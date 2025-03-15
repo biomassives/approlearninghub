@@ -1,0 +1,91 @@
+{
+  "wastewater_and_sewage": {
+    "collection": ["None", "Small bore/Settled sewerage", "Simplified Sewerage", "Conventional Sewerage (Drainage Field)"],
+    "transfer": ["None"],
+    "treatment": [
+      "Constructed wet lands",
+      "Soil aquifer treatment",
+      "Oxidation ditch",
+      "Rotating biological contractor",
+      "Trickling filters",
+      "Upflow anaerobic sludge blanket",
+      "Activated sludge process",
+      "Stabilization Ponds"
+    ],
+    "disposal": [
+      "Burial",
+      "Composting",
+      "Pit Privy",
+      "Ventilated improved pit latrine",
+      "Double-vault compost latrine",
+      "Aqua Privy",
+      "Pour Flush Toilet",
+      "Cistern-Flush Toilet",
+      "Drainage Field"
+    ]
+  },
+  "drinking_water_supply": {
+    "source": [
+      "Bucket",
+      "Handpump",
+      "Handpump - Deep well",
+      "Guard bucket with windlass",
+      "Motorized pump",
+      "Standpost"
+    ],
+    "procurement": ["None"],
+    "storage": ["Barrel", "Tank", "Reservoir", "Cistern"],
+    "treatment": ["None", "Boiling", "Slow Sand Filter", "Piped Water (Pumped)", "Ultraviolet Light"]
+  },
+  "mss_technology_assessment": {
+    "steps": [
+      "Perform Background Research",
+      "Develop list of technologies",
+      "Group technologies into unit operations",
+      "Calculate Technology Scores based on 4 criteria",
+      "Develop options for service",
+      "Calculate Option Scores",
+      "Classify Options into Stage of Development"
+    ],
+    "criteria": ["Cost", "Energy", "Technical Requirements", "Institutional Requirements"]
+  },
+  "list_of_technologies": {
+    "characteristics": [
+      "Description of Technology",
+      "Components",
+      "Schematics",
+      "Cost",
+      "Operation and Maintenance",
+      "Technical Knowledge",
+      "Environmental Impact",
+      "Cultural Factors",
+      "Other Factors",
+      "Sources"
+    ]
+  },
+  "biogas_digester": {
+    "system_description": "24/7/365 gas from animal and human waste and organic material, and fertilizer as a byproduct.",
+    "implementation_context": "Near remote clinics in warm climates. Mini-grants, individual homes and farms.",
+    "tags": [
+      "mini-grants",
+      "home-biogas",
+      "humanwasteproc",
+      "animalwasteproc",
+      "fertilizer-production"
+    ],
+    "context": [
+      "warm-climates",
+      "infectious-disease-prevention"
+    ],
+    "case_study": "Bedouin community, Negev",
+    "referred_by": ["Bernard Amadei", "Peter Ornstein"],
+    "associated_organizations": ["Women Talk", "Wheels Of Change"],
+    "cultural_factors": "Bedouin community",
+    "project_status": "Operational",
+    "approhub_program": [
+      "mini-grants",
+      "remote-clinics"
+    ],
+    "notes": "An example of a biogas digester recommended for a Bedouin community in the Negev, providing gas for cooking and fertilizer as a byproduct."
+  }
+}

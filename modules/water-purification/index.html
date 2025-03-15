@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Approvideo Hub - Community Environmental Health & Research Portal</title>
+    <script src="/js/libs/Dexie.js"></script>
+    <script src="/js/milestonePlanner.mjs"></script> 
+    <script src="/js/libs/supabase-js2.js"></script>
+
+    <link rel="stylesheet" href="/output.css">
+    <link rel="stylesheet" href="/style.css">
+    <meta property="og:image" content="/assets/icon_640_480.webp">
+    <meta property="og:description" content="Approvideo Hub served knowledge and sustainable practices literacy.">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Approvideo Learning Hub">
+    <meta name="application-name" content="Approvideo Hub">
+    <meta name="theme-color" content="#047857">
+    <meta name="License" content="gplv3">
+    <meta name="msapplication-TileColor" content="#047857">
+    <meta name="msapplication-TileImage" content="/assets/ms-icon-144x144.png">
+
+    <link rel="icon" type="image/png" href="favicon.ico"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+ 
+
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div id="app" class="flex flex-col">
+        <nav id="main-nav" class="bg-emerald-700 text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+
+
+                    <img src="/assets/apprologo_40-40-202march05_a.webp" alt="Approvideo Hub Logo" class="w-10 h-10 rounded-full">
+                    <h1 class="text-xl font-bold">Approvideo Learning Hub</h1>
+                </div>
+
+
+                <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-xl">
+                        <div class="flex justify-between items-center mb-4">
+
+
+                            <button id="auth-modal-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Close Menu
+                            </button>
+
+
+
+                            <h2 class="text-xl font-bold text-gray-800">Sign In / Register</h2>
+                            <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+        
+        
+                        <div class="space-y-4">
+                            <button id="login-with-zoom" alt="Connect Approvideo Hub Login to Zoom"  
+                            title="Connect Approvideo Hub Login to Zoom" 
+                            class="w-half text-black border-radius:5px py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-video mr-2"></i> 
+                                    <img src="/assets/zoom-logo-2022.svg" alt="Zoom" class="w-12 h-6 mr-2">
+                            </button>
+        
+                            <button id="login-with-notion" alt="Connect Approvideo Hub Login to Notion" title="Connect Approvideo Hub Login to Notion" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-book mr-2"></i>
+                                <img src="/assets/notion-logo.svg" alt="Notion" class="w-12 h-6 mr-2">
+        
+                            </button>
+        
+                            <button id="login-with-teams" alt="Connect Approvideo Hub Login to Teams" 
+                            title="Connect Approvideo Hub Login to Teams" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-video mr-2"></i>
+                                <img src="/assets/teams.svg" alt="Teams" class="w-12 h-6 mr-2">
+        
+                            </button>
+        
+                            <button id="login-with-mastodon" alt="Connect Approvideo Hub Login via Mastodon" 
+                            title="Connect Approvideo Hub Login via Mastodon open networks" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-400 transition">
+                                <i class="fas fa-book mr-2"></i>
+                                <img src="/assets/mastodon_logo.svg" alt="Mastodon" class="w-12 h-6 mr-2">
+        
+                            </button>
+                            <button id="login-portable" alt="Connect Approvideo Hub guest login"
+                            title="Connect to Approvideo Hub guest login"  
+                            class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
+                                <i class="fas fa-book mr-2"></i> Guest login
+                            </button>
+
+        
+        
+                            <div class="relative flex items-center justify-center">
+                                <div class="border-t border-gray-300 w-full"></div>
+                                <span class="bg-white px-3 text-sm text-gray-500">or</span>
+                                <div class="border-t border-gray-300 w-full"></div>
+                            </div>
+        
+                            <button id="login-with-email" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-envelope mr-2"></i> Continue with Email
+                            </button>
+        
+                            <button id="login-with-sms" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-envelope mr-2"></i> Continue with SMS
+                            </button>
+                            <div id="email-login-form" class="hidden space-y-3">
+                                <input type="email" id="email-input" placeholder="Your email address" class="w-full p-2 border border-gray-300 rounded">
+                                <div id="password-field" class="hidden">
+                                    <input type="password" id="password-input" placeholder="Password"
+                                    class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <button id="submit-email-login" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700 transition">Continue</button>
+                            </div>
+        
+                            <p class="text-sm text-gray-500 text-center">
+                                By continuing, you agree to our
+                                <a href="#terms" id="terms-link-modal" class="text-emerald-600 hover:underline">Terms of Service</a> 
+                                <a href="#gplv3" id="gplv3" class="text-emerald-600 hover:underline">General Public License V3</a> and
+                                <a href="#privacy" id="privacy-link-modal" class="text-emerald-600 hover:underline">Privacy Policy</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="flex items-center space-x-4">
+                    <div id="auth-top-right" class="flex items-center space-x-4">
+                        <div id="auth-logged-out-top-right">
+                            <button id="register-button" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
+                                Register
+                            </button>
+                            <button id="login-button" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
+                                Sign In
+                            </button>
+                            <button id="add-milestone" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
+                                Add a milestone
+                            </button>
+                            <input type="text" id="overall-goal" Placeholder="">
+
+
+                            <select id="sort-milestones">
+                                    <option value="dueDate">Sort by Due Date</option>
+                                    <option value="status">Sort by Status</option>
+                                    <option value="title">Sort by Title</option>
+                                </select>
+                                <div id="milestones-list" data-module="modules/water-purification"></div>
+
+                                <template id="milestone-template">
+                                    <div class="milestone-item" data-module="modules/water-purification">
+                                        <div class="milestone-header">
+                                            <input type="text" class="milestone-title" placeholder="Milestone Title">
+                                            <button class="remove-milestone">Remove</button>
+                                        </div>
+                                        <div>
+                                            <label>Due Date: <input type="date" class="milestone-date"></label>
+                                        </div>
+                                        <div>
+                                            <label>Status:
+                                                <select class="milestone-status">
+                                                    <option value="not-started">Not Started</option>
+                                                    <option value="in-progress">In Progress</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>Description: <textarea class="milestone-description"></textarea></label>
+                                        </div>
+                                        <div>
+                                            <label>Celebration: <textarea class="milestone-celebration"></textarea></label>
+                                        </div>
+                                        <div class="metrics-display"></div>
+                                        <div>
+                                            <input type="text" class="milestone-metric-name" placeholder="Metric Name">
+                                            <input type="number" class="milestone-metric-value" placeholder="Value">
+                                            <select class="milestone-metric-unit">
+                                                <option value="units">units</option>
+                                                <option value="hours">hours</option>
+                                                <option value="days">days</option>
+                                                <option value="projects">projects</option>
+                                            </select>
+                                            <button class="add-metric">Add Metric</button>
+                                        </div>
+                                    </div>
+                                </template>
+
+
+
+
+                        </div>
+
+                        <div id="auth-logged-in-top-right" class="hidden flex items-center space-x-3">
+
+
+                            <div class="main-nav">
+                                <div class="nav-links">
+
+                                    <a href="#library" id="library-header" class="hidden nav-item hover:bg-emerald-700 text-gray-100 hover:text-white"  id="moremenu-crisis-relief">Skill Training</a>
+                                    <a href="#librarycr" id="librarycr-header" class="hidden nav-item hover:bg-emerald-700 text-gray-100 hover:text-white" id="moremenu-crisis-relief">Crisis relief</a>
+                                    <a href="#events" id="events-header"  class="nav-item hover:bg-emerald-700 text-gray-100  hover:text-white"  id="moremenu-practical-clinics">Practical clinics</a>
+                                    <a href="#smallgrants" id="small-grants-header" class="nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" id="moremenu-smallgrants">Funding</a>
+                                    <a href="#research" id="research-header" class="hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" id="moremenu-research">Research</a>
+                                    <a href="#community" id="community-header" class=" hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" id="moremenu-community">Community</a>
+                                    <a href="#about" id="about-header" class=" hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" id="moremenu-about">About</a>
+
+
+
+                                    <button id="mega-menu-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Open Menu
+                                    </button>
+
+
+    
+                                        <div
+                                        id="user-dropdown"
+                                        class="hidden absolute right-4 mt-12 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                                        >    
+                                        
+                                        <!-- Profile -->
+                                        <a
+                                            href="#profile"
+                                            id="profile-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                        
+                                    
+                                        <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9 10a3 3 0 116 0 3 3 0 01-6 0z"
+                                            />
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M12 14.25c-2.5 0-4.71 1.28-6.04 3.248A8.999
+                                                8.999 0 1021.75 12c0 2.005-.66 3.855-1.76
+                                                5.333A7.51 7.51 0 0012 14.25z"
+                                            />
+                                        </svg>
+                                            Profile
+                                        </a>
+                                        <!-- Milestones -->
+                                        <a
+                                            href="#milestones"
+                                            id="milestones-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Flag (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3 3v18m0-10h13.5l-1.72
+                                                3.445a.75.75 0 00.67 1.055H20.25"
+                                            />
+                                            </svg>
+                                            Milestones
+                                        </a>
+                                        <!-- Learning -->
+                                        <a
+                                            href="#myLibraryState"
+                                            id="learning-header"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Brain (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
+                                            />
+                                            </svg>
+                                        Learning Modules
+                                        </a>
+                                        <!-- Divider -->
+                                        <hr class="my-1 border-gray-200" />
+                                        <!-- Settings -->
+                                        <a
+                                            href="#settings"
+                                            id="settings-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Cog (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M4.5 12a7.5 7.5 0 0114.972
+                                                1.59c.01.108.028.215.05.319l2.168
+                                                1.25a.75.75 0 01.28 1.022l-2.25
+                                                3.897a.75.75 0 01-1.02.28l-2.159-1.246a7.512
+                                                7.512 0 01-1.572.91l-.328 2.3a.75.75
+                                                0 01-.743.64h-4.5a.75.75 0 01-.743-.64l-.328-2.3a7.517
+                                                7.517 0 01-1.572-.91l-2.159 1.246a.75.75
+                                                0 01-1.02-.28l-2.25-3.897a.75.75 0
+                                                01.28-1.022l2.168-1.25c.022-.104.04-.21.05-.319A7.5
+                                                7.5 0 014.5 12z"
+                                            />
+                                            </svg>
+                                            Settings
+                                        </a>
+                                        <!-- My Data -->
+                                        <a
+                                            href="#share"
+                                            id="share-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Database (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3 8c0 1.657 4.03 3 9
+                                                3s9-1.343 9-3M3 8v8c0 1.657
+                                                4.03 3 9 3s9-1.343 9-3V8m-18
+                                                0C3 6.343 7.03 5 12 5s9 1.343
+                                                9 3m-9 3c4.97 0 9-1.343
+                                                9-3m-9 3c-4.97 0-9 1.343-9
+                                                3"
+                                            />
+                                            </svg>
+                                            Share Folder
+                                        </a>
+                                        <!-- Divider -->
+                                        <div class="border-t border-gray-200 my-1"></div>
+                                        <!-- Sign Out -->
+                                        <button
+                                            id="logout-button"
+                                            class="w-full text-left flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Arrow Left On Rectangle (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M12.75 9V3.75A2.25 2.25 0
+                                                0010.5 1.5h-6A2.25 2.25 0 002.25
+                                                3.75v16.5A2.25 2.25 0 004.5
+                                                22.5h6a2.25 2.25 0 002.25-2.25V15m6
+                                                0l-3-3m0 0l3-3m-3 3H9"
+                                            />
+                                            </svg>
+                                            Sign Out
+                                        </button>
+                                        </div>
+                                        
+
+                                </div>
+                            </div>
+
+                            <div id="moduleModal" class="modal hidden">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <img src="" alt="Module Icon" class="modal-icon" id="modalIcon">
+                                    <h2 id="modalTitle"></h2>
+                                    <p id="modalDescription"></p>
+                                    <div class="modal-buttons">
+                                        <button class="start">Start Learning</button>
+                                        <button class="queue">Queue Learning</button>
+                                    </div>
+                                </div>
+                            </div>

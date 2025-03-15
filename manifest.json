@@ -1,0 +1,77 @@
+{
+    "short_name": "ApproVideo",
+    "name": "ApproVideo Hub",
+    "icons": [
+      {
+        "src": "/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#48bb78",
+    "description": "ApproVideo Hub: Accessible clinics, grants, and education for sustainable infrastructure, especially in conflict zones.",
+    "scope": "/",
+    "shortcuts": [
+      {
+        "name": "Accessible Clinics",
+        "short_name": "Clinics",
+        "description": "Join community engineering and science clinics.",
+        "url": "/index.html#accessible-clinics",
+        "icons": [
+          {
+            "src": "/icons/clinic-shortcut.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Small Grants",
+        "short_name": "Grants",
+        "description": "Apply for microgrants for sustainable projects.",
+        "url": "/index.html#small-grants",
+        "icons": [
+          {
+            "src": "/assets/icons-grant-shortcut.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "FAQ",
+        "short_name": "FAQ",
+        "description": "Frequently asked questions about ApproVideo Hub.",
+        "url": "/index.html#faq-section",
+        "icons": [
+          {
+            "src": "/assets/icons-faq-shortcut.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Learning Path",
+        "short_name": "Learn",
+        "description": "Continue your learning Path.",
+        "url": "/index.html#learning-path",
+        "icons": [
+          {
+            "src": "/assets/appro-learning-path.webp",
+            "sizes": "120x99",
+            "type": "image/png"
+          }
+        ]
+      }
+    ],
+    "prefer_related_applications": false
+  }

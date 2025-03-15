@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Modules</title></head>
+<body>
+    <div id="content-area"></div>
+    <script>
+        const path = window.location.pathname;
+        let message = "Default Modules Page";
+        if (path.startsWith('/modules/skill-training')) {
+            message = "Skill Training Module";
+            if (path.endsWith('/exams')) {
+                message = "Skill Training Exams";
+            }
+        }
+        document.getElementById('content-area').textContent = message;
+    </script>
+</body>
+</html>

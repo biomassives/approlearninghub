@@ -1,0 +1,2511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Approvideo Learning Hub - Community Health  -appropriate- Sustainable Development Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/libs/tailwind-3.4.16.es"></script>
+    <script src="./js/libs/Dexie.js"></script>
+    <script src="./js/libs/dexie-encrypted-addon.min.js"></script>
+
+
+    <script src="./js/milestonePlanner.mjs"></script> 
+    <script src="./js/libs/supabase-js2.js"></script>
+
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="style.css">
+    <meta property="og:image" content="assets/">
+    <meta property="og:description" content="URL_of_the_image">
+
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Approvideo Hub">
+    <meta name="application-name" content="Approvideo Hub">
+    <meta name="theme-color" content="#047857">
+    <meta name="License" content="GPLv3">
+    <meta name="msapplication-TileColor" content="#047857">
+    <meta name="msapplication-TileImage" content="assets/ms-icon-144x144.png">
+
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" href="favicon.ico"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <script src="manifest.js"></script>
+
+
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div id="app" class="flex flex-col">
+        <nav id="main-nav" class="bg-emerald-700 text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center bg">
+                <div class="flex items-center space-x-2">
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                    stroke-linecap="round" stroke-linejoin="round" 
+                    class="icon-button animate bg-grey-100" >
+                        <path d="M12 2.5c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10z" />
+                        <path d="M15.5 8.5l-4 4 4 4" />
+                        <path d="M8.5 15.5l4-4-4-4" />
+                        <path d="M16 16.5l-1.5-1.5" />
+                        <path d="M8 16.5l1.5-1.5" />
+                        <path d="M14.146 7.146l1.414-1.414" />
+                        <path d="M9.854 7.146l-1.414-1.414" />
+                      </svg>
+                                     <!--   
+                    <img src="assets/apprologo_40-40-202march05_a.webp" alt="Approvideo Hub Logo" class="w-10 h-10 rounded-full">
+                    -->
+                    <h1 class="text-xl font-bold">Approvideo Learning Hub</h1>
+
+                    <div id="auth-logged-out-top-right">
+
+                        <button id="librarycr-header" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Crisis Recovery Learning Modules">
+                            modules         
+                        </button>  
+                         <button id="library-header" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Approtech Solutions Library">
+                            solutions
+                        </button> 
+                        <button id="small-grants-header" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Prototyping Grants">
+                            microgrants
+                        </button>
+                        <button id="events-header" class="nav-item hover:bg-pink-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Practical Clinics">
+                            clinics           
+                        </button>
+                </div>
+
+
+                </div>
+
+
+
+
+
+                <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-xl">
+                        <div class="flex justify-between items-center mb-4">
+
+                            <h2 class="text-xl font-bold text-gray-800">Sign In / Register</h2>
+                            <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-times"></i>
+                            </button>
+
+                            <button id="auth-modal-button-close" class="bg-gray-100 border-gray-800 hover:bg-white text-black font-bold py-2 px-4 rounded">
+                                X
+                            </button>
+
+                        </div>
+        
+        
+                        <div class="space-y-4">
+                            <button id="login-with-zoom"  
+                            title="Connect Approvideo Hub Login to Zoom" 
+                            class="w-half text-black border-radius:5px py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-video mr-2"></i> 
+                                    <img src="/assets/zoom-logo-2022.svg" alt="Zoom" class="w-12 h-6 mr-2">
+                            </button>
+        
+                            <button id="login-with-notion" title="Connect Approvideo Hub Login to Notion" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-book mr-2"></i>
+                                <img src="/assets/notion-logo.svg" alt="Notion" class="w-12 h-6 mr-2">
+        
+                            </button>
+        
+                            <button id="login-with-teams"  
+                            title="Connect Approvideo Hub Login to Teams" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-video mr-2"></i>
+                                <img src="/assets/teams.svg" alt="Teams" class="w-12 h-6 mr-2">
+        
+                            </button>
+        
+                            <button id="login-with-mastodon"  
+                            title="Connect Approvideo Hub Login via Mastodon open networks" 
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-400 transition">
+                                <i class="fas fa-book mr-2"></i>
+                                <img src="/assets/mastodon_logo.svg" alt="Mastodon" class="w-12 h-6 mr-2">
+        
+                            </button>
+                            <button id="login-portable" 
+                            title="Connect to Approvideo Hub guest login"  
+                            class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
+                                <i class="fas fa-book mr-2"></i> Guest login
+                            </button>
+        <!--
+                            <button id="login-with-google" class="w-half bg-green-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
+                                <i class="fas fa-book mr-2"></i> Google
+                            </button>
+                            
+                            <button id="login-with-tiktok" class="w-half  bg-white-800 text-black py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+                                <i class="fas fa-book mr-2"></i> Tiktok
+                            </button>
+        
+                            <button id="login-with-blusky" class="w-half  bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
+                                <i class="fas fa-book mr-2"></i> BlueSky
+                            </button>
+        
+                            <button id="login-with-tiktok" class="w-half bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
+                                <i class="fas fa-book mr-2"></i> Substack
+                            </button>
+         -->
+        
+        
+        
+                            <div class="relative flex items-center justify-center">
+                                <div class="border-t border-gray-300 w-full"></div>
+                                <span class="bg-white px-3 text-sm text-gray-500">or</span>
+                                <div class="border-t border-gray-300 w-full"></div>
+                            </div>
+        
+                            <button id="login-with-email" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-envelope mr-2"></i> Continue with Email
+                            </button>
+        
+                            <button id="login-with-sms" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-envelope mr-2"></i> Continue with SMS
+                            </button>
+                            <!--
+                            <button id="login-with-sms" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-envelope mr-2"></i> Continue with NFT
+                            </button>
+                            -->
+                            <div id="email-login-form" class="hidden space-y-3">
+                                <input type="email" id="email-input" placeholder="Your email address" class="w-full p-2 border border-gray-300 rounded">
+                                <div id="password-field" class="hidden">
+                                    <input type="password" id="password-input" placeholder="Password" class="w-full p-2 border border-gray-300 rounded">
+                                </div>
+                                <button id="submit-email-login" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700 transition">Continue</button>
+                            </div>
+        
+                            <p class="text-sm text-gray-500 text-center">
+                                By continuing, you agree to our
+                                <a href="#terms" id="terms-link-modal" class="text-emerald-600 hover:underline">Terms of Service</a> 
+                                <a href="#gplv3" id="gplv3" class="text-emerald-600 hover:underline">General Public License V3</a> and
+                                <a href="#privacy" id="privacy-link-modal" class="text-emerald-600 hover:underline">Privacy Policy</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div id="auth-top-right" class="flex items-center space-x-4">
+                        <div id="auth-logged-out-top-right2" class="auth-logged-out-top-right">
+
+                            <button id="login-button" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
+                                Data Portal
+                            </button>
+                        </div>
+
+                        <div id="auth-logged-in-top-right" class="hidden flex items-center space-x-3">
+                            <div class="main-nav">
+                                <div class="nav-links">
+
+                                    <!--  note mostly hidden and here for staging  -->
+                                    <a href="#librarycr" id="moremenu-crisis-relief" class="hidden nav-item hover:bg-emerald-700 text-gray-100 hover:text-white" >Crisis relief</a>
+                                    <a href="#events"  id="more-practical-clinics-button"   class="nav-item hover:bg-emerald-700 text-gray-100  hover:text-white"  >Practical clinics</a>
+                                    <a href="#events2"  id="events-header2"   class="hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white"  >Practical clinics</a>
+                                    <a href="#smallgrants" id="more-smallgrants" class="nav-item hover:bg-emerald-700 text-gray-100  hover:text-white">Funding</a>
+
+                                    <a href="#research"   id="more-research"  class="hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white">Research</a>
+                                    <a href="#community" id="moremenu-community" class=" hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" >Community</a>
+                                    <a href="#about" id="moremenu-about" class=" hidden nav-item hover:bg-emerald-700 text-gray-100  hover:text-white" >About</a>
+
+
+                                    <button id="mega-menu-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Open Menu
+                                    </button>
+
+
+    
+                                        <div
+                                        id="user-dropdown"
+                                        class="hidden absolute right-4 mt-12 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+                                        >    
+                                        
+                                        <!-- Profile -->
+                                        <a
+                                            href="#profile"
+                                            id="profile-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                        
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9 10a3 3 0 116 0 3 3 0 01-6 0z"
+                                            />
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M12 14.25c-2.5 0-4.71 1.28-6.04 3.248A8.999
+                                                8.999 0 1021.75 12c0 2.005-.66 3.855-1.76
+                                                5.333A7.51 7.51 0 0012 14.25z"
+                                            />
+                                            </svg>
+                                            Profile
+                                        </a>
+                                        <!-- Milestones -->
+                                        <a
+                                            href="#milestones"
+                                            id="milestones-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Flag (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3 3v18m0-10h13.5l-1.72
+                                                3.445a.75.75 0 00.67 1.055H20.25"
+                                            />
+                                            </svg>
+                                            Milestones
+                                        </a>
+                                        <!-- Learning -->
+                                        <a
+                                            href="#myLibraryState"
+                                            id="learning-header"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Brain (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
+                                            />
+                                            </svg>
+                                        Learning Modules
+                                        </a>
+
+                                        <!-- Settings -->
+                                        <a
+                                            href="#settings"
+                                            id="settings-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Cog (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M4.5 12a7.5 7.5 0 0114.972
+                                                1.59c.01.108.028.215.05.319l2.168
+                                                1.25a.75.75 0 01.28 1.022l-2.25
+                                                3.897a.75.75 0 01-1.02.28l-2.159-1.246a7.512
+                                                7.512 0 01-1.572.91l-.328 2.3a.75.75
+                                                0 01-.743.64h-4.5a.75.75 0 01-.743-.64l-.328-2.3a7.517
+                                                7.517 0 01-1.572-.91l-2.159 1.246a.75.75
+                                                0 01-1.02-.28l-2.25-3.897a.75.75 0
+                                                01.28-1.022l2.168-1.25c.022-.104.04-.21.05-.319A7.5
+                                                7.5 0 014.5 12z"
+                                            />
+                                            </svg>
+                                            Settings
+                                        </a>
+                                        <!-- My Data -->
+                                        <a
+                                            href="#share"
+                                            id="share-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Database (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3 8c0 1.657 4.03 3 9
+                                                3s9-1.343 9-3M3 8v8c0 1.657
+                                                4.03 3 9 3s9-1.343 9-3V8m-18
+                                                0C3 6.343 7.03 5 12 5s9 1.343
+                                                9 3m-9 3c4.97 0 9-1.343
+                                                9-3m-9 3c-4.97 0-9 1.343-9
+                                                3"
+                                            />
+                                            </svg>
+                                            Share Folder
+                                        </a>
+                                        <!-- Divider -->
+                                        <div class="border-t border-gray-200 my-1"></div>
+                                        <!-- Sign Out -->
+                                        <button
+                                            id="logout-button"
+                                            class="w-full text-left flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Arrow Left On Rectangle (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M12.75 9V3.75A2.25 2.25 0
+                                                0010.5 1.5h-6A2.25 2.25 0 002.25
+                                                3.75v16.5A2.25 2.25 0 004.5
+                                                22.5h6a2.25 2.25 0 002.25-2.25V15m6
+                                                0l-3-3m0 0l3-3m-3 3H9"
+                                            />
+                                            </svg>
+                                            Sign Out
+                                        </button>
+                                        </div>
+                                        
+
+                                </div>
+                            </div>
+
+                            <div id="moduleModal" class="modal hidden">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <img src="/assets/appro4.gif" alt="Module Icon" class="modal-icon" id="modalIcon">
+                                    <h2 id="modalTitle">Learning module</h2>
+                                    <p id="modalDescription"></p>
+                                    <div class="modal-buttons">
+                                        <button class="start">Start Exercise</button>
+                                        <button class="queue">Queue Topics</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="modal-module-menu" class="modal hidden">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <img src="/assets/appro4.gif" alt="Module Icon" class="modal-icon" id="modalIconMenu">
+                                    <h2 id="modalTitleMenu">Module x</h2>
+                                    <p id="modalDescriptionMenu">module description y</p>
+                                    <div class="modal-buttons">
+                                        <button class="start">Start Exercise</button>
+                                        <button class="queue">Queue Topics</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                              
+                              <div id="mega-menu" class="hidden absolute top-20 border-gray-300 border-radius-10 left-0 w-full bg-gray-100 shadow-lg rounded-md z-10">
+                                <div class="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                                <button id="mega-menu-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Close Menu
+                                </button>
+
+                                    <div>
+                                        <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-drop mr-2"></i> Water Security</h3>
+                                        <p class="text-gray-600 text-sm mb-4">Explore topics related to securing safe and clean water sources.</p>
+                                        <ul>
+                                            <li><a href="lm4.html?area=water-security&emphasis=water-purification" class="text-teal-700 hover:text-blue-500"><i class="fas fa-filter mr-2"></i> Water Purification</a></li>
+                                            <li><a href="lm4.html?area=water-security&emphasis=desalination" class="text-teal-700 hover:text-blue-500"><i class="fas fa-faucet-drip mr-2"></i> Desalination</a></li>
+                                            <li><a href="lm4.html?area=water-security&emphasis=efficient-distribution" class="text-teal-700 hover:text-blue-500"><i class="fas fa-truck-container mr-2"></i> Efficient Distribution</a></li>
+                                        
+                                        </ul>
+                                  </div>
+                            
+                                  <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-plate mr-2"></i> Food Production</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Learn about innovative and sustainable food production methods.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=food-production&emphasis=urban-gardening" class="text-teal-700 hover:text-blue-500"><i class="fas fa-seedling mr-2"></i> Urban Gardening</a></li>
+                                        <li><a href="lm4.html?area=food-production&emphasis=hydroponics" class="text-teal-700 hover:text-blue-500"><i class="fas fa-water mr-2"></i> Hydroponics</a></li>
+                                        <li><a href="lm4.html?area=food-production&emphasis=sustainable-agriculture" class="text-teal-700 hover:text-blue-500"><i class="fas fa-tractor mr-2"></i> Sustainable Agriculture</a></li>
+
+                                    </ul>
+                                  </div>
+                              
+                                  <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-house-chimney mr-2"></i> Shelter</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Explore sustainable and affordable shelter solutions.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=shelter&emphasis=low-cost-construction" class="text-teal-700 hover:text-blue-500"><i class="fas fa-house-crack mr-2"></i> Low-cost Construction</a></li>
+                                        <li><a href="lm4.html?area=shelter&emphasis=local-materials" class="text-teal-700 hover:text-blue-500"><i class="fas fa-tree mr-2"></i> Local Materials</a></li>
+
+                                    </ul>
+                                  </div>
+                              
+                                  <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-firstaid mr-2"></i> Healthcare</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Access essential healthcare information and resources.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=healthcare&emphasis=emergency-medical-training" class="text-teal-700 hover:text-blue-500"><i class="fas fa-first-aid mr-2"></i> Emergency Medical Training</a></li>
+                                        <li><a href="lm4.html?area=healthcare&emphasis=telemedicine" class="text-teal-700 hover:text-blue-500"><i class="fas fa-video mr-2"></i> Telemedicine</a></li>
+                                        <li><a href="lm4.html?area=healthcare&emphasis=self-sufficient-healthcare" class="text-teal-700 hover:text-blue-500"><i class="fas fa-user-doctor mr-2"></i> Self-Sufficient Healthcare</a></li>
+
+                                    </ul>
+                                  </div>
+
+                                  <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-wremch mr-2"></i> Vocational Skills</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Access essential healthcare information and resources.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=vocational&emphasis=carpentry" class="text-teal-700 hover:text-blue-500"><i class="fas fa-first-aid mr-2"></i> Carpentry</a></li>
+                                        <li><a href="lm4.html?area=vocational&emphasis=plumbing" class="text-teal-700 hover:text-blue-500"><i class="fas fa-video mr-2"></i> Plumbing</a></li>
+                                        <li><a href="lm4.html?area=vocational&emphasis=mechanical" class="text-teal-700 hover:text-blue-500"><i class="fas fa-user-doctor mr-2"></i> Mechanical</a></li>
+                                        <li><a href="lm4.html?area=vocational&emphasis=electrical" class="text-teal-700 hover:text-blue-500"><i class="fas fa-video mr-2"></i> Electrical</a></li>
+                                  
+                                    </ul>
+                                  </div>
+
+
+                                  <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-kit-medical mr-2"></i> AI</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Access essential healthcare information and resources.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=ai&emphasis=monitoring-systems" class="text-teal-700 hover:text-blue-500"><i class="fas fa-video mr-2"></i> Monitoring</a></li>
+                                        <li><a href="lm4.html?area=ai&emphasis=kagragmodel" class="text-teal-700 hover:text-blue-500"><i class="fas fa-user-doctor mr-2"></i> Expert Models</a></li>
+                                        <li><a href="lm4.html?area=ai&emphasis=prompting" class="text-teal-700 hover:text-blue-500"><i class="fas fa-user-doctor mr-2"></i> Prompt Engineering</a></li>
+                                        <li><a href="lm4.html?area=ai&emphasis=usecases" class="text-teal-700 hover:text-blue-500"><i class="fas fa-user-doctor mr-2"></i> Use Cases</a></li>
+
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-bolt mr-2"></i> Energy Solutions</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Discover sustainable energy solutions for a greener future.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=energy-solutions&emphasis=diy-solar" class="text-teal-700 hover:text-blue-500"><i class="fas fa-solar-panel mr-2"></i> DIY Solar</a></li>
+                                        <li><a href="lm4.html?area=energy-solutions&emphasis=biogas-generation" class="text-teal-700 hover:text-blue-500"><i class="fas fa-biohazard mr-2"></i> Biogas Generation</a></li>
+                                        <li><a href="lm4.html?area=energy-solutions&emphasis=microgrids" class="text-teal-700 hover:text-blue-500"><i class="fas fa-plug-circle-bolt mr-2"></i> Microgrids</a></li>
+
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold mb-2 text-teal-900 text-lg"><i class="fas fa-kit-medical mr-2"></i> Technical / Coding</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Access essential healthcare information and resources.</p>
+                                    <ul>
+                                        <li><a href="lm4.html?area=techskills&emphasis=uicoding" class="text-teal-700 hover:text-blue-500"><i class="fas fa-first-aid mr-2"></i> Interface Design</a></li>
+                                        <li><a href="lm4.html?area=techskills&emphasis=apidata" class="text-teal-700 hover:text-blue-500"><i class="fas fa-first-aid mr-2"></i> API / Data</a></li>
+                                        <li><a href="lm4.html?area=techskills&emphasis=deployment" class="text-teal-700 hover:text-blue-500"><i class="fas fa-first-aid mr-2"></i> Deployment</a></li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+
+
+                                </div>
+                              </div>
+                              
+
+        
+                            <div id="user-profile-top-right" class="flex items-center cursor-pointer">
+                                    <svg
+                                    class="w-5 h-5 mr-2 hidden"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2.0"
+                                    stroke="white"
+                                    >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M9 10a3 3 0 116 0 3 3 0 01-6 0z"
+                                    />
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 14.25c-2.5 0-4.71 1.28-6.04 3.248A8.999
+                                         8.999 0 1021.75 12c0 2.005-.66 3.855-1.76
+                                         5.333A7.51 7.51 0 0012 14.25z"
+                                    />
+                                    </svg>
+                                <span id="user-name-top-right" class="ml-2 hidden md:inline">Community Appropriate Technology Project and Learning Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <div id="public-subnav-menu" class="top-20 bg-pink-800 border-radius-10 right-0 margin-right:10px w-full bg-gray-100 shadow-lg rounded-md z-10">
+
+
+        </div>
+
+
+
+        </nav>
+
+        <div class="nav-links main-nav flex items-center">
+
+
+                <a href="#skilltraining" id="skilltraining-header" class="nav-item hidden bg-emerald-900 hover:bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="skilltraining">Skill Training</a>
+
+        
+
+
+    
+                <div id="skilltraining-modal" class="absolute hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                          <h3>Skill training introduction Modal</h3>
+                        
+                </div>
+
+              <div id="skill-training-menu" class="absolute hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <div class="grid-cols-3">
+
+        
+                    <div class="-p-6 space-x-8">
+                        <div class="grid">
+                            <h3 class="font-semibold mb-2">Basic Education</h3>
+                            <ul class="space-y-1">
+                                <li><a href="/modules/basic-education-k-12" class="hover:text-blue-600">K-12 Curriculum</a></li>
+                                <li><a href="/modules/basic-education-numeracy" class="hover:text-blue-600">Numeracy Skills</a></li>
+                                <li><a href="/modules/basic-education-language-skills" class="hover:text-blue-600">Language Skills</a></li>
+                                <li><a href="/modules/basic-education-financial-literacy" class="hover:text-blue-600">Financial Literacy</a></li>
+                                <li><a href="/modules/basic-education-environmental-science" class="hover:text-blue-600">Environmental Science</a></li>
+                            </ul>
+                        </div>
+        
+                        <div class="grid">
+                            <h3 class="font-semibold mb-2">Technical & Vocational Skills</h3>
+                            <ul class="space-y-1">
+                                <li><a href="/modules/tech-training-appropriate-tech" class="hover:text-blue-600">Appropriate Technology</a></li>
+                                <li><a href="/modules/tech-traning-computer-literacy" class="hover:text-blue-600">Computer Literacy</a></li>
+                                <li><a href="/modules/tech-traning-coding" class="hover:text-blue-600">Coding & Development</a></li>
+                                <li><a href="/modules/vocational-plumbing" class="hover:text-blue-600">Plumbing</a></li>
+                                <li><a href="/modules/vocational-electrical" class="hover:text-blue-600">Electrical</a></li>
+                                <li><a href="/modules/vocational-machining" class="hover:text-blue-600">Machining</a></li>
+                                <li><a href="/modules/vocational-carpentry" class="hover:text-blue-600">Carpentry</a></li>
+                                <li><a href="/modules/vocational-forestry" class="hover:text-blue-600">Forestry</a></li>
+                                <li><a href="/modules/vocational-landscaping" class="hover:text-blue-600">Landscaping</a></li>
+                                <li><a href="/modules/vocational-repairing" class="hover:text-blue-600">Repairing</a></li>
+                            </ul>
+                        </div>
+        
+                        <div class="grid">
+                            <h3 class="font-semibold mb-2">Entrepreneurship & Business</h3>
+                            <ul class="space-y-1">
+                                <li><a href="/modules/entrepreneurship-business-planning" class="hover:text-blue-600">Business Planning</a></li>
+                                <li><a href="/modules/entrepreneurship-financial-literacy" class="hover:text-blue-600">Financial Literacy (Business)</a></li>
+                                <li><a href="/modules/entrepreneurship-marketing" class="hover:text-blue-600">Marketing & Sales</a></li>
+                                <li><a href="/modules/entrepreneurship-project-management" class="hover:text-blue-600">Project Management</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+   
+           
+        <div class="relative ">
+            <div id="modules-water-filtration-purification" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <h3> module water filtration purification modules</h3>
+                <BR><BR><BR>
+                    jello0
+                    <button id="module-water-filtration-purification-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+            </div>  
+        </div>
+    
+        <div class="relative ">
+            <div id="modules-community-health-sanitation" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <h3> Community-health-sanitation modules</h3>
+                <BR><BR><BR>
+                    jello1
+                    <button id="module-community-health-sanitation-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+            </div>  
+        </div>
+
+        <div class="relative ">
+            <div id="modules-biodiversity-and-ecosystems" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <h3> Biodiversity-and-ecosystems modules-</h3>
+                <BR><BR><BR>
+                    jello2
+                    <button id="module-biodiversity-and-ecosystems-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+            </div>
+        </div>
+
+           
+            <div id="modules-community-waste-management" class="hidden absolute top-20 border-gray-300 border-radius-10 left-0 w-full bg-gray-100 shadow-lg rounded-md z-10">
+                <h3> Community-waste-management modules</h3>
+                <BR><BR><BR>
+                    jello3
+                    <button id="module-community-waste-management-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+            </div>
+        
+
+        <div class="relative ">
+            <div id="modules-renewable-energy-solutions" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <h3> Renewable-energy-solutions modules</h3>
+                <BR><BR><BR>
+                    jello4
+                    <button id="module-renewable-energy-solutions-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+            </div>
+        </div>
+        <div class="relative ">
+            <div id="modules-sustainable-agriculture-practices" class="hidden bg-white shadow-lg rounded-md mt-2 h-full z-500 w-full left-0 z-10">
+                <h3> sustainable-agriculture-practices</h3>
+                <BR><BR><BR>
+                    <button id="module-sustainable-agriculture-practices-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block">
+                        Close Menu
+                    </button>
+                    jello5
+            </div>
+        </div>
+
+
+
+
+        <div class="relative ">
+            <div id="crisis-relief-menu" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <div class="module-grid">
+                    <div class="module-card" data-module-id="module-community-waste-management" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding waste decomposition and recycling."
+                    },
+                    {
+                      "title": "Logistics",
+                      "description": "Designing efficient waste collection systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Preventing disease spread through proper waste disposal."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for waste reduction policies."
+                    },
+                    {
+                      "title": "Education & Outreach",
+                      "description": "Promoting waste reduction and recycling practices."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Community Waste Management</h3>
+                        <p class="text-gray-600">Learn effective community waste reduction and recycling strategies.</p>
+                        <button id="module-community-waste-management-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-sustainable-agriculture-practices" data-related-info='[
+                    {
+                        "title": "Agronomy",
+                        "description": "Implementing sustainable farming techniques."
+                    },
+                    {
+                        "title": "Ecology",
+                        "description": "Understanding the impact of agriculture on ecosystems."
+                    },
+                    {
+                        "title": "Food Science",
+                        "description": "Developing sustainable food production methods."
+                    },
+                    {
+                        "title": "Economics",
+                        "description": "Supporting sustainable agriculture businesses."
+                    },
+                    {
+                        "title": "Community Organizing",
+                        "description": "Establishing local food systems."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Sustainable Agriculture Practices</h3>
+                        <p class="text-gray-600">Discover eco-friendly farming techniques to improve soil health and crop yields.</p>
+                        <button id="module-sustainable-agriculture-practices-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-water-filtration-purification" data-related-info='[
+                    {
+                      "title": "Chemistry",
+                      "description": "Understanding water purification processes."
+                    },
+                    {
+                      "title": "Engineering",
+                      "description": "Designing effective filtration systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Ensuring safe drinking water for communities."
+                    },
+                    {
+                      "title": "Environmental Science",
+                      "description": "Protecting water sources from pollution."
+                    },
+                    {
+                      "title": "Logistics & Distribution",
+                      "description": "Delivering clean water to remote areas."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Water Filtration & Purification</h3>
+                        <p class="text-gray-700">Learn and certify your knowledge in water management techniques.</p>
+                        <button id="module-water-filtration-purification-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-renewable-energy-solutions" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding renewable energy sources."
+                    },
+                    {
+                      "title": "Financial Literacy",
+                      "description": "Investing in renewable energy projects."
+                    },
+                    {
+                      "title": "Technology & Innovation",
+                      "description": "Developing efficient renewable tech."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for renewable energy policies."
+                    },
+                    {
+                      "title": "Community Engagement",
+                      "description": "Promoting community-owned renewable energy."
+                    }
+                  ]'>                       
+                        <h3 class="text-lg font-semibold">Renewable Energy Solutions</h3>
+                        <p class="text-gray-600">Learn about solar, wind, and other renewable energy sources for a greener future.</p>
+                        <button id="module-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-biodiversity-and-ecosystems" data-related-info='[
+
+                    {"title": "Environmental Science", 
+                    "description": "Understanding ecological systems."}, 
+                    {"title": "Financial Literacy", 
+                    "description": "Funding conservation efforts."}, 
+                    {"title": "Self-Sufficient Healthcare", 
+                    "description": "Healthy ecosystems for community health."},
+                    {"title": "Water Distribution",
+                      "description": "Managing water for ecosystems."}
+                      , {"title": "Marketing & Promotion", 
+                      "description": "Promoting conservation."
+                    }
+                  ]'>
+                        <h3 class="text-lg font-semibold">Biodiversity and Ecosystems</h3>
+
+
+                        <p class="text-gray-600">Understand the importance of biodiversity and how to protect our ecosystems.</p>
+                        <button id="module-biodiversity-and-ecosystems-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                        <div class="module-name">Biodiversity and Ecosystems</div>
+                        <div class="module-info">Protecting our ecosystems</div>
+                    </div>
+                    <div class="module-card" data-module-id="modules-community-health-sanitation" data-related-info='[
+                    {
+                      "title": "Hygiene Heroes: Handwashing & Germ Defense",
+                      "description": "Discover the science behind handwashing, learn effective techniques, and understand how proper hygiene prevents the spread of germs and keeps your community healthy."
+                    },
+                    {
+                      "title": "Clean Water, Healthy Lives: Sanitation Essentials",
+                      "description": "Explore the importance of clean water and proper sanitation. Learn about safe water sources, waste disposal methods, and how to prevent waterborne diseases in your community."
+                    },
+                    {
+                      "title": "Food Safety First: Preventing Illness Through Clean Practices",
+                      "description": "Understand the critical role of food safety in community health. Learn about safe food handling, storage, and preparation techniques to prevent foodborne illnesses and promote well-being."
+                    },
+                    {
+                      "title": "Environmental Cleanliness: Creating a Healthy Living Space",
+                      "description": "Learn how to maintain a clean and healthy environment in your home and community. Explore topics like waste management, pest control, and the impact of pollution on health."
+                    },
+                    {
+                      "title": "Community Action for Health: Implementing Sanitation Solutions",
+                      "description": "Discover how communities can work together to improve sanitation and hygiene. Learn about effective strategies for implementing sanitation projects, promoting behavior change, and advocating for public health initiatives."
+                    }
+                  ]'>
+                        <h3 class="text-lg font-semibold">Community Health and Sanitation</h3>
+                        <p class="text-gray-700">Learn about hygiene and sanitation practices to improve community health.</p>
+                        <button id="modules-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+
+
+
+                </div>
+                </div>
+ 
+            </div>
+        </div>
+
+                <script src="js/moduleCards.js"></script>
+
+        <main class="flex-grow bg-gray-50 container mx-auto px-4 py-6">
+
+
+        <section id="dashboard-section" class="">
+            <div id="dashboard-content">
+                <div id="dashboard-logged-out" class="text-center py-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to Approvideo Hub</h2>
+                    <p class="text-xl text-gray-600 mb-8">Join us in contributing to the commons, while addressing community health, environment, and skills training needs.</p>
+                    <button id="get-started-button-dashboard" class="bg-emerald-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-emerald-700 transition">
+                        Get Started
+                    </button>
+                    <p class="mt-4 text-gray-500">Already have an account? <a href="#" id="login-link-dashboard" class="text-emerald-600 hover:underline">Sign In</a></p>
+                </div>
+
+                <div id="dashboard-logged-in" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 id="dashboard-welcome-message" class="text-2xl font-bold text-gray-800">Welcome, User!</h2>
+                        <div class="text-sm text-gray-500">Last updated: <span id="last-updated">Just now</span></div>
+                    </div>
+
+                    <div id="role-based-dashboard-content">
+                        </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-500 mb-1">Learning Progress</p>
+                            <p class="text-2xl font-bold text-emerald-600">42%</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-500 mb-1">Clinic Sessions</p>
+                            <p class="text-2xl font-bold text-emerald-600">7</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-500 mb-1">Certificates</p>
+                            <p class="text-2xl font-bold text-emerald-600">3</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <p class="text-sm text-gray-500 mb-1">Contributions</p>
+                            <p class="text-2xl font-bold text-emerald-600">$120</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-4">Upcoming Activities</h3>
+                            <div class="space-y-4" id="upcoming-activities">
+                                <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                                    <p class="font-medium">Water Quality Clinic Session</p>
+                                    <p class="text-sm text-gray-500">Tomorrow at 2:00 PM · Zoom</p>
+                                </div>
+                                <div class="border-l-4 border-blue-500 pl-4 py-1">
+                                    <p class="font-medium">Module 3: Air Pollution Assessment</p>
+                                    <p class="text-sm text-gray-500">Due in 3 days</p>
+                                </div>
+                            </div>
+                            <button class="mt-4 text-emerald-600 text-sm hover:underline">View all activities</button>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold mb-4">Current Learning Progress</h3>
+                            <div class="space-y-3" id="learning-progress">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Community Water Testing</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Air Quality Monitoring</span>
+                                        <span>30%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Environmental Justice</span>
+                                        <span>15%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="mt-4 text-emerald-600 text-sm hover:underline">Go to learning modules</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                        <div class="space-y-4" id="activity-feed">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">You earned a certificate for "Basic Environmental Sampling"</p>
+                                    <p class="text-sm text-gray-500">2 days ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">You joined the "Urban Air Quality" research team</p>
+                                    <p class="text-sm text-gray-500">5 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="welcome-section" class="hidden py-12">
+            <div class="text-center max-w-3xl mx-auto space-y-6">
+                <h1 class="text-4xl font-bold text-gray-800">Community Environmental Health & Research</h1>
+                <p class="text-xl text-gray-600">
+                    Join our collaborative platform for learning, research, and community-driven environmental health initiatives.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="get-started-button" class="bg-emerald-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-emerald-700 transition">
+                        Get Started
+                    </button>
+                    <button id="learn-more-button" class="border border-emerald-600 text-emerald-600 px-6 py-3 rounded-lg text-lg font-medium hover:bg-emerald-50 transition">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mt-16">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="bg-emerald-100 text-emerald-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-graduation-cap text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Learning Modules</h3>
+                    <p class="text-gray-600">Access structured educational content and earn certificates in environmental health topics.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="bg-emerald-100 text-emerald-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-clinic-medical text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Accessible Clinics</h3>
+                    <p class="text-gray-600">Participate in privacy-preserving community engineering and science clinics making use of the ECHO model.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="bg-emerald-100 text-emerald-700 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-microscope text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 grantlink">Small Grants Component</h3>
+                        <p class="text-gray-600">Prototyping and applied research areas are emphasized, via ECHO program's 'many teach many' approach.
+
+                        Microgrants for protyping applied research in water security, sanitation, renewables, and other
+                        community level sustainable development practices can provide a helping hand to passionate individuals and teams. Join a community 
+                        dedicated to positive environmental change. 
+                        </p>
+
+                        <p class="text-gray-600">
+                        Approvideo suports developing opportunities to collaborate on impactful projects. 
+                        We are positioning ourselves to provide this a conduit. 
+                        At this time we are encouraging partners to document their 
+                        train-the-trainer based project goals and to with work with 
+                        the Approvideo hub educational modules and mentorship process
+                        toward the goal of making a difference in your own community.
+                        
+                        </p> 
+
+
+                    </div>
+                </div>
+            </section>
+              
+            
+
+            <section id="faq-section" class="hidden py-12">
+                <h2>ApproVideo Hub - Frequently Asked Questions</h2>
+            
+                <article>
+                    <h3>What is the ApproVideo Hub and what is its mission, especially in conflict zones?</h3>
+                    <p>
+                        The ApproVideo Hub is a platform dedicated to providing educational and collaborative resources 
+                        for sustainable infrastructure and environmental solutions. We focus on areas like municipal 
+                        drinking water supply resiliency, wastewater and sewage treatment, solid waste management, 
+                        renewable energy systems,  circular economy protyping,  land reclaimation, and social recovery 
+                        planning.
+
+                        Our mission is to empower communities and organizations, especially those in conflict zones, 
+                        with knowledge and tools to implement sustainable practices that build resilience and promote 
+                        restoration. We understand that conflict disrupts essential services and damages the environment, 
+                        and we aim to provide practical, accessible solutions tailored to these challenging contexts.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you tailor your approach to Municipal Solid Waste (MSW) management for conflict zones?</h3>
+                    <p>
+                        In conflict zones, waste management is often severely disrupted, leading to health hazards and environmental degradation. We analyze MSW systems by examining storage (improvised bins), transfer (community-led collection), disposal (safe burning alternatives, temporary landfills), and recovery methods (resource recovery from debris). We focus on simple, low-cost solutions that can be implemented with limited resources and in unstable environments, emphasizing community participation and resourcefulness.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>What is your approach to Circular Economy Prototyping in areas affected by conflict?</h3>
+                    <p>
+                        We engage in prototyping initiatives like the "Waste-to-Value Chain Initiative," focusing on recovering value from materials like debris, rubble, and readily available local resources. We prioritize simple, adaptable prototypes that can be built and maintained by local communities, even with limited resources. We collaborate with community groups, local leaders, and aid organizations to develop and implement these prototypes, fostering self-reliance and local economic recovery.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you address Wastewater and Sewage management in crisis situations?</h3>
+                    <p>
+                        Conflict often damages or destroys sanitation infrastructure, leading to disease outbreaks H Pylori and Cholera. We assess wastewater and sewage systems by looking at emergency collection methods (temporary latrines, mobile sanitation units), basic treatment processes (filtration, chlorination, purification), and safe disposal options (composting latrines, leach pits,  safe burial). Our goal is to promote immediate, safe, and sustainable sanitation practices that protect public health and prevent further environmental harm.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>What is your strategy for improving Drinking Water Supply in conflict zones?</h3>
+                    <p>
+                        Access to clean water is critical during and after conflict. We analyze drinking water supply systems by examining and educating on emergency sources (rainwater catchment, surface water abstraction, staged carbon filtration, R.O, purification & temporary wells), safe storage (containers, emergency tanks), and basic treatment methods (chlorination, solar disinfection, boiling). We aim to support the rapid implementation of safe and reliable drinking water solutions, focusing on community-managed systems and locally available resources.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you conduct Technology Assessments for Municipal Service Systems (MSS) in challenging environments?</h3>
+                    <p>
+                        We follow a structured approach that includes rapid needs assessments, technology listing (focusing on robust and adaptable technologies), unit operation grouping, technology scoring based on criteria like resilience and ease of maintenance, service option development, option scoring, and classification of options by implementation readiness. We consider factors like technology descriptions, components, costs, environmental impact, cultural factors, and, crucially, security and accessibility in conflict zones.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>What are the key criteria used in your Technology Assessments for conflict zones?</h3>
+                    <p>
+                        We evaluate technologies based on criteria such as cost, energy requirements, technical requirements, institutional requirements, and, importantly, resilience, adaptability, and security. We prioritize technologies that can be easily repaired and maintained by local communities, even under difficult circumstances.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you use the ApproHub Program to support restoration in conflict zones?</h3>
+                    <p>
+                        We use the ApproHub program to create and promote projects such as "community-led debris recycling," "emergency water purification kits," and "rapid sanitation solutions." We focus on empowering local communities to rebuild their infrastructure and restore their environment, fostering self-reliance and long-term sustainability.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How can I get involved or learn more, especially if I'm working in or affected by a conflict zone?</h3>
+                    <p>
+                        Please contact us at <a href="mailto:ecocommunity@protonmail.com">ecocommunity@protonmail.com</a> for more information, collaboration opportunities, or to access our resources. We are particularly interested in connecting with individuals and organizations working in conflict zones to provide tailored support and resources. We are also interested in receiving information and feedback from people living in conflict zones, to continue to refine the tools and information we provide.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you address the psychological impact of environmental damage and infrastructure collapse in conflict zones?</h3>
+                    <p>
+                        We recognize that environmental damage and infrastructure collapse can have a significant psychological impact on communities. Our educational materials include information on the importance of community-led restoration and the role of environmental stewardship in rebuilding social cohesion and fostering hope. We also collaborate with mental health professionals to integrate psychosocial support into our programs.
+                    </p>
+                </article>
+            
+                <article>
+                    <h3>How do you ensure your materials are accessible to people with limited literacy or digital access in conflict zones?</h3>
+                    <p>
+                        We prioritize the use of visual aids, video content, documents, and audio materials to ensure our information is accessible to people with limited literacy.  Our core educational content is being machine converted to local languages, with provisions in our funding model to work with local participants to ensure that our content it is well adapted to local community members and clinic participants.
+            
+                        We also work with local partners to translate materials into local languages and adapt them to cultural contexts. We are also exploring the use of radio broadcasts and community outreach programs to reach people with limited digital access.
+                    </p>
+                </article>
+            
+            
+                <article>
+                    <h3>How do you ensure your materials are accessible to people with limited literacy or digital access in conflict zones?</h3>
+                    <p>
+                        In-app reminder services are being developed to provide support and encouragement to learners, while supporting community clinics with role specific messaging for participants and detailed project context based advising on best practices.
+                    </p>
+                </article>
+            
+            </section>
+
+
+
+            <section id="milestones-section" class="hidden py-12 bg-gray-100">
+                <div class="container max-w-4xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Milestone Planner</h2>
+                    <p class="text-gray-600 mb-8">Track your progress and set clear goals for your environmental projects.</p>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div class="mb-6">
+                            <label for="overall-goal" class="block text-gray-700 font-medium mb-2">Overall Goal:</label>
+                            <input type="text" id="overall-goal" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Set your overall goal here!">
+                        </div>
+                        
+                        <div class="milestone-controls">
+                            <button id="add-milestone" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                Add Milestone
+                            </button>
+                            
+                            <div class="sort-controls">
+                                <label for="sort-milestones">Sort by:</label>
+                                <select id="sort-milestones" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <option value="dueDate">Due Date</option>
+                                    <option value="status">Status</option>
+                                    <option value="title">Title</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="milestones-list" class="space-y-6">
+                        <!-- Milestone items will be added here dynamically -->
+                    </div>
+                </div>
+
+            
+            <!-- Template for Milestone Items -->
+            <template id="milestone-template">
+                <div class="milestone-item bg-white rounded-lg shadow-md p-6">
+                    <div class="milestone-header flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
+                        <div class="flex-grow">
+                            <input type="text" class="milestone-title w-full p-2 border border-gray-300 rounded-md text-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Milestone Title">
+                        </div>
+                        <div class="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                            <div>
+                                <label class="block text-gray-500 text-sm mb-1">Due Date</label>
+                                <input type="date" class="milestone-date p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-500 text-sm mb-1">Status</label>
+                                <select class="milestone-status p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                    <option value="not-started">Not Started</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                                <!-- Progress bar will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Description:</label>
+                        <textarea class="milestone-description w-full p-3 border border-gray-300 rounded-md h-24 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Describe what you aim to achieve with this milestone..."></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-lg font-medium text-gray-700 mb-2">Key Metrics</h4>
+                        <div class="metrics-section bg-gray-50 p-4 rounded-md">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                                <div>
+                                    <label class="block text-gray-500 text-sm mb-1">Metric Name</label>
+                                    <input type="text" class="milestone-metric-name w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Metric Name">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-500 text-sm mb-1">Value</label>
+                                    <input type="text" class="milestone-metric-value w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Metric Value">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-500 text-sm mb-1">Unit</label>
+                                    <select class="milestone-metric-unit w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <option value="hours">Hours</option>
+                                        <option value="days">Days</option>
+                                        <option value="%">%</option>
+                                        <option value="kg">kg</option>
+                                        <option value="liters">liters</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="add-metric bg-emerald-500 text-white px-3 py-1 rounded hover:bg-emerald-600 transition text-sm flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                Add Metric
+                            </button>
+                        </div>
+                        
+                        <div class="metrics-display mt-3 space-y-2">
+                            <!-- Metrics will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Celebration (What will you do when you achieve this?):</label>
+                        <input type="text" class="milestone-celebration w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="How will you celebrate this achievement?">
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button class="remove-milestone bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Remove Milestone
+                        </button>
+                    </div>
+                </div>
+            </template>
+
+        </section>
+
+
+            <section id="milestones-section0" class="hidden py-12 bg-gray-100">
+
+                    <h2>Milestone Planner</h2>
+                
+                    <label for="overall-goal">Overall Goal:</label>
+                    <input type="text" id="overall-goal0" value="Set your overall goal here!">
+                
+                    <button id="add-milestone0">Add Milestone</button>
+                
+                    <div id="milestones-list0">
+                        </div>
+                
+                    <template id="milestone-template0">
+                        <div class="milestone-item">
+                            <input type="text" class="milestone-title" id="milestone-title0" placeholder="Milestone Title">
+                            <input type="date" class="milestone-date" id="milestone-data0" >
+                            <select class="milestone-status" id="milestone-status0" >
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+
+                  
+                            <textarea class="milestone-description" id="milestone-description0"  placeholder="Description"></textarea>
+                
+                            <div class="metrics-section">
+                                <input type="text" class="milestone-metric-name" placeholder="Metric Name">
+                                <input type="text" class="milestone-metric-value" placeholder="Metric Value">
+                                <select class="milestone-metric-unit">
+                                    <option value="hours">Hours</option>
+                                    <option value="days">Days</option>
+                                    <option value="%">%</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <button class="add-metric">Add Metric</button>
+                            </div>
+                
+                            <div class="metrics-display"></div>
+                
+                            <input type="text" class="milestone-celebration" placeholder="Celebration">
+                            <button class="remove-milestone">Remove Milestone</button>
+                        </div>
+                    </template>
+                
+        </section>
+
+        <section id="smallgrants-section" class="hidden py-12 bg-gray-100">
+
+
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Flexible Microgrants for Environmental Projects</h2>
+            <p class="text-gray-700">
+
+            <b>Develop your ideas for a better world.</b>
+            </p>
+            Whether you're building a prototype, expanding your skills, or conducting vital research 
+            in areas like food resilience or sanitation, we want to hear from you. Our Flexible 
+            Microgrants offer a helping hand to passionate individuals and teams. Join a community 
+            dedicated to positive environmental change. 
+            <p class="text-gray-700">
+            We'll support you with funding and opportunities to collaborate on impactful projects. 
+            </p>               
+
+
+
+
+            
+        </section>
+
+
+
+        <section id="research-section" class="hidden py-12 bg-gray-100">
+
+
+            <h2 class="text-3xl font-bold text-gray-800 mb-4"> Applied Research </h2>
+            <p class="text-gray-700">
+
+            <b>Prototyping Support.</b>
+            </p>
+            Whether you're building a prototype, expanding your skills, or conducting vital research 
+            in areas critical to community resilience like fo 
+            <p class="text-gray-700">
+            Project-centric clinics.  
+            </p>               
+        </section>
+
+
+        <section id="sharefolder-section" class="hidden py-12 bg-gray-100">
+
+
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Share Folder </h2>
+
+            <P class="text-gray-700">
+            <b>Shared Resources.</b>
+            </P>
+
+            <ul class="text-gray-700">
+                <li>documents videos</li>
+                <li>links </li>
+            </ul> 
+
+            <div class="text-gray-700">
+                Set permissions on your files and folders for 
+                how you wish to collaborate on impactful community projects. 
+            </div>       
+        </section>
+
+
+
+
+        <section id="blog-section" class="hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">APPROVIDEO BLOG</h2>
+            <article id="blogpost-1" >
+            <b>Introduction</b>
+                <p>For over seven years, I've had the honor of serving as the director of the Sustainable Community Development Hub (SCDHub), a non-profit organization dedicated to empowering communities through sustainable practices. In 2024, we had the opportunity to assist a group of recently displaced immigrants from Kabul.  I was personally involved in delivering donated computers and printers to these individuals, and I was struck by their incredible skills and expertise in engineering and other technical fields. This experience solidified my understanding of the urgent need for effective educational programs that can help displaced professionals like my new friends from Kabul rebuild their careers and contribute their talents to their new communities. That's where the ECHO model comes in.
+                <BR>
+
+                <h4><i>What is the ECHO Model?</i></h4>
+
+                The ECHO (Extension for Community Healthcare Outcomes) model is a powerful framework for delivering knowledge and building capacity. Originally developed for medical education, it has proven incredibly adaptable and is now being used across various disciplines. At its core, ECHO utilizes a hub-and-spoke structure, connecting expert mentors ("hubs") with learners ("spokes") in interactive online sessions. This fosters a dynamic "all teach, all learn" environment where knowledge is shared, challenges are addressed collaboratively, and best practices are disseminated.
+                <BR>
+                
+                <h4><i>Why ECHO for Displaced Professionals?</i></h4>
+
+                Displaced scientists and engineers often face significant challenges in accessing traditional educational opportunities. The ECHO model's flexibility and online nature make it an ideal solution. It breaks down geographical barriers, allowing learners to connect with experts and peers worldwide. It also fosters a sense of community, which is crucial for individuals who have been displaced from their homes and professional networks.<BR>
+                <BR>    
+
+                <h4><i>ECHO in Action: Real-World Examples</i></h4>
+
+                Beyond healthcare, the ECHO model has demonstrated success in various fields. For instance, the University of New Mexico is using ECHO to train teachers in rural areas on effective teaching strategies for students with autism. In India, ECHO is being used to improve agricultural practices and empower farmers. These examples showcase the model's versatility and its potential to empower displaced professionals in fields like engineering, science, and technology.
+                <BR>
+                
+                <h4><i>Approvideo Hub and the ECHO Model</i></h4>
+
+                Approvideo Hub is embracing the ECHO model to provide accessible and relevant technical training to displaced scientists and engineers. We envision creating specialized ECHO programs in areas like water security, renewable energy, and infrastructure repair – fields that are critical for rebuilding communities and fostering resilience. By leveraging the ECHO model, we aim to create a thriving online learning community where displaced professionals can regain their footing, connect with peers, and contribute their expertise to global challenges.
+                <BR>
+                <BR> 
+
+                <h4><i>Conclusion:</i></h4>
+
+                The ECHO model offers a powerful and proven pathway to empower displaced professionals. By combining online learning, mentorship, and peer-to-peer collaboration, ECHO can help displaced scientists and engineers like those I met from Kabul to rebuild their careers, contribute to their new communities, and continue making valuable contributions to the world.
+                <BR>
+                <BR>
+
+                <h2><i>Call to Action:</i></h2>
+
+                Learn more about the ECHO model and how you can support Approvideo Hub's initiative to empower displaced professionals.
+                <BR>
+
+            </article>
+        </section>
+
+        <section id="about-section" class="hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">About Approvideo Hub</h2>
+
+            <h2>Empowering Displaced Scientists and Engineers: A Global Initiative</h2>
+
+            Approvideo Hub is evolving into a vital platform for the empowerment of displaced scientists and engineers worldwide. Building upon the established expertise and global reach of the National Academies of Sciences, Engineering, and Medicine (NASEM), this initiative aims to provide essential education, research opportunities, and collaborative networks to those whose careers have been disrupted by conflict and crisis.
+
+            <h2>Our Mission</h2>
+            Our mission is to support displaced and refugee scientists and engineers in rebuilding their careers, fostering innovation in crisis-affected regions, and contributing to global knowledge. We strive to create a resilient and effective safety net, ensuring that their invaluable expertise is preserved and harnessed for the benefit of global progress.
+
+            <h2>What We Do</h2>
+            Approvideo Hub serves as a central online learning platform, leveraging the proven ECHO (Extension for Community Healthcare Outcomes) model, to provide:
+            <ul>
+                <li><strong>Technical Education and Training:</strong> We deliver accessible, scalable, and adaptable training focused on crisis-relevant fields such as water security, renewable energy, infrastructure repair, and crisis recovery.</li>
+                <li><strong>Peer-Learning Networks:</strong> Through ECHO-based networks, we facilitate real-time technical training and professional mentoring, fostering collaboration and problem-solving.</li>
+                <li><strong>Micro-Grants:</strong> We offer flexible micro-grants to support applied research, prototyping, and skill-building projects, enabling professionals to apply their expertise in real-world contexts.</li>
+                <li><strong>Global Networking and Collaboration:</strong> We convene practitioners and strengthen support networks, establishing a cohesive global framework for displaced scientists and engineers.</li>
+                <li><strong>Resource Repository:</strong> An open-access educational repository provides structured learning materials, research papers, and practical guides.</li>
+            </ul>
+
+            <h2 class="text-1xl font-bold text-gray-800 mb-4">Our Approach</h2>
+            We are committed to:
+            <ul>
+                <li>Providing structured online learning using the ECHO model, including ECHO Science and ECHO Engineering.</li>
+                <li>Employing a "train-the-trainer" approach to empower displaced scientists as educators within their communities.</li>
+                <li>Ensuring mobile and low-bandwidth accessibility to reach even remote, resource-limited areas.</li>
+                <li>Facilitating data-sharing, funding coordination, and policy development through a global network.</li>
+            </ul>
+
+            <h2>Our Vision</h2>
+            We envision a world where displaced scientists and engineers are empowered to continue their vital work, driving innovation and contributing to the rebuilding of their communities and the advancement of global knowledge.
+
+            <h2>Contact Us</h2>
+            For more information or to support our initiative, please contact us.
+        </section>
+
+
+
+        <section id="more-events" class="hidden py-12">
+            <div class="container max-w-3xl mx-auto space-y-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Events of Approvideo Hub 2025</h2>
+                <p class="text-gray-700">
+                    <p> ** discusion ** </p>
+                       
+                  
+                    Water Security
+                    Food Production
+                    Shelter
+                    Sanitation
+                    Energy Solutions
+                    Technical / Code / AI
+                    Vocational Skills
+                    Analysis
+                    Healthcare
+
+            </div>
+    </section>
+
+
+
+
+        <section id="more-about" class="hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">More About Approvideo Hub and our activities</h2>
+
+            <h2>Displaced Scientists and Engineers: A Global Initiative</h2>
+
+            <p>Approvideo Hub is evolving into a vital platform for the empowerment of displaced scientists and engineers worldwide. Building upon the established expertise and global reach of the National Academies of Sciences, Engineering, and Medicine (NASEM), this initiative aims to provide essential education, research opportunities, and collaborative networks to those whose careers have been disrupted by conflict and crisis.</p>
+
+            <h2>Our Mission</h2>
+            <p>Our mission is to support displaced and refugee scientists and engineers in rebuilding their careers, fostering innovation in crisis-affected regions, and contributing to global knowledge. We strive to create a resilient and effective safety net, ensuring that their invaluable expertise is preserved and harnessed for the benefit of global progress.</p>
+
+            <h2>What We Do</h2>
+            <p>Approvideo Hub serves as a central online learning platform, leveraging the proven ECHO (Extension for Community Healthcare Outcomes) model, to provide:</p>
+            <ul>
+                <li><strong>Technical Education and Training:</strong> We deliver accessible, scalable, and adaptable training focused on crisis-relevant fields such as water security, renewable energy, infrastructure repair, and crisis recovery.</li>
+                <li><strong>Peer-Learning Networks:</strong> Through ECHO-based networks, we facilitate real-time technical training and professional mentoring, fostering collaboration and problem-solving.</li>
+                <li><strong>Micro-Grants:</strong> We offer flexible micro-grants to support applied research, prototyping, and skill-building projects, enabling professionals to apply their expertise in real-world contexts.</li>
+                <li><strong>Global Networking and Collaboration:</strong> We convene practitioners and strengthen support networks, establishing a cohesive global framework for displaced scientists and engineers.</li>
+                <li><strong>Resource Repository:</strong> An open-access educational repository provides structured learning materials, research papers, and practical guides.</li>
+            </ul>
+
+            <h2 class="text-1xl font-bold text-gray-800 mb-4">Our Approach</h2>
+            <p>We are committed to:</p>
+            <ul>
+                <li>Providing structured online learning using the ECHO model, including ECHO Science and ECHO Engineering.</li>
+                <li>Employing a "train-the-trainer" approach to empower displaced scientists as educators within their communities.</li>
+                <li>Ensuring mobile and low-bandwidth accessibility to reach even remote, resource-limited areas.</li>
+                <li>Facilitating data-sharing, funding coordination, and policy development through a global network.</li>
+            </ul>
+
+            <h2>Our Vision</h2>
+            <p>We envision a world where displaced scientists and engineers are empowered to continue their vital work, driving innovation and contributing to the rebuilding of their communities and the advancement of global knowledge.</p>
+
+            <h2>Contact Us</h2>
+            <p>For more information or to support our initiative, please contact us.</p>
+            </section>
+
+            <section id="team-section" class="hidden">
+               <div class="container max-w-3xl mx-auto space-y-6">
+                <h2>Our Team</h2>
+                     <p>This initiative is led by Bernard Amadei, Franklin Carrero-Martínez, Gary Machlis, and Lina Stankute-Alexander, under the guidance of NASEM. Our team includes dedicated professionals focused on platform development, content curation, training coordination, and grant management.</p>
+                </div>
+        </section>
+
+
+
+
+        <section id="clinics-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Clinics</h2>
+                    <p class="text-gray-700">
+                        your   
+                        Healthcare
+                        Water Security
+                        Food Production
+                        Shelter
+                        Vocational Skills
+                        Energy Solutions
+                        Technical / Coding
+                        AI
+
+
+                    </p>
+                </div>
+        </section>
+
+
+    <section id="practical-clinics-section" class="hidden py-12">
+            <div class="container max-w-3xl mx-auto space-y-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Practical Clinics</h2>
+                    <div class="text-gray-700">
+                        <p> ** ** 
+                        your   
+                        Healthcare
+                        Water Security
+                        Food Production
+                        Shelter
+                        Vocational Skills
+                        Energy Solutions
+                        Technical / Coding /  AI
+                        </p>
+
+                            <ul>
+                                <li><a href="/modules/ai-monitoring-systems" class="hover:text
+                                -blue-600">ai-monitoring-systems</a></li>       
+                                <li><a href="/modules/ai-kagragmodel" class="hover:text
+                                -blue-600">ai-kagragmodel</a></li>
+                                <li><a href="/modules/ai-prompting" class="hover:text
+                                -blue-600">ai-prompting</a></li>
+                                <li><a href="/modules/ai-usecases" class="hover:text
+                                -blue-600">ai-usecases</a></li>
+                            </ul>
+
+                    </div>
+            </div>
+    </section>
+
+
+    <section id="clinic-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Clinic  Specifics</h2>
+                    
+                        <h2> ** Clinic  Specifics ** </h2>
+                       
+                    
+                </div>
+    </section>    
+
+    <section id="library-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">DIY Solutions Library</h2>
+                    <div class="text-gray-700">
+                        
+                        
+                        <h3> Susainable design solution prototyping .. in contextuall relevant water, energy, shelter, health care, sanitation, waste management, open source technology </h3>
+
+                            <button class="flex justify-center space-x-4 py-2 categoryIcons icon-button relative group bg-gradient-to-r from-red-600 to-zinc-400 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-1 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-building"> 
+                                <i class="fas fa-2x fa-building"></i>
+                             
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                diy
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-zinc-400 to-amber-600 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-2 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-bolt"> 
+                                <i class="fas fa-2x fa-bolt"></i>
+                             
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                energy-systems
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-green-500 to-indigo-600 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-4 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-trash"> 
+                                <i class="fas fa-2x fa-trash"></i>
+                            
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                waste-management
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-cyan-500 to-blue-600 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-5 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-tint"> 
+                                <i class="fas fa-2x fa-tint"></i>
+                             
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                drinking-water
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-purple-500 to-emerald-600 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-6 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-heartbeat"> 
+                                <i class="fas fa-2x fa-heartbeat"></i>
+                            
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                health1
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-emerald-500 to-green-600 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-7 
+                                          flex items-center justify-center"
+                                          id="diylib-fa-seedling"> 
+                                <i class="fas fa-2x fa-seedling"></i>
+                              
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                agriculure
+                              </span>
+                            </button>
+
+                        </div>
+                    </div>
+    </section>    
+
+
+    <section id="librarycr-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">skills necessary in crisis recovery </h2>
+                    
+                        <h3>
+                        susainable prototyping in water, energy, shelter, health care, sanitation, waste management, food security, and community wellbeing 
+                        </h3>
+
+                        <div class="flex justify-center space-x-4 py-2" id="categoryIconsCr">
+                            <button class="icon-button relative group bg-gradient-to-r from-red-600 to-zinc-400 
+                                          text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                                          hover:scale-105 hover:shadow-xl
+                                          float-1 
+                                          flex items-center justify-center"> 
+
+                                <i class="fas fa-2x fa-building"></i>
+                                    
+                             
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                shelter
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-zinc-400 to-amber-600 
+                            text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                            hover:scale-105 hover:shadow-xl
+                            float-2 
+                            flex items-center justify-center" data-category="energy-systems">
+                            
+                            
+                                <i class="fas fa-2x fa-bolt"></i>
+                            
+                                <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                         energy-systems
+                                </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-green-500 to-indigo-600 
+                            text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                            hover:scale-105 hover:shadow-xl
+                            float-4 
+                            flex items-center justify-center" data-category="waste-management">
+                              
+                                <i class="fas fa-2x fa-trash"></i>
+                                   
+                              
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                         waste-management
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-cyan-500 to-blue-600 
+                            text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                            hover:scale-105 hover:shadow-xl
+                            float-5 
+                            flex items-center justify-center" data-category="drinking-water">
+                              
+                                <i class="fas fa-2x fa-tint"></i>
+                              
+                              
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                drinking-water
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-purple-500 to-emerald-600 
+                            text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                            hover:scale-105 hover:shadow-xl
+                            float-6 
+                            flex items-center justify-center" data-category="health">
+                             
+                                <i class="fas fa-2x fa-heartbeat"></i>
+                             
+
+                              
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                health1
+                              </span>
+                            </button>
+                          
+                            <button class="icon-button relative group bg-gradient-to-r from-emerald-500 to-green-600 
+                            text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                            hover:scale-105 hover:shadow-xl
+                            float-7 
+                            flex items-center justify-center" data-category="agriculure">
+                                 
+                                <i class="fas fa-2x fa-seedling"></i>
+                               
+                               
+                              <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                                         bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                agriculure
+                              </span>
+                            </button>
+                          </div>   
+    
+                        
+
+
+
+
+                    
+                </div>
+    </section>    
+
+
+    <section id="events-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Appropriate Technology Centered Community Clinics related scheduled events</h2>
+                    
+                    <h2> ** PRACTICAL CLINICS  ** </h2>
+
+
+                    <span class="text-gray-700">
+                        Practical science and technology protyping in service of healthy society.
+                    </span>
+                </div>
+    </section>   
+
+
+
+    <section id="profile-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                   profile selectors
+                    </h2>
+                </div>
+    </section>    
+
+
+    <section id="certs-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Certificates and Awards</h2>
+
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4"> ** your info ** </h2>
+                        <div>
+                            
+                            As you accumulate experiences,
+                            you may complete a learning and 
+                            wish to show your cerficates somewhere.
+                            <br>
+                            this is that place 
+                        </div>
+
+                </div>
+    </section>    
+
+    <section id="myclinics-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Appropraite Technology Centered Community Clinics</h2>
+
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4"> ** My Clinics** </h2>
+                        your  
+
+                </div>
+    </section>    
+
+
+    <section id="mydata-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Appropraite Technology Centered Community Clinics</h2>
+
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4"> ** My Data** </h2>
+                        Your data is YOUR data, and you h privacy is important to us
+                        
+                </div>
+    </section>   
+
+
+
+    <section id="settings-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Settings</h2>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+
+
+                        <h3 class="text-xl font-semibold mb-4">Role Based Features and Access</h3>
+
+                    <form class="mb-6">
+                    <label class="block mb-2 text-gray-700">Select your role:</label> 
+                        
+                    
+                    <select>
+                        <option value="user">User</option>
+                        <option value="researcher">Researcher</option>
+                        <option value="participant_active">Particiant in active clinic</option>
+                        <option value="paritcipant_upcoming-clinic">Particiant with upcoming clinic</option>
+                        <option value="project_champion">Project Champion</option>
+                        <option value="expert_mentor">Expert Mentor</option>
+                        <option value="researcher">Researcher</option>
+                        <option value="community_member">Community Member</option>
+                        <option value="software_admin">Software Admin</option>
+                        <option value="guest_new">Guest user first time</option>
+                        <option value="guest_with">Guest user with data</option>
+                        <option value="role_invited">someone with an invite</option>
+                        <option value="role_media">media / promotions</option>
+                        <option value="role_admin">admin</option>
+                        <option value="role_superadmin">super admin</option>
+                    </select>
+
+
+                    </form>
+
+                        <h3 class="text-xl font-semibold mb-4">Authentication Settings</h3>
+                        
+                        <div class="mb-6">
+                            <p class="text-gray-700 mb-2">Choose your authentication method:</p>
+                            
+                            <div class="flex items-center space-x-4 mt-3">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" id="local-auth" name="auth-method" class="form-radio h-5 w-5 text-emerald-600" checked>
+                                    <span class="ml-2 text-gray-700">Local Authentication (Default)</span>
+                                </label>
+                                
+                                <label class="inline-flex items-center">
+                                    <input type="radio" id="supabase-auth" name="auth-method" class="form-radio h-5 w-5 text-emerald-600">
+                                    <span class="ml-2 text-gray-700">Supabase Authentication</span>
+                                </label>
+                            </div>
+                            
+                            <div class="mt-2 text-sm text-gray-500">
+                                <p id="local-auth-desc" class="mb-1">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Local authentication stores your account information on your device.
+                                </p>
+                                <p id="supabase-auth-desc" class="mb-1 hidden">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Supabase authentication stores your account securely in the cloud, allowing you to access your account from any device.
+                                </p>
+                                <p class="text-red-500">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                    Changing authentication method will log you out. You'll need to create a new account on the other system if you haven't already.
+                                </p>
+                            </div>
+                            
+                            <button id="save-auth-settings" class="mt-4 bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition">
+                                Save Authentication Settings
+                            </button>
+                        </div>
+                        
+                        <hr class="my-6">
+                        
+                        <h3 class="text-xl font-semibold mb-4">Account Settings</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex flex-col md:flex-row md:items-center">
+                                <label for="display-name" class="md:w-1/3 text-gray-700 mb-2 md:mb-0">Display Name</label>
+                                <input id="display-name" type="text" class="md:w-2/3 p-2 border border-gray-300 rounded" placeholder="Your display name">
+                            </div>
+                            
+                            <div class="flex flex-col md:flex-row md:items-center">
+                                <label for="email-settings" class="md:w-1/3 text-gray-700 mb-2 md:mb-0">Email</label>
+                                <input id="email-settings" type="email" class="md:w-2/3 p-2 border border-gray-300 rounded" placeholder="Your email address" disabled>
+                            </div>
+                            
+                            <button id="save-account-settings" class="mt-4 bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition">
+                                Save Account Settings
+                            </button>
+                        </div>
+                        
+                        <hr class="my-6">
+                        
+                        <h3 class="text-xl font-semibold mb-4">Notification Settings</h3>
+                        
+                        <div class="space-y-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="email-notifications" class="form-checkbox h-5 w-5 text-emerald-600">
+                                <span class="ml-2 text-gray-700">Email Notifications</span>
+                            </label>
+                            
+                            <label class="flex items-center">
+                                <input type="checkbox" id="clinic-reminders" class="form-checkbox h-5 w-5 text-emerald-600" checked>
+                                <span class="ml-2 text-gray-700">Clinic Session Reminders</span>
+                            </label>
+                            
+                            <label class="flex items-center">
+                                <input type="checkbox" id="learning-updates" class="form-checkbox h-5 w-5 text-emerald-600" checked>
+                                <span class="ml-2 text-gray-700">Learning Module Updates</span>
+                            </label>
+                            
+                            <button id="save-notification-settings" class="mt-4 bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition">
+                                Save Notification Settings
+                            </button>
+                        </div>
+                        
+                        <hr class="my-6">
+                        <div class="mt-4">
+                            <button id="delete-account" class="text-red-600 hover:text-red-800 hover:underline">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+
+
+
+    <section id="learning-modules-section" class="hidden py-12">
+                <div class="container max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Learning Modules</h2>
+                    <p class="text-gray-700 italic mb-4">Develop your knowledge and skills here.</p>
+            
+
+
+                    <h1>Module Catalog</h1>
+
+                    <div id="content-area">
+                        <p>Click on a module link above to view its description and submodules.</p>
+                    </div>
+                
+
+                
+                    <div class="modules-container">
+                        <ul class="module-list">
+                            <!-- First module (Water Distribution) -->
+                            <li data-description="Fundamentals of water distribution and management.">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="lightblue" stroke="blue">
+                                    <title>Icon for Water Distribution & Management</title>
+                                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path><path d="M12 2a10 10 0 0 0-5 17.54v.46a10 10 0 0 0 10 0v-.46A10 10 0 0 0 12 2z"></path>
+                                </svg>
+                                <a href="/modules/water-distribution">Water Distribution &amp; Management</a>
+                                <ul class="submodule-list">
+                                    <li><a href="/modules/water-distribution/plumbing">Plumbing Basics</a></li>
+                                    <li><a href="/modules/water-distribution/piping">Piping Systems</a></li>
+                                    <li><a href="/modules/water-distribution/water-quality">Water Quality Testing &amp; Analysis</a></li>
+                                    <li><a href="/modules/water-distribution/community-water">Community Water Management Strategies</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                
+
+                            <ul class="module-list">
+                                <li data-description="Fundamentals of water distribution and management.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightblue" stroke="blue">
+                                        <title>Icon for Water Distribution & Management</title>
+                                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path><path d="M12 2a10 10 0 0 0-5 17.54v.46a10 10 0 0 0 10 0v-.46A10 10 0 0 0 12 2z"></path>
+                                    </svg>
+                                    <a href="/modules/water-distribution">Water Distribution &amp; Management</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/water-distribution/plumbing">Plumbing Basics</a></li>
+                                        <li><a href="/modules/water-distribution/piping">Piping Systems</a></li>
+                                        <li><a href="/modules/water-distribution/water-quality">Water Quality Testing &amp; Analysis</a></li>
+                                        <li><a href="/modules/water-distribution/community-water">Community Water Management Strategies</a></li>
+                                    </ul>
+                                </li>
+                                </ul>  
+                                <ul class="module-list">
+                                <li data-description="Installation, maintenance, and design of solar energy systems.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="gold" stroke="orange">
+                                        <title>Icon for Solar Energy</title>
+                                        <path d="M12 2a10 10 0 0 0-5.86 16.79v-.97a10 10 0 0 0 11.72 0v.97A10 10 0 0 0 12 2z"></path>
+                                    </svg>
+                                    <a href="/modules/solar-energy">Solar Energy</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/solar-energy/installation">Solar Panel Installation &amp; Maintenance</a></li>
+                                        <li><a href="/modules/solar-energy/design">Solar System Design &amp; Sizing</a></li>
+                                        <li><a href="/modules/solar-energy/off-grid">Off-Grid Solar Solutions</a></li>
+                                        <li><a href="/modules/solar-energy/troubleshooting">Troubleshooting Solar Issues</a></li>
+                                    </ul>
+                                </li>
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Methods for purifying and treating water.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightblue" stroke="blue">
+                                        <title>Icon for Water Purification & Treatment</title>
+                                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path><path d="M12 2a10 10 0 0 0-5 17.54v.46a10 10 0 0 0 10 0v-.46A10 10 0 0 0 12 2z"></path>
+                                    </svg>
+                                    <a href="/modules/water-purification">Water Purification &amp; Treatment</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/water-purification/filtration">Filtration Techniques</a></li>
+                                        <li><a href="/modules/water-purification/disinfection">Disinfection Methods</a></li>
+                                        <li><a href="/modules/water-purification/rainwater">Rainwater Harvesting &amp; Treatment</a></li>
+                                        <li><a href="/modules/water-purification/diy-filters">Building DIY Water Filters</a></li>
+                                    </ul>
+                                </li>
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Techniques for managing and composting waste.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightgreen" stroke="green">
+                                        <title>Icon for Waste Management & Composting</title>
+                                        <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path>
+                                    </svg>
+                                    <a href="/modules/waste-management">Waste Management &amp; Composting</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/waste-management/reduction">Waste Reduction &amp; Recycling</a></li>
+                                        <li><a href="/modules/waste-management/composting">Composting Methods</a></li>
+                                        <li><a href="/modules/waste-management/wastewater">Wastewater Treatment Basics</a></li>
+                                        <li><a href="/modules/waste-management/community">Community Waste Management Solutions</a></li>
+                                    </ul>
+                                </li>
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Using Arduino for environmental monitoring.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightgray" stroke="black">
+                                        <title>Icon for Arduino & Environmental Sensing</title>
+                                        <path d="M16 8v8h-4V8h4m2-2H6v12h12V6z"></path>
+                                    </svg>
+                                    <a href="/modules/arduino">Arduino &amp; Environmental Sensing</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/arduino/intro">Introduction to Arduino Programming</a></li>
+                                        <li><a href="/modules/arduino/sensors">Building Environmental Sensors</a></li>
+                                        <li><a href="/modules/arduino/data-logging">Data Logging &amp; Analysis with Arduino</a></li>
+                                        <li><a href="/modules/arduino/remote-monitoring">Remote Monitoring with Arduino &amp; IoT</a></li>
+                                    </ul>
+                                </li>
+                        
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Repair and maintenance of various types of pumps.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightblue" stroke="blue">
+                                        <title>Icon for Pump Repair & Maintenance</title>
+                                        <path d="M18 11v2H6v-2h12m2-2H4v6h16V9z"></path>
+                                    </svg>
+                                    <a href="/modules/pump-repair">Pump Repair &amp; Maintenance</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/pump-repair/types">Types of Pumps</a></li>
+                                        <li><a href="/modules/pump-repair/troubleshooting">Troubleshooting Pump Problems</a></li>
+                                        <li><a href="/modules/pump-repair/techniques">Basic Pump Repair Techniques</a></li>
+                                        <li><a href="/modules/pump-repair/preventive">Preventive Maintenance for Pumps</a></li>
+                                    </ul>
+                                </li>
+                        
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Managing and maintaining energy storage systems.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightyellow" stroke="goldenrod">
+                                        <title>Icon for Energy Storage & Battery Management</title>
+                                        <path d="M13 10v4h-2v-4h2m-3-4H8v12h2V6z"></path>
+                                    </svg>
+                                    <a href="/modules/energy-storage">Energy Storage &amp; Battery Management</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/energy-storage/types">Types of Batteries</a></li>
+                                        <li><a href="/modules/energy-storage/safety">Battery Safety &amp; Handling</a></li>
+                                        <li><a href="/modules/energy-storage/charging">Battery Charging &amp; Discharging</a></li>
+                                        <li><a href="/modules/energy-storage/maintenance">Maintaining Energy Storage Systems</a></li>
+                                    </ul>
+                                </li>
+                        
+                            </ul>  
+                            <ul class="module-list">
+                        
+                                <li data-description="Developing and delivering skill training programs.">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="lightcoral" stroke="red">
+                                        <title>Icon for Skill Training & Certification</title>
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4"></path>
+                                    </svg>
+                                    <a href="/modules/skill-training">Skill Training &amp; Certification</a>
+                                    <ul class="submodule-list">
+                                        <li><a href="/modules/skill-training/exams">Preparing for Certification Exams</a></li>
+                                        <li><a href="/modules/skill-training/materials">Developing Training Materials</a></li>
+                                        <li><a href="/modules/skill-training/community">Community-Based Skill-Sharing Programs</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="intersections-section" class="hidden py-12">
+                    <div class="container max-w-3xl mx-auto space-y-6">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Intersectional Modules</h2>
+                        <p class="text-gray-700 italic mb-4">Explore modules that intersect with various fields.</p>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <button class="accordion-header">
+                                    Intersectional Modules
+                                    <span class="accordion-icon"></span>
+                                </button>
+                                <div class="accordion-content">
+                                    <ul class="module-list">
+                                        <li data-description="Addressing environmental health disparities and injustices.">
+                                            <a href="/modules/environmental-justice">Environmental Health &amp; Justice</a>
+                                            <ul class="submodule-list">
+                                                <li><a href="/modules/environmental-justice/racism">Understanding Environmental Racism</a></li>
+                                                <li><a href="/modules/environmental-justice/health-impacts">Community Health Impacts of Pollution</a></li>
+                                                <li><a href="/modules/environmental-justice/advocacy">Advocacy &amp; Activism for Environmental Justice</a></li>
+                                            </ul>
+                                        </li>
+                                        <li data-description="Techniques for urban farming and sustainable food production.">
+                                            <a href="/modules/urban-farming">Urban Farming &amp; Gardening</a>
+                                            <ul class="submodule-list">
+                                                <li><a href="/modules/urban-farming/soil">Soil Health &amp; Composting</a></li>
+                                                <li><a href="/modules/urban-farming/organic">Organic Gardening Techniques</a></li>
+                                                <li><a href="/modules/urban-farming/food-security">Urban Agriculture for Food Security</a></li>
+                                                <li><a href="/modules/urban-farming/community-gardens">Community Gardens &amp; Food Sovereignty</a></li>
+                                            </ul>
+                                        </li>
+                                        <li data-description="Principles of green building and sustainable design.">
+                                            <a href="/modules/green-building">Green Building &amp; Sustainable Design</a>
+                                            <ul class="submodule-list">
+                                                <li><a href="/modules/green-building/passive-solar">Passive Solar Design</a></li>
+                                                <li><a href="/modules/green-building/energy-efficient">Energy-Efficient Construction</a></li>
+                                                <li><a href="/modules/green-building/natural-materials">Natural Building Materials</a></li>
+                                                <li><a href="/modules/green-building/healthy-environments">Creating Healthy Indoor Environments</a></li>
+                                            </ul>   
+                                        </li>
+                                        <li data-description="Exploring various renewable energy sources.">
+                                            <a href="/modules/renewable-energy">Renewable Energy Systems</a>
+                                            <ul class="submodule-list">
+                                                <li><a href="/modules/renewable-energy/wind">Wind Energy Basics</a></li>
+                                                <li><a href="/modules/renewable-energy/hydro">Hydropower Systems</a></li>
+                                                <li><a href="/modules/renewable-energy/biogas">Biogas Production &amp; Utilization</a></li>
+                                                <li><a href="/modules/renewable-energy/community-projects">Community-Owned Renewable Energy Projects</a></li>
+                                            </ul>       
+                                        </li>   
+                                    </ul>
+                                </div>
+                                
+                            
+                        <div class="accordion-item">
+                            <button class="accordion-header">
+                                WATSAN Modules
+                                <span class="accordion-icon"></span>
+                            </button>
+                            <button class="sidebar-heading clickable">
+                                <span class="title">Sewage And Wastewater</span>
+                                <span class="arrow end"></span>
+                              </button>
+                              <button class="sidebar-heading clickable">
+                                <span class="title">Drinking Water</span>
+                                <span class="arrow end"></span>
+                              </button>
+                              <button class="sidebar-heading clickable">
+                                <span class="title">Municipal Solid Waste </span>
+                                <span class="arrow end"></span>
+                              </button>
+                              <button class="sidebar-heading clickable">
+                                <span class="title">Municipal Solid Waste </span>
+                                <span class="arrow end"></span>
+                              </button>
+                            </div>
+
+
+
+                            <div class="accordion-content">
+                                <ul class="module-list">
+                                    <li data-description="Addressing environmental health disparities and injustices.">
+                                        <a href="/modules/environmental-justice">Environmental Health &amp; Justice</a>
+                                        <ul class="submodule-list">
+                                            <li><a href="/modules/environmental-justice/racism">Understanding Environmental Racism</a></li>
+                                            <li><a href="/modules/environmental-justice/health-impacts">Community Health Impacts of Pollution</a></li>
+                                            <li><a href="/modules/environmental-justice/advocacy">Advocacy &amp; Activism for Environmental Justice</a></li>
+                                        </ul>
+                                    </li>
+                                    <li data-description="Techniques for urban farming and sustainable food production.">
+                                        <a href="/modules/urban-farming">Urban Farming &amp; Gardening</a>
+                                            <ul class="submodule-list">
+                                                <li><a href="/modules/urban-farming/soil">Soil Health &amp; Composting</a></li>
+                                            <li><a href="/modules/urban-farming/organic">Organic Gardening Techniques</a></li>
+                                            <li><a href="/modules/urban-farming/food-security">Urban Agriculture for Food Security</a></li>
+                                            <li><a href="/modules/urban-farming/community-gardens">Community Gardens &amp; Food Sovereignty</a></li>
+                                        </ul>
+                                    </li>
+                                    <li data-description="Principles of green building and sustainable design.">
+                                        <a href="/modules/green-building">Green Building &amp; Sustainable Design</a>
+                                            <ul class="submodule-list">
+                                            <li><a href="/modules/green-building/passive-solar">Passive Solar Design</a></li>
+                                            <li><a href="/modules/green-building/energy-efficient">Energy-Efficient Construction</a></li>
+                                            <li><a href="/modules/green-building/natural-materials">Natural Building Materials</a></li>
+                                            <li><a href="/modules/green-building/healthy-environments">Creating Healthy Indoor Environments</a></li>
+                                        </ul>
+                                    </li>
+                                    <li data-description="Exploring various renewable energy sources.">
+                                        <a href="/modules/renewable-energy">Renewable Energy Systems</a>
+                                            <ul class="submodule-list">
+                                            <li><a href="/modules/renewable-energy/wind">Wind Energy Basics</a></li>
+                                            <li><a href="/modules/renewable-energy/hydro">Hydropower Systems</a></li>
+                                            <li><a href="/modules/renewable-energy/biogas">Biogas Production &amp; Utilization</a></li>
+                                            <li><a href="/modules/renewable-energy/community-projects">Community-Owned Renewable Energy Projects</a></li>
+                                        </ul>
+                                    </li>
+                                        <li data-description="Understanding and adapting to the impacts of climate change.">
+                                        <a href="/modules/climate-change">Climate Change &amp; Adaptation</a>
+                                        <ul class="submodule-list">
+                                            <li><a href="/modules/climate-change/science">Understanding Climate Science</a></li>
+                                            <li><a href="/modules/climate-change/impacts">Local Impacts of Climate Change</a></li>
+                                            <li><a href="/modules/climate-change/adaptation">Community-Based Adaptation Strategies</a></li>
+                                            <li><a href="/modules/climate-change/resilience">Climate Resilience &amp; Disaster Preparedness</a></li>
+                                        </ul>
+                                    </li>
+                                    <li data-description="Analyzing and visualizing environmental data.">
+                                        <a href="/modules/data-analysis">Environmental Data Analysis &amp; Visualization</a>
+                                            <ul class="submodule-list">
+                                            <li><a href="/modules/data-analysis/collecting">Collecting &amp; Analyzing Environmental Data</a></li>
+                                            <li><a href="/modules/data-analysis/gis">Using GIS for Environmental Mapping</a></li>
+                                            <li><a href="/modules/data-analysis/communication">Communicating Environmental Data Effectively</a></li>
+                                        </ul>
+                                    </li>
+                                        <li data-description="Organizing and leading community environmental initiatives.">
+                                        <a href="/modules/community-organizing">Community Organizing &amp; Leadership</a>
+                                            <ul class="submodule-list">
+                                            <li><a href="/modules/community-organizing/building">Building Effective Community Organizations</a></li>
+                                            <li><a href="/modules/community-organizing/leadership">Leadership Skills for Environmental Action</a></li>
+                                            <li><a href="/modules/community-organizing/fundraising">Fundraising &amp; Grant Writing for Environmental Projects</a></li>
+                                        </ul>
+                                    </li>
+                                        <li data-description="Integrating indigenous knowledge with environmental stewardship.">
+                                        <a href="/modules/indigenous-knowledge">Indigenous Knowledge &amp; Environmental Stewardship</a>
+                                            <ul class="submodule-list">
+                                            <li><a href="/modules/indigenous-knowledge/tek">Traditional Ecological Knowledge (TEK)</a></li>
+                                            <li><a href="/modules/indigenous-knowledge/land-management">Land Management Practices</a></li>
+                                            <li><a href="/modules/indigenous-knowledge/cultural-perspectives">Cultural Perspectives on Environmental Health</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                            <div class="mt-6">
+                            <a href="/lm4.html" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                View Learning Paths, Videos, and Clinic Information
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+
+            <section id="terms-section" class="hidden">
+                <div class="container max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Terms of Service</h2>
+                    <div class="text-gray-700">
+                        <p> **Placeholder Terms of Service** </p>
+
+                        <p>Welcome to Approvideo Learning Hub! Please read these Terms of Service ("Terms") carefully before using our platform. By accessing or using Approvideo Learning Hub, you agree to be bound by these Terms.</p>
+
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By using EcoLearn Hub, you agree to these Terms and our Privacy Policy. If you do not agree, you must not use our platform.</p>
+
+                        <h3>2. User Accounts</h3>
+                        <p>You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account.</p>
+
+                        <h3>3. User Conduct</h3>
+                        <p>You agree to use EcoLearn Hub only for lawful purposes and in a manner that does not infringe the rights of, restrict or inhibit anyone else's use and enjoyment of EcoLearn Hub.</p>
+
+                        <h3>4. Intellectual Property</h3>
+                        <p>The content, design, and code of EcoLearn Hub are protected by copyright and other intellectual property laws.  You may not copy, reproduce, or distribute our content without permission, except as explicitly allowed.</p>
+
+                        <h3>5. Disclaimer of Warranties</h3>
+                        <p>EcoLearn Hub is provided "as is" and "as available" without any warranties of any kind, either express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+
+                        <h3>6. Limitation of Liability</h3>
+                        <p>To the fullest extent permitted by applicable law, EcoLearn Hub shall not be liable for any indirect, incidental, special, consequential or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.</p>
+
+                        <h3>7. Governing Law</h3>
+                        <p>These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law provisions.</p>
+
+                        <h3>8. Changes to Terms</h3>
+                        <p>We reserve the right to modify or replace these Terms at any time. We will endeavor to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+
+                        <p> **End of Placeholder Terms of Service** </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="privacy-section" class="hidden">
+                <div class="container max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold text-gray-800">Privacy Policy</h2>
+                    <div class="text-gray-700">
+                        <p> **Placeholder Privacy Policy** </p>
+
+                        <p>Your privacy is important to us. This Privacy Policy explains how Approvideo Learning Hub collects, uses, and protects your personal information.</p>
+
+                        <h3>1. Information We Collect</h3>
+                        <p>We collect information that you provide directly to us, such as when you register for an account, participate in learning modules, or contact us. This may include your name, email address, and role.</p>
+
+                        <h3>2. How We Use Your Information</h3>
+                        <p>We use your information to:</p>
+                        <ul>
+                            <li>Provide, maintain, and improve our services.</li>
+                            <li>Personalize your experience on EcoLearn Hub.</li>
+                            <li>Communicate with you, including sending you updates and support messages.</li>
+                            <li>Monitor usage and trends, and personalize and improve EcoLearn Hub.</li>
+                        </ul>
+
+                        <h3>3. Data Sharing and Disclosure</h3>
+                        <p>We will not share your personal information with third parties except as described in this policy or with your consent. For example, we may share information with:</p>
+                        <ul>
+                            <li>Service providers who perform services on our behalf.</li>
+                            <li>Legal authorities when required by law.</li>
+                        </ul>
+
+                        <h3>4. Data Security</h3>
+                        <p>We take reasonable measures to help protect your personal information from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction.</p>
+
+                        <h3>5. Your Rights (especially for EU users)</h3>
+                        <p>Depending on your location, you may have certain rights regarding your personal information, including the right to access, correct, delete, or restrict the use of your personal data. Users in the EU have rights under GDPR. Please contact us if you wish to exercise these rights.</p>
+
+                        <h3>6. Cookies and Tracking Technologies</h3>
+                        <p>We may use cookies and similar tracking technologies to collect information about your activity on EcoLearn Hub. You can control cookies through your browser settings.</p>
+
+                        <h3>7. Changes to this Privacy Policy</h3>
+                        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+
+                        <h3>8. Contact Us</h3>
+                        <p>If you have any questions about this Privacy Policy, please contact Approvideo Learning Hub via ecocommunity@protonmail.com.</p>
+
+                        <p> **End of Placeholder Privacy Policy** </p>
+
+                    </div>
+                
+            </div>
+            </section>
+
+    
+        </main>
+
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-4 gap-8">
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Approvideo Hub</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#learning" id="learning-footer" class="hover:text-white">Learning</a></li>
+
+                            <li><a href="#about" id="about-footer" class="hover:text-white">About Us</a></li>
+                            <li><a href="#team" id="team-footer"  class="hover:text-white">Our Team</a></li>
+                            <li><a href="#applied-research-grants" id="small-grants-footer"  class="hover:text-white">Applied Research Microgrants</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#library" id="diy-solutions-library" class="hover:text-white">Resources Library</a></li>
+                            <li><a href="#blog" id="approvideo-blog" class="hover:text-white">Blog</a></li>
+                            <li><a href="#faq" id="faq-footer" class="hover:text-white">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                        <div class="flex space-x-4 mb-4">
+                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                        <p class="text-gray-400">
+                            
+                            <a href="#contact" class="text-gray-400 hover:text-white" id="contact-header"><i class="fab fa-letter"></i>ecocommunity@protonmail.com</a>
+                                
+                                
+                                </p>
+
+                            </div>
+                    </div>
+                </div>
+
+          
+
+
+                <div class="border-t border-gray-500 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400">&copy; 2025 Approvideo Hub, GPL v3
+                    <br>
+                    Sharing knowledge & expertise benefits vulnerable communities.
+
+                    </p>
+                    <div class="flex space-x-4 mt-4 md:mt-0">
+                        
+                        <a href="#privacy" id="privacy-link-footer" class="text-gray-400 hover:text-white">Privacy Policy</a>
+                        <a href="#terms" id="terms-link-footer" class="text-gray-400 hover:text-white">Terms of Service</a>
+                        <a href="#cookies" class="text-gray-400 hover:text-white">Cookie Policy</a>
+                    </div>
+                </div>
+         
+        </footer>
+
+        <div id="chat-container" class="rounded-t-md shadow-lg">
+            <div id="chat-header" class="rounded-t-md">
+                <div class="relative">
+                    <span>Chat</span>
+                    <span id="chat-notification-badge" class="chat-notification hidden">1</span>
+                </div>
+                <button id="close-chat-button" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div id="chat-body" class="hidden">
+                <p>Welcome to the chat! (Placeholder)</p>
+                </div>
+        </div>
+
+
+        <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+                <div class="loading-spinner mb-4"></div>
+                <p id="loading-message" class="text-gray-700">Loading...</p>
+            </div>
+        </div>
+
+        <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+    </div>
+
+
+  <script src="/js/app.js"></script>
+  <script type="module" src="/js/milestonePlanner.mjs"></script>
+
+</body>
+</html>

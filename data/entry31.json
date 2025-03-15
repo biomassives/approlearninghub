@@ -1,0 +1,195 @@
+{
+    "categories": [
+      {
+        "name": "Water",
+        "topics": [
+          "Water Distribution & Management",
+          "Water Purification & Treatment",
+          "Rainwater Harvesting",
+          "Greywater & Blackwater Systems",
+          "Water Conservation",
+          "Water Quality Monitoring",
+          "Irrigation & Water-Efficient Agriculture",
+          "Desalination",
+          "Groundwater Management",
+          "Water Rights & Policy",
+          "Community Water Management"
+        ]
+      },
+      {
+        "name": "Energy",
+        "topics": [
+          "Solar Energy (Installation, Design, Off-Grid)",
+          "Wind Energy",
+          "Hydropower",
+          "Biogas Production & Utilization",
+          "Energy Efficiency & Conservation",
+          "Energy Storage & Battery Management",
+          "Microgrids & Decentralized Energy",
+          "Renewable Energy Policy & Economics",
+          "Community-Owned Renewable Energy",
+          "Energy Efficiency (General)",
+          "HVAC (Heating, Ventilation, and Air Conditioning)",
+          "Insulation",
+          "Lighting (Energy-Efficient Lighting)",
+          "Renewable Energy (General)",
+          "Transportation (Sustainable Transportation)"
+        ]
+      },
+      {
+        "name": "Food & Agriculture",
+        "topics": [
+          "Urban Farming & Gardening",
+          "Sustainable Agriculture Techniques",
+          "Permaculture",
+          "Organic Farming",
+          "Food Security & Sovereignty",
+          "Composting & Soil Health",
+          "Hydroponics & Aquaponics",
+          "Seed Saving & Biodiversity",
+          "Food Preservation & Storage",
+          "Community Gardens & Food Cooperatives"
+        ]
+      },
+      {
+        "name": "Shelter & Infrastructure",
+        "topics": [
+          "Green Building & Sustainable Design",
+          "Passive Solar Design",
+          "Energy-Efficient Construction",
+          "Natural Building Materials",
+          "Low-Cost, Durable Construction",
+          "Tiny Houses & Alternative Housing",
+          "Eco-Villages & Sustainable Communities",
+          "Waste Management & Composting",
+          "Wastewater Treatment",
+          "Waste Management (expanded)",
+          "Windows (Energy-Efficient Windows)"
+        ]
+      },
+      {
+        "name": "Health & Wellbeing",
+        "topics": [
+          "Environmental Health & Justice",
+          "Traditional Ecological Knowledge (TEK)",
+          "Herbal Medicine & Natural Remedies",
+          "Self-Sufficient Healthcare",
+          "Mental Health & Nature",
+          "Community Health & Resilience",
+          "Disaster Preparedness & Response",
+          "First Aid & Emergency Medical Skills",
+          "Telemedicine & Remote Healthcare",
+          "Nutrition & Sustainable Food Systems",
+          "EMS (Emergency Medical Services)"
+        ]
+      },
+      {
+        "name": "Community Development",
+        "topics": [
+          "Community Organizing & Leadership",
+          "Social Equity & Inclusion",
+          "Economic Development & Local Businesses",
+          "Education & Lifelong Learning",
+          "Cultural Heritage Preservation",
+          "Public Safety & Community Policing",
+          "Climate Change Adaptation & Resilience",
+          "Land Use & Urban Design",
+          "Green Spaces & Urban Forestry",
+          "Natural Resource Management"
+        ]
+      },
+      {
+        "name": "Technology & Innovation",
+        "topics": [
+          "Arduino & Environmental Sensing",
+          "Data Analysis & Visualization",
+          "GIS & Remote Sensing",
+          "Open Source Technology & Collaboration",
+          "Appropriate Technology & DIY Solutions",
+          "Biomimicry & Nature-Inspired Design",
+          "Citizen Science & Community Monitoring",
+          "Digital Fabrication & Maker Spaces",
+          "Green Tech & Social Entrepreneurship",
+          "Blockchain & Decentralized Systems"
+        ]
+      },
+      {
+        "name": "Other",
+        "topics": [
+          "Environmental Ethics & Philosophy",
+          "Sustainable Consumption & Lifestyle",
+          "Aviation (Sustainable Aviation)",
+          "Appliances (Energy-Efficient Appliances)"
+        ]
+      }, 
+      {
+    "name":  "wastewater_and_sewage" {
+    "collection": [
+        "None", 
+        "Small bore/Settled sewerage", 
+        "Simplified Sewerage", 
+        "Conventional Sewerage (Drainage Field)"
+    ],
+    "transfer": ["None"],
+    "treatment": [
+      "Constructed wet lands",
+      "Soil aquifer treatment",
+      "Oxidation ditch",
+      "Rotating biological contractor",
+      "Trickling filters",
+      "Upflow anaerobic sludge blanket",
+      "Activated sludge process",
+      "Stabilization Ponds"
+    ],
+    "disposal": [
+      "Burial",
+      "Composting",
+      "Pit Privy",
+      "Ventilated improved pit latrine",
+      "Double-vault compost latrine",
+      "Aqua Privy",
+      "Pour Flush Toilet",
+      "Cistern-Flush Toilet",
+      "Drainage Field"
+    ]
+  },
+  "drinking_water_supply": {
+    "source": [
+      "Bucket",
+      "Handpump",
+      "Handpump - Deep well",
+      "Guard bucket with windlass",
+      "Motorized pump",
+      "Standpost"
+    ],
+    "procurement": ["None"],
+    "storage": ["Barrel", "Tank", "Reservoir", "Cistern"],
+    "treatment": ["None", "Boiling", "Slow Sand Filter", "Piped Water (Pumped)", "Ultraviolet Light"]
+  },
+  "mss_technology_assessment": {
+    "steps": [
+      "Perform Background Research",
+      "Develop list of technologies",
+      "Group technologies into unit operations",
+      "Calculate Technology Scores based on 4 criteria",
+      "Develop options for service",
+      "Calculate Option Scores",
+      "Classify Options into Stage of Development"
+    ],
+    "criteria": ["Cost", "Energy", "Technical Requirements", "Institutional Requirements"]
+  },
+  "list_of_technologies": {
+    "characteristics": [
+      "Description of Technology",
+      "Components",
+      "Schematics",
+      "Cost",
+      "Operation and Maintenance",
+      "Technical Knowledge",
+      "Environmental Impact",
+      "Cultural Factors",
+      "Other Factors",
+      "Sources"
+    ]
+  },
+  

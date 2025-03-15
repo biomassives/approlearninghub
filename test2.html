@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+ <title>Secure Login Workflow</title>
+
+ <script src="/js/libs/Dexie.js"></script>
+
+ <script src="./node_modules/@pvermeer/dexie-encrypted-addon/dist/dexie-encrypted-addon.min.js"></script>
+
+</head>
+
+<body>
+
+ <div id="authStatus">Logged Out</div>
+
+ <button id="loginButton">Login</button>
+
+ <button id="logoutButton" style="display: none;">Logout</button>
+
+ <a href="/profile" id="profileLink">Profile</a>
+
+  <div id="loginModal" style="display: none;">
+
+    <input type="text" id="username" placeholder="Username">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <button id="submitLogin">Submit</button>
+
+  </div>
+
+  <script>
+// Dexie Setup
+
+const db = new Dexie("MyDatabase", {
+
+  addons: [Dexie.addons.Encrypted]
+
+});
+
+
+db.version(1).stores({
+
+  authTokens: "id, encryptedKey, token"
+
+});
+
+
+db.use({
+
+  stack: "dbcore",
+
+  create: (downlevelDatabase) => {
+
+    return new Dexie.addons.Encrypted(downlevelDatabase, {
+
+      key: null, // Key will be set dynamically
+
+      algorithm: "aes-256-gcm",
+
+      additionalProperties: ["token"]
+
+    });
+
+  }
+
+});
+
+
+// DOM Elements
+
+const authStatus = document.getElementById("authStatus");
+
+const loginButton = document.getElementById("loginButton");
+
+const logoutButton = document.getElementById("logoutButton");
+
+const profileLink = document.getElementById("profileLink");
+
+const loginModal = document.getElementById("loginModal");
+
+const usernameInput = document.getElementById("username");
+
+const passwordInput = document.getElementById("password");
+
+const submitLoginButton = document.getElementById("submitLogin");
+
+
+let isLoggedIn = false;
+
+
+// Functions
+
+async function deriveKeyFromPassword(password) {
+
+  const encoder = new TextEncoder();
+
+  const keyMaterial = await window.crypto.subtle.importKey(
+
+    "raw",
+
+    encoder.encode(password),
+
+    { name: "PBKDF2" },
+
+    false,
+
+    ["deriveKey"]
+
+  );
+
+  const derivedKey = await window.crypto.subtle.deriveKey(
+
+    {
+
+      name: "PBKDF2",
+
+      salt: encoder.encode("your_salt_value"), // Replace with a unique salt
+
+      iterations: 100000,
+
+      hash: "SHA-256"
+
+    },
+
+    keyMaterial,
+
+    { name: "AES-GCM", length: 256 },
+
+    true,
+
+    ["encrypt", "decrypt"]
+
+  );
+
+  return derivedKey;
+
+}
+
+
+async function encryptKey(key, derivedKey) {
+
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+  const encryptedKeyBuffer = await window.crypto.subtle.encrypt(
+
+    { name: "AES-GCM", iv: iv },
+
+    derivedKey,
+
+    await window.crypto.subtle.exportKey("raw", key)
+
+  );
+
+  const combined = new Uint8Array(iv.length + encryptedKeyBuffer.byteLength);
+
+  combined.set(iv);
+
+  combined.set(new Uint8Array(encryptedKeyBuffer), iv.length);
+
+  return Array.from(combined).map(b => b.toString(16).padStart(2, '0')).join('');
+
+}
+
+
+async function decryptKey(encryptedKeyHex, derivedKey) {
+
+  const combined = new Uint8Array(encryptedKeyHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+  const iv = combined.slice(0, 12);
+
+  const encryptedKeyBuffer = combined.slice(12);
+
+
+  const decryptedKeyBuffer = await window.crypto.subtle.decrypt(
+
+    { name: "AES-GCM", iv: iv },
+
+    derivedKey,
+
+    encryptedKeyBuffer
+
+  );
+
+
+  return window.crypto.subtle.importKey(
+
+    "raw",
+
+    decryptedKeyBuffer,
+
+    { name: "AES-GCM", length: 256 },
+
+    true,
+
+    ["encrypt", "decrypt"]
+
+  );
+
+}
+
+
+
+async function login(username, password) {
+
+  // 1. Simulate API Call (Replace with your actual API endpoint)
+
+  const response = await fetch("/api/login", {  // Use a relative path
+
+    method: "POST",
+
+    headers: {
+
+      "Content-Type": "application/json"
+
+    },
+
+    body: JSON.stringify({ username, password })
+
+  });
+
+
+
+  if (!response.ok) {
+
+    const errorData = await response.json();
+
+    throw new Error(errorData.message || "Login failed"); // Handle API errors
+
+  }
+
+
+  const data = await response.json();
+
+  // Assuming API returns: { token: "...", key: "..." }
+
+  const { token, key } = data;
+
+
+  // 2. Derive key from password
+
+  const derivedKey = await deriveKeyFromPassword(password);
+
+
+  // 3. Encrypt the encryption key
+
+  const encryptedKey = await encryptKey(key, derivedKey);
+
+
+  // 4. Store in Dexie
+
+  await db.authTokens.put({ id: 1, encryptedKey, token });
+
+
+  // 5. Update UI
+
+  isLoggedIn = true;
+
+  updateUI();
+
+  return true;
+
+}
+
+
+
+async function logout() {
+
+  // 1. Clear Dexie
+
+  await db.authTokens.clear();
+
+  //clear dexie-encrypted key
+    db.encrypted.key = null;
+
+
+  // 2.  Simulate API call to invalidate token (optional, but good practice)
+    try {
+        const response = await fetch("/api/logout", { // Use a relative path
+            method: "POST",
+        });
+
+        if (!response.ok) {
+          console.error("Logout API call failed, but clearing local data anyway.");
+        }
+    } catch (error){
+        console.error("Logout API call failed (network error), but clearing local data anyway.", error);
+    }
+
+
+
+  // 3. Update UI
+
+  isLoggedIn = false;
+  usernameInput.value = "";
+  passwordInput.value = "";
+
+  updateUI();
+
+}
+
+
+
+
+async function checkAuthStatus() {
+  try{
+      const authData = await db.authTokens.get(1);
+
+      if (authData) {
+        // We have *something* in the db.  Doesn't mean it's valid.
+        const storedToken = authData.token;
+
+        // Make API call to validate token
+        const response = await fetch("/api/validate-token", {
+            method: "POST",
+             headers: {
+                "Authorization": `Bearer ${storedToken}`
+             }
+        });
+        if (response.ok) {
+          //Token is valid.
+          isLoggedIn = true;
+          //Restore the key.  User won't need to re-enter password.
+          // Get the password.  This is secure because it's only ever
+          // in memory, and only briefly.
+            const password = prompt("Enter your password to unlock your session:");
+            if(!password) {
+                //User cancelled.  Log them out.
+                await logout();
+                return;
+            }
+            db.encrypted.key = await deriveKeyFromPassword(password);
+
+        } else {
+          // Token is invalid.  Clear the db.
+          await db.authTokens.clear();
+          isLoggedIn = false;
+        }
+
+
+      } else {
+        isLoggedIn = false;
+      }
+    } catch (error) {
+        // Handle errors, likely related to decryption.  Force logout.
+        console.error("Error checking auth status:", error);
+        await logout(); // Clear any potentially corrupted data
+        isLoggedIn = false; // Ensure consistent state
+    }
+
+  updateUI();
+
+}
+
+
+
+function updateUI() {
+
+  if (isLoggedIn) {
+
+    authStatus.textContent = "Logged In";
+
+    loginButton.style.display = "none";
+
+    logoutButton.style.display = "inline-block";
+
+    profileLink.style.display = "inline-block";  // Show profile link
+
+    loginModal.style.display = "none";
+
+  } else {
+
+    authStatus.textContent = "Logged Out";
+
+    loginButton.style.display = "inline-block";
+
+    logoutButton.style.display = "none";
+
+    profileLink.style.display = "none"; // Hide profile link
+
+    loginModal.style.display = "none";
+
+  }
+
+}
+
+
+// Event Listeners
+
+loginButton.addEventListener("click", () => {
+
+  loginModal.style.display = "block";
+
+});
+
+
+submitLoginButton.addEventListener("click", async () => {
+
+  const username = usernameInput.value;
+
+  const password = passwordInput.value;
+
+
+  if (!username || !password) {
+
+    alert("Please enter both username and password.");
+
+    return;
+
+  }
+
+
+  try {
+
+    await login(username, password);
+
+  } catch (error) {
+
+    alert(error.message); // Display the error message
+
+  }
+
+});
+
+
+logoutButton.addEventListener("click", logout);
+
+
+// Initial Check
+
+checkAuthStatus();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+{
+    "isLoggedIn": true,
+    "username": "John Doe",
+    "role": "user",
+    "language": "en",
+    "learningProgress": {
+      "Community Water Testing": 75,
+      "Air Quality Monitoring": 30,
+      "Environmental Justice": 15
+    },
+    "clinicSessions": 7,
+    "certificates": 3,
+    "contributions": 120,
+    "upcomingActivities": [
+      {
+        "title": "Water Quality Clinic Session",
+        "time": "Tomorrow at 2:00 PM",
+        "location": "Zoom",
+        "type": "clinic"
+      },
+      {
+        "title": "Module 3: Air Pollution Assessment",
+        "time": "Due in 3 days",
+        "type": "module"
+      }
+    ],
+    "recentActivity": [
+      {
+        "type": "certificate",
+        "title": "Basic Environmental Sampling",
+        "time": "2 days ago"
+      },
+      {
+        "type": "users",
+        "title": "Urban Air Quality research team",
+        "time": "5 days ago"
+      }
+    ],
+    "lastUpdated": "2024-10-27T10:00:00Z"
+  }
