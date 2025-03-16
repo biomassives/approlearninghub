@@ -11,153 +11,162 @@ db.version(1).stores({
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
-    const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
-    const userProfileTopRight = document.getElementById('user-profile-top-right');
-    const userDropdown = document.getElementById('user-dropdown');
-    const loginButton = document.getElementById('login-button');
 
 
-    const registerButton = document.getElementById('user-profile-top-right');
-    const logoutButton = document.getElementById('logout-button');
-    const authModal = document.getElementById('auth-modal');
-    const closeAuthModalButton = document.getElementById('close-auth-modal');
-    const emailLoginForm = document.getElementById('email-login-form');
-    const loginWithEmailButton = document.getElementById('login-with-email');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const welcomeSection = document.getElementById('welcome-section');
-    const dashboardLoggedInContent = document.getElementById('dashboard-logged-in');
-    const dashboardLoggedOutContent = document.getElementById('dashboard-logged-out');
-    const dashboardWelcomeMessage = document.getElementById('dashboard-welcome-message');
-    const roleBasedDashboardContent = document.getElementById('role-based-dashboard-content');
-    const getStartedButtonDashboard = document.getElementById('get-started-button-dashboard');
-    const loginLinkDashboard = document.getElementById('login-link-dashboard');
 
-    // Chat Elements
-    const chatContainer = document.getElementById('chat-container');
-    const chatHeader = document.getElementById('chat-header');
-    const chatBody = document.getElementById('chat-body');
-    const closeChatButton = document.getElementById('close-chat-button');
-    const chatNotificationBadge = document.getElementById('chat-notification-badge');
 
-    // New Page Sections
-    const termsSection = document.getElementById('terms-section');
-    const privacySection = document.getElementById('privacy-section');
 
-    const aboutSection = document.getElementById('about-section');
-    const clinicsSection = document.getElementById('clinics-section');
-    const teamSection = document.getElementById('team-section');
-    const learningmodulesSection = document.getElementById('learning-modules-section');
-    const blogSection = document.getElementById('blog-section');
-    const librarySection = document.getElementById('library-section');
-    const faqSection = document.getElementById('faq-section');
-    const certificatesSection = document.getElementById('certs-section');
-    const profileSection = document.getElementById('profile-section');
-    const mydataSection = document.getElementById('mydata-section');
-    const settingsSection = document.getElementById('settings-section');
-    const eventsSection = document.getElementById('events-section');
+        const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
+        const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
+        const userProfileTopRight = document.getElementById('user-profile-top-right');
+        const userDropdown = document.getElementById('user-dropdown');
+        const loginButton = document.getElementById('login-button');
 
-    // Footer & other links
-    const privacyLinkFooter = document.getElementById('privacy-link-footer');
-    const termsLinkFooter = document.getElementById('terms-link-footer');
-    const aboutLinkFooter = document.getElementById('about-footer');
-    const teamLinkFooter = document.getElementById('team-footer');
-    const blogLinkFooter = document.getElementById('approvideo-blog');
-    const faqLinkFooter = document.getElementById('faq-footer');
 
-    const smallgrantsLinkFooter = document.getElementById('small-grants-footer');
-    const smallgrantsLinkHeader = document.getElementById('small-grants-header');
-    const smallgrantsLinkMore = document.getElementById('more-smallgrants');
-    const learningLinkFooter = document.getElementById('learning-footer');
-    const learningLinkHeader = document.getElementById('learning-header');
-    const libraryLinkFooter = document.getElementById('diy-solutions-library');
-    const libraryLinkHeader = document.getElementById('library-header');
-    const librarycrLinkHeader = document.getElementById('librarycr-header');
-    const eventsLinkHeader = document.getElementById('events-header');
+        // set initial state
+        userProfileTopRight.classList.toggle('hidden');
 
-    const practicalclinicsMoreButton = document.getElementById('more-practical-clinics-button');
-    const researchMoreButton = document.getElementById('more-research');
-    const eventsMoreButton = document.getElementById('more-events');
-    const aboutMenu = document.getElementById('more-about');
-  
-    const skillTrainingButton = document.getElementById('library-header');
-    const skillTraining2Button = document.getElementById('skilltraining-header');
-    const skillTrainingMenu = document.getElementById('skill-training-menu');
-    const crisisReliefButton = document.getElementById('librarycr-header');
-    const crisisReliefMenu = document.getElementById('crisis-relief-menu');
-    const moreButton = document.getElementById('more-button');
-    //const moreMenu = document.getElementById('more-menu');
-    const modalModuleMenu  = document.getElementById('modal-module-menu');
-    const modalModuleMenuButton = document.getElementById('modal-module-menu-button');
-    const moduleButtonBiodiversityAndEcosystemsButton = document.getElementById('module-biodiversity-and-ecosystems-button');
-    const moduleButtonBiodiversityAndEcosystems = document.getElementById('module-biodiversity-and-ecosystems');
+
+        const registerButton = document.getElementById('user-profile-top-right');
+        const logoutButton = document.getElementById('logout-button');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthModalButton = document.getElementById('close-auth-modal');
+        const emailLoginForm = document.getElementById('email-login-form');
+        const loginWithEmailButton = document.getElementById('login-with-email');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const welcomeSection = document.getElementById('welcome-section');
+        const dashboardLoggedInContent = document.getElementById('dashboard-logged-in');
+        const dashboardLoggedOutContent = document.getElementById('dashboard-logged-out');
+        const dashboardWelcomeMessage = document.getElementById('dashboard-welcome-message');
+        const roleBasedDashboardContent = document.getElementById('role-based-dashboard-content');
+        const getStartedButtonDashboard = document.getElementById('get-started-button-dashboard');
+        const loginLinkDashboard = document.getElementById('login-link-dashboard');
+
+        // Chat Elements
+        const chatContainer = document.getElementById('chat-container');
+        const chatHeader = document.getElementById('chat-header');
+        const chatBody = document.getElementById('chat-body');
+        const closeChatButton = document.getElementById('close-chat-button');
+        const chatNotificationBadge = document.getElementById('chat-notification-badge');
+
+        // New Page Sections
+        const termsSection = document.getElementById('terms-section');
+        const privacySection = document.getElementById('privacy-section');
+
+        const aboutSection = document.getElementById('about-section');
+        const clinicsSection = document.getElementById('clinics-section');
+        const teamSection = document.getElementById('team-section');
+        const learningmodulesSection = document.getElementById('learning-modules-section');
+        const blogSection = document.getElementById('blog-section');
+        const librarySection = document.getElementById('library-section');
+        const faqSection = document.getElementById('faq-section');
+        const certificatesSection = document.getElementById('certs-section');
+        const profileSection = document.getElementById('profile-section');
+        const mydataSection = document.getElementById('mydata-section');
+        const settingsSection = document.getElementById('settings-section');
+        const eventsSection = document.getElementById('events-section');
+
+        // Footer & other links
+        const privacyLinkFooter = document.getElementById('privacy-link-footer');
+        const termsLinkFooter = document.getElementById('terms-link-footer');
+        const aboutLinkFooter = document.getElementById('about-footer');
+        const teamLinkFooter = document.getElementById('team-footer');
+        const blogLinkFooter = document.getElementById('approvideo-blog');
+        const faqLinkFooter = document.getElementById('faq-footer');
+
+        const smallgrantsLinkFooter = document.getElementById('small-grants-footer');
+        const smallgrantsLinkHeader = document.getElementById('small-grants-header');
+        const smallgrantsLinkMore = document.getElementById('more-smallgrants');
+        const learningLinkFooter = document.getElementById('learning-footer');
+        const learningLinkHeader = document.getElementById('learning-header');
+        const libraryLinkFooter = document.getElementById('diy-solutions-library');
+        const libraryLinkHeader = document.getElementById('library-header');
+        const librarycrLinkHeader = document.getElementById('librarycr-header');
+        const eventsLinkHeader = document.getElementById('events-header');
+
+        const practicalclinicsMoreButton = document.getElementById('more-practical-clinics-button');
+        const researchMoreButton = document.getElementById('more-research');
+        const eventsMoreButton = document.getElementById('more-events');
+        const aboutMenu = document.getElementById('more-about');
     
-    // added to set initial state of profile icon
-    userProfileTopRight.classList.toggle('hidden');
+        const skillTrainingButton = document.getElementById('library-header');
+        const skillTraining2Button = document.getElementById('skilltraining-header');
+        const skillTrainingMenu = document.getElementById('skill-training-menu');
+        const crisisReliefButton = document.getElementById('librarycr-header');
+        const crisisReliefMenu = document.getElementById('crisis-relief-menu');
+        const moreButton = document.getElementById('more-button');
+        //const moreMenu = document.getElementById('more-menu');
+        const modalModuleMenu  = document.getElementById('modal-module-menu');
+        const modalModuleMenuButton = document.getElementById('modal-module-menu-button');
+        const moduleButtonBiodiversityAndEcosystemsButton = document.getElementById('module-biodiversity-and-ecosystems-button');
+        const moduleButtonBiodiversityAndEcosystems = document.getElementById('module-biodiversity-and-ecosystems');
+        
 
-    // Menu Links
-    const profileLinkMenu = document.getElementById('profile-menu');
-    const milestonesLinkMenu = document.getElementById('milestones-menu');
-    const settingsLinkMenu = document.getElementById('settings-menu');
-    const shareLinkMenu = document.getElementById('share-menu');
 
-    // Modal  & Megamenu
-    const privacyLinkModal = document.getElementById('privacy-link-modal');
-    const termsLinkModal = document.getElementById('terms-link-modal');
-    const megaMenuButton = document.getElementById('mega-menu-button');
-    const megaMenu = document.getElementById('mega-menu');
-    const megaMenuButtonCLOSE = document.getElementById('mega-menu-button-close');
+        // Menu Links
+        const profileLinkMenu = document.getElementById('profile-menu');
+        const milestonesLinkMenu = document.getElementById('milestones-menu');
+        const settingsLinkMenu = document.getElementById('settings-menu');
+        const shareLinkMenu = document.getElementById('share-menu');
 
-    megaMenuButton.addEventListener('click', () => {
-        megaMenu.classList.toggle('hidden');
-        megaMenuButtonCLOSE.classList.toggle('block');
-    });
+        // Modal  & Megamenu
+        const privacyLinkModal = document.getElementById('privacy-link-modal');
+        const termsLinkModal = document.getElementById('terms-link-modal');
+        const megaMenuButton = document.getElementById('mega-menu-button');
+        const megaMenu = document.getElementById('mega-menu');
+        const megaMenuButtonCLOSE = document.getElementById('mega-menu-button-close');
 
-    megaMenuButtonCLOSE.addEventListener('click', () => {
-        megaMenu.classList.toggle('hidden');
-        megaMenuButtonCLOSE.classList.toggle('hidden');
-        //megaMenuButton.classList.toggle('block');
-    });
+        megaMenuButton.addEventListener('click', () => {
+            megaMenu.classList.toggle('hidden');
+            megaMenuButtonCLOSE.classList.toggle('block');
+        });
 
-    const authMenu = document.getElementById('auth-modal');
-    const authMenuButtonCLOSE = document.getElementById('auth-modal-button-close');
+        megaMenuButtonCLOSE.addEventListener('click', () => {
+            megaMenu.classList.toggle('hidden');
+            megaMenuButtonCLOSE.classList.toggle('hidden');
+            //megaMenuButton.classList.toggle('block');
+        });
 
-    authMenuButtonCLOSE.addEventListener('click', () => {
-            authMenu.classList.toggle('hidden');
-            profileLinkMenu.classList.toggle('hidden');
-    });
+        const authMenu = document.getElementById('auth-modal');
+        const authMenuButtonCLOSE = document.getElementById('auth-modal-button-close');
 
-    let isLoggedIn = false;
-    let userName = "User";
-    let userRole = "user";
+        authMenuButtonCLOSE.addEventListener('click', () => {
+                authMenu.classList.toggle('hidden');
+                profileLinkMenu.classList.toggle('hidden');
+        });
 
-    const roleContent = {
-        'user': '<p>Welcome to your user dashboard. Explore learning modules and health clinics.</p>',
-        'project leader': '<p>Project Leader Dashboard: Manage projects and team members.</p>',
-        'expert mentor': '<p>Expert Mentor Dashboard: Guide and mentor learners.</p>',
-        'research assistance': '<p>Research Assistant Dashboard: Contribute to research projects.</p>',
-        'member of effected community': '<p>Community Member Dashboard: Access resources and community forums.</p>',
-        'software admin': '<p>Software Admin Dashboard: System administration and user management.</p>',
-        'default': '<p>Generic dashboard content for logged-in users.</p>'
-    };
+        let isLoggedIn = false;
+        let userName = "User";
+        let userRole = "user";
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const iconNavItems = document.querySelectorAll('.icon-nav-item');
-        iconNavItems.forEach(item => {
-            const text = item.textContent; // Store original text
-            item.innerHTML = ''; // Clear original text
-            item.appendChild(document.createElement('span')).textContent = text; // Add text as span
-    });
+        const roleContent = {
+            'user': '<p>Welcome to your user dashboard. Explore learning modules and health clinics.</p>',
+            'project leader': '<p>Project Leader Dashboard: Manage projects and team members.</p>',
+            'expert mentor': '<p>Expert Mentor Dashboard: Guide and mentor learners.</p>',
+            'research assistance': '<p>Research Assistant Dashboard: Contribute to research projects.</p>',
+            'member of effected community': '<p>Community Member Dashboard: Access resources and community forums.</p>',
+            'software admin': '<p>Software Admin Dashboard: System administration and user management.</p>',
+            'default': '<p>Generic dashboard content for logged-in users.</p>'
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const iconNavItems = document.querySelectorAll('.icon-nav-item');
+            iconNavItems.forEach(item => {
+                const text = item.textContent; // Store original text
+                item.innerHTML = ''; // Clear original text
+                item.appendChild(document.createElement('span')).textContent = text; // Add text as span
+        });
 
         
-    document.addEventListener('click', (event) => {
-            if (event.target.classList.contains('accordion-header')) {
-                const item = event.target.closest('.accordion-item');
-                if (item) {
-                    item.classList.toggle('active');
+        document.addEventListener('click', (event) => {
+                if (event.target.classList.contains('accordion-header')) {
+                    const item = event.target.closest('.accordion-item');
+                    if (item) {
+                        item.classList.toggle('active');
+                    }
                 }
-            }
-     });
+        });
+
 
     });
 
@@ -186,7 +195,7 @@ function updateAuthUI() {
         chatNotificationBadge.classList.add('hidden');
     }
     hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible after auth changes
-}
+  }       
 
 function renderRoleBasedContent() {
     let content = roleContent[userRole] || roleContent['default'];
@@ -557,9 +566,7 @@ navLinks.forEach(link => {
 
     });
 
-    
     // Initial UI setup
     updateAuthUI();
     hideAllSectionsExcept('dashboard-section'); // Start on dashboard by default
 });
-
