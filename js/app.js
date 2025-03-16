@@ -92,76 +92,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const moduleButtonBiodiversityAndEcosystemsButton = document.getElementById('module-biodiversity-and-ecosystems-button');
     const moduleButtonBiodiversityAndEcosystems = document.getElementById('module-biodiversity-and-ecosystems');
     
-
-/*
-    const moduleButtonCommunityWasteManagementButton = document.getElementById('module-community-waste-management-button');
-    const moduleButtonCommunityWasteManagementButtonCLOSE = document.getElementById('module-community-waste-management-button-close');
-    const moduleButtonCommunityWasteManagement = document.getElementById('modules-community-waste-management');
-    
-    if (moduleButtonCommunityWasteManagementButton) { // add a check that the button exists.
-      moduleButtonCommunityWasteManagementButton.addEventListener('click', function() {
-        if (moduleButtonCommunityWasteManagement) { // add a check that the module exists.
-          moduleButtonCommunityWasteManagement.classList.toggle('hidden');
-        }
-      });
-    }
-
-    const moduleButtonRenewableEnergySolutionsButton = document.getElementById('module-renewable-energy-solutions-button');
-    const moduleButtonRenewableEnergySolutionsButtonCLOSE = document.getElementById('module-renewable-energy-solutions-button-close');
-    const moduleButtonRenewableEnergySolutions = document.getElementById('modules-renewable-energy-solutions');
-    
-    if (moduleButtonRenewableEnergySolutionsButton) { // add a check that the button exists.
-      moduleButtonRenewableEnergySolutionsButton.addEventListener('click', function() {
-        if (moduleButtonRenewableEnergySolutions) { // add a check that the module exists.
-          moduleButtonRenewableEnergySolutions.classList.toggle('hidden');
-        }
-      });
-    }
-
-    const moduleButtonSustainableAgriculturePracticesButton = document.getElementById('module-sustainable-agriculture-practices-button');
-    const moduleButtonSustainableAgriculturePracticesButtonCLOSE = document.getElementById('module-sustainable-agriculture-practices-button-close');
-    const moduleButtonSustainableAgriculturePractices = document.getElementById('modules-sustainable-agriculture-practices');
-    
-    if (moduleButtonSustainableAgriculturePracticesButton) { // add a check that the button exists.
-      moduleButtonRenewableEnergySolutionsButton.addEventListener('click', function() {
-        if (moduleButtonSustainableAgriculturePractices) { // add a check that the module exists.
-          moduleButtonSustainableAgriculturePractices.classList.toggle('hidden');
-        }
-      });
-    }
-
-    const moduleButtonWaterFiltrationPurificationButton = document.getElementById('module-water-filtration-purification-button');
-    const moduleButtonWaterFiltrationPurificationButtonCLOSE = document.getElementById('module-water-filtration-purification-button-close');
-    const moduleButtonWaterFiltrationPurification = document.getElementById('module-water-filtration-purification');
-    
-    if (moduleButtonSustainableAgriculturePracticesButton) { // add a check that the button exists.
-      moduleButtonRenewableEnergySolutionsButton.addEventListener('click', function() {
-        if (moduleButtonSustainableAgriculturePractices) { // add a check that the module exists.
-          moduleButtonSustainableAgriculturePractices.classList.toggle('hidden');
-        }
-      });
-    }
-  
-    const moduleButtonCommunityHealthSanitationButton = document.getElementById('modules-community-health-sanitation-button');
-    const moduleButtonCommunityHealthSanitationButtonCLOSE = document.getElementById('modules-community-health-sanitation-button-close');
-    const moduleButtonCommunityHealthSanitation = document.getElementById('modules-community-health-sanitation');
-    
-    if (moduleButtonCommunityHealthSanitationButton) { // add a check that the button exists.
-      moduleButtonCommunityHealthSanitationButton.addEventListener('click', function() {
-        if (moduleButtonCommunityHealthSanitation) { // add a check that the module exists.
-          moduleButtonCommunityHealthSanitation.classList.toggle('hidden');
-        }
-      });
-    }
-
-*/
-
-
-
-
-
-
-
+    // added to set initial state of profile icon
+    userProfileTopRight.classList.toggle('hidden');
 
     // Menu Links
     const profileLinkMenu = document.getElementById('profile-menu');
@@ -192,6 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     authMenuButtonCLOSE.addEventListener('click', () => {
             authMenu.classList.toggle('hidden');
+            profileLinkMenu.classList.toggle('hidden');
     });
 
     let isLoggedIn = false;
@@ -225,9 +158,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
      });
-
-
-
 
     });
 
@@ -331,6 +261,7 @@ function simulateLogin() {
     const encryptedToken = result.encryptedToken;
     const key = result.key;
     storeEncryptedToken(encryptedToken, key);
+    userProfileTopRight.classList.toggle('hidden');
   });
 
   async function encryptToken(token, key) {
@@ -371,6 +302,8 @@ function simulateLogout() {
   // Clear the stored token and key on logout
   db.authTokens.delete(1).then(() => {
     console.log("Token and key cleared on logout.");
+    userProfileTopRight.classList.toggle('hidden');
+
   }).catch((error) => {
     console.error("Error clearing token and key:", error);
   });
