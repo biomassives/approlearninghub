@@ -37,6 +37,81 @@
     <link rel="manifest" href="manifest.json">
     <script src="manifest.js"></script>
 
+    <style>
+    .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 0.375rem;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200%.0; }
+    }
+
+    /* Custom styles */
+    .faq-section {
+        scroll-margin-top: 80px;
+    }
+
+    .faq-question {
+        scroll-margin-top: 100px;
+    }
+
+    /* Tab transition animations */
+    .tab-content {
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .tab-content.hidden {
+        opacity: 0;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Custom active tab styles */
+    .tab-active {
+        color: #1d4ed8;
+        border-bottom: 3px solid #d8681d;
+        font-weight: 600;
+    }
+
+    /* Print styles */
+    @media print {
+        header, footer, #back-to-top, .no-print, .tabs-container {
+            display: none !important;
+        }
+
+        .tab-content {
+            display: block !important;
+            opacity: 1 !important;
+        }
+
+        body, .container {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bg-white {
+            background-color: white !important;
+            color: black !important;
+            box-shadow: none !important;
+        }
+
+        .faq-question {
+            break-after: avoid;
+        }
+
+        a {
+            text-decoration: none !important;
+            color: black !important;
+        }
+    }
+    </style>
 
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -1047,106 +1122,545 @@
             
 
             <section id="faq-section" class="hidden py-12">
-                <h2>ApproVideo Hub - Frequently Asked Questions</h2>
-            
-                <article>
-                    <h3>What is the ApproVideo Hub and what is its mission, especially in conflict zones?</h3>
-                    <p>
-                        The ApproVideo Hub is a platform dedicated to providing educational and collaborative resources 
-                        for sustainable infrastructure and environmental solutions. We focus on areas like municipal 
-                        drinking water supply resiliency, wastewater and sewage treatment, solid waste management, 
-                        renewable energy systems,  circular economy protyping,  land reclaimation, and social recovery 
-                        planning.
 
-                        Our mission is to empower communities and organizations, especially those in conflict zones, 
-                        with knowledge and tools to implement sustainable practices that build resilience and promote 
-                        restoration. We understand that conflict disrupts essential services and damages the environment, 
-                        and we aim to provide practical, accessible solutions tailored to these challenging contexts.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you tailor your approach to Municipal Solid Waste (MSW) management for conflict zones?</h3>
-                    <p>
-                        In conflict zones, waste management is often severely disrupted, leading to health hazards and environmental degradation. We analyze MSW systems by examining storage (improvised bins), transfer (community-led collection), disposal (safe burning alternatives, temporary landfills), and recovery methods (resource recovery from debris). We focus on simple, low-cost solutions that can be implemented with limited resources and in unstable environments, emphasizing community participation and resourcefulness.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>What is your approach to Circular Economy Prototyping in areas affected by conflict?</h3>
-                    <p>
-                        We engage in prototyping initiatives like the "Waste-to-Value Chain Initiative," focusing on recovering value from materials like debris, rubble, and readily available local resources. We prioritize simple, adaptable prototypes that can be built and maintained by local communities, even with limited resources. We collaborate with community groups, local leaders, and aid organizations to develop and implement these prototypes, fostering self-reliance and local economic recovery.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you address Wastewater and Sewage management in crisis situations?</h3>
-                    <p>
-                        Conflict often damages or destroys sanitation infrastructure, leading to disease outbreaks H Pylori and Cholera. We assess wastewater and sewage systems by looking at emergency collection methods (temporary latrines, mobile sanitation units), basic treatment processes (filtration, chlorination, purification), and safe disposal options (composting latrines, leach pits,  safe burial). Our goal is to promote immediate, safe, and sustainable sanitation practices that protect public health and prevent further environmental harm.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>What is your strategy for improving Drinking Water Supply in conflict zones?</h3>
-                    <p>
-                        Access to clean water is critical during and after conflict. We analyze drinking water supply systems by examining and educating on emergency sources (rainwater catchment, surface water abstraction, staged carbon filtration, R.O, purification & temporary wells), safe storage (containers, emergency tanks), and basic treatment methods (chlorination, solar disinfection, boiling). We aim to support the rapid implementation of safe and reliable drinking water solutions, focusing on community-managed systems and locally available resources.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you conduct Technology Assessments for Municipal Service Systems (MSS) in challenging environments?</h3>
-                    <p>
-                        We follow a structured approach that includes rapid needs assessments, technology listing (focusing on robust and adaptable technologies), unit operation grouping, technology scoring based on criteria like resilience and ease of maintenance, service option development, option scoring, and classification of options by implementation readiness. We consider factors like technology descriptions, components, costs, environmental impact, cultural factors, and, crucially, security and accessibility in conflict zones.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>What are the key criteria used in your Technology Assessments for conflict zones?</h3>
-                    <p>
-                        We evaluate technologies based on criteria such as cost, energy requirements, technical requirements, institutional requirements, and, importantly, resilience, adaptability, and security. We prioritize technologies that can be easily repaired and maintained by local communities, even under difficult circumstances.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you use the ApproHub Program to support restoration in conflict zones?</h3>
-                    <p>
-                        We use the ApproHub program to create and promote projects such as "community-led debris recycling," "emergency water purification kits," and "rapid sanitation solutions." We focus on empowering local communities to rebuild their infrastructure and restore their environment, fostering self-reliance and long-term sustainability.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How can I get involved or learn more, especially if I'm working in or affected by a conflict zone?</h3>
-                    <p>
-                        Please contact us at <a href="mailto:ecocommunity@protonmail.com">ecocommunity@protonmail.com</a> for more information, collaboration opportunities, or to access our resources. We are particularly interested in connecting with individuals and organizations working in conflict zones to provide tailored support and resources. We are also interested in receiving information and feedback from people living in conflict zones, to continue to refine the tools and information we provide.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you address the psychological impact of environmental damage and infrastructure collapse in conflict zones?</h3>
-                    <p>
-                        We recognize that environmental damage and infrastructure collapse can have a significant psychological impact on communities. Our educational materials include information on the importance of community-led restoration and the role of environmental stewardship in rebuilding social cohesion and fostering hope. We also collaborate with mental health professionals to integrate psychosocial support into our programs.
-                    </p>
-                </article>
-            
-                <article>
-                    <h3>How do you ensure your materials are accessible to people with limited literacy or digital access in conflict zones?</h3>
-                    <p>
-                        We prioritize the use of visual aids, video content, documents, and audio materials to ensure our information is accessible to people with limited literacy.  Our core educational content is being machine converted to local languages, with provisions in our funding model to work with local participants to ensure that our content it is well adapted to local community members and clinic participants.
-            
-                        We also work with local partners to translate materials into local languages and adapt them to cultural contexts. We are also exploring the use of radio broadcasts and community outreach programs to reach people with limited digital access.
-                    </p>
-                </article>
-            
-            
-                <article>
-                    <h3>How do you ensure your materials are accessible to people with limited literacy or digital access in conflict zones?</h3>
-                    <p>
-                        In-app reminder services are being developed to provide support and encouragement to learners, while supporting community clinics with role specific messaging for participants and detailed project context based advising on best practices.
-                    </p>
-                </article>
-            
+
+                <h1 class="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
+                <p class="text-xl max-w-3xl mx-auto"> Sustainable infrastructure and appropriate technology solution clinics.</p>
+    
+                <div class="bg-white shadow-md rounded-lg overflow-hidden mb-12">
+                    <div class="tabs-container border-b border-gray-200 overflow-x-auto whitespace-nowrap">
+                        <div class="flex">
+                            <button class="tab-btn tab-active px-6 py-4 focus:outline-none" data-tab="about">
+                                About ApproVideo Hub
+                            </button>
+                            <button class="tab-btn px-6 py-4 focus:outline-none" data-tab="watsan">
+                                WATSAN Solutions
+                            </button>
+                            <button class="tab-btn px-6 py-4 focus:outline-none" data-tab="technology">
+                                Technology & Implementation
+                            </button>
+                            <button class="tab-btn px-6 py-4 focus:outline-none" data-tab="education">
+                                Community Empowerment
+                            </button>
+                            <button class="tab-btn px-6 py-4 focus:outline-none" data-tab="collaboration">
+                                Collaboration & Participation
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tab-contents p-6">
+                        <div id="about-content" class="tab-content">
+                            <div class="mb-8">
+                                <h3 id="mission" class="text-xl font-semibold mb-4 faq-question">What is the ApproVideo Hub and what is its mission?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-2/3">
+                                        <p class="mb-4">The ApproVideo Hub is a platform dedicated to providing educational and collaborative resources for sustainable infrastructure and environmental solutions. Our mission is to empower communities and organizations with knowledge and tools to implement sustainable practices that build resilience and promote restoration, especially in challenging environments and conflict zones.</p>
+                                        
+                                        <p class="mb-4">We focus on areas like:</p>
+                                        <ul class="list-disc pl-6 mb-4">
+                                            <li>Municipal drinking water supply resiliency</li>
+                                            <li>Wastewater and sewage treatment</li>
+                                            <li>Solid waste management</li>
+                                            <li>Renewable energy systems</li>
+                                            <li>Circular economy prototyping</li>
+                                            <li>Land reclamation</li>
+                                            <li>Social recovery planning</li>
+                                        </ul>
+                                        
+                                        <p>We understand that conflict and crisis situations disrupt essential services and damage the environment, and we aim to provide practical, accessible solutions tailored to these challenging contexts.</p>
+                                    </div>
+                                    <div class="lg:w-1/3 mt-4 lg:mt-0">
+                                        <div class="w-full h-64"><img  src="/assets/approllearninghub.webp" width="360" height="188" alt="Appro Learning Hub" ></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">ApproVideo Hub works with communities in challenging environments</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 id="echo-model" class="text-xl font-semibold mb-4 faq-question">How does ApproVideo Hub empower displaced scientists, engineers, and local changemakers in the global community build sustainable infrastructure?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-1/3 order-2 lg:order-1 mt-4 lg:mt-0">
+                                        <div class="skeleton w-full h-64"></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">We provide the tools and knowledge to restore communities, especially in crisis-affected areas. The hub connects experts with communities through virtual collaborative learning 'clinics' dedicating to developing better understanding of context for the needs to be met, and the percieved >> quantifiable outcomes and unintended side effects of existing and historic approaches. </p>
+                                    </div>
+                                    <div class="lg:w-2/3 order-1 lg:order-2">
+                                        <p class="mb-4">Our platform utilizes an adapted version of the Extension for Community Healthcare Outcomes (ECHO) model to foster community capacity building in the WATSAN (Water and Sanitation) sector. This approach uses Zoom-based knowledge transfer sessions that connect specialists with community providers, facilitating:</p>
+                                        
+                                        <ul class="list-disc pl-6 mb-4">
+                                            <li>Knowledge sharing across geographical barriers</li>
+                                            <li>Case-based learning to address real-world challenges</li>
+                                            <li>Establishment of communities of practice</li>
+                                            <li>Bi-directional learning where "All Teach, All Learn"</li>
+                                            <li>Development of local expertise</li>
+                                        </ul>
+                                        
+                                        <p>Our ECHO-style intervention clinics are structured across different levels to progressively build community knowledge and skills, ultimately enabling local communities to develop strong, transparent WATSAN programs with robust documentation practices.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="watsan-content" class="tab-content hidden">
+                            <div class="mb-8">
+                                <h3 id="water-supply" class="text-xl font-semibold mb-4 faq-question">What is your strategy for improving Drinking Water Supply in conflict zones?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-2/3">
+                                        <p class="mb-4">Access to clean water is critical during and after conflict. We analyze drinking water supply systems by examining and educating on:</p>
+                                        
+                                        <ul class="mb-4">
+                                            <li class="mb-2"><strong class="text-blue-700">Emergency water sources</strong>: Rainwater catchment, surface water abstraction, staged carbon filtration, reverse osmosis, purification, and temporary wells</li>
+                                            <li class="mb-2"><strong class="text-blue-700">Safe storage solutions</strong>: Appropriate containers and emergency tanks</li>
+                                            <li class="mb-2"><strong class="text-blue-700">Basic treatment methods</strong>: Chlorination, solar disinfection (SODIS), and boiling</li>
+                                        </ul>
+                                        
+                                        <p>We aim to support the rapid implementation of safe and reliable drinking water solutions, focusing on community-managed systems and locally available resources. Our approach recognizes that in conflict zones, the dangers posed by unsafe water can be as lethal as direct violence, especially for children.</p>
+                                    </div>
+                                    <div class="lg:w-1/3 mt-4 lg:mt-0">
+                                        <div class="skeleton w-full h-64"></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">Emergency water treatment solutions can be implemented with local resources</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h3 id="wastewater" class="text-xl font-semibold mb-4 faq-question">How do you address Wastewater and Sewage management in crisis situations?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-1/3 order-2 lg:order-1 mt-4 lg:mt-0">
+                                        <div class="skeleton w-full h-64"></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">Emergency sanitation solutions prevent disease outbreaks in crisis situations</p>
+                                    </div>
+                                    <div class="lg:w-2/3 order-1 lg:order-2">
+                                        <p class="mb-4">Conflict often damages or destroys sanitation infrastructure, leading to disease outbreaks such as H. Pylori and Cholera. Our approach includes:</p>
+                                        
+                                        <ul class="mb-4">
+                                            <li class="mb-2"><strong class="text-blue-700">Assessment of emergency collection methods</strong>: Temporary latrines, mobile sanitation units, and improvised facilities</li>
+                                            <li class="mb-2"><strong class="text-blue-700">Basic treatment processes</strong>: Filtration, chlorination, and purification appropriate for emergency contexts</li>
+                                            <li class="mb-2"><strong class="text-blue-700">Safe disposal options</strong>: Composting latrines, leach pits, and safe burial techniques</li>
+                                        </ul>
+                                        
+                                        <p>Our goal is to promote immediate, safe, and sustainable sanitation practices that protect public health and prevent further environmental harm while acknowledging the limited resources and operational complexities in crisis zones.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 id="environmental-factors" class="text-xl font-semibold mb-4 faq-question">What environmental factors shape WATSAN challenges in emergencies?</h3>
+                                <p class="mb-6">Environmental factors significantly impact WATSAN challenges in crisis situations:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="flex">
+                                        <div class="skeleton w-16 h-16 mr-4 flex-shrink-0"></div>
+                                        <div>
+                                            <h4 class="font-semibold text-blue-700 mb-2">Climate change</h4>
+                                            <p>Increasingly recognized as a driver of water scarcity and catalyst for water-related disasters</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="skeleton w-16 h-16 mr-4 flex-shrink-0"></div>
+                                        <div>
+                                            <h4 class="font-semibold text-blue-700 mb-2">Temperature variations</h4>
+                                            <p>Different temperature zones present unique challenges requiring specific adaptations</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="skeleton w-16 h-16 mr-4 flex-shrink-0"></div>
+                                        <div>
+                                            <h4 class="font-semibold text-blue-700 mb-2">Water toxicity and contamination</h4>
+                                            <p>Natural disasters, conflict, and infrastructure damage introduce contaminants into water sources</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex">
+                                        <div class="skeleton w-16 h-16 mr-4 flex-shrink-0"></div>
+                                        <div>
+                                            <h4 class="font-semibold text-blue-700 mb-2">Precipitation patterns</h4>
+                                            <p>Becoming more variable and leading to increased severity of extreme weather events</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="technology-content" class="tab-content hidden">
+                            <div class="mb-8">
+                                <h3 id="circular-economy" class="text-xl font-semibold mb-4 faq-question">What is your approach to Circular Economy Prototyping in areas affected by conflict?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-2/3">
+                                        <p class="mb-4">We engage in prototyping initiatives like the "Waste-to-Value Chain Initiative," focusing on:</p>
+                                        
+                                        <ul class="list-disc pl-6 mb-4">
+                                            <li>Recovering value from materials like debris, rubble, and readily available local resources</li>
+                                            <li>Developing simple, adaptable prototypes that can be built and maintained by local communities</li>
+                                            <li>Creating solutions that work even with limited resources</li>
+                                            <li>Collaborating with community groups, local leaders, and aid organizations</li>
+                                        </ul>
+                                        
+                                        <p>Our approach fosters self-reliance and local economic recovery while promoting sustainable resource use in challenging environments.</p>
+                                    </div>
+                                    <div class="lg:w-1/3 mt-4 lg:mt-0">
+                                        <div class="skeleton w-full h-64"></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">Circular economy initiatives create value from locally available materials</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h3 id="tech-assessment" class="text-xl font-semibold mb-4 faq-question">How do you conduct Technology Assessments for Municipal Service Systems (MSS) in challenging environments?</h3>
+                                <p class="mb-6">We follow a structured approach that includes:</p>
+                                
+                                <div class="relative overflow-hidden">
+                                    <div class="skeleton absolute inset-0 opacity-10"></div>
+                                    <ol class="relative z-10 border-l-4 border-blue-600 ml-6">
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">1</div>
+                                            <h4 class="font-semibold text-lg mb-1">Rapid needs assessments</h4>
+                                            <p>Identify specific challenges in the local context</p>
+                                        </li>
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">2</div>
+                                            <h4 class="font-semibold text-lg mb-1">Technology listing</h4>
+                                            <p>Focus on robust and adaptable solutions suitable for challenging environments</p>
+                                        </li>
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">3</div>
+                                            <h4 class="font-semibold text-lg mb-1">Unit operation grouping</h4>
+                                            <p>Understand system components and their interdependencies</p>
+                                        </li>
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">4</div>
+                                            <h4 class="font-semibold text-lg mb-1">Technology scoring</h4>
+                                            <p>Evaluate based on criteria like resilience and ease of maintenance</p>
+                                        </li>
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">5</div>
+                                            <h4 class="font-semibold text-lg mb-1">Service option development</h4>
+                                            <p>Create different scenarios based on available resources and constraints</p>
+                                        </li>
+                                        <li class="mb-6 ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">6</div>
+                                            <h4 class="font-semibold text-lg mb-1">Option scoring</h4>
+                                            <p>Identify the most appropriate solutions for implementation</p>
+                                        </li>
+                                        <li class="ml-6">
+                                            <div class="absolute -left-10 mt-1.5 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">7</div>
+                                            <h4 class="font-semibold text-lg mb-1">Classification by implementation readiness</h4>
+                                            <p>Determine which solutions can be implemented immediately and which require further development</p>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 id="tech-criteria" class="text-xl font-semibold mb-4 faq-question">What are the key criteria used in your Technology Assessments for conflict zones?</h3>
+                                <p class="mb-6">We evaluate technologies based on multiple criteria:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Technical feasibility</h4>
+                                        <p>Can the technology function with available resources?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Financial sustainability</h4>
+                                        <p>Is it affordable for implementation and long-term maintenance?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Social acceptability</h4>
+                                        <p>Will it be embraced and used by the community?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Environmental impact</h4>
+                                        <p>Does it protect or restore the environment?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Operational simplicity</h4>
+                                        <p>Can it be operated by community members with limited training?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Resilience</h4>
+                                        <p>Can it withstand challenging conditions?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Adaptability</h4>
+                                        <p>Can it be modified to suit changing circumstances?</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-blue-700 mb-2">Security concerns</h4>
+                                        <p>Can it be safely implemented in insecure environments?</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="education-content" class="tab-content hidden">
+                            <div class="mb-8">
+                                <h3 id="echo-empower" class="text-xl font-semibold mb-4 faq-question">How do you empower local communities through the ECHO program?</h3>
+                                <p class="mb-6">Our ECHO-style WATSAN intervention clinics operate across three levels:</p>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                                    <div class="bg-gradient-to-b from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200 flex flex-col">
+                                        <div class="skeleton w-16 h-16 mx-auto mb-4 rounded-full"></div>
+                                        <h4 class="text-lg font-semibold text-blue-700 mb-2 text-center">Level 1: Foundational Knowledge</h4>
+                                        <ul class="list-disc pl-6 flex-grow">
+                                            <li>Basic information on WATSAN topics</li>
+                                            <li>Raising awareness on safe water and sanitation</li>
+                                            <li>Introduction to key concepts</li>
+                                            <li>Accessible Zoom sessions</li>
+                                        </ul>
+                                        <div class="mt-4 text-center pt-4 border-t border-blue-200">
+                                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Entry Level</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg p-6 border border-blue-300 flex flex-col">
+                                        <div class="skeleton w-16 h-16 mx-auto mb-4 rounded-full"></div>
+                                        <h4 class="text-lg font-semibold text-blue-700 mb-2 text-center">Level 2: Focused Skill Building</h4>
+                                        <ul class="list-disc pl-6 flex-grow">
+                                            <li>Practical skills for WATSAN systems</li>
+                                            <li>Technical guidance for specific challenges</li>
+                                            <li>Case-based learning</li>
+                                            <li>Interactive exercises</li>
+                                        </ul>
+                                        <div class="mt-4 text-center pt-4 border-t border-blue-300">
+                                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Intermediate Level</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-b from-blue-200 to-blue-300 rounded-lg p-6 border border-blue-400 flex flex-col">
+                                        <div class="skeleton w-16 h-16 mx-auto mb-4 rounded-full"></div>
+                                        <h4 class="text-lg font-semibold text-blue-700 mb-2 text-center">Level 3: Advanced Program Development</h4>
+                                        <ul class="list-disc pl-6 flex-grow">
+                                            <li>Comprehensive program development with transparent governance</li>
+                                            <li>Establishment of monitoring and evaluation frameworks</li>
+                                            <li>Creation of robust documentation protocols</li>
+                                            <li>Long-term sustainability planning</li>
+                                        </ul>
+                                        <div class="mt-4 text-center pt-4 border-t border-blue-400">
+                                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm">Advanced Level</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h3 id="measuring-impact" class="text-xl font-semibold mb-4 faq-question">How do you measure the impact of your educational programs?</h3>
+                                <div class="relative overflow-hidden">
+                                    <div class="skeleton absolute inset-0 opacity-10"></div>
+                                    <div class="relative z-10 mb-6">
+                                        <p class="mb-4">We use a comprehensive monitoring and evaluation framework to assess the impact of our educational programs across multiple dimensions:</p>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                            <div class="bg-blue-50 rounded-lg p-4">
+                                                <h4 class="font-semibold text-blue-700 mb-2">Knowledge Acquisition</h4>
+                                                <ul class="list-disc pl-5">
+                                                    <li>Pre and post assessments</li>
+                                                    <li>Practical demonstrations</li>
+                                                    <li>Case-based evaluations</li>
+                                                </ul>
+                                            </div>
+                                            <div class="bg-blue-50 rounded-lg p-4">
+                                                <h4 class="font-semibold text-blue-700 mb-2">Implementation</h4>
+                                                <ul class="list-disc pl-5">
+                                                    <li>Tracking of adopted practices</li>
+                                                    <li>Documentation of constructed systems</li>
+                                                    <li>Quality assessment of implementations</li>
+                                                </ul>
+                                            </div>
+                                            <div class="bg-blue-50 rounded-lg p-4">
+                                                <h4 class="font-semibold text-blue-700 mb-2">Outcomes</h4>
+                                                <ul class="list-disc pl-5">
+                                                    <li>Water quality measurements</li>
+                                                    <li>Waterborne disease incidence</li>
+                                                    <li>Community self-reliance indicators</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 id="vocational-training" class="text-xl font-semibold mb-4 faq-question">What specific vocational training opportunities do you provide for WATSAN skills?</h3>
+                                <p class="mb-6">Our vocational training programs focus on developing practical skills that enable community members to implement, operate, and maintain their own WATSAN systems:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                    <div class="bg-blue-50 p-4 rounded-lg flex flex-col h-full">
+                                        <div class="skeleton w-full h-32 mb-3"></div>
+                                        <h4 class="font-semibold text-blue-700 mb-2">Water Pump Repair & Maintenance</h4>
+                                        <p class="mb-2">Installation, troubleshooting, and repair of manual and powered water pumps</p>
+                                        <span class="mt-auto inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Technical Certification Available</span>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg flex flex-col h-full">
+                                        <div class="skeleton w-full h-32 mb-3"></div>
+                                        <h4 class="font-semibold text-blue-700 mb-2">Sanitation Technician Training</h4>
+                                        <p class="mb-2">Construction and maintenance of latrines, septic systems, and basic sewage management</p>
+                                        <span class="mt-auto inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Beginner to Advanced Levels</span>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg flex flex-col h-full">
+                                        <div class="skeleton w-full h-32 mb-3"></div>
+                                        <h4 class="font-semibold text-blue-700 mb-2">Water Quality Testing</h4>
+                                        <p class="mb-2">Using field-appropriate methods to test and ensure water safety for consumption</p>
+                                        <span class="mt-auto inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Field & Laboratory Options</span>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-lg flex flex-col h-full">
+                                        <div class="skeleton w-full h-32 mb-3"></div>
+                                        <h4 class="font-semibold text-blue-700 mb-2">Solar Water System Installation</h4>
+                                        <p class="mb-2">Setting up and maintaining solar-powered water pumping and treatment systems</p>
+                                        <span class="mt-auto inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Renewable Energy Focus</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="collaboration-content" class="tab-content hidden">
+                            <div class="mb-8">
+                                <h3 id="collaboration-opportunities" class="text-xl font-semibold mb-4 faq-question">How can organizations and individuals collaborate with ApproVideo Hub?</h3>
+                                <div class="lg:flex gap-6">
+                                    <div class="lg:w-2/3">
+                                        <p class="mb-4">Organizations and individuals can collaborate with us through:</p>
+                                        
+                                        <ul class="list-disc pl-6 mb-4">
+                                            <li><strong class="text-blue-700">Participating in our ECHO sessions</strong>: Join our virtual clinics as a learner or contribute your expertise as a presenter</li>
+                                            <li><strong class="text-blue-700">Contributing to our resource library</strong>: Share case studies, technical guides, or educational materials</li>
+                                            <li><strong class="text-blue-700">Partnering on community projects</strong>: Collaborate on implementing WATSAN solutions in specific communities</li>
+                                            <li><strong class="text-blue-700">Providing technical expertise</strong>: Offer specialized knowledge in areas such as water engineering, sanitation systems, or environmental management</li>
+                                        </ul>
+                                        
+                                        <p>We welcome collaborations that align with our mission to empower communities with sustainable solutions. Our platform serves as a hub for connecting various stakeholders working in the WATSAN sector, especially those focused on challenging environments.</p>
+                                    </div>
+                                    <div class="lg:w-1/3 mt-4 lg:mt-0">
+                                        <div class="skeleton w-full h-64"></div>
+                                        <p class="text-sm text-gray-500 mt-2 text-center">Collaboration brings together diverse expertise to develop innovative solutions</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 id="sustainability" class="text-xl font-semibold mb-4 faq-question">How do you ensure the sustainability of your interventions?</h3>
+                                <p class="mb-6">We ensure sustainability by:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                                        <div class="flex items-center mb-4">
+                                            <div class="skeleton w-12 h-12 mr-4 rounded-full"></div>
+                                            <h4 class="text-lg font-semibold text-blue-700">Building local capacity</h4>
+                                        </div>
+                                        <p>Our ECHO model focuses on transferring knowledge and skills to community members, ensuring they can operate and maintain systems independently.</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                                        <div class="flex items-center mb-4">
+                                            <div class="skeleton w-12 h-12 mr-4 rounded-full"></div>
+                                            <h4 class="text-lg font-semibold text-blue-700">Using locally available resources</h4>
+                                        </div>
+                                        <p>We prioritize solutions that utilize materials and technologies that are accessible within the local context to ensure long-term viability.</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                                        <div class="flex items-center mb-4">
+                                            <div class="skeleton w-12 h-12 mr-4 rounded-full"></div>
+                                            <h4 class="text-lg font-semibold text-blue-700">Implementing adaptable technologies</h4>
+                                        </div>
+                                        <p>Our recommended solutions can be modified and scaled according to changing needs and conditions in the community.</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                                        <div class="flex items-center mb-4">
+                                            <div class="skeleton w-12 h-12 mr-4 rounded-full"></div>
+                                            <h4 class="text-lg font-semibold text-blue-700">Fostering community ownership</h4>
+                                        </div>
+                                        <p>We involve community members in all stages of planning and implementation, ensuring they have a sense of ownership and commitment to maintaining the systems.</p>
+                                    </div>
+                                </div>
+                                
+                                <p>Our approach emphasizes long-term solutions that can be maintained and managed by the communities themselves, even after our direct involvement ends.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
             </section>
-
+            <script>
+                // Tab functionality
+                document.addEventListener('DOMContentLoaded', function() {
+                    const tabButtons = document.querySelectorAll('.tab-btn');
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    
+                    // Initialize tabs
+                    function setActiveTab(tabId) {
+                        // Hide all tab contents
+                        tabContents.forEach(content => {
+                            content.classList.add('hidden');
+                        });
+                        
+                        // Remove active class from all buttons
+                        tabButtons.forEach(btn => {
+                            btn.classList.remove('tab-active');
+                        });
+                        
+                        // Show selected tab content
+                        const selectedContent = document.getElementById(`${tabId}-content`);
+                        selectedContent.classList.remove('hidden');
+                        
+                        // Add active class to selected button
+                        const selectedBtn = document.querySelector(`[data-tab="${tabId}"]`);
+                        selectedBtn.classList.add('tab-active');
+                    }
+                    
+                    // Add click event to tab buttons
+                    tabButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const tabId = this.getAttribute('data-tab');
+                            setActiveTab(tabId);
+                        });
+                    });
+                    
+                    // Search functionality
+                    const searchInput = document.getElementById('faq-search');
+                    if (searchInput) {
+                        searchInput.addEventListener('keyup', function() {
+                            const searchTerm = this.value.toLowerCase();
+                            const allQuestions = document.querySelectorAll('.faq-question');
+                            
+                            allQuestions.forEach(question => {
+                                const questionText = question.textContent.toLowerCase();
+                                const questionContainer = question.closest('div');
+                                
+                                if (questionText.includes(searchTerm)) {
+                                    questionContainer.style.display = 'block';
+                                    
+                                    // Ensure the tab containing this question is visible
+                                    const tabContent = question.closest('.tab-content');
+                                    if (tabContent && tabContent.classList.contains('hidden') && searchTerm.length > 0) {
+                                        const tabId = tabContent.id.replace('-content', '');
+                                        setActiveTab(tabId);
+                                    }
+                                } else {
+                                    questionContainer.style.display = 'none';
+                                }
+                            });
+                        });
+                    }
+                    
+                    // Back to top button functionality
+                    const backToTopButton = document.getElementById('back-to-top');
+                    
+                    if (backToTopButton) {
+                        window.addEventListener('scroll', function() {
+                            if (window.pageYOffset > 300) {
+                                backToTopButton.classList.remove('hidden');
+                            } else {
+                                backToTopButton.classList.add('hidden');
+                            }
+                        });
+                        
+                        backToTopButton.addEventListener('click', function() {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                        });
+                    }
+                });
+            </script>
 
 
             <section id="milestones-section" class="hidden py-12 bg-gray-100">
@@ -1329,9 +1843,17 @@
             Microgrants offer a helping hand to passionate individuals and teams. Join a community 
             dedicated to positive environmental change. 
             <p class="text-gray-700">
-            We'll support you with funding and opportunities to collaborate on impactful projects. 
+            Above all, We value the opportunity to collaborate with you. 
             </p>               
 
+            
+            <ul >
+                <li ><strong>Climate Change Mitigation:</strong> Reducing greenhouse gas emissions, promoting renewable energy, and increasing energy efficiency.</li>
+                <li ><strong>Biodiversity Conservation:</strong> Protecting endangered species, restoring ecosystems, and promoting sustainable land use practices.</li>
+                <li ><strong>Water Resources Management:</strong> Improving water quality and access, reducing water pollution, and promoting sustainable water use.</li>
+                <li ><strong>Waste Reduction and Recycling:</strong> Developing innovative waste management solutions and promoting a circular economy.</li>
+                <li ><strong>Food Security and Resilience:</strong> Supporting local food systems, promoting sustainable agriculture, and addressing food waste.</li>
+                </ul>
 
 
 
@@ -1528,27 +2050,28 @@
 
 
 
-        <section id="clinics-section" class="hidden py-12">
-                <div class="container max-w-3xl mx-auto space-y-6">
+        <section id="practical-clinics-section" class="hidden py-12">
+
                     <h2 class="text-3xl font-bold text-gray-800 mb-4">Clinics</h2>
-                    <p class="text-gray-700">
-                        your   
-                        Healthcare
-                        Water Security
-                        Food Production
-                        Shelter
-                        Vocational Skills
-                        Energy Solutions
-                        Technical / Coding
-                        AI
+                 
+                    <h1 class="text-2xl font-bold mt-1 text-text-200">Technical Support Clinics for Sustainable Infrastructure in Conflict Settings</h1>
+                    <p class="whitespace-pre-wrap break-words">Our technical and scientific clinics focus on practical approaches to developing sustainable infrastructure in conflict-affected areas where basic resources are severely limited. We bring together engineers, technicians, and local practitioners through virtual knowledge-sharing sessions that prioritize adaptable, low-resource solutions for water access, sanitation, energy systems, and waste management. These clinics combine evidence-based technical guidance with indigenous knowledge and on-the-ground experience, ensuring solutions are both scientifically sound and contextually appropriate for the complex realities of conflict zones.</p>
+                    <p class="whitespace-pre-wrap break-words">The clinics operate on a distributed expertise model where participants simultaneously serve as both learners and teachers, acknowledging that innovation often emerges from necessity in challenging environments. We utilize a case-based learning approach where real infrastructure challenges faced by communities are presented, analyzed, and addressed collaboratively, with solutions that can be implemented using locally available materials and maintenance approaches that don't rely on external supply chains. This methodology builds technical self-sufficiency while fostering a growing network of practitioners who can support one another across geographical boundaries.</p>
+                    <p class="whitespace-pre-wrap break-words">Key components of our technical support clinics include:</p>
+ 
+                    <ul class="[&amp;:not(:last-child)_ul]:pb-1 [&amp;:not(:last-child)_ol]:pb-1 list-disc space-y-1.5 pl-7" depth="0">
+                        <li class="whitespace-normal break-words" index="0"><strong>Adaptive Technology Assessment</strong>: Systematic evaluation of infrastructure technologies based on conflict-resilience, local maintainability, and operation without specialized parts</li>
+                        <li class="whitespace-normal break-words" index="1"><strong>Resource Mapping Protocols</strong>: Methodologies for identifying and documenting locally available materials, skills, and fabrication capabilities that can be leveraged for infrastructure development</li>
+                        <li class="whitespace-normal break-words" index="2"><strong>Failure-Tolerant Design Principles</strong>: Engineering approaches that anticipate component failures and incorporate redundancy and repair pathways using accessible resources</li>
+                        <li class="whitespace-normal break-words" index="3"><strong>Security-Conscious Implementation</strong>: Strategies for developing critical infrastructure that minimizes visibility and vulnerability to targeted destruction</li>
+                        <li class="whitespace-normal break-words" index="4"><strong>Knowledge Preservation Systems</strong>: Documenting both technical specifications and implementation experience to build an accessible repository of conflict-relevant infrastructure solutions</li>
+                        <li class="whitespace-normal break-words" index="5"><strong>Cross-Disciplinary Problem Solving</strong>: Connecting experts across fields to develop integrated solutions for complex infrastructure challenges under resource constraints</li>
+                    </ul>
 
-
-                    </p>
-                </div>
         </section>
 
 
-    <section id="practical-clinics-section" class="hidden py-12">
+        <section id="clinics-section" class="hidden py-12">
             <div class="container max-w-3xl mx-auto space-y-6">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Practical Clinics</h2>
                     <div class="text-gray-700">
@@ -1576,7 +2099,7 @@
 
                     </div>
             </div>
-    </section>
+        </section>
 
 
     <section id="clinic-section" class="hidden py-12">
@@ -1893,21 +2416,19 @@
                         <option value="paritcipant_upcoming-clinic">Particiant with upcoming clinic</option>
                         <option value="project_champion">Project Champion</option>
                         <option value="expert_mentor">Expert Mentor</option>
-                        <option value="researcher">Researcher</option>
+                        <option value="researcher">Researcher</option>r</option>
                         <option value="community_member">Community Member</option>
                         <option value="software_admin">Software Admin</option>
                         <option value="guest_new">Guest user first time</option>
                         <option value="guest_with">Guest user with data</option>
                         <option value="role_invited">someone with an invite</option>
                         <option value="role_media">media / promotions</option>
-                        <option value="role_admin">admin</option>
-                        <option value="role_superadmin">super admin</option>
-                    </select>
+                        </select>
 
 
                     </form>
 
-                        <h3 class="text-xl font-semibold mb-4">Authentication Settings</h3>
+                        <h3 class="text-xl font-semibold mb-4">Data Settings</h3>
                         
                         <div class="mb-6">
                             <p class="text-gray-700 mb-2">Choose your authentication method:</p>
@@ -2450,10 +2971,14 @@
                             
                             <a href="#contact" class="text-gray-400 hover:text-white" id="contact-header"><i class="fab fa-letter"></i>ecocommunity@protonmail.com</a>
                                 
-                                
-                                </p>
+                            <button id="back-to-top" class="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                            </button>
 
-                            </div>
+                        </p>
+                    </div>
                     </div>
                 </div>
 
