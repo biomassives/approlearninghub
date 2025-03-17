@@ -12,19 +12,16 @@ db.version(1).stores({
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-
-
-
-
         const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
         const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
         const userProfileTopRight = document.getElementById('user-profile-top-right');
         const userDropdown = document.getElementById('user-dropdown');
         const loginButton = document.getElementById('login-button');
 
-
         // set initial state
         userProfileTopRight.classList.toggle('hidden');
+
+        // User Authentication Elements 
 
 
         const registerButton = document.getElementById('user-profile-top-right');
@@ -183,7 +180,8 @@ function updateAuthUI() {
         renderRoleBasedContent();
         chatContainer.classList.remove('hidden');
         chatNotificationBadge.classList.remove('hidden');
-
+        // Change the text of the login button to "Timeline"
+        loginButton.textContent = 'Timeline'; // or loginButton.innerText = 'Timeline';
     } else {
         authLoggedInTopRight.classList.add('hidden');
         authLoggedOutTopRight.classList.remove('hidden');
@@ -193,6 +191,8 @@ function updateAuthUI() {
         dashboardSection.classList.remove('hidden');
         chatContainer.classList.add('hidden');
         chatNotificationBadge.classList.add('hidden');
+        loginButton.textContent = 'Log in'; // or loginButton.innerText = 'Timeline';
+
     }
     hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible after auth changes
   }       
