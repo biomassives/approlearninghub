@@ -204,7 +204,7 @@
         
                             <button id="login-with-mastodon"  
                             title="Connect Approvideo Hub Login via Mastodon open networks" 
-                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-400 transition">
+                            class="w-half text-white py-2 px-4 rounded-lg hover:bg-gray-200 transition">
                                 <i class="fas fa-book mr-2"></i>
                                 <img src="/assets/mastodon_logo.svg" alt="Mastodon" class="w-12 h-6 mr-2">
         
@@ -257,6 +257,12 @@
                                 <div id="password-field" class="hidden">
                                     <input type="password" id="password-input" placeholder="Password" class="w-full p-2 border border-gray-300 rounded">
                                 </div>
+                                <label for="supabase-consent" class="flex items-center">
+                                      <input type="checkbox" id="supabase-consent" class="form-checkbox h-5 w-5 text-emerald-600">
+                                      <span class="ml-2 text-gray-700">I agree to the use of Supabase for authentication.</span>
+                                     </label>
+
+
                                 <button id="submit-email-login" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700 transition">Continue</button>
                             </div>
         
@@ -653,13 +659,8 @@
 
                 <a href="#skilltraining" id="skilltraining-header" class="nav-item hidden bg-emerald-900 hover:bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="skilltraining">Skill Training</a>
 
-        
-
-
-    
                 <div id="skilltraining-modal" class="absolute hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
-                          <h3>Skill training introduction Modal</h3>
-                        
+                          <h3>Skill training introduction Modal</h3>     
                 </div>
 
               <div id="skill-training-menu" class="absolute hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
@@ -709,6 +710,14 @@
         </div>
    
            
+
+
+
+
+
+
+
+
 
 
         <div class="relative ">
@@ -2360,6 +2369,10 @@
 
                         <h3 class="text-xl font-semibold mb-4">Data Settings</h3>
                         
+                        <button id="export-data-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Export Data
+                        </button>
+
                         <div class="mb-6">
                             <p class="text-gray-700 mb-2">Choose your authentication method:</p>
                             
