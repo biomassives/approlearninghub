@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const skillTraining2Button = document.getElementById('skilltraining-header');
     const skillTrainingMenu = document.getElementById('skill-training-menu');
     const crisisReliefButton = document.getElementById('librarycr-header');
-    const crisisReliefMenu = document.getElementById('crisis-relief-menu');
     const moreButton = document.getElementById('more-button'); // You have this, but it's unused
     const modalModuleMenu = document.getElementById('modal-module-menu'); // You have this, but it's unused
     const modalModuleMenuButton = document.getElementById('modal-module-menu-button'); // You have this, but it's unused
@@ -284,9 +283,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         skillTrainingMenu.classList.toggle('hidden');
     });
 
-    crisisReliefButton.addEventListener('click', () => {
-        crisisReliefMenu.classList.toggle('hidden');
-    });
+
 
     moduleButtonBiodiversityAndEcosystemsButton.addEventListener('click', () => {
         moduleButtonBiodiversityAndEcosystems.classList.toggle('hidden');
@@ -303,9 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!skillTrainingButton.contains(event.target) && !skillTrainingMenu.contains(event.target)) {
             skillTrainingMenu.classList.add('hidden');
         }
-        if (!crisisReliefButton.contains(event.target) && !crisisReliefMenu.contains(event.target)) {
-            crisisReliefMenu.classList.add('hidden');
-        }
+     
     });
 
     // Close dropdown on nav link clicks
@@ -660,21 +655,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         authModal.classList.add('hidden');
     });
 
-    logoutButton.addEventListener('click', async () => { //logout uses supabase now.
-        const { error } = await supabase.auth.signOut();
+    logoutButton.addEventListener('click', async () => {
+        try {
+            // Check if Supabase is initialized and consent is given
+            if (supabase && localStorage.getItem('supabaseConsent') === 'true') {
+                const { error } = await supabase.auth.signOut();
     
-            if (error) {
-                console.error('Error signing out:', error);
-                alert('Error signing out:' + error.message) //show this to user
+                if (error) {
+                    console.error('Error signing out:', error);
+                    alert('Error signing out: ' + error.message);
+                    return; // Exit the function if there's an error
+                } else {
+                    console.log('Signed out successfully (Supabase)');
+                }
             } else {
-                 //simulateLogout(); // No longer needed - onAuthStateChange handles UI
-                  console.log('Signed out successfully');
-                   // Reset to default state and update UI.  onAuthStateChange handles some
-                    isLoggedIn = false;
-                    userName = "User";
-                    userRole = 'user';
-                    updateAuthUI();
+                console.log('User not using Supabase or consent not given.');
+                // Handle local logout if needed (e.g., clearing local tokens)
+                //  await db.authTokens.clear(); // Clear Dexie tokens if you still use them
+                //  isLoggedIn = false; //  These may not be needed if Supabase listener is working
+                //  userName = "User";
+                //  userRole = 'user';
+                //  updateAuthUI();
             }
+    
+            // UI updates should largely be handled by the Supabase auth state listener
+            // But you might want to add a final catch-all here
+            isLoggedIn = false;
+            userName = "User";
+            userRole = 'user';
+            updateAuthUI();
+        } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout.');
+        }
     });
 
     userProfileTopRight.addEventListener('click', () => {
