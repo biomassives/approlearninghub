@@ -25,12 +25,23 @@ let supabase; // Declare supabase globally
 function initSupabase() {
     if (supabase) return; // Important: Only initialize once
 
-    const supabaseUrl = 'YOUR_SUPABASE_URL'; // Replace with your project URL
-    const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your anon key
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    // Initialize Supabase client
+    // IMPORTANT:  Only create the client once to avoid multiple listeners
+    // and potential memory leaks.
+
+    // This is a common pitfall when using Supabase with Dexie or other state management.
+    // Create the Supabase client
+    // and store it in a global variable to avoid re-initialization.
+    // This ensures that the client is only created once, preventing multiple listeners
+    // and potential memory leaks.
 
     supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     // --- onAuthStateChange Listener (INSIDE initSupabase) ---
+
+
     supabase.auth.onAuthStateChange(async (event, session) => {
         console.log('Auth state changed:', event);
 
@@ -514,10 +525,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             dashboardLoggedInContent.classList.remove('hidden');
             welcomeSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
-            dashboardWelcomeMessage.textContent = `Welcome, <span class="math-inline">\{userName\}\! \(</span>{userRole})`;
+            dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
             renderRoleBasedContent();
-            chatContainer.classList.remove('hidden');
-            chatNotificationBadge.classList.remove('hidden');
+
+            // Ensure these elements exist before manipulating them
+            if (!chatContainer || !chatNotificationBadge) {
+                chatContainer.classList.remove('hidden');
+                chatNotificationBadge.classList.remove('hidden');        
+            }
+
             loginButton.textContent = 'Timeline';
         } else {
             authLoggedInTopRight.classList.add('hidden');
