@@ -139,6 +139,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const roleBasedDashboardContent = document.getElementById('role-based-dashboard-content');
     const getStartedButtonDashboard = document.getElementById('get-started-button-dashboard');
     const loginLinkDashboard = document.getElementById('login-link-dashboard');
+    const startClinicButton = document.getElementById('start-a-clinic-public-header');
+
+
 
     // Chat Elements
     const chatContainer = document.getElementById('chat-container');
@@ -152,6 +155,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const privacySection = document.getElementById('privacy-section');
     const aboutSection = document.getElementById('about-section');
     const clinicsSection = document.getElementById('clinics-section');
+    const startClinicSection = document.getElementById('start-a-clinic-public');
+
     const teamSection = document.getElementById('team-section');
     const learningmodulesSection = document.getElementById('learning-modules-section');
     const blogSection = document.getElementById('blog-section');
@@ -162,12 +167,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mydataSection = document.getElementById('mydata-section');
     const settingsSection = document.getElementById('settings-section');
     const eventsSection = document.getElementById('events-section');
-
+    const teachingModulesSection = document.getElementById('teaching-modules-section');
     const sharefolderSection = document.getElementById('sharefolder-section');
     const smallgrantsSection = document.getElementById('smallgrants-section');
     const researchSection = document.getElementById('research-section');
     const practicalClinicsSection = document.getElementById('practical-clinics-section');
-    const milestonesSection = document.getElementById('milestones-section');
+    //const milestonesSection = document.getElementById('milestones-section');
+    const teachingSection = document.getElementById('teaching-section');
 
 
     // Footer & other links
@@ -178,20 +184,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const blogLinkFooter = document.getElementById('approvideo-blog');
     const faqLinkFooter = document.getElementById('faq-footer');
 
+ 
     const smallgrantsLinkFooter = document.getElementById('small-grants-footer');
     const smallgrantsLinkHeader = document.getElementById('small-grants-header');
     const smallgrantsLinkMore = document.getElementById('more-smallgrants');
-    const learningLinkFooter = document.getElementById('learning-footer');
     const learningLinkHeader = document.getElementById('learning-header');
-    const libraryLinkFooter = document.getElementById('diy-solutions-library');
+    const libraryLinkFooter = document.getElementById('library-footer');
     const libraryLinkHeader = document.getElementById('library-header');
     const librarycrLinkHeader = document.getElementById('librarycr-header');
     const eventsLinkHeader = document.getElementById('events-header');
-
     const practicalclinicsMoreButton = document.getElementById('more-practical-clinics-button');
-    const researchMoreButton = document.getElementById('more-research');
-    const eventsMoreButton = document.getElementById('more-events');
-    const aboutMenu = document.getElementById('more-about');
 
     const skillTrainingButton = document.getElementById('library-header');
     const skillTraining2Button = document.getElementById('skilltraining-header');
@@ -205,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Menu Links
     const profileLinkMenu = document.getElementById('profile-menu');
-    const milestonesLinkMenu = document.getElementById('milestones-menu');
+    const teachingLinkMenu = document.getElementById('teaching-menu');
     const settingsLinkMenu = document.getElementById('settings-menu');
     const shareLinkMenu = document.getElementById('share-menu');
 
@@ -252,7 +254,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // --- Event Listeners ---
-    // Click listeners for toggling menus
+
+
+
     megaMenuButton.addEventListener('click', () => {
         megaMenu.classList.toggle('hidden');
         megaMenuButtonCLOSE.classList.toggle('block');
@@ -263,12 +267,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         megaMenuButtonCLOSE.classList.toggle('hidden');
     });
 
+
+
     authMenuButtonCLOSE.addEventListener('click', () => {
         authMenu.classList.toggle('hidden');
         profileLinkMenu.classList.toggle('hidden');
     });
 
-    // Click listener for accordion headers
+    // accordion headers
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('accordion-header')) {
             const item = event.target.closest('.accordion-item');
@@ -556,10 +562,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             'research-section', 'practical-clinics-section',
             'learning-modules-section', 'clinics-section', 'smallgrants-section',
             'library-section', 'terms-section', 'privacy-section', 'about-section',
-            'team-section', 'milestones-section', 'sharefolder-section',
+            'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
             'profile-section', 'settings-section', 'faq-section', 'events-section',
             'blog-section', 'welcome-section', 'certs-section', 'smallgrants-section',
-            'research-section', 'practical-clinics-section', 'milestones-section'
+            'research-section', 'practical-clinics-section', 'teaching-section'
         ];
         sections.forEach(id => {
             const section = document.getElementById(id);
@@ -575,7 +581,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // --- Data Export Function ---
-   
     async function exportData() {
         try {
             const allData = {};
@@ -605,10 +610,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
     
-
-
-
-
     // --- Initial Setup ---
     // Check authentication status *before* setting up other event listeners.
     try {
@@ -742,26 +743,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         'about-footer': 'about-section',
         'share-menu': 'sharefolder-section',
         'team-footer': 'team-section',
-        'learning-footer': 'learning-modules-section',
+        'start-a-clinic-header': 'start-a-clinic-section',
         'learning-header': 'learning-modules-section',
         'library-header': 'library-section',
-        'library-footer': 'library-section',
         'about-menu': 'about-section',
+        'small-grants-footer': 'smallgrants-section',
+        'approvideo-blog' : 'blog-section',
+        'more-smallgrants': 'smallgrants-section',
         'more-events': 'events-section',
         'more-practical-clinics-button': 'clinics-section',
         'more-research': 'research-section',
-        'more-smallgrants': 'smallgrants-section',
-        'small-grants-footer': 'smallgrants-section',
         'small-grants-header': 'smallgrants-section',
         'events-header': 'practical-clinics-section',
         'settings-menu': 'settings-section',
-        'milestones-menu': 'milestones-section',
+
+        'teaching-menu': 'teaching-section',
         'profile-menu': 'profile-section',
         'privacy-link-footer': 'privacy-section',
         'terms-link-footer': 'terms-section',
         'blog-footer': 'blog-section',
         'faq-footer': 'faq-section',
     };
+
+//         'milestones-menu': 'milestones-section',
 
     for (const [elementId, sectionId] of Object.entries(sectionLinks)) {
         const element = document.getElementById(elementId);

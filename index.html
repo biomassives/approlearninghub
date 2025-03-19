@@ -79,12 +79,10 @@
                         <button id="small-grants-header" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Small Grants">
                            Funding
                         </button>
-                        <button id="start-a-clinic-public-header" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Start a Clinic">
-                           Start a clinic
-                        </button>
-                        <button id="approvideo-blog" class="nav-item hover:bg-emerald-900 bg-emerald-700 text-gray-100 hover:text-emerald-200" data-icon="Blog">
-                           News
-                        </button>
+                        <a href="/clinics"><button id="start-a-clinic-public-header" class="nav-item hover:bg-green-400 bg-yellow-500 border-gray-300 border-radius-2 hover:text-emerald-900 text-gray-900 hover:text-emerald-200" data-icon="Start a Clinic">
+                            Start a clinic
+                        </button></a>
+
 
                 </div>
 
@@ -273,10 +271,10 @@
                                             </svg>
                                             Profile
                                         </a>
-                                        <!-- Milestones -->
+                                        <!-- Teaching -->
                                         <a
-                                            href="#milestones"
-                                            id="milestones-menu"
+                                            href="#teaching"
+                                            id="teaching-menu"
                                             class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
                                         >
                                             <!-- Heroicon: Flag (outline) -->
@@ -295,7 +293,7 @@
                                                 3.445a.75.75 0 00.67 1.055H20.25"
                                             />
                                             </svg>
-                                            Milestones
+                                            Teaching
                                         </a>
                                         <!-- Learning -->
                                         <a
@@ -318,7 +316,7 @@
                                                 d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
                                             />
                                             </svg>
-                                        Learning Modules
+                                        Learning
                                         </a>
 
                                         <!-- Settings -->
@@ -1847,7 +1845,7 @@
 
 
         <section id="blog-section" class="hidden">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">APPROVIDEO BLOG</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">ApproVideo Community Blog</h2>
             <article id="blogpost-1" >
             <b>Introduction</b>
                 <p>For over seven years, I've had the honor of serving as the director of the Sustainable Community Development Hub (SCDHub), a non-profit organization dedicated to empowering communities through sustainable practices. In 2024, we had the opportunity to assist a group of recently displaced immigrants from Kabul.  I was personally involved in delivering donated computers and printers to these individuals, and I was struck by their incredible skills and expertise in engineering and other technical fields. This experience solidified my understanding of the urgent need for effective educational programs that can help displaced professionals like my new friends from Kabul rebuild their careers and contribute their talents to their new communities. That's where the ECHO model comes in.
@@ -2033,11 +2031,11 @@
                 </div>
     </section>
 
-    <section id="clinic-section" class="hidden py-12">
+    <section id="start-a-clinic-public" class="hidden py-12">
                 <div class="container max-w-3xl mx-auto space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Clinic  Specifics</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Propose an Approvideo Community Clinic</h2>
                     
-                        <h2> ** Clinic  Specifics ** </h2>
+                        <h2>Clinic Request</h2>
                        
                 </div>
     </section>    
@@ -2218,18 +2216,17 @@
                     <label class="block mb-2 text-gray-700">Select your role:</label> 
                     <select>
                         <option value="user">User</option>
-                        <option value="researcher">Researcher</option>
+                        <option value="guest_new">Guest user</option>
+                        <option value="researcher">Researcher</option>   
+                        <option value="sponsor">Sponsor</option>   
+                        <option value="community_member">Community Member</option>
                         <option value="participant_active">Particiant in active clinic</option>
                         <option value="paritcipant_upcoming-clinic">Particiant with upcoming clinic</option>
                         <option value="project_champion">Project Champion</option>
                         <option value="expert_mentor">Expert Mentor</option>
-                        <option value="researcher">Researcher</option>r</option>
-                        <option value="community_member">Community Member</option>
-                        <option value="software_admin">Software Admin</option>
-                        <option value="guest_new">Guest user first time</option>
-                        <option value="guest_with">Guest user with data</option>
-                        <option value="role_invited">someone with an invite</option>
-                        <option value="role_media">media / promotions</option>
+                        <option value="role_invited">Someone with an invite</option>
+                        <option value="software_admin">Site Admin</option>
+                        <option value="role_media">Media / press</option>
                         </select>
                     </form>
 
@@ -2322,16 +2319,50 @@
                         </div>
                     </div>
                 </div>
-    </section>
+                </section>
 
-    <section id="learning-modules-section" class="hidden py-12">
+                <section id="learning-modules-section" class="hidden py-12">
                 <div class="container max-w-5xl mx-auto space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Learning Modules</h2>
-                    <p class="text-gray-700 italic mb-4">Develop your knowledge and skills here.</p>
-            
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Learning Activity</h2>
+
+                    <p class="text-gray-700 italic mb-4">Community Clinics</p>
+                    <p class="text-gray-700 italic mb-4">Library</p>
+                    <p class="text-gray-700 italic mb-4">Learning Modules</p>
+
              
                     </div>
                 </section>
+
+                <section id="teaching-section" class="hidden py-12">
+                    <div class="container max-w-5xl mx-auto space-y-6">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Teaching Activity</h2>
+    
+                        <p class="text-gray-700 italic mb-4">Community Clinics</p>
+                        <p class="text-gray-700 italic mb-4">Library</p>
+                        <p class="text-gray-700 italic mb-4">Learning Modules</p>
+                        </div>
+                </section>
+                <section id="teaching-modules-section" class="hidden py-12">
+                    <div class="container max-w-5xl mx-auto space-y-6">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Teaching Activity</h2>
+    
+                        <p class="text-gray-700 italic mb-4">Community Clinics</p>
+                        <p class="text-gray-700 italic mb-4">Library</p>
+                        <p class="text-gray-700 italic mb-4">Learning Modules</p>
+                        </div>
+                </section>
+                <section id="teaching-clinics-section" class="hidden py-12">
+                    <div class="container max-w-5xl mx-auto space-y-6">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Teaching Clinic Modules</h2>
+    
+                        <p class="text-gray-700 italic mb-4">Context</p>
+                        <p class="text-gray-700 italic mb-4">All teach, all learn</p>
+                        <p class="text-gray-700 italic mb-4">Background info</p>
+                        <p class="text-gray-700 italic mb-4">Resources</p>
+                        <p class="text-gray-700 italic mb-4">Appropriate Technology</p>
+                        </div>
+                </section>
+
 
                 <section id="intersections-section" class="hidden py-12">
                     <div class="container max-w-3xl mx-auto space-y-6">
@@ -2582,22 +2613,22 @@
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Approvideo Hub</h3>
                         <ul class="space-y-2 text-gray-400">
-                            <li><a href="#learning" id="learning-footer" class="hover:text-white">Learning Modules</a></li>
-
                             <li><a href="#about" id="about-footer" class="hover:text-white">About Us</a></li>
-                            <li><a href="#applied-research-grants" id="small-grants-footer"  class="hover:text-white">Applied Research Microgrants</a></li>
+                            <li><a href="#blog" id="approvideo-blog" class="hover:text-white">Community Blog</a></li>
                         </ul>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Resources</h3>
                         <ul class="space-y-2 text-gray-400">
-                            <li><a href="#library" id="diy-solutions-library" class="hover:text-white">Resources Library</a></li>
+                           <!--<li><a href="#library" id="library-footer" class="hover:text-white">Resources Library</a></li>--> 
+                            <li><a href="#applied-research-grants" id="small-grants-footer"  class="hover:text-white">Applied Research Microgrants</a></li>
 
                         </ul>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
                         <div class="flex space-x-4 mb-4">
+                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-blusky"></i></a>
                             <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
                             <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
                             <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
