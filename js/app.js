@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // User Authentication Elements 
     const loginButton = document.getElementById('login-button');
+    const timelineButton = document.getElementById('timeline-button');
     const registerButton = document.getElementById('user-profile-top-right'); // Reused below
     const logoutButton = document.getElementById('logout-button');
     const authModal = document.getElementById('auth-modal');
@@ -520,6 +521,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function updateAuthUI() {
         if (isLoggedIn) {
+            loginButton.classList.toggle('hidden');
+            timelineButton.classList.toggle('hidden');
             authLoggedOutTopRight.classList.add('hidden');
             authLoggedInTopRight.classList.remove('hidden');
             dashboardLoggedOutContent.classList.add('hidden');
@@ -535,8 +538,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 chatNotificationBadge.classList.remove('hidden');        
             }
 
-            loginButton.textContent = 'Timeline';
+
         } else {
+            loginButton.classList.remove('block');
+            timelineButton.classList.toggle('block');
             authLoggedInTopRight.classList.add('hidden');
             authLoggedOutTopRight.classList.remove('hidden');
             dashboardLoggedInContent.classList.add('hidden');
@@ -545,7 +550,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             dashboardSection.classList.remove('hidden');
             chatContainer.classList.add('hidden');
             chatNotificationBadge.classList.add('hidden');
-            loginButton.textContent = 'Log in';
         }
         hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible
     }
@@ -559,7 +563,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function hideAllSectionsExcept(sectionId) {
         const sections = [
             'dashboard-section', 'welcome-section', 'skill-training-menu',
-            'research-section', 'practical-clinics-section',
+            'research-section', 'practical-clinics-section', 'timeline-section',
             'learning-modules-section', 'clinics-section', 'smallgrants-section',
             'library-section', 'terms-section', 'privacy-section', 'about-section',
             'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
@@ -638,8 +642,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Error during initial setup:", error);
     }
 
+
+
+
     // --- Event Listeners (that don't depend on auth status) ---
-    // These can be set up unconditionally.
 
     checkConsentAndInit(); // Check for consent and initialize Supabase if allowed
     
@@ -756,9 +762,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         'small-grants-header': 'smallgrants-section',
         'events-header': 'practical-clinics-section',
         'settings-menu': 'settings-section',
+        'timeline-button': 'timeline-section',
 
         'teaching-menu': 'teaching-section',
         'profile-menu': 'profile-section',
+        'dashboard-menu': 'dashboard-section',
         'privacy-link-footer': 'privacy-section',
         'terms-link-footer': 'terms-section',
         'blog-footer': 'blog-section',

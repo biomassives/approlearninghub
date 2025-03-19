@@ -213,6 +213,9 @@
                             <button id="login-button" class="bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
                                 Log in
                             </button>
+                            <button id="timeline-button" class="hidden bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
+                                timeline
+                            </button>
                         </div>
 
                         <div id="auth-logged-in-top-right" class="hidden flex items-center space-x-3">
@@ -271,6 +274,31 @@
                                             </svg>
                                             Profile
                                         </a>
+
+                                        <!-- Dashboard -->
+                                        <a
+                                            href="#dashboard"
+                                            id="dashboard-menu"
+                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            <!-- Heroicon: Brain (outline) -->
+                                            <svg
+                                            class="w-5 h-5 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
+                                            />
+                                            </svg>
+                                        Dashboard
+                                        </a>
+
                                         <!-- Teaching -->
                                         <a
                                             href="#teaching"
@@ -427,7 +455,6 @@
                                 </div>
                             </div>
 
-
                             <div id="modal-module-menu" class="modal hidden">
                                 <div class="modal-content">
                                     <span class="close">&times;</span>
@@ -441,9 +468,7 @@
                                 </div>
                             </div>
 
-
-                              
-                              <div id="mega-menu" class="hidden absolute top-20 border-gray-300 border-radius-10 left-0 w-full bg-gray-100 shadow-lg rounded-md z-10">
+                            <div id="mega-menu" class="hidden absolute top-20 border-gray-300 border-radius-10 left-0 w-full bg-gray-100 shadow-lg rounded-md z-10">
                                 <div class="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                                 <button id="mega-menu-button-close" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -1001,6 +1026,23 @@
                 <script src="js/moduleCards.js"></script>
 
         <main class="flex-grow bg-gray-50 container mx-auto px-4 py-6">
+
+
+        <section id="timeline-section" class="hidden py-12 bg-gray-100">
+            <div class="container max-w-4xl mx-auto px-4">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Clinic(s) / Learning Timelines</h2>
+                <div class="modal-content">
+                <span class="timelineCLOSE">&times;</span>
+                    <img src="/assets/appro4.gif" alt="Module Icon" class="modal-icon" id="modalIcon">
+                    <h2 id="modalTitle">Learning module</h2>
+                    <p id="modalDescription"></p>
+                    <div class="modal-buttons">
+                        <button class="start">Start Exercise</button>
+                        <button class="queue">Queue Topics</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
         <section id="dashboard-section" class="">
