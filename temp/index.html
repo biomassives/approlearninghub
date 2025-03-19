@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+      .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      }
+
+      .module-card {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .module-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .module-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      }
+
+      .module-card p {
+      color: #666;
+      margin-bottom: 15px;
+      }
+
+      .module-button {
+      background-color: #fcd34d; /* Yellow-500 equivalent */
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      }
+
+      .module-button:hover {
+      background-color: #34d399; /* Emerald-500 equivalent */
+      }
+
+      .modules-container {
+      padding: 20px;
+      }
+
+      .module-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      }
+
+      .module-list:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .module-list li {
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+      }
+
+      .module-list li svg {
+      position: absolute;
+      left: 0;
+      top: 5px;
+      }
+
+      .module-list a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      }
+
+      .submodule-list {
+      list-style: none;
+      padding-left: 20px;
+      }
+
+      .submodule-list li a {
+      color: #666;
+      }
+  </style>
+</head>
+<body>
+            <div class="relative">
+                <div id="crisis-relief-menu" class="bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <div class="module-grid">
+                    <div class="module-card" data-module-id="module-community-waste-management" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Community Waste Management</h3>
+                    <p class="text-gray-600">Learn effective community waste reduction and recycling strategies.</p>
+                    <button id="module-community-waste-management-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-sustainable-agriculture-practices" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Sustainable Agriculture Practices</h3>
+                    <p class="text-gray-600">Discover eco-friendly farming techniques to improve soil health and crop yields.</p>
+                    <button id="module-sustainable-agriculture-practices-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-water-filtration-purification" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Water Filtration & Purification</h3>
+                    <p class="text-gray-700">Learn and certify your knowledge in water management techniques.</p>
+                    <button id="module-water-filtration-purification-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-renewable-energy-solutions" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Renewable Energy Solutions</h3>
+                    <p class="text-gray-600">Learn about solar, wind, and other renewable energy sources for a greener future.</p>
+                    <button id="module-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-biodiversity-and-ecosystems" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Biodiversity and Ecosystems</h3>
+                    <p class="text-gray-600">Understand the importance of biodiversity and how to protect our ecosystems.</p>
+                    <button id="module-biodiversity-and-ecosystems-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    <div class="module-name">Biodiversity and Ecosystems</div>
+                    <div class="module-info">Protecting our ecosystems</div>
+                    </div>
+                    <div class="module-card" data-module-id="modules-community-health-sanitation" data-related-info='[...]'>
+                    <h3 class="text-lg font-semibold">Community Health and Sanitation</h3>
+                    <p class="text-gray-700">Learn about hygiene and sanitation practices to improve community health.</p>
+                    <button id="modules-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                </div>
+
+            
+                
+            </div>
+            </div>

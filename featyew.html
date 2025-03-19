@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ApproVideo Community Learning Hub - Appropriate Technology Engineering and Science Clinic Portal</title>
+
+    <style>
+
+    .module-list {
+        list-style: none; /* Remove default bullet points */
+        padding: 0;
+    }
+
+    .module-list > li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+        position: relative; /* For positioning the tooltip */
+    }
+    .module-list > li:last-child {
+         border-bottom: none;
+    }
+
+    .module-list > li > a {
+        color: #007bff; /* Link color */
+        text-decoration: none;
+         display: block; /* Make the link take up the full width */
+        padding-right: 20px; /* Space for the tooltip */
+    }
+
+    .module-list > li > a:hover {
+        text-decoration: underline;
+    }
+
+    /* Tooltip styles */
+    .module-list > li::before {
+        content: attr(data-description); /* Use the data-description attribute */
+        position: absolute;
+        top: 100%; /* Position below the list item */
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 0.5rem;
+        border-radius: 4px;
+        z-index: 10;
+        white-space: nowrap; /* Prevent text wrapping */
+        opacity: 0; /* Hidden by default */
+        transition: opacity 0.2s ease;
+        pointer-events: none; /* Prevent clicks on the tooltip */
+    }
+
+    .module-list > li:hover::before {
+        opacity: 1; /* Show on hover */
+    }
+
+    .submodule-list {
+        list-style: disc; /* Use standard bullet points for submodules */
+         margin-left: 1.5rem; /* Indent submodules */
+        padding-left: 1rem; /* Add some extra padding */
+        margin-top: 0.5rem;
+    }
+    .submodule-list > li > a{
+        color: #007bff;
+        text-decoration: none;
+    }
+    .submodule-list>li{
+      margin: 4px;
+    }
+    .loading-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #38a169;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    </style>
+
+    </head>
+
+
+    <body class="bg-gray-100 min-h-screen">
+
+        <div class="relative ">
+            <div id="crisis-relief-menu" class="bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+                <div class="module-grid">
+                    <div class="module-card" data-module-id="module-community-waste-management" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding waste decomposition and recycling."
+                    },
+                    {
+                      "title": "Logistics",
+                      "description": "Designing efficient waste collection systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Preventing disease spread through proper waste disposal."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for waste reduction policies."
+                    },
+                    {
+                      "title": "Education & Outreach",
+                      "description": "Promoting waste reduction and recycling practices."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Community Waste Management</h3>
+                        <p class="text-gray-600">Learn effective community waste reduction and recycling strategies.</p>
+                        <button id="module-community-waste-management-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-sustainable-agriculture-practices" data-related-info='[
+                    {
+                        "title": "Agronomy",
+                        "description": "Implementing sustainable farming techniques."
+                    },
+                    {
+                        "title": "Ecology",
+                        "description": "Understanding the impact of agriculture on ecosystems."
+                    },
+                    {
+                        "title": "Food Science",
+                        "description": "Developing sustainable food production methods."
+                    },
+                    {
+                        "title": "Economics",
+                        "description": "Supporting sustainable agriculture businesses."
+                    },
+                    {
+                        "title": "Community Organizing",
+                        "description": "Establishing local food systems."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Sustainable Agriculture Practices</h3>
+                        <p class="text-gray-600">Discover eco-friendly farming techniques to improve soil health and crop yields.</p>
+                        <button id="module-sustainable-agriculture-practices-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-water-filtration-purification" data-related-info='[
+                    {
+                      "title": "Chemistry",
+                      "description": "Understanding water purification processes."
+                    },
+                    {
+                      "title": "Engineering",
+                      "description": "Designing effective filtration systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Ensuring safe drinking water for communities."
+                    },
+                    {
+                      "title": "Environmental Science",
+                      "description": "Protecting water sources from pollution."
+                    },
+                    {
+                      "title": "Logistics & Distribution",
+                      "description": "Delivering clean water to remote areas."
+                    }
+                    ]'>
+                        <h3 class="text-lg font-semibold">Water Filtration & Purification</h3>
+                        <p class="text-gray-700">Learn and certify your knowledge in water management techniques.</p>
+                        <button id="module-water-filtration-purification-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-renewable-energy-solutions" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding renewable energy sources."
+                    },
+                    {
+                      "title": "Financial Literacy",
+                      "description": "Investing in renewable energy projects."
+                    },
+                    {
+                      "title": "Technology & Innovation",
+                      "description": "Developing efficient renewable tech."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for renewable energy policies."
+                    },
+                    {
+                      "title": "Community Engagement",
+                      "description": "Promoting community-owned renewable energy."
+                    }
+                  ]'>                       
+                        <h3 class="text-lg font-semibold">Renewable Energy Solutions</h3>
+                        <p class="text-gray-600">Learn about solar, wind, and other renewable energy sources for a greener future.</p>
+                        <button id="module-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                    <div class="module-card" data-module-id="modules-biodiversity-and-ecosystems" data-related-info='[
+
+                    {"title": "Environmental Science", 
+                    "description": "Understanding ecological systems."}, 
+                    {"title": "Financial Literacy", 
+                    "description": "Funding conservation efforts."}, 
+                    {"title": "Self-Sufficient Healthcare", 
+                    "description": "Healthy ecosystems for community health."},
+                    {"title": "Water Distribution",
+                      "description": "Managing water for ecosystems."}
+                      , {"title": "Marketing & Promotion", 
+                      "description": "Promoting conservation."
+                    }
+                  ]'>
+                        <h3 class="text-lg font-semibold">Biodiversity and Ecosystems</h3>
+
+
+                        <p class="text-gray-600">Understand the importance of biodiversity and how to protect our ecosystems.</p>
+                        <button id="module-biodiversity-and-ecosystems-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                        <div class="module-name">Biodiversity and Ecosystems</div>
+                        <div class="module-info">Protecting our ecosystems</div>
+                    </div>
+                    <div class="module-card" data-module-id="modules-community-health-sanitation" data-related-info='[
+                    {
+                      "title": "Hygiene Heroes: Handwashing & Germ Defense",
+                      "description": "Discover the science behind handwashing, learn effective techniques, and understand how proper hygiene prevents the spread of germs and keeps your community healthy."
+                    },
+                    {
+                      "title": "Clean Water, Healthy Lives: Sanitation Essentials",
+                      "description": "Explore the importance of clean water and proper sanitation. Learn about safe water sources, waste disposal methods, and how to prevent waterborne diseases in your community."
+                    },
+                    {
+                      "title": "Food Safety First: Preventing Illness Through Clean Practices",
+                      "description": "Understand the critical role of food safety in community health. Learn about safe food handling, storage, and preparation techniques to prevent foodborne illnesses and promote well-being."
+                    },
+                    {
+                      "title": "Environmental Cleanliness: Creating a Healthy Living Space",
+                      "description": "Learn how to maintain a clean and healthy environment in your home and community. Explore topics like waste management, pest control, and the impact of pollution on health."
+                    },
+                    {
+                      "title": "Community Action for Health: Implementing Sanitation Solutions",
+                      "description": "Discover how communities can work together to improve sanitation and hygiene. Learn about effective strategies for implementing sanitation projects, promoting behavior change, and advocating for public health initiatives."
+                    }
+                  ]'>
+                        <h3 class="text-lg font-semibold">Community Health and Sanitation</h3>
+                        <p class="text-gray-700">Learn about hygiene and sanitation practices to improve community health.</p>
+                        <button id="modules-renewable-energy-solutions-button" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                    </div>
+                </div>
+          </div>
+                </div>
+
+</body>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get all module buttons
+  const moduleButtons = document.querySelectorAll('.module-button');
+  
+  // Keep track of the original state
+  let originalState = {};
+  
+  // Store the original state of all cards
+  const allCards = document.querySelectorAll('.module-card');
+  allCards.forEach(card => {
+    const cardId = card.getAttribute('data-module-id');
+    originalState[cardId] = {
+      title: card.querySelector('h3')?.textContent,
+      description: card.querySelector('p')?.textContent,
+      backgroundColor: card.style.backgroundColor || 'transparent'
+    };
+  });
+  
+  moduleButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+      // Find the parent module card for the clicked button
+      const clickedCard = event.target.closest('.module-card');
+      const clickedCardId = clickedCard.getAttribute('data-module-id');
+      
+      // Retrieve and parse the JSON data from the data-related-info attribute
+      let relatedInfo;
+      try {
+        relatedInfo = JSON.parse(clickedCard.getAttribute('data-related-info'));
+      } catch (error) {
+        console.error("Error parsing related info JSON:", error);
+        return;
+      }
+      
+      // Change background color of the clicked card
+      clickedCard.style.backgroundColor = '#e0f7fa'; // Light cyan color
+      
+      // Create reset button if it doesn't exist
+      if (!clickedCard.querySelector('.reset-button')) {
+        const resetButton = document.createElement('button');
+        resetButton.className = 'reset-button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 mt-2';
+        resetButton.textContent = 'Reset View';
+        resetButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent triggering parent click events
+          resetCards();
+        });
+        clickedCard.appendChild(resetButton);
+      }
+      
+      // Get all module cards and filter out the clicked one
+      const otherCards = Array.from(allCards).filter(card => card !== clickedCard);
+      
+      // Loop over each of the other cards and update their title and description
+      otherCards.forEach((card, index) => {
+        if (relatedInfo[index]) {
+          // Assume the card has an <h3> for the title and a <p> for the description.
+          const titleElement = card.querySelector('h3');
+          const descriptionElement = card.querySelector('p');
+          
+          // Update the card with the new info
+          if (titleElement) titleElement.textContent = relatedInfo[index].title;
+          if (descriptionElement) descriptionElement.textContent = relatedInfo[index].description;
+          
+          // Change the background color of other cards to indicate they've been modified
+          card.style.backgroundColor = '#f5f5f5'; // Light gray
+        }
+      });
+    });
+  });
+  
+  // Function to reset all cards to their original state
+  function resetCards() {
+    allCards.forEach(card => {
+      const cardId = card.getAttribute('data-module-id');
+      const original = originalState[cardId];
+      
+      if (original) {
+        // Reset title and description
+        if (card.querySelector('h3')) card.querySelector('h3').textContent = original.title;
+        if (card.querySelector('p')) card.querySelector('p').textContent = original.description;
+        
+        // Reset background color
+        card.style.backgroundColor = original.backgroundColor;
+      }
+      
+      // Remove the reset button if it exists
+      const resetButton = card.querySelector('.reset-button');
+      if (resetButton) {
+        resetButton.remove();
+      }
+    });
+  }
+});
+</script>
+
+</html>

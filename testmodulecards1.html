@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ApproVideo Community Learning Hub - Appropriate Technology Engineering and Science Clinic Portal</title>
+    <script src="./js/libs/Dexie.js"></script>
+    <script src="./js/libs/dexie-encrypted-addon.min.js"></script>
+    <script src="./js/libs/supabase-js2.js"></script>
+
+
+
+
+<Style>
+    .relative {
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+.bg-white {
+    background-color: #fff;
+}
+
+.shadow-lg {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.rounded-md {
+    border-radius: 0.375rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.left-0 {
+    left: 0;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 16px;
+    padding: 16px;
+}
+
+.module-card {
+    border: 1px solid transparent; /* Transparent border by default */
+    padding: 20px;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for effects */
+}
+
+.module-card:hover {
+    border-color: #e0e0e0; /* Subtle hover border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow on hover */
+}
+
+.module-card.clicked {
+    border-color: #4CAF50; /* Selected border color */
+    background-color: #f0f8f0; /* Optional: subtle background color change */
+}
+
+.module-button {
+    display: block;
+    width: fit-content;
+    margin-top: 10px;
+}
+
+.return-index {
+    display: block;
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.module-icon{
+    width: 100%;
+    height: 150px;
+    background-color: grey;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.breadcrumb-links a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.breadcrumb-links a:hover {
+    background-color: #e0e0e0;
+}
+
+</style> 
+
+
+</head>
+<body class="bg-gray-100 min-h-screen">
+ 
+
+<div class="relative">
+    <div id="crisis-relief-menu" class="hidden bg-white shadow-lg rounded-md mt-2 w-full left-0 z-10">
+        <div class="module-grid">
+            <div class="module-card" data-module-id="module-community-waste-management" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding waste decomposition and recycling."
+                    },
+                    {
+                      "title": "Logistics",
+                      "description": "Designing efficient waste collection systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Preventing disease spread through proper waste disposal."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for waste reduction policies."
+                    },
+                    {
+                      "title": "Education & Outreach",
+                      "description": "Promoting waste reduction and recycling practices."
+                    }
+                    ]' data-breadcrumb-module-link="/module/waste-management" data-breadcrumb-library-link="/library/waste-management">
+                <h3 class="text-lg font-semibold">Community Waste Management</h3>
+                <p class="text-gray-600">Learn effective community waste reduction and recycling strategies.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+            <div class="module-card" data-module-id="modules-sustainable-agriculture-practices" data-related-info='[
+                    {
+                        "title": "Agronomy",
+                        "description": "Implementing sustainable farming techniques."
+                    },
+                    {
+                        "title": "Ecology",
+                        "description": "Understanding the impact of agriculture on ecosystems."
+                    },
+                    {
+                        "title": "Food Science",
+                        "description": "Developing sustainable food production methods."
+                    },
+                    {
+                        "title": "Economics",
+                        "description": "Supporting sustainable agriculture businesses."
+                    },
+                    {
+                        "title": "Community Organizing",
+                        "description": "Establishing local food systems."
+                    }
+                    ]' data-breadcrumb-module-link="/module/sustainable-agriculture" data-breadcrumb-library-link="/library/sustainable-agriculture">
+                <h3 class="text-lg font-semibold">Sustainable Agriculture Practices</h3>
+                <p class="text-gray-600">Discover eco-friendly farming techniques to improve soil health and crop yields.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+            <div class="module-card" data-module-id="modules-water-filtration-purification" data-related-info='[
+                    {
+                      "title": "Chemistry",
+                      "description": "Understanding water purification processes."
+                    },
+                    {
+                      "title": "Engineering",
+                      "description": "Designing effective filtration systems."
+                    },
+                    {
+                      "title": "Public Health",
+                      "description": "Ensuring safe drinking water for communities."
+                    },
+                    {
+                      "title": "Environmental Science",
+                      "description": "Protecting water sources from pollution."
+                    },
+                    {
+                      "title": "Logistics & Distribution",
+                      "description": "Delivering clean water to remote areas."
+                    }
+                    ]' data-breadcrumb-module-link="/module/water-filtration" data-breadcrumb-library-link="/library/water-filtration">
+                <h3 class="text-lg font-semibold">Water Filtration & Purification</h3>
+                <p class="text-gray-700">Learn and certify your knowledge in water management techniques.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+            <div class="module-card" data-module-id="modules-renewable-energy-solutions" data-related-info='[
+                    {
+                      "title": "Environmental Science",
+                      "description": "Understanding renewable energy sources."
+                    },
+                    {
+                      "title": "Financial Literacy",
+                      "description": "Investing in renewable energy projects."
+                    },
+                    {
+                      "title": "Technology & Innovation",
+                      "description": "Developing efficient renewable tech."
+                    },
+                    {
+                      "title": "Policy & Regulation",
+                      "description": "Advocating for renewable energy policies."
+                    },
+                    {
+                      "title": "Community Engagement",
+                      "description": "Promoting community-owned renewable energy."
+                    }
+                  ]' data-breadcrumb-module-link="/module/renewable-energy" data-breadcrumb-library-link="/library/renewable-energy">
+                <h3 class="text-lg font-semibold">Renewable Energy Solutions</h3>
+                <p class="text-gray-600">Learn about solar, wind, and other renewable energy sources for a greener future.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+            <div class="module-card" data-module-id="modules-biodiversity-and-ecosystems" data-related-info='[
+                    {"title": "Environmental Science", 
+                    "description": "Understanding ecological systems."}, 
+                    {"title": "Financial Literacy", 
+                    "description": "Funding conservation efforts."}, 
+                    {"title": "Self-Sufficient Healthcare", 
+                    "description": "Healthy ecosystems for community health."},
+                    {"title": "Water Distribution",
+                      "description": "Managing water for ecosystems."},
+                    {"title": "Marketing & Promotion", 
+                      "description": "Promoting conservation."}
+                  ]' data-breadcrumb-module-link="/module/biodiversity" data-breadcrumb-library-link="/library/biodiversity">
+                <h3 class="text-lg font-semibold">Biodiversity and Ecosystems</h3>
+                <p class="text-gray-600">Understand the importance of biodiversity and how to protect our ecosystems.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+            <div class="module-card" data-module-id="modules-community-health-sanitation" data-related-info='[
+                    {
+                      "title": "Hygiene Heroes: Handwashing & Germ Defense",
+                      "description": "Discover the science behind handwashing, learn effective techniques, and understand how proper hygiene prevents the spread of germs and keeps your community healthy."
+                    },
+                    {
+                      "title": "Clean Water, Healthy Lives: Sanitation Essentials",
+                      "description": "Explore the importance of clean water and proper sanitation. Learn about safe water sources, waste disposal methods, and how to prevent waterborne diseases in your community."
+                    },
+                    {
+                      "title": "Food Safety First: Preventing Illness Through Clean Practices",
+                        "description": "Understand the critical role of food safety in community health. Learn about safe food handling, storage, and preparation techniques to prevent foodborne illnesses and promote well-being."
+                    },
+                    {
+                      "title": "Environmental Cleanliness: Creating a Healthy Living Space",
+                      "description": "Learn how to maintain a clean and healthy environment in your home and community. Explore topics like waste management, pest control, and the impact of pollution on health."
+                    },
+                    {
+                      "title": "Community Action for Health: Implementing Sanitation Solutions",
+                      "description": "Discover how communities can work together to improve sanitation and hygiene. Learn about effective strategies for implementing sanitation projects, promoting behavior change, and advocating for public health initiatives."
+                    }
+                  ]' data-breadcrumb-module-link="/module/community-health" data-breadcrumb-library-link="/library/community-health">
+                <h3 class="text-lg font-semibold">Community Health and Sanitation</h3>
+                <p class="text-gray-700">Learn about hygiene and sanitation practices to improve community health.</p>
+                <button class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-emerald-500 module-button">View Module</button>
+                <div class="module-icon hidden"></div>
+                <button class="return-index hidden">Return to Index</button>
+                <div class="breadcrumb-links hidden">
+                    <a class="breadcrumb-module-link" href=""></a>
+                    <a class="breadcrumb-library-link" href=""></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const moduleButtons = document.querySelectorAll('.module-button');
+    const moduleCards = document.querySelectorAll('.module-card');
+
+    moduleButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            const clickedCard = event.target.closest('.module-card');
+            const otherCards = Array.from(moduleCards).filter(card => card !== clickedCard);
+            const relatedInfo = JSON.parse(clickedCard.getAttribute('data-related-info'));
+
+            // Update clicked card
+            updateClickedCard(clickedCard);
+
+            // Update other cards
+            updateOtherCards(otherCards, relatedInfo);
+        });
+    });
+
+    moduleCards.forEach(card => {
+        const returnButton = card.querySelector('.return-index');
+        returnButton.addEventListener('click', function() {
+            resetAllCards(moduleCards);
+        });
+    });
+
+    function updateClickedCard(card) {
+        card.classList.add('clicked'); // Add a class for styling
+        card.querySelector('.module-button').style.display = 'none';
+        card.querySelector('.module-icon').style.display = 'block';
+        card.querySelector('.return-index').style.display = 'block';
+    }
+
+    function updateOtherCards(cards, relatedInfo) {
+        cards.forEach((card, index) => {
+            if (relatedInfo[index]) {
+                card.querySelector('h3').textContent = relatedInfo[index].title;
+                card.querySelector('p').textContent = relatedInfo[index].description;
+                card.querySelector('.breadcrumb-links').style.display = 'block';
+                card.querySelector('.breadcrumb-module-link').href = card.getAttribute('data-breadcrumb-module-link');
+                card.querySelector('.breadcrumb-library-link').href = card.getAttribute('data-breadcrumb-library-link');
+                card.querySelector('.breadcrumb-module-link').textContent = "Module";
+                card.querySelector('.breadcrumb-library-link').textContent = "Library";
+            }
+        });
+    }
+
+    function resetAllCards(cards) {
+        cards.forEach(card => {
+            card.classList.remove('clicked');
+            card.querySelector('.module-button').style.display = 'block';
+            card.querySelector('.module-icon').style.display = 'none';
+            card.querySelector('.return-index').style.display = 'none';
+            card.querySelector('.breadcrumb-links').style.display = 'none';
+            // Reset titles and descriptions to initial values (you might need to store these initially)
+        });
+    }
+});
+
+</script>
+</body>
+</html>
