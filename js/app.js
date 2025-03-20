@@ -735,6 +735,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     getStartedButtonDashboard.addEventListener('click', () => {
+        e.preventDefault();
         authModal.classList.remove('hidden');
     });
 
@@ -771,6 +772,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'terms-link-footer': 'terms-section',
         'blog-footer': 'blog-section',
         'faq-footer': 'faq-section',
+        'faq-welcome': 'faq-section',
     };
 
 //         'milestones-menu': 'milestones-section',
@@ -793,7 +795,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           hideAllSectionsExcept('privacy-section');
       });
     }
-
     if (termsLinkModal){
       termsLinkModal.addEventListener('click', (e) => {
           e.preventDefault();
@@ -801,7 +802,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           hideAllSectionsExcept('terms-section');
       });
     }
-    // Supa Chat Panel Events (Unchanged, but included for completeness)
     chatHeader.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
         chatBody.classList.toggle('hidden');
@@ -823,7 +823,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           exportDataButton.addEventListener('click', exportData);
       }
 
-      // --- Initial UI setup (after potential async operations) ---
       updateAuthUI();  // Sets initial state based on isLoggedIn
   
 
