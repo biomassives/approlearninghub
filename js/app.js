@@ -104,9 +104,179 @@ function checkConsentAndInit() {
     }
 }
 
+// Define checkScroll globally or move the window event listener inside DOMContentLoaded
+function checkScroll() {
+  if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
+    filenameContainer.classList.add('scrolling');
+  } else {
+    filenameContainer.classList.remove('scrolling');
+  }
+}
+
+// Then you can have
+window.addEventListener('resize', checkScroll);
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get elements
+      const audioElement = document.getElementById('audioElement');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const progressBar = document.getElementById('progressBar');
+      const progressContainer = document.getElementById('progressContainer');
+      const currentTimeElement = document.getElementById('currentTime');
+      const durationElement = document.getElementById('duration');
+      const filenameDisplay = document.getElementById('filenameDisplay');
+      const filenameContainer = document.getElementById('filenameContainer');
+      const downloadLink = document.getElementById('downloadLink');
+      const thumbnailImg = document.getElementById('thumbnailImg');
+     
+      // Initialize
+      let isPlaying = false;
+      
+      // Extract and display filename from the audio source
+      function extractFilename(src) {
+        // Get just the filename from the path
+        const fullPath = src.split('/');
+        const filename = fullPath[fullPath.length - 1];
+        
+        // Store original filename for download
+        const originalFilename = filename;
+        
+        // Remove extension and replace hyphens with spaces
+        const cleanName = filename.split('.')[0].replace(/-/g, ' ');
+        
+        // Capitalize words for nicer display
+        return {
+          display: cleanName.split('_').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' '),
+          original: originalFilename
+        };
+      }
+      
+      // Set up filename display and download link
+      const fileInfo = extractFilename(audioElement.src);
+      filenameDisplay.textContent = fileInfo.display;
+      downloadLink.href = audioElement.src;
+      downloadLink.download = fileInfo.original;
+      downloadLink.setAttribute('title', 'Download ' + fileInfo.original);
+      
+      // Check if text needs scrolling
+      function checkScroll() {
+        if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
+          filenameContainer.classList.add('scrolling');
+        } else {
+          filenameContainer.classList.remove('scrolling');
+        }
+      }
+      
+      // Call checkScroll after rendering
+      setTimeout(checkScroll, 100);
+      
+      // Set thumbnail image based on audio type
+      // In a real application, you would determine this based on audio metadata
+      // For now, we'll use a basic approach
+      if (fileInfo.original.includes('briquette')) {
+        thumbnailImg.src = "/assets/mp3/briquette.webp";
+        thumbnailImg.alt = "Briquette Audio";
+      } else {
+        thumbnailImg.src = "/assets/mp3/defult.webp"; 
+        thumbnailImg.alt = "Audio Thumbnail";
+      }
+     
+      // Format time in MM:SS
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        seconds = Math.floor(seconds % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+     
+      // Set up duration display once metadata is loaded
+      audioElement.addEventListener('loadedmetadata', function() {
+        durationElement.textContent = formatTime(audioElement.duration);
+      });
+     
+      // Toggle play/pause
+      playPauseBtn.addEventListener('click', function() {
+        if (isPlaying) {
+          audioElement.pause();
+          playPauseBtn.textContent = '▶';
+        } else {
+          audioElement.play()
+            .catch(error => {
+              console.error('Playback failed:', error);
+              filenameDisplay.textContent = 'Error loading audio';
+              // Provide fallback or error message if needed
+            });
+          playPauseBtn.textContent = '❚❚';
+        }
+        isPlaying = !isPlaying;
+      });
+     
+      // Update progress bar and current time during playback
+      audioElement.addEventListener('timeupdate', function() {
+        const progress = (audioElement.currentTime / audioElement.duration) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentTimeElement.textContent = formatTime(audioElement.currentTime);
+      });
+     
+      // Allow seeking by clicking on progress bar
+      progressContainer.addEventListener('click', function(e) {
+        const rect = progressContainer.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        audioElement.currentTime = pos * audioElement.duration;
+      });
+     
+      // Reset player when audio ends
+      audioElement.addEventListener('ended', function() {
+        progressBar.style.width = '0%';
+        playPauseBtn.textContent = '▶';
+        isPlaying = false;
+        audioElement.currentTime = 0;
+      });
+     
+      // Handle errors
+      audioElement.addEventListener('error', function() {
+        console.error('Audio error:', audioElement.error);
+        filenameDisplay.textContent = 'Error: File not found';
+        filenameDisplay.style.color = '#000000';
+        downloadLink.style.display = 'none';
+      });
+      
+      // Reset scrolling when audio ends
+      audioElement.addEventListener('ended', function() {
+        // Reset scrolling animation if needed
+        filenameContainer.classList.remove('scrolling');
+        setTimeout(checkScroll, 100);
+      });
+      
+      // Start scrolling on mouseover and pause on mouseout for better user experience
+      filenameContainer.addEventListener('mouseenter', function() {
+        if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
+          filenameContainer.classList.add('scrolling');
+        }
+      });
+      
+      filenameContainer.addEventListener('mouseleave', function() {
+        filenameContainer.classList.remove('scrolling');
+        setTimeout(() => {
+          checkScroll();
+        }, 2000);
+      });
+      
+      // Responsive handling for window resize
+    });
+
+
+
 
 
 // --- DOMContentLoaded Event ---
+
+
+window.addEventListener('resize', checkScroll);
+
 document.addEventListener('DOMContentLoaded', async () => {
 
 
@@ -532,8 +702,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
             renderRoleBasedContent();
 
-            // Ensure these elements exist before manipulating them
-            if (!chatContainer || !chatNotificationBadge) {
+            if (chatContainer && chatNotificationBadge) {
                 chatContainer.classList.remove('hidden');
                 chatNotificationBadge.classList.remove('hidden');        
             }
