@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Appro: Ecosystems Learning Module</title>
+    <title>Approvideo  - clinic request</title>
     <script src="/js/libs/tailwind-3.4.16.es"></script>
     <script src="/js/libs/Dexie.js"></script>
     <script src="/js/libs/dexie-encrypted-addon.min.js"></script>
     <script src="/js/libs/supabase-js2.js"></script>
-
+    <script src="/js/libs/axios.min.js"></script>
     <link rel="stylesheet" href="/style.css">
     <meta property="og:image" content="/assets/appro4.gif">
     <meta property="og:description" content="URL_of_the_image">
@@ -147,8 +147,10 @@
                     <div class="space-y-1">
                     <label for="area" class="text-sm font-semibold text-gray-600">Area</label>
                     <select id="subject-area">
-			<option>La </option>
-			<option>Ro </option>
+			<option>Water Security </option>
+			<option>Renewable Energy</option>
+			<option>Infrastructure Repair </option>
+			<option>Crisis Recovery</option>
                     </select>
                     </div>
     
@@ -200,24 +202,51 @@
     
 </main>
 <script>
-    document.getElementById('clinic-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-  
-      const formData = {
+document.getElementById('clinic-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const thinDevEndpoint = 'https://approlearninghub.thinbackend.app';
+    const formData = {
         userId: document.getElementById('user-id').value,
         name: document.getElementById('name').value,
         region: document.getElementById('region').value,
         context: document.getElementById('context').value,
+        area: document.getElementById('subject-area').value,
         clinicTitle: document.getElementById('clinic-title').value,
         clinicDescription: document.getElementById('clinic-description').value,
         existingProviders: document.getElementById('existing-providers').value,
         expertsInvite: document.getElementById('experts-invite').value,
         criticality: document.getElementById('criticality').value,
         educationalAreas: document.getElementById('educational-areas').value,
-      };
-  
-      // Placeholder: Send formData to Supabase and create a user profile.
-      console.log(formData); // Replace with your Supabase integration.
+    };
+
+    try {
+        await db.proposals.add(formData); // Store in Dexie
+        console.log('Data stored in Dexie.');
+
+        axios.post(thinDevEndpoint, formData)
+            .then(response => {
+                console.log('Success:', response.data);
+                alert("Proposal Submitted to thin.dev and stored locally! A magic link will be sent to your email to confirm your account.");
+                document.getElementById('clinic-form').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while submitting to thin.dev. Please try again.");
+            });
+    } catch (dexieError) {
+        console.error('Dexie error:', dexieError);
+        alert("An error occurred while storing data locally.");
+    }
+
+});
+
+
+
+
+
+
+
       alert("Proposal Submitted! A magic link will be sent to your email to confirm your account.");
       // Clear Form here.
       document.getElementById('clinic-form').reset();
