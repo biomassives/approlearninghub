@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ApproVideo Learning Hub -  Techn Clinic Portal</title>
+    <title>ApproVideo Learning Hub</title>
     <script src="./js/libs/tailwind-3.4.16.es"></script>
     <script src="./js/libs/Dexie.js"></script>
     <script src="./js/libs/dexie-encrypted-addon.min.js"></script>
@@ -203,7 +203,45 @@
       color: #555;
       font-weight: bold;
     }
-  </style>
+
+    .color-panel {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .color-panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .color-panel .icon-bg {
+      position: absolute;
+      right: -10px;
+      bottom: -10px;
+      width: 120px;
+      height: 120px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style> 
+
+
+    
 
 
 </head>
@@ -307,12 +345,13 @@
                                 <img src="/assets/mastodon_logo.svg" alt="Mastodon" class="w-12 h-6 mr-2">
         
                             </button>
+                            <!--
                             <button id="login-portable" 
                             title="Connect to Approvideo Hub guest login"  
                             class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
                                 <i class="fas fa-book mr-2"></i> Guest login
                             </button>
-        <!--
+        
                             <button id="login-with-google" class="w-half bg-green-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition">
                                 <i class="fas fa-book mr-2"></i> Google
                             </button>
@@ -341,11 +380,11 @@
                             <button id="login-with-email" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
                                 <i class="fas fa-envelope mr-2"></i> Continue with Email
                             </button>
-        
+                            <!--
                             <button id="login-with-sms" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
                                 <i class="fas fa-envelope mr-2"></i> Continue with SMS
                             </button>
-                            <!--
+                            
                             <button id="login-with-sms" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition">
                                 <i class="fas fa-envelope mr-2"></i> Continue with NFT
                             </button>
@@ -382,7 +421,7 @@
                                 Log in
                             </button>
                             <button id="timeline-button" class="hidden bg-white text-emerald-700 px-4 py-2 rounded-lg font-medium hover:bg-emerald-100 transition">
-                                quick lessons
+                                reference
                             </button>
                         </div>
 
@@ -1194,11 +1233,12 @@
                 <script src="js/moduleCards.js"></script>
 
         <main class="flex-grow bg-gray-50 container mx-auto px-4 py-6">
+            
 
 
         <section id="timeline-section" class="hidden py-12 bg-gray-100">
             <div class="container max-w-4xl mx-auto px-4">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Quick Lessons</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Reference</h2>
                 <div class="modal-content">
                 <span class="timelineCLOSE">&times;</span>
 
@@ -1251,39 +1291,116 @@
             </button>
             <p class="mt-4 text-gray-500">Already have an account? <a href="#" id="login-link-dashboard" class="text-emerald-600 hover:underline">Sign In</a></p>
 
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="video-section">
-                    <a name="watersec"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
-                    <p class="text-lg font-semibold text-gray-800 mb-2"> Water Security</p>
-                    <p class="text-gray-600 mb-4">Water Security</p>
-                    <a href="#" class="text-emerald-600 hover:underline">Learn More</a>
-                </div>
 
-                <div class="video-section">
-                    <a name="energy"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
-                    <p class="text-lg font-semibold text-gray-800 mb-2"> Renewable Energy </p>
-                    <p class="text-gray-600 mb-4">Short description of video 2.</p>
-                    <a href="#" class="text-emerald-600 hover:underline">Learn More</a>
-                </div>
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Our Clinic Areas</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Water Sec - Plant/Growth Theme -->
+      <div class="color-panel bg-teal-950 text-white rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="sage">
+        <h2 class="text-2xl font-semibold text-green-800">Water Security</h2>
+        <p class="text-white mb-3">Safe drinking water, hygenic sanitation</p>
+        <div class="hover-content hidden text-blue-800 font-medium">
+          Load youtube video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 11.5v-7m0 0l-3 3m3-3l3 3m-12 9.5h16.5M12 18.5c-4.65 0-8.5-3.85-8.5-8.5 0-1.05.22-2.05.6-2.96m17.4 2.96c0 1.05-.22 2.05-.6 2.96M12 18.5c4.65 0 8.5-3.85 8.5-8.5 0-1.05-.22-2.05-.6-2.96M5.63 7.04L4.5 7.5m15-3l-1.1.55" />
+        </svg>
+      </div>
+      
+      <!-- Muted Blue Panel - Water/Ocean Theme -->
+      <div class="color-panel bg-zinc-950 rounded-lg text-white p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="blue">
+        <h2 class="text-2xl font-semibold text-blue-800">Renewble Energy</h2>
+        <p class="text-white mb-3">Small solar electric, diy wind systems, batteries, wiring.</p>
+        <div class="hover-content hidden text-blue-800 font-medium">
+          Load youtube video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+        </svg>
+      </div>
+      
+      <!-- Soft Lavender Panel - Stars/Cosmos Theme -->
+      <div class="color-panel bg-gray-900 rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="lavender">
+        <h2 class="text-2xl font-semibold text-sky-600">Crisis Recovery</h2>
+        <p class="text-white mb-3">Support for resilience mid disruption.</p>
+        <div class="hover-content hidden text-blue-800 font-medium">
+          Load youtube video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+        </svg>
+      </div>
+      
+      <!-- Blush Pink Panel - Heart/Compassion Theme -->
+      <div class="color-panel bg-red-950 rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="pink">
+        <h2 class="text-2xl font-semibold text-black">Infrastructure Repair</h2>
+        <p class="text-white mb-3">Repair and restore basic services.</p>
+        <div class="hover-content hidden text-blue-800 font-medium">
+          Click to load video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Video container (hidden initially) -->
+    <div id="video-section" class="hidden mt-8 transition-all duration-300 ease-in-out">
+      <h2 id="selected-color-title" class="text-2xl font-bold text-center mb-4"></h2>
+      <div class="video-container" id="video-container"></div>
+    </div>
+  </div>
 
-                <div class="video-section">
-                    <a name="infrarepair"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse-slow"></div>
-                    <p class="text-lg font-semibold text-gray-800 mb-2"> Infrastructure Repair</p>
-                    <p class="text-gray-600 mb-4">Short description of video 3.</p>
-                    <a href="/modules/inrastructure-repair/index.html" class="text-emerald-600 hover:underline">Learn More</a>
-                </div>
-
-                <div class="video-section">
-                    <a name="crisisrecovery"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
-                    <p class="text-lg font-semibold text-gray-800 mb-2"> Crisis Recovery</p>
-                    <p class="text-gray-600 mb-4">Short description of video 4.</p>
-                    <a href="#" class="text-emerald-600 hover:underline">Learn More</a>
-                </div>
-            </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const colorPanels = document.querySelectorAll('.color-panel');
+      const videoSection = document.getElementById('video-section');
+      const videoContainer = document.getElementById('video-container');
+      const selectedColorTitle = document.getElementById('selected-color-title');
+      
+      // Rick Roll YouTube video ID
+      const videoId = 'B1QfZs0W8I8';
+      
+      // Show "Click to load" text on hover
+      colorPanels.forEach(panel => {
+        panel.addEventListener('mouseover', () => {
+          const hoverContent = panel.querySelector('.hover-content');
+          hoverContent.classList.remove('hidden');
+        });
+        
+        panel.addEventListener('mouseout', () => {
+          const hoverContent = panel.querySelector('.hover-content');
+          hoverContent.classList.add('hidden');
+        });
+        
+        // Load video on click
+        panel.addEventListener('click', () => {
+          const colorName = panel.querySelector('h2').textContent;
+          selectedColorTitle.textContent = `You selected: ${colorName}`;
+          
+          // Create and append the iframe only after user clicks
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          iframe.title = "YouTube video player";
+          iframe.frameBorder = "0";
+          iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+          iframe.allowFullscreen = true;
+          
+          // Clear previous video if any
+          videoContainer.innerHTML = '';
+          videoContainer.appendChild(iframe);
+          
+          // Show the video section
+          videoSection.classList.remove('hidden');
+          
+          // Scroll to the video section
+          videoSection.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    });
+  </script>
+          
         </div>
     </div>
 </section>
@@ -1457,11 +1574,15 @@
               
             
 
-            <section id="faq-section" class="hidden py-12" style="background-color: #f9faf7;"> <h1 class="text-4xl font-bold mb-4 text-green-800">Appropriate Technology Solutions Library</h1>
+            <section id="faq-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6" style="background-color: #f9faf7;"> <h1 class="text-4xl font-bold mb-4 text-green-800">Appropriate Technology Solutions Library</h1>
             
 
 
-                <div class="lg:w-2/3 mt-4 lg:mt-0">Practical, accessible solutions.</div>
+                <div class="lg:w-2/3 mt-4 lg:mt-0">Open source Education repository</div>
+                <div class="lg:w-1/3 mt-4 lg:mt-0">
+                    <a href="https://github.com/biomassives/approlearninghub/archive/refs/heads/main.zip"><svg data-slot="icon" width=40 height=40 aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg></a></div>
                 <div class="bg-white shadow-md rounded-lg overflow-hidden mb-12">
                     <div class="tabs-container border-b border-gray-200 overflow-x-auto whitespace-nowrap">
                         <div class="flex">
@@ -1495,27 +1616,14 @@
                         <div id="watsan-content" class="tab-content hidden">
                             <div class="mb-8">
                                 <div class="lg:flex gap-6">
-                                    <div class="lg:w-1/2">
+                                    <div class="lg:w-1/4">
                                         
 
-                                        <svg width="150" height="200" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                              <linearGradient id="gradient" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
-                                                <stop offset="30%" style="stop-color:#ADD8E6;stop-opacity:1" />
-                                                <stop offset="70%" style="stop-color:#00BFFF;stop-opacity:1" />
-                                                <stop offset="100%" style="stop-color:#1E90FF;stop-opacity:1" />
-                                              </linearGradient>
-                                            </defs>
-                                            <path d="M 75 180 C 120 160 120 100 75 30 C 30 100 30 160 75 180 Z" fill="url(#gradient)" stroke="#2979FF" stroke-width="2"/>
-                                            <ellipse cx="75" cy="50" rx="25" ry="15" fill="#FFFFFF" opacity="0.6"/>
-                                          </svg>
-
-                                          <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M 50 85 C 75 70 85 40 50 15 C 15 40 25 70 50 85 Z" fill="white" />
-                                            <path d="M 30 70 C 35 60 45 60 50 65" stroke="black" stroke-width="3" stroke-linecap="round" fill="none" />
-                                          </svg>
-
+                                        <svg fill="#4a90e2" height="77px" width="77px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 501.42 501.42" xml:space="preserve" stroke="#4a90e2" stroke-width="7.521344999999999" transform="matrix(-1, 0, 0, 1, 0, 0)"></svg>
+					    
+ </div>
+ <div class="lg:w-1/2">
+                                        
 
                                         <ul class="mb-4 text-gray-700">
 
@@ -1526,7 +1634,7 @@
                                         </ul>
                                         
                                     </div>
-                                    <div class="lg:w-1/2 mt-4 lg:mt-0">
+                                    <div class="lg:w-1/4 mt-4 lg:mt-0">
                                         <p class="text-2xl text-gray-500 mt-2"><strong>Emergency water sourcing</strong></p>
 
                                                 <ul style="list-style-type: disc; margin-block-start: 1em; padding-inline-start: 40px;">
@@ -1591,6 +1699,9 @@
                             <div class="mb-8">
                                 <div class="lg:flex gap-6">
 
+                                    <div class="lg:w-1/3 order-1 lg:order-1">
+
+                                    </div>
                                     <div class="lg:w-2/3 order-1 lg:order-2">
 
                                         <ul class="mb-4 text-gray-700">
@@ -1615,8 +1726,8 @@
                                               </svg>
                                         
                                         <ul class="mb-4 text-gray-700">
-                                            <li class="mb-2"><strong class="text-orange-700">Assessment of emergency collection methods</strong>: Temporary latrines, mobile sanitation units, and improvised facilities</li>
-                                            <li class="mb-2"><strong class="text-orange-700">Basic treatment processes</strong>: Filtration, chlorination, and purification appropriate for emergency contexts</li>
+                                            <li class="mb-2"><strong class="text-orange-700">Waste Segregation and Temporary Collection Points:</strong>: Temporary latrines, mobile sanitation units, and improvised facilities</li>
+                                            <li class="mb-2"><strong class="text-orange-700">Community-Led Safe Disposal Awareness</strong>: Community designated safe burial of non-recyclable and hazardous wastes.</li>
                                             <li class="mb-2"><strong class="text-orange-700">Safe disposal options</strong>: Composting latrines, leach pits, and safe burial techniques</li>
                                         </ul>
                                         
@@ -1629,39 +1740,33 @@
                         <div id="technology-content" class="tab-content hidden">
     
                             <div>
+
+
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Technical feasibility</h4>
-                                        <p class="text-gray-700">Can the technology function with available resources?</p>
+                                    <div class="bg-teal-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-green-700 mb-2">Solar Electric</h4>
+                                        <p class="text-gray-700">Panel, battery, & electronics sizing &amp; installation</p>
                                     </div>
                                     <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Financial sustainability</h4>
-                                        <p class="text-gray-700">Is it affordable for implementation and long-term maintenance?</p>
+                                        <h4 class="font-semibold text-green-700 mb-2">Off-Grid Solar</h4>
+                                        <p class="text-gray-700">System design and maintenance plan</p>
+                                    </div>
+                                    <div class="bg-teal-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-green-700 mb-2">Biogas</h4>
+                                        <p class="text-gray-700">Produces cooking gas and electric power</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-green-700 mb-2">DIY windpower </h4>
+                                        <p class="text-gray-700">Small wind energy system design considerations </p>
                                     </div>
                                     <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Social acceptability</h4>
-                                        <p class="text-gray-700">Will it be embraced and used by the community?</p>
+                                        <h4 class="font-semibold text-green-700 mb-2">Tidal and Wave Power</h4>
+                                        <p class="text-gray-700">Ocean power approaches</p>
                                     </div>
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Environmental impact</h4>
-                                        <p class="text-gray-700">Does it protect or restore the environment?</p>
-                                    </div>
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Operational simplicity</h4>
-                                        <p class="text-gray-700">Can it be operated by community members with limited training?</p>
-                                    </div>
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Resilience</h4>
-                                        <p class="text-gray-700">Can it withstand challenging conditions?</p>
-                                    </div>
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Adaptability</h4>
-                                        <p class="text-gray-700">Can it be modified to suit changing circumstances?</p>
-                                    </div>
-                                    <div class="bg-green-50 p-4 rounded-lg">
-                                        <h4 class="font-semibold text-green-700 mb-2">Security concerns</h4>
-                                        <p class="text-gray-700">Can it be safely implemented in insecure environments?</p>
+                                    <div class="bg-teal-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-green-700 mb-2">Community Mictrogrids</h4>
+                                        <p class="text-gray-700">Interesting solutions in use today</p>
                                     </div>
                                 </div>
                             </div>
@@ -2010,7 +2115,7 @@
                 
         </section>
 
-        <section id="smallgrants-section" class="hidden py-12 bg-gray-100">
+        <section id="smallgrants-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
 
         <h2 class="text-3xl font-bold text-gray-800 mb-4">Flexible Microgrants</h2>
         <p class="text-gray-700 mb-4"><b>We do not have grants available yet at this time. These area the areas we aim to support.</b></p>
@@ -2121,20 +2226,22 @@
 
 
 
-        <section id="blog-section" class="hidden">
+        <section id="blog-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">ApproVideo Community Blog</h2>
             <article id="blogpost-1" >
 
 
-            <h2 id="title" class="text-3xl font-bold text-gray-800 mb-4">ApproVideo insired by ECHO Program</h2>
+            <h2 id="title" class="text-3xl font-bold text-gray-800 mb-4">ApproVideo inspired by ECHO Program's approach</h2>
 
-            <b>Introduction</b>
-                <p>For over seven years, I've had the honor of serving as the director of the Sustainable Community Development Hub (SCDHub), a non-profit organization dedicated to empowering communities through sustainable practices. In 2024, we had the opportunity to assist a group of recently displaced immigrants from Kabul.  I was personally involved in delivering donated computers and printers to these individuals, and I was struck by their incredible skills and expertise in engineering and other technical fields. This experience solidified my understanding of the urgent need for effective educational programs that can help displaced professionals like my new friends from Kabul rebuild their careers and contribute their talents to their new communities. That's where the ECHO model comes in.
-                <BR>
 
                 <h4><i>What is the ECHO Model?</i></h4>
 
-                The ECHO (Extension for Community Healthcare Outcomes) model is a powerful framework for delivering knowledge and building capacity. Originally developed for medical education, it has proven incredibly adaptable and is now being used across various disciplines. At its core, ECHO utilizes a hub-and-spoke structure, connecting expert mentors ("hubs") with learners ("spokes") in interactive online sessions. This fosters a dynamic "all teach, all learn" environment where knowledge is shared, challenges are addressed collaboratively, and best practices are disseminated.
+                The ECHO (Extension for Community Healthcare Outcomes) was originally developed for medical education, is now 
+                being used across various disciplines. At its core, ECHO utilizes a hub-and-spoke structure, connecting expert 
+                mentors ("hubs") with learners ("spokes") in interactive online sessions. 
+                
+                This fosters a dynamic "all teach, all learn" environment where knowledge is shared, 
+                challenges are addressed collaboratively, and best practices are disseminated.
                 <BR>
                 
                 <h4><i>Why ECHO for Displaced Professionals?</i></h4>
@@ -2142,27 +2249,26 @@
                 Displaced scientists and engineers often face significant challenges in accessing traditional educational opportunities. The ECHO model's flexibility and online nature make it an ideal solution. It breaks down geographical barriers, allowing learners to connect with experts and peers worldwide. It also fosters a sense of community, which is crucial for individuals who have been displaced from their homes and professional networks.<BR>
                 <BR>    
                 
-                <h4><i>Approvideo Hub and the ECHO Model</i></h4>
+                <h4><i>Approvideo Hub's role</i></h4>
 
-                Approvideo Hub is embracing the ECHO model to provide accessible and relevant technical training to displaced scientists and engineers. We envision creating specialized ECHO programs in areas like water security, renewable energy, and infrastructure repair – fields that are critical for rebuilding communities and fostering resilience. By leveraging the ECHO model, we aim to create a thriving online learning community where displaced professionals can regain their footing, connect with peers, and contribute their expertise to global challenges.
+                Approvideo Hub supports
+                displaced scientists and engineers by creating 
+                specialized programs in areas like water security, 
+                renewable energy, infrastructure repair nd crisis recovery. 
+                We aim to create a thriving online 
+                learning community where displaced professionals can regain their 
+                footing, connect with peers, find support while providing mentorship 
+                to global challenges.
                 <BR>
                 <BR> 
 
-                <h4><i>Conclusion:</i></h4>
-
-                The ECHO model offers a powerful and proven pathway to empower displaced professionals. By combining online learning, mentorship, and peer-to-peer collaboration, ECHO can help displaced scientists and engineers like those I met from Kabul to rebuild their careers, contribute to their new communities, and continue making valuable contributions to the world.
-                <BR>
                 <BR>
 
-                <h2><i>Call to Action:</i></h2>
-
-                Learn more about the ECHO model and how you can support Approvideo Hub's initiative to empower displaced professionals.
-                <BR>
 
             </article>
         </section>
 
-        <section id="about-section" class="hidden">
+        <section id="about-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
             <h2 class="text-3xl font-bold text-gray-800 mb-4">About Approvideo Hub</h2>
 
             <h2>Empowering Displaced Scientists and Engineers: A Global Initiative</h2>
@@ -2261,7 +2367,7 @@
                 </div>
     </section>
 
-    <section id="practical-clinics-section" class="hidden py-12">
+    <section id="practical-clinics-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
 
                     <h1 class="text-2xl font-bold mt-1 text-text-200">Approvideo Clinics</h1>
                         <br>
@@ -2371,7 +2477,7 @@
                             float-4 
                             flex items-center justify-center" data-category="waste-management">
                               
-                            <i class="fas fa-2x fa-trash"></i>
+                            <i class="fas fa-2x fa-trash" width=50 height=50></i>
                               <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
                                          bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
                                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
