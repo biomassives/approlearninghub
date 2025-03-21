@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Approvideo  - emt skills review module</title>
+    <script src="/js/libs/tailwind-3.4.16.es"></script>
+    <script src="/js/libs/Dexie.js"></script>
+    <script src="/js/libs/dexie-encrypted-addon.min.js"></script>
+    <script src="/js/libs/supabase-js2.js"></script>
+    <script src="/js/libs/axios.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.0/dist/panzoom.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/style.css">
+    <meta property="og:image" content="/assets/appro4.gif">
+    <meta property="og:description" content="URL_of_the_image">
+    <meta property="og:title" content="Approvideo Learning Hub - Community Health  -appropriate- Sustainable Development Portal">   
+
+    <meta name="description" content="Appropriate Technology Engineering and Science Clinics">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Approvideo Hub">
+    <meta name="application-name" content="Approvideo Hub">
+    <meta name="theme-color" content="#047857">
+    <meta name="License" content="GPLv3">
+    <meta name="msapplication-TileColor" content="#047857">
+    <meta name="msapplication-TileImage" content="/assets/ms-icon-144x144.png">
+
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" href="/favicon.ico"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/manifest.js"></script>
+    <style>
+          body {
+          font-family: sans-serif;
+          margin: 20px;
+          }
+          h1 {
+          text-align: left;
+          margin-bottom: 30px;
+          }
+          .item-container {
+          border: 1px solid #ddd;
+          padding: 20px;
+          margin-bottom: 20px;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+          .item-container h2 {
+          margin-top: 0;
+          color: #333;
+          }
+          .item-container h3 {
+          margin-top: 10px;
+          color: #555;
+          }
+          .item-container p, .item-container ul, .item-container ol {
+          line-height: 1.6;
+          }
+          .item-container ul, .item-container ol {
+          padding-left: 20px;
+          }
+
+          .header {
+          display: flex;
+          align-items: center; /* Aligns items vertically centered */
+          padding: 10px;       /* Adjust as needed */
+          }
+
+          .logo {
+          margin-right: 20px;  /* Creates spacing between logo and breadcrumbs */
+          }
+
+          .breadcrumbs ul {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          }
+
+          .breadcrumbs li + li::before {
+          content: ">>";
+          margin: 0 10px;
+          color: #ffffff;         /* Change color as desired */
+          }
+
+    /* Smooth transitions for theme toggling */
+    body {
+      transition: background-color 0.3s, color 0.3s;
+    }
+    /* Container for the SVG diagram */
+    .diagram-container {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      background: linear-gradient(
+          to bottom,
+          rgba(207, 235, 216, 0.8),
+          rgba(121, 243, 141, 0.8)
+        );
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: background-color 0.3s, background-image 0.3s;
+    }
+    /* Info panel on the right side */
+    .info-panel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100vh;
+      background: white;
+      padding: 20px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: none;
+      overflow-y: auto;
+      transition: background-color 0.3s;
+    }
+    /* Node rectangle styles with higher contrast green */
+    .box-shadow {
+      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.25));
+    }
+    .node rect {
+      fill: #2a4e08;        /* Darker green for better contrast */
+      stroke: #1B5E20;      /* Even darker green for the stroke */
+      stroke-width: 2;
+      transition: filter 0.2s;
+    }
+    .node rect.dark {
+      fill: #d4fbb0;        /* Darker green for better contrast */
+      stroke: #ff9010;      /* Even darker green for the stroke */
+      stroke-width: 2;
+      transition: filter 0.2s;
+    }
+    .node.dark text {
+      fill: #000000;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+    /* Node text in white, a bit bigger for readability */
+    .node text {
+      fill: #FFF;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+    /* Hover effect for nodes */
+    .node:hover rect {
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+      cursor: pointer;
+    }
+    .node.dark:hover rect {
+      filter: drop-shadow(0 0 8px rgb(255, 162, 0));
+      cursor: pointer;
+    }
+
+    .Y-no-label {
+      fill: #1B5E20;
+      font-size: 12px;
+      font-family: Arial;
+      text-anchor: middle;
+    }
+    .Y-no-circle {
+      fill: white;
+      stroke: #2E7D32;
+      stroke-width: 2;
+    }
+    body.dark .Y-no-circle {
+      fill: #2c2c2c;
+      stroke: #fefd10;
+    }
+    body.dark .Y-no-label {
+      fill: #fefd10;
+    }
+    text.roguetext.dark {
+      color: #fff;
+    }
+
+
+    /* Zoom buttons in dark mode */
+    body.dark #zoomInBtn, 
+    body.dark #zoomOutBtn {
+      background-color: #4a4a4a;
+      color: #fff;
+      border: 1px solid #666;
+    }
+    /* Header in dark mode */
+    body.dark .header {
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+    /* High contrast colors for better readability */
+    body.dark .node rect {
+      fill: #0f4912;
+      stroke: #fefd10;  /* Bright yellow stroke */
+    }
+
+    
+    /* Dark mode overrides */
+    body.dark {
+      background-color: #1e1e1e; /* A dark background for the body */
+      color: #ddd;
+    }
+    body.dark .diagram-container {
+      /* Dim or remove the background image in dark mode */
+      background: #2a2a2a;
+    }
+    body.dark .info-panel {
+      background-color: #333;
+      color: #ddd;
+    }
+    /* In dark mode, shift node color to a lighter or more saturated green for clarity */
+    body.dark .node rect {
+      fill: #0f4912;
+      stroke: #fefffe;
+    }
+    /* Outline text of the process */
+    .process-outline {
+      padding: 1rem;
+    }
+    .process-outline h2 {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+
+
+
+</head>
+
+    <body class="bg-gray-50 min-h-screen">
+                <header class="header flex flex-col items-start bg-rose-950 text-white p-4 shadow-md">
+                    <div class="logo flex items-start">
+                        <a href=/><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                        stroke-linecap="round" stroke-linejoin="round" 
+                        class="icon-butto>n animate bg-grey-100 flex items-center" >
+                            <path d="M12 2.5c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10z" />
+                            <path d="M15.5 8.5l-4 4 4 4" />
+                            <path d="M8.5 15.5l4-4-4-4" />
+                            <path d="M16 16.5l-1.5-1.5" />
+                            <path d="M8 16.5l1.5-1.5" />
+                            <path d="M14.146 7.146l1.414-1.414" />
+                            <path d="M9.854 7.146l-1.414-1.414" />
+                            </svg></a>           
+                        <h1 class="text-xl font-bold"><a href=/>Approvideo Learning Hub</a></h1>
+                    </div>
+                    <nav class="breadcrumbs w-full and text-left" >
+                      <ul>
+                        <li>Approvideo Community Clinics </li>
+                      </ul>
+                    </nav>
+  
+                </header>
+
+<main>
+    <div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+
+  <div class="flex flex-col h-screen">
+    <!-- Header / Toggle -->
+    <div class="p-4 bg-white shadow flex items-center justify-between">
+      <h1 class="text-xl font-bold">EMT Decision Tree</h1>
+      <button 
+        id="toggleThemeBtn" 
+        class="px-4 py-2 bg-green-600 text-white rounded shadow"
+      >
+        Toggle Theme
+      </button>
+    </div>
+
+
+
+
+    
+    <div class="flex flex-grow overflow-hidden">
+      <!-- Diagram area -->
+      <div class="diagram-container flex-grow relative">
+        <!-- Zoom controls -->
+        <div class="absolute top-4 left-4 flex flex-col space-y-2 z-10">
+          <button id="zoomInBtn" class="px-3 py-1 bg-white dark:text-violet-700 dark:bg-indigo-700 rounded shadow">
+            Zoom In
+          </button>
+          <button id="zoomOutBtn" class="px-3 py-1 bg-white dark:text-violet-100 dark:bg-indigo-700 rounded shadow">
+            Zoom Out
+          </button>
+        </div>
+
+        <!-- SVG-based decision tree -->
+        <div id="diagram">
+            <svg
+            id="decisionTree"
+            width="4900"
+            height="640"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Arrow marker -->
+            <defs>
+              <marker
+                id="arrow"
+                markerWidth="10"
+                markerHeight="10"
+                refX="6"
+                refY="3"
+                orient="auto"
+              >
+                <path d="M0,0 L0,6 L6,3 z" fill="#2E7D32"></path>
+              </marker>
+            </defs>
+          
+            <!-- A[Start] -->
+            <g class="node" data-step="A">
+              <rect x="100" y="100" width="120" height="50" rx="10" fill="#388E3C"/>
+              <text x="160" y="125" text-anchor="middle" fill="white">
+                Start
+              </text>
+            </g>
+          
+            <!-- B{Is the scene safe?} -->
+            <g class="node" data-step="B">
+              <rect x="400" y="100" width="200" height="50" rx="10" fill="#388E3C"/>
+              <text x="500" y="125" text-anchor="middle" fill="white">
+                Is the scene safe?
+              </text>
+            </g>
+            <!-- A->B (Scene Assessment label) -->
+            <text x="250" y="90" fill="#1B5E20" font-size="12" class="roguetext">Scene Assessment</text>
+            <line
+              x1="220" y1="125"
+              x2="400" y2="125"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- C[BSI] (Y from B) -->
+            <g class="node" data-step="C">
+              <rect x="700" y="60" width="170" height="40" rx="10" fill="#388E3C"/>
+              <text x="790" y="85" text-anchor="middle" fill="white">Protective Equipment</text>
+            </g>
+            <circle cx="600" cy="105" r="15" fill="#388E3C"/>
+            <text x="600" y="110" fill="white" font-size="12">Y</text>
+            <line
+              x1="600" y1="125"
+              x2="700" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- D[Secure the scene] (No from B) -->
+            <g class="node" data-step="D">
+              <rect x="700" y="150" width="170" height="40" rx="10" fill="#388E3C"/>
+              <text x="785" y="175" text-anchor="middle" fill="white">
+                Secure the scene
+              </text>
+            </g>
+            <circle cx="600" cy="145" r="15" fill="#388E3C"/>
+            <text x="600" y="150" fill="white" font-size="12">N</text>
+            <line
+              x1="600" y1="125"
+              x2="700" y2="170"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- E[Request assistance] -->
+            <g class="node" data-step="E">
+              <rect x="900" y="150" width="170" height="40" rx="10" fill="#388E3C"/>
+              <text x="985" y="175" text-anchor="middle" fill="white">
+                Request assistance
+              </text>
+            </g>
+            <!-- D->E -->
+            <line
+              x1="870" y1="170"
+              x2="900" y2="170"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- F[General Impression] -->
+            <g class="node" data-step="F">
+              <rect x="900" y="60" width="180" height="40" rx="10" fill="#388E3C"/>
+              <text x="990" y="85" text-anchor="middle" fill="white">
+                General Impression
+              </text>
+            </g>
+            <!-- C->F -->
+            <line
+              x1="865" y1="80"
+              x2="900" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- G{Assess LOC} -->
+            <g class="node" data-step="G">
+              <rect x="1150" y="60" width="160" height="40" rx="10" fill="#388E3C"/>
+              <text x="1230" y="85" text-anchor="middle" fill="white">
+                Assess mental state
+              </text>
+            </g>
+            <!-- F->G -->
+            <line
+              x1="1080" y1="80"
+              x2="1150" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- H[Airway] (Alert/Verbal/Painful from G) -->
+            <g class="node" data-step="H">
+              <rect x="1400" y="20" width="100" height="40" rx="10" fill="#388E3C"/>
+              <text x="1450" y="45" text-anchor="middle" fill="white">Airway</text>
+            </g>
+            <!-- We have 3 paths from G: Alert/Verbal, Painful => H, Unresponsive => I.
+                 For simplicity, we will show them as 2 lines labeled "Y" and "No," or
+                 use small text for "Alert/Verbal/Painful" vs "Unresponsive." -->
+          
+            <!-- "Alert/Verbal/Painful" circle near the line to H -->
+            <circle cx="1335" cy="55" r="25" fill="#388E3C"/>
+            <text x="1320" y="60" fill="white" font-size="10">
+              A/V/P
+            </text>
+            <line
+              x1="1310" y1="80"
+              x2="1400" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- I[Open airway] (Unresponsive from G) -->
+            <g class="node" data-step="I">
+              <rect x="1400" y="100" width="140" height="40" rx="10" fill="#388E3C"/>
+              <text x="1470" y="125" text-anchor="middle" fill="white">
+                Open airway
+              </text>
+            </g>
+            <!-- "Unresponsive" circle near line to I -->
+            <circle cx="1335" cy="115" r="25" fill="#388E3C"/>
+            <text x="1320" y="120" fill="white" font-size="10">
+              Unresp
+            </text>
+            <line
+              x1="1310" y1="80"
+              x2="1400" y2="100"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- I->H -->
+            <line
+              x1="1470" y1="140"
+              x2="1450" y2="60"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- J{Ensure airway is unobstructed?} -->
+            <g class="node" data-step="J">
+              <rect x="1600" y="20" width="160" height="40" rx="10" fill="#388E3C"/>
+              <text x="1680" y="45" text-anchor="middle" fill="white">
+                Airway unobstructed?
+              </text>
+            </g>
+            <!-- H->J -->
+            <line
+              x1="1500" y1="40"
+              x2="1600" y2="40"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- K[Breathing] (Y from J) -->
+            <g class="node" data-step="K">
+              <rect x="1900" y="0" width="120" height="40" rx="10" fill="#388E3C"/>
+              <text x="1960" y="25" text-anchor="middle" fill="white">Breathing</text>
+            </g>
+            <circle cx="1770" cy="31" r="15" fill="#388E3C"/>
+            <text x="1770" y="36" fill="white" font-size="12">Y</text>
+            <line
+              x1="1780" y1="48"
+              x2="1900" y2="20"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- L[Open airway] (N from J) -->
+            <g class="node" data-step="L">
+              <rect x="1900" y="60" width="140" height="40" rx="10" fill="#388E3C"/>
+              <text x="1970" y="85" text-anchor="middle" fill="white">
+                Open airway
+              </text>
+            </g>
+            <circle cx="1770" cy="66" r="15" fill="#388E3C"/>
+            <text x="1770" y="71" fill="white" font-size="12">N</text>
+            <line
+              x1="1780" y1="48"
+              x2="1900" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <!-- L->K -->
+            <line
+              x1="1970" y1="100"
+              x2="1960" y2="40"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- M{Adequate breathing?} -->
+            <g class="node" data-step="M">
+              <rect x="2100" y="30" width="200" height="40" rx="10" fill="#388E3C"/>
+              <text x="2200" y="55" text-anchor="middle" fill="white">
+                Adequate breathing?
+              </text>
+            </g>
+            <!-- K->M -->
+            <line
+              x1="2020" y1="20"
+              x2="2100" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- N[Circulation] (Y from M) -->
+            <g class="node" data-step="N">
+              <rect x="2400" y="0" width="140" height="40" rx="10" fill="#388E3C"/>
+              <text x="2470" y="25" text-anchor="middle" fill="white">
+                Circulation
+              </text>
+            </g>
+            <circle cx="2300" cy="40" r="15" fill="#388E3C"/>
+            <text x="2300" y="45" fill="white" font-size="12">Y</text>
+            <line
+              x1="2300" y1="50"
+              x2="2400" y2="20"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- O[Provide ventilations] (No from M) -->
+            <g class="node" data-step="O">
+              <rect x="2400" y="60" width="200" height="40" rx="10" fill="#388E3C"/>
+              <text x="2500" y="85" text-anchor="middle" fill="white">
+                Provide ventilation
+              </text>
+            </g>
+            <circle cx="2300" cy="80" r="15" fill="#388E3C"/>
+            <text x="2300" y="85" fill="white" font-size="12">N</text>
+            <line
+              x1="2300" y1="50"
+              x2="2400" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <!-- O->N -->
+            <line
+              x1="2500" y1="100"
+              x2="2470" y2="40"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- P{Pulse present?} -->
+            <g class="node" data-step="P">
+              <rect x="2650" y="30" width="160" height="40" rx="10" fill="#388E3C"/>
+              <text x="2730" y="55" text-anchor="middle" fill="white">
+                Pulse present?
+              </text>
+            </g>
+            <!-- N->P -->
+            <line
+              x1="2540" y1="20"
+              x2="2650" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- Q[Control bleeding] (Y) -->
+            <g class="node" data-step="Q">
+              <rect x="2900" y="0" width="180" height="40" rx="10" fill="#388E3C"/>
+              <text x="2990" y="25" text-anchor="middle" fill="white">
+                Control bleeding
+              </text>
+            </g>
+            <circle cx="2810" cy="40" r="15" fill="#388E3C"/>
+            <text x="2810" y="45" fill="white" font-size="12">Y</text>
+            <line
+              x1="2810" y1="50"
+              x2="2900" y2="20"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- R[Start CPR] (No) -->
+            <g class="node" data-step="R">
+              <rect x="2900" y="60" width="130" height="40" rx="10" fill="#388E3C"/>
+              <text x="2965" y="85" text-anchor="middle" fill="white">
+                Start CPR
+              </text>
+            </g>
+            <circle cx="2810" cy="80" r="15" fill="#388E3C"/>
+            <text x="2810" y="85" fill="white" font-size="12">N</text>
+            <line
+              x1="2810" y1="50"
+              x2="2900" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- S{High priority?} -->
+            <g class="node" data-step="S">
+              <rect x="3150" y="30" width="150" height="40" rx="10" fill="#388E3C"/>
+              <text x="3225" y="55" text-anchor="middle" fill="white">
+                High priority?
+              </text>
+            </g>
+            <!-- Q->S and R->S -->
+            <line
+              x1="3080" y1="20"
+              x2="3150" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <line
+              x1="3020" y1="80"
+              x2="3150" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- T[Rapid Transport] (Y) -->
+            <g class="node" data-step="T">
+              <rect x="3400" y="0" width="160" height="40" rx="10" fill="#388E3C"/>
+              <text x="3480" y="25" text-anchor="middle" fill="white">
+                Rapid Transport
+              </text>
+            </g>
+            <circle cx="3300" cy="40" r="15" fill="#388E3C"/>
+            <text x="3300" y="45" fill="white" font-size="12">Y</text>
+            <line
+              x1="3300" y1="50"
+              x2="3400" y2="20"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- U[History Taking] (No) -->
+            <g class="node" data-step="U">
+              <rect x="3400" y="60" width="160" height="40" rx="10" fill="#388E3C"/>
+              <text x="3480" y="85" text-anchor="middle" fill="white">
+                History Taking
+              </text>
+            </g>
+            <circle cx="3300" cy="80" r="15" fill="#388E3C"/>
+            <text x="3300" y="85" fill="white" font-size="12">N</text>
+            <line
+              x1="3300" y1="50"
+              x2="3400" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- V{Assessment type} -->
+            <g class="node" data-step="V">
+              <rect x="3650" y="60" width="170" height="40" rx="10" fill="#388E3C"/>
+              <text x="3735" y="85" text-anchor="middle" fill="white">
+                Assessment type
+              </text>
+            </g>
+            <!-- U->V -->
+            <line
+              x1="3560" y1="80"
+              x2="3650" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- W[Examine relevant system] (Focused) -->
+            <g class="node" data-step="W">
+              <rect x="3900" y="20" width="220" height="40" rx="10" fill="#388E3C"/>
+              <text x="4010" y="45" text-anchor="middle" fill="white">
+                Examine relevant system
+              </text>
+            </g>
+            <ellipse cx="3843" cy="60" rx="35" ry="18" fill="#388E3C" />
+
+            <text x="3820" y="65" fill="white" font-size="12">Focused</text>
+            <line
+              x1="3860" y1="80"
+              x2="3900" y2="40"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- X[Head-to-toe exam] (Detailed) -->
+            <g class="node" data-step="X">
+              <rect x="3900" y="100" width="180" height="40" rx="10" fill="#388E3C"/>
+              <text x="3990" y="125" text-anchor="middle" fill="white">
+                Head-to-toe exam
+              </text>
+            </g>
+            <ellipse cx="3843" cy="100" rx="35" ry="18" fill="#388E3C" />
+            <text x="3820" y="105" fill="white" font-size="12">Detailed</text>
+            <line
+              x1="3860" y1="80"
+              x2="3900" y2="120"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- Y[Treatment] -->
+            <g class="node" data-step="Y">
+              <rect x="4150" y="60" width="120" height="40" rx="10" fill="#388E3C"/>
+              <text x="4210" y="85" text-anchor="middle" fill="white">
+                Treatment
+              </text>
+            </g>
+            <!-- W->Y, X->Y -->
+            <line
+              x1="4110" y1="40"
+              x2="4150" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <line
+              x1="4060" y1="120"
+              x2="4150" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- Z[Transport] -->
+            <g class="node" data-step="Z">
+              <rect x="4300" y="60" width="120" height="40" rx="10" fill="#388E3C"/>
+              <text x="4360" y="85" text-anchor="middle" fill="white">
+                Transport
+              </text>
+            </g>
+            <!-- Y->Z -->
+            <line
+              x1="4270" y1="80"
+              x2="4300" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- AA[Monitoring] -->
+            <g class="node" data-step="AA">
+              <rect x="4450" y="60" width="140" height="40" rx="10" fill="#388E3C"/>
+              <text x="4520" y="85" text-anchor="middle" fill="white">
+                Monitoring
+              </text>
+            </g>
+            <!-- Z->AA -->
+            <line
+              x1="4420" y1="80"
+              x2="4450" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- AB[Hospital Handover] -->
+            <g class="node" data-step="AB">
+              <rect x="4600" y="60" width="190" height="40" rx="10" fill="#388E3C"/>
+              <text x="4695" y="85" text-anchor="middle" fill="white">
+                Hospital Handover
+              </text>
+            </g>
+            <!-- AA->AB -->
+            <line
+              x1="4590" y1="80"
+              x2="4600" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          
+            <!-- AC[End] -->
+            <g class="node" data-step="AC">
+              <rect x="4800" y="60" width="80" height="40" rx="10" fill="#388E3C"/>
+              <text x="4840" y="85" text-anchor="middle" fill="white">
+                End
+              </text>
+            </g>
+            <!-- AB->AC -->
+            <line
+              x1="4790" y1="80"
+              x2="4800" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+          </svg>
+          
+        </div>
+      </div>
+
+      <!-- Info panel on the right -->
+      <div class="info-panel" id="infoPanel">
+        <button
+          class="absolute top-2 right-2 text-gray-500 text-xl"
+          onclick="closePanel()"
+        >
+          &times;
+        </button>
+        <h3 class="text-xl font-bold mb-4" id="stepTitle"></h3>
+        <div id="stepContent" class="prose"></div>
+        <div id="videoContent" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text Outline of the Flow -->
+  <div class="process-outline">
+    <h2>Process Outline</h2>
+
+    <ol> <li><b>Start</b> <ul> <li>The process begins, initiating the assessment and response protocol.</li> </ul> </li> <li><b>Scene Assessment</b> <ul> <li><b>Action:</b> Evaluate the surrounding environment to understand the context and identify any immediate dangers. This includes: 1 <ul> <li>Noting the presence of environmental hazards (e.g., downed power lines, traffic, fire, hazardous materials).</li> <li>Observing bystanders and their behavior.</li> <li>Identifying potential threats (e.g., weapons, aggressive individuals).</li> <li>Considering the mechanism of injury or nature of illness.</li> </ul> </li> <li><b>Decision Point:</b> Is the scene safe?</li> </ul> </li> <li><b>Is the Scene Safe?</b> <ul> <li><b>Yes:</b> Proceed to Basic Impression (BSI).</li> <li><b>No:</b> Transition to Secure the Scene.</li> </ul> </li> <li><b>Secure the Scene (If Scene is Not Safe)</b> <ul> <li><b>Action:</b> Take necessary measures to make the environment safe for both the responder and the victim. This may involve: 2 <ul> <li>Contacting law enforcement for assistance with violent situations or crowd control.</li> <li>Moving the patient to a safer location if possible.</li> <li>Mitigating hazards (e.g., turning off power, containing spills).</li> </ul> </li> <li><b>Next Step:</b> Request Assistance.</li> </ul> </li> <li><b>Request Assistance</b> <ul> <li><b>Action:</b> Call for additional help or emergency services to ensure adequate support is available. This may include: 2 <ul> <li>Requesting additional EMS units.</li> <li>Calling for specialized resources (e.g., fire department, HazMat team).</li> </ul> </li> <li><b>Flow Continues Back to:</b> Basic Impression (BSI) after securing the scene and obtaining assistance.</li> </ul> </li> <li><b>Basic Impression (BSI)</b> <ul> <li><b>Action:</b> Conduct an initial survey to gather general information about the victim’s condition and the situation. This includes: 1 <ul> <li>Taking standard precautions (e.g., wearing gloves, eye protection) 3.</li> <li>Forming a general impression of the patient's appearance and level of distress.</li> </ul> </li> <li><b>Next Step:</b> General Impression.</li> </ul> </li> <li><b>General Impression</b> <ul> <li><b>Action:</b> Observe the victim for any obvious signs of distress, injury, or abnormal behavior.</li> <li><b>Next Step:</b> Assess Level of Consciousness (LOC).</li> </ul> </li> <li><b>Assess Level of Consciousness (LOC)</b> <ul> <li><b>Decision Point:</b> Is the victim Alert/Verbal, Responding to Pain, or Unresponsive? <ul> <li><b>Alert/Verbal:</b> Move to Airway Management.</li> <li><b>Responding to Pain:</b> Also move to Airway Management.</li> <li><b>Unresponsive:</b> Proceed to Open Airway.</li> </ul> </li> </ul> </li> <li><b>Unresponsive?</b> <ul> <li><b>Action:</b> If the victim is unresponsive, immediately Open Airway to ensure the airway is clear.</li> </ul> </li> <li><b>Open Airway</b> <ul> <li><b>Action:</b> Utilize appropriate techniques (e.g., head-tilt, chin-lift) to open the victim’s airway.</li> <li><b>Next Step:</b> Airway Patent?</li> </ul> </li> <li><b>Airway Patent?</b> <ul> <li><b>Decision Point:</b> Is the airway clear and open? <ul> <li><b>Yes:</b> Continue to Breathing Assessment.</li> <li><b>No:</b> Reattempt Open Airway.</li> </ul> </li> </ul> </li> <li><b>Breathing Assessment</b> <ul> <li><b>Decision Point:</b> Is breathing adequate? <ul> <li><b>Yes:</b> Proceed to Circulation Assessment.</li> <li><b>No:</b> Provide Ventilations to support breathing.</li> </ul> </li> </ul> </li> <li><b>Provide Ventilations</b> <ul> <li><b>Action:</b> Administer rescue breaths or use a ventilatory device as necessary.</li> <li><b>Next Step:</b> Return to Circulation Assessment after providing ventilations.</li> </ul> </li> <li><b>Circulation Assessment</b> <ul> <li><b>Decision Point:</b> Is a pulse present? <ul> <li><b>Yes:</b> Move to Control Bleeding.</li> <li><b>No:</b> Initiate Cardiopulmonary Resuscitation (CPR).</li> </ul> </li> </ul> </li> <li><b>Control Bleeding (If Pulse is Present)</b> <ul> <li><b>Action:</b> Apply measures to stop any significant bleeding, such as direct pressure or tourniquets.</li> <li><b>Next Step:</b> High Priority?</li> </ul> </li> <li><b>Start CPR (If No Pulse)</b> <ul> <li><b>Action:</b> Begin CPR to maintain circulation and oxygenation until further help arrives.</li> <li><b>Next Step:</b> High Priority?</li> </ul> </li> <li><b>High Priority?</b> <ul> <li><b>Decision Point:</b> Is the situation classified as high priority? <ul> <li><b>Yes:</b> Proceed to Rapid Transport.</li> <li><b>No:</b> Move to History Taking.</li> </ul> </li> </ul> </li> <li><b>Rapid Transport (If High Priority)</b> <ul> <li><b>Action:</b> Quickly transport the victim to the appropriate medical facility for advanced care.</li> <li><b>Next Step:</b> End.</li> </ul> </li> <li><b>History Taking (If Not High Priority)</b> <ul> <li><b>Action:</b> Gather relevant medical history and information about the incident.</li> <li><b>Next Step:</b> Assessment Type.</li> </ul> </li> <li><b>Assessment Type</b> <ul> <li><b>Decision Point:</b> Is a Focused or Detailed Assessment Required? <ul> <li><b>Focused:</b> Conduct a Focused Examination.</li> <li><b>Detailed:</b> Perform a Head-to-Toe Examination.</li> </ul> </li> </ul> </li> <li><b>Examine Relevant System (Focused Assessment)</b> <ul> <li><b>Action:</b> Assess specific body systems related to the victim’s complaints or injuries.</li> <li><b>Next Step:</b> Treatment.</li> </ul> </li> <li><b>Head-to-Toe Exam (Detailed Assessment)</b> <ul> <li><b>Action:</b> Conduct a comprehensive examination of the entire body to identify all potential injuries or issues.</li> <li><b>Next Step:</b> Treatment.</li> </ul> </li> <li><b>Treatment</b> <ul> <li><b>Action:</b> Provide necessary medical interventions based on the assessments conducted.</li> <li><b>Next Step:</b> Transport.</li> </ul> </li> <li><b>Transport</b> <ul> <li><b>Action:</b> Move the victim to a medical facility for further evaluation and treatment while continuously monitoring the patient's condition 4.</li> <li><b>Next Step:</b> Monitoring.</li> </ul> </li> <li><b>Monitoring</b> <ul> <li><b>Action:</b> Continuously observe the victim’s vital signs and condition during transport.</li> <li><b>Next Step:</b> Hospital Handover.</li> </ul> </li> <li><b>Hospital Handover</b> <ul> <li><b>Action:</b> Transfer all relevant information and findings to the hospital medical team to ensure seamless care.</li> <li><b>Next Step:</b> End.</li> </ul> </li> <li><b>End</b> <ul> <li><b>Action:</b> Conclude the assessment and response process.</li> </ul> </li> </ol>
+   
+   
+    <h2>Works cited</h2>
+
+    <ol>
+        <li>Scene Assessment in the Real World - First Response Rescue Blog, accessed January 23, 2025,</li>
+        <li> <a href="https://www.firstresponse-ed.com/blog/scene-assessment-in-the-real-world/">https://www.firstresponse-ed.com/blog/scene-assessment-in-the-real-world/</a></li> 
+        <li>Scene Safety for EMS Operations - MedicTests, accessed January 23, 2025, </li>
+        <li> <a href="https://medictests.com/units/scene-management">https://medictests.com/units/scene-management</a> </li>
+        <li>MS Guidelines for Personal Protective Equipment (PPE) Use in Response to COVID-19 Calls for Service - DHHS, accessed January 23, 2025, <a href="https://dhhs.ne.gov/OEHS%20Program%20Documents/EMS%20Guidelines%20for%20PPE.pdf">https://dhhs.ne.gov/OEHS%20Program%20Documents/EMS%20Guidelines%20for%20PPE.pdf</a></li>
+        <li> <a href="https://emt-ce.com/course-catalog/scene-safety-considerations">https://emt-ce.com/course-catalog/scene-safety-considerations</a></li>
+        <li>Scene Safety Considerations - EMT-CE, accessed January 23, 2025, </li>
+        <li> <a href="https://emt-ce.com/course-catalog/scene-safety-considerations">https://emt-ce.com/course-catalog/scene-safety-considerations</a></li>
+    </ol>
+    
+  </div>
+ </div>
+ </div>
+
+<script>
+  // Step info data for each node
+  const stepInfo = {
+    A: {
+      title: 'Start',
+      content: 'Approach the scene, begin your initial assessment. Watch for hazards!',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    B: {
+      title: 'Scene Assessed',
+      content: 'Ensure you have a quick overview of the environment, number of patients, etc.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    C: {
+      title: 'Scene Safe?',
+      content: 'Evaluate hazards. If unsafe, call for more resources or relocate. BSI stands for Body Substance Isolation, which emphasizes protecting yourself (and the patient) from exposure to blood or other potentially infectious materials by using appropriate Personal Protective Equipment (PPE) such as gloves, masks, gowns, or eye protection.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    D: {
+      title: 'Basic Impression',
+      content: 'Form a rapid, overall impression of the patient’s condition.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    E: {
+      title: 'Request Help',
+      content: 'Call for law enforcement, ALS, or special resources if needed.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    F: {
+      title: 'LOC Assessment',
+      content: 'Assess Level of Consciousness with AVPU or GCS as appropriate.',
+      videoId: 'https://www.youtube.com/shorts/L4FnNgMA6wo'
+    },
+    G: {
+      title: 'Alert/Voice/Pain?',
+      content: 'Is the patient alert to person, place, time? Responding only to voice/pain?',
+      videoId: 'https://www.youtube.com/shorts/o00hISedKsU'
+    },
+    H: {
+      title: 'Already Patent?',
+      content: 'Check if the patient’s airway is already open and clear.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    I: {
+      title: 'Open Airway',
+      content: 'Perform maneuvers (head-tilt–chin-lift, jaw thrust, etc.) to open airway.',
+      videoId: 'https://www.youtube.com/watch?v=Ydp-cJyDOHY'
+    },
+    J: {
+      title: 'Unresponsive',
+      content: 'If unresponsive, quickly check for breathing/pulse. Prepare immediate interventions.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    K: {
+      title: 'Breathing',
+      content: 'Evaluate the patient’s respiratory rate, depth, and quality. If inadequate, move to support ventilations.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    L: {
+      title: 'Open Airway',
+      content: 'Perform airway-opening maneuvers (e.g., head-tilt–chin-lift or jaw thrust) if airway is still compromised.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    M: {
+      title: 'Adequate breathing?',
+      content: 'Determine whether respirations are sufficient to maintain oxygenation. If not, provide ventilatory support.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    N: {
+      title: 'Circulation',
+      content: 'Check pulse, skin signs, and capillary refill; address any life-threatening circulatory issues.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    O: {
+      title: 'Provide ventilations',
+      content: 'Use BVM or other appropriate equipment to assist or control respirations if breathing is inadequate.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    P: {
+      title: 'Pulse present?',
+      content: 'Check for a palpable pulse. If absent, begin CPR immediately.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    Q: {
+      title: 'Control bleeding',
+      content: 'Identify and manage external hemorrhage or other severe bleeding using appropriate techniques.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    R: {
+      title: 'Start CPR',
+      content: 'If no pulse is present, start chest compressions and ventilations following ACLS or BLS protocols.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    S: {
+      title: 'High priority?',
+      content: 'Decide if the patient’s condition requires rapid transport based on clinical findings.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    T: {
+      title: 'Rapid Transport',
+      content: 'Minimize on-scene time and expedite transport to an appropriate facility if the patient is critical.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    U: {
+      title: 'History Taking',
+      content: 'Obtain a focused or full history (SAMPLE, OPQRST) to guide further assessment and care.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    V: {
+      title: 'Assessment type',
+      content: 'Decide whether to perform a focused exam or a detailed head-to-toe exam based on the situation.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    W: {
+      title: 'Examine relevant system',
+      content: 'Conduct a targeted examination of the body system(s) associated with the chief complaint.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    X: {
+      title: 'Head-to-toe exam',
+      content: 'Perform a comprehensive physical assessment to identify any other injuries or issues.',
+      videoId: 'https://www.youtube.com/watch?v=ea1RJUOiNfQ',
+      videoId2: 'https://www.youtube.com/watch?v=AkxzJffdGBE'
+    },
+
+    Y: {
+      title: 'Treatment',
+      content: 'Provide interventions such as wound care, medication administration, or splinting as indicated.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    Z: {
+      title: 'Transport',
+      content: 'Move the patient to the ambulance and begin transport to the most appropriate receiving facility.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    AA: {
+      title: 'Monitoring',
+      content: 'Continuously reassess vital signs, interventions, and patient status en route to the hospital.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    AB: {
+      title: 'Hospital Handover',
+      content: 'Transfer care by providing a concise, accurate report to the receiving facility’s staff.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    },
+    AC: {
+      title: 'End',
+      content: 'Complete the prehospital care process; finalize documentation and debrief as needed.',
+      videoId: 'https://www.youtube.com/embed/INSERT_VIDEO_ID'
+    }
+  };
+
+  window.onload = function() {
+    const diagramElement = document.getElementById('diagram');
+    const body = document.body;
+
+    // Initialize Panzoom
+    const pz = panzoom(diagramElement, {
+      maxZoom: 5,
+      minZoom: 0.4,
+      initialX: 0,
+      initialY: 0,
+      initialZoom: 1
+    });
+
+    // Zoom in/out
+    document.getElementById('zoomInBtn').addEventListener('click', () => {
+      pz.smoothZoom(diagramElement.clientWidth / 2, diagramElement.clientHeight / 2, 1.2);
+    });
+    document.getElementById('zoomOutBtn').addEventListener('click', () => {
+      pz.smoothZoom(diagramElement.clientWidth / 2, diagramElement.clientHeight / 2, 0.8);
+    });
+
+    // Click on nodes -> show info panel
+    diagramElement.addEventListener('click', (e) => {
+      const node = e.target.closest('.node');
+      if (node) {
+        const stepId = node.dataset.step;
+        showPanel(stepId);
+      }
+    });
+
+    // Theme toggle
+    document.getElementById('toggleThemeBtn').addEventListener('click', () => {
+      body.classList.toggle('dark');
+    });
+  };
+
+  function showPanel(stepId) {
+    const panel = document.getElementById('infoPanel');
+    const titleEl = document.getElementById('stepTitle');
+    const contentEl = document.getElementById('stepContent');
+    const videoEl = document.getElementById('videoContent');
+
+    if (stepInfo[stepId]) {
+      const { title, content, videoId } = stepInfo[stepId];
+      titleEl.textContent = title;
+      contentEl.textContent = content;
+      if (videoId) {
+        videoEl.innerHTML = `
+          <iframe 
+            width="100%" 
+            height="200" 
+            src="${videoId}" 
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        `;
+      } else {
+        videoEl.innerHTML = '';
+      }
+    } else {
+      // Fallback if node not in stepInfo
+      titleEl.textContent = 'No Title';
+      contentEl.textContent = 'No additional info available.';
+      videoEl.innerHTML = '';
+    }
+    panel.style.display = 'block';
+  }
+
+  function closePanel() {
+    document.getElementById('infoPanel').style.display = 'none';
+    // Clear the video so it stops playing
+    document.getElementById('videoContent').innerHTML = '';
+  }
+</script>
+</body>
+</html>
