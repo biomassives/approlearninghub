@@ -203,7 +203,45 @@
       color: #555;
       font-weight: bold;
     }
-  </style>
+
+    .color-panel {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .color-panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .color-panel .icon-bg {
+      position: absolute;
+      right: -10px;
+      bottom: -10px;
+      width: 120px;
+      height: 120px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style> 
+
+
+    
 
 
 </head>
@@ -1194,6 +1232,7 @@
                 <script src="js/moduleCards.js"></script>
 
         <main class="flex-grow bg-gray-50 container mx-auto px-4 py-6">
+            
 
 
         <section id="timeline-section" class="hidden py-12 bg-gray-100">
@@ -1251,10 +1290,121 @@
             </button>
             <p class="mt-4 text-gray-500">Already have an account? <a href="#" id="login-link-dashboard" class="text-emerald-600 hover:underline">Sign In</a></p>
 
+
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Select a Color to Continue</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Water Sec - Plant/Growth Theme -->
+      <div class="color-panel bg-teal-950 text-white rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="sage">
+        <h2 class="text-2xl font-semibold text-green-800">Water Security</h2>
+        <p class="text-white mb-3">Safe drinking water, hygenic sanitation</p>
+        <div class="hover-content hidden text-green-800 font-medium">
+          Click to load video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 11.5v-7m0 0l-3 3m3-3l3 3m-12 9.5h16.5M12 18.5c-4.65 0-8.5-3.85-8.5-8.5 0-1.05.22-2.05.6-2.96m17.4 2.96c0 1.05-.22 2.05-.6 2.96M12 18.5c4.65 0 8.5-3.85 8.5-8.5 0-1.05-.22-2.05-.6-2.96M5.63 7.04L4.5 7.5m15-3l-1.1.55" />
+        </svg>
+      </div>
+      
+      <!-- Muted Blue Panel - Water/Ocean Theme -->
+      <div class="color-panel bg-zinc-950 rounded-lg text-white p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="blue">
+        <h2 class="text-2xl font-semibold text-blue-800">Renewble Energy</h2>
+        <p class="text-white mb-3">Small solar electric, diy wind systems, batteries, wiring.</p>
+        <div class="hover-content hidden text-blue-800 font-medium">
+          Click to load video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+        </svg>
+      </div>
+      
+      <!-- Soft Lavender Panel - Stars/Cosmos Theme -->
+      <div class="color-panel bg-gray-900 rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="lavender">
+        <h2 class="text-2xl font-semibold text-purple-800">Crisis Recovery</h2>
+        <p class="text-white mb-3">A soft purple that inspires creativity and peace</p>
+        <div class="hover-content hidden text-purple-800 font-medium">
+          Click to load video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+        </svg>
+      </div>
+      
+      <!-- Blush Pink Panel - Heart/Compassion Theme -->
+      <div class="color-panel bg-red-950 rounded-lg p-6 cursor-pointer h-48 flex flex-col justify-between" data-color="pink">
+        <h2 class="text-2xl font-semibold text-pink-800">Infrastructure Repair</h2>
+        <p class="text-white mb-3">A gentle pink reminiscent of new beginnings</p>
+        <div class="hover-content hidden text-pink-800 font-medium">
+          Click to load video
+        </div>
+        <svg class="icon-bg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Video container (hidden initially) -->
+    <div id="video-section" class="hidden mt-8 transition-all duration-300 ease-in-out">
+      <h2 id="selected-color-title" class="text-2xl font-bold text-center mb-4"></h2>
+      <div class="video-container" id="video-container"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const colorPanels = document.querySelectorAll('.color-panel');
+      const videoSection = document.getElementById('video-section');
+      const videoContainer = document.getElementById('video-container');
+      const selectedColorTitle = document.getElementById('selected-color-title');
+      
+      // Rick Roll YouTube video ID
+      const videoId = 'B1QfZs0W8I8';
+      
+      // Show "Click to load" text on hover
+      colorPanels.forEach(panel => {
+        panel.addEventListener('mouseover', () => {
+          const hoverContent = panel.querySelector('.hover-content');
+          hoverContent.classList.remove('hidden');
+        });
+        
+        panel.addEventListener('mouseout', () => {
+          const hoverContent = panel.querySelector('.hover-content');
+          hoverContent.classList.add('hidden');
+        });
+        
+        // Load video on click
+        panel.addEventListener('click', () => {
+          const colorName = panel.querySelector('h2').textContent;
+          selectedColorTitle.textContent = `You selected: ${colorName}`;
+          
+          // Create and append the iframe only after user clicks
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          iframe.title = "YouTube video player";
+          iframe.frameBorder = "0";
+          iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+          iframe.allowFullscreen = true;
+          
+          // Clear previous video if any
+          videoContainer.innerHTML = '';
+          videoContainer.appendChild(iframe);
+          
+          // Show the video section
+          videoSection.classList.remove('hidden');
+          
+          // Scroll to the video section
+          videoSection.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    });
+  </script>
+          
             <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="video-section">
                     <a name="watersec"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
+
+                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse" data-color="pink"  style="background: linear-gradient(135deg, #A8D5FF, #69B2E8, #2E8BC0);">
                     <p class="text-lg font-semibold text-gray-800 mb-2"> Water Security</p>
                     <p class="text-gray-600 mb-4">Water Security</p>
                     <a href="#" class="text-emerald-600 hover:underline">Learn More</a>
@@ -1270,10 +1420,10 @@
 
                 <div class="video-section">
                     <a name="infrarepair"></a>
-                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse-slow"></div>
+                    <div class="skeleton-preloader bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
                     <p class="text-lg font-semibold text-gray-800 mb-2"> Infrastructure Repair</p>
                     <p class="text-gray-600 mb-4">Short description of video 3.</p>
-                    <a href="/modules/inrastructure-repair/index.html" class="text-emerald-600 hover:underline">Learn More</a>
+                    <a href="#" class="text-emerald-600 hover:underline">Learn More</a>
                 </div>
 
                 <div class="video-section">
@@ -2261,7 +2411,7 @@
                 </div>
     </section>
 
-    <section id="practical-clinics-section" class="hidden py-12">
+    <section id="practical-clinics-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
 
                     <h1 class="text-2xl font-bold mt-1 text-text-200">Approvideo Clinics</h1>
                         <br>
