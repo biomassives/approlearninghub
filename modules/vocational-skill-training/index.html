@@ -4,7 +4,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-      <title>Vocational Skill Training - Approvideo Learning Modules</title>
+      <title>Arduino & other open Microcontollers * Approvideo Solutions Library Module</title>
       <script src="/js/libs/tailwind-3.4.16.es"></script>
       <script src="/js/libs/Dexie.js"></script>
       <script src="/js/libs/dexie-encrypted-addon.min.js"></script>
@@ -34,7 +34,61 @@
       <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
       <link rel="manifest" href="/manifest.json">
       <script src="/manifest.js"></script>
- 
+      <style>
+            body {
+            font-family: sans-serif;
+            margin: 20px;
+            }
+            h1 {
+            text-align: left;
+            margin-bottom: 30px;
+            }
+            .item-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .item-container h2 {
+            margin-top: 0;
+            color: #333;
+            }
+            .item-container h3 {
+            margin-top: 10px;
+            color: #555;
+            }
+            .item-container p, .item-container ul, .item-container ol {
+            line-height: 1.6;
+            }
+            .item-container ul, .item-container ol {
+            padding-left: 20px;
+            }
+
+            .header {
+            display: flex;
+            align-items: center; /* Aligns items vertically centered */
+            padding: 10px;       /* Adjust as needed */
+            }
+
+            .logo {
+            margin-right: 20px;  /* Creates spacing between logo and breadcrumbs */
+            }
+
+            .breadcrumbs ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            }
+
+            .breadcrumbs li + li::before {
+            content: ">>";
+            margin: 0 10px;
+            color: #ffffff;         /* Change color as desired */
+            }
+
+      </style>
 </head>
 <body>
     <body class="bg-gray-50 min-h-screen">
@@ -57,9 +111,8 @@
                     </div>
                     <nav class="breadcrumbs w-full and text-left" >
                       <ul>
-                        <li><a href="/modules">Learning Modules</a></li>
-                        <li><a href="/modules/vocational-skill-training/">Vocational Skill Training</a></li>
-                        <li>Regenerative Approaches</a></li>
+                        <li><a href="/modules">Modules</a></li>
+                        <li>Arduino and Other Open Microcontrollers</li>
                       </ul>
                     </nav>
 
@@ -136,7 +189,7 @@
 
 async function loadHealthLibrary() {
       try {
-        const response = await fetch('biodiversity.json');
+        const response = await fetch('/modules/ecosystems/regenerative-approaches/biodiversity.json');
         const healthData = await response.json();
 
         const libraryContainer = document.getElementById('health-library');
