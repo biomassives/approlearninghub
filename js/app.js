@@ -1,15 +1,13 @@
 // js/app.js
-
+//
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
-
+//
 // --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
-
 db.version(1).stores({  //Initial setup
     authTokens: "id, token, key"
 });
-// New version with userContent store + upgrade callback
 db.version(2).stores({
     authTokens: "id, token, key",
     userContent: "++id, title, content, createdBy, createdAt",
@@ -115,8 +113,6 @@ function checkScroll() {
 
 // Then you can have
 window.addEventListener('resize', checkScroll);
-
-
 
     document.addEventListener('DOMContentLoaded', function() {
       // Get elements
@@ -268,26 +264,15 @@ window.addEventListener('resize', checkScroll);
       // Responsive handling for window resize
     });
 
-
-
-
-
 // --- DOMContentLoaded Event ---
-
-
 window.addEventListener('resize', checkScroll);
-
 document.addEventListener('DOMContentLoaded', async () => {
-
-
-
 
     // --- DOM Element Selection (Consolidated) ---
     const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
     const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
     const userProfileTopRight = document.getElementById('user-profile-top-right');
     const userDropdown = document.getElementById('user-dropdown');
-
 
     // set initial state
     userProfileTopRight.classList.toggle('hidden');
@@ -311,8 +296,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const getStartedButtonDashboard = document.getElementById('get-started-button-dashboard');
     const loginLinkDashboard = document.getElementById('login-link-dashboard');
     const startClinicButton = document.getElementById('start-a-clinic-public-header');
-
-
 
     // Chat Elements
     const chatContainer = document.getElementById('chat-container');
@@ -354,7 +337,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const teamLinkFooter = document.getElementById('team-footer');
     const blogLinkFooter = document.getElementById('approvideo-blog');
     const faqLinkFooter = document.getElementById('faq-footer');
-
  
     const smallgrantsLinkFooter = document.getElementById('small-grants-footer');
     const smallgrantsLinkHeader = document.getElementById('small-grants-header');
@@ -687,46 +669,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-    // --- UI Update Functions ---
-
-    function updateAuthUI() {
-        if (isLoggedIn) {
-            loginButton.classList.toggle('hidden');
-            timelineButton.classList.toggle('hidden');
-            authLoggedOutTopRight.classList.add('hidden');
-            authLoggedInTopRight.classList.remove('hidden');
-            dashboardLoggedOutContent.classList.add('hidden');
-            dashboardLoggedInContent.classList.remove('hidden');
-            welcomeSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
-            renderRoleBasedContent();
-
-            if (chatContainer && chatNotificationBadge) {
-                chatContainer.classList.remove('hidden');
-                chatNotificationBadge.classList.remove('hidden');        
-            }
-
-
-        } else {
-            loginButton.classList.toggle('block');
-            timelineButton.classList.toggle('block');
-            authLoggedInTopRight.classList.add('hidden');
-            authLoggedOutTopRight.classList.remove('hidden');
-            dashboardLoggedInContent.classList.add('hidden');
-            dashboardLoggedOutContent.classList.remove('hidden');
-            welcomeSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            chatContainer.classList.add('hidden');
-            chatNotificationBadge.classList.add('hidden');
-        }
-        hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible
-    }
-
-    function renderRoleBasedContent() {
-        let content = roleContent[userRole] || roleContent['default'];
-        roleBasedDashboardContent.innerHTML = content;
-    }
 
     // Function to hide all main sections except one (you have this, it's good)
     function hideAllSectionsExcept(sectionId) {
@@ -738,7 +680,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
             'profile-section', 'settings-section', 'faq-section', 'events-section',
             'blog-section', 'welcome-section', 'certs-section', 'smallgrants-section',
-            'research-section', 'practical-clinics-section', 'teaching-section'
+            'research-section', 'practical-clinics-section', 'teaching-section',
+            'dashboard-logged-in'
         ];
         sections.forEach(id => {
             const section = document.getElementById(id);
@@ -955,6 +898,54 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
     }
+
+
+
+
+    // --- UI Update Functions ---
+
+    function updateAuthUI() {
+        if (isLoggedIn) {
+            loginButton.classList.toggle('hidden');
+            timelineButton.classList.toggle('hidden');
+            authLoggedOutTopRight.classList.add('hidden');
+            authLoggedInTopRight.classList.remove('hidden');
+            dashboardLoggedOutContent.classList.add('hidden');
+            dashboardLoggedInContent.classList.remove('hidden');
+            welcomeSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
+            renderRoleBasedContent();
+
+            if (chatContainer && chatNotificationBadge) {
+                chatContainer.classList.remove('hidden');
+                chatNotificationBadge.classList.remove('hidden');        
+            }
+
+
+        } else {
+            loginButton.classList.toggle('block');
+            timelineButton.classList.toggle('block');
+            authLoggedInTopRight.classList.add('hidden');
+            authLoggedOutTopRight.classList.remove('hidden');
+            dashboardLoggedInContent.classList.add('hidden');
+            dashboardLoggedOutContent.classList.remove('hidden');
+            welcomeSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            chatContainer.classList.add('hidden');
+            chatNotificationBadge.classList.add('hidden');
+        }
+        //hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible
+    }
+
+    function renderRoleBasedContent() {
+        let content = roleContent[userRole] || roleContent['default'];
+        roleBasedDashboardContent.innerHTML = content;
+    }
+
+
+
+
 
     // Modal Links for Terms/Privacy (Simplified)
     if(privacyLinkModal){
