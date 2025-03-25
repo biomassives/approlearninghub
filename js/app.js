@@ -1,13 +1,15 @@
 // js/app.js
-//
+
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
-//
+
 // --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
+
 db.version(1).stores({  //Initial setup
     authTokens: "id, token, key"
 });
+// New version with userContent store + upgrade callback
 db.version(2).stores({
     authTokens: "id, token, key",
     userContent: "++id, title, content, createdBy, createdAt",
@@ -102,177 +104,20 @@ function checkConsentAndInit() {
     }
 }
 
-// Define checkScroll globally or move the window event listener inside DOMContentLoaded
-function checkScroll() {
-  if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
-    filenameContainer.classList.add('scrolling');
-  } else {
-    filenameContainer.classList.remove('scrolling');
-  }
-}
 
-// Then you can have
-window.addEventListener('resize', checkScroll);
-
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get elements
-      const audioElement = document.getElementById('audioElement');
-      const playPauseBtn = document.getElementById('playPauseBtn');
-      const progressBar = document.getElementById('progressBar');
-      const progressContainer = document.getElementById('progressContainer');
-      const currentTimeElement = document.getElementById('currentTime');
-      const durationElement = document.getElementById('duration');
-      const filenameDisplay = document.getElementById('filenameDisplay');
-      const filenameContainer = document.getElementById('filenameContainer');
-      const downloadLink = document.getElementById('downloadLink');
-      const thumbnailImg = document.getElementById('thumbnailImg');
-     
-      // Initialize
-      let isPlaying = false;
-      
-      // Extract and display filename from the audio source
-      function extractFilename(src) {
-        // Get just the filename from the path
-        const fullPath = src.split('/');
-        const filename = fullPath[fullPath.length - 1];
-        
-        // Store original filename for download
-        const originalFilename = filename;
-        
-        // Remove extension and replace hyphens with spaces
-        const cleanName = filename.split('.')[0].replace(/-/g, ' ');
-        
-        // Capitalize words for nicer display
-        return {
-          display: cleanName.split('_').map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-          ).join(' '),
-          original: originalFilename
-        };
-      }
-      
-      // Set up filename display and download link
-      const fileInfo = extractFilename(audioElement.src);
-      filenameDisplay.textContent = fileInfo.display;
-      downloadLink.href = audioElement.src;
-      downloadLink.download = fileInfo.original;
-      downloadLink.setAttribute('title', 'Download ' + fileInfo.original);
-      
-      // Check if text needs scrolling
-      function checkScroll() {
-        if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
-          filenameContainer.classList.add('scrolling');
-        } else {
-          filenameContainer.classList.remove('scrolling');
-        }
-      }
-      
-      // Call checkScroll after rendering
-      setTimeout(checkScroll, 100);
-      
-      // Set thumbnail image based on audio type
-      // In a real application, you would determine this based on audio metadata
-      // For now, we'll use a basic approach
-      if (fileInfo.original.includes('briquette')) {
-        thumbnailImg.src = "/assets/mp3/briquette.webp";
-        thumbnailImg.alt = "Briquette Audio";
-      } else {
-        thumbnailImg.src = "/assets/mp3/defult.webp"; 
-        thumbnailImg.alt = "Audio Thumbnail";
-      }
-     
-      // Format time in MM:SS
-      function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        seconds = Math.floor(seconds % 60);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      }
-     
-      // Set up duration display once metadata is loaded
-      audioElement.addEventListener('loadedmetadata', function() {
-        durationElement.textContent = formatTime(audioElement.duration);
-      });
-     
-      // Toggle play/pause
-      playPauseBtn.addEventListener('click', function() {
-        if (isPlaying) {
-          audioElement.pause();
-          playPauseBtn.textContent = '▶';
-        } else {
-          audioElement.play()
-            .catch(error => {
-              console.error('Playback failed:', error);
-              filenameDisplay.textContent = 'Error loading audio';
-              // Provide fallback or error message if needed
-            });
-          playPauseBtn.textContent = '❚❚';
-        }
-        isPlaying = !isPlaying;
-      });
-     
-      // Update progress bar and current time during playback
-      audioElement.addEventListener('timeupdate', function() {
-        const progress = (audioElement.currentTime / audioElement.duration) * 100;
-        progressBar.style.width = `${progress}%`;
-        currentTimeElement.textContent = formatTime(audioElement.currentTime);
-      });
-     
-      // Allow seeking by clicking on progress bar
-      progressContainer.addEventListener('click', function(e) {
-        const rect = progressContainer.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        audioElement.currentTime = pos * audioElement.duration;
-      });
-     
-      // Reset player when audio ends
-      audioElement.addEventListener('ended', function() {
-        progressBar.style.width = '0%';
-        playPauseBtn.textContent = '▶';
-        isPlaying = false;
-        audioElement.currentTime = 0;
-      });
-     
-      // Handle errors
-      audioElement.addEventListener('error', function() {
-        console.error('Audio error:', audioElement.error);
-        filenameDisplay.textContent = 'Error: File not found';
-        filenameDisplay.style.color = '#000000';
-        downloadLink.style.display = 'none';
-      });
-      
-      // Reset scrolling when audio ends
-      audioElement.addEventListener('ended', function() {
-        // Reset scrolling animation if needed
-        filenameContainer.classList.remove('scrolling');
-        setTimeout(checkScroll, 100);
-      });
-      
-      // Start scrolling on mouseover and pause on mouseout for better user experience
-      filenameContainer.addEventListener('mouseenter', function() {
-        if (filenameDisplay.offsetWidth > filenameContainer.offsetWidth) {
-          filenameContainer.classList.add('scrolling');
-        }
-      });
-      
-      filenameContainer.addEventListener('mouseleave', function() {
-        filenameContainer.classList.remove('scrolling');
-        setTimeout(() => {
-          checkScroll();
-        }, 2000);
-      });
-      
-      // Responsive handling for window resize
-    });
 
 // --- DOMContentLoaded Event ---
-window.addEventListener('resize', checkScroll);
 document.addEventListener('DOMContentLoaded', async () => {
+
+
+
 
     // --- DOM Element Selection (Consolidated) ---
     const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
     const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
     const userProfileTopRight = document.getElementById('user-profile-top-right');
     const userDropdown = document.getElementById('user-dropdown');
+
 
     // set initial state
     userProfileTopRight.classList.toggle('hidden');
@@ -296,6 +141,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const getStartedButtonDashboard = document.getElementById('get-started-button-dashboard');
     const loginLinkDashboard = document.getElementById('login-link-dashboard');
     const startClinicButton = document.getElementById('start-a-clinic-public-header');
+
+
 
     // Chat Elements
     const chatContainer = document.getElementById('chat-container');
@@ -337,6 +184,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const teamLinkFooter = document.getElementById('team-footer');
     const blogLinkFooter = document.getElementById('approvideo-blog');
     const faqLinkFooter = document.getElementById('faq-footer');
+
  
     const smallgrantsLinkFooter = document.getElementById('small-grants-footer');
     const smallgrantsLinkHeader = document.getElementById('small-grants-header');
@@ -669,6 +517,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
+    // --- UI Update Functions ---
+
+    function updateAuthUI() {
+        if (isLoggedIn) {
+            loginButton.classList.toggle('hidden');
+            timelineButton.classList.toggle('hidden');
+            authLoggedOutTopRight.classList.add('hidden');
+            authLoggedInTopRight.classList.remove('hidden');
+            dashboardLoggedOutContent.classList.add('hidden');
+            dashboardLoggedInContent.classList.remove('hidden');
+            welcomeSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
+            renderRoleBasedContent();
+
+            // Ensure these elements exist before manipulating them
+            if (!chatContainer || !chatNotificationBadge) {
+                chatContainer.classList.remove('hidden');
+                chatNotificationBadge.classList.remove('hidden');        
+            }
+
+
+        } else {
+            loginButton.classList.toggle('block');
+            timelineButton.classList.toggle('block');
+            authLoggedInTopRight.classList.add('hidden');
+            authLoggedOutTopRight.classList.remove('hidden');
+            dashboardLoggedInContent.classList.add('hidden');
+            dashboardLoggedOutContent.classList.remove('hidden');
+            welcomeSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            chatContainer.classList.add('hidden');
+            chatNotificationBadge.classList.add('hidden');
+        }
+        hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible
+    }
+
+    function renderRoleBasedContent() {
+        let content = roleContent[userRole] || roleContent['default'];
+        roleBasedDashboardContent.innerHTML = content;
+    }
 
     // Function to hide all main sections except one (you have this, it's good)
     function hideAllSectionsExcept(sectionId) {
@@ -680,8 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
             'profile-section', 'settings-section', 'faq-section', 'events-section',
             'blog-section', 'welcome-section', 'certs-section', 'smallgrants-section',
-            'research-section', 'practical-clinics-section', 'teaching-section',
-            'dashboard-logged-in'
+            'research-section', 'practical-clinics-section', 'teaching-section'
         ];
         sections.forEach(id => {
             const section = document.getElementById(id);
@@ -847,7 +735,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     getStartedButtonDashboard.addEventListener('click', () => {
-        e.preventDefault();
         authModal.classList.remove('hidden');
     });
 
@@ -884,7 +771,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         'terms-link-footer': 'terms-section',
         'blog-footer': 'blog-section',
         'faq-footer': 'faq-section',
-        'faq-welcome': 'faq-section',
     };
 
 //         'milestones-menu': 'milestones-section',
@@ -899,54 +785,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-
-
-
-    // --- UI Update Functions ---
-
-    function updateAuthUI() {
-        if (isLoggedIn) {
-            loginButton.classList.toggle('hidden');
-            timelineButton.classList.toggle('hidden');
-            authLoggedOutTopRight.classList.add('hidden');
-            authLoggedInTopRight.classList.remove('hidden');
-            dashboardLoggedOutContent.classList.add('hidden');
-            dashboardLoggedInContent.classList.remove('hidden');
-            welcomeSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            dashboardWelcomeMessage.innerHTML = `Welcome, <span class="math-inline">${userName}! (${userRole})</span>`;
-            renderRoleBasedContent();
-
-            if (chatContainer && chatNotificationBadge) {
-                chatContainer.classList.remove('hidden');
-                chatNotificationBadge.classList.remove('hidden');        
-            }
-
-
-        } else {
-            loginButton.classList.toggle('block');
-            timelineButton.classList.toggle('block');
-            authLoggedInTopRight.classList.add('hidden');
-            authLoggedOutTopRight.classList.remove('hidden');
-            dashboardLoggedInContent.classList.add('hidden');
-            dashboardLoggedOutContent.classList.remove('hidden');
-            welcomeSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            chatContainer.classList.add('hidden');
-            chatNotificationBadge.classList.add('hidden');
-        }
-        //hideAllSectionsExcept('dashboard-section'); // Ensure dashboard is visible
-    }
-
-    function renderRoleBasedContent() {
-        let content = roleContent[userRole] || roleContent['default'];
-        roleBasedDashboardContent.innerHTML = content;
-    }
-
-
-
-
-
     // Modal Links for Terms/Privacy (Simplified)
     if(privacyLinkModal){
       privacyLinkModal.addEventListener('click', (e) => {
@@ -955,6 +793,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           hideAllSectionsExcept('privacy-section');
       });
     }
+
     if (termsLinkModal){
       termsLinkModal.addEventListener('click', (e) => {
           e.preventDefault();
@@ -962,6 +801,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           hideAllSectionsExcept('terms-section');
       });
     }
+    // Supa Chat Panel Events (Unchanged, but included for completeness)
     chatHeader.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
         chatBody.classList.toggle('hidden');
@@ -983,6 +823,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           exportDataButton.addEventListener('click', exportData);
       }
 
+      // --- Initial UI setup (after potential async operations) ---
       updateAuthUI();  // Sets initial state based on isLoggedIn
   
 
