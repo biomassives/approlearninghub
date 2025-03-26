@@ -266,8 +266,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         megaMenuButtonCLOSE.classList.toggle('hidden');
     });
 
-
-
     authMenuButtonCLOSE.addEventListener('click', () => {
         authMenu.classList.toggle('hidden');
         profileLinkMenu.classList.toggle('hidden');
@@ -576,7 +574,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   section.classList.remove('hidden');
               } else {
                   section.classList.add('hidden');
-                  dashboardLoggedInContent.classList.remove('hidden');
+                  dashboardLoggedInContent.classList.add('hidden');
               }
             }
         });
