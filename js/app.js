@@ -576,6 +576,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   section.classList.remove('hidden');
               } else {
                   section.classList.add('hidden');
+                  dashboardLoggedInContent.classList.remove('hidden');
               }
             }
         });
