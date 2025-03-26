@@ -3,9 +3,7 @@
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
 //
-
-
-// --- Dexie Local Database Setup ---
+// --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
 db.version(1).stores({  //Initial setup
     authTokens: "id, token, key"
@@ -19,8 +17,9 @@ db.version(2).stores({
     console.log("Database upgraded to version 2. userContent table created.");
 });
 
-// --- Supabase Remote Database Setup ---
+
 let supabase; // Declare supabase globally
+
 function initSupabase() {
     if (supabase) return; // Important: Only initialize once
 

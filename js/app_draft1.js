@@ -3,9 +3,7 @@
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
 //
-
-
-// --- Dexie Local Database Setup ---
+// --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
 db.version(1).stores({  //Initial setup
     authTokens: "id, token, key"
@@ -19,8 +17,9 @@ db.version(2).stores({
     console.log("Database upgraded to version 2. userContent table created.");
 });
 
-// --- Supabase Remote Database Setup ---
+
 let supabase; // Declare supabase globally
+
 function initSupabase() {
     if (supabase) return; // Important: Only initialize once
 
@@ -672,24 +671,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // Function to hide all main sections except one (you have this, it's good)
-    function hideAllSectionsExcept(sectionId) {
-        const sections = [
-            'dashboard-section', 'welcome-section', 'skill-training-menu',
-            'research-section', 'practical-clinics-section', 'timeline-section',
-            'learning-modules-section', 'clinics-section', 'smallgrants-section',
-            'library-section', 'terms-section', 'privacy-section', 'about-section',
-            'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
-            'profile-section', 'settings-section', 'faq-section', 'events-section',
-            'blog-section', 'welcome-section', 'certs-section', 'smallgrants-section',
-            'research-section', 'practical-clinics-section', 'teaching-section',
-            'dashboard-logged-in'
-        ];
-        sections.forEach(id => {
-            const section = document.getElementById(id);
-            if (section) { //  Check if the element exists (important!)
-              if (id === sectionId) {
-                  section.classList.remove('hidden');
-              } else {
+ else {
                   section.classList.add('hidden');
               }
             }
@@ -859,7 +841,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Section Navigation (Using hideAllSectionsExcept) ---
     // These event listeners are simplified.
-    const sectionLinks = {
+
+# --- Old sectionLinks object commented out ---
+#     const sectionLinks = {
         'about-footer': 'about-section',
         'share-menu': 'sharefolder-section',
         'team-footer': 'team-section',
@@ -888,8 +872,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         'faq-welcome': 'faq-section',
     };
 
+# --- End of commented out sectionLinks object ---
+              
 //         'milestones-menu': 'milestones-section',
 
+# --- Old sectionLinks loop commented out ---
+# 
     for (const [elementId, sectionId] of Object.entries(sectionLinks)) {
         const element = document.getElementById(elementId);
         if (element) { //  Check if the element exists
@@ -898,7 +886,56 @@ document.addEventListener('DOMContentLoaded', async () => {
                 hideAllSectionsExcept(sectionId);
             });
         }
+# --- End of commented out sectionLinks loop ---
+              
     }
+// --- Event Listeners for Navigation (New Approach using Event Delegation) ---
+
+document.addEventListener('click', (event) => {
+    // Find the closest ancestor anchor or button with a data-section attribute
+    const navElement = event.target.closest('a[data-section], button[data-section]');
+
+    if (navElement && navElement.dataset.section) {
+        event.preventDefault(); // Prevent default anchor link behavior or button form submission
+        const targetSectionId = navElement.dataset.section;
+
+        // Basic check if the section exists before attempting to show it
+        if (document.getElementById(targetSectionId)) {
+             showSection(targetSectionId); // Let showSection handle hash update
+        } else {
+             console.warn(`Navigation target section "${targetSectionId}" not found in HTML.`);
+             // Optionally show a default section or error message
+             // showSection('user-dashboard-section'); // Example fallback
+             return; // Don't proceed if target doesn't exist
+        }
+
+
+        // Optional: Close dropdown if the clicked item is inside one
+        const dropdown = navElement.closest('#user-dropdown'); // Example dropdown ID
+        if (dropdown && !dropdown.classList.contains('hidden')) {
+             // Assuming toggleUserDropdown exists or similar logic
+             // toggleUserDropdown(); // Replace with your actual dropdown closing logic
+             dropdown.classList.add('hidden');
+             console.log("Closing dropdown after nav click.");
+        }
+        // Add similar logic for other menus like mega-menu if needed
+        const megaMenu = navElement.closest('#mega-menu');
+        if (megaMenu && !megaMenu.classList.contains('hidden')) {
+            megaMenu.classList.add('hidden');
+             // Maybe also hide the close button
+             const megaMenuButtonCLOSE = document.getElementById('mega-menu-button-close');
+             if(megaMenuButtonCLOSE) megaMenuButtonCLOSE.classList.add('hidden'); // Check if exists
+        }
+         // Add logic for skill training menu
+         const skillMenu = navElement.closest('#skill-training-menu'); // Assuming this is the ID
+         if (skillMenu && !skillMenu.classList.contains('hidden')) {
+             skillMenu.classList.add('hidden');
+         }
+
+    }
+});
+
+
 
 
 
@@ -982,9 +1019,102 @@ document.addEventListener('DOMContentLoaded', async () => {
       const exportDataButton = document.getElementById('export-data-button'); // Make sure this ID exists in your HTML
       if (exportDataButton) {
           exportDataButton.addEventListener('click', exportData);
-      }
+      }    // --- Handle Initial Page Load Section ---
+    const initialHash = window.location.hash.substring(1);
+    let sectionToLoadInitially = '';
+
+    // Determine initial section based on hash and auth state (logic inside DOMContentLoaded)
+    const currentAuthStatus = await checkAuthStatus(); // Re-check or use stored status
+
+    if (initialHash) {
+        const potentialSectionId = `${initialHash}-section`;
+        // Basic validation: Does an element with this ID exist?
+        if (document.getElementById(potentialSectionId)) {
+            // More robust check: Is this section appropriate for the current auth state?
+             const isPublicSection = ['welcome-section', 'dashboard-section', 'about-section', 'privacy-section', 'terms-section', 'faq-section', 'blog-section', 'library-section' /* add other public IDs */ ].includes(potentialSectionId);
+             const isLoggedInOnlySection = !isPublicSection; // Assume others are logged-in only for simplicity
+
+            if (currentAuthStatus === "authenticated" && isLoggedInOnlySection) {
+                 sectionToLoadInitially = potentialSectionId;
+            } else if (currentAuthStatus !== "authenticated" && isPublicSection) {
+                 sectionToLoadInitially = potentialSectionId;
+            } else if (currentAuthStatus !== "authenticated" && isLoggedInOnlySection) {
+                 console.log(`Attempted to access logged-in section (${potentialSectionId}) while logged out. Redirecting to default.`);
+                 // Fall through to default logic below
+            } else if (currentAuthStatus === "authenticated" && isPublicSection) {
+                 // Allow logged-in users to view public sections via hash
+                 sectionToLoadInitially = potentialSectionId;
+            }
+        } else {
+             console.warn(`Initial hash target section "${potentialSectionId}" not found.`);
+             // Fall through to default logic
+        }
+    }
+
+    // If no valid hash section determined, use default based on auth
+    if (!sectionToLoadInitially) {
+        sectionToLoadInitially = (currentAuthStatus === "authenticated") ? 'user-dashboard-section' : 'dashboard-section'; // Or 'welcome-section'
+    }
+
+    console.log("Initial section to load:", sectionToLoadInitially);
+    // Make sure the section exists before showing
+    if (document.getElementById(sectionToLoadInitially)) {
+        showSection(sectionToLoadInitially, false); // Show initial section without updating hash again
+    } else {
+        console.error(`Cannot show initial section "${sectionToLoadInitially}" as it does not exist in the DOM.`);
+        // Attempt to show an absolute fallback like the body or show an error message
+        const fallbackSection = (currentAuthStatus === "authenticated") ? 'user-dashboard-section' : 'dashboard-section';
+        if (document.getElementById(fallbackSection)) {
+             showSection(fallbackSection, false);
+        } else {
+             document.body.innerHTML = "<h1>Error: Critical application sections missing.</h1>";
+        }
+    }
+
+
+    // --- Add listener for hash changes (for back/forward buttons) ---
+    window.addEventListener('hashchange', async () => {
+        console.log("Hash changed detected");
+        const newHash = window.location.hash.substring(1);
+        const targetSectionId = newHash ? `${newHash}-section` : '';
+
+        // Re-check auth status in case it changed since page load (e.g., token expired)
+         const authStatus = await checkAuthStatus(); // Or get from Supabase state listener
+         let defaultSectionId = (authStatus === "authenticated") ? 'user-dashboard-section' : 'dashboard-section';
+
+        let sectionIdToShow = targetSectionId || defaultSectionId;
+
+         // Optional: Add validation here - check if targetSectionId is valid for current auth state
+         if (targetSectionId && document.getElementById(targetSectionId)) {
+             const isPublic = ['welcome-section', 'dashboard-section', 'about-section', 'privacy-section', 'terms-section', 'faq-section', 'blog-section', 'library-section'].includes(targetSectionId);
+             const isLoggedInOnly = !isPublic;
+
+             if (authStatus !== "authenticated" && isLoggedInOnly) {
+                  console.log(`Hash change to logged-in section (${targetSectionId}) while logged out. Showing default.`);
+                  sectionIdToShow = defaultSectionId;
+             }
+             // Allow logged-in users to see public sections via hash
+         } else if (targetSectionId && !document.getElementById(targetSectionId)) {
+             console.warn(`Hash change target section "${targetSectionId}" not found. Showing default.`);
+             sectionIdToShow = defaultSectionId;
+         }
+
+
+        console.log(`Hash changed to: #${newHash}, attempting to show: ${sectionIdToShow}`);
+         // Ensure the final section to show exists
+         if (document.getElementById(sectionIdToShow)) {
+            showSection(sectionIdToShow, false); // Show section based on hash, don't update hash again
+         } else {
+             console.error(`Cannot show section "${sectionIdToShow}" from hashchange as it does not exist. Showing absolute fallback.`);
+              const absoluteFallback = (authStatus === "authenticated") ? 'user-dashboard-section' : 'dashboard-section';
+              if (document.getElementById(absoluteFallback)) {
+                  showSection(absoluteFallback, false);
+              }
+         }
+    });
+
+
 
       updateAuthUI();  // Sets initial state based on isLoggedIn
   
-
 }); // End of DOMContentLoaded
