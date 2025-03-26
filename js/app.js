@@ -401,6 +401,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         userRole = profile.role;
         updateAuthUI();
         authModal.classList.add('hidden');
+        dashboardLoggedInContent.classList.add('block');
+
     }
 
     // --- Token Generation and Encryption (Unchanged, but included for completeness) ---
@@ -504,11 +506,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     function simulateLogin(profileId = 'user1') {  // Default to user1
         const profile = profiles[profileId] || profiles['user1']; // Fallback to user1
 
+	console.log("login simulated with user1");
         isLoggedIn = true;
         userName = profile.name;
         userRole = profile.role;
         updateAuthUI();
         authModal.classList.add('hidden');
+        dashboardLoggedInContent.classList.remove('hidden');
+
     }
 
 
