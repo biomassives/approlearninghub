@@ -540,7 +540,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         } else {
-            loginButton.classList.toggle('block');
+            loginButton.classList.toggle('hidden');
             timelineButton.classList.toggle('block');
             authLoggedInTopRight.classList.add('hidden');
             authLoggedOutTopRight.classList.remove('hidden');
