@@ -106,19 +106,14 @@ function checkConsentAndInit() {
 }
 
 
-
 // --- DOMContentLoaded Event ---
 document.addEventListener('DOMContentLoaded', async () => {
-
-
-
 
     // --- DOM Element Selection (Consolidated) ---
     const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
     const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
     const userProfileTopRight = document.getElementById('user-profile-top-right');
     const userDropdown = document.getElementById('user-dropdown');
-
 
     // set initial state
     userProfileTopRight.classList.toggle('hidden');
@@ -404,7 +399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAuthUI();
         authModal.classList.add('hidden');
         dashboardLoggedInContent.classList.add('block');
-
+        userDropdown.classList.toggle('hidden');
     }
 
     // --- Token Generation and Encryption (Unchanged, but included for completeness) ---
