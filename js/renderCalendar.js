@@ -160,7 +160,7 @@ monthViewBtn.addEventListener('click', () => {
     renderCalendar();
 });
 
-// renderCalendar(); // Initial render
+ renderCalendar(); // Initial render
 
 
 
