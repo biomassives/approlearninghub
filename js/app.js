@@ -512,13 +512,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAuthUI();
         authModal.classList.add('hidden');
         dashboardLoggedInContent.classList.remove('hidden');
-
     }
 
-
-
     // --- UI Update Functions ---
-
     function updateAuthUI() {
         if (isLoggedIn) {
             loginButton.classList.toggle('hidden');
@@ -540,7 +536,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         } else {
-            loginButton.classList.toggle('hidden');
+            loginButton.classList.toggle('block');
             timelineButton.classList.toggle('block');
             authLoggedInTopRight.classList.add('hidden');
             authLoggedOutTopRight.classList.remove('hidden');
