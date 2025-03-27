@@ -687,8 +687,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
             // UI updates should largely be handled by the Supabase auth state listener
             // But you might want to add a final catch-all here
-            loginButton.classList.toggle('block');
-	    timelineButton.classList.toggle('block');
+            loginButton.classList.toggle('hidden');
+	    timelineButton.classList.toggle('hidden');
             isLoggedIn = false;
             userName = "User";
             userRole = 'user';
