@@ -1,7 +1,10 @@
 // js/app.js
 
+//  APPRO LEARNING HUB
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
+
+
 // --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
 
@@ -684,6 +687,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
             // UI updates should largely be handled by the Supabase auth state listener
             // But you might want to add a final catch-all here
+            loginButton.classList.toggle('block');
+	    timelineButton.classList.toggle('block');
             isLoggedIn = false;
             userName = "User";
             userRole = 'user';
