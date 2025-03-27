@@ -4,7 +4,6 @@
 // GPL v3   GENERAL PUBLIC LICENSE
 // G. WILLSON SCD HUB PO BOX 911 NEDERLAND CO 80466 USA
 
-
 // --- Dexie Database Setup ---
 const db = new Dexie("ApprovideoLearningHub");
 
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userDropdown = document.getElementById('user-dropdown');
 
     // set initial state
-    userProfileTopRight.classList.toggle('hidden');
+    // userProfileTopRight.classList.toggle('block');
 
     // User Authentication Elements 
     const loginButton = document.getElementById('login-button');
@@ -399,7 +398,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAuthUI();
         authModal.classList.add('hidden');
         dashboardLoggedInContent.classList.add('block');
-        userDropdown.classList.toggle('hidden');
+        userDropdown.classList.remove('hidden');
     }
 
     // --- Token Generation and Encryption (Unchanged, but included for completeness) ---
@@ -503,18 +502,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     function simulateLogin(profileId = 'user1') {  // Default to user1
         const profile = profiles[profileId] || profiles['user1']; // Fallback to user1
 
-	console.log("login simulated with user1");
+	    console.log("login simulated with user1");
         isLoggedIn = true;
         userName = profile.name;
         userRole = profile.role;
         updateAuthUI();
         authModal.classList.add('hidden');
         dashboardLoggedInContent.classList.remove('hidden');
+        userProfileTopRight .classList.remove('hidden');
     }
 
     // --- UI Update Functions ---
     function updateAuthUI() {
         if (isLoggedIn) {
+            userProfileTopRight.classList.remove('hidden');
             loginButton.classList.toggle('hidden');
             timelineButton.classList.toggle('hidden');
             authLoggedOutTopRight.classList.add('hidden');
@@ -727,7 +728,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const encryptedToken = result.encryptedToken;
             const key = result.key;
             storeEncryptedToken(encryptedToken, key);
-            userProfileTopRight.classList.toggle('hidden');
           });
     });
 
@@ -824,3 +824,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   
 
 }); // End of DOMContentLoaded
+
