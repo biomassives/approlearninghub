@@ -171,7 +171,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const smallgrantsSection = document.getElementById('smallgrants-section');
     const researchSection = document.getElementById('research-section');
     const practicalClinicsSection = document.getElementById('practical-clinics-section');
-    //const milestonesSection = document.getElementById('milestones-section');
     const teachingSection = document.getElementById('teaching-section');
 
 
@@ -567,7 +566,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'research-section', 'practical-clinics-section', 'timeline-section',
             'learning-modules-section', 'clinics-section', 'smallgrants-section',
             'library-section', 'terms-section', 'privacy-section', 'about-section',
-            'team-section', 'milestones-section', 'sharefolder-section', 'start-a-clinic-section',
+            'team-section', 'sharefolder-section', 'start-a-clinic-section',
             'profile-section', 'settings-section', 'faq-section', 'events-section',
             'blog-section', 'welcome-section', 'certs-section', 'smallgrants-section',
             'research-section', 'practical-clinics-section', 'teaching-section'
@@ -775,7 +774,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         'faq-footer': 'faq-section',
     };
 
-//         'milestones-menu': 'milestones-section',
 
     for (const [elementId, sectionId] of Object.entries(sectionLinks)) {
         const element = document.getElementById(elementId);

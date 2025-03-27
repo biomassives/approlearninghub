@@ -9,8 +9,6 @@
     <script src="./js/libs/Dexie.js"></script>
     <script src="./js/libs/dexie-encrypted-addon.min.js"></script>
 
-
-    <script src="./js/milestonePlanner.mjs"></script> 
     <script src="./js/libs/supabase-js2.js"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -37,213 +35,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
     <script src="manifest.js"></script>
-<style>
-    .audio-player {
-      display: flex;
-      max-width: 350px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 12px;
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      font-family: Arial, sans-serif;
-    }
-    
-    .player-header {
-      position: relative;
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .controls-top {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .thumbnail {
-      width: 50px;
-      height: 50px;
-      border-radius: 6px;
-      margin-right: 10px;
-      object-fit: cover;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .download-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #4d7bac;
-      text-decoration: none;
-      font-size: 12px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background-color: #f0f3f7;
-      border: 1px solid #d0d8e0;
-      transition: all 0.2s ease;
-    }
-    
-    .download-link:hover {
-      background-color: #e0e7f0;
-      color: #3a5e8c;
-    }
-   
-    .led-display {
-      background: linear-gradient(to bottom, #d0d8e0, #c0c9d8);
-      border-radius: 6px;
-      padding: 6px 8px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.8);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid #a3adb9;
-      flex: 1;
-      min-width: 0; /* Important for text overflow to work properly */
-    }
-    
-    .led-display:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-      pointer-events: none;
-      border-radius: 7px 7px 0 0;
-    }
-    
-    .filename-text {
-      font-family: 'Courier New', monospace;
-      color: #000000;
-      font-size: 14px;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      letter-spacing: 1px;
-      margin: 0;
-      padding: 3px 0;
-    }
-    
-    .scrolling-text {
-      display: inline-block;
-      animation: scroll-text 10s linear infinite;
-      animation-play-state: paused;
-      padding-right: 20px;
-    }
-    
-    .scrolling .scrolling-text {
-      animation-play-state: running;
-    }
-    
-    @keyframes scroll-text {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-   
-    .player-controls {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-   
-    .play-btn {
-      background: linear-gradient(to bottom, #55b559, #4CAF50);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-   
-    .play-btn:hover {
-      background: linear-gradient(to bottom, #4CAF50, #45a049);
-    }
-   
-    .time-display {
-      font-size: 14px;
-      color: #555;
-      font-weight: bold;
-    }
-   
-    .progress-container {
-      width: 100%;
-      height: 8px;
-      background-color: #ddd;
-      border-radius: 4px;
-      margin: 8px 0;
-      cursor: pointer;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-      overflow: hidden;
-    }
-   
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, #4CAF50, #7dde81);
-      border-radius: 4px;
-      width: 0%;
-      transition: width 0.1s ease;
-    }
-    
-    .time-display {
-      font-size: 12px;
-      color: #555;
-      font-weight: bold;
-    }
 
-    .color-panel {
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .color-panel:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    .color-panel .icon-bg {
-      position: absolute;
-      right: -10px;
-      bottom: -10px;
-      width: 120px;
-      height: 120px;
-      opacity: 0.15;
-      pointer-events: none;
-    }
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      overflow: hidden;
-      width: 100%;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style> 
 
 
     
-
-
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div id="app" class="flex flex-col">
@@ -445,15 +240,8 @@
                                     </button>
    
 					<!-- dropdown menu  -->
-                                    	<div id="user-dropdown" class="hidden absolute right-4 mt-32 w-48 bg-white rounded-md shadow-lg py-1 z-50"> 
-                                        <a
-                                            href="#dashboard"
-                                            id="dashboard-menu"
-                                            class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
-                                        >
-					<svg data-slot="icon" width=64 height=64 aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                        Dashboard
-                                        </a>
+                                    	<div id="user-dropdown" class="hidden absolute right-4 mt-24 w-48 bg-white rounded-md shadow-lg py-1 z-50"> 
+                                      
                                         <a
                                             href="#profile"
                                             id="profile-menu"
@@ -462,6 +250,14 @@
 					<svg data-slot="icon" width=64 height=64 aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 					  <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                             Profile
+                                        </a>
+                                        <a
+                                        href="#dashboard"
+                                        id="dashboard-menu"
+                                        class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                    <svg data-slot="icon" width=64 height=64 aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                        Dashboard
                                         </a>
                                         <a
                                             href="#teaching"
@@ -1111,7 +907,6 @@
 
         </div>
 
-                <script src="js/moduleCards.js"></script>
 
         <main class="flex-grow bg-gray-50 container mx-auto px-4 py-6">
             
@@ -1119,15 +914,33 @@
 
         <section id="timeline-section" class="hidden py-12 bg-gray-100">
             <div class="container max-w-4xl mx-auto px-4">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Calendar</h2>
-                <div class="modal-content">
-                <span class="timelineCLOSE">&times;</span>
-
-                    <h2 id="modalTitle">Fuel Briquettes</h2>
-                    <p id="modalDescription"></p>
+        
+                
+            <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="calendar-title" class="text-2xl font-semibold">Approvideo Learning Hub Calendar</h2>
+                    <div>
+                        <button id="prev-btn" class="px-3 py-1 bg-stone-200 rounded-md mr-2">&lt;</button>
+                        <button id="next-btn" class="px-3 py-1 bg-stone-200 rounded-md">&gt;</button>
+                    </div>
                 </div>
+
+                <div class="mb-4 flex space-x-2">
+                    <button id="day-view-btn" class="px-4 py-2 bg-sky-400 text-white rounded-md">Day</button>
+                    <button id="week-view-btn" class="px-4 py-2 bg-stone-200 rounded-md">Week</button>
+                    <button id="month-view-btn" class="px-4 py-2 bg-stone-200 rounded-md">Month</button>
+                    <button id="supabase-sync-btn" class="px-4 py-2 bg-emerald-600 text-white rounded-md">Sync Supabase</button>
+                </div>
+
+                <div id="calendar-view"></div>
+            </div>
+
+
+
             </div>
         </section>
+
+
 
 <section id="dashboard-section" class="py-12">
     <div id="dashboard-content" class="container mx-auto px-4">
@@ -1446,54 +1259,60 @@
 
                     <div class="tab-contents p-6">
                         
-                        <div id="watsan-content" class="tab-content hidden">
+                        <div id="watsan-content" class="tab-content">
+  
+                            <div class="lg:flex gap-6">
+                                <div class="lg:w-2/3">                    
+                                    <div class="lg:flex gap-6">
+                                        <div class="lg:w-1/3 order-1 lg:order-1">                                        
+                                            
+                                            
+                                            <img width="192" height="192" src="./assets/drinkwater.gif" alt="Drinking Water Management">
 
-                                        <div class="mb-8">
-                                            <div class="lg:flex gap-6">
-            
-                                                <div class="lg:w-1/3 order-1 lg:order-1">
-                                                    <img width="241" height="245" src="./assets/images/drinkwater.gif" alt="Drinking Water Management">
-                                                </div>
-                                                <div class="lg:w-2/3 order-1 lg:order-2">
+                                            
+                                        </div>
+                                        <div class="lg:w-2/3 order-1 lg:order-2">
 
-                                                                                
-
-                                                <ul class="mb-4 text-gray-700">
-                                                    <li class="mb-2"><strong class="text-orange-700">Safe storage solutions</strong>: Appropriate containers and emergency tanks</li>
-                                                    <li class="mb-2"><strong class="text-orange-700">Distribution networks</strong>: preventing cross contamination</li>
-                                                    <li class="mb-2"><strong class="text-orange-700">Basic treatment methods</strong>: Chlorination, solar disinfection (SODIS), and boiling</li>
-                                                    <li class="mb-2"><strong class="text-orange-700">Basic treatment methods</strong> Water acquisition</li>
-                                                    <li>
-                                                        <ul style="list-style-type: disc; margin-block-start: 1em; padding-inline-start: 40px;">
-                                                            <li class="mb-5"><strong class="text-rose-950">Rainwater catchment</strong></li>
-                                                            <li class="mb-5"><strong class="text-rose-950">surface water abstraction</strong></li>
-                                                            <li class="mb-5"><strong class="text-rose-950">staged carbon filtration</strong></li>
-                                                            <li class="mb-5"><strong class="text-rose-950">reverse osmosis</strong></li>
-                                                            <li class="mb-5"><strong class="text-rose-950">purification</strong></li>
-                                                            <li class="mb-5"><strong class="text-rose-950">temporary wells</strong></li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>    
-                                                </div>
-
+                                            <ul class="mb-4 text-gray-700">
+                                                <li class="mb-2"><strong class="text-orange-700">Safe storage solutions</strong>: Appropriate containers and emergency tanks</li>
+                                                <li class="mb-2"><strong class="text-orange-700">Distribution networks</strong>: preventing cross contamination</li>
+                                                <li class="mb-2"><strong class="text-orange-700">Basic treatment methods</strong>: Chlorination, solar disinfection (SODIS), and boiling</li>
+                                                <li class="mb-2"><strong class="text-orange-700">Basic treatment methods</strong> Water acquisition</li>
+                                                <li>
+                                                    <div class="grid grid-cols-2 gap-4">
+                                                        <div>
+                                                            <ul style="list-style-type: disc; margin-block-start: 1em; padding-inline-start: 40px;">
+                                                                <li class="mb-5"><strong class="text-rose-950">Rainwater catchment</strong></li>
+                                                                <li class="mb-5"><strong class="text-rose-950">surface water abstraction</strong></li>
+                                                                <li class="mb-5"><strong class="text-rose-950">staged carbon filtration</strong></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div>
+                                                            <ul style="list-style-type: disc; margin-block-start: 1em; padding-inline-start: 40px;">
+                                                                <li class="mb-5"><strong class="text-rose-950">reverse osmosis</strong></li>
+                                                                <li class="mb-5"><strong class="text-rose-950">purification</strong></li>
+                                                                <li class="mb-5"><strong class="text-rose-950">temporary wells</strong></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>   
+                                        </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-            <div id="shelter-content" class="tab-content">
+                    </div>
+            <div id="shelter-content" class="tab-content hidden">
                       
                                 <div class="lg:flex gap-6">
                                     <div class="lg:w-2/3">                    
                                         <div class="lg:flex gap-6">
                                             <div class="lg:w-1/3 order-1 lg:order-1">                                        
-                                                <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                                <polygon points="20,150 100,50 180,150" fill="#E0E0E0" stroke="#808080" stroke-width="2"/>
-                                                <rect x="50" y="150" width="100" height="50" fill="#D0D0D0" stroke="#808080" stroke-width="2"/>
-                                                <path d="M 70 110 L 90 90 L 110 110 L 90 130 Z M 110 90 L 130 110 L 110 130 L 90 110 Z" fill="#FFFFFF" stroke="#000000" stroke-width="1"/>
-                                                <line x1="20" y1="150" x2="100" y2="50" stroke="#808080" stroke-width="1"/>
-                                                <line x1="100" y1="50" x2="180" y2="150" stroke="#808080" stroke-width="1"/>
-                                                <path d="M 100 200 L 90 150 L 110 150 Z" fill="#C0C0C0" stroke="#A0A0A0" stroke-width="1"/>
-                                                <rect x="150" y="160" width="20" height="20" fill="#ADD8E6" stroke="#808080" stroke-width="1"/>
-                                                </svg>
+                                                
+                                                
+                                            <img src="/assets/shelter.gif" height="192" width="192" alt="Solid Waste Management">                             
+
                                                 
                                             </div>
                                             <div class="lg:w-2/3 order-1 lg:order-2">
@@ -1514,25 +1333,32 @@
                             </div>
                         </div>
 
+
+
+
                         <div id="wastewater-content" class="tab-content hidden">
-                            <div class="mb-8">
-                                <div class="lg:flex gap-6">
+                            <div class="mb-8 max-w-4xl mx-auto">
+                              <div class="relative">
+                                <div class="float-left mr-6 mb-4 w-24 sm:w-32 md:w-40 lg:w-48">
 
-                                    <div class="lg:w-1/3 order-1 lg:order-1">
-                                        <img width="241" height="245" src="./assets/images/peacewater.gif" alt="Wastewater Management">
-                                    </div>
-                                    <div class="lg:w-2/3 order-1 lg:order-2">
 
-                                        <ul class="mb-4 text-gray-700">
-                                            <li class="mb-2"><strong class="text-orange-700">Assessment of emergency collection methods</strong>: Temporary latrines, mobile sanitation units, and improvised facilities</li>
-                                            <li class="mb-2"><strong class="text-orange-700">Basic treatment processes</strong>: Filtration, chlorination, and purification appropriate for emergency contexts</li>
-                                            <li class="mb-2"><strong class="text-orange-700">Safe disposal options</strong>: Composting latrines, leach pits, and safe burial techniques</li>
-                                        </ul>
-                                        
-                                    </div>
+                                    <img width="241" height="245" src="./assets/images/peacewater.gif" alt="Wastewater Management">
+                             
                                 </div>
-                            </div>
+
+                                
+                                <!-- Text content that wraps around the image -->
+                                <ul class="text-gray-700 overflow-hidden">
+                                    <li class="mb-2"><strong class="text-orange-700">Assessment of emergency collection methods</strong>: Temporary latrines, mobile sanitation units, and improvised facilities</li>
+                                    <li class="mb-2"><strong class="text-orange-700">Basic treatment processes</strong>: Filtration, chlorination, and purification appropriate for emergency contexts</li>
+                                    <li class="mb-2"><strong class="text-orange-700">Safe disposal options</strong>: Composting latrines, leach pits, and safe burial techniques</li>
+                                </ul>    
+                             
+                             </div>
+                           </div>
                         </div>
+
+
 
                         <div id="solidwaste-content" class="tab-content hidden">
                             <div class="mb-8 max-w-4xl mx-auto">
@@ -1543,6 +1369,7 @@
                                   <img src="/assets/images/peacewatersolidwaste.gif" height="256" width="256" alt="Solid Waste Management">                             
                              
                                 </div>
+
                                 
                                 <!-- Text content that wraps around the image -->
                                 <ul class="text-gray-700 overflow-hidden">
@@ -1556,11 +1383,17 @@
                         </div>
 
 
-                        <div id="technology-content" class="tab-content hidden">
+
+                        <div id="technology-content" class="tab-content hidden bg-white">
     
-                            <div>
+                            <div class="mb-8 max-w-4xl mx-auto">
+                                <div class="relative">
+                                  <div class="float-left mr-6 mb-4 w-24 sm:w-32 md:w-40 lg:w-48">
+  
 
+                                <img width="192" height="192" src="./assets/energy.gif" alt="Renewable Energy">
 
+                                </div>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                                     <div class="bg-teal-50 p-4 rounded-lg">
@@ -1589,9 +1422,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                       
+                     </div>
             
-                        <div id="education-content" class="tab-content hidden">
+                        <div id="education-content" class="tab-content hidden bg-white">
 
                             <div class="mb-8">
                                 <div class="relative overflow-hidden">
@@ -1600,7 +1434,7 @@
                                     <div class="relative z-10 mb-6">
                                         <p class="mb-4 text-gray-700">We use a comprehensive monitoring and evaluation framework to assess the impact of our educational programs across multiple dimensions:</p>
                                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="dummy1.html">
+                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="modules/health/firstaid.html">
                                             <h4 class="font-semibold text-green-700 mb-2">First Aid</h4>
                                             <ul class="list-disc pl-5 text-gray-700">
                                               <li>Basic wound care: cleaning, dressing, and infection prevention using improvised materials
@@ -1610,7 +1444,7 @@
                                               <li>Injury management: splinting fractures, managing burns, and controlling bleeding effectively</li>
                                             </ul>
                                           </div>
-                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="dummy2.html">
+                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="modules/health/emt/index.html">
                                             <h4 class="font-semibold text-green-700 mb-2">EMT Techniques</h4>
                                             <ul class="list-disc pl-5 text-gray-700">
                                               <li>Rapid patient assessment: identifying critical signs and effective triage in emergencies</li>
@@ -1618,7 +1452,7 @@
                                               <li>Trauma stabilization: using immobilization techniques and shock management strategies in the field</li>
                                             </ul>
                                           </div>
-                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="dummy3.html">
+                                          <div class="panel bg-green-50 rounded-lg p-4 cursor-pointer transition-all duration-300" data-link="modules/health/self-sufficient.html">
                                             <h4 class="font-semibold text-green-700 mb-2">Self Sufficient Health Care</h4>
                                             <ul class="list-disc pl-5 text-gray-700">
                                               <li>Preventative care: promoting sanitation, proper nutrition, and immunization awareness</li>
@@ -1632,7 +1466,7 @@
                             </div>
                         </div>
             
-                        <div id="collaboration-content" class="tab-content hidden">
+                        <div id="collaboration-content" class="tab-content hidden bg-white">
 
                             <div class="mb-8">
                                 <div class="lg:flex gap-6">
@@ -1739,172 +1573,7 @@
             </script>
 
 
-            <section id="milestones-section" class="hidden py-12 bg-gray-100">
-                <div class="container max-w-4xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Milestone Planner</h2>
-                    <p class="text-gray-600 mb-8">Track your progress and set clear goals for your environmental projects.</p>
-                    
-                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                        <div class="mb-6">
-                            <label for="overall-goal" class="block text-gray-700 font-medium mb-2">Overall Goal:</label>
-                            <input type="text" id="overall-goal" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Set your overall goal here!">
-                        </div>
-                        
-                        <div class="milestone-controls">
-                            <button id="add-milestone" class="bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 transition flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                                Add Milestone
-                            </button>
-                            
-                            <div class="sort-controls">
-                                <label for="sort-milestones">Sort by:</label>
-                                <select id="sort-milestones" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                    <option value="dueDate">Due Date</option>
-                                    <option value="status">Status</option>
-                                    <option value="title">Title</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="milestones-list" class="space-y-6">
-                        <!-- Milestone items will be added here dynamically -->
-                    </div>
-                </div>
-
-            
-            <!-- Template for Milestone Items -->
-            <template id="milestone-template">
-                <div class="milestone-item bg-white rounded-lg shadow-md p-6">
-                    <div class="milestone-header flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
-                        <div class="flex-grow">
-                            <input type="text" class="milestone-title w-full p-2 border border-gray-300 rounded-md text-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Milestone Title">
-                        </div>
-                        <div class="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                            <div>
-                                <label class="block text-gray-500 text-sm mb-1">Due Date</label>
-                                <input type="date" class="milestone-date p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            </div>
-                            <div>
-                                <label class="block text-gray-500 text-sm mb-1">Status</label>
-                                <select class="milestone-status p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                    <option value="not-started">Not Started</option>
-                                    <option value="in-progress">In Progress</option>
-                                    <option value="completed">Completed</option>
-                                </select>
-                                <!-- Progress bar will be added here -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-2">Description:</label>
-                        <textarea class="milestone-description w-full p-3 border border-gray-300 rounded-md h-24 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Describe what you aim to achieve with this milestone..."></textarea>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <h4 class="text-lg font-medium text-gray-700 mb-2">Key Metrics</h4>
-                        <div class="metrics-section bg-gray-50 p-4 rounded-md">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                                <div>
-                                    <label class="block text-gray-500 text-sm mb-1">Metric Name</label>
-                                    <input type="text" class="milestone-metric-name w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Metric Name">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-500 text-sm mb-1">Value</label>
-                                    <input type="text" class="milestone-metric-value w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Metric Value">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-500 text-sm mb-1">Unit</label>
-                                    <select class="milestone-metric-unit w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                        <option value="hours">Hours</option>
-                                        <option value="days">Days</option>
-                                        <option value="%">%</option>
-                                        <option value="kg">kg</option>
-                                        <option value="liters">liters</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button class="add-metric bg-emerald-500 text-white px-3 py-1 rounded hover:bg-emerald-600 transition text-sm flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                                Add Metric
-                            </button>
-                        </div>
-                        
-                        <div class="metrics-display mt-3 space-y-2">
-                            <!-- Metrics will be added here dynamically -->
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-2">Celebration (What will you do when you achieve this?):</label>
-                        <input type="text" class="milestone-celebration w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="How will you celebrate this achievement?">
-                    </div>
-                    
-                    <div class="flex justify-end">
-                        <button class="remove-milestone bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            Remove Milestone
-                        </button>
-                    </div>
-                </div>
-            </template>
-
-        </section>
-
-
-            <section id="milestones-section0" class="hidden py-12 bg-gray-100">
-
-                    <h2>Milestone Planner</h2>
-                
-                    <label for="overall-goal">Overall Goal:</label>
-                    <input type="text" id="overall-goal0" value="Set your overall goal here!">
-                
-                    <button id="add-milestone0">Add Milestone</button>
-                
-                    <div id="milestones-list0">
-                        </div>
-                
-                    <template id="milestone-template0">
-                        <div class="milestone-item">
-                            <input type="text" class="milestone-title" id="milestone-title0" placeholder="Milestone Title">
-                            <input type="date" class="milestone-date" id="milestone-data0" >
-                            <select class="milestone-status" id="milestone-status0" >
-                                <option value="not-started">Not Started</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="completed">Completed</option>
-                            </select>
-
-                  
-                            <textarea class="milestone-description" id="milestone-description0"  placeholder="Description"></textarea>
-                
-                            <div class="metrics-section">
-                                <input type="text" class="milestone-metric-name" placeholder="Metric Name">
-                                <input type="text" class="milestone-metric-value" placeholder="Metric Value">
-                                <select class="milestone-metric-unit">
-                                    <option value="hours">Hours</option>
-                                    <option value="days">Days</option>
-                                    <option value="%">%</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <button class="add-metric">Add Metric</button>
-                            </div>
-                
-                            <div class="metrics-display"></div>
-                
-                            <input type="text" class="milestone-celebration" placeholder="Celebration">
-                            <button class="remove-milestone">Remove Milestone</button>
-                        </div>
-                    </template>
-                
-        </section>
+         
 
         <section id="smallgrants-section" class="hidden flex-grow bg-gray-50 container mx-auto px-4 py-6">
 
@@ -2961,7 +2630,8 @@
 
 
   <script src="/js/app.js"></script>
-  <script type="module" src="/js/milestonePlanner.mjs"></script>
+
+  <script src="js/renderCalendar.js"></script>
 
 </body>
 </html>
