@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Successful</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="text-center">
+                <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            
+            <h1>Check Your Email</h1>
+            
+            <p class="text-center">
+                We've sent a confirmation link to your email address.<br>
+                Please check your inbox and click the link to verify your account.
+            </p>
+            
+            <div class="info-box">
+                <p>
+                    <strong>Important:</strong> If you don't see the email, please check your spam folder.
+                    The email should arrive within a few minutes.
+                </p>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="login.html" class="btn-secondary">Back to Login</a>
+                <a href="signup.html" class="btn-link">Change Email</a>
+            </div>
+            
+            <div class="help-text">
+                <p>Need help? <a href="mailto:support@example.com">Contact Support</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        /* Additional styles for the success page */
+        .check-icon {
+            width: 60px;
+            height: 60px;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+        
+        .info-box {
+            background-color: #f0f4ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: var(--rounded);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .help-text {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .btn-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .btn-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--rounded);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f4ff;
+        }
+    </style>
+</body>
+</html>
