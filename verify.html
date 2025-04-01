@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div id="loading-view">
+                <h1>Verifying Email</h1>
+                <p class="text-center">Please wait while we verify your email...</p>
+                <div class="loader"></div>
+            </div>
+            
+            <div id="success-view" class="hidden">
+                <h1>Email Verified!</h1>
+                <p class="text-center">Your email has been successfully verified.</p>
+                <div class="action-buttons">
+                    <a href="dashboard.html" class="btn-primary">Go to Dashboard</a>
+                </div>
+            </div>
+            
+            <div id="error-view" class="hidden">
+                <h1>Verification Failed</h1>
+                <p id="error-message" class="text-center error-message">An error occurred during verification.</p>
+                <div class="action-buttons">
+                    <a href="login.html" class="btn-primary">Back to Login</a>
+                </div>
+            </div>
+            
+            <div id="recovery-view" class="hidden">
+                <h1>Reset Your Password</h1>
+                <form id="password-reset-form">
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" name="new-password" required>
+                        <small>Password must be at least 8 characters</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Reset Password</button>
+                    
+                    <div id="reset-error-container" class="error-message hidden"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Import auth functions using the new abstraction layer
+        import { handleConfirmation } from './supabase-auth.js';
+        import { supabase, AUTH_REDIRECTS } from './supabase-config.js';
+        
+        // Get page elements
+        const loadingView = document.getElementById('loading-view');
+        const successView = document.getElementById('success-view');
+        const errorView = document.getElementById('error-view');
+        const errorMessage = document.getElementById('error-message');
+        const recoveryView = document.getElementById('recovery-view');
+        
+        // Password reset form elements (if recovery)
+        const resetForm = document.getElementById('password-reset-form');
+        const newPasswordInput = document.getElementById('new-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const resetErrorContainer = document.getElementById('reset-error-container');
+        
+        // Process verification or recovery based on URL hash parameters
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Handle verification or recovery
+                const result = await handleConfirmation();
+                
+                if (result.success) {
+                    // Check if this is a password recovery
+                    if (result.type === 'recovery') {
+                        // Show password reset form
+                        showView(recoveryView);
+                        setupPasswordResetForm();
+                    } else {
+                        // Show success view for signup verification
+                        showView(successView);
+                    }
+                } else {
+                    // Show error view with message
+                    errorMessage.textContent = result.error || 'Verification failed';
+                    showView(errorView);
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                errorMessage.textContent = 'An unexpected error occurred during verification';
+                showView(errorView);
+            }
+        });
+        
+        // Set up password reset form (for recovery flow)
+        function setupPasswordResetForm() {
+            resetForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Clear previous errors
+                resetErrorContainer.textContent = '';
+                resetErrorContainer.classList.add('hidden');
+                
+                // Validate passwords
+                const newPassword = newPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                
+                if (newPassword !== confirmPassword) {
+                    showResetError("Passwords don't match");
+                    return;
+                }
+                
+                if (newPassword.length < 8) {
+                    showResetError("Password must be at least 8 characters");
+                    return;
+                }
+                
+                try {
+                    // Update password
+                    const { data, error } = await supabase.auth.updateUser({
+                        password: newPassword
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Success - redirect to login
+                    window.location.href = 'login.html?message=Password reset successful. Please log in with your new password.';
+                } catch (error) {
+                    console.error('Password reset error:', error);
+                    showResetError(error.message || 'Failed to reset password');
+                }
+            });
+        }
+        
+        // Helper to show specific view
+        function showView(viewElement) {
+            // Hide all views
+            loadingView.classList.add('hidden');
+            successView.classList.add('hidden');
+            errorView.classList.add('hidden');
+            recoveryView.classList.add('hidden');
+            
+            // Show requested view
+            viewElement.classList.remove('hidden');
+        }
+        
+        // Helper to show error in reset form
+        function showResetError(message) {
+            resetErrorContainer.textContent = message;
+            resetErrorContainer.classList.remove('hidden');
+        }
+    </script>
+    
+    <style>
+        /* Additional styles for the verification page */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3182ce;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</body>
+</html>
