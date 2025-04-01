@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Log In</h1>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-options">
+                    <a href="reset-password-request.html" class="text-sm">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Log In</button>
+
+                <div id="error-container" class="error-message hidden"></div>
+            </form>
+
+    <script type="module">
+        // Import auth functions using the new abstraction layer
+        import { signIn } from './supabase-auth.js';
+        import { AUTH_REDIRECTS } from './supabase-config.js';
+
+        // Get form elements
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorContainer = document.getElementById('error-container');
+
+        // Check if user was redirected with a message
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+
+        if (message) {
+            showMessage(message);
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            errorContainer.textContent = '';
+            errorContainer.classList.add('hidden');
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Disable form during login
+            setFormDisabled(true);
+
+            try {
+                // Submit login request
+                const result = await signIn(email, password);
+
+                if (result.success) {
+                    // Redirect to dashboard on success
+                    window.location.href = AUTH_REDIRECTS.login;
+                } else {
+                    showError(result.error || 'Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('An unexpected error occurred');
+            } finally {
+                // Re-enable form
+                setFormDisabled(false);
+            }
+        });
+
+        // Helper to show error message
+        function showError(message) {
+            errorContainer.textContent = message;
+            errorContainer.classList.remove('hidden');
+        }
+
+        // Helper to show regular message (e.g., from redirects)
+        function showMessage(message) {
+            errorContainer.textContent = message;
+            errorContainer.classList.remove('hidden');
+            errorContainer.classList.remove('error-message');
+            errorContainer.classList.add('info-message');
+        }
+
+        // Helper to disable/enable form
+        function setFormDisabled(disabled) {
+            const elements = form.elements;
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].disabled = disabled;
+            }
+
+            // Change button text
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.textContent = disabled ? 'Logging in...' : 'Log In';
+        }
+    </script>
+</body>
+</html>
+
+
+
+          
