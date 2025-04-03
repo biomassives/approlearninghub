@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+
+  <title>Approvideo - add a new resource</title>
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  </head>
+  <body class="bg-gray-50">
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    ❝ ɒ  Appropriate Technology Videos for the DIY Sector ℧ ❞ 
+  </div>
+
+  <div class="container mx-auto p-4">
+
+<nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-3 group">
+            <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                 viewBox="0 0 24 24" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 stroke-width="1.5"
+                 id="logoIcon">
+              <circle class="tool-circle" cx="12" cy="12" r="10" stroke-dasharray="4 4"/>
+              <path class="tool-wrench" d="M3 21h4l9-9"/>
+              <circle class="tool-gear" cx="12" cy="12" r="3"/>
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproVideo
+            </span>
+          </a>
+        </div>
+
+
+          <div class="relative">
+            <button id="darkModeToggle" 
+                  class="p-2 rounded-lg transition-all duration-300 hover:bg-opacity-10 justify-right">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+            <button id="profileButton" 
+            class="p-2 rounded-lg transition-colors duration-300">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5z" />
+                <path d="M19 21v-2a7 7 0 0 0-7-7h0a7 7 0 0 0-7 7v2" />
+              </svg>
+            </button>
+            <div id="profileDropdown"
+            class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                <a href="/admin/new.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Critical Skills Videos</a>
+                <a href="/admin/new_learningomics.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Learning Videos</a>
+                <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Live Site</a>
+                <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Content Manager</a>
+                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxonomy</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+        <h1 class="text-4xl font-bold page-title mb-2">Add a Video</h1>
+    </div>
+  <!-- ACCORDION FOR CATEGORY COUNTS -->
+  <div id="categoryCountsContainer" class="max-w-4xl mx-auto mb-6 mt-6 dark:bg-gray-700 dark:text-gray-100 bg-gray-100 text-gray-800">
+    <button
+      id="toggleCategoryCounts"
+      class="w-full flex items-center justify-between 
+             bg-gray-900 text-white 
+             dark:bg-gray-800 dark:text-gray-200
+             px-4 py-2 rounded-md shadow-md
+             focus:outline-none focus:ring-2 focus:ring-blue-500
+             transition"
+    >
+      <h2 class="text-lg font-bold mb-0">Category Counts</h2>
+      <span
+        id="toggleIcon"
+        class="ml-2 transform transition-transform duration-300"
+      >&darr;</span>
+    </button>
+
+    <div
+      id="categoryCounts"
+      class="mt-2 p-4 
+             rounded-md shadow-md
+             transition-all duration-300 ease-in-out
+             bg-gray-100 text-gray-800
+             dark:bg-gray-700 dark:text-gray-100
+             flex flex-wrap gap-3"
+      style="display: none;"
+    >
+      <!-- Pills go here -->
+      <div id="categoryCountsContent" class="w-full"></div>
+    </div>
+  </div>
+    
+
+
+
+
+    
+        <!-- Update form class -->
+        <form id="newVideoForm" 
+        class="w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md transition-all duration-300">
+
+      <div class="mb-4">
+        <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+        <input type="text" id="newTitle" class="liquid-input w-full" required>
+      </div>
+      
+      <div class="mb-4">
+        <label for="newYoutubeUrl" class="block text-gray-700 text-sm font-bold mb-2">YouTube URL:</label>
+        <input type="text" id="newYoutubeUrl" class="liquid-input w-full" required>
+        <div id="youtubeIdPreview" class="text-sm text-gray-500 mt-1"></div>
+      </div>
+      
+      <div class="mb-4">
+        <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+        <select id="newCategory" class="liquid-input w-full" required>
+          <option value="">Select a category</option>
+          <option value="waterpurification">Water Purification</option>
+          <option value="desalination">Desalination</option>
+          <option value="waterdistribution">Efficient Water Distribution</option>
+          <option value="diysolar">DIY Solar</option>
+          <option value="biogas">Biogas</option>
+          <option value="microgrids">Microgrids</option>
+          <option value="urbanfood">Urban Food Prouction</option>
+          <option value="hydroponics">Hydroponics</option>
+          <option value="sustainableag">Sustainable Agriculture Techniques</option>  
+          <option value="lowcostconstruction">Low Cost Contruction</option>
+          <option value="localsheltermaterials">Useful Local Materials for Shelter</option> 
+          <option value="emtskills">EMT Skills</option>
+          <option value="telemedicine">Telemedicine</option>
+          <option value="firstaid">First Aid</option>
+          <option value="selfsuficienthealthcare">Self Sufficient Health Care</option>   
+
+          
+        </select>
+      </div>
+
+
+      <div class="mb-4">
+        <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags:</label>
+        <input type="text" id="newTags" class="liquid-input w-full" placeholder="critical-skills">
+        <div id="tagSuggestions" class="absolute z-10 bg-white rounded-md shadow-lg mt-1 p-2 max-h-40 overflow-y-auto hidden"></div>
+      </div>
+      
+      <div class="mb-6">
+        <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+        <textarea id="newDescription" class="liquid-textarea w-full h-32" required></textarea>
+      </div>
+      
+      <div class="text-center">
+        <button type="submit" class="liquid-button" id="submitButton">Add Video Data Object</button>
+      </div>
+    </form>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-full">
+      <div class="flex items-center space-x-2">
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+          
+          // Accordion toggle logic
+          const toggleBtn = document.getElementById('toggleCategoryCounts');
+          const categoryCountsDiv = document.getElementById('categoryCounts');
+          const toggleIcon = document.getElementById('toggleIcon');
+          
+          let isAccordionOpen = false;
+          
+          toggleBtn.addEventListener('click', () => {
+            isAccordionOpen = !isAccordionOpen;
+            
+            // Show or hide the content
+            categoryCountsDiv.style.display = isAccordionOpen ? 'block' : 'none';
+            
+            // Rotate the arrow
+            toggleIcon.style.transform = isAccordionOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+          });
+
+
+    
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-full ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+      } text-white`;
+      
+      toastMessage.textContent = message;
+      
+      setTimeout(() => {
+        toast.style.transform = 'translateY(0)';
+      }, 100);
+      
+      setTimeout(() => {
+        toast.style.transform = 'translateY(100%)';
+      }, 3000);
+    }
+
+    function extractYoutubeId(url) {
+      if (!url) return null;
+      
+      const patterns = [
+        /youtube\.com\/watch\?v=([^&#]+)/,
+        /youtu\.be\/([^&#]+)/,
+        /youtube\.com\/embed\/([^&#]+)/
+      ];
+
+      for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match && match[1]) {
+          return match[1];
+        }
+      }
+
+      return null;
+    }
+
+
+    // Our known categories
+    const allCategories = [
+      'waterpurification',
+      'desalination',
+      'waterdistribution',
+      'diysolar',
+      'biogas',
+      'microgrids',
+      'urbanfood',
+      'hydroponics',
+      'sustainableag',
+      'lowcostconstruction',
+      'localsheltermaterials',
+      'emtskills',
+      'telemedicine',
+      'firstaid',
+      'selfsuficienthealthcare',
+    ];
+
+    async function fetchCategoryCounts() {
+      try {
+        const { data, error } = await supabase
+          .from('Video')
+          .select('category'); // or just select('*')
+
+        if (error) {
+          console.error('Error fetching videos:', error);
+          return;
+        }
+
+        // Count categories
+        const counts = {};
+        data.forEach((video) => {
+          const cat = video.category || 'Uncategorized';
+          counts[cat] = (counts[cat] || 0) + 1;
+        });
+
+        // Build pills
+        const container = document.getElementById('categoryCountsContent');
+        container.innerHTML = '';
+
+        allCategories.forEach((cat) => {
+          const count = counts[cat] || 0;
+
+          const pill = `
+            <div class="inline-flex items-center space-x-2
+                        px-3 py-1 rounded-full
+                        bg-blue-100 text-blue-800
+                        text-sm font-medium
+                        hover:bg-blue-200 transition
+                        ">
+              <a 
+                href="/videos.html?category=${cat}"
+                class="hover:underline"
+                title="View only ${cat} videos on site"
+              >
+                ${cat}
+              </a>
+              <span
+                class="bg-white text-blue-800 font-semibold
+                       px-2 py-0.5 rounded-full
+                       shadow-sm text-xs"
+                title="Number of videos in ${cat}"
+              >
+                ${count}
+              </span>
+              <a 
+                href="https://www.youtube.com/results?search_query=${cat}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-red-600"
+                title="Search on YouTube for '${cat}'"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          `;
+          container.innerHTML += pill;
+        });
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    }
+
+    // Realtime channel to auto-refresh
+    const videoChannel = supabase.channel('video-changes-channel');
+    videoChannel.on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'Video' },
+      (payload) => {
+        console.log('Realtime update:', payload);
+        fetchCategoryCounts();
+      }
+    );
+    videoChannel.subscribe();
+
+    // Accordion toggle
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggleCategoryCounts');
+      const categoryCountsDiv = document.getElementById('categoryCounts');
+      const toggleIcon = document.getElementById('toggleIcon');
+
+      let isAccordionOpen = false;
+
+      toggleBtn.addEventListener('click', () => {
+        isAccordionOpen = !isAccordionOpen;
+        categoryCountsDiv.style.display = isAccordionOpen ? 'block' : 'none';
+        toggleIcon.style.transform = isAccordionOpen
+          ? 'rotate(180deg)'
+          : 'rotate(0deg)';
+      });
+
+      // Fetch counts at startup
+      fetchCategoryCounts();
+    });
+
+    
+
+
+
+    
+    // dark mode functionality
+
+    // Consolidated dark mode functionality
+const darkModeToggle = document.getElementById('darkModeToggle');
+const body = document.body;
+let isDarkMode = false;
+    
+function updateDarkMode() {
+  isDarkMode = body.classList.contains('dark-mode');
+  
+  // Update nav background
+  const mainNav = document.getElementById('mainNav');
+  mainNav.classList.toggle('bg-gray-800', isDarkMode);
+  mainNav.classList.toggle('bg-white', !isDarkMode);
+
+  // Update icons
+  const icons = document.querySelectorAll('.nav-link svg, #darkModeToggle svg, #profileButton svg');
+  icons.forEach(icon => {
+    icon.classList.toggle('text-gray-300', isDarkMode);
+    icon.classList.toggle('text-gray-600', !isDarkMode);
+  });
+
+  // Update dropdown
+  const dropdown = document.getElementById('profileDropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('bg-gray-800', isDarkMode);
+    dropdown.classList.toggle('bg-white', !isDarkMode);
+  }
+  
+  // Update nav elements
+  const textElements = document.querySelectorAll('.nav-link');
+  textElements.forEach(el => {
+    el.classList.toggle('text-gray-300', isDarkMode);
+    el.classList.toggle('text-gray-600', !isDarkMode);
+  });
+
+  // Update form elements
+  const inputs = document.querySelectorAll('input, select, textarea');
+  inputs.forEach(input => {
+    input.classList.toggle('dark-input', isDarkMode);
+  });
+
+
+
+  // Update form background
+  const form = document.getElementById('newVideoForm');
+  form.classList.toggle('bg-gray-800', isDarkMode);
+  form.classList.toggle('bg-white', !isDarkMode);
+
+  // Update text colors
+  const labels = document.querySelectorAll('label');
+  labels.forEach(label => {
+    label.classList.toggle('text-gray-200', isDarkMode);
+    label.classList.toggle('text-gray-700', !isDarkMode);
+  });
+
+  // Save preference
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  updateDarkMode();
+});
+
+// Check for saved preference on load
+if (localStorage.getItem('darkMode') === 'true') {
+  body.classList.add('dark-mode');
+  updateDarkMode();
+}
+
+    // Profile dropdown functionality
+    let isProfileOpen = false;
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileButton.addEventListener('click', () => {
+      isProfileOpen = !isProfileOpen;
+      profileDropdown.classList.toggle('dropdown-active');
+      profileDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+        isProfileOpen = false;
+        profileDropdown.classList.remove('dropdown-active');
+        profileDropdown.classList.add('dropdown-inactive');
+      }
+    });
+
+    // Add hover animations
+    document.querySelectorAll('.group').forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.add('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.add('text-blue-500'));
+        }
+      });
+
+      element.addEventListener('mouseleave', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.remove('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.remove('text-blue-500'));
+        }
+      });
+    });
+
+
+
+// Tag Suggestions (no changes needed here)
+const tagSuggestions = [
+  "DIY", "Sustainability", "Environment", "Green Building", "Gardening", "Recycling", "Composting", "Solar", "Wind",
+  "Permaculture", "Organic Farming", "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly",
+  "Off-grid", "Resilience", "Community Development"
+];
+
+
+      // Tag suggestion functionality
+      const tagInput = document.getElementById('newTags');
+      const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+      tagInput.addEventListener('input', () => {
+        const inputText = tagInput.value.toLowerCase();
+        const filteredSuggestions = tagSuggestions.filter(tag => tag.toLowerCase().includes(inputText));
+        tagSuggestionsDiv.innerHTML = '';
+        if (filteredSuggestions.length > 0 && inputText !== '') {
+          filteredSuggestions.forEach(tag => {
+            tagSuggestionsDiv.innerHTML += `<div class="cursor-pointer hover:bg-gray-100 px-2 py-1" onclick="addTag('${tag}')">${tag}</div>`;
+          });
+          tagSuggestionsDiv.classList.remove('hidden');
+        } else {
+          tagSuggestionsDiv.classList.add('hidden');
+        }
+      });
+
+      // Function to add tag to input
+      window.addTag = function (tag) {
+        const currentTags = tagInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
+        currentTags.push(tag);
+        tagInput.value = currentTags.join(', ');
+        tagSuggestionsDiv.classList.add('hidden');
+      };
+
+    function isValidYoutubeId(id) {
+      return /^[a-zA-Z0-9_-]{11}$/.test(id);
+    }
+
+    // Add YouTube URL preview
+    const youtubeUrlInput = document.getElementById('newYoutubeUrl');
+    const youtubeIdPreview = document.getElementById('youtubeIdPreview');
+
+    youtubeUrlInput.addEventListener('input', () => {
+      const url = youtubeUrlInput.value;
+      const extractedId = extractYoutubeId(url);
+      
+      if (extractedId && isValidYoutubeId(extractedId)) {
+        youtubeIdPreview.textContent = `Valid YouTube ID: ${extractedId}`;
+        youtubeIdPreview.className = 'text-sm text-green-600 mt-1';
+      } else {
+        youtubeIdPreview.textContent = url ? 'Invalid YouTube URL' : '';
+        youtubeIdPreview.className = 'text-sm text-red-600 mt-1';
+      }
+    });
+
+    // Handle form submission
+    const newVideoForm = document.getElementById('newVideoForm');
+    const submitButton = document.getElementById('submitButton');
+
+    newVideoForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Get form values
+      const title = document.getElementById('newTitle').value.trim();
+      const youtubeUrl = document.getElementById('newYoutubeUrl').value.trim();
+      const description = document.getElementById('newDescription').value.trim();
+      const category = document.getElementById('newCategory').value.trim();
+      const subcategory = "";
+  
+      const tagsInput = document.getElementById('newTags');
+      let tags = [];
+        if (tagsInput) {
+            tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+            //tags = tags.replace(/[",\[\]]/g, '')
+
+
+        } else {
+            console.error('Element with ID "newTags" not found.');
+            // You might want to return here or show an error message to the user if the element is not found.
+        }
+
+
+      // Extract YouTube ID
+      const youtubeId = extractYoutubeId(youtubeUrl);
+
+      // Validate all fields
+      if (!title || !youtubeUrl || !description || !category || tags.length === 0) {
+        showToast('Please fill in all fields and select at least one tag.', 'error');
+        return;
+      }
+
+      if (!youtubeId || !isValidYoutubeId(youtubeId)) {
+        showToast('Please enter a valid YouTube URL.', 'error');
+        return;
+      }
+
+      try {
+        // Disable submit button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Creating...';
+
+
+        // Get today's date in ISO format
+        const now = new Date().toISOString();
+
+        // Prepare video data with UUID and date
+        const videoData = {
+        id: crypto.randomUUID(),
+        title,
+        description,
+        youtubeId,
+        category,
+        subcategory, // Moved subcategory here
+        tags,
+        datePublished: now,  
+        createdAt: now,    
+        updatedAt: now     
+        };
+
+        console.log('Inserting video data:', videoData); // For debugging
+
+
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from('Video')
+          .insert(videoData)
+          .select()
+          .single();
+
+
+        if (error) throw error;
+
+        // Show success message
+        showToast('Video created successfully!', 'success');
+        
+        // Reset form
+        newVideoForm.reset();
+        youtubeIdPreview.textContent = '';
+        
+      } catch (error) {
+        console.error('Error creating video:', error);
+        showToast('Failed to create video. Please try again.', 'error');
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = 'Create Video';
+      }
+    });
+  </script>
+</body>
+</html>
