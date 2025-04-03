@@ -6,6 +6,68 @@ import { supabase, AUTH_REDIRECTS, DataAccess, ROLE_HIERARCHY, roleHasAccess, ha
 
 // --- User Auth API ---
 
+// Get User Profile Data
+export async function getUserProfile() {
+    const user = await getCurrentUser();
+    if (!user) return { success: false, error: 'Not authenticated', data: null };
+
+    try {
+        const { data, error } = await supabase
+            .from('profiles') // Your profile table name
+            .select('*')      // Select desired columns
+            .eq('user_id', user.id)
+            .maybeSingle(); // Use maybeSingle() in case profile doesn't exist yet
+
+        if (error) throw error;
+        return { success: true, data: data, error: null };
+
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
+        return { success: false, error: error.message, data: null };
+    }
+}
+
+// Update or Insert User Profile Data (Upsert)
+export async function updateUserProfile(profileData) {
+    const user = await getCurrentUser();
+     // Ensure user_id is set correctly, overriding any passed value
+     if (!user || !user.id) return { success: false, error: 'Not authenticated' };
+     profileData.user_id = user.id; // Always use the authenticated user's ID
+
+
+    // Remove user_id from data if it's the primary key and handled by upsert's eq filter
+    // const { user_id, ...updateData } = profileData;
+     // However, if upsert needs user_id in the object, keep it. Check Supabase docs/your setup.
+
+
+    try {
+         console.log("Attempting upsert with data:", profileData);
+        // Upsert attempts to update if a row matching user_id exists,
+        // otherwise it inserts a new row.
+        const { data, error } = await supabase
+            .from('profiles') // Your profile table name
+            .upsert(profileData, {
+                 onConflict: 'user_id' // Specify the column that identifies conflict
+                 // ignoreDuplicates: false // default is false, ensures update happens
+            })
+            .select() // Optionally select the updated/inserted row back
+            .single(); // Expecting a single row result
+
+        if (error) {
+             console.error("Supabase upsert error:", error);
+             throw error;
+        };
+
+        console.log("Upsert successful:", data);
+        return { success: true, data: data, error: null };
+
+    } catch (error) {
+        console.error("Error updating/inserting user profile:", error);
+        return { success: false, error: error.message, data: null };
+    }
+}
+
+
 export async function signUp(email, password) {
     try {
       const { data, error } = await supabase.auth.signUp({ 
