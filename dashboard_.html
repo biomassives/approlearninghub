@@ -298,60 +298,98 @@ document.addEventListener('click', (e) => {
                 
                 // Clear loading message
                 userList.innerHTML = '';
-                
-                if (users && users.length > 0) {
-                    // Populate user list
-                    users.forEach(user => {
-                        if (!user.users || !user.users.email) return; // Skip invalid entries
-                        
-                        const userItem = document.createElement('div');
-                        userItem.className = 'user-item';
-                        userItem.innerHTML = 
-                            <span>${user.users.email}</span>
-                            <div>
-                                <select class="role-select" data-user-id="${user.user_id}">
-                                    <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
-                                    <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
-                                    <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                                </select>
-                                <button class="save-role" data-user-id="${user.user_id}">Save</button>
-                            </div>
-                        ;
-                        userList.appendChild(userItem);
-                    });
-                    
-                    // Add event listeners to save buttons
-                    document.querySelectorAll('.save-role').forEach(btn => {
-                        btn.addEventListener('click', async (e) => {
-                            const userId = e.target.dataset.userId;
-                            const select = document.querySelector(.role-select[data-user-id="${userId}"]);
-                            const newRole = select.value;
-                            
-                            // Update UI to show loading state
-                            btn.textContent = 'Saving...';
-                            btn.disabled = true;
-                            
-                            const success = await updateUserRole(userId, newRole);
-                            
-                            // Reset button state
-                            btn.textContent = 'Save';
-                            btn.disabled = false;
-                            
-                            if (success) {
-                                showMessage(User role updated to ${newRole}, 'success');
-                            } else {
-                                showMessage('Failed to update user role', 'error');
-                            }
-                        });
-                    });
-                } else {
-                    userList.innerHTML = '<div class="user-item">No users found</div>';
+        
+        if (users && users.length > 0) {
+            // Ensure the userList element exists before trying to append to it
+            const userList = document.getElementById('your-user-list-container-id'); // Replace with your actual container ID
+            if (!userList) {
+                console.error("User list container not found!");
+                return; // Stop if the container doesn't exist
+            }
+        
+            userList.innerHTML = ''; // Clear previous list items if necessary
+        
+            // Populate user list
+            users.forEach(user => {
+                // Check the structure: It seems 'user' contains 'user_id', 'role',
+                // and an inner 'users' object with 'email'.
+                // Double-check if this structure is correct. If email is directly on user, use user.email
+                if (!user || !user.users || !user.users.email || !user.user_id) {
+                     console.warn('Skipping user due to missing data:', user);
+                     return; // Skip invalid or incomplete entries
                 }
-            } catch (error) {
-                console.error('Error loading users:', error);
-                userList.innerHTML = '<div class="user-item error-message">Error loading users. Please check database configuration.</div>';
+        
+                const userItem = document.createElement('div');
+                // Added some basic utility classes for structure/spacing (Tailwind example, adjust as needed)
+                userItem.className = 'user-item flex justify-between items-center p-2 border-b';
+        
+                // *** Use backticks (`) to define the template literal string ***
+                userItem.innerHTML = `
+                    <span class="user-email"><span class="math-inline">\{user\.users\.email\}</span\>
+        <div class\="user\-controls flex items\-center gap\-2"\>
+        <select class\="role\-select border rounded px\-2 py\-1 text\-sm" data\-user\-id\="</span>{user.user_id}">
+                            <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+                            <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
+                            <option value="admin" <span class="math-inline">\{user\.role \=\=\= 'admin' ? 'selected' \: ''\}\>Admin</option\>
+        </select\>
+        <button class\="save\-role bg\-blue\-500 hover\:bg\-blue\-700 text\-white text\-sm py\-1 px\-3 rounded" data\-user\-id\="</span>{user.user_id}">Save</button>
+                    </div>
+                `; // *** Semicolon goes after the closing backtick ***
+        
+                userList.appendChild(userItem);
+        
+                // Optional: Attach event listener to the save button immediately
+                const saveButton = userItem.querySelector('.save-role');
+                if (saveButton) {
+                    saveButton.addEventListener('click', handleSaveRoleClick); // Define handleSaveRoleClick elsewhere
+                }
+            });
+        
+        } else {
+            // Handle the case where there are no users
+            const userList = document.getElementById('your-user-list-container-id'); // Replace ID
+            if (userList) {
+                userList.innerHTML = '<p>No users found.</p>';
             }
         }
+        
+        // --- You would need a function like this defined somewhere ---
+        function handleSaveRoleClick(event) {
+            const button = event.target;
+            const userId = button.dataset.userId;
+            // Find the select element within the same user-item container
+            const selectElement = button.closest('.user-item').querySelector('.role-select');
+            const newRole = selectElement.value;
+        
+            console.log(`Save button clicked for User ID: ${userId}, New Role: ${newRole}`);
+        
+            // ---> Add your logic here to send the updated role to your backend/API <---
+            // Example: updateUserRole(userId, newRole);
+        
+            // Provide feedback to the user (optional)
+            button.textContent = 'Saving...';
+            // Simulate API call and provide feedback
+            setTimeout(() => {
+                 button.textContent = 'Save';
+                 // You might want more robust feedback, like a temporary success message
+                 console.log(`Role for ${userId} potentially updated to ${newRole} (implement actual API call).`);
+            }, 1000);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Handle logout
         logoutButton.addEventListener('click', async () => {
