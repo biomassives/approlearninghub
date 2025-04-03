@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community & Learning Milestones</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --meeting-color: #9b59b6;
+            --milestone-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --border-color: #ddd;
+            --text-color: #333;
+            --light-text: #666;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        
+        h1 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        button, select {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .filter-active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Gantt Chart Container */
+        .gantt-container {
+            overflow-x: auto;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .timeline-header {
+            display: flex;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .timeline-labels {
+            min-width: 200px;
+            border-right: 1px solid var(--border-color);
+            font-weight: bold;
+            padding: 10px;
+        }
+        
+        .timeline-dates {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        .timeline-date {
+            min-width: 40px;
+            padding: 10px 5px;
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+        
+        .weekend {
+            background-color: #f8f8f8;
+        }
+        
+        .today {
+            background-color: rgba(52, 152, 219, 0.2);
+            font-weight: bold;
+        }
+        
+        .gantt-grid {
+            display: flex;
+            position: relative;
+        }
+        
+        .gantt-labels {
+            min-width: 200px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .gantt-label {
+            padding: 10px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .gantt-data {
+            flex-grow: 1;
+            position: relative;
+        }
+        
+        .gantt-row {
+            height: 60px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+        }
+        
+        .gantt-cell {
+            min-width: 40px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .gantt-item {
+            position: absolute;
+            height: 30px;
+            border-radius: 4px;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .gantt-item-learning {
+            background-color: var(--primary-color);
+        }
+        
+        .gantt-item-meeting {
+            background-color: var(--meeting-color);
+        }
+        
+        .gantt-item-milestone {
+            background-color: var(--milestone-color);
+            height: 20px;
+            top: 20px;
+            text-align: center;
+            padding: 0 5px;
+        }
+        
+        .gantt-milestone-marker {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid var(--milestone-color);
+            top: 40px;
+            transform: translateX(-5px);
+            z-index: 4;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .today-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e74c3c;
+            z-index: 1;
+        }
+        
+        /* Legend */
+        .legend {
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        /* Add Events Form */
+        .add-event-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .submit-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .submit-button:hover {
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .timeline-labels, .gantt-labels {
+                min-width: 150px;
+            }
+            
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Community & Learning Milestones</h1>
+            <div>
+                <button id="add-event-button">Add New Event</button>
+            </div>
+        </header>
+        
+        <div class="controls">
+            <div>
+                <label for="view-mode">View:</label>
+                <select id="view-mode">
+                    <option value="month">Monthly</option>
+                    <option value="week">Weekly</option>
+                    <option value="quarter">Quarterly</option>
+                </select>
+            </div>
+            
+            <div>
+                <button class="filter-btn filter-active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="learning">Learning</button>
+                <button class="filter-btn" data-filter="meeting">Meetings</button>
+                <button class="filter-btn" data-filter="milestone">Milestones</button>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--primary-color);"></div>
+                <span>Learning Activities</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--meeting-color);"></div>
+                <span>Meetings</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--milestone-color);"></div>
+                <span>Milestones</span>
+            </div>
+        </div>
+        
+        <div class="gantt-container" id="gantt-chart">
+            <!-- Gantt chart will be generated here by JavaScript -->
+        </div>
+        
+        <div class="tooltip" id="tooltip"></div>
+        
+        <div class="add-event-form" id="add-event-form" style="display: none;">
+            <h2>Add New Event</h2>
+            <form id="event-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="event-name">Event Name</label>
+                        <input type="text" id="event-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-type">Event Type</label>
+                        <select id="event-type" required>
+                            <option value="learning">Learning Activity</option>
+                            <option value="meeting">Meeting</option>
+                            <option value="milestone">Milestone</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-start">Start Date</label>
+                        <input type="date" id="event-start" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-end">End Date</label>
+                        <input type="date" id="event-end">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-group">Group/Category</label>
+                        <input type="text" id="event-group" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-priority">Priority</label>
+                        <select id="event-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="event-description">Description</label>
+                    <textarea id="event-description"></textarea>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button type="submit" class="submit-button">Save Event</button>
+                    <button type="button" id="cancel-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for the Gantt chart
+        let events = [
+            {
+                id: 1,
+                name: "JavaScript Fundamentals Workshop",
+                type: "learning",
+                startDate: new Date(2025, 3, 5), // April 5, 2025
+                endDate: new Date(2025, 3, 20), // April 20, 2025
+                group: "Frontend Development",
+                description: "Comprehensive workshop covering JavaScript basics to advanced topics.",
+                priority: "high"
+            },
+            {
+                id: 2,
+                name: "Community Meetup",
+                type: "meeting",
+                startDate: new Date(2025, 3, 10), // April 10, 2025
+                endDate: new Date(2025, 3, 10), // April 10, 2025
+                group: "Community Events",
+                description: "Monthly community gathering to share ideas and network.",
+                priority: "medium"
+            },
+            {
+                id: 3,
+                name: "Project Alpha Launch",
+                type: "milestone",
+                startDate: new Date(2025, 3, 25), // April 25, 2025
+                endDate: new Date(2025, 3, 25), // April 25, 2025
+                group: "Project Milestones",
+                description: "Launch of our first community project.",
+                priority: "high"
+            },
+            {
+                id: 4,
+                name: "Database Design Course",
+                type: "learning",
+                startDate: new Date(2025, 3, 15), // April 15, 2025
+                endDate: new Date(2025, 4, 10), // May 10, 2025
+                group: "Backend Development",
+                description: "Learn database design principles and implementation.",
+                priority: "medium"
+            },
+            {
+                id: 5,
+                name: "Team Planning Session",
+                type: "meeting",
+                startDate: new Date(2025, 3, 18), // April 18, 2025
+                endDate: new Date(2025, 3, 18), // April 18, 2025
+                group: "Team Activities",
+                description: "Quarterly planning session for the development team.",
+                priority: "high"
+            },
+            {
+                id: 6,
+                name: "First Code Contribution",
+                type: "milestone",
+                startDate: new Date(2025, 4, 5), // May 5, 2025
+                endDate: new Date(2025, 4, 5), // May 5, 2025
+                group: "Project Milestones",
+                description: "First code contribution to the open source project.",
+                priority: "medium"
+            },
+            {
+                id: 7,
+                name: "API Integration Workshop",
+                type: "learning",
+                startDate: new Date(2025, 4, 10), // May 10, 2025
+                endDate: new Date(2025, 4, 25), // May 25, 2025
+                group: "Backend Development",
+                description: "Hands-on workshop on integrating with various APIs.",
+                priority: "medium"
+            },
+            {
+                id: 8,
+                name: "Project Beta Release",
+                type: "milestone",
+                startDate: new Date(2025, 5, 15), // June 15, 2025
+                endDate: new Date(2025, 5, 15), // June 15, 2025
+                group: "Project Milestones",
+                description: "Release of the beta version for the community.",
+                priority: "high"
+            }
+        ];
+        
+        // DOM elements
+        const ganttContainer = document.getElementById('gantt-chart');
+        const tooltip = document.getElementById('tooltip');
+        const viewModeSelect = document.getElementById('view-mode');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const addEventButton = document.getElementById('add-event-button');
+        const addEventForm = document.getElementById('add-event-form');
+        const eventForm = document.getElementById('event-form');
+        const cancelButton = document.getElementById('cancel-button');
+        
+        // Settings
+        let viewMode = 'month';
+        let filter = 'all';
+        let cellWidth = 40;
+        let rowHeight = 60;
+        
+        // Current view date range
+        let currentViewStartDate = new Date(2025, 3, 1); // April 1, 2025
+        let currentViewEndDate = new Date(2025, 5, 30);  // June 30, 2025
+        
+        // Initialize the Gantt chart
+        initGanttChart();
+        
+        // Event listeners
+        viewModeSelect.addEventListener('change', function() {
+            viewMode = this.value;
+            updateViewDateRange();
+            renderGanttChart();
+        });
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+                this.classList.add('filter-active');
+                filter = this.dataset.filter;
+                renderGanttChart();
+            });
+        });
+        
+        addEventButton.addEventListener('click', function() {
+            addEventForm.style.display = 'block';
+            this.style.display = 'none';
+        });
+        
+        cancelButton.addEventListener('click', function() {
+            addEventForm.style.display = 'none';
+            addEventButton.style.display = 'block';
+            eventForm.reset();
+        });
+        
+        eventForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newEvent = {
+                id: events.length + 1,
+                name: document.getElementById('event-name').value,
+                type: document.getElementById('event-type').value,
+                startDate: new Date(document.getElementById('event-start').value),
+                endDate: document.getElementById('event-end').value ? 
+                         new Date(document.getElementById('event-end').value) : 
+                         new Date(document.getElementById('event-start').value),
+                group: document.getElementById('event-group').value,
+                description: document.getElementById('event-description').value,
+                priority: document.getElementById('event-priority').value
+            };
+            
+            events.push(newEvent);
+            renderGanttChart();
+            
+            addEventForm.style.display = 'none';
+            addEventButton.style.display = 'block';
+            eventForm.reset();
+        });
+        
+        // Functions
+        function initGanttChart() {
+            updateViewDateRange();
+            renderGanttChart();
+        }
+        
+        function updateViewDateRange() {
+            const today = new Date();
+            
+            switch(viewMode) {
+                case 'week':
+                    // Set to beginning of the current week
+                    currentViewStartDate = new Date(today);
+                    currentViewStartDate.setDate(today.getDate() - today.getDay());
+                    
+                    // End date is 4 weeks later
+                    currentViewEndDate = new Date(currentViewStartDate);
+                    currentViewEndDate.setDate(currentViewStartDate.getDate() + 28);
+                    break;
+                    
+                case 'month':
+                    // Set to beginning of the current month
+                    currentViewStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    
+                    // End date is 3 months later
+                    currentViewEndDate = new Date(currentViewStartDate);
+                    currentViewEndDate.setMonth(currentViewStartDate.getMonth() + 3);
+                    currentViewEndDate.setDate(0); // Last day of the month
+                    break;
+                    
+                case 'quarter':
+                    // Set to beginning of the current quarter
+                    const quarter = Math.floor(today.getMonth() / 3);
+                    currentViewStartDate = new Date(today.getFullYear(), quarter * 3, 1);
+                    
+                    // End date is 6 months later
+                    currentViewEndDate = new Date(currentViewStartDate);
+                    currentViewEndDate.setMonth(currentViewStartDate.getMonth() + 6);
+                    currentViewEndDate.setDate(0); // Last day of the month
+                    break;
+            }
+        }
+        
+        function renderGanttChart() {
+            ganttContainer.innerHTML = '';
+            
+            // Create date range for the timeline
+            const dates = getDatesInRange(currentViewStartDate, currentViewEndDate);
+            
+            // Get unique groups from the filtered events
+            const filteredEvents = events.filter(event => {
+                return filter === 'all' || event.type === filter;
+            });
+            
+            const groups = [...new Set(filteredEvents.map(event => event.group))];
+            
+            // Create timeline header
+            const timelineHeader = document.createElement('div');
+            timelineHeader.className = 'timeline-header';
+            
+            const timelineLabels = document.createElement('div');
+            timelineLabels.className = 'timeline-labels';
+            timelineLabels.textContent = 'Group / Category';
+            timelineHeader.appendChild(timelineLabels);
+            
+            const timelineDates = document.createElement('div');
+            timelineDates.className = 'timeline-dates';
+            
+            dates.forEach(date => {
+                const dateCell = document.createElement('div');
+                dateCell.className = 'timeline-date';
+                
+                // Check if weekend
+                const day = date.getDay();
+                if (day === 0 || day === 6) {
+                    dateCell.classList.add('weekend');
+                }
+                
+                // Check if today
+                const today = new Date();
+                if (date.toDateString() === today.toDateString()) {
+                    dateCell.classList.add('today');
+                }
+                
+                // Format date display based on view mode
+                if (viewMode === 'week' || viewMode === 'month') {
+                    dateCell.textContent = date.getDate();
+                } else {
+                    // For quarterly view, show month and date
+                    const month = date.toLocaleString('default', { month: 'short' });
+                    if (date.getDate() === 1 || date.getDate() % 5 === 0) {
+                        dateCell.textContent = `${month} ${date.getDate()}`;
+                    } else {
+                        dateCell.textContent = date.getDate();
+                    }
+                }
+                
+                timelineDates.appendChild(dateCell);
+            });
+            
+            timelineHeader.appendChild(timelineDates);
+            ganttContainer.appendChild(timelineHeader);
+            
+            // Create Gantt grid
+            const ganttGrid = document.createElement('div');
+            ganttGrid.className = 'gantt-grid';
+            
+            const ganttLabels = document.createElement('div');
+            ganttLabels.className = 'gantt-labels';
+            
+            const ganttData = document.createElement('div');
+            ganttData.className = 'gantt-data';
+            
+            // Create rows for each group
+            groups.forEach(group => {
+                const label = document.createElement('div');
+                label.className = 'gantt-label';
+                label.textContent = group;
+                ganttLabels.appendChild(label);
+                
+                const row = document.createElement('div');
+                row.className = 'gantt-row';
+                row.dataset.group = group;
+                
+                // Add cells for each date
+                dates.forEach(date => {
+                    const cell = document.createElement('div');
+                    cell.className = 'gantt-cell';
+                    
+                    // Highlight weekends
+                    const day = date.getDay();
+                    if (day === 0 || day === 6) {
+                        cell.style.backgroundColor = '#f8f8f8';
+                    }
+                    
+                    row.appendChild(cell);
+                });
+                
+                ganttData.appendChild(row);
+            });
+            
+            ganttGrid.appendChild(ganttLabels);
+            ganttGrid.appendChild(ganttData);
+            ganttContainer.appendChild(ganttGrid);
+            
+            // Add today line
+            const today = new Date();
+            if (today >= currentViewStartDate && today <= currentViewEndDate) {
+                const daysDiff = Math.floor((today - currentViewStartDate) / (1000 * 60 * 60 * 24));
+                const todayLine = document.createElement('div');
+                todayLine.className = 'today-line';
+                todayLine.style.left = `${(daysDiff * cellWidth) + 200}px`;
+                ganttContainer.appendChild(todayLine);
+            }
+            
+            // Add events to the chart
+            filteredEvents.forEach(event => {
+                if (event.endDate < currentViewStartDate || event.startDate > currentViewEndDate) {
+                    return; // Event outside the current view range
+                }
+                
+                const row = ganttData.querySelector(`.gantt-row[data-group="${event.group}"]`);
+                if (!row) return;
+                
+                const startDaysDiff = Math.max(0, Math.floor((event.startDate - currentViewStartDate) / (1000 * 60 * 60 * 24)));
+                const endDaysDiff = Math.min(
+                    dates.length - 1,
+                    Math.floor((event.endDate - currentViewStartDate) / (1000 * 60 * 60 * 24))
+                );
+                
+                const left = startDaysDiff * cellWidth;
+                const width = ((endDaysDiff - startDaysDiff) + 1) * cellWidth - 6;
+                
+                const eventDiv = document.createElement('div');
+                eventDiv.className = `gantt-item gantt-item-${event.type}`;
+                eventDiv.style.left = `${left}px`;
+                
+                if (event.type === 'milestone') {
+                    eventDiv.innerHTML = `<i>◆</i> ${event.name}`;
+                    eventDiv.style.width = 'auto';
+                    
+                    // Add milestone marker
+                    const marker = document.createElement('div');
+                    marker.className = 'gantt-milestone-marker';
+                    marker.style.left = `${left + (cellWidth/2)}px`;
+                    row.appendChild(marker);
+                } else {
+                    eventDiv.style.width = `${width}px`;
+                    eventDiv.textContent = event.name;
+                }
+                
+                // Add event details as data attributes
+                eventDiv.dataset.id = event.id;
+                eventDiv.dataset.name = event.name;
+                eventDiv.dataset.type = event.type;
+                eventDiv.dataset.start = event.startDate.toLocaleDateString();
+                eventDiv.dataset.end = event.endDate.toLocaleDateString();
+                eventDiv.dataset.description = event.description;
+                eventDiv.dataset.priority = event.priority;
+                
+                // Event hover to show tooltip
+                eventDiv.addEventListener('mousemove', showTooltip);
+                eventDiv.addEventListener('mouseleave', hideTooltip);
+                
+                row.appendChild(eventDiv);
+            });
+        }
+        
+        function getDatesInRange(startDate, endDate) {
+            const dates = [];
+            let currentDate = new Date(startDate);
+            
+            while (currentDate <= endDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            return dates;
+        }
+        
+        function showTooltip(e) {
+            const eventDiv = e.currentTarget;
+            
+            tooltip.innerHTML = `
+                <strong>${eventDiv.dataset.name}</strong><br>
+                <span style="color: #aaa;">Type: ${capitalize(eventDiv.dataset.type)}</span><br>
+                <span>Date: ${eventDiv.dataset.start}${eventDiv.dataset.start !== eventDiv.dataset.end ? ' to ' + eventDiv.dataset.end : ''}</span><br>
+                <span>Priority: ${capitalize(eventDiv.dataset.priority)}</span><br>
+                <p style="margin: 5px 0 0;">${eventDiv.dataset.description}</p>
+            `;
+            
+            // Position the tooltip
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY + 10}px`;
+            tooltip.style.opacity = 1;
+        }
+        
+        function hideTooltip() {
+            tooltip.style.opacity = 0;
+        }
+        
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+    </script>
+</body>
+</html>
