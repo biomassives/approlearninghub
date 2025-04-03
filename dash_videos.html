@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <title>ApproVideo Video Portal Admin</title>
+	
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+ 
+<style>
+/* Add these styles to your HTML head or in a style tag */
+
+    .nav-link.active {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+    .nav-link.active .icon {
+      fill: #10b981;
+    }
+
+.profile-dropdown {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+}
+
+
+.dark-mode .profile-dropdown {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  color: white;
+  background-color: black;
+}
+.dark-mode .tools-dropdown {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  color: white;
+  background-color: black;
+}
+
+
+
+	
+.profile-dropdown.dropdown-active {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.profile-dropdown.dropdown-inactive {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-dropdown a {
+  transition: all 0.2s ease-in-out;
+}
+
+.profile-dropdown a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>
+
+
+</head>
+<body class="bg-gray-100">
+    
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - DIY Solutions Video Portal 🎥
+  </div>
+
+    <div class="container mx-auto p-4">
+      <!-- Enhanced Navigation Bar -->
+ 
+<nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo Section -->
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-3 group">
+            <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                 viewBox="0 0 24 24" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 stroke-width="1.5"
+                 id="logoIcon">
+              <circle class="tool-circle" cx="12" cy="12" r="10" stroke-dasharray="4 4"/>
+              <path class="tool-wrench" d="M3 21h4l9-9"/>
+              <path class="tool-screwdriver" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              <circle class="tool-gear" cx="12" cy="12" r="3"/>
+              <path class="tool-arrows" d="M8 12h8m-4-4v8" stroke-linecap="round"/>
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproVideo
+            </span>
+          </a>
+        </div>
+
+        <!-- Navigation Items -->
+        <div class="flex items-center space-x-6">
+
+
+          <button id="darkModeToggle"
+                class="p-2 rounded-lg transition-all duration-300 hover:bg-opacity-10">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+
+
+          <!-- Tools Button -->
+          <div class="relative">
+            <button id="toolsButton" 
+            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-gray-600 dark:text-white hover:text-green-500 transition-all px-3 rounded-lg hover:bg-gray-50"
+
+           
+            >
+            <a href="#"
+               class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+              <i class="fa-solid fa-toolbox"></i>
+            </a>
+
+            </button>
+            <div id="toolsDropdown"
+            class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                
+                <a href="/urban-agriculture_interactive.html" class="block px-4 py-2 text-gray-800 dark-mode:text-gray-100 text-sm hover:bg-gray-100"> Urban Agriculture</a>
+                <a href="/emt-decision-tree-videos.html" class="block px-4 py-2 text-gray-800 dark-mode:text-gray-100 text-sm hover:bg-gray-100"> EMT Decision Tree</a>
+                <a href="/water-security-tree-videos.html" class="block px-4 py-2 text-gray-800 dark-mode:text-gray-100 text-sm hover:bg-gray-100"> Water Security Tree</a>
+      		<a class="block"></a>
+                <a href="/admin/new.html" class="block px-4 py-2 text-gray-800 dark-mode:text-gray-100 text-sm hover:bg-gray-100">&oplus; Add Critical Skills Videos</a>
+                <a href="/admin/new_learningomics.html" class="block px-4 py-2 text-sm text-gray-800 dark-mode:text-gray-100 hover:bg-gray-100">&oplus; Add Training Modules</a>
+
+              </div>
+            </div>
+          </div>
+		
+
+
+		
+
+          <!-- Profile Button -->
+          <div class="relative">
+            <button id="profileButton" 
+            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 hover:text-green-500 transition-all px-3 rounded-lg hover:bg-gray-50"
+
+           
+            >
+            <a href="#"
+               class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+              <i class="fa-solid fa-user"></i>
+            </a>
+
+            </button>
+            <div id="profileDropdown"
+            class="profile-dropdown dropdown-inactive bg-grey-900 absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <a href="profile.html" class="block px-4 py-2 text-sm dark-mode:text-gray-100 text-gray-700 hover:bg-gray-100">Your Profile</a>
+		<a href="/admin" class="block px-4 py-2 text-sm dark-mode:text-gray-100 text-gray-700 hover:bg-gray-100">Content Index</a>
+                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm dark-mode:text-gray-100 text-gray-700 hover:bg-gray-100">Taxonomy</a>
+                <a href="/admin/pending.html" class="block px-4 py-2 text-sm dark-mode:text-gray-100 text-gray-700 hover:bg-gray-100">Pending</a>
+                <a href="logout.html" class="block px-4 py-2 text-sm dark-mode:text-gray-100 text-gray-700 hover:bg-gray-100">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+
+
+<!-- Sorting and Filtering Controls -->
+<div class="mb-6 space-y-2">
+  <!-- Category Icons -->
+  <div class="flex justify-center space-x-4 py-2" id="categoryIcons"></div>
+
+  <!-- Sorting Controls -->
+  <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-md p-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-sort text-gray-600"></i>
+        <h2 class="text-lg font-semibold text-gray-800">Sort Videos</h2>
+      </div>
+      <select id="sortSelect" 
+              class="px-4 py-2 text-gray-700 dark-mode:text-gray-100 dark-mode:bg-black/80 dark-mode:text-gray-800 bg-white/50 backdrop-blur-sm border rounded-lg 
+                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     transition-all duration-300">
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="title">Title</option>
+        <option value="title-desc">Title Z-A</option>
+        <option value="category">Category</option>
+        <option value="category-desc">Category Z-A</option>
+      </select>
+    </div>
+  </div>
+</div>
+  
+  <!-- Add Search Input -->
+  <div class="mt-4">
+    <input type="text" id="searchInput" placeholder="Search videos..." class="w-full px-4 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+  </div>
+
+
+
+  <!-- Video Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
+</div>
+
+<script type="module">
+// 1. First, separate our configuration and state
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const APP_CONFIG = {
+  supabase: {
+    url: 'https://vlvbodwrtblttvwnxkjx.supabase.co',
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
+  },
+  categories: {
+    diy: { icon: 'fa-building', color: 'from-red-600 to-zinc-400', anim: 'float-1' },
+    'energy-systems': { icon: 'fa-bolt', color: 'from-zinc-400 to-amber-600', anim: 'float-2' },
+    'waste-management': { icon: 'fa-trash', color: 'from-green-500 to-indigo-600', anim: 'float-4' },
+    'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-5' },
+    'health': { icon: 'fa-heartbeat', color: 'from-purple-500 to-emerald-600', anim: 'float-6' },
+    agriculure: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-7' }
+  }
+};
+
+// 2. Create a single state manager
+const AppState = {
+  _state: {
+    currentSort: 'date-desc',
+    filterCategory: null,
+    searchQuery: '',
+    loading: false
+  },
+  
+  subscribers: new Set(),
+  
+  get state() {
+    return {...this._state};
+  },
+  
+  update(newState) {
+    this._state = {...this._state, ...newState};
+    this.notify();
+  },
+  
+  subscribe(callback) {
+    this.subscribers.add(callback);
+    return () => this.subscribers.delete(callback);
+  },
+  
+  notify() {
+    this.subscribers.forEach(callback => callback(this.state));
+  }
+};
+
+// 3. Create a VideoManager class to handle all video-related operations
+class VideoManager {
+  constructor(supabase, state) {
+    this.supabase = supabase;
+    this.state = state;
+  }
+
+  async loadVideos() {
+  try {
+    this.state.update({ loading: true });
+    console.log("Loading videos with category filter:", this.state.state.filterCategory);
+
+
+
+  let query = await this.supabase
+    .from('Video')
+    .select('*')
+    .is('status', null);
+
+
+
+if (this.state.state.filterCategory) {
+  const safeValue = this.state.state.filterCategory.toLowerCase();
+  query = query.or(`
+    category.ilike.%${safeValue}%,
+    subcategory.ilike.%${safeValue}%
+  `);
+}
+
+	  
+/*    if (this.state.state.filterCategory) {
+      query = query.eq('category', this.state.state.filterCategory);
+    }
+*/
+
+    const { data: videos, error } = await query;
+    if (error) throw error;
+
+    // Log fetched videos to see if the `created_at` values are correctly formatted
+    videos.forEach(video => {
+      console.log("Fetched video:", video.title, "created_at:", video.created_at);
+    });
+
+    let filteredVideos = videos;
+
+    if (this.state.state.searchQuery) {
+      const searchQuery = this.state.state.searchQuery.toLowerCase();
+      filteredVideos = videos.filter(video =>
+        (video.title || '').toLowerCase().includes(searchQuery) ||
+        (video.description || '').toLowerCase().includes(searchQuery)
+      );
+    }
+
+    const sortedVideos = this.sortVideos(filteredVideos);
+    this.renderVideos(sortedVideos);
+  } catch (error) {
+    console.error('Error loading videos:', error);
+  } finally {
+    this.state.update({ loading: false });
+  }
+}
+
+sortVideos(videos) {
+  // Log the original videos array to see the initial state
+  console.log("Original videos:", videos);
+
+  return [...videos].sort((a, b) => {
+
+    // Ensure that `datePublished` fields are in a format that can be parsed correctly
+    const aDate = a.datePublished ? new Date(a.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
+    const bDate = b.datePublished ? new Date(b.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
+
+
+    // Log each comparison to ensure the values are correct
+    console.log("Comparing:", a.title, "(", aDate, ") with", b.title, "(", bDate, ")");
+
+    switch (this.state.state.currentSort) {
+      case 'date-desc': // Newest First
+        return bDate - aDate; // Sort descending by date
+      case 'date-asc': // Oldest First
+        return aDate - bDate; // Sort ascending by date
+      case 'title-asc': // Title A-Z
+        return (a.title || '').localeCompare(b.title || '');
+      case 'title-desc': // Title Z-A
+        return (b.title || '').localeCompare(a.title || '');
+      case 'category': // Category Sort
+        return (a.category || '').localeCompare(b.category || '');
+      case 'subcategory': // SubCategory Sort
+        return (a.subcategory || '').localeCompare(b.subcategory || '');
+      default:
+        console.warn("Unknown sort option:", this.state.state.currentSort);
+        return 0;
+    }
+  });
+}
+
+
+  renderVideos(videos) {
+    const videoGrid = document.getElementById('videoGrid');
+    videoGrid.innerHTML = videos.map(video => this.createVideoCard(video)).join('');
+  }
+
+
+  createVideoCard(video) {
+    return `
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+        <div class="relative group">
+          <div class="relative">
+            <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
+                 alt="${this.escapeHtml(video.title)}" 
+                 class="w-full h-48 object-cover"
+                 onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/0.jpg'">
+            
+            <div class="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <button onclick="event.stopPropagation(); handleEditClick('${video.id}')"
+                      class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                     stroke="currentColor" class="w-5 h-5 text-blue-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" 
+                        d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
+                </svg>
+              </button>
+              
+              <button onclick="event.stopPropagation(); handleDeleteClick('${video.id}')"
+                      class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                     stroke="currentColor" class="w-5 h-5 text-red-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content Section -->
+          <div class="p-6">
+            <div class="mb-3">
+              <h2 class="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">${this.escapeHtml(video.title)}</h2>
+              <p class="text-gray-600 text-sm line-clamp-3"><b><small>${video.youtubeId}</small></b> - ${this.escapeHtml(video.description)}</p>
+            </div>
+            
+            <!-- Category and Tags -->
+            <div class="flex flex-col gap-3">
+              <!-- Category with Icon -->
+              <div class="flex items-center gap-2">
+                <i class="fas ${this.getCategoryIcon(video.category)} text-green-600 "></i>
+                <span class="text-sm text-green-600 font-medium">${video.category || 'Uncategorized'}</span>
+              </div>
+              
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2">
+                ${this.renderTags(video.tags)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderTags(tags) {
+    if (!tags) return '';
+    
+    const processedTags = Array.isArray(tags) 
+      ? tags 
+      : tags.toString().replace(/[{}]/g, '').split(',');
+
+    return processedTags.map(tag => `
+      <a href="/tags/${encodeURIComponent(tag.trim())}" 
+         class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs 
+                transition-colors duration-200 flex items-center gap-1 hover:shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+             stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+        </svg>
+        ${this.escapeHtml(tag.trim())}
+      </a>
+    `).join('');
+  }
+
+  getCategoryIcon(category) {
+    return APP_CONFIG.categories[category]?.icon || 'fa-tag';
+  }
+
+  escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+}
+
+
+
+// 4. UI Manager for handling interface elements
+class UIManager {
+  constructor(videoManager, state, config) {
+    this.videoManager = videoManager;
+    this.state = state;
+    this.config = config;
+  }
+
+  initialize() {
+    this.initializeCategoryIcons();
+    this.initializeSortControls();
+    this.initializeEventListeners();
+  }
+
+
+
+
+
+
+	
+ 
+  initializeCategoryIcons() {
+    const categoryIconsDiv = document.getElementById('categoryIcons');
+
+    for (const category in this.config.categories) {
+      const categoryData = this.config.categories[category];
+      const iconElement = `
+        <button class="icon-button relative group" data-category="${category}">
+          <div class="bg-gradient-to-r ${categoryData.color} 
+                      text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                      hover:scale-105 hover:shadow-xl
+                      ${categoryData.anim} 
+                      flex items-center justify-center"> 
+            <i class="fas fa-2x ${categoryData.icon}"></i>
+          </div>
+          <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                     bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                     opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            ${category}
+          </span>
+        </button>
+      `;
+      categoryIconsDiv.innerHTML += iconElement;
+    }
+
+    // Add click event listeners to the icons
+    const iconButtons = document.querySelectorAll('.iconButton');
+    iconButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.category;
+        this.state.update({ filterCategory: category }); 
+        this.videoManager.loadVideos();
+      });
+    });
+  }
+
+  initializeSortControls() {
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', () => {
+      this.state.update({ currentSort: sortSelect.value });
+      this.videoManager.loadVideos(); 
+    });
+  }
+
+  initializeEventListeners() {
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', () => {
+    this.state.update({ searchQuery: searchInput.value });
+    this.videoManager.loadVideos();
+  });
+} 
+    
+}
+
+// 5. Initialize everything in a clean way
+async function initializeApp() {
+  try {
+    const supabase = createClient(APP_CONFIG.supabase.url, APP_CONFIG.supabase.key);
+    const videoManager = new VideoManager(supabase, AppState);
+    const uiManager = new UIManager(videoManager, AppState, APP_CONFIG);
+
+
+
+    uiManager.initialize();
+    await videoManager.loadVideos();
+  } catch (error) {
+    console.error('Failed to initialize app:', error);
+  }
+}
+
+
+
+    // Tools dropdown functionality
+    let isToolsOpen = false;
+    const toolsButton = document.getElementById('toolsButton');
+    const toolsDropdown = document.getElementById('toolsDropdown');
+
+    toolsButton.addEventListener('click', () => {
+      isToolsOpen = !isToolsOpen;
+      toolsDropdown.classList.toggle('dropdown-active');
+      toolsDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!toolsButton.contains(e.target) && !toolsDropdown.contains(e.target)) {
+        isToolsOpen = false;
+        toolsDropdown.classList.remove('dropdown-active');
+        toolsDropdown.classList.add('dropdown-inactive');
+      }
+    });
+
+    // Profile dropdown functionality
+    let isProfileOpen = false;
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileButton.addEventListener('click', () => {
+      isProfileOpen = !isProfileOpen;
+      profileDropdown.classList.toggle('dropdown-active');
+      profileDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+        isProfileOpen = false;
+        profileDropdown.classList.remove('dropdown-active');
+        profileDropdown.classList.add('dropdown-inactive');
+      }
+    });
+
+	
+// Consolidated dark mode functionality
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const body = document.body;
+  let isDarkMode = false;
+
+function updateDarkMode() {
+  isDarkMode = body.classList.contains('dark-mode');
+  
+  // Update nav background
+  const mainNav = document.getElementById('mainNav');
+  mainNav.classList.toggle('bg-gray-800', isDarkMode);
+  mainNav.classList.toggle('bg-white', !isDarkMode);
+
+  // Update icons
+  const icons = document.querySelectorAll('.nav-link svg, #darkModeToggle svg, #profileButton svg');
+  icons.forEach(icon => {
+    icon.classList.toggle('text-gray-300', isDarkMode);
+    icon.classList.toggle('text-gray-600', !isDarkMode);
+  });
+
+  // Update dropdown
+  const dropdown = document.getElementById('profileDropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('bg-gray-800', isDarkMode);
+    dropdown.classList.toggle('bg-white', !isDarkMode);
+  }
+  
+  // Update nav elements
+  const textElements = document.querySelectorAll('.nav-link');
+  textElements.forEach(el => {
+    el.classList.toggle('text-gray-300', isDarkMode);
+    el.classList.toggle('text-gray-600', !isDarkMode);
+  });
+
+  // Update form elements
+  const inputs = document.querySelectorAll('input, select, textarea');
+  inputs.forEach(input => {
+    input.classList.toggle('dark-input', isDarkMode);
+  });
+
+  // Update text colors
+  const labels = document.querySelectorAll('label');
+  labels.forEach(label => {
+    label.classList.toggle('text-gray-200', isDarkMode);
+    label.classList.toggle('text-gray-700', !isDarkMode);
+  });
+
+  // Save preference
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  updateDarkMode();
+});
+
+// Check for saved preference on load
+if (localStorage.getItem('darkMode') === 'true') {
+  body.classList.add('dark-mode');
+  updateDarkMode();
+}
+
+    
+  
+
+
+    async function handleEditClick(videoId) {
+      try {
+        console.log('Setting videoId in localStorage:', videoId);
+        
+        // Store in both localStorage and localForage for redundancy
+        localStorage.setItem('videoId', videoId);
+        await localforage.setItem('videoId', videoId);
+        
+        // Verify the storage was successful
+        const storedId = localStorage.getItem('videoId');
+        const forageId = await localforage.getItem('videoId');
+        
+        console.log('Verified localStorage videoId:', storedId);
+        console.log('Verified localForage videoId:', forageId);
+        
+        if (storedId === videoId && forageId === videoId) {
+          console.log('Storage verification successful, navigating to edit page');
+          window.location.href = `/admin/edit4.html?id=${videoId}`;
+        } else {
+          throw new Error('Storage verification failed');
+        }
+      } catch (error) {
+        console.error('Error handling edit click:', error);
+        alert('There was an error preparing to edit this video. Please try again.');
+      }
+    }
+
+
+    async function handleDeleteClick(videoId) {
+      try {
+        localStorage.setItem('deleteVideoId', videoId);
+        await localforage.setItem('deleteVideoId', videoId);
+        window.location.href = '/admin/delete1.html';
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error preparing to delete. Please try again.');
+      }
+    }
+
+    
+	// Start the app
+	document.addEventListener('DOMContentLoaded', initializeApp);
+
+
+
+    // Make handleEditClick available globally
+    window.handleEditClick = handleEditClick;
+    window.handleDeleteClick = handleDeleteClick;
+
+
+  </script>
+
+</body>
+</html>
+<script async data-explicit-opt-in="true" data-cookie-opt-in="true" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
