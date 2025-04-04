@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     
@@ -1345,11 +1344,32 @@
             window.tagManager = new TagManager(store, getText);     // Pass getText
 
     
-            this.store.on('dataLoaded', (payload) => {
-                 if (this.editingState.isEditing) this.cancelEdit(true);
-                 this.render();
-            });
+            window.categoryManager = new CategoryManager(store, getText);
+                    window.tagManager = new TagManager(store, getText);
             
+                    // --- ADD THIS CORRECTED LISTENER HERE ---
+                    store.on('dataLoaded', (payload) => {
+                        console.log("Data loaded event received in DOMContentLoaded, source:", payload?.source);
+                        // Update offline indicator based on source
+                        const offlineIndicator = document.getElementById('offline-indicator');
+                        if (offlineIndicator) {
+                             const cacheText = getText('CACHED_DATA_LABEL') || '(Cached Data)'; // Get translated label
+                             offlineIndicator.textContent = payload?.source === 'cache' ? cacheText : '';
+                             offlineIndicator.classList.toggle('text-yellow-500', payload?.source === 'cache');
+                        } else {
+                             console.warn("Offline indicator element #offline-indicator not found in HTML");
+                        }
+                        // Note: The CategoryManager and TagManager instances already have
+                        // their own 'dataLoaded' listeners that trigger their respective render methods.
+                        // No need to call window.categoryManager.render() here again unless specifically needed.
+                    });
+                    // --- END ADD CORRECTED LISTENER ---
+            
+                    // Global error handler...
+                    window.addEventListener('unhandledrejection', function(event) { /* ... */ });
+                        
+            
+
 
             // Global error handler (using translation)
              window.addEventListener('unhandledrejection', function(event) {
@@ -1532,8 +1552,8 @@
                 <div class="flex items-center space-x-3">
                      <input type="text" id="new-category-input" class="..."
                            placeholder="${placeholderText}" aria-label="${placeholderText}" autofocus>
-                     <button class="btn btn-green save-new-category-btn p-2" aria-label="${saveLabel}">...</button>
-                     <button class="btn btn-red cancel-new-category-btn p-2" aria-label="${cancelLabel}">...</button>
+                     <button class="btn btn-green save-new-category-btn p-2" aria-label="${saveLabel}">${saveLabel}</button>
+                     <button class="btn btn-red cancel-new-category-btn p-2" aria-label="${cancelLabel}">${cancelLabel}</button>
                 </div>
             </div>`;
         // ... (insert HTML) ...
