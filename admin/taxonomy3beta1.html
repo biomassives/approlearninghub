@@ -1736,10 +1736,10 @@ startEditing(element, type, id, categoryId = null) {
     console.log('Editing state set:', this.editingState);
 }
 
+        console.log(`Executing startEditing for type: ${type}, id: ${id}`); // LOG 7
 
-            
-        // area 2
-console.log(`Executing startEditing for type: ${type}, id: ${id}`); // LOG 7
+
+
 
     // --- Prevent starting a new edit if already editing ---
     if (this.editingState.isEditing) {
