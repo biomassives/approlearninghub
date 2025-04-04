@@ -10,9 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-
-    <link rel="stylesheet" href="styles.css"> <style>
-
+   <!-- <link rel="stylesheet" href="styles.css"> -->
+    
+<style> 
         /* Base styles */
         body {
             font-family: 'Poppins', sans-serif;
@@ -38,6 +38,160 @@
             --delete-btn-hover: #e6927a;
         }
     
+
+        /* --- Inline Editing & Feedback Styles --- */
+        
+        /* Style for the input field when editing */
+        .inline-edit-field {
+            /* Inherit font styles from parent for consistency */
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            /* Specific Styling */
+            border: 2px solid var(--savanna-green); /* Use theme color */
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem; /* Adjust padding as needed */
+            width: 95%; /* Take up most available space within parent */
+            box-sizing: border-box; /* Include padding/border in width calculation */
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.2); /* Subtle glow */
+            position: relative; /* Ensure it appears above static content if needed */
+            z-index: 10; /* Higher stack order */
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .dark-mode .inline-edit-field {
+            background-color: #3a3a54; /* Darker background */
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.3);
+        }
+        
+        .inline-edit-field:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.5); /* Stronger glow on focus */
+        }
+        
+        /* Style for the parent item (category or subcategory) when its name is being edited */
+        .is-editing {
+             /* Subtle indication that this item is active */
+             background-color: rgba(150, 176, 137, 0.05);
+             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.3);
+        }
+        .dark-mode .is-editing {
+             background-color: rgba(150, 176, 137, 0.1);
+             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.5);
+        }
+        
+        /* --- Status Feedback Styles (Applied to the .category-name or .subcategory-name) --- */
+        
+        /* Base adjustments for status pseudo-elements */
+        .category-name, .subcategory-name {
+            position: relative; /* Needed for ::after positioning */
+            /* Add padding to make space for status icons/background flash */
+            padding: 0.25rem 0.5rem;
+            margin: -0.25rem -0.5rem; /* Counteract padding to maintain layout flow */
+            border-radius: 4px; /* Match input field */
+            transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.2s ease; /* Smooth transitions */
+        }
+        
+        /* Saving State */
+        .status-saving {
+            /* Optional: slightly dim text while saving */
+            /* color: #a0aec0; */ /* Example: Tailwind gray-500 */
+            cursor: wait; /* Indicate processing */
+        }
+        .dark-mode .status-saving {
+            /* color: #718096; */ /* Example: Tailwind gray-600 */
+        }
+        .status-saving::after {
+           content: '⏳'; /* Saving indicator icon */
+           font-size: 0.8em;
+           margin-left: 6px;
+           display: inline-block;
+           vertical-align: middle;
+           animation: spin 1s linear infinite; /* Reuse spin animation */
+           /* Ensure this doesn't get duplicated by hover styles */
+           opacity: 1 !important;
+           transform: translateX(0) !important;
+        }
+        
+        /* Success State */
+        .status-success {
+            /* Flash background */
+            background-color: rgba(74, 222, 128, 0.2); /* Tailwind green-400 @ 20% */
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
+        }
+        .dark-mode .status-success {
+             background-color: rgba(74, 222, 128, 0.3);
+             box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.5);
+        }
+        .status-success::after {
+            content: '✅'; /* Success indicator icon */
+            font-size: 0.8em;
+            margin-left: 6px;
+            vertical-align: middle;
+            /* Ensure this doesn't get duplicated by hover styles */
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        
+        /* Error State */
+        .status-error {
+             /* Flash background */
+            background-color: rgba(248, 113, 113, 0.2); /* Tailwind red-400 @ 20% */
+            box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.4);
+            /* Optionally change text color for error */
+            /* color: #b91c1c; */ /* Tailwind red-700 */
+        }
+        .dark-mode .status-error {
+             background-color: rgba(248, 113, 113, 0.3);
+             box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5);
+             /* color: #f87171; */ /* Tailwind red-400 */
+        }
+        .status-error::after {
+            content: '❌'; /* Error indicator icon */
+            font-size: 0.8em;
+            margin-left: 6px;
+            vertical-align: middle;
+            /* Ensure this doesn't get duplicated by hover styles */
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        /* Ensure status icons override the hover pencil icon */
+        .category-name.status-saving::before,
+        .subcategory-name.status-saving::before,
+        .category-name.status-success::before,
+        .subcategory-name.status-success::before,
+        .category-name.status-error::before,
+        .subcategory-name.status-error::before,
+        .category-name.status-saving::after, /* If you were using ::after for pencil */
+        .subcategory-name.status-saving::after {
+            content: none !important; /* Hide pencil during status display */
+        }
+        
+        
+        /* --- Keyframes (ensure present) --- */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Existing animation for pencil wiggle (optional) */
+        @keyframes wiggle {
+             0% { transform: rotate(0deg); }
+             25% { transform: rotate(10deg); }
+             75% { transform: rotate(-10deg); }
+             100% { transform: rotate(0deg); }
+        }
+        /* Apply wiggle only if NOT showing status */
+        .category-name:not(.status-saving):not(.status-success):not(.status-error):hover::before,
+        .subcategory-name:not(.status-saving):not(.status-success):not(.status-error):hover::before {
+             animation: wiggle 0.5s ease;
+        }
+
+
         /* Profile Button and Dropdown Styles */
         .profile-dropdown {
             position: absolute;
