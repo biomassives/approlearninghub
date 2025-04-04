@@ -1380,7 +1380,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             window.categoryManager = new CategoryManager(store, getText);
                     window.tagManager = new TagManager(store, getText);
             
-                    // --- ADD THIS CORRECTED LISTENER HERE ---
                     store.on('dataLoaded', (payload) => {
                         console.log("Data loaded event received in DOMContentLoaded, source:", payload?.source);
                         // Update offline indicator based on source
@@ -1396,7 +1395,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
                         // their own 'dataLoaded' listeners that trigger their respective render methods.
                         // No need to call window.categoryManager.render() here again unless specifically needed.
                     });
-                    // --- END ADD CORRECTED LISTENER ---
             
                     // Global error handler...
                     window.addEventListener('unhandledrejection', function(event) { /* ... */ });
@@ -1720,7 +1718,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
                         <span class="...">${this.getText('EDIT_HINT')}${category.slug ? `, ${this.getText('SLUG_LABEL')} ${category.slug}` : ''}</span>
                     </div>
                     <div class="category-controls ...">
-                        {/* Use getText for button text/title */}
                         <button class="btn btn-blue add-subcategory-btn text-sm" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
                             <svg ...></svg>${this.getText('ADD_SUBCATEGORY_BUTTON')}
                         </button>
@@ -1736,7 +1733,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
                                 <span class="... subcategory-name ...">${subcategory.name}</span>
                                 ${subcategory.slug ? `<span class="text-xs ...">(${subcategory.slug})</span>` : ''}
                                 <div class="subcategory-controls ...">
-                                     {/* Use getText for button title */}
                                     <button class="... delete-subcategory-btn ..." title="${this.getText('DELETE_BUTTON')}">
                                         <svg ...></svg>
                                     </button>
