@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en" data-translate-title-key="PORTAL_TITLE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script src="https://unpkg.com/dexie-encrypted/dist/dexie-encrypted.js"></script>
+
+    <link rel="stylesheet" href="styles.css"> <style>
+
+        /* Base styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #dbe5df;
+            color: #333;
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    
+        /* Theme Colors */
+        :root {
+            --nile-blue: #8fb8cc;
+            --desert-red: #c49178;
+            --savanna-green: #96b089;
+            
+            --nile-blue-hover: #68c1e6;
+            --desert-red-hover: #e6927a;
+            --savanna-green-hover: #7fc261;
+            
+            --item-bg: #f9fafb;
+            --body-text: #1a1a1e;
+            --delete-btn: #c49178;
+            --delete-btn-hover: #e6927a;
+        }
+    
+        /* Profile Button and Dropdown Styles */
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 12rem;
+            z-index: 50;
+            transform-origin: top right;
+            transition: all 0.2s ease;
+        }
+    
+        /* Active State */
+        .profile-dropdown.dropdown-active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+    
+        /* Inactive State */
+        .profile-dropdown.dropdown-inactive {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            visibility: hidden;
+        }
+    
+        /* Dropdown Items */
+        .profile-dropdown .py-1 a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+    
+        .profile-dropdown .py-1 a:hover {
+            background-color: #f3f4f6;
+        }
+    
+        /* Dark Mode Styles */
+        .dark-mode .profile-dropdown {
+            background-color: #2d2d44;
+            border: 1px solid #3f3f5f;
+        }
+    
+        .dark-mode .profile-dropdown .py-1 a {
+            color: #e5e7eb;
+        }
+    
+        .dark-mode .profile-dropdown .py-1 a:hover {
+            background-color: #3f3f5f;
+        }
+    
+        .dark-mode #mainNav {
+            background-color: #1a1a2e;
+            color: #e5e7eb;
+        }
+    
+        .dark-mode .nav-link {
+            color: #e5e7eb;
+        }
+    
+        .dark-mode #profileButton svg,
+        .dark-mode #darkModeToggle svg {
+            color: #e5e7eb;
+        }
+    
+        /* Profile Button */
+        #profileButton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    
+        #profileButton svg {
+            width: 24px;
+            height: 24px;
+        }
+    
+        /* Navigation Container Dark Mode */
+        .dark-mode nav.bg-white {
+            background-color: #1a1a2e;
+        }
+    
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #1a1a2e;
+            color: #e1e1e1;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            
+            --item-bg: #2a2a3e;
+            --body-text: #e1e1e1;
+            --delete-btn: #b37a64;
+            --delete-btn-hover: #e6927a;
+        }
+    
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+    
+        .btn-blue {
+            background-color: var(--nile-blue);
+            color: white;
+        }
+    
+        .btn-red {
+            background-color: var(--desert-red);
+            color: white;
+        }
+    
+        .btn-green {
+            background-color: var(--savanna-green);
+            color: white;
+        }
+    
+        .btn-blue:hover, .btn-red:hover, .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    
+        .btn-blue:hover { background-color: var(--nile-blue-hover); }
+        .btn-red:hover { background-color: var(--desert-red-hover); }
+        .btn-green:hover { background-color: var(--savanna-green-hover); }
+    
+        /* Navigation Styles */
+        .nav-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .nav-container {
+            background-color: rgba(45, 45, 68, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    
+        /* Category and Subcategory Styles */
+        .category-item {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .category-item {
+            background-color: #2d2d44;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            color: #e1e1e1;
+        }
+    
+        .category-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    
+        .subcategory-item {
+            background: #f3f4f6;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .dark-mode .subcategory-item {
+            background-color: #3a3a54;
+        }
+    
+        /* Tag Styles */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+    
+        .tag-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .tag-item {
+            background-color: #2d2d44;
+        }
+    
+        .tag-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #666;
+        }
+    
+        .loading::after {
+            content: '';
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+    
+        /* Error State */
+        .error {
+            background: #fee;
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+    
+        /* Custom Scrollbar */
+        .subcategories {
+            max-height: 250px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #9CA3AF transparent;
+        }
+    
+        .subcategories::-webkit-scrollbar {
+            width: 6px;
+        }
+    
+        .subcategories::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    
+        .subcategories::-webkit-scrollbar-thumb {
+            background-color: #9CA3AF;
+            border-radius: 3px;
+        }
+    
+        /* Inline Editing Styles */
+        .inline-edit-field {
+            border: 2px solid var(--savanna-green);
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: inherit;
+            font-weight: inherit;
+            width: 100%;
+            max-width: 300px;
+            background-color: white;
+            transition: all 0.2s ease;
+        }
+    
+        .dark-mode .inline-edit-field {
+            background-color: #1f1f35;
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+        }
+    
+        .new-item-input {
+            border: 2px solid var(--savanna-green);
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: inherit;
+            background-color: white;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.2s ease;
+        }
+    
+        .dark-mode .new-item-input {
+            background-color: #1f1f35;
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+        }
+    
+        .category-name, .subcategory-name {
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+    
+        .category-name:hover, .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+    
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    
+        .subcategory-item {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+    
+        .subcategory-item:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+    
+        .subcategory-controls {
+            opacity: 0.3;
+            transition: opacity 0.2s ease;
+        }
+    
+        .subcategory-item:hover .subcategory-controls {
+            opacity: 1;
+        }
+    
+        .error-toast {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #e74c3c;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    
+        /* New Category and Subcategory Animation */
+        .new-category, .new-subcategory {
+            animation: slideDown 0.3s ease;
+        }
+    
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        /* Dark Mode Adjustments */
+        .dark-mode .category-name:hover, 
+        .dark-mode .subcategory-name:hover,
+        .dark-mode .subcategory-item:hover {
+            background-color: rgba(150, 176, 137, 0.2);
+        }
+    
+        /* Make the subcategory and category items look more clickable */
+        .category-name::after, 
+        .subcategory-name::after {
+            content: '✏️';
+            font-size: 0.75em;
+            opacity: 0;
+            margin-left: 6px;
+            transition: opacity 0.2s ease;
+        }
+    
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            opacity: 1;
+        }
+    
+    /* Firefox-specific enhancements for inline editing */
+    .category-name, .subcategory-name {
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+        position: relative;
+        user-select: none; /* Prevents text selection issues in Firefox */
+    }
+    
+    .category-name:hover, .subcategory-name:hover {
+        background-color: rgba(150, 176, 137, 0.2);
+        outline: 2px solid rgba(150, 176, 137, 0.3);
+    }
+    
+    /* Make editable elements more obvious */
+    .category-name::before, 
+    .subcategory-name::before {
+        content: '✏️';
+        position: absolute;
+        right: -25px;
+        opacity: 0;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        transform: translateX(-10px);
+    }
+    
+    .category-name:hover::before, 
+    .subcategory-name:hover::before {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    /* Improved styling for the inline edit field */
+    .inline-edit-field {
+        border: 2px solid var(--savanna-green);
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: inherit;
+        font-weight: inherit;
+        width: 100%;
+        min-width: 200px; /* Ensure minimum width for usability */
+        max-width: 100%;
+        background-color: white;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
+        z-index: 5;
+        position: relative;
+    }
+    
+    .dark-mode .inline-edit-field {
+        background-color: #1f1f35;
+        border-color: var(--savanna-green);
+        color: #e1e1e1;
+    }
+    
+    /* Ensure inputs are properly sized and clickable */
+    .new-item-input {
+        border: 2px solid var(--savanna-green);
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: inherit;
+        background-color: white;
+        width: 100%;
+        min-width: 200px;
+        max-width: 100%;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
+    }
+    
+    .dark-mode .new-item-input {
+        background-color: #1f1f35;
+        border-color: var(--savanna-green);
+        color: #e1e1e1;
+    }
+    
+    /* Visual feedback for keyboard focus */
+    .category-name:focus,
+    .subcategory-name:focus {
+        outline: 2px solid var(--savanna-green);
+        background-color: rgba(150, 176, 137, 0.2);
+    }
+    
+    /* Add a subtle pointer cursor for all interactive elements */
+    .category-name, 
+    .subcategory-name,
+    .btn,
+    .delete-subcategory-btn {
+        cursor: pointer;
+    }
+    
+    /* Fix for Firefox event bubbling */
+    .subcategory-item {
+        position: relative;
+        pointer-events: auto;
+    }
+    
+    .subcategory-name {
+        pointer-events: auto;
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Animation for the edit pencil icon */
+    @keyframes wiggle {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(10deg); }
+        75% { transform: rotate(-10deg); }
+        100% { transform: rotate(0deg); }
+    }
+    .category-name:hover::before,
+    .subcategory-name:hover::before {
+        animation: wiggle 0.5s ease;
+    }   
+    /* Empty state styling */
+    .empty-state {
+        padding: 2rem;
+        text-align: center;
+        color: #6b7280;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .dark-mode .empty-state {
+        background-color: rgba(45, 45, 68, 0.5);
+        color: #9ca3af;
+    }
+      #toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 50; display: flex; flex-direction: column; gap: 0.5rem; }
+      
+    </style>
+</head>
+<body>
+    <div class="banner-message bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out">
+        </div>
+
+    <header class="shadow-lg">
+        <div class="container mx-auto">
+            <nav class="shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center space-x-4">
+                            <a href="index.html" class="flex items-center space-x-3 group">
+                                <svg class="h-10 w-10 text-green-500 ..." id="logoIcon">
+                                    </svg>
+                                <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                                    ApproAdmin
+                                </span>
+                            </a>
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <a href="/" class="nav-link group ..." data-translate-title="NAV_LINK_WEBSITE_TITLE">
+                                <svg>...</svg>
+                            </a>
+                            <a href="new.html" class="nav-link group ..." data-translate-title="NAV_LINK_NEW_TITLE">
+                                <svg>...</svg>
+                            </a>
+                            <button id="darkModeToggle" class="p-2 ..." data-translate-title="TOGGLE_DARK_MODE_TITLE">
+                                <svg>...</svg>
+                            </button>
+                            
+                            <div id="lang-switcher" class="flex items-center border-l border-gray-300 dark:border-gray-600 ml-4 pl-4">
+                                <button data-lang="en" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">EN</button>
+                                <button data-lang="es" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">ES</button>
+                                </div>
+
+                            <div class="relative">
+                                <button id="profileButton" class="icon-button ..." data-translate-title="PROFILE_MENU_TITLE">
+                                    <svg>...</svg>
+                                </button>
+                                <div id="profileDropdown" class="profile-dropdown dropdown-inactive ...">
+                                    <div class="py-1">
+                                        <a href="https://content.approvideo.org" class="block ..." data-translate-key="DROPDOWN_APPROVIDEO_BETA">Approvideo beta</a>
+                                        <a href="pending.html" class="block ..." data-translate-key="DROPDOWN_PENDING">Pending</a>
+                                        <a href="#" class="block ..." data-translate-key="DROPDOWN_SIGN_OUT">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500">
+            <h1 class="text-3xl font-bold mb-2" data-translate-key="TAXONOMY_TITLE">Taxonomy Management</h1>
+            <p class="text-gray-600 dark:text-gray-300" data-translate-key="TAXONOMY_DESC">Organize your content...</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold" data-translate-key="CATEGORIES_HEADER">Categories & Subcategories</h2>
+                <button class="btn btn-green" id="add-category-btn">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
+                    <span data-translate-key="ADD_CATEGORY_BUTTON">Add Category</span>
+                </button>
+            </div>
+            <div id="categories-container" class="categories-wrapper">
+                <div class="loading" data-translate-key="LOADING_CATEGORIES">Loading categories...</div>
+            </div>
+        </div>
+
+         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold" data-translate-key="TAG_MANAGEMENT_HEADER">Tag Management</h2>
+                <button id="add-tag-btn" class="btn btn-green">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
+                     <span data-translate-key="ADD_TAG_BUTTON">Add Tag</span>
+                </button>
+            </div>
+            <div id="tag-cloud" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Paste the JavaScript code provided above here
+        // (I18N setup, DOMContentLoaded, classes like EventEmitter, BlueprintStore, CategoryManager, TagManager)
+
+
+
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    // ... (Supabase client setup) ...
+
+    // --- I18N (Internationalization) Setup ---
+
+     // --- 1. EventEmitter Class ---
+    // Simple event emitter for decoupling components (like the store)
+    class EventEmitter {
+        constructor() {
+            this.events = {};
+        }
+        on(eventName, listener) {
+            if (!this.events[eventName]) {
+                this.events[eventName] = [];
+            }
+            this.events[eventName].push(listener);
+        }
+        off(eventName, listenerToRemove) {
+            if (!this.events[eventName]) return;
+            this.events[eventName] = this.events[eventName].filter(
+                listener => listener !== listenerToRemove
+            );
+        }
+        emit(eventName, data) {
+            if (!this.events[eventName]) return;
+            // Call each listener with the provided data
+            this.events[eventName].forEach(listener => {
+                try {
+                    listener(data);
+                } catch (error) {
+                    console.error(`Error in listener for event "${eventName}":`, error);
+                }
+            });
+        }
+        once(eventName, listener) {
+            const onceWrapper = (data) => {
+                listener(data);
+                this.off(eventName, onceWrapper);
+            };
+            this.on(eventName, onceWrapper);
+        }
+    }
+    // --- 2. TagManager Class (Stub Implementation) ---
+    // Basic structure, accepts getText, handles add button click and render empty state.
+    class TagManager {
+        constructor(store, getTextFn) { // Accept getText
+            this.store = store;
+            this.getText = getTextFn; // Store the function
+            this.containerEl = document.getElementById('tag-cloud');
+            if (!this.containerEl) {
+                 console.error("Tag container #tag-cloud not found!");
+                 return;
+            }
+            this.bindEvents();
+            this.render(); // Initial render for empty state or existing tags
+        }
+        bindEvents() {
+            const addTagBtn = document.getElementById('add-tag-btn');
+            if (addTagBtn) {
+                 addTagBtn.addEventListener('click', () => {
+                     // Use translated message for the toast
+                     if (window.showErrorToast) {
+                         window.showErrorToast('TAG_FEATURE_NOT_IMPLEMENTED');
+                     } else {
+                         alert(this.getText('TAG_FEATURE_NOT_IMPLEMENTED'));
+                     }
+                 });
+            }
+            // Add delegated listeners for editing/deleting tags later if needed
+            // this.containerEl.addEventListener('click', (e) => { /* ... */ });
+        }
+        render() {
+            // Basic render logic (can be expanded later)
+            // Replace with actual tags from store eventually: const tags = this.store.tags || [];
+            const tags = []; // Stub: Assume no tags for now
+            if (!this.containerEl) return; // Guard if container not found
+            if (tags.length === 0) {
+                // Use getText for empty state messages
+                this.containerEl.innerHTML = `
+                    <div class="empty-state col-span-full"> {/* Apply to full width if grid */}
+                        <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                        <p class="dark:text-gray-400">${this.getText('NO_TAGS_YET')} ${this.getText('ADD_FIRST_TAG_PROMPT')}</p>
+                   </div>
+                `;
+            } else {
+                // Example rendering if tags existed (use getText for titles etc.)
+                this.containerEl.innerHTML = tags.map(tag => `
+                    <div class="tag-item flex justify-between items-center bg-white dark:bg-gray-700 p-2 rounded shadow-sm border dark:border-gray-600">
+                        <span class="tag-name font-medium cursor-pointer hover:text-green-600">${tag.name}</span>
+                        <button class="delete-tag-btn text-red-500 hover:text-red-700 p-1" title="${this.getText('DELETE_BUTTON')}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+        // Add methods for addTag, deleteTag, updateTag later
+    }
+    // --- 3. getEncryptionKey Function (for Dexie Encryption) ---
+    // WARNING: See security notes about passphrase and salt in production!
+    async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only') {
+        // !!! WARNING: Using a fixed salt is insecure for production.
+        // Generate a unique, random salt for each user/installation in a real app
+        // and store it alongside the encrypted data (salt is not secret).
+        // !!! WARNING: Deriving keys directly from low-entropy passphrases needs
+        // very high iteration counts to be secure against brute-forcing.
+        console.warn("Using insecure hardcoded salt and potentially low iteration count for encryption key derivation demo!");
+        try {
+            const keyMaterial = await window.crypto.subtle.importKey(
+                'raw',
+                new TextEncoder().encode(passphrase),
+                { name: 'PBKDF2' },
+                false, // Don't make the base key extractable
+                ['deriveKey']
+            );
+            // Use PBKDF2 to derive a strong AES-GCM key
+            // Increase iterations significantly for production (e.g., 100000+)
+            const key = await window.crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: new TextEncoder().encode(salt),
+                    iterations: 10000, // LOW - Increase for production!
+                    hash: 'SHA-256' // SHA-256 is generally recommended
+                },
+                keyMaterial,
+                // Key type: AES-GCM is recommended for its authenticated encryption properties
+                // Key length: 256 bits (32 bytes) is a strong standard
+                { name: 'AES-GCM', length: 256 },
+                true, // Extractable: set to 'false' in production if the raw key is never needed outside SubtleCrypto
+                ['encrypt', 'decrypt'] // Define what the key can be used for
+            );
+            console.log("Encryption key derived (DO NOT log key object in production!)");
+            return key;
+        } catch (error) {
+             console.error("Error deriving encryption key:", error);
+             // Handle key derivation failure appropriately - maybe disable offline storage?
+             throw new Error(`Could not derive encryption key: ${error.message}`);
+        }
+    }
+    const translations = {
+        // English (Default)
+        en: {
+            // General UI
+            PORTAL_TITLE: "Appro🎥video Video Portal Manager🎥",
+            TAXONOMY_TITLE: "Taxonomy Management",
+            TAXONOMY_DESC: "Organize your content with categories and subcategories. Click on any name to edit.",
+            CATEGORIES_HEADER: "Categories & Subcategories",
+            TAG_MANAGEMENT_HEADER: "Tag Management",
+            LOADING: "Loading...", // Generic loading
+            SAVE_BUTTON: "Save",
+            CANCEL_BUTTON: "Cancel",
+            DELETE_BUTTON: "Delete",
+            EDIT_HINT: "Click name to edit",
+            SLUG_LABEL: "Slug:",
+            STATUS_SAVING: "Saving...",
+            STATUS_SAVED: "Saved!",
+            STATUS_ERROR: "Error",
+            CONFIRM_ACTION_TITLE: "Confirm Action", // For generic confirmations
+
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Add Category",
+            ADD_SUBCATEGORY_BUTTON: "Add Sub",
+            LOADING_CATEGORIES: "Loading categories...",
+            NO_CATEGORIES_YET: "No categories yet.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Click "Add Category" to create your first one.',
+            NO_SUBCATEGORIES_YET: "No subcategories yet.",
+            ADD_SUB_PROMPT: 'Use the "Add Sub" button above.',
+            ENTER_CATEGORY_PLACEHOLDER: "Enter category name and press Enter",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Enter subcategory name and press Enter",
+            DELETE_CATEGORY_CONFIRM: "Are you sure you want to delete the category \"{name}\"? This action cannot be undone.", // Placeholder {name}
+            DELETE_SUBCATEGORY_CONFIRM: "Are you sure you want to delete the subcategory \"{name}\"? This action cannot be undone.", // Placeholder {name}
+            ITEM_NAME_EMPTY_ERROR: "{itemType} name cannot be empty.", // Placeholders {itemType}
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'Cannot delete "{name}": It still contains subcategories. Please delete them first.', // Placeholder {name}
+
+            // Tags
+            ADD_TAG_BUTTON: "Add Tag",
+            NO_TAGS_YET: "No tags yet.",
+            ADD_FIRST_TAG_PROMPT: 'Click "Add Tag" to create your first tag.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "Tag management is not yet implemented.", // Example message
+
+            // Banners (Keep separate or integrate if needed)
+            BANNER_MSG_1: "🎥 Sharing knowledge that changes lives - One video at a time",
+            BANNER_MSG_2: "🌱 Building resilience through appropriate technology",
+            // ... add others BANNER_MSG_3, etc.
+
+            // Navigation Titles (for tooltips/accessibility)
+            NAV_LINK_WEBSITE_TITLE: "Visit Main Website",
+            NAV_LINK_NEW_TITLE: "Add New Content", // Or be more specific
+            TOGGLE_DARK_MODE_TITLE: "Toggle Dark/Light Mode",
+            PROFILE_MENU_TITLE: "User Menu",
+    
+            // Dropdown Items (if static and translatable)
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+            DROPDOWN_PENDING: "Pending",
+            DROPDOWN_HOMEPAGE: "Homepage Admin", // Example
+            DROPDOWN_TAXONOMY: "Taxonomy Editor", // Example
+            DROPDOWN_SIGN_OUT: "Sign out",
+    
+            // Item Types (for error messages etc.)
+            CATEGORY: "Category",
+            SUBCATEGORY: "Subcategory",
+            TAG: "Tag", // Added for consistency
+
+            // Errors & Status
+            ERROR_PREFIX: "Error", // Generic prefix for errors
+            CRITICAL_ERROR_MSG: "Critical Error: Could not initialize application. {error} Please check console and refresh.", // Placeholder {error}
+            NETWORK_ERROR_CACHE_FALLBACK: "Network Error: {error}. Trying local data.",
+            NETWORK_ERROR_NO_CACHE: "Network Error: {error}. No local data available.",
+            CACHE_ERROR: "Cache Error: {error}. Unable to load local data.",
+            DB_INIT_ERROR: "Failed to initialize local database: {error}",
+            FAILED_OPERATION: "Failed to {operation}: {error}", // Generic failure, placeholders {operation}, {error}
+            UNEXPECTED_ERROR: "An unexpected error occurred: {error}",
+        },
+        // Spanish Example
+        es: {
+            PORTAL_TITLE: "Appro🎥video Gestor del Portal de Vídeos🎥",
+            TAXONOMY_TITLE: "Gestión de Taxonomía",
+            TAXONOMY_DESC: "Organiza tu contenido con categorías y subcategorías. Haz clic en cualquier nombre para editar.",
+            CATEGORIES_HEADER: "Categorías y Subcategorías",
+            TAG_MANAGEMENT_HEADER: "Gestión de Etiquetas",
+            LOADING: "Cargando...",
+            SAVE_BUTTON: "Guardar",
+            CANCEL_BUTTON: "Cancelar",
+            DELETE_BUTTON: "Eliminar",
+            EDIT_HINT: "Haz clic en el nombre para editar",
+            SLUG_LABEL: "Slug:",
+            STATUS_SAVING: "Guardando...",
+            STATUS_SAVED: "¡Guardado!",
+            STATUS_ERROR: "Error",
+            CONFIRM_ACTION_TITLE: "Confirmar Acción",
+
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Añadir Categoría",
+            ADD_SUBCATEGORY_BUTTON: "Añadir Sub",
+            LOADING_CATEGORIES: "Cargando categorías...",
+            NO_CATEGORIES_YET: "Aún no hay categorías.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Haz clic en "Añadir Categoría" para crear la primera.',
+            NO_SUBCATEGORIES_YET: "Aún no hay subcategorías.",
+            ADD_SUB_PROMPT: 'Usa el botón "Añadir Sub" de arriba.',
+            ENTER_CATEGORY_PLACEHOLDER: "Introduce el nombre de la categoría y pulsa Enter",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Introduce el nombre de la subcategoría y pulsa Enter",
+            DELETE_CATEGORY_CONFIRM: "¿Estás seguro de que quieres eliminar la categoría \"{name}\"? Esta acción no se puede deshacer.",
+            DELETE_SUBCATEGORY_CONFIRM: "¿Estás seguro de que quieres eliminar la subcategoría \"{name}\"? Esta acción no se puede deshacer.",
+            ITEM_NAME_EMPTY_ERROR: "El nombre de {itemType} no puede estar vacío.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'No se puede eliminar "{name}": Todavía contiene subcategorías. Por favor, elimínalas primero.',
+
+            // Tags
+            ADD_TAG_BUTTON: "Añadir Etiqueta",
+            NO_TAGS_YET: "Aún no hay etiquetas.",
+            ADD_FIRST_TAG_PROMPT: 'Haz clic en "Añadir Etiqueta" para crear la primera.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "La gestión de etiquetas aún no está implementada.",
+
+             // Banners
+            BANNER_MSG_1: "🎥 Compartiendo conocimiento que cambia vidas - Un vídeo a la vez",
+            BANNER_MSG_2: "🌱 Construyendo resiliencia a través de tecnología apropiada",
+            // ...
+            // Navigation Titles (for tooltips/accessibility)
+            NAV_LINK_WEBSITE_TITLE: "Visitar Sitio Principal",
+            NAV_LINK_NEW_TITLE: "Añadir Nuevo Contenido",
+            TOGGLE_DARK_MODE_TITLE: "Cambiar Modo Oscuro/Claro",
+            PROFILE_MENU_TITLE: "Menú de Usuario",
+    
+            // Dropdown Items (if static and translatable)
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+            DROPDOWN_PENDING: "Pendiente",
+            DROPDOWN_HOMEPAGE: "Admin Principal", // Example
+            DROPDOWN_TAXONOMY: "Editor de Taxonomía", // Example
+            DROPDOWN_SIGN_OUT: "Cerrar sesión",
+    
+            // Item Types (for error messages etc.)
+            CATEGORY: "Categoría",
+            SUBCATEGORY: "Subcategoría",
+            TAG: "Etiqueta", // Added for consistency
+
+            // Errors & Status
+            ERROR_PREFIX: "Error",
+            CRITICAL_ERROR_MSG: "Error Crítico: No se pudo inicializar la aplicación. {error} Por favor, revisa la consola y refresca.",
+            NETWORK_ERROR_CACHE_FALLBACK: "Error de red: {error}. Intentando datos locales.",
+            NETWORK_ERROR_NO_CACHE: "Error de red: {error}. No hay datos locales disponibles.",
+            CACHE_ERROR: "Error de caché: {error}. No se pueden cargar datos locales.",
+            DB_INIT_ERROR: "Fallo al inicializar la base de datos local: {error}",
+            FAILED_OPERATION: "Fallo al {operation}: {error}",
+            UNEXPECTED_ERROR: "Un error inesperado ocurrió: {error}",
+        }
+        // Add other language objects here (fr: {}, pt: {}, etc.)
+    };
+
+    let currentLanguage = 'en'; // Default language
+
+    /**
+     * Retrieves a translated string for a given key and language.
+     * Handles fallback to English and simple interpolation.
+     * @param {string} key - The key identifier for the string.
+     * @param {object} [params={}] - Optional parameters for interpolation (e.g., { name: 'Example' }).
+     * @returns {string} The translated (or fallback) string.
+     */
+    function getText(key, params = {}) {
+        const lang = translations[currentLanguage] || translations.en; // Fallback to English
+        let text = lang[key] || translations.en[key] || key; // Fallback chain: current lang -> english -> key itself
+
+        // Simple interpolation: replace {placeholder}
+        for (const paramKey in params) {
+            if (Object.hasOwnProperty.call(params, paramKey)) {
+                const placeholder = `{${paramKey}}`;
+                // Use a regex for global replacement
+                text = text.replace(new RegExp(placeholder.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), params[paramKey]);
+            }
+        }
+        return text;
+    }
+
+    /**
+     * Applies translations to elements with data-translate attributes.
+     */
+    function translatePage() {
+        document.querySelectorAll('[data-translate-key]').forEach(element => {
+            const key = element.dataset.translateKey;
+            element.textContent = getText(key);
+        });
+        document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+            const key = element.dataset.translatePlaceholder;
+            element.placeholder = getText(key);
+        });
+         document.querySelectorAll('[data-translate-title]').forEach(element => {
+            const key = element.dataset.translateTitle;
+            element.title = getText(key);
+         });
+         // Translate the main page title
+         const titleKey = document.documentElement.dataset.translateTitleKey;
+         if (titleKey) {
+            document.title = getText(titleKey);
+         }
+    }
+
+    /**
+     * Sets the current language and optionally updates the UI.
+     * @param {string} langCode - The language code (e.g., 'en', 'es').
+     * @param {boolean} [updateUI=true] - Whether to re-translate the page immediately.
+     */
+    function setLanguage(langCode, updateUI = true) {
+        currentLanguage = translations[langCode] ? langCode : 'en'; // Validate language or fallback
+        console.log(`Language set to: ${currentLanguage}`);
+        // Store preference (optional)
+        // localStorage.setItem('preferredLanguage', currentLanguage);
+        if (updateUI) {
+            translatePage();
+            // Potentially re-render dynamic components if needed
+            if (window.categoryManager) window.categoryManager.render();
+            if (window.tagManager) window.tagManager.render();
+            // Re-initialize banner rotation with potentially new text
+            setupBannerMessages();
+        }
+    }
+
+     // Helper to get a translated banner message
+     function getTranslatedBannerMessages() {
+         const messages = [];
+         let i = 1;
+         while (true) {
+             const key = `BANNER_MSG_${i}`;
+             const text = getText(key);
+             // Stop if key not found in English (assuming English has all keys)
+             if (!translations.en[key]) break;
+             messages.push(text);
+             i++;
+         }
+         return messages.length > 0 ? messages : [getText('BANNER_MSG_1')]; // Fallback
+     }
+
+      // Keep track of banner interval
+      let bannerIntervalId = null;
+
+     // Function to setup/reset banner messages
+     function setupBannerMessages() {
+         // Clear existing interval if running
+         if (bannerIntervalId) {
+             clearInterval(bannerIntervalId);
+             bannerIntervalId = null;
+         }
+
+         const bannerMessages = getTranslatedBannerMessages();
+         const bannerElement = document.querySelector('.banner-message'); // Use the specific class
+
+         if (bannerElement && bannerMessages.length > 0) {
+             let currentMessageIndex = 0;
+             function updateBannerMessage() {
+                 // Fade out, update text, fade in (optional nice effect)
+                 bannerElement.style.opacity = '0';
+                 setTimeout(() => {
+                     bannerElement.textContent = bannerMessages[currentMessageIndex];
+                     bannerElement.style.opacity = '1';
+                     currentMessageIndex = (currentMessageIndex + 1) % bannerMessages.length;
+                 }, 300); // Match transition duration
+             }
+             updateBannerMessage(); // Initial message
+             bannerIntervalId = setInterval(updateBannerMessage, 5000); // Rotate every 5 seconds
+
+             // Add transition style to banner element if not already present
+             bannerElement.style.transition = 'opacity 0.3s ease-in-out';
+         }
+     }
+
+    // --- End I18N Setup ---
+
+
+    // --- Updated DOMContentLoaded ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Prevent double initialization
+        if (window.appInitialized) return;
+        window.appInitialized = true;
+
+        // --- Language Initialization ---
+        // Example: Detect from browser or localStorage (optional)
+        // const preferredLang = localStorage.getItem('preferredLanguage') || navigator.language.split('-')[0];
+        // setLanguage(preferredLang, false); // Set initial language without UI update yet
+        setLanguage('en', false); // Default to English for now, set false to avoid translating before elements exist
+
+        document.getElementById('lang-switcher')?.addEventListener('click', (e) => {
+            const button = e.target.closest('.lang-button');
+            if (button && button.dataset.lang) {
+                setLanguage(button.dataset.lang);
+                // Optional: Add visual cue to active language button
+                document.querySelectorAll('.lang-button').forEach(btn => btn.classList.remove('font-bold', 'bg-gray-200', 'dark:bg-gray-600'));
+                button.classList.add('font-bold', 'bg-gray-200', 'dark:bg-gray-600');
+            }
+        });
+        // Set initial active button style based on currentLanguage after setup
+        document.querySelector(`.lang-button[data-lang="${currentLanguage}"]`)?.classList.add('font-bold', 'bg-gray-200', 'dark:bg-gray-600');
+        
+
+        // --- Translate initial HTML static content ---
+        translatePage(); // Translate static text defined in HTML
+
+        // --- Banner Setup (Now uses translated messages) ---
+        setupBannerMessages();
+
+        // --- Profile Dropdown ---
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+        // (Keep existing profile dropdown logic)
+        let isDropdownOpen = false;
+        profileButton?.addEventListener('click', (e) => {
+             e.stopPropagation();
+             isDropdownOpen = !isDropdownOpen;
+             profileDropdown?.classList.toggle('dropdown-active', isDropdownOpen);
+             profileDropdown?.classList.toggle('dropdown-inactive', !isDropdownOpen);
+        });
+        document.addEventListener('click', (e) => {
+             if (profileButton && profileDropdown && !profileButton.contains(e.target) && isDropdownOpen) {
+                 profileDropdown.classList.remove('dropdown-active');
+                 profileDropdown.classList.add('dropdown-inactive');
+                 isDropdownOpen = false;
+             }
+        });
+
+        // --- Dark Mode ---
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+        }
+        darkModeToggle?.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // --- Error Toast Function (using getText) ---
+        // Ensure toast container exists
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'fixed bottom-4 right-4 z-50 space-y-2';
+            document.body.appendChild(toastContainer);
+        }
+
+        window.showErrorToast = (messageKeyOrText, params = {}) => {
+            const message = translations[currentLanguage]?.[messageKeyOrText] ? getText(messageKeyOrText, params) : messageKeyOrText; // If key exists, translate; otherwise use text as is
+
+            const errorToast = document.createElement('div');
+            // Use Tailwind classes for styling if available, or fallback to predefined class
+            errorToast.className = 'error-toast bg-red-600 text-white p-3 rounded-md shadow-lg max-w-sm animate-fadeInOut'; // Example Tailwind
+            errorToast.textContent = message;
+
+            toastContainer.appendChild(errorToast);
+
+            setTimeout(() => {
+                errorToast.remove();
+            }, 3500); // Slightly longer timeout
+        };
+         // Add CSS for fade in/out animation if not using Tailwind animations
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateY(10px); }
+                15% { opacity: 1; transform: translateY(0); }
+                85% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(10px); }
+            }
+            .animate-fadeInOut { animation: fadeInOut 3.5s ease-in-out forwards; }
+            .error-toast {} /* Keep class for potential non-Tailwind styling */
+        `;
+        document.head.appendChild(styleSheet);
+
+        // --- Initialize Store and UI Managers ---
+        try {
+            console.log(getText('LOADING')); // Example usage
+            const store = new BlueprintStore();
+            await store.initialize(); // Initialize Dexie/Encryption if used
+
+            // Pass getText function if needed, or rely on emitting keys
+            window.categoryManager = new CategoryManager(store, getText); // Pass getText
+            window.tagManager = new TagManager(store, getText);     // Pass getText
+
+            // Global error handler (using translation)
+             window.addEventListener('unhandledrejection', function(event) {
+                 console.error('Unhandled Promise Rejection:', event.reason);
+                 const errorMsg = event.reason?.message || String(event.reason);
+                 window.showErrorToast('UNEXPECTED_ERROR', { error: errorMsg });
+             });
+
+            await store.loadInitialData();
+            console.log("App initialization complete.");
+
+        } catch (error) {
+             const errorMsg = error.message || String(error);
+             console.error('FATAL: Error initializing app:', errorMsg);
+             const container = document.getElementById('categories-container') || document.body;
+             container.innerHTML = `<div class="error p-4 bg-red-100 text-red-700 border border-red-300 rounded">${getText('CRITICAL_ERROR_MSG', { error: errorMsg })}</div>`;
+             if (window.showErrorToast) {
+                 window.showErrorToast('CRITICAL_ERROR_MSG', { error: errorMsg });
+             }
+        }
+    }); // End DOMContentLoaded
+
+    // --- Include other classes (EventEmitter, BlueprintStore, CategoryManager, TagManager) here ---
+    // Make sure CategoryManager and TagManager constructors accept `getText`
+    // and use it for confirm messages, alerts, etc., OR modify store events
+    // to emit keys/params instead of final strings.
+
+  class CategoryManager {
+    constructor(store, getTextFn) { // Accept getText function
+        this.store = store;
+        this.getText = getTextFn; // Store the function
+        this.containerEl = document.getElementById('categories-container');
+
+        // State for tracking the currently edited item
+        this.editingState = {
+            isEditing: false, element: null, inputElement: null, elementId: null,
+            type: null, id: null, categoryId: null, originalValue: null
+        };
+
+        // State to manage visual feedback during/after save operations
+        this.saveStatus = { element: null, status: 'idle', timeoutId: null };
+
+        this.bindEvents();
+        this.bindStoreEvents(); // Ensure this listener handles structured errors
+    }
+
+    /**
+     * Binds event listeners for user interactions (adding, deleting, editing).
+     */
+    bindEvents() {
+        // (Keep the previously refined bindEvents logic)
+        // It should already handle starting edits, saving on Enter/Click-Outside,
+        // saving/canceling before other actions.
+         document.getElementById('add-category-btn').addEventListener('click', () => {
+             if (this.editingState.isEditing) this.saveEdit();
+             this.createNewCategory();
+         });
+
+         this.containerEl.addEventListener('click', (e) => {
+            // ... (Keep the logic from previous refinement for handling clicks on names, buttons) ...
+             // Ensure button handlers call this.deleteCategory, this.createNewSubcategory etc.
+              // --- Button Handling Example ---
+              const deleteCategoryButton = e.target.closest('.delete-category-btn');
+              if (deleteCategoryButton) {
+                  if (this.editingState.isEditing) this.cancelEdit(); // Cancel before delete
+                  const categoryId = deleteCategoryButton.closest('.category-item')?.dataset.categoryId;
+                  if (categoryId) this.deleteCategory(categoryId); // Calls method below
+                  return;
+              }
+             // ... other button handlers
+         });
+
+         document.addEventListener('keydown', (e) => { /* ... Enter/Escape logic ... */ });
+         document.addEventListener('click', (e) => { /* ... Click outside logic ... */ }, true);
+    }
+
+    /**
+     * Binds listeners to events from the BlueprintStore.
+     * Handles structured error events for translated toast messages.
+     */
+    bindStoreEvents() {
+        this.store.on('loading', (isLoading) => {
+            // ... (loading logic - use this.getText for loading message in render) ...
+            if (!isLoading && this.editingState.isEditing) this.cancelEdit(true);
+            this.render();
+        });
+
+        this.store.on('dataLoaded', (payload) => {
+             if (this.editingState.isEditing) this.cancelEdit(true);
+             this.render();
+        });
+
+         // --- Updated Error Handler ---
+         this.store.on('error', (errorData) => { // Expects { key, params }
+             if (window.showErrorToast) {
+                 // Pass the key and params directly to the toast function
+                 window.showErrorToast(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
+             } else {
+                 // Fallback using alert, translating if possible
+                 const fallbackMsg = this.getText(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
+                 alert(`${this.getText('ERROR_PREFIX')}: ${fallbackMsg}`);
+             }
+             // Optionally update UI state if needed based on error
+              if (!this.store.isLoading) {
+                  this.render(); // Re-render to show potential error message in the main area
+              }
+         });
+
+         // Optional: Handle 'info' events if emitted by the store
+          this.store.on('info', (infoData) => {
+             if (window.showInfoToast) { // Assume a similar function for info
+                 window.showInfoToast(infoData.key, infoData.params);
+             } else {
+                 console.log("INFO:", this.getText(infoData.key, infoData.params));
+             }
+          });
+    }
+
+    /**
+     * Handles category deletion, using translated confirmation.
+     */
+    async deleteCategory(categoryId) {
+        const category = this.store.categories.find(c => c.id === categoryId);
+        const categoryName = category ? category.name : '...'; // Get name for param
+
+        // Get translated confirmation message
+        const confirmMessage = this.getText('DELETE_CATEGORY_CONFIRM', { name: categoryName });
+
+        // Pre-delete check (example) - use translated alert if needed
+         if (category && category.subcategories && category.subcategories.length > 0) {
+             // Alert is blocking, consider using a non-blocking toast/modal
+             alert(this.getText('CATEGORY_DELETE_HAS_SUBS_ERROR', { name: categoryName }));
+             return;
+         }
+
+        if (confirm(confirmMessage)) {
+            try {
+                await this.store.deleteCategory(categoryId);
+                // Success: render handled by 'dataLoaded'
+            } catch (error) {
+                // Error display handled by 'error' event listener
+                console.error("Delete category failed (handled by store listener):", error);
+            }
+        }
+    }
+
+    /**
+     * Handles subcategory deletion, using translated confirmation.
+     */
+    async deleteSubcategory(subcategoryId, categoryId) {
+        const category = this.store.categories.find(c => c.id === categoryId);
+        const subcategory = category?.subcategories.find(s => s.id === subcategoryId);
+        const subcategoryName = subcategory ? subcategory.name : '...';
+
+        // Get translated confirmation message
+        const confirmMessage = this.getText('DELETE_SUBCATEGORY_CONFIRM', { name: subcategoryName });
+
+        if (confirm(confirmMessage)) {
+            try {
+                await this.store.deleteSubcategory(subcategoryId, categoryId);
+                // Success: render handled by 'dataLoaded'
+            } catch (error) {
+                 // Error display handled by 'error' event listener
+                 console.error("Delete subcategory failed (handled by store listener):", error);
+            }
+        }
+    }
+
+    /**
+     * Creates UI for adding a new category, using translated placeholders.
+     */
+    createNewCategory() {
+        if (this.containerEl.querySelector('.new-category')) { /* ... focus existing ... */ return; }
+
+        const tempId = 'new-category-' + Date.now();
+        // Use getText for placeholder
+        const placeholderText = this.getText('ENTER_CATEGORY_PLACEHOLDER');
+        const saveLabel = this.getText('SAVE_BUTTON');
+        const cancelLabel = this.getText('CANCEL_BUTTON');
+
+        const newCategoryHTML = `
+            <div class="category-item new-category ..." data-category-id="${tempId}">
+                <div class="flex items-center space-x-3">
+                     <input type="text" id="new-category-input" class="..."
+                           placeholder="${placeholderText}" aria-label="${placeholderText}" autofocus>
+                     <button class="btn btn-green save-new-category-btn p-2" aria-label="${saveLabel}">...</button>
+                     <button class="btn btn-red cancel-new-category-btn p-2" aria-label="${cancelLabel}">...</button>
+                </div>
+            </div>`;
+        // ... (insert HTML) ...
+
+        const newCategoryItem = this.containerEl.querySelector(/* ... */);
+        const inputField = newCategoryItem.querySelector('#new-category-input');
+        const saveBtn = newCategoryItem.querySelector('.save-new-category-btn');
+        const cancelBtn = newCategoryItem.querySelector('.cancel-new-category-btn');
+
+        const handleSave = async () => {
+            const name = inputField.value.trim();
+            if (name) {
+                saveBtn.disabled = true; cancelBtn.disabled = true; inputField.disabled = true;
+                try {
+                    await this.store.addCategory({ name }); // Store handles errors/success
+                } catch (error) {
+                     // Error handled by store listener, just re-enable form
+                    saveBtn.disabled = false; cancelBtn.disabled = false; inputField.disabled = false;
+                    inputField.focus();
+                }
+            } else {
+                // Use translated error message via toast
+                window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('CATEGORY') || 'Category' }); // Translate 'Category' type?
+                inputField.focus();
+            }
+        };
+        // ... (attach listeners: handleSave, handleCancel, keydown) ...
+         inputField.focus();
+    }
+
+    /**
+     * Creates UI for adding a new subcategory, using translated placeholders.
+     */
+    createNewSubcategory(categoryId) {
+         // ... (find parent elements, check for existing form) ...
+         const placeholderText = this.getText('ENTER_SUBCATEGORY_PLACEHOLDER');
+         const saveLabel = this.getText('SAVE_BUTTON');
+         const cancelLabel = this.getText('CANCEL_BUTTON');
+
+         const tempId = 'new-subcategory-' + Date.now();
+         const newSubcategoryHTML = `
+            <div class="subcategory-item new-subcategory ..." data-subcategory-id="${tempId}">
+                <input type="text" class="..." placeholder="${placeholderText}" aria-label="${placeholderText}" autofocus>
+                 <button class="btn btn-green save-new-subcategory-btn ..." aria-label="${saveLabel}">...</button>
+                 <button class="btn btn-red cancel-new-subcategory-btn ..." aria-label="${cancelLabel}">...</button>
+            </div>`;
+         // ... (insert HTML) ...
+
+         const newSubcategoryItem = subcategoriesContainer.querySelector(/* ... */);
+         const inputField = newSubcategoryItem.querySelector('input');
+         const saveBtn = newSubcategoryItem.querySelector('.save-new-subcategory-btn');
+         const cancelBtn = newSubcategoryItem.querySelector('.cancel-new-subcategory-btn');
+
+         const handleSave = async () => {
+             const name = inputField.value.trim();
+             if (name) {
+                 saveBtn.disabled = true; cancelBtn.disabled = true; inputField.disabled = true;
+                 try {
+                     await this.store.addSubcategory(categoryId, { name });
+                  } catch (error) {
+                      saveBtn.disabled = false; cancelBtn.disabled = false; inputField.disabled = false;
+                      inputField.focus();
+                  }
+              } else {
+                  window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('SUBCATEGORY') || 'Subcategory' });
+                  inputField.focus();
+              }
+          };
+         // ... (attach listeners: handleSave, handleCancel, keydown) ...
+          inputField.focus();
+    }
+
+    // --- Inline Editing methods (startEditing, saveEdit, cancelEdit, resetEditingState) ---
+    // These primarily deal with DOM manipulation and state. They don't usually
+    // need direct calls to getText, except perhaps for aria-labels if not handled
+    // by the static HTML attributes set during render. Keep as previously refined.
+    startEditing(element, type, id, categoryId = null) { /* ... */ }
+    async saveEdit() { /* ... */ } // Calls store methods, errors handled by listener
+    cancelEdit(isRendering = false) { /* ... */ }
+    resetEditingState() { /* ... */ }
+
+    // --- Feedback methods (showSaveStatus, clearSaveStatus) ---
+    // These apply CSS classes. The text content (like Saving...) could be
+    // set using getText if needed, but CSS pseudo-elements are often used.
+    showSaveStatus(element, status) { /* ... */ } // Maybe add getText for accessibility content?
+    clearSaveStatus(element = null) { /* ... */ }
+
+    /**
+     * Renders the UI, using getText for all user-facing strings.
+     */
+    render() {
+        this.clearSaveStatus(); // Clear status on render
+        this.saveStatus = { element: null, status: 'idle', timeoutId: null };
+
+        // Handle error display using raw error message from store (toasts handle translated keys)
+        if (this.store.error && !this.store.isLoading) {
+            // Show a generic error in the main panel, toast provides detail
+            const errorMsg = this.store.error || 'Unknown error occurred.';
+            this.containerEl.innerHTML = `<div class="error ...">${this.getText('ERROR_PREFIX')}: ${errorMsg}</div>`;
+            return;
+        }
+
+        // Handle loading state
+        if (this.store.isLoading) {
+             if (!this.containerEl.querySelector('.loading')) {
+                 // Use translated loading text
+                 this.containerEl.innerHTML = `<div class="loading">${this.getText('LOADING_CATEGORIES')}</div>`;
+             }
+             return;
+        }
+
+        // Preserve 'new category' form
+        const newCategoryForm = this.containerEl.querySelector('.new-category');
+
+        // Handle empty state using translated text
+        if (this.store.categories.length === 0 && !newCategoryForm) {
+            this.containerEl.innerHTML = `
+                <div class="empty-state">
+                     <svg class="w-12 h-12 ..."></svg>
+                    <p class="dark:text-gray-400">${this.getText('NO_CATEGORIES_YET')} ${this.getText('ADD_FIRST_CATEGORY_PROMPT')}</p>
+                </div>`;
+            return;
+        }
+
+        // Generate HTML, using getText for labels, titles, hints
+        const categoriesHTML = this.store.categories.map(category => `
+            <div class="category-item ..." data-category-id="${category.id}">
+                <div class="category-header ...">
+                    <div class="...">
+                        <h3 class="... category-name ...">${category.name}</h3>
+                        <span class="...">${this.getText('EDIT_HINT')}${category.slug ? `, ${this.getText('SLUG_LABEL')} ${category.slug}` : ''}</span>
+                    </div>
+                    <div class="category-controls ...">
+                        {/* Use getText for button text/title */}
+                        <button class="btn btn-blue add-subcategory-btn text-sm" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
+                            <svg ...></svg>${this.getText('ADD_SUBCATEGORY_BUTTON')}
+                        </button>
+                        <button class="btn btn-red delete-category-btn text-sm" title="${this.getText('DELETE_BUTTON')}">
+                             <svg ...></svg>${this.getText('DELETE_BUTTON')}
+                        </button>
+                    </div>
+                </div>
+                <div class="subcategories ...">
+                    ${category.subcategories && category.subcategories.length > 0 ?
+                        category.subcategories.map(subcategory => `
+                            <div class="subcategory-item ..." data-subcategory-id="${subcategory.id}">
+                                <span class="... subcategory-name ...">${subcategory.name}</span>
+                                ${subcategory.slug ? `<span class="text-xs ...">(${subcategory.slug})</span>` : ''}
+                                <div class="subcategory-controls ...">
+                                     {/* Use getText for button title */}
+                                    <button class="... delete-subcategory-btn ..." title="${this.getText('DELETE_BUTTON')}">
+                                        <svg ...></svg>
+                                    </button>
+                                </div>
+                            </div>`).join('') :
+                        // Use getText for empty subcategory list message
+                        `<p class="...">${this.getText('NO_SUBCATEGORIES_YET')} ${this.getText('ADD_SUB_PROMPT')}</p>`
+                    }
+                </div>
+            </div>`).join('');
+
+        this.containerEl.innerHTML = categoriesHTML;
+
+        // Re-attach 'new category' form if it existed
+        if (newCategoryForm) {
+            this.containerEl.insertAdjacentElement('afterbegin', newCategoryForm);
+        }
+    }
+
+} // End CategoryManager Class
+
+ class BlueprintStore extends EventEmitter {
+    constructor() {
+        super();
+        this.supabase = supabase;
+        this.categories = [];
+        this.isLoading = false;
+        this.error = null; // Stores the raw error message for logging/debugging
+        this.db = null; // Dexie instance
+        this.encryptionKey = null; // Or manage key differently
+    }
+
+    // --- Async Initialization Method (Keep as previously defined) ---
+    async initialize() {
+        console.log("Initializing BlueprintStore...");
+        try {
+            // !!! INSECURE DEMO PASSPHRASE - REPLACE IN PRODUCTION !!!
+            const insecurePassphrase = 'your-secret-passphrase-here-very-bad';
+            // console.warn("Using insecure hardcoded passphrase for Dexie encryption demo!"); // Keep console warning
+            this.encryptionKey = await getEncryptionKey(insecurePassphrase);
+
+            this.db = new Dexie('ApproAdminDBEncrypted');
+
+            applyEncryptionMiddleware(this.db, this.encryptionKey, {
+                 categories: encrypt.NON_INDEXED_FIELDS,
+                 subcategories: encrypt.NON_INDEXED_FIELDS,
+            }, false); // Disable detailed logging for production maybe?
+
+            this.db.version(1).stores({
+                // Use 'id' as primary key if using Supabase UUIDs, or '++id' for auto-increment
+                 categories: 'id, *name, *slug',
+                 subcategories: 'id, *name, *slug, category_id'
+             });
+
+            console.log("Dexie DB schema defined with encryption middleware.");
+            await this.db.open();
+            console.log("Dexie DB opened successfully.");
+            this.error = null; // Clear any previous init error
+
+        } catch (error) {
+            console.error("FATAL: Failed to initialize Dexie or encryption:", error);
+            const errorMsg = error.message || String(error);
+            this.error = `Failed to initialize local database: ${errorMsg}`; // Store raw error
+            this.db = null; // Ensure db is null on failure
+            // Emit structured error for UI
+            this.emit('error', { key: 'DB_INIT_ERROR', params: { error: errorMsg } });
+            throw new Error(this.error); // Re-throw critical error
+        }
+    }
+
+    // --- Load Initial Data (Emits structured errors) ---
+    async loadInitialData() {
+        if (!this.db) {
+             this.error = "Local database not initialized.";
+             this.emit('error', { key: 'DB_INIT_ERROR', params: { error: this.error } });
+             this.isLoading = false;
+             this.emit('loading', false);
+             return;
+        }
+        this.isLoading = true;
+        this.error = null;
+        this.emit('loading', true);
+        let loadedFromCache = false;
+
+
+
+
+
+        try {
+            const { data: categoriesFromSupabase, error: supabaseError } = await this.supabase
+                .from('categories')
+                .select('*, subcategories(*)')
+                .order('name', { ascending: true })
+                .order('name', { foreignTable: 'subcategories', ascending: true });
+
+            if (supabaseError) throw supabaseError; // Let catch handle it
+
+            const processedCategories = (categoriesFromSupabase || []).map(cat => ({
+                 ...cat, subcategories: cat.subcategories || []
+            }));
+            this.categories = processedCategories;
+            this.updateLocalCache(processedCategories).catch(cacheError => console.error("Background cache update failed:", cacheError));
+            this.emit('dataLoaded', { categories: this.categories, source: 'supabase' });
+
+        } catch (error) {
+            // Supabase fetch failed, try cache
+            const networkErrMsg = error.message || String(error);
+            console.warn("Supabase failed, trying cache:", networkErrMsg);
+            this.error = `Network Error: ${networkErrMsg}.`; // Store raw error
+
+            try {
+                const cachedCategories = await this.db.categories.orderBy('name').toArray();
+                if (cachedCategories && cachedCategories.length > 0) {
+                    const categoryIds = cachedCategories.map(c => c.id);
+                    const cachedSubcategories = await this.db.subcategories.where('category_id').anyOf(categoryIds).sortBy('name');
+                    this.categories = cachedCategories.map(cat => ({
+                        ...cat,
+                        subcategories: cachedSubcategories.filter(sub => sub.category_id === cat.id)
+                    }));
+                    loadedFromCache = true;
+                    // Emit data, but also emit the network error as a non-critical warning/info maybe?
+                    this.emit('dataLoaded', { categories: this.categories, source: 'cache' });
+                    // Optionally inform user about using cache due to network issue
+                    this.emit('info', { key: 'NETWORK_ERROR_CACHE_FALLBACK', params: { error: networkErrMsg } }); // Use a different event type? Or handle in UI based on source.
+                } else {
+                     this.categories = [];
+                     // Emit specific error key for this case
+                     this.emit('error', { key: 'NETWORK_ERROR_NO_CACHE', params: { error: networkErrMsg } });
+                     this.emit('dataLoaded', { categories: [], source: 'empty' }); // Ensure UI updates
+                }
+            } catch (dexieError) {
+                const cacheErrMsg = dexieError.message || String(dexieError);
+                console.error("Failed to load data from Dexie cache:", cacheErrMsg);
+                this.error += ` Cache Error: ${cacheErrMsg}.`; // Append cache error info
+                 this.categories = [];
+                 // Emit specific cache error key
+                 this.emit('error', { key: 'CACHE_ERROR', params: { error: cacheErrMsg } });
+                 this.emit('dataLoaded', { categories: [], source: 'error' });
+            }
+        } finally {
+            this.isLoading = false;
+            this.emit('loading', false);
+        }
+
+//  added here,  not sure if correct.
+// Inside store.on('dataLoaded', ...) in DOMContentLoaded
+this.store.on('dataLoaded', (payload) => {
+    if (this.editingState.isEditing) this.cancelEdit(true);
+    this.render();
+    // Update offline indicator based on source
+    const offlineIndicator = document.getElementById('offline-indicator');
+    if (offlineIndicator) {
+         offlineIndicator.textContent = payload.source === 'cache' ? ' (Cached Data)' : '';
+         offlineIndicator.classList.toggle('text-yellow-500', payload.source === 'cache');
+    }
+});
+
+// Add element in HTML (e.g., near header title)
+// <span id="offline-indicator" class="text-xs ml-2"></span>
+
+
+
+    }
+
+    // --- Update Local Cache (Keep as previously defined) ---
+     async updateLocalCache(categories) { /* ... */ }
+
+    // --- Mutation Methods (Emit structured errors) ---
+
+    async addOperation(entityName, dbTable, dataToAdd, localUpdateFn) {
+        if (!this.db) throw new Error("Local DB not available");
+        const operationName = `add ${entityName}`;
+        try {
+            // Assume dataToAdd is already validated if needed outside, or add validation here
+            const { data, error } = await this.supabase.from(dbTable).insert([dataToAdd]).select().single();
+
+            if (error) throw error; // Let catch handle Supabase errors
+            if (!data) throw new Error(`No data returned after ${operationName}.`); // Internal error
+
+            localUpdateFn(data); // Update the local this.categories array
+
+            // Update cache (using only relevant fields for the specific table)
+            await this.db[dbTable].put(data).catch(e => console.error(`Dexie cache update failed (${operationName}):`, e));
+
+            this.emit('dataLoaded', { categories: this.categories }); // Use full categories state
+            return data;
+
+        } catch (error) {
+            const errorMsg = error.message || String(error);
+            console.error(`Error ${operationName}:`, error);
+            this.error = `Failed operation: ${errorMsg}`; // Store raw error
+            // Emit structured error
+            this.emit('error', { key: 'FAILED_OPERATION', params: { operation: operationName, error: errorMsg } });
+            throw error; // Re-throw for caller
+        }
+    }
+
+     async updateOperation(entityName, dbTable, id, dataToUpdate, localUpdateFn) {
+         if (!this.db) throw new Error("Local DB not available");
+         const operationName = `update ${entityName}`;
+         try {
+             // Add validation if needed (e.g., non-empty name)
+             if (!dataToUpdate.name?.trim()) {
+                 throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: entityName } };
+             }
+
+             const { data, error } = await this.supabase.from(dbTable).update(dataToUpdate).eq('id', id).select().single();
+
+             if (error) throw error;
+             if (!data) throw new Error(`No data returned after ${operationName}.`);
+
+             localUpdateFn(data); // Update local this.categories array
+
+             await this.db[dbTable].put(data).catch(e => console.error(`Dexie cache update failed (${operationName}):`, e));
+
+             this.emit('dataLoaded', { categories: this.categories });
+             return data;
+
+         } catch (error) {
+            const errorMsg = error.message || String(error);
+            console.error(`Error ${operationName}:`, error);
+            this.error = `Failed operation: ${errorMsg}`;
+             const errorKey = error.key || 'FAILED_OPERATION'; // Use specific key if thrown
+             const errorParams = error.params || { operation: operationName, error: errorMsg };
+            this.emit('error', { key: errorKey, params: errorParams });
+            throw error;
+         }
+     }
+
+      async deleteOperation(entityName, dbTable, id, localUpdateFn) {
+          if (!this.db) throw new Error("Local DB not available");
+          const operationName = `delete ${entityName}`;
+          try {
+              // Add pre-delete checks if necessary (e.g., category has no subs)
+              // These checks might throw specific structured errors
+
+              const { error } = await this.supabase.from(dbTable).delete().eq('id', id);
+              if (error) throw error;
+
+              localUpdateFn(id); // Update local this.categories array
+
+              await this.db[dbTable].delete(id).catch(e => console.error(`Dexie cache update failed (${operationName}):`, e));
+
+              this.emit('dataLoaded', { categories: this.categories });
+
+          } catch (error) {
+            const errorMsg = error.message || String(error);
+            console.error(`Error ${operationName}:`, error);
+            this.error = `Failed operation: ${errorMsg}`;
+            const errorKey = error.key || 'FAILED_OPERATION'; // Use specific key if thrown
+            const errorParams = error.params || { operation: operationName, error: errorMsg };
+            this.emit('error', { key: errorKey, params: errorParams });
+            throw error;
+          }
+      }
+
+    // --- Specific Methods using generic operations ---
+
+    async addCategory(categoryData) {
+        // Validate here or expect validated data
+        if (!categoryData.name?.trim()) {
+             throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Category' } };
+        }
+        const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const dataToAdd = { name: categoryData.name.trim(), slug: slug }; // Add other fields if needed
+
+        return this.addOperation('category', 'categories', dataToAdd, (data) => {
+             const newCategory = { ...data, subcategories: [] };
+             this.categories.push(newCategory);
+             this.categories.sort((a, b) => a.name.localeCompare(b.name));
+        });
+    }
+
+    async updateCategory(categoryId, categoryData) {
+        // Name validation happens inside updateOperation
+        const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const dataToUpdate = { name: categoryData.name.trim(), slug: slug };
+
+        return this.updateOperation('category', 'categories', categoryId, dataToUpdate, (data) => {
+             const index = this.categories.findIndex(cat => cat.id === categoryId);
+             if (index !== -1) {
+                const existingSubcategories = this.categories[index].subcategories;
+                this.categories[index] = { ...data, subcategories: existingSubcategories };
+                this.categories.sort((a, b) => a.name.localeCompare(b.name));
+             }
+        });
+    }
+
+     async deleteCategory(categoryId) {
+         // Pre-check (example of throwing specific structured error)
+         const category = this.categories.find(c => c.id === categoryId);
+         if (category && category.subcategories && category.subcategories.length > 0) {
+            throw { key: 'CATEGORY_DELETE_HAS_SUBS_ERROR', params: { name: category.name } };
+         }
+         // If check passes, proceed with generic delete
+         return this.deleteOperation('category', 'categories', categoryId, (id) => {
+             this.categories = this.categories.filter(cat => cat.id !== id);
+         });
+     }
+
+      async addSubcategory(categoryId, subcategoryData) {
+           if (!subcategoryData.name?.trim()) {
+               throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Subcategory' } };
+           }
+           const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+           const dataToAdd = { name: subcategoryData.name.trim(), slug: slug, category_id: categoryId };
+
+           return this.addOperation('subcategory', 'subcategories', dataToAdd, (data) => {
+               const category = this.categories.find(cat => cat.id === categoryId);
+               if (category) {
+                    if (!Array.isArray(category.subcategories)) category.subcategories = [];
+                    category.subcategories.push(data);
+                    category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+               }
+           });
+      }
+
+       async updateSubcategory(subcategoryId, categoryId, subcategoryData) {
+            // Name validation happens inside updateOperation
+           const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+           const dataToUpdate = { name: subcategoryData.name.trim(), slug: slug };
+
+           return this.updateOperation('subcategory', 'subcategories', subcategoryId, dataToUpdate, (data) => {
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category?.subcategories) {
+                     const subIndex = category.subcategories.findIndex(s => s.id === subcategoryId);
+                     if (subIndex > -1) {
+                         category.subcategories[subIndex] = data;
+                         category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+                     }
+                 }
+           });
+       }
+
+       async deleteSubcategory(subcategoryId, categoryId) {
+            // No pre-check needed here usually, but could add if needed
+            return this.deleteOperation('subcategory', 'subcategories', subcategoryId, (id) => {
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category?.subcategories) {
+                    category.subcategories = category.subcategories.filter(sub => sub.id !== id);
+                }
+            });
+       }
+
+} // End BlueprintStore Class
+
+    // Remember to place the full class definitions for EventEmitter,
+    // BlueprintStore, CategoryManager, TagManager here.
+
+</script>
