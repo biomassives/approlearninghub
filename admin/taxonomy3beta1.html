@@ -2307,27 +2307,35 @@ class BlueprintStore extends EventEmitter {
         return true;
     }
 
-    // --- Internal Dexie Helper Methods ---
 
-    /** Generic Dexie cache update (handles create/update) */
-    async _dexiePut(tableName, record) {
-            if (!this.db)  {
-            console.error(`_dexiePut called for ${tableName} but this.db is null!`);
-            return; // Stop if db isn't initialized
-        }
-        try {
-            // --- ADD THIS LOG ---
-            console.log(`Attempting Dexie put. Table: ${tableName}. DB available:`, !!this.db, "Record:", record);
-            // --------------------
-            await this.db[tableName].put(record);
-            console.log(`Dexie put successful for table: ${tableName}`);
-        } catch (error) {
-            // Log the specific error including table name
-            console.error(`Dexie put error [${tableName}]:`, error);
-            // Optionally re-throw if needed upstream
-            // throw error;
-        }
+/** Dexie cache update (handles create/update) - WITH TRANSACTION */
+async _dexiePut(tableName, record) {
+    if (!this.db) {
+        console.error(`_dexiePut called for ${tableName} but this.db is null!`);
+        return; // Or throw? Return for now.
     }
+    try {
+        // --- MODIFICATION START ---
+        console.log(`Attempting Dexie transaction + put. Table: ${tableName}. Record:`, record);
+        // Define the table(s) involved in the transaction
+        const tableToUpdate = this.db[tableName];
+        if (!tableToUpdate) {
+             throw new Error(`Dexie table '${tableName}' not found.`);
+        }
+        // Explicitly wrap the 'put' in a read-write ('rw') transaction
+        await this.db.transaction('rw', tableToUpdate, async () => {
+            await tableToUpdate.put(record);
+        });
+        // --- MODIFICATION END ---
+
+        console.log(`Dexie put successful for table: ${tableName}`);
+    } catch (error) {
+        // Log the specific error including table name
+        console.error(`Dexie transaction/put error [${tableName}]:`, error);
+        // Rethrow the error so the calling function (e.g., saveEdit) knows it failed
+        throw error;
+    }
+}
 
     /** Generic Dexie bulk cache update */
      async _dexieBulkPut(tableName, records) {
