@@ -11,9 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
 
-    <!-- <script type="module"> import dexie-encrypted from https://cdn.jsdelivr.net/npm/dexie-encrypted@2.0.0/+esm </script>-->
-
-    <script src="https://cdn.jsdelivr.net/npm/dexie-encrypted-esm@1.0.0/index.min.js"></script>
     <link rel="stylesheet" href="styles.css"> <style>
 
         /* Base styles */
@@ -659,13 +656,15 @@
     </main>
 
     <script type="module">
-        // Paste the JavaScript code provided above here
+        // Ensure JavaScript code provided here
         // (I18N setup, DOMContentLoaded, classes like EventEmitter, BlueprintStore, CategoryManager, TagManager)
 
 
-
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    // ... (Supabase client setup) ...
+    
+    // Import Dexie-Encrypted as an ES Module (use version compatible with Dexie v3, e.g., 4.1.1)
+    import * as dexieEncrypted from 'https://cdn.jsdelivr.net/npm/dexie-encrypted@4.1.1/+esm';
+
 
     // --- I18N (Internationalization) Setup ---
 
@@ -1562,9 +1561,12 @@
 
             this.db = new Dexie('ApproAdminDBEncrypted');
 
-            applyEncryptionMiddleware(this.db, this.encryptionKey, {
-                 categories: encrypt.NON_INDEXED_FIELDS,
-                 subcategories: encrypt.NON_INDEXED_FIELDS,
+
+
+            dexieEncrypted.applyEncryptionMiddleware(this.db, this.encryptionKey, { 
+
+                 categories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS, // Use dexieEncrypted.encrypt
+                subcategories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS, // Use dexieEncrypted.encrypt
             }, false); // Disable detailed logging for production maybe?
 
             this.db.version(1).stores({
