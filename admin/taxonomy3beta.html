@@ -927,45 +927,61 @@
     }
     // --- 3. getEncryptionKey Function (for Dexie Encryption) ---
     // WARNING: See security notes about passphrase and salt in production!
-    async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only') {
-        // !!! WARNING: Using a fixed salt is insecure for production.
-        // Generate a unique, random salt for each user/installation in a real app
-        // and store it alongside the encrypted data (salt is not secret).
-        // !!! WARNING: Deriving keys directly from low-entropy passphrases needs
-        // very high iteration counts to be secure against brute-forcing.
-        console.warn("Using insecure hardcoded salt and potentially low iteration count for encryption key derivation demo!");
-        try {
-            const keyMaterial = await window.crypto.subtle.importKey(
-                'raw',
-                new TextEncoder().encode(passphrase),
-                { name: 'PBKDF2' },
-                false, // Don't make the base key extractable
-                ['deriveKey']
-            );
-            // Use PBKDF2 to derive a strong AES-GCM key
-            // Increase iterations significantly for production (e.g., 100000+)
-            const key = await window.crypto.subtle.deriveKey(
-                {
-                    name: 'PBKDF2',
-                    salt: new TextEncoder().encode(salt),
-                    iterations: 10000, // LOW - Increase for production!
-                    hash: 'SHA-256' // SHA-256 is generally recommended
-                },
-                keyMaterial,
-                // Key type: AES-GCM is recommended for its authenticated encryption properties
-                // Key length: 256 bits (32 bytes) is a strong standard
-                { name: 'AES-GCM', length: 256 },
-                true, // Extractable: set to 'false' in production if the raw key is never needed outside SubtleCrypto
-                ['encrypt', 'decrypt'] // Define what the key can be used for
-            );
-            console.log("Encryption key derived (DO NOT log key object in production!)");
-            return key;
-        } catch (error) {
-             console.error("Error deriving encryption key:", error);
-             // Handle key derivation failure appropriately - maybe disable offline storage?
-             throw new Error(`Could not derive encryption key: ${error.message}`);
-        }
+
+async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only') {
+    // !!! WARNING: Using a fixed salt is insecure for production.
+    // Generate a unique, random salt for each user/installation in a real app
+    // and store it alongside the encrypted data (salt is not secret).
+    // !!! WARNING: Deriving keys directly from low-entropy passphrases needs
+    // very high iteration counts to be secure against brute-forcing.
+    console.warn("Using insecure hardcoded salt and potentially low iteration count for encryption key derivation demo!");
+    try {
+        const keyMaterial = await window.crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(passphrase),
+            { name: 'PBKDF2' },
+            false, // Don't make the base key extractable
+            ['deriveKey']
+        );
+        // Use PBKDF2 to derive a strong AES-GCM key
+        // Increase iterations significantly for production (e.g., 100000+)
+        const key = await window.crypto.subtle.deriveKey(
+            {
+                name: 'PBKDF2',
+                salt: new TextEncoder().encode(salt),
+                iterations: 10000, // LOW - Increase for production!
+                hash: 'SHA-256' // SHA-256 is generally recommended
+            },
+            keyMaterial,
+            // Key type: AES-GCM is recommended for its authenticated encryption properties
+            // Key length: 256 bits (32 bytes) is a strong standard
+            { name: 'AES-GCM', length: 256 },
+            true, // Extractable: MUST be true to allow exportKey
+            ['encrypt', 'decrypt'] // Define what the key can be used for
+        );
+
+        // --- ADDED EXPORT STEP ---
+        const exportedKeyBuffer = await window.crypto.subtle.exportKey(
+            'raw', // Export format
+            key    // The CryptoKey object to export
+        );
+        const exportedKeyUint8Array = new Uint8Array(exportedKeyBuffer); // Convert ArrayBuffer to Uint8Array
+        // --- END ADDED EXPORT STEP ---
+
+        console.log("Encryption key derived and exported."); // Updated log
+        // console.log("Key length:", exportedKeyUint8Array.length); // Should log 32 if successful
+
+        return exportedKeyUint8Array; // Return the Uint8Array (the raw key bytes)
+
+    } catch (error) {
+        console.error("Error deriving or exporting encryption key:", error);
+        // Handle key derivation failure appropriately - maybe disable offline storage?
+        throw new Error(`Could not derive/export encryption key: ${error.message}`);
     }
+}
+
+         
+     
     const translations = {
         // English (Default)
         en: {
