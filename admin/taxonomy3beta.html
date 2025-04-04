@@ -734,22 +734,30 @@
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center space-x-4">
                             <a href="index.html" class="flex items-center space-x-3 group">
-                                <svg class="h-10 w-10 text-green-500 ..." id="logoIcon">
-                                    </svg>
+                                <svg id="logoIcon" class="h-10 w-10 text-green-500 group-hover:text-green-600 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l-4.655 4.654A3.375 3.375 0 0 1 2.135 15.17l4.654-4.655M11.42 15.17l-1.518-.506a5.25 5.25 0 0 1-4.474-4.474l-.506-1.518M11.42 15.17 15.88 10.71m0 0A5.25 5.25 0 0 1 10.71 15.88m5.17-5.17A5.25 5.25 0 0 0 10.71 5.17m5.17 5.17 5.877 5.877a2.652 2.652 0 0 0 3.75-3.75L15.88 10.71Z" />
+                                </svg>
                                 <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                                    ApproAdmin
+                                    Approvideo Learning Hub
                                 </span>
                             </a>
                         </div>
                         <div class="flex items-center space-x-6">
+                            <span id="offline-indicator" class="text-xs ml-2 font-semibold text-yellow-600 dark:text-yellow-400"></span>
                             <a href="/" class="nav-link group ..." data-translate-title="NAV_LINK_WEBSITE_TITLE">
-                                <svg>...</svg>
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c.246 0 .492-.015.732-.044m-1.464 0A9.006 9.006 0 0 1 12 3c.587 0 1.159.069 1.711.193M12 3a9.006 9.006 0 0 0-7.08 2.886M12 3c.015-.01.03-.019.046-.028M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm4.016 4.016a9.003 9.003 0 0 0 -8.032 0M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" />
+                                </svg>
                             </a>
                             <a href="new.html" class="nav-link group ..." data-translate-title="NAV_LINK_NEW_TITLE">
-                                <svg>...</svg>
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
                             </a>
                             <button id="darkModeToggle" class="p-2 ..." data-translate-title="TOGGLE_DARK_MODE_TITLE">
-                                <svg>...</svg>
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                                </svg>
                             </button>
                             
                             <div id="lang-switcher" class="flex items-center border-l border-gray-300 dark:border-gray-600 ml-4 pl-4">
@@ -1169,6 +1177,7 @@
             // Potentially re-render dynamic components if needed
             if (window.categoryManager) window.categoryManager.render();
             if (window.tagManager) window.tagManager.render();
+            
             // Re-initialize banner rotation with potentially new text
             setupBannerMessages();
         }
@@ -1335,6 +1344,13 @@
             window.categoryManager = new CategoryManager(store, getText); // Pass getText
             window.tagManager = new TagManager(store, getText);     // Pass getText
 
+    
+            this.store.on('dataLoaded', (payload) => {
+                 if (this.editingState.isEditing) this.cancelEdit(true);
+                 this.render();
+            });
+            
+
             // Global error handler (using translation)
              window.addEventListener('unhandledrejection', function(event) {
                  console.error('Unhandled Promise Rejection:', event.reason);
@@ -1421,10 +1437,7 @@
             this.render();
         });
 
-        this.store.on('dataLoaded', (payload) => {
-             if (this.editingState.isEditing) this.cancelEdit(true);
-             this.render();
-        });
+
 
          // --- Updated Error Handler ---
          this.store.on('error', (errorData) => { // Expects { key, params }
@@ -1692,124 +1705,287 @@
 
 } // End CategoryManager Class
 
- class BlueprintStore extends EventEmitter {
+
+
+
+
+class BlueprintStore extends EventEmitter {
     constructor() {
         super();
+        // Ensure supabase is initialized globally before this constructor runs
+        // e.g., const supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        if (typeof supabase === 'undefined') {
+             console.error("Supabase client not initialized globally before BlueprintStore instantiation.");
+             throw new Error("Supabase client required.");
+        }
         this.supabase = supabase;
         this.categories = [];
         this.isLoading = false;
-        this.error = null; // Stores the raw error message for logging/debugging
+        this.error = null; // Raw error message
         this.db = null; // Dexie instance
-        this.encryptionKey = null; // Or manage key differently
+        this.encryptionKey = null;
     }
 
-    // --- Async Initialization Method (Keep as previously defined) ---
+    // --- Initialization (Keep as is, ensure it runs before other methods) ---
     async initialize() {
+        // ... (Existing initialize logic with getEncryptionKey, Dexie setup, applyEncryptionMiddleware)
+        // Make sure this sets this.db correctly or throws/emits error on failure.
         console.log("Initializing BlueprintStore...");
         try {
-            // !!! INSECURE DEMO PASSPHRASE - REPLACE IN PRODUCTION !!!
             const insecurePassphrase = 'your-secret-passphrase-here-very-bad';
-            // console.warn("Using insecure hardcoded passphrase for Dexie encryption demo!"); // Keep console warning
-            this.encryptionKey = await getEncryptionKey(insecurePassphrase);
+            console.warn("Using insecure hardcoded passphrase/salt/iterations for Dexie encryption demo!");
+            this.encryptionKey = await getEncryptionKey(insecurePassphrase, 'a-fixed-salt-for-demo-only', 10000); // Pass iterations
 
             this.db = new Dexie('ApproAdminDBEncrypted');
 
-
-
-            dexieEncrypted.applyEncryptionMiddleware(this.db, this.encryptionKey, { 
-
-                 categories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS, // Use dexieEncrypted.encrypt
-                subcategories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS, // Use dexieEncrypted.encrypt
-            }, false); // Disable detailed logging for production maybe?
+            dexieEncrypted.applyEncryptionMiddleware(this.db, this.encryptionKey, {
+                categories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
+                subcategories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
+            }, false);
 
             this.db.version(1).stores({
-                // Use 'id' as primary key if using Supabase UUIDs, or '++id' for auto-increment
                  categories: 'id, *name, *slug',
                  subcategories: 'id, *name, *slug, category_id'
              });
 
-            console.log("Dexie DB schema defined with encryption middleware.");
+            console.log("Dexie DB schema defined.");
             await this.db.open();
-            console.log("Dexie DB opened successfully.");
-            this.error = null; // Clear any previous init error
+            console.log("Dexie DB opened.");
+            this.error = null;
 
         } catch (error) {
             console.error("FATAL: Failed to initialize Dexie or encryption:", error);
             const errorMsg = error.message || String(error);
-            this.error = `Failed to initialize local database: ${errorMsg}`; // Store raw error
-            this.db = null; // Ensure db is null on failure
-            // Emit structured error for UI
+            this.error = `Failed to initialize local database: ${errorMsg}`;
+            this.db = null;
             this.emit('error', { key: 'DB_INIT_ERROR', params: { error: errorMsg } });
-            throw new Error(this.error); // Re-throw critical error
+            throw new Error(this.error);
         }
     }
 
-    // --- Load Initial Data (Emits structured errors) ---
-    async loadInitialData() {
-        if (!this.db) {
-             this.error = "Local database not initialized.";
-             this.emit('error', { key: 'DB_INIT_ERROR', params: { error: this.error } });
-             this.isLoading = false;
-             this.emit('loading', false);
-             return;
+    // --- Internal Supabase Helper Methods ---
+
+    /** Generic Supabase fetch wrapper */
+    async _supabaseFetch(tableName, options = {}) {
+        const { select = '*', eq, order } = options;
+        let query = this.supabase.from(tableName).select(select);
+        if (eq && eq.column && eq.value) {
+            query = query.eq(eq.column, eq.value);
         }
+        if (order && order.column) {
+            query = query.order(order.column, {
+                 ascending: order.ascending !== false,
+                 foreignTable: order.foreignTable
+            });
+            // Add secondary order if needed
+            if(order.secondaryColumn) {
+                 query = query.order(order.secondaryColumn, {
+                     ascending: order.secondaryAscending !== false,
+                     foreignTable: order.secondaryForeignTable
+                 });
+            }
+        }
+
+        const { data, error } = await query;
+        if (error) {
+             console.error(`Supabase fetch error [${tableName}]:`, error);
+             throw error; // Re-throw Supabase error object
+        }
+        return data;
+    }
+
+    /** Generic Supabase create wrapper */
+    async _supabaseCreate(tableName, dataToCreate) {
+        // Assumes dataToCreate is a single object
+        const { data, error } = await this.supabase
+            .from(tableName)
+            .insert([dataToCreate]) // insert expects an array
+            .select()
+            .single(); // Expect single row back
+
+        if (error) {
+            console.error(`Supabase create error [${tableName}]:`, error);
+            throw error;
+        }
+         if (!data) {
+            console.error(`Supabase create error [${tableName}]: No data returned after insert.`);
+            throw new Error(`No data returned after insert on ${tableName}.`);
+         }
+        return data;
+    }
+
+    /** Generic Supabase update wrapper */
+    async _supabaseUpdate(tableName, id, dataToUpdate) {
+        const { data, error } = await this.supabase
+            .from(tableName)
+            .update(dataToUpdate)
+            .eq('id', id)
+            .select()
+            .single(); // Expect single row back
+
+        if (error) {
+            console.error(`Supabase update error [${tableName}]:`, error);
+            throw error;
+        }
+         if (!data) {
+            console.error(`Supabase update error [${tableName}]: No data returned after update.`);
+            throw new Error(`No data returned after update on ${tableName}.`);
+         }
+        return data;
+    }
+
+    /** Generic Supabase delete wrapper */
+    async _supabaseDelete(tableName, id) {
+        const { error } = await this.supabase
+            .from(tableName)
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error(`Supabase delete error [${tableName}]:`, error);
+            throw error;
+        }
+        // Delete doesn't return data by default
+        return true;
+    }
+
+    // --- Internal Dexie Helper Methods ---
+
+    /** Generic Dexie cache update (handles create/update) */
+    async _dexiePut(tableName, record) {
+        if (!this.db) return; // Silently fail if db not ready? Or throw?
+        try {
+            // Ensure we only put fields defined in the schema
+            // This requires knowledge of the schema or filtering based on it.
+            // Simple approach: assume 'record' has appropriate fields (id, name, slug, category_id)
+            await this.db[tableName].put(record);
+        } catch (error) {
+            console.error(`Dexie put error [${tableName}]:`, error);
+            // Non-critical, don't throw, just log? Or emit a specific cache warning?
+        }
+    }
+
+    /** Generic Dexie bulk cache update */
+     async _dexieBulkPut(tableName, records) {
+        if (!this.db || !records || records.length === 0) return;
+        try {
+            // Similar schema filtering concern as _dexiePut if records have extra fields
+            await this.db[tableName].bulkPut(records);
+        } catch (error) {
+            console.error(`Dexie bulkPut error [${tableName}]:`, error);
+        }
+     }
+
+    /** Generic Dexie cache delete */
+    async _dexieDelete(tableName, id) {
+        if (!this.db) return;
+        try {
+            await this.db[tableName].delete(id);
+        } catch (error) {
+            console.error(`Dexie delete error [${tableName}]:`, error);
+        }
+    }
+
+     /** Generic Dexie clear table */
+     async _dexieClear(tableName) {
+        if (!this.db) return;
+        try {
+            await this.db[tableName].clear();
+        } catch (error) {
+            console.error(`Dexie clear error [${tableName}]:`, error);
+        }
+     }
+
+    /** Generic Dexie get all */
+    async _dexieGetAll(tableName, indexName = 'name') {
+        if (!this.db) return [];
+        try {
+            return await this.db[tableName].orderBy(indexName).toArray();
+        } catch (error) {
+            console.error(`Dexie getAll error [${tableName}]:`, error);
+            return []; // Return empty on error
+        }
+    }
+
+     /** Dexie get subcategories by category IDs */
+     async _dexieGetSubcategoriesByCatIds(categoryIds) {
+        if (!this.db || !categoryIds || categoryIds.length === 0) return [];
+        try {
+            // Assumes subcategories table has 'category_id' index
+            return await this.db.subcategories.where('category_id').anyOf(categoryIds).sortBy('name');
+        } catch (error) {
+            console.error(`Dexie getSubcategoriesByCatIds error:`, error);
+            return [];
+        }
+     }
+
+
+    // --- Refactored Load Initial Data ---
+    async loadInitialData() {
+        if (!this.db) { /* ... handle DB not initialized (as before) ... */ return; }
         this.isLoading = true;
         this.error = null;
         this.emit('loading', true);
         let loadedFromCache = false;
 
-
-
-
-
         try {
-            const { data: categoriesFromSupabase, error: supabaseError } = await this.supabase
-                .from('categories')
-                .select('*, subcategories(*)')
-                .order('name', { ascending: true })
-                .order('name', { foreignTable: 'subcategories', ascending: true });
+            // 1. Try fetch from Supabase
+            const categoriesFromSupabase = await this._supabaseFetch('categories', {
+                 select: '*, subcategories(*)', // Fetch nested
+                 order: { column: 'name', secondaryColumn: 'name', secondaryForeignTable: 'subcategories' } // Order both
+            });
 
-            if (supabaseError) throw supabaseError; // Let catch handle it
-
+            // 2. Process and Update Local State
             const processedCategories = (categoriesFromSupabase || []).map(cat => ({
-                 ...cat, subcategories: cat.subcategories || []
+                 ...cat,
+                 subcategories: cat.subcategories || [] // Ensure subcategories is always array
             }));
             this.categories = processedCategories;
-            this.updateLocalCache(processedCategories).catch(cacheError => console.error("Background cache update failed:", cacheError));
+
+            // 3. Update Dexie Cache (Background - don't await fully here)
+            this._updateLocalCache(processedCategories).catch(cacheError => {
+                 console.error("Background cache update failed:", cacheError);
+                 // Optionally emit a non-critical warning here
+            });
+
+            // 4. Emit Success
             this.emit('dataLoaded', { categories: this.categories, source: 'supabase' });
 
         } catch (error) {
             // Supabase fetch failed, try cache
             const networkErrMsg = error.message || String(error);
             console.warn("Supabase failed, trying cache:", networkErrMsg);
-            this.error = `Network Error: ${networkErrMsg}.`; // Store raw error
+            this.error = `Network Error: ${networkErrMsg}.`;
 
             try {
-                const cachedCategories = await this.db.categories.orderBy('name').toArray();
+                // 1. Fetch from Dexie tables
+                const cachedCategories = await this._dexieGetAll('categories', 'name');
                 if (cachedCategories && cachedCategories.length > 0) {
-                    const categoryIds = cachedCategories.map(c => c.id);
-                    const cachedSubcategories = await this.db.subcategories.where('category_id').anyOf(categoryIds).sortBy('name');
-                    this.categories = cachedCategories.map(cat => ({
-                        ...cat,
-                        subcategories: cachedSubcategories.filter(sub => sub.category_id === cat.id)
-                    }));
-                    loadedFromCache = true;
-                    // Emit data, but also emit the network error as a non-critical warning/info maybe?
-                    this.emit('dataLoaded', { categories: this.categories, source: 'cache' });
-                    // Optionally inform user about using cache due to network issue
-                    this.emit('info', { key: 'NETWORK_ERROR_CACHE_FALLBACK', params: { error: networkErrMsg } }); // Use a different event type? Or handle in UI based on source.
+                     const categoryIds = cachedCategories.map(c => c.id);
+                     const cachedSubcategories = await this._dexieGetSubcategoriesByCatIds(categoryIds);
+
+                    // 2. Combine into nested structure & Update Local State
+                     this.categories = cachedCategories.map(cat => ({
+                         ...cat,
+                         subcategories: cachedSubcategories.filter(sub => sub.category_id === cat.id)
+                     }));
+
+                    // 3. Emit Success (from Cache)
+                     loadedFromCache = true;
+                     this.emit('dataLoaded', { categories: this.categories, source: 'cache' });
+                     this.emit('info', { key: 'NETWORK_ERROR_CACHE_FALLBACK', params: { error: networkErrMsg } });
+
                 } else {
                      this.categories = [];
-                     // Emit specific error key for this case
                      this.emit('error', { key: 'NETWORK_ERROR_NO_CACHE', params: { error: networkErrMsg } });
-                     this.emit('dataLoaded', { categories: [], source: 'empty' }); // Ensure UI updates
+                     this.emit('dataLoaded', { categories: [], source: 'empty' });
                 }
             } catch (dexieError) {
+                // Dexie fetch failed
                 const cacheErrMsg = dexieError.message || String(dexieError);
-                console.error("Failed to load data from Dexie cache:", cacheErrMsg);
-                this.error += ` Cache Error: ${cacheErrMsg}.`; // Append cache error info
+                console.error("Failed loading from Dexie cache:", cacheErrMsg);
+                this.error += ` Cache Error: ${cacheErrMsg}.`;
                  this.categories = [];
-                 // Emit specific cache error key
                  this.emit('error', { key: 'CACHE_ERROR', params: { error: cacheErrMsg } });
                  this.emit('dataLoaded', { categories: [], source: 'error' });
             }
@@ -1817,19 +1993,716 @@
             this.isLoading = false;
             this.emit('loading', false);
         }
-
-//  added here,  not sure if correct.
-// Inside store.on('dataLoaded', ...) in DOMContentLoaded
-this.store.on('dataLoaded', (payload) => {
-    if (this.editingState.isEditing) this.cancelEdit(true);
-    this.render();
-    // Update offline indicator based on source
-    const offlineIndicator = document.getElementById('offline-indicator');
-    if (offlineIndicator) {
-         offlineIndicator.textContent = payload.source === 'cache' ? ' (Cached Data)' : '';
-         offlineIndicator.classList.toggle('text-yellow-500', payload.source === 'cache');
     }
-});
+
+    // --- Refactored Update Local Cache ---
+    // Uses Dexie helpers and transaction
+    async _updateLocalCache(categories) {
+        if (!this.db) return;
+        console.log("Updating Dexie cache (encrypted)...");
+        const allSubcategories = categories.flatMap(cat => cat.subcategories || []);
+        const categoriesToCache = categories.map(({ subcategories, ...rest }) => rest); // Don't store nested array
+
+        try {
+             await this.db.transaction('rw', this.db.categories, this.db.subcategories, async () => {
+                // Clear strategy: Simple clear all first.
+                // Could be smarter (diffing) but adds complexity.
+                await this._dexieClear('subcategories');
+                await this._dexieClear('categories');
+                // Bulk add new data
+                await this._dexieBulkPut('categories', categoriesToCache);
+                await this._dexieBulkPut('subcategories', allSubcategories);
+             });
+             console.log("Dexie cache updated.");
+        } catch (error) {
+            // Catch transaction errors
+            console.error("Dexie cache transaction failed:", error);
+            // Emit a warning? This might leave cache inconsistent.
+             this.emit('warning', { key: 'CACHE_UPDATE_FAILED', params: { error: error.message }});
+        }
+    }
+
+
+    // --- Refactored Mutation Methods ---
+
+    async _handleOperationError(error, operationName) {
+        const errorMsg = error.message || String(error);
+        console.error(`Error ${operationName}:`, error);
+        this.error = `Failed operation: ${errorMsg}`;
+        const errorKey = error.key || 'FAILED_OPERATION'; // Use specific key if validation threw it
+        const errorParams = error.params || { operation: operationName, error: errorMsg };
+        this.emit('error', { key: errorKey, params: errorParams });
+        throw error; // Re-throw original error structure
+    }
+
+    async addCategory(categoryData) {
+        const operationName = 'add category';
+        try {
+            // 1. Validation
+            if (!categoryData.name?.trim()) {
+                 throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Category' } };
+            }
+            const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            const dataToAdd = { name: categoryData.name.trim(), slug: slug };
+
+            // 2. Call Supabase
+            const createdData = await this._supabaseCreate('categories', dataToAdd);
+            const newCategory = { ...createdData, subcategories: [] }; // Add empty subs array
+
+            // 3. Update Local State
+             this.categories.push(newCategory);
+             this.categories.sort((a, b) => a.name.localeCompare(b.name));
+
+            // 4. Update Cache (Don't necessarily await fully)
+            this._dexiePut('categories', newCategory).catch(e => console.warn("Cache update failed post-add:", e));
+
+            // 5. Emit Success
+            this.emit('dataLoaded', { categories: this.categories });
+            return newCategory;
+
+        } catch (error) {
+            this._handleOperationError(error, operationName);
+        }
+    }
+
+    async updateCategory(categoryId, categoryData) {
+        const operationName = 'update category';
+         try {
+             // 1. Validation (name check done in helper) & Prepare data
+             const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+             const dataToUpdate = { name: categoryData.name.trim(), slug: slug };
+
+             // 2. Call Supabase
+             const updatedData = await this._supabaseUpdate('categories', categoryId, dataToUpdate);
+
+            // 3. Update Local State
+             const index = this.categories.findIndex(cat => cat.id === categoryId);
+             if (index !== -1) {
+                 const existingSubcategories = this.categories[index].subcategories;
+                 this.categories[index] = { ...updatedData, subcategories: existingSubcategories };
+                 this.categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                // 4. Update Cache (Use updatedData, don't store subcategories array here)
+                this._dexiePut('categories', updatedData).catch(e => console.warn("Cache update failed post-update:", e));
+             }
+
+             // 5. Emit Success
+             this.emit('dataLoaded', { categories: this.categories });
+             return updatedData;
+
+         } catch (error) {
+             this._handleOperationError(error, operationName);
+         }
+    }
+
+     async deleteCategory(categoryId) {
+         const operationName = 'delete category';
+         try {
+             // 1. Pre-check
+             const category = this.categories.find(c => c.id === categoryId);
+             if (category && category.subcategories && category.subcategories.length > 0) {
+                 throw { key: 'CATEGORY_DELETE_HAS_SUBS_ERROR', params: { name: category.name } };
+             }
+
+             // 2. Call Supabase
+             await this._supabaseDelete('categories', categoryId);
+
+             // 3. Update Local State
+             const initialLength = this.categories.length;
+             this.categories = this.categories.filter(cat => cat.id !== categoryId);
+
+             // 4. Update Cache only if local state changed
+             if(this.categories.length < initialLength) {
+                 this._dexieDelete('categories', categoryId).catch(e => console.warn("Cache update failed post-delete:", e));
+                 // NOTE: Should also delete associated subcategories from cache, or rely on next full sync/load
+                 // For simplicity here, we only delete the category record.
+             }
+
+             // 5. Emit Success
+             this.emit('dataLoaded', { categories: this.categories });
+
+         } catch (error) {
+            this._handleOperationError(error, operationName);
+         }
+     }
+
+     // --- Implement add/update/delete Subcategory similarly ---
+      async addSubcategory(categoryId, subcategoryData) {
+          const operationName = 'add subcategory';
+          try {
+               if (!subcategoryData.name?.trim()) {
+                  throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Subcategory' } };
+               }
+               const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+               const dataToAdd = { name: subcategoryData.name.trim(), slug: slug, category_id: categoryId };
+
+               const createdData = await this._supabaseCreate('subcategories', dataToAdd);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                     if (!Array.isArray(category.subcategories)) category.subcategories = [];
+                     category.subcategories.push(createdData);
+                     category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+                }
+
+               this._dexiePut('subcategories', createdData).catch(e => console.warn("Cache update failed post-add:", e));
+
+               this.emit('dataLoaded', { categories: this.categories });
+               return createdData;
+
+          } catch (error) {
+              this._handleOperationError(error, operationName);
+          }
+      }
+
+       async updateSubcategory(subcategoryId, categoryId, subcategoryData) {
+            const operationName = 'update subcategory';
+           try {
+               const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+               const dataToUpdate = { name: subcategoryData.name.trim(), slug: slug };
+
+               const updatedData = await this._supabaseUpdate('subcategories', subcategoryId, dataToUpdate);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category?.subcategories) {
+                     const subIndex = category.subcategories.findIndex(s => s.id === subcategoryId);
+                     if (subIndex > -1) {
+                         category.subcategories[subIndex] = updatedData;
+                         category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+                         this._dexiePut('subcategories', updatedData).catch(e => console.warn("Cache update failed post-update:", e));
+                     }
+                }
+
+               this.emit('dataLoaded', { categories: this.categories });
+               return updatedData;
+
+           } catch (error) {
+                this._handleOperationError(error, operationName);
+           }
+       }
+
+       async deleteSubcategory(subcategoryId, categoryId) {
+            const operationName = 'delete subcategory';
+           try {
+               await this._supabaseDelete('subcategories', subcategoryId);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                 if (category?.subcategories) {
+                     const initialLength = category.subcategories.length;
+                     category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                     if (category.subcategories.length < initialLength) {
+                         this._dexieDelete('subcategories', subcategoryId).catch(e => console.warn("Cache update failed post-delete:", e));
+                     }
+                 }
+
+                this.emit('dataLoaded', { categories: this.categories });
+
+           } catch (error) {
+                this._handleOperationError(error, operationName);
+           }
+       }
+
+} // End BlueprintStore Class
+
+        
+        
+        
+        
+        
+        class BlueprintStore extends EventEmitter {
+    constructor() {
+        super();
+        // Ensure supabase is initialized globally before this constructor runs
+        // e.g., const supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        if (typeof supabase === 'undefined') {
+             console.error("Supabase client not initialized globally before BlueprintStore instantiation.");
+             throw new Error("Supabase client required.");
+        }
+        this.supabase = supabase;
+        this.categories = [];
+        this.isLoading = false;
+        this.error = null; // Raw error message
+        this.db = null; // Dexie instance
+        this.encryptionKey = null;
+    }
+
+    // --- Initialization (Keep as is, ensure it runs before other methods) ---
+    async initialize() {
+        // ... (Existing initialize logic with getEncryptionKey, Dexie setup, applyEncryptionMiddleware)
+        // Make sure this sets this.db correctly or throws/emits error on failure.
+        console.log("Initializing BlueprintStore...");
+        try {
+            const insecurePassphrase = 'your-secret-passphrase-here-very-bad';
+            console.warn("Using insecure hardcoded passphrase/salt/iterations for Dexie encryption demo!");
+            this.encryptionKey = await getEncryptionKey(insecurePassphrase, 'a-fixed-salt-for-demo-only', 10000); // Pass iterations
+
+            this.db = new Dexie('ApproAdminDBEncrypted');
+
+            dexieEncrypted.applyEncryptionMiddleware(this.db, this.encryptionKey, {
+                categories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
+                subcategories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
+            }, false);
+
+            this.db.version(1).stores({
+                 categories: 'id, *name, *slug',
+                 subcategories: 'id, *name, *slug, category_id'
+             });
+
+            console.log("Dexie DB schema defined.");
+            await this.db.open();
+            console.log("Dexie DB opened.");
+            this.error = null;
+
+        } catch (error) {
+            console.error("FATAL: Failed to initialize Dexie or encryption:", error);
+            const errorMsg = error.message || String(error);
+            this.error = `Failed to initialize local database: ${errorMsg}`;
+            this.db = null;
+            this.emit('error', { key: 'DB_INIT_ERROR', params: { error: errorMsg } });
+            throw new Error(this.error);
+        }
+    }
+
+    // --- Internal Supabase Helper Methods ---
+
+    /** Generic Supabase fetch wrapper */
+    async _supabaseFetch(tableName, options = {}) {
+        const { select = '*', eq, order } = options;
+        let query = this.supabase.from(tableName).select(select);
+        if (eq && eq.column && eq.value) {
+            query = query.eq(eq.column, eq.value);
+        }
+        if (order && order.column) {
+            query = query.order(order.column, {
+                 ascending: order.ascending !== false,
+                 foreignTable: order.foreignTable
+            });
+            // Add secondary order if needed
+            if(order.secondaryColumn) {
+                 query = query.order(order.secondaryColumn, {
+                     ascending: order.secondaryAscending !== false,
+                     foreignTable: order.secondaryForeignTable
+                 });
+            }
+        }
+
+        const { data, error } = await query;
+        if (error) {
+             console.error(`Supabase fetch error [${tableName}]:`, error);
+             throw error; // Re-throw Supabase error object
+        }
+        return data;
+    }
+
+    /** Generic Supabase create wrapper */
+    async _supabaseCreate(tableName, dataToCreate) {
+        // Assumes dataToCreate is a single object
+        const { data, error } = await this.supabase
+            .from(tableName)
+            .insert([dataToCreate]) // insert expects an array
+            .select()
+            .single(); // Expect single row back
+
+        if (error) {
+            console.error(`Supabase create error [${tableName}]:`, error);
+            throw error;
+        }
+         if (!data) {
+            console.error(`Supabase create error [${tableName}]: No data returned after insert.`);
+            throw new Error(`No data returned after insert on ${tableName}.`);
+         }
+        return data;
+    }
+
+    /** Generic Supabase update wrapper */
+    async _supabaseUpdate(tableName, id, dataToUpdate) {
+        const { data, error } = await this.supabase
+            .from(tableName)
+            .update(dataToUpdate)
+            .eq('id', id)
+            .select()
+            .single(); // Expect single row back
+
+        if (error) {
+            console.error(`Supabase update error [${tableName}]:`, error);
+            throw error;
+        }
+         if (!data) {
+            console.error(`Supabase update error [${tableName}]: No data returned after update.`);
+            throw new Error(`No data returned after update on ${tableName}.`);
+         }
+        return data;
+    }
+
+    /** Generic Supabase delete wrapper */
+    async _supabaseDelete(tableName, id) {
+        const { error } = await this.supabase
+            .from(tableName)
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error(`Supabase delete error [${tableName}]:`, error);
+            throw error;
+        }
+        // Delete doesn't return data by default
+        return true;
+    }
+
+    // --- Internal Dexie Helper Methods ---
+
+    /** Generic Dexie cache update (handles create/update) */
+    async _dexiePut(tableName, record) {
+        if (!this.db) return; // Silently fail if db not ready? Or throw?
+        try {
+            // Ensure we only put fields defined in the schema
+            // This requires knowledge of the schema or filtering based on it.
+            // Simple approach: assume 'record' has appropriate fields (id, name, slug, category_id)
+            await this.db[tableName].put(record);
+        } catch (error) {
+            console.error(`Dexie put error [${tableName}]:`, error);
+            // Non-critical, don't throw, just log? Or emit a specific cache warning?
+        }
+    }
+
+    /** Generic Dexie bulk cache update */
+     async _dexieBulkPut(tableName, records) {
+        if (!this.db || !records || records.length === 0) return;
+        try {
+            // Similar schema filtering concern as _dexiePut if records have extra fields
+            await this.db[tableName].bulkPut(records);
+        } catch (error) {
+            console.error(`Dexie bulkPut error [${tableName}]:`, error);
+        }
+     }
+
+    /** Generic Dexie cache delete */
+    async _dexieDelete(tableName, id) {
+        if (!this.db) return;
+        try {
+            await this.db[tableName].delete(id);
+        } catch (error) {
+            console.error(`Dexie delete error [${tableName}]:`, error);
+        }
+    }
+
+     /** Generic Dexie clear table */
+     async _dexieClear(tableName) {
+        if (!this.db) return;
+        try {
+            await this.db[tableName].clear();
+        } catch (error) {
+            console.error(`Dexie clear error [${tableName}]:`, error);
+        }
+     }
+
+    /** Generic Dexie get all */
+    async _dexieGetAll(tableName, indexName = 'name') {
+        if (!this.db) return [];
+        try {
+            return await this.db[tableName].orderBy(indexName).toArray();
+        } catch (error) {
+            console.error(`Dexie getAll error [${tableName}]:`, error);
+            return []; // Return empty on error
+        }
+    }
+
+     /** Dexie get subcategories by category IDs */
+     async _dexieGetSubcategoriesByCatIds(categoryIds) {
+        if (!this.db || !categoryIds || categoryIds.length === 0) return [];
+        try {
+            // Assumes subcategories table has 'category_id' index
+            return await this.db.subcategories.where('category_id').anyOf(categoryIds).sortBy('name');
+        } catch (error) {
+            console.error(`Dexie getSubcategoriesByCatIds error:`, error);
+            return [];
+        }
+     }
+
+
+    // --- Refactored Load Initial Data ---
+    async loadInitialData() {
+        if (!this.db) { /* ... handle DB not initialized (as before) ... */ return; }
+        this.isLoading = true;
+        this.error = null;
+        this.emit('loading', true);
+        let loadedFromCache = false;
+
+        try {
+            // 1. Try fetch from Supabase
+            const categoriesFromSupabase = await this._supabaseFetch('categories', {
+                 select: '*, subcategories(*)', // Fetch nested
+                 order: { column: 'name', secondaryColumn: 'name', secondaryForeignTable: 'subcategories' } // Order both
+            });
+
+            // 2. Process and Update Local State
+            const processedCategories = (categoriesFromSupabase || []).map(cat => ({
+                 ...cat,
+                 subcategories: cat.subcategories || [] // Ensure subcategories is always array
+            }));
+            this.categories = processedCategories;
+
+            // 3. Update Dexie Cache (Background - don't await fully here)
+            this._updateLocalCache(processedCategories).catch(cacheError => {
+                 console.error("Background cache update failed:", cacheError);
+                 // Optionally emit a non-critical warning here
+            });
+
+            // 4. Emit Success
+            this.emit('dataLoaded', { categories: this.categories, source: 'supabase' });
+
+        } catch (error) {
+            // Supabase fetch failed, try cache
+            const networkErrMsg = error.message || String(error);
+            console.warn("Supabase failed, trying cache:", networkErrMsg);
+            this.error = `Network Error: ${networkErrMsg}.`;
+
+            try {
+                // 1. Fetch from Dexie tables
+                const cachedCategories = await this._dexieGetAll('categories', 'name');
+                if (cachedCategories && cachedCategories.length > 0) {
+                     const categoryIds = cachedCategories.map(c => c.id);
+                     const cachedSubcategories = await this._dexieGetSubcategoriesByCatIds(categoryIds);
+
+                    // 2. Combine into nested structure & Update Local State
+                     this.categories = cachedCategories.map(cat => ({
+                         ...cat,
+                         subcategories: cachedSubcategories.filter(sub => sub.category_id === cat.id)
+                     }));
+
+                    // 3. Emit Success (from Cache)
+                     loadedFromCache = true;
+                     this.emit('dataLoaded', { categories: this.categories, source: 'cache' });
+                     this.emit('info', { key: 'NETWORK_ERROR_CACHE_FALLBACK', params: { error: networkErrMsg } });
+
+                } else {
+                     this.categories = [];
+                     this.emit('error', { key: 'NETWORK_ERROR_NO_CACHE', params: { error: networkErrMsg } });
+                     this.emit('dataLoaded', { categories: [], source: 'empty' });
+                }
+            } catch (dexieError) {
+                // Dexie fetch failed
+                const cacheErrMsg = dexieError.message || String(dexieError);
+                console.error("Failed loading from Dexie cache:", cacheErrMsg);
+                this.error += ` Cache Error: ${cacheErrMsg}.`;
+                 this.categories = [];
+                 this.emit('error', { key: 'CACHE_ERROR', params: { error: cacheErrMsg } });
+                 this.emit('dataLoaded', { categories: [], source: 'error' });
+            }
+        } finally {
+            this.isLoading = false;
+            this.emit('loading', false);
+        }
+    }
+
+    // --- Refactored Update Local Cache ---
+    // Uses Dexie helpers and transaction
+    async _updateLocalCache(categories) {
+        if (!this.db) return;
+        console.log("Updating Dexie cache (encrypted)...");
+        const allSubcategories = categories.flatMap(cat => cat.subcategories || []);
+        const categoriesToCache = categories.map(({ subcategories, ...rest }) => rest); // Don't store nested array
+
+        try {
+             await this.db.transaction('rw', this.db.categories, this.db.subcategories, async () => {
+                // Clear strategy: Simple clear all first.
+                // Could be smarter (diffing) but adds complexity.
+                await this._dexieClear('subcategories');
+                await this._dexieClear('categories');
+                // Bulk add new data
+                await this._dexieBulkPut('categories', categoriesToCache);
+                await this._dexieBulkPut('subcategories', allSubcategories);
+             });
+             console.log("Dexie cache updated.");
+        } catch (error) {
+            // Catch transaction errors
+            console.error("Dexie cache transaction failed:", error);
+            // Emit a warning? This might leave cache inconsistent.
+             this.emit('warning', { key: 'CACHE_UPDATE_FAILED', params: { error: error.message }});
+        }
+    }
+
+
+    // --- Refactored Mutation Methods ---
+
+    async _handleOperationError(error, operationName) {
+        const errorMsg = error.message || String(error);
+        console.error(`Error ${operationName}:`, error);
+        this.error = `Failed operation: ${errorMsg}`;
+        const errorKey = error.key || 'FAILED_OPERATION'; // Use specific key if validation threw it
+        const errorParams = error.params || { operation: operationName, error: errorMsg };
+        this.emit('error', { key: errorKey, params: errorParams });
+        throw error; // Re-throw original error structure
+    }
+
+    async addCategory(categoryData) {
+        const operationName = 'add category';
+        try {
+            // 1. Validation
+            if (!categoryData.name?.trim()) {
+                 throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Category' } };
+            }
+            const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            const dataToAdd = { name: categoryData.name.trim(), slug: slug };
+
+            // 2. Call Supabase
+            const createdData = await this._supabaseCreate('categories', dataToAdd);
+            const newCategory = { ...createdData, subcategories: [] }; // Add empty subs array
+
+            // 3. Update Local State
+             this.categories.push(newCategory);
+             this.categories.sort((a, b) => a.name.localeCompare(b.name));
+
+            // 4. Update Cache (Don't necessarily await fully)
+            this._dexiePut('categories', newCategory).catch(e => console.warn("Cache update failed post-add:", e));
+
+            // 5. Emit Success
+            this.emit('dataLoaded', { categories: this.categories });
+            return newCategory;
+
+        } catch (error) {
+            this._handleOperationError(error, operationName);
+        }
+    }
+
+    async updateCategory(categoryId, categoryData) {
+        const operationName = 'update category';
+         try {
+             // 1. Validation (name check done in helper) & Prepare data
+             const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+             const dataToUpdate = { name: categoryData.name.trim(), slug: slug };
+
+             // 2. Call Supabase
+             const updatedData = await this._supabaseUpdate('categories', categoryId, dataToUpdate);
+
+            // 3. Update Local State
+             const index = this.categories.findIndex(cat => cat.id === categoryId);
+             if (index !== -1) {
+                 const existingSubcategories = this.categories[index].subcategories;
+                 this.categories[index] = { ...updatedData, subcategories: existingSubcategories };
+                 this.categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                // 4. Update Cache (Use updatedData, don't store subcategories array here)
+                this._dexiePut('categories', updatedData).catch(e => console.warn("Cache update failed post-update:", e));
+             }
+
+             // 5. Emit Success
+             this.emit('dataLoaded', { categories: this.categories });
+             return updatedData;
+
+         } catch (error) {
+             this._handleOperationError(error, operationName);
+         }
+    }
+
+     async deleteCategory(categoryId) {
+         const operationName = 'delete category';
+         try {
+             // 1. Pre-check
+             const category = this.categories.find(c => c.id === categoryId);
+             if (category && category.subcategories && category.subcategories.length > 0) {
+                 throw { key: 'CATEGORY_DELETE_HAS_SUBS_ERROR', params: { name: category.name } };
+             }
+
+             // 2. Call Supabase
+             await this._supabaseDelete('categories', categoryId);
+
+             // 3. Update Local State
+             const initialLength = this.categories.length;
+             this.categories = this.categories.filter(cat => cat.id !== categoryId);
+
+             // 4. Update Cache only if local state changed
+             if(this.categories.length < initialLength) {
+                 this._dexieDelete('categories', categoryId).catch(e => console.warn("Cache update failed post-delete:", e));
+                 // NOTE: Should also delete associated subcategories from cache, or rely on next full sync/load
+                 // For simplicity here, we only delete the category record.
+             }
+
+             // 5. Emit Success
+             this.emit('dataLoaded', { categories: this.categories });
+
+         } catch (error) {
+            this._handleOperationError(error, operationName);
+         }
+     }
+
+     // --- Implement add/update/delete Subcategory similarly ---
+      async addSubcategory(categoryId, subcategoryData) {
+          const operationName = 'add subcategory';
+          try {
+               if (!subcategoryData.name?.trim()) {
+                  throw { key: 'ITEM_NAME_EMPTY_ERROR', params: { itemType: 'Subcategory' } };
+               }
+               const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+               const dataToAdd = { name: subcategoryData.name.trim(), slug: slug, category_id: categoryId };
+
+               const createdData = await this._supabaseCreate('subcategories', dataToAdd);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category) {
+                     if (!Array.isArray(category.subcategories)) category.subcategories = [];
+                     category.subcategories.push(createdData);
+                     category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+                }
+
+               this._dexiePut('subcategories', createdData).catch(e => console.warn("Cache update failed post-add:", e));
+
+               this.emit('dataLoaded', { categories: this.categories });
+               return createdData;
+
+          } catch (error) {
+              this._handleOperationError(error, operationName);
+          }
+      }
+
+       async updateSubcategory(subcategoryId, categoryId, subcategoryData) {
+            const operationName = 'update subcategory';
+           try {
+               const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+               const dataToUpdate = { name: subcategoryData.name.trim(), slug: slug };
+
+               const updatedData = await this._supabaseUpdate('subcategories', subcategoryId, dataToUpdate);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                if (category?.subcategories) {
+                     const subIndex = category.subcategories.findIndex(s => s.id === subcategoryId);
+                     if (subIndex > -1) {
+                         category.subcategories[subIndex] = updatedData;
+                         category.subcategories.sort((a, b) => a.name.localeCompare(b.name));
+                         this._dexiePut('subcategories', updatedData).catch(e => console.warn("Cache update failed post-update:", e));
+                     }
+                }
+
+               this.emit('dataLoaded', { categories: this.categories });
+               return updatedData;
+
+           } catch (error) {
+                this._handleOperationError(error, operationName);
+           }
+       }
+
+       async deleteSubcategory(subcategoryId, categoryId) {
+            const operationName = 'delete subcategory';
+           try {
+               await this._supabaseDelete('subcategories', subcategoryId);
+
+                const category = this.categories.find(cat => cat.id === categoryId);
+                 if (category?.subcategories) {
+                     const initialLength = category.subcategories.length;
+                     category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                     if (category.subcategories.length < initialLength) {
+                         this._dexieDelete('subcategories', subcategoryId).catch(e => console.warn("Cache update failed post-delete:", e));
+                     }
+                 }
+
+                this.emit('dataLoaded', { categories: this.categories });
+
+           } catch (error) {
+                this._handleOperationError(error, operationName);
+           }
+       }
+
+} // End BlueprintStore Class
 
 // Add element in HTML (e.g., near header title)
 // <span id="offline-indicator" class="text-xs ml-2"></span>
