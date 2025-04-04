@@ -2311,15 +2311,21 @@ class BlueprintStore extends EventEmitter {
 
     /** Generic Dexie cache update (handles create/update) */
     async _dexiePut(tableName, record) {
-        if (!this.db) return; // Silently fail if db not ready? Or throw?
+            if (!this.db)  {
+            console.error(`_dexiePut called for ${tableName} but this.db is null!`);
+            return; // Stop if db isn't initialized
+        }
         try {
-            // Ensure we only put fields defined in the schema
-            // This requires knowledge of the schema or filtering based on it.
-            // Simple approach: assume 'record' has appropriate fields (id, name, slug, category_id)
+            // --- ADD THIS LOG ---
+            console.log(`Attempting Dexie put. Table: ${tableName}. DB available:`, !!this.db, "Record:", record);
+            // --------------------
             await this.db[tableName].put(record);
+            console.log(`Dexie put successful for table: ${tableName}`);
         } catch (error) {
+            // Log the specific error including table name
             console.error(`Dexie put error [${tableName}]:`, error);
-            // Non-critical, don't throw, just log? Or emit a specific cache warning?
+            // Optionally re-throw if needed upstream
+            // throw error;
         }
     }
 
