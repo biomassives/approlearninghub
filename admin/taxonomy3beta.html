@@ -1759,10 +1759,10 @@ class BlueprintStore extends EventEmitter {
             this.db = new Dexie('ApproAdminDBEncrypted');
 
             dexieEncrypted.applyEncryptionMiddleware(this.db, this.encryptionKey, {
-                categories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
-                subcategories: dexieEncrypted.encrypt.NON_INDEXED_FIELDS,
+                categories: dexieEncrypted.NON_INDEXED_FIELDS,
+                subcategories: dexieEncrypted.NON_INDEXED_FIELDS,
             }, false);
-
+            
             this.db.version(1).stores({
                  categories: 'id, *name, *slug',
                  subcategories: 'id, *name, *slug, category_id'
