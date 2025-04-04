@@ -1955,6 +1955,100 @@ class BlueprintStore extends EventEmitter {
         }
      }
 
+    
+// --- Refactored Load Initial Data ---
+    async loadInitialData() {
+        if (!this.db) {
+            console.error("DB not initialized in loadInitialData");
+            this.emit('error', { key: 'DB_INIT_ERROR', params: { error: 'Database not available.' } });
+            return;
+         }
+        this.isLoading = true;
+        this.error = null;
+        this.emit('loading', true);
+        let loadedFromCache = false;
+
+        try {
+            // 1. Try fetch from Supabase
+            console.log("Attempting to fetch data from Supabase...");
+            const categoriesFromSupabase = await this._supabaseFetch('categories', {
+                select: '*, subcategories(*)', // Fetch nested
+                order: { column: 'name', secondaryColumn: 'name', secondaryForeignTable: 'subcategories' } // Order both
+            });
+            console.log("Fetched data from Supabase.");
+
+            // 2. Process and Update Local State
+            const processedCategories = (categoriesFromSupabase || []).map(cat => ({
+                ...cat,
+                subcategories: (cat.subcategories || []).sort((a, b) => a.name.localeCompare(b.name)) // Ensure subs are sorted too
+            }));
+            this.categories = processedCategories;
+
+            // 3. Update Dexie Cache (Run in background, don't wait for UI)
+            this._updateLocalCache(processedCategories).catch(cacheError => {
+                console.error("Background cache update failed:", cacheError);
+                this.emit('warning', { key: 'CACHE_UPDATE_FAILED', params: { error: cacheError.message } });
+            });
+
+            // 4. Emit Success
+            this.emit('dataLoaded', { categories: this.categories, source: 'supabase' });
+            console.log("Data loaded successfully from Supabase.");
+
+        } catch (error) {
+            // Supabase fetch failed, try cache
+            const networkErrMsg = error.message || String(error);
+            console.warn("Supabase fetch failed, trying cache:", networkErrMsg);
+            this.error = `Network Error: ${networkErrMsg}.`; // Store raw network error temporarily
+
+            try {
+                // 1. Fetch from Dexie tables
+                console.log("Attempting to fetch data from Dexie cache...");
+                const cachedCategories = await this._dexieGetAll('categories', 'name');
+                if (cachedCategories && cachedCategories.length > 0) {
+                    const categoryIds = cachedCategories.map(c => c.id);
+                    const cachedSubcategories = await this._dexieGetSubcategoriesByCatIds(categoryIds);
+                    console.log("Fetched data from Dexie cache.");
+
+                    // 2. Combine into nested structure & Update Local State
+                    this.categories = cachedCategories.map(cat => ({
+                        ...cat,
+                        subcategories: cachedSubcategories.filter(sub => sub.category_id === cat.id)
+                        // Subcategories should already be sorted by name from _dexieGetSubcategoriesByCatIds
+                    }));
+
+                    // 3. Emit Success (from Cache)
+                    loadedFromCache = true;
+                    this.error = null; // Clear network error if cache load succeeds
+                    this.emit('dataLoaded', { categories: this.categories, source: 'cache' });
+                    this.emit('info', { key: 'NETWORK_ERROR_CACHE_FALLBACK', params: { error: networkErrMsg } });
+                    console.log("Data loaded successfully from cache.");
+
+                } else {
+                    // Cache is also empty
+                    console.warn("No data found in Dexie cache either.");
+                    this.categories = [];
+                    // Keep the network error message in this.error
+                    this.emit('error', { key: 'NETWORK_ERROR_NO_CACHE', params: { error: networkErrMsg } });
+                    this.emit('dataLoaded', { categories: [], source: 'empty' });
+                }
+            } catch (dexieError) {
+                // Dexie fetch failed
+                const cacheErrMsg = dexieError.message || String(dexieError);
+                console.error("FATAL: Failed loading from Dexie cache:", cacheErrMsg);
+                // Overwrite network error with the more critical cache error
+                this.error = `Cache Error: ${cacheErrMsg}.`;
+                this.categories = [];
+                this.emit('error', { key: 'CACHE_ERROR', params: { error: cacheErrMsg } });
+                this.emit('dataLoaded', { categories: [], source: 'error' });
+            }
+        } finally {
+            this.isLoading = false;
+            this.emit('loading', false);
+        }
+    }
+
+
+
  
     // --- Refactored Update Local Cache ---
     // Uses Dexie helpers and transaction
