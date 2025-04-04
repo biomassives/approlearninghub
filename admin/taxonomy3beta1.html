@@ -1445,15 +1445,22 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
     // and use it for confirm messages, alerts, etc., OR modify store events
     // to emit keys/params instead of final strings.
 
-  class CategoryManager {
+class CategoryManager {
     constructor(store, getTextFn) { // Accept getText function
         this.store = store;
         this.getText = getTextFn; // Store the function
         this.containerEl = document.getElementById('categories-container');
 
+        if (!this.containerEl) {
+             console.error("FATAL: Category container #categories-container not found!");
+             // Optional: Display an error to the user or throw
+             return; // Stop initialization if container is missing
+        }
+
+
         // State for tracking the currently edited item
         this.editingState = {
-            isEditing: false, element: null, inputElement: null, elementId: null,
+            isEditing: false, element: null, inputElement: null,
             type: null, id: null, categoryId: null, originalValue: null
         };
 
@@ -1468,69 +1475,164 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
      * Binds event listeners for user interactions (adding, deleting, editing).
      */
     bindEvents() {
-        // (Keep the previously refined bindEvents logic)
-        // It should already handle starting edits, saving on Enter/Click-Outside,
-        // saving/canceling before other actions.
-         document.getElementById('add-category-btn').addEventListener('click', () => {
-             if (this.editingState.isEditing) this.saveEdit();
-             this.createNewCategory();
-         });
+       // --- Add Category Button Listener ---
+       document.getElementById('add-category-btn')?.addEventListener('click', () => {
+            if (this.editingState.isEditing) {
+                console.log("Add Category clicked while editing. Canceling edit first.");
+                this.cancelEdit();
+            }
+            // Only proceed if not editing anymore
+            if (!this.editingState.isEditing) {
+                this.createNewCategory();
+            }
+       });
 
-         this.containerEl.addEventListener('click', (e) => {
-            // ... (Keep the logic from previous refinement for handling clicks on names, buttons) ...
-             // Ensure button handlers call this.deleteCategory, this.createNewSubcategory etc.
-              // --- Button Handling Example ---
-              const deleteCategoryButton = e.target.closest('.delete-category-btn');
-              if (deleteCategoryButton) {
-                  if (this.editingState.isEditing) this.cancelEdit(); // Cancel before delete
-                  const categoryId = deleteCategoryButton.closest('.category-item')?.dataset.categoryId;
-                  if (categoryId) this.deleteCategory(categoryId); // Calls method below
-                  return;
-              }
-             // ... other button handlers
-         });
+       // --- Main Container Click Listener ---
+       this.containerEl.addEventListener('click', (e) => {
+            console.log('Clicked inside container. Target:', e.target); // LOG 1
 
-         document.addEventListener('keydown', (e) => { /* ... Enter/Escape logic ... */ });
-         document.addEventListener('click', (e) => { /* ... Click outside logic ... */ }, true);
+            // --- Check if click is inside an existing edit field ---
+            if (e.target.closest('.inline-edit-field')) {
+                console.log('Click was inside an existing edit field. Ignoring.');
+                return; // Don't process further
+            }
+
+            // --- Find potential targets ---
+            const categoryNameElement = e.target.closest('.category-name');
+            const subcategoryNameElement = e.target.closest('.subcategory-name');
+            const deleteCategoryButton = e.target.closest('.delete-category-btn');
+            const addSubcategoryButton = e.target.closest('.add-subcategory-btn');
+            const deleteSubcategoryButton = e.target.closest('.delete-subcategory-btn');
+
+            // --- Decide action based on editing state and click target ---
+            let clickedEditableElement = null;
+            let editType = null;
+            let editId = null;
+            let editCategoryId = null;
+
+            if (categoryNameElement) {
+                clickedEditableElement = categoryNameElement;
+                editType = 'category';
+                editId = categoryNameElement.closest('.category-item')?.dataset.categoryId;
+                console.log(`Potential category edit target found. ID: ${editId}`); // LOG 2a
+            } else if (subcategoryNameElement) {
+                clickedEditableElement = subcategoryNameElement;
+                editType = 'subcategory';
+                editId = subcategoryNameElement.closest('.subcategory-item')?.dataset.subcategoryId;
+                editCategoryId = subcategoryNameElement.closest('.category-item')?.dataset.categoryId;
+                console.log(`Potential subcategory edit target found. ID: ${editId}, CategoryID: ${editCategoryId}`); // LOG 2b
+            }
+
+            // --- Logic based on whether currently editing ---
+            if (this.editingState.isEditing) {
+                 // If already editing, clicking *outside* the current edit field's item should save/cancel
+                 // Check if the click target is NOT within the currently edited item's container
+                const currentEditingItem = this.editingState.element?.closest('.category-item, .subcategory-item');
+                if (!currentEditingItem || !currentEditingItem.contains(e.target)) {
+                    console.log('Clicked outside current edit item while editing. Attempting save...'); // LOG 3
+                    this.saveEdit();
+                    // We saved/cancelled, don't process this click further as an action
+                    return;
+                } else {
+                     console.log('Clicked inside the currently edited item while editing. Ignoring.'); // LOG 4 (Allow input interaction)
+                     return;
+                }
+
+            } else {
+                // --- Not currently editing ---
+
+                // 1. Handle direct button clicks first
+                if (deleteCategoryButton) {
+                    console.log('Delete category button clicked.');
+                    const categoryId = deleteCategoryButton.closest('.category-item')?.dataset.categoryId;
+                    if (categoryId) this.deleteCategory(categoryId);
+                    return; // Handled
+                }
+                if (addSubcategoryButton) {
+                    console.log('Add subcategory button clicked.');
+                    const categoryId = addSubcategoryButton.closest('.category-item')?.dataset.categoryId;
+                    if (categoryId) this.createNewSubcategory(categoryId);
+                    return; // Handled
+                }
+                if (deleteSubcategoryButton) {
+                    console.log('Delete subcategory button clicked.');
+                    const subcategoryId = deleteSubcategoryButton.closest('.subcategory-item')?.dataset.subcategoryId;
+                    const categoryId = deleteSubcategoryButton.closest('.category-item')?.dataset.categoryId;
+                    if (subcategoryId && categoryId) this.deleteSubcategory(subcategoryId, categoryId);
+                    return; // Handled
+                }
+
+                // 2. Handle clicks on editable names (if not editing and target found)
+                if (clickedEditableElement && editType && editId) {
+                    console.log(`Attempting to start editing ${editType} with ID ${editId}`); // LOG 5
+                    this.startEditing(clickedEditableElement, editType, editId, editCategoryId); // Pass categoryId if it's a subcat
+                    return; // Handled
+                }
+            }
+
+            console.log('Click did not match any known interactive element.'); // LOG 6
+       });
+
+       // --- Document Listeners (Escape Key - others like click-outside might be added) ---
+       document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.editingState.isEditing) {
+                console.log("Escape key pressed while editing. Canceling edit.");
+                this.cancelEdit();
+            }
+       });
+
+       // Add a 'click outside' listener if needed, ensuring it correctly calls saveEdit or cancelEdit
+       // Be careful with using 'capture: true' if other listeners might interfere
+        document.addEventListener('click', (e) => {
+            if (this.editingState.isEditing) {
+                const editingItemElement = this.editingState.element?.closest('.category-item, .subcategory-item');
+                // If the click target is NOT the editing input AND not inside the item being edited...
+                if (e.target !== this.editingState.inputElement && (!editingItemElement || !editingItemElement.contains(e.target)) ) {
+                     console.log("Clicked outside the editing item. Saving edit.");
+                     this.saveEdit(); // Or this.cancelEdit() depending on desired behavior
+                 }
+            }
+        }, true); // Using capture phase to catch clicks early
+
     }
 
     /**
      * Binds listeners to events from the BlueprintStore.
-     * Handles structured error events for translated toast messages.
      */
     bindStoreEvents() {
         this.store.on('loading', (isLoading) => {
-            // ... (loading logic - use this.getText for loading message in render) ...
-            if (!isLoading && this.editingState.isEditing) this.cancelEdit(true);
+            if (!isLoading && this.editingState.isEditing) {
+                 console.warn("Data load finished while editing - cancelling edit state.");
+                 this.cancelEdit(true); // Cancel edit state if data reloads
+            }
             this.render();
         });
 
+        this.store.on('error', (errorData) => { // Expects { key, params }
+            if (window.showErrorToast) {
+                window.showErrorToast(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
+            } else {
+                const fallbackMsg = this.getText(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
+                alert(`${this.getText('ERROR_PREFIX')}: ${fallbackMsg}`);
+            }
+            // Don't automatically re-render on store error, maybe specific errors need UI update
+            // if (!this.store.isLoading) { this.render(); }
+        });
 
-
-         // --- Updated Error Handler ---
-         this.store.on('error', (errorData) => { // Expects { key, params }
-             if (window.showErrorToast) {
-                 // Pass the key and params directly to the toast function
-                 window.showErrorToast(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
-             } else {
-                 // Fallback using alert, translating if possible
-                 const fallbackMsg = this.getText(errorData.key || 'UNEXPECTED_ERROR', errorData.params || { error: 'Unknown error' });
-                 alert(`${this.getText('ERROR_PREFIX')}: ${fallbackMsg}`);
-             }
-             // Optionally update UI state if needed based on error
-              if (!this.store.isLoading) {
-                  this.render(); // Re-render to show potential error message in the main area
-              }
-         });
-
-         // Optional: Handle 'info' events if emitted by the store
-          this.store.on('info', (infoData) => {
-             if (window.showInfoToast) { // Assume a similar function for info
+        this.store.on('info', (infoData) => {
+            if (window.showInfoToast) {
                  window.showInfoToast(infoData.key, infoData.params);
-             } else {
+            } else {
                  console.log("INFO:", this.getText(infoData.key, infoData.params));
-             }
-          });
+            }
+        });
+
+        // Listen for successful data load to potentially clear states if needed
+         this.store.on('dataLoaded', (payload) => {
+             console.log("Store emitted dataLoaded, source:", payload?.source);
+             // Render is called automatically by the 'loading' event listener when loading finishes.
+             // The render method itself now handles canceling edits if needed.
+         });
     }
 
     /**
@@ -1538,24 +1640,21 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
      */
     async deleteCategory(categoryId) {
         const category = this.store.categories.find(c => c.id === categoryId);
-        const categoryName = category ? category.name : '...'; // Get name for param
+        const categoryName = category ? category.name : '...';
 
-        // Get translated confirmation message
         const confirmMessage = this.getText('DELETE_CATEGORY_CONFIRM', { name: categoryName });
 
-        // Pre-delete check (example) - use translated alert if needed
-         if (category && category.subcategories && category.subcategories.length > 0) {
-             // Alert is blocking, consider using a non-blocking toast/modal
-             alert(this.getText('CATEGORY_DELETE_HAS_SUBS_ERROR', { name: categoryName }));
-             return;
-         }
+        if (category && category.subcategories && category.subcategories.length > 0) {
+            alert(this.getText('CATEGORY_DELETE_HAS_SUBS_ERROR', { name: categoryName }));
+            return;
+        }
 
         if (confirm(confirmMessage)) {
             try {
                 await this.store.deleteCategory(categoryId);
-                // Success: render handled by 'dataLoaded'
+                // Success: render handled by 'dataLoaded' -> 'loading:false' -> render()
             } catch (error) {
-                // Error display handled by 'error' event listener
+                // Error display handled by store 'error' event listener
                 console.error("Delete category failed (handled by store listener):", error);
             }
         }
@@ -1569,47 +1668,63 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         const subcategory = category?.subcategories.find(s => s.id === subcategoryId);
         const subcategoryName = subcategory ? subcategory.name : '...';
 
-        // Get translated confirmation message
         const confirmMessage = this.getText('DELETE_SUBCATEGORY_CONFIRM', { name: subcategoryName });
 
         if (confirm(confirmMessage)) {
             try {
                 await this.store.deleteSubcategory(subcategoryId, categoryId);
-                // Success: render handled by 'dataLoaded'
+                 // Success: render handled by 'dataLoaded' -> 'loading:false' -> render()
             } catch (error) {
-                 // Error display handled by 'error' event listener
-                 console.error("Delete subcategory failed (handled by store listener):", error);
+                 // Error display handled by store 'error' event listener
+                console.error("Delete subcategory failed (handled by store listener):", error);
             }
         }
     }
 
     /**
-     * Creates UI for adding a new category, using translated placeholders.
+     * Creates UI for adding a new category.
      */
     createNewCategory() {
-        if (this.containerEl.querySelector('.new-category')) { /* ... focus existing ... */ return; }
+        if (this.containerEl.querySelector('.new-category')) {
+            this.containerEl.querySelector('.new-category input')?.focus();
+            return;
+         }
+         if (this.editingState.isEditing) {
+             console.warn("Attempted to create new category while editing. Cancel first.");
+             // Maybe automatically save/cancel here? For now, just block.
+             return;
+         }
 
         const tempId = 'new-category-' + Date.now();
-        // Use getText for placeholder
         const placeholderText = this.getText('ENTER_CATEGORY_PLACEHOLDER');
         const saveLabel = this.getText('SAVE_BUTTON');
         const cancelLabel = this.getText('CANCEL_BUTTON');
 
-        const newCategoryHTML = `
-            <div class="category-item new-category ..." data-category-id="${tempId}">
-                <div class="flex items-center space-x-3">
-                     <input type="text" id="new-category-input" class="..."
-                           placeholder="${placeholderText}" aria-label="${placeholderText}" autofocus>
-                     <button class="btn btn-green save-new-category-btn p-2" aria-label="${saveLabel}">${saveLabel}</button>
-                     <button class="btn btn-red cancel-new-category-btn p-2" aria-label="${cancelLabel}">${cancelLabel}</button>
-                </div>
-            </div>`;
-        // ... (insert HTML) ...
+        const newCategoryDiv = document.createElement('div');
+        newCategoryDiv.className = 'category-item new-category bg-green-50 dark:bg-green-900 p-4 border border-green-200 dark:border-green-700 rounded-lg animate-slideDown'; // Added animation class + styling
+        newCategoryDiv.dataset.categoryId = tempId; // Use dataset for consistency
 
-        const newCategoryItem = this.containerEl.querySelector(/* ... */);
-        const inputField = newCategoryItem.querySelector('#new-category-input');
-        const saveBtn = newCategoryItem.querySelector('.save-new-category-btn');
-        const cancelBtn = newCategoryItem.querySelector('.cancel-new-category-btn');
+        newCategoryDiv.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <input type="text" class="new-item-input flex-grow p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                       placeholder="${placeholderText}" aria-label="${placeholderText}">
+                <button class="btn btn-green save-new-category-btn p-2" aria-label="${saveLabel}">
+                   ${saveLabel}
+                </button>
+                <button class="btn btn-red cancel-new-category-btn p-2" aria-label="${cancelLabel}">
+                   ${cancelLabel}
+                </button>
+            </div>`;
+
+        this.containerEl.insertBefore(newCategoryDiv, this.containerEl.firstChild); // Insert at the top
+
+        const inputField = newCategoryDiv.querySelector('input');
+        const saveBtn = newCategoryDiv.querySelector('.save-new-category-btn');
+        const cancelBtn = newCategoryDiv.querySelector('.cancel-new-category-btn');
+
+        const removeForm = () => {
+             newCategoryDiv.remove();
+        };
 
         const handleSave = async () => {
             const name = inputField.value.trim();
@@ -1617,395 +1732,438 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
                 saveBtn.disabled = true; cancelBtn.disabled = true; inputField.disabled = true;
                 try {
                     await this.store.addCategory({ name }); // Store handles errors/success
+                     // On success, the dataLoaded event triggers render, which will remove this form
                 } catch (error) {
                      // Error handled by store listener, just re-enable form
                     saveBtn.disabled = false; cancelBtn.disabled = false; inputField.disabled = false;
                     inputField.focus();
                 }
             } else {
-                // Use translated error message via toast
-                window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('CATEGORY') || 'Category' }); // Translate 'Category' type?
-                inputField.focus();
+                 window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('CATEGORY') || 'Category' });
+                 inputField.focus();
             }
         };
-        // ... (attach listeners: handleSave, handleCancel, keydown) ...
-         inputField.focus();
+
+        saveBtn.addEventListener('click', handleSave);
+        cancelBtn.addEventListener('click', removeForm);
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                 handleSave();
+            } else if (e.key === 'Escape') {
+                 removeForm();
+            }
+        });
+
+        inputField.focus();
     }
 
     /**
-     * Creates UI for adding a new subcategory, using translated placeholders.
+     * Creates UI for adding a new subcategory.
      */
     createNewSubcategory(categoryId) {
-         // ... (find parent elements, check for existing form) ...
-         const placeholderText = this.getText('ENTER_SUBCATEGORY_PLACEHOLDER');
-         const saveLabel = this.getText('SAVE_BUTTON');
-         const cancelLabel = this.getText('CANCEL_BUTTON');
+       const categoryItem = this.containerEl.querySelector(`.category-item[data-category-id="${categoryId}"]`);
+       if (!categoryItem) return; // Should not happen
 
-         const tempId = 'new-subcategory-' + Date.now();
-         const newSubcategoryHTML = `
-            <div class="subcategory-item new-subcategory ..." data-subcategory-id="${tempId}">
-                <input type="text" class="..." placeholder="${placeholderText}" aria-label="${placeholderText}" autofocus>
-                 <button class="btn btn-green save-new-subcategory-btn ..." aria-label="${saveLabel}">...</button>
-                 <button class="btn btn-red cancel-new-subcategory-btn ..." aria-label="${cancelLabel}">...</button>
-            </div>`;
-         // ... (insert HTML) ...
+       const subcategoriesContainer = categoryItem.querySelector('.subcategories');
+       if (!subcategoriesContainer) return; // Should not happen
 
-         const newSubcategoryItem = subcategoriesContainer.querySelector(/* ... */);
-         const inputField = newSubcategoryItem.querySelector('input');
-         const saveBtn = newSubcategoryItem.querySelector('.save-new-subcategory-btn');
-         const cancelBtn = newSubcategoryItem.querySelector('.cancel-new-subcategory-btn');
+       if (subcategoriesContainer.querySelector('.new-subcategory')) {
+            subcategoriesContainer.querySelector('.new-subcategory input')?.focus();
+            return;
+       }
+        if (this.editingState.isEditing) {
+             console.warn("Attempted to create new subcategory while editing. Cancel first.");
+             return; // Block if editing something else
+        }
 
-         const handleSave = async () => {
-             const name = inputField.value.trim();
-             if (name) {
-                 saveBtn.disabled = true; cancelBtn.disabled = true; inputField.disabled = true;
-                 try {
-                     await this.store.addSubcategory(categoryId, { name });
-                  } catch (error) {
-                      saveBtn.disabled = false; cancelBtn.disabled = false; inputField.disabled = false;
-                      inputField.focus();
-                  }
-              } else {
-                  window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('SUBCATEGORY') || 'Subcategory' });
-                  inputField.focus();
-              }
-          };
-         // ... (attach listeners: handleSave, handleCancel, keydown) ...
-          inputField.focus();
+
+        const placeholderText = this.getText('ENTER_SUBCATEGORY_PLACEHOLDER');
+        const saveLabel = this.getText('SAVE_BUTTON');
+        const cancelLabel = this.getText('CANCEL_BUTTON');
+
+        const tempId = 'new-subcategory-' + Date.now();
+        const newSubcategoryDiv = document.createElement('div');
+        // Add some styling to differentiate the add form
+        newSubcategoryDiv.className = 'subcategory-item new-subcategory bg-blue-50 dark:bg-blue-900 p-2 border border-blue-200 dark:border-blue-700 rounded-md animate-slideDown flex items-center space-x-2';
+        newSubcategoryDiv.dataset.subcategoryId = tempId;
+
+        newSubcategoryDiv.innerHTML = `
+            <input type="text" class="new-item-input flex-grow p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                   placeholder="${placeholderText}" aria-label="${placeholderText}">
+            <button class="btn btn-green save-new-subcategory-btn text-xs p-1" aria-label="${saveLabel}">
+                ${saveLabel}
+            </button>
+            <button class="btn btn-red cancel-new-subcategory-btn text-xs p-1" aria-label="${cancelLabel}">
+                 ${cancelLabel}
+             </button>`;
+
+         // Insert before the first existing subcategory or at the end
+         subcategoriesContainer.insertBefore(newSubcategoryDiv, subcategoriesContainer.firstChild);
+
+
+        const inputField = newSubcategoryDiv.querySelector('input');
+        const saveBtn = newSubcategoryDiv.querySelector('.save-new-subcategory-btn');
+        const cancelBtn = newSubcategoryDiv.querySelector('.cancel-new-subcategory-btn');
+
+        const removeForm = () => {
+            newSubcategoryDiv.remove();
+        };
+
+        const handleSave = async () => {
+            const name = inputField.value.trim();
+            if (name) {
+                saveBtn.disabled = true; cancelBtn.disabled = true; inputField.disabled = true;
+                try {
+                    await this.store.addSubcategory(categoryId, { name });
+                     // Success: dataLoaded -> render will remove this form
+                } catch (error) {
+                    saveBtn.disabled = false; cancelBtn.disabled = false; inputField.disabled = false;
+                    inputField.focus();
+                }
+            } else {
+                window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText('SUBCATEGORY') || 'Subcategory' });
+                inputField.focus();
+            }
+        };
+
+        saveBtn.addEventListener('click', handleSave);
+        cancelBtn.addEventListener('click', removeForm);
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                 handleSave();
+            } else if (e.key === 'Escape') {
+                 removeForm();
+            }
+        });
+        inputField.focus();
     }
 
-    // --- Inline Editing methods (startEditing, saveEdit, cancelEdit, resetEditingState) ---
-    // These primarily deal with DOM manipulation and state. They don't usually
-    // need direct calls to getText, except perhaps for aria-labels if not handled
-    // by the static HTML attributes set during render. Keep as previously refined.
+    // --- Inline Editing Methods (Implementations) ---
 
-// Inside CategoryManager class
+    startEditing(element, type, id, categoryId = null) {
+        console.log(`Executing startEditing for type: ${type}, id: ${id}, categoryId: ${categoryId}`);
 
-startEditing(element, type, id, categoryId = null) {
-    console.log(`Executing startEditing for type: ${type}, id: ${id}`); // LOG 7
-
-    // --- Prevent starting a new edit if already editing ---
-    if (this.editingState.isEditing) {
-        console.warn("Attempted to start edit while already editing. Canceling previous.");
-        this.cancelEdit(); // Or maybe save? For safety, let's cancel.
-    }
-
-    const originalValue = element.textContent.trim();
-    console.log(`Original value: "${originalValue}"`);
-
-    // --- Create the input field ---
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = originalValue;
-    input.className = 'inline-edit-field'; // Use your existing CSS class
-    // Add keydown listener for Enter/Escape *on the input itself*
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            console.log("Enter pressed in input field. Saving.");
-            this.saveEdit();
-        } else if (e.key === 'Escape') {
-            console.log("Escape pressed in input field. Canceling.");
+        if (this.editingState.isEditing) {
+            console.warn("Attempted to start edit while already editing. Canceling previous first.");
             this.cancelEdit();
+             // Optional: Add a small delay to ensure state is reset before starting new one?
+             // setTimeout(() => this.startEditing(element, type, id, categoryId), 50);
+             // return; // Exit for now, require second click after cancel
         }
-    });
-
-     // --- Simple Replace (You might need more sophisticated DOM handling) ---
-     // Hide the original element, append the input
-     // This is basic, might mess up layout slightly depending on your CSS.
-     element.style.display = 'none'; // Hide the original span/h3
-     element.parentNode.insertBefore(input, element.nextSibling); // Insert input after the hidden element
+         // Double check after potential cancel above
+         if (this.editingState.isEditing) {
+             console.error("Still editing after cancel attempt. Aborting new edit.");
+             return;
+         }
 
 
-    // --- Update State ---
-    this.editingState = {
-        isEditing: true,
-        element: element, // The original H3 or SPAN
-        inputElement: input,
-        type: type,
-        id: id,
-        categoryId: categoryId, // Store categoryId if type is 'subcategory'
-        originalValue: originalValue
-    };
+        const originalValue = element.textContent.trim();
+        console.log(`Original value: "${originalValue}"`);
 
-    // Add a class to the parent item for visual indication (optional)
-    element.closest('.category-item, .subcategory-item')?.classList.add('is-editing');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalValue;
+        input.className = 'inline-edit-field'; // Use your existing CSS class for styling
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                console.log("Enter pressed in input field. Saving.");
+                this.saveEdit();
+            } else if (e.key === 'Escape') {
+                console.log("Escape pressed in input field. Canceling.");
+                this.cancelEdit();
+            }
+        });
 
-    input.focus(); // Focus the input field
-    input.select(); // Select the text
+        // Replace the content of the original element temporarily
+        // This preserves the original element structure better than insertBefore/remove
+        element.innerHTML = ''; // Clear the original text/nodes
+        element.appendChild(input); // Add the input inside
 
-    console.log('Editing state set:', this.editingState);
-}
+        this.editingState = {
+            isEditing: true,
+            element: element,
+            inputElement: input,
+            type: type,
+            id: id,
+            categoryId: categoryId,
+            originalValue: originalValue
+        };
 
-        console.log(`Executing startEditing for type: ${type}, id: ${id}`); // LOG 7
+        element.closest('.category-item, .subcategory-item')?.classList.add('is-editing');
 
+        input.focus();
+        input.select();
 
-
-
-    // --- Prevent starting a new edit if already editing ---
-    if (this.editingState.isEditing) {
-        console.warn("Attempted to start edit while already editing. Canceling previous.");
-        this.cancelEdit(); // Or maybe save? For safety, let's cancel.
+        console.log('Editing state set:', this.editingState);
     }
 
-    const originalValue = element.textContent.trim();
-    console.log(`Original value: "${originalValue}"`);
+    async saveEdit() {
+        if (!this.editingState.isEditing) return;
+        console.log("Executing saveEdit");
 
-    // --- Create the input field ---
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = originalValue;
-    input.className = 'inline-edit-field'; // Use your existing CSS class
-    // Add keydown listener for Enter/Escape *on the input itself*
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            console.log("Enter pressed in input field. Saving.");
-            this.saveEdit();
-        } else if (e.key === 'Escape') {
-            console.log("Escape pressed in input field. Canceling.");
+        const { element, inputElement, type, id, categoryId, originalValue } = this.editingState;
+        // Make sure inputElement still exists
+        if (!inputElement || !document.body.contains(inputElement)) {
+             console.warn("Input element no longer exists. Cancelling save.");
+             this.cancelEdit();
+             return;
+        }
+
+        const newValue = inputElement.value.trim();
+
+        if (!newValue) {
+            window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText(type.toUpperCase()) });
+            inputElement.focus();
+            return;
+        }
+
+        if (newValue === originalValue) {
+            console.log("Value unchanged. Canceling edit.");
             this.cancelEdit();
+            return;
         }
-    });
 
-     // --- Simple Replace (You might need more sophisticated DOM handling) ---
-     // Hide the original element, append the input
-     // This is basic, might mess up layout slightly depending on your CSS.
-     element.style.display = 'none'; // Hide the original span/h3
-     element.parentNode.insertBefore(input, element.nextSibling); // Insert input after the hidden element
+        this.showSaveStatus(element, 'saving');
+        inputElement.disabled = true; // Disable input while saving
 
+        try {
+            if (type === 'category') {
+                await this.store.updateCategory(id, { name: newValue });
+            } else if (type === 'subcategory') {
+                // Ensure categoryId is valid for subcategory updates
+                 if (!categoryId) {
+                    throw new Error("Missing categoryId for subcategory update.");
+                 }
+                await this.store.updateSubcategory(id, categoryId, { name: newValue });
+            }
+            console.log("Save successful (render will update UI).");
+            this.showSaveStatus(element, 'success');
+            // On success, dataLoaded -> render -> cancelEdit(true) will reset state and UI
 
-    // --- Update State ---
-    this.editingState = {
-        isEditing: true,
-        element: element, // The original H3 or SPAN
-        inputElement: input,
-        type: type,
-        id: id,
-        categoryId: categoryId, // Store categoryId if type is 'subcategory'
-        originalValue: originalValue
-    };
+        } catch (error) {
+            console.error("Save failed (error toast should show).");
+            this.showSaveStatus(element, 'error');
+            inputElement.disabled = false; // Re-enable input on error
+            inputElement.focus();
+            // Do not reset state here, let user fix or cancel
+            return; // Stop
 
-    // Add a class to the parent item for visual indication (optional)
-    element.closest('.category-item, .subcategory-item')?.classList.add('is-editing');
-
-    input.focus(); // Focus the input field
-    input.select(); // Select the text
-
-    console.log('Editing state set:', this.editingState);
-        
-    }
-      
-  // Inside CategoryManager class
-
-async saveEdit() {
-    if (!this.editingState.isEditing) return; // Nothing to save
-    console.log("Executing saveEdit");
-
-    const { element, inputElement, type, id, categoryId, originalValue } = this.editingState;
-    const newValue = inputElement.value.trim();
-
-    // Basic validation
-    if (!newValue) {
-        window.showErrorToast('ITEM_NAME_EMPTY_ERROR', { itemType: this.getText(type.toUpperCase()) });
-        inputElement.focus();
-        return; // Don't proceed or reset state yet
-    }
-
-    if (newValue === originalValue) {
-        console.log("Value unchanged. Canceling edit.");
-        this.cancelEdit(); // Treat as cancel if value hasn't changed
-        return;
-    }
-
-    // Show saving status (optional)
-    this.showSaveStatus(element, 'saving');
-
-    try {
-        // Call the appropriate store method
-        if (type === 'category') {
-            await this.store.updateCategory(id, { name: newValue });
-        } else if (type === 'subcategory') {
-            await this.store.updateSubcategory(id, categoryId, { name: newValue });
+        } finally {
+             // No need to manually reset state here on success, render handles it.
+             // On failure, we leave the input active.
+             console.log("Save attempt finished.");
         }
-        // Success is handled by the 'dataLoaded' event triggering render()
-        // which implicitly cancels the edit by redrawing
-        console.log("Save successful (render will update UI).");
-        this.showSaveStatus(element, 'success'); // Give brief success feedback
-
-    } catch (error) {
-        // Error handled by store listener showing toast
-        console.error("Save failed (error toast should show).");
-        this.showSaveStatus(element, 'error'); // Give brief error feedback
-         // Optional: Revert input to original value or leave as is?
-         // inputElement.value = originalValue;
-        // Do NOT reset editing state here - allow user to fix the error or cancel
-        return; // Stop execution here
-
-    } finally {
-         // --- CRITICAL: Reset state *only if save didn't fail* ---
-         // Actually, render() triggered by 'dataLoaded' handles the UI reset.
-         // We just need to clear the internal state flag *after* a successful save
-         // or explicit cancel. Let's move the reset logic mainly to cancelEdit
-         // and rely on render() post-success.
-         // For now, let's just log that the save attempt finished.
-         console.log("Save attempt finished.");
-         // The 'status-success' or 'status-error' flash will be cleared by the next render.
-          // If the save succeeded, the `dataLoaded` event will trigger `render`,
-         // which should call `resetEditingState` implicitly by rebuilding the DOM.
-         // If it failed, the input remains until user cancels.
-
-         // --- Let's simplify: Reset state ONLY in cancelEdit or on successful render ---
-         // We might need a dedicated reset function called by render and cancelEdit.
-         this.resetEditingState(); // TRY RESETTING HERE - Test this carefully
-
-    }
-}
-
-
-cancelEdit(isRendering = false) {
-    if (!this.editingState.isEditing) return;
-    console.log("Executing cancelEdit");
-
-    const { element, inputElement } = this.editingState;
-
-    // --- Restore DOM ---
-    if (inputElement && inputElement.parentNode) {
-        inputElement.remove(); // Remove the input field
-    }
-    if(element) {
-       element.style.display = ''; // Show the original element
     }
 
-    // Remove editing class (if added)
-    element?.closest('.category-item, .subcategory-item')?.classList.remove('is-editing');
+    cancelEdit(isRendering = false) { // Added isRendering flag
+        if (!this.editingState.isEditing) return;
+        console.log(`Executing cancelEdit. Called by render: ${isRendering}`);
 
-     // --- Clear any save status ONLY if not triggered by render ---
-     // Render clears status anyway.
-     if (!isRendering) {
-        this.clearSaveStatus(element);
-     }
+        const { element, inputElement, originalValue } = this.editingState;
+
+        // --- Restore DOM ---
+         // Check if element still exists (might have been removed by render)
+        if (element && document.body.contains(element)) {
+             // Restore original content (safer than assuming input is still its child)
+             element.innerHTML = originalValue || ''; // Restore text, clear if no original value
+             element.style.display = ''; // Ensure visible if previously hidden
+
+             // Remove editing class
+             element.closest('.category-item, .subcategory-item')?.classList.remove('is-editing');
+
+             // Clear status only if cancel wasn't triggered by a render
+             if (!isRendering) {
+                  this.clearSaveStatus(element);
+             }
+        } else {
+            console.warn("Original element for cancelEdit no longer exists in DOM.");
+        }
+
+         // Remove input if it somehow lingers (shouldn't if appended inside element)
+         if (inputElement && inputElement.parentNode) {
+            inputElement.remove();
+         }
 
 
-    // --- CRITICAL: Reset the state object ---
-    this.resetEditingState();
+        // --- CRITICAL: Reset the state object ---
+        this.resetEditingState();
     }
 
     // Helper to centralize state reset
     resetEditingState() {
-         console.log("Resetting editing state");
-          this.editingState = {
+        console.log("Resetting editing state");
+         if (this.editingState.inputElement) {
+             // Clean up potential listeners on the input to prevent memory leaks
+             // (Best practice, though maybe overkill here if element is removed anyway)
+             // this.editingState.inputElement.removeEventListener('keydown', ...);
+         }
+        this.editingState = {
             isEditing: false, element: null, inputElement: null, type: null,
             id: null, categoryId: null, originalValue: null
-         };
+        };
     }
-    
-    // Modify render slightly to clear status (already done at start) and potentially call reset
-    render() {
-        // Clear any lingering status indicators first
-        this.clearSaveStatus(); // Ensure this works globally or finds specific elements if needed
-    
-        // --- NEW: If rendering happens while editing, cancel the edit ---
-        // This handles cases where data updates externally (e.g. after successful save)
-        // The `cancelEdit(true)` prevents clearSaveStatus running twice redundantly.
-        if (this.editingState.isEditing) {
-             console.warn("Render called while editing - cancelling edit state.");
-             this.cancelEdit(true); // Pass true to indicate it's part of render
-        }
-        // Reset internal saveStatus object state (visual status cleared above)
-        this.saveStatus = { element: null, status: 'idle', timeoutId: null };
-    
-        // ... rest of your existing render logic (loading, error, empty, map categories) ...
-    }
-    resetEditingState() { /* ... */ }
 
-    // --- Feedback methods (showSaveStatus, clearSaveStatus) ---
-    // These apply CSS classes. The text content (like Saving...) could be
-    // set using getText if needed, but CSS pseudo-elements are often used.
-    showSaveStatus(element, status) { /* ... */ } // Maybe add getText for accessibility content?
-    clearSaveStatus(element = null) { /* ... */ }
+
+    // --- Feedback Methods (Implementations) ---
+    showSaveStatus(element, status) {
+        if (!element) return;
+
+        console.log(`Showing status: ${status} on element:`, element);
+        this.clearSaveStatus(element); // Clear previous status first
+
+        const statusClass = `status-${status}`; // e.g., 'status-saving', 'status-success'
+        element.classList.add(statusClass);
+        this.saveStatus = { element, status, timeoutId: null }; // Track current status
+
+        // Automatically clear success/error messages after a delay
+        if (status === 'success' || status === 'error') {
+            this.saveStatus.timeoutId = setTimeout(() => {
+                 // Check if the status is still the one we set before clearing
+                 if (this.saveStatus.element === element && this.saveStatus.status === status) {
+                     this.clearSaveStatus(element);
+                 }
+            }, 2000); // Show for 2 seconds
+        }
+    }
+
+    clearSaveStatus(element = null) {
+        // Clear specific element or the globally tracked one
+        const targetElement = element || this.saveStatus.element;
+        if (!targetElement) return;
+
+        console.log("Clearing save status from element:", targetElement);
+
+        // Clear timeout if one was set
+        if (this.saveStatus.timeoutId && (!element || targetElement === this.saveStatus.element)) {
+             clearTimeout(this.saveStatus.timeoutId);
+        }
+
+        targetElement.classList.remove('status-saving', 'status-success', 'status-error');
+
+        // Reset global tracking only if clearing the tracked element
+        if (!element || targetElement === this.saveStatus.element) {
+             this.saveStatus = { element: null, status: 'idle', timeoutId: null };
+        }
+    }
+
 
     /**
      * Renders the UI, using getText for all user-facing strings.
      */
     render() {
-        this.clearSaveStatus(); // Clear status on render
+        // --- Cancel Edit State if Rendering Occurs ---
+        if (this.editingState.isEditing) {
+            console.warn("Render called while editing - cancelling edit state.");
+            // Pass true to prevent redundant clearSaveStatus inside cancelEdit
+            this.cancelEdit(true);
+        }
+
+        // --- Clear Any Visual Status Indicators ---
+        // Clear the internal tracking object state first
+        if (this.saveStatus.timeoutId) {
+             clearTimeout(this.saveStatus.timeoutId);
+        }
         this.saveStatus = { element: null, status: 'idle', timeoutId: null };
+        // Remove status classes from *all* potential elements (more robust than tracking one)
+        this.containerEl.querySelectorAll('.status-saving, .status-success, .status-error').forEach(el => {
+            el.classList.remove('status-saving', 'status-success', 'status-error');
+        });
 
-        // Handle error display using raw error message from store (toasts handle translated keys)
-        if (this.store.error && !this.store.isLoading) {
-            // Show a generic error in the main panel, toast provides detail
-            const errorMsg = this.store.error || 'Unknown error occurred.';
-            this.containerEl.innerHTML = `<div class="error ...">${this.getText('ERROR_PREFIX')}: ${errorMsg}</div>`;
-            return;
-        }
 
-        // Handle loading state
+        // --- Handle Loading State ---
         if (this.store.isLoading) {
-             if (!this.containerEl.querySelector('.loading')) {
-                 // Use translated loading text
-                 this.containerEl.innerHTML = `<div class="loading">${this.getText('LOADING_CATEGORIES')}</div>`;
-             }
-             return;
+            if (!this.containerEl.querySelector('.loading')) {
+                this.containerEl.innerHTML = `<div class="loading">${this.getText('LOADING_CATEGORIES')}</div>`;
+            }
+            return; // Stop rendering if loading
         }
 
-        // Preserve 'new category' form
-        const newCategoryForm = this.containerEl.querySelector('.new-category');
+        // --- Handle Store Error State ---
+         // Display error within the container if fetching failed and cache didn't work
+        if (this.store.error && this.store.categories.length === 0) {
+             // Check categories length to avoid showing this if cache loaded successfully after network error
+            const errorMsg = this.store.error || 'Unknown error occurred.';
+            this.containerEl.innerHTML = `<div class="error p-4 m-4 rounded border border-red-300 bg-red-100 text-red-700">${this.getText('ERROR_PREFIX')}: ${errorMsg}</div>`;
+            return; // Stop rendering on critical load error
+        }
 
-        // Handle empty state using translated text
-        if (this.store.categories.length === 0 && !newCategoryForm) {
+
+        // --- Preserve 'new category' form content if it exists ---
+        // Find the input element within the form
+        const newCategoryInput = this.containerEl.querySelector('.new-category input');
+        const newCategoryValue = newCategoryInput ? newCategoryInput.value : null; // Get its current value
+
+        // --- Handle Empty State ---
+        if (this.store.categories.length === 0 && !newCategoryInput) { // Also check if add form isn't present
             this.containerEl.innerHTML = `
-                <div class="empty-state">
-                     <svg class="w-12 h-12 ..."></svg>
-                    <p class="dark:text-gray-400">${this.getText('NO_CATEGORIES_YET')} ${this.getText('ADD_FIRST_CATEGORY_PROMPT')}</p>
+                <div class="empty-state text-center p-6 bg-gray-50 dark:bg-gray-700 rounded-lg my-4">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400">${this.getText('NO_CATEGORIES_YET')} ${this.getText('ADD_FIRST_CATEGORY_PROMPT')}</p>
                 </div>`;
-            return;
+            return; // Stop rendering if empty
         }
 
-        // Generate HTML, using getText for labels, titles, hints
-        const categoriesHTML = this.store.categories.map(category => `
-            <div class="category-item ..." data-category-id="${category.id}">
-                <div class="category-header ...">
-                    <div class="...">
-                        <h3 class="... category-name ...">${category.name}</h3>
-                        <span class="...">${this.getText('EDIT_HINT')}${category.slug ? `, ${this.getText('SLUG_LABEL')} ${category.slug}` : ''}</span>
-                    </div>
-                    <div class="category-controls ...">
-                        <button class="btn btn-blue add-subcategory-btn text-sm" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
-                            <svg ...></svg>${this.getText('ADD_SUBCATEGORY_BUTTON')}
-                        </button>
-                        <button class="btn btn-red delete-category-btn text-sm" title="${this.getText('DELETE_BUTTON')}">
-                             <svg ...></svg>${this.getText('DELETE_BUTTON')}
-                        </button>
-                    </div>
-                </div>
-                <div class="subcategories ...">
-                    ${category.subcategories && category.subcategories.length > 0 ?
-                        category.subcategories.map(subcategory => `
-                            <div class="subcategory-item ..." data-subcategory-id="${subcategory.id}">
-                                <span class="... subcategory-name ...">${subcategory.name}</span>
-                                ${subcategory.slug ? `<span class="text-xs ...">(${subcategory.slug})</span>` : ''}
-                                <div class="subcategory-controls ...">
-                                    <button class="... delete-subcategory-btn ..." title="${this.getText('DELETE_BUTTON')}">
-                                        <svg ...></svg>
-                                    </button>
-                                </div>
-                            </div>`).join('') :
-                        // Use getText for empty subcategory list message
-                        `<p class="...">${this.getText('NO_SUBCATEGORIES_YET')} ${this.getText('ADD_SUB_PROMPT')}</p>`
-                    }
-                </div>
-            </div>`).join('');
 
+        // --- Generate Main List HTML ---
+        const categoriesHTML = this.store.categories.map(category => {
+            const subcategoriesHTML = category.subcategories && category.subcategories.length > 0 ?
+                category.subcategories.map(subcategory => `
+                    <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-subcategory-id="${subcategory.id}">
+                         <div class="flex-grow mr-2">
+                             <span class="subcategory-name cursor-pointer font-medium text-sm">${subcategory.name}</span>
+                             ${subcategory.slug ? `<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(${subcategory.slug})</span>` : ''}
+                         </div>
+                         <div class="subcategory-controls opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-1">
+                             <button class="delete-subcategory-btn p-1 text-red-500 hover:text-red-700" title="${this.getText('DELETE_BUTTON')}">
+                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                              </button>
+                         </div>
+                    </div>`).join('') :
+                // Use getText for empty subcategory list message
+                 `<p class="text-sm text-gray-500 dark:text-gray-400 px-2 py-1">${this.getText('NO_SUBCATEGORIES_YET')} ${this.getText('ADD_SUB_PROMPT')}</p>`;
+
+            return `
+                <div class="category-item bg-white dark:bg-gray-800 rounded-lg shadow mb-4 group" data-category-id="${category.id}">
+                    <div class="category-header flex justify-between items-center p-3 border-b dark:border-gray-700">
+                        <div class="flex-grow mr-4">
+                             <h3 class="category-name cursor-pointer font-semibold text-lg">${category.name}</h3>
+                             <span class="text-xs text-gray-500 dark:text-gray-400">${this.getText('EDIT_HINT')}${category.slug ? `, ${this.getText('SLUG_LABEL')} ${category.slug}` : ''}</span>
+                         </div>
+                         <div class="category-controls flex items-center space-x-2">
+                             <button class="btn btn-blue add-subcategory-btn text-xs px-2 py-1" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
+                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                 ${this.getText('ADD_SUBCATEGORY_BUTTON')}
+                             </button>
+                             <button class="btn btn-red delete-category-btn text-xs px-2 py-1" title="${this.getText('DELETE_BUTTON')}">
+                                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                 ${this.getText('DELETE_BUTTON')}
+                             </button>
+                         </div>
+                    </div>
+                    <div class="subcategories p-2 space-y-1">
+                         ${subcategoriesHTML}
+                    </div>
+                </div>`;
+        }).join('');
+
+        // --- Update Container ---
         this.containerEl.innerHTML = categoriesHTML;
 
-        // Re-attach 'new category' form if it existed
-        if (newCategoryForm) {
-            this.containerEl.insertAdjacentElement('afterbegin', newCategoryForm);
+        // --- Re-attach 'new category' form if it existed ---
+        if (newCategoryValue !== null) {
+             // Re-create the form and add it back, preserving value
+             this.createNewCategory(); // This function handles creating the element
+             const recreatedInput = this.containerEl.querySelector('.new-category input');
+             if (recreatedInput) {
+                 recreatedInput.value = newCategoryValue; // Restore value
+             }
         }
     }
 
+
 } // End CategoryManager Class
-
-
 
 
 
