@@ -8,11 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="taxonomy.css">
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-    
-
 </head>
 <body>
     <div class="banner-message bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out">
@@ -51,16 +48,33 @@
                                 </svg>
                             </button>
                             
-                            <div id="lang-switcher" class="flex items-center border-l border-gray-300 dark:border-gray-600 ml-4 pl-4">
+                              <!-- Language selector container -->
+                              <div id="lang-switcher" class="grid grid-cols-5 gap-x-2 gap-y-1 flex items-center border-l border-gray-300 dark:border-gray-600 ml-4 pl-4">
+                                <!-- First row -->
                                 <button data-lang="en" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">EN</button>
                                 <button data-lang="es" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">ES</button>
                                 <button data-lang="fr" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">FR</button>
                                 <button data-lang="pt" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">PT</button>
                                 <button data-lang="ar" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">AR</button>
+                            
+                                
+                                <!-- Second row -->
                                 <button data-lang="sw" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">SW</button>
                                 <button data-lang="hi" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">HI</button>
                                 <button data-lang="zh" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">ZH</button>
                                 <button data-lang="bn" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">BN</button>
+                                <button data-lang="ru" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">Ru</button>
+
+                                <button data-lang="ur" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">UR</button>
+                                <button data-lang="id" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">ID</button>
+                                <button data-lang="ha" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">HA</button>
+                                <button data-lang="th" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">TH</button>
+                                <button data-lang="am" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">AM</button>
+                                <button data-lang="vi" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">VI</button>
+                    
+                                <button data-lang="yo" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">YO</button>
+                                <button data-lang="fa" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">VI</button>
+                                <button data-lang="ms" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">YO</button>
                                 </div>
 
                             <div class="relative">
