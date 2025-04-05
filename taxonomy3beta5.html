@@ -1960,7 +1960,13 @@ cleanupAnyActiveEdits() {
     // --- Inline Editing Methods (Implementations) ---
 
     startEditing(element, type, id, categoryId = null) {
-        
+
+        // Skip editing if the element is a slug label or within one
+        if (element.closest('.slug-label')) {
+            console.log("Clicked on a slug label. Ignoring edit attempt.");
+            return;
+        }
+
         this.cleanupAnyActiveEdits();
         
         console.log(`Executing startEditing for type: ${type}, id: ${id}, categoryId: ${categoryId}`);
