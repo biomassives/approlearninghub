@@ -24,76 +24,62 @@
         }
 
         
-          /* Base styles */
-          #lang-buttons {
-            display: grid;
-            gap: 0.25rem;
+       /* Base styles */
+          #lang-dropdown {
+            position: relative;
+            display: inline-block;
           }
           
-          /* Mobile layout - stacked pairs of 3 */
+          #lang-buttons {
+            display: grid;
+            gap: 0.5rem;
+          }
+          
+          /* Mobile layout - 2 columns */
           @media (max-width: 767px) {
             #lang-buttons {
               grid-template-columns: repeat(2, 1fr);
-              grid-auto-flow: dense;
-            }
-            
-            /* Create vertical groupings of 3 */
-            .lang-button:nth-child(6n+1),
-            .lang-button:nth-child(6n+2),
-            .lang-button:nth-child(6n+3) {
-              grid-column: 1;
-            }
-            
-            .lang-button:nth-child(6n+4),
-            .lang-button:nth-child(6n+5),
-            .lang-button:nth-child(6n+6) {
-              grid-column: 2;
-            }
-            
-            /* Space out the groups */
-            .lang-button:nth-child(6n+4) {
-              margin-top: -2.5rem; /* Align with first item in left column */
-            }
-            
-            .lang-button:nth-child(6n+1),
-            .lang-button:nth-child(6n+4) {
-              margin-top: 0.75rem; /* Add space between groups */
-            }
-            
-            /* First items don't need top margin */
-            .lang-button:nth-child(1),
-            .lang-button:nth-child(4) {
-              margin-top: 0 !important;
-            }
-            
-            #help-translate {
-              grid-column: span 2;
-              margin-top: 0.75rem;
+              min-width: 220px;
             }
           }
           
-          /* Tablet layout - 4 columns */
+          /* Tablet layout - 3 columns */
           @media (min-width: 768px) and (max-width: 1023px) {
             #lang-buttons {
-              grid-template-columns: repeat(4, 1fr);
-            }
-            
-            #help-translate {
-              grid-column: span 2;
+              grid-template-columns: repeat(3, 1fr);
+              min-width: 300px;
             }
           }
           
-          /* Desktop layout - 11 columns */
+          /* Desktop layout - 4 columns */
           @media (min-width: 1024px) {
             #lang-buttons {
-              grid-template-columns: repeat(11, 1fr);
-            }
-            
-            #help-translate {
-              grid-column: span 3;
+              grid-template-columns: repeat(4, 1fr);
+              min-width: 360px;
             }
           }
-        
+          
+          /* Active state for language buttons */
+          .lang-button[data-active="true"] {
+            background-color: #4A5568;
+            border-color: #4299E1;
+          }
+          
+          /* Animation for dropdown */
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          
+          #lang-panel.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out forwards;
+          }
+          
+          #lang-toggle.active svg {
+            transform: rotate(180deg);
+          }
+                
 
         /* Reset the existing pencil behavior */
         .category-name::before, 
@@ -168,15 +154,15 @@
         .slug-label::after {
             content: none !important;
         }
+        
 
-
-            /* Styling the edited state */
-            .inline-edit-field {
+        /* Styling the edited state */
+        .inline-edit-field {
                 font-size: inherit;
                 font-weight: inherit;
                 padding: 2px 6px;
                 margin: 0;
-
+        
             /* Inherit font styles from parent for consistency */
             font-size: inherit;
             font-weight: inherit;
