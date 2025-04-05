@@ -7,797 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="taxonomy.css">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     
-<style> 
-        /* Base styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #dbe5df;
-            color: #333;
-            transition: all 0.3s ease;
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
-        }
-    
-        /* Theme Colors */
-        :root {
-            --nile-blue: #8fb8cc;
-            --desert-red: #c49178;
-            --savanna-green: #96b089;
-            
-            --nile-blue-hover: #68c1e6;
-            --desert-red-hover: #e6927a;
-            --savanna-green-hover: #7fc261;
-            
-            --item-bg: #f9fafb;
-            --body-text: #1a1a1e;
-            --delete-btn: #c49178;
-            --delete-btn-hover: #e6927a;
-        }
-            
-        /* Reset the existing pencil behavior */
-        .category-name::before, 
-        .subcategory-name::before {
-            content: none;
-        }
-        
-        /* Remove the existing hover text decoration */
-        .category-name:hover::after, 
-        .subcategory-name:hover::after {
-            opacity: 0;
-        }
-        
-        /* Create a more elegant hover effect */
-        .category-name, .subcategory-name {
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            padding: 2px 6px;
-            margin: -2px -6px;
-            border-radius: 4px;
-        }
-        
-        .category-name:hover, .subcategory-name:hover {
-            background-color: rgba(150, 176, 137, 0.1);
-        }
-        
-        .dark-mode .category-name:hover, 
-        .dark-mode .subcategory-name:hover {
-            background-color: rgba(150, 176, 137, 0.2);
-        }
-        
-        /* Subtle indicator on hover showing it's editable */
-        .category-name:hover::after, 
-        .subcategory-name:hover::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 6px;
-            right: 6px;
-            height: 1px;
-            background-color: rgba(150, 176, 137, 0.6);
-            opacity: 1;
-        }
-        
-        /* Update the edit hint text to be more subtle */
-        .category-header .text-xs {
-            opacity: 0.65;
-            transition: opacity 0.2s ease;
-        }
-        
-        .category-item:hover .category-header .text-xs {
-            opacity: 1;
-        }
-        
-        /* Make slug labels clearly non-editable */
-        .slug-label {
-            cursor: default !important;
-            user-select: text !important; /* Allow text selection but not editing */
-            opacity: 0.7;
-            pointer-events: none; /* Prevent clicks from propagating */
-        }
-        
-        /* Ensure no hover effects on slug labels */
-        .slug-label:hover {
-            background-color: transparent !important;
-            cursor: text !important;
-        }
-        
-        /* Clear any pseudo-elements for slug labels */
-        .slug-label::before, 
-        .slug-label::after {
-            content: none !important;
-        }
 
-
-            /* Styling the edited state */
-            .inline-edit-field {
-                font-size: inherit;
-                font-weight: inherit;
-                padding: 2px 6px;
-                margin: 0;
-
-            /* Inherit font styles from parent for consistency */
-            font-size: inherit;
-            font-weight: inherit;
-            line-height: inherit;
-            /* Specific Styling */
-            border: 2px solid var(--savanna-green); /* Use theme color */
-            border-radius: 4px;
-            padding: 0.25rem 0.5rem; /* Adjust padding as needed */
-            width: 95%; /* Take up most available space within parent */
-            box-sizing: border-box; /* Include padding/border in width calculation */
-            background-color: white;
-            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.2); /* Subtle glow */
-            position: relative; /* Ensure it appears above static content if needed */
-            z-index: 10; /* Higher stack order */
-            transition: box-shadow 0.2s ease;
-        }
-        
-        .dark-mode .inline-edit-field {
-            background-color: #3a3a54; /* Darker background */
-            border-color: var(--savanna-green);
-            color: #e1e1e1;
-            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.3);
-        }
-        
-        .inline-edit-field:focus {
-            outline: none; /* Remove default outline */
-            box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.5); /* Stronger glow on focus */
-        }
-        
-        /* Style for the parent item (category or subcategory) when its name is being edited */
-        .is-editing {
-             /* Subtle indication that this item is active */
-             background-color: rgba(150, 176, 137, 0.05);
-             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.3);
-        }
-        .dark-mode .is-editing {
-             background-color: rgba(150, 176, 137, 0.1);
-             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.5);
-        }
-        
-        /* --- Status Feedback Styles (Applied to the .category-name or .subcategory-name) --- */
-        
-        /* Base adjustments for status pseudo-elements */
-        .category-name, .subcategory-name {
-            position: relative; /* Needed for ::after positioning */
-            /* Add padding to make space for status icons/background flash */
-            padding: 0.25rem 0.5rem;
-            margin: -0.25rem -0.5rem; /* Counteract padding to maintain layout flow */
-            border-radius: 4px; /* Match input field */
-            transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.2s ease; /* Smooth transitions */
-        }
-        
-        /* Saving State */
-        .status-saving {
-            /* Optional: slightly dim text while saving */
-            /* color: #a0aec0; */ /* Example: Tailwind gray-500 */
-            cursor: wait; /* Indicate processing */
-        }
-        .dark-mode .status-saving {
-            /* color: #718096; */ /* Example: Tailwind gray-600 */
-        }
-        .status-saving::after {
-           content: '⏳'; /* Saving indicator icon */
-           font-size: 0.8em;
-           margin-left: 6px;
-           display: inline-block;
-           vertical-align: middle;
-           animation: spin 1s linear infinite; /* Reuse spin animation */
-           /* Ensure this doesn't get duplicated by hover styles */
-           opacity: 1 !important;
-           transform: translateX(0) !important;
-        }
-        
-        /* Success State */
-        .status-success {
-            /* Flash background */
-            background-color: rgba(74, 222, 128, 0.2); /* Tailwind green-400 @ 20% */
-            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
-        }
-        .dark-mode .status-success {
-             background-color: rgba(74, 222, 128, 0.3);
-             box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.5);
-        }
-        .status-success::after {
-            content: '✅'; /* Success indicator icon */
-            font-size: 0.8em;
-            margin-left: 6px;
-            vertical-align: middle;
-            /* Ensure this doesn't get duplicated by hover styles */
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-        }
-        
-        
-        /* Error State */
-        .status-error {
-             /* Flash background */
-            background-color: rgba(248, 113, 113, 0.2); /* Tailwind red-400 @ 20% */
-            box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.4);
-            /* Optionally change text color for error */
-            /* color: #b91c1c; */ /* Tailwind red-700 */
-        }
-        .dark-mode .status-error {
-             background-color: rgba(248, 113, 113, 0.3);
-             box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5);
-             /* color: #f87171; */ /* Tailwind red-400 */
-        }
-        .status-error::after {
-            content: '❌'; /* Error indicator icon */
-            font-size: 0.8em;
-            margin-left: 6px;
-            vertical-align: middle;
-            /* Ensure this doesn't get duplicated by hover styles */
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-        }
-        
-        /* Ensure status icons override the hover pencil icon */
-        .category-name.status-saving::before,
-        .subcategory-name.status-saving::before,
-        .category-name.status-success::before,
-        .subcategory-name.status-success::before,
-        .category-name.status-error::before,
-        .subcategory-name.status-error::before,
-        .category-name.status-saving::after, /* If you were using ::after for pencil */
-        .subcategory-name.status-saving::after {
-            content: none !important; /* Hide pencil during status display */
-        }
-        
-        
-        /* --- Keyframes (ensure present) --- */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Existing animation for pencil wiggle (optional) */
-        @keyframes wiggle {
-             0% { transform: rotate(0deg); }
-             25% { transform: rotate(10deg); }
-             75% { transform: rotate(-10deg); }
-             100% { transform: rotate(0deg); }
-        }
-        /* Apply wiggle only if NOT showing status */
-        .category-name:not(.status-saving):not(.status-success):not(.status-error):hover::before,
-        .subcategory-name:not(.status-saving):not(.status-success):not(.status-error):hover::before {
-             animation: wiggle 0.5s ease;
-        }
-
-
-        /* Profile Button and Dropdown Styles */
-        .profile-dropdown {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            width: 12rem;
-            z-index: 50;
-            transform-origin: top right;
-            transition: all 0.2s ease;
-        }
-    
-        /* Active State */
-        .profile-dropdown.dropdown-active {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
-            visibility: visible;
-        }
-    
-        /* Inactive State */
-        .profile-dropdown.dropdown-inactive {
-            opacity: 0;
-            transform: scale(0.95);
-            pointer-events: none;
-            visibility: hidden;
-        }
-    
-        /* Dropdown Items */
-        .profile-dropdown .py-1 a {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: #374151;
-            transition: all 0.2s ease;
-        }
-    
-        .profile-dropdown .py-1 a:hover {
-            background-color: #f3f4f6;
-        }
-    
-        /* Dark Mode Styles */
-        .dark-mode .profile-dropdown {
-            background-color: #2d2d44;
-            border: 1px solid #3f3f5f;
-        }
-    
-        .dark-mode .profile-dropdown .py-1 a {
-            color: #e5e7eb;
-        }
-    
-        .dark-mode .profile-dropdown .py-1 a:hover {
-            background-color: #3f3f5f;
-        }
-    
-        .dark-mode #mainNav {
-            background-color: #1a1a2e;
-            color: #e5e7eb;
-        }
-    
-        .dark-mode .nav-link {
-            color: #e5e7eb;
-        }
-    
-        .dark-mode #profileButton svg,
-        .dark-mode #darkModeToggle svg {
-            color: #e5e7eb;
-        }
-    
-        /* Profile Button */
-        #profileButton {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-    
-        #profileButton svg {
-            width: 24px;
-            height: 24px;
-        }
-    
-        /* Navigation Container Dark Mode */
-        .dark-mode nav.bg-white {
-            background-color: #1a1a2e;
-        }
-    
-        /* Dark Mode */
-        body.dark-mode {
-            background-color: #1a1a2e;
-            color: #e1e1e1;
-            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            
-            --item-bg: #2a2a3e;
-            --body-text: #e1e1e1;
-            --delete-btn: #b37a64;
-            --delete-btn-hover: #e6927a;
-        }
-    
-        /* Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-    
-        .btn-blue {
-            background-color: var(--nile-blue);
-            color: white;
-        }
-    
-        .btn-red {
-            background-color: var(--desert-red);
-            color: white;
-        }
-    
-        .btn-green {
-            background-color: var(--savanna-green);
-            color: white;
-        }
-    
-        .btn-blue:hover, .btn-red:hover, .btn-green:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-    
-        .btn-blue:hover { background-color: var(--nile-blue-hover); }
-        .btn-red:hover { background-color: var(--desert-red-hover); }
-        .btn-green:hover { background-color: var(--savanna-green-hover); }
-    
-        /* Navigation Styles */
-        .nav-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-    
-        .dark-mode .nav-container {
-            background-color: rgba(45, 45, 68, 0.9);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-    
-        /* Category and Subcategory Styles */
-        .category-item {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            animation: slideIn 0.3s ease-out;
-            transition: all 0.3s ease;
-        }
-    
-        .dark-mode .category-item {
-            background-color: #2d2d44;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            color: #e1e1e1;
-        }
-    
-        .category-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-    
-        .subcategory-item {
-            background: #f3f4f6;
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    
-        .dark-mode .subcategory-item {
-            background-color: #3a3a54;
-        }
-    
-        /* Tag Styles */
-        .tag-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            padding: 1rem 0;
-        }
-    
-        .tag-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            transition: all 0.3s ease;
-        }
-    
-        .dark-mode .tag-item {
-            background-color: #2d2d44;
-        }
-    
-        .tag-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-    
-        /* Animations */
-        @keyframes slideIn {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    
-        /* Loading State */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            color: #666;
-        }
-    
-        .loading::after {
-            content: '';
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 2px solid #3498db;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-            margin-left: 0.5rem;
-        }
-    
-        /* Error State */
-        .error {
-            background: #fee;
-            color: #e74c3c;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-    
-        /* Custom Scrollbar */
-        .subcategories {
-            max-height: 250px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #9CA3AF transparent;
-        }
-    
-        .subcategories::-webkit-scrollbar {
-            width: 6px;
-        }
-    
-        .subcategories::-webkit-scrollbar-track {
-            background: transparent;
-        }
-    
-        .subcategories::-webkit-scrollbar-thumb {
-            background-color: #9CA3AF;
-            border-radius: 3px;
-        }
-    
-        /* Inline Editing Styles */
-        .inline-edit-field {
-            border: 2px solid var(--savanna-green);
-            border-radius: 4px;
-            padding: 0.5rem;
-            font-size: inherit;
-            font-weight: inherit;
-            width: 100%;
-            max-width: 300px;
-            background-color: white;
-            transition: all 0.2s ease;
-        }
-    
-        .dark-mode .inline-edit-field {
-            background-color: #1f1f35;
-            border-color: var(--savanna-green);
-            color: #e1e1e1;
-        }
-    
-        .new-item-input {
-            border: 2px solid var(--savanna-green);
-            border-radius: 4px;
-            padding: 0.5rem;
-            font-size: inherit;
-            background-color: white;
-            width: 100%;
-            max-width: 300px;
-            transition: all 0.2s ease;
-        }
-    
-        .dark-mode .new-item-input {
-            background-color: #1f1f35;
-            border-color: var(--savanna-green);
-            color: #e1e1e1;
-        }
-    
-        .category-name, .subcategory-name {
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 4px;
-            transition: background-color 0.2s ease;
-        }
-    
-        .category-name:hover, .subcategory-name:hover {
-            background-color: rgba(150, 176, 137, 0.1);
-        }
-    
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-    
-        .subcategory-item {
-            position: relative;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-    
-        .subcategory-item:hover {
-            background-color: rgba(150, 176, 137, 0.1);
-        }
-    
-        .subcategory-controls {
-            opacity: 0.3;
-            transition: opacity 0.2s ease;
-        }
-    
-        .subcategory-item:hover .subcategory-controls {
-            opacity: 1;
-        }
-    
-        .error-toast {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background-color: #e74c3c;
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 4px;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
-        }
-    
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
-        }
-    
-        /* New Category and Subcategory Animation */
-        .new-category, .new-subcategory {
-            animation: slideDown 0.3s ease;
-        }
-    
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    
-        /* Dark Mode Adjustments */
-        .dark-mode .category-name:hover, 
-        .dark-mode .subcategory-name:hover,
-        .dark-mode .subcategory-item:hover {
-            background-color: rgba(150, 176, 137, 0.2);
-        }
-    
-        /* Make the subcategory and category items look more clickable */
-        .category-name::after, 
-        .subcategory-name::after {
-            content: '✏️';
-            font-size: 0.75em;
-            opacity: 0;
-            margin-left: 6px;
-            transition: opacity 0.2s ease;
-        }
-    
-        .category-name:hover::after, 
-        .subcategory-name:hover::after {
-            opacity: 1;
-        }
-    
-    /* Firefox-specific enhancements for inline editing */
-    .category-name, .subcategory-name {
-        cursor: pointer;
-        padding: 0.25rem;
-        border-radius: 4px;
-        transition: background-color 0.2s ease;
-        position: relative;
-        user-select: none; /* Prevents text selection issues in Firefox */
-    }
-    
-    .category-name:hover, .subcategory-name:hover {
-        background-color: rgba(150, 176, 137, 0.2);
-        outline: 2px solid rgba(150, 176, 137, 0.3);
-    }
-    
-    /* Make editable elements more obvious */
-    .category-name::before, 
-    .subcategory-name::before {
-        content: '✏️';
-        position: absolute;
-        right: -25px;
-        opacity: 0;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-        transform: translateX(-10px);
-    }
-    
-    .category-name:hover::before, 
-    .subcategory-name:hover::before {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    
-    /* Improved styling for the inline edit field */
-    .inline-edit-field {
-        border: 2px solid var(--savanna-green);
-        border-radius: 4px;
-        padding: 0.5rem;
-        font-size: inherit;
-        font-weight: inherit;
-        width: 100%;
-        min-width: 200px; /* Ensure minimum width for usability */
-        max-width: 100%;
-        background-color: white;
-        transition: all 0.2s ease;
-        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
-        z-index: 5;
-        position: relative;
-    }
-    
-    .dark-mode .inline-edit-field {
-        background-color: #1f1f35;
-        border-color: var(--savanna-green);
-        color: #e1e1e1;
-    }
-    
-    /* Ensure inputs are properly sized and clickable */
-    .new-item-input {
-        border: 2px solid var(--savanna-green);
-        border-radius: 4px;
-        padding: 0.5rem;
-        font-size: inherit;
-        background-color: white;
-        width: 100%;
-        min-width: 200px;
-        max-width: 100%;
-        transition: all 0.2s ease;
-        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
-    }
-    
-    .dark-mode .new-item-input {
-        background-color: #1f1f35;
-        border-color: var(--savanna-green);
-        color: #e1e1e1;
-    }
-    
-    /* Visual feedback for keyboard focus */
-    .category-name:focus,
-    .subcategory-name:focus {
-        outline: 2px solid var(--savanna-green);
-        background-color: rgba(150, 176, 137, 0.2);
-    }
-    
-    /* Add a subtle pointer cursor for all interactive elements */
-    .category-name, 
-    .subcategory-name,
-    .btn,
-    .delete-subcategory-btn {
-        cursor: pointer;
-    }
-    
-    /* Fix for Firefox event bubbling */
-    .subcategory-item {
-        position: relative;
-        pointer-events: auto;
-    }
-    
-    .subcategory-name {
-        pointer-events: auto;
-        position: relative;
-        z-index: 2;
-    }
-    
-    /* Animation for the edit pencil icon */
-    @keyframes wiggle {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(10deg); }
-        75% { transform: rotate(-10deg); }
-        100% { transform: rotate(0deg); }
-    }
-    .category-name:hover::before,
-    .subcategory-name:hover::before {
-        animation: wiggle 0.5s ease;
-    }   
-    /* Empty state styling */
-    .empty-state {
-        padding: 2rem;
-        text-align: center;
-        color: #6b7280;
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 8px;
-        margin: 1rem 0;
-    }
-    .dark-mode .empty-state {
-        background-color: rgba(45, 45, 68, 0.5);
-        color: #9ca3af;
-    }
-      #toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 50; display: flex; flex-direction: column; gap: 0.5rem; }
-      
-    </style>
 </head>
 <body>
     <div class="banner-message bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out">
@@ -1084,10 +299,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
     }
 }
 
-   
-
-      
-     
     const translations = {
         // English (Default)
         en: {
@@ -1232,7 +443,644 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "Fallo al inicializar la base de datos local: {error}",
             FAILED_OPERATION: "Fallo al {operation}: {error}",
             UNEXPECTED_ERROR: "Un error inesperado ocurrió: {error}",
-        }
+        },
+     // French Translation
+        fr: {
+            PORTAL_TITLE: "Appro🎥video Gestionnaire du Portail Vidéo🎥",
+            TAXONOMY_TITLE: "Gestion de la Taxonomie",
+            TAXONOMY_DESC: "Organisez votre contenu avec des catégories et sous-catégories. Cliquez sur un nom pour modifier.",
+            CATEGORIES_HEADER: "Catégories et Sous-catégories",
+            TAG_MANAGEMENT_HEADER: "Gestion des Étiquettes",
+            LOADING: "Chargement...",
+            SAVE_BUTTON: "Enregistrer",
+            CANCEL_BUTTON: "Annuler",
+            DELETE_BUTTON: "Supprimer",
+            EDIT_HINT: "Cliquez sur le nom pour modifier",
+            SLUG_LABEL: "Slug :",
+            STATUS_SAVING: "Enregistrement...",
+            STATUS_SAVED: "Enregistré !",
+            STATUS_ERROR: "Erreur",
+            CONFIRM_ACTION_TITLE: "Confirmer l'Action",
+        
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Ajouter Catégorie",
+            ADD_SUBCATEGORY_BUTTON: "Ajouter Sous-catégorie",
+            LOADING_CATEGORIES: "Chargement des catégories...",
+            NO_CATEGORIES_YET: "Aucune catégorie pour le moment.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Cliquez sur "Ajouter Catégorie" pour créer la première.',
+            NO_SUBCATEGORIES_YET: "Aucune sous-catégorie pour le moment.",
+            ADD_SUB_PROMPT: 'Utilisez le bouton "Ajouter Sous-catégorie" ci-dessus.',
+            ENTER_CATEGORY_PLACEHOLDER: "Entrez le nom de la catégorie et appuyez sur Entrée",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Entrez le nom de la sous-catégorie et appuyez sur Entrée",
+            DELETE_CATEGORY_CONFIRM: "Êtes-vous sûr de vouloir supprimer la catégorie \"{name}\" ? Cette action est irréversible.",
+            DELETE_SUBCATEGORY_CONFIRM: "Êtes-vous sûr de vouloir supprimer la sous-catégorie \"{name}\" ? Cette action est irréversible.",
+            ITEM_NAME_EMPTY_ERROR: "Le nom de {itemType} ne peut pas être vide.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'Impossible de supprimer "{name}" : elle contient encore des sous-catégories. Veuillez les supprimer d’abord.',
+        
+            // Tags
+            ADD_TAG_BUTTON: "Ajouter Étiquette",
+            NO_TAGS_YET: "Aucune étiquette pour le moment.",
+            ADD_FIRST_TAG_PROMPT: 'Cliquez sur "Ajouter Étiquette" pour créer la première.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "La gestion des étiquettes n'est pas encore implémentée.",
+        
+            // Banners
+            BANNER_MSG_1: "🎥 Partager des connaissances qui changent des vies - Une vidéo à la fois",
+            BANNER_MSG_2: "🌱 Construire la résilience grâce à des technologies adaptées",
+        
+            // Navigation Titles
+            NAV_LINK_WEBSITE_TITLE: "Visiter le Site Principal",
+            NAV_LINK_NEW_TITLE: "Ajouter Nouveau Contenu",
+            TOGGLE_DARK_MODE_TITLE: "Changer Mode Sombre/Clair",
+            PROFILE_MENU_TITLE: "Menu Utilisateur",
+        
+            // Dropdown Items
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo bêta",
+            DROPDOWN_PENDING: "En Attente",
+            DROPDOWN_HOMEPAGE: "Admin Principal",
+            DROPDOWN_TAXONOMY: "Éditeur de Taxonomie",
+            DROPDOWN_SIGN_OUT: "Déconnexion",
+        
+            // Item Types
+            CATEGORY: "Catégorie",
+            SUBCATEGORY: "Sous-catégorie",
+            TAG: "Étiquette",
+        
+            // Errors & Status
+            ERROR_PREFIX: "Erreur",
+            CRITICAL_ERROR_MSG: "Erreur Critique : Impossible d'initialiser l'application. {error} Veuillez vérifier la console et rafraîchir.",
+            NETWORK_ERROR_CACHE_FALLBACK: "Erreur réseau : {error}. Tentative d'utiliser les données locales.",
+            NETWORK_ERROR_NO_CACHE: "Erreur réseau : {error}. Aucune donnée locale disponible.",
+            CACHE_ERROR: "Erreur du cache : {error}. Impossible de charger les données locales.",
+            DB_INIT_ERROR: "Échec d'initialisation de la base de données locale : {error}",
+            FAILED_OPERATION: "Échec lors de {operation} : {error}",
+            UNEXPECTED_ERROR: "Une erreur inattendue est survenue : {error}",
+        },
+        
+        // Portuguese Translation
+        pt: {
+            PORTAL_TITLE: "Appro🎥video Gestor do Portal de Vídeos🎥",
+            TAXONOMY_TITLE: "Gestão de Taxonomia",
+            TAXONOMY_DESC: "Organize seu conteúdo com categorias e subcategorias. Clique em qualquer nome para editar.",
+            CATEGORIES_HEADER: "Categorias e Subcategorias",
+            TAG_MANAGEMENT_HEADER: "Gestão de Etiquetas",
+            LOADING: "Carregando...",
+            SAVE_BUTTON: "Salvar",
+            CANCEL_BUTTON: "Cancelar",
+            DELETE_BUTTON: "Excluir",
+            EDIT_HINT: "Clique no nome para editar",
+            SLUG_LABEL: "Slug:",
+            STATUS_SAVING: "Salvando...",
+            STATUS_SAVED: "Salvo!",
+            STATUS_ERROR: "Erro",
+            CONFIRM_ACTION_TITLE: "Confirmar Ação",
+        
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Adicionar Categoria",
+            ADD_SUBCATEGORY_BUTTON: "Adicionar Subcategoria",
+            LOADING_CATEGORIES: "Carregando categorias...",
+            NO_CATEGORIES_YET: "Ainda não há categorias.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Clique em "Adicionar Categoria" para criar a primeira.',
+            NO_SUBCATEGORIES_YET: "Ainda não há subcategorias.",
+            ADD_SUB_PROMPT: 'Use o botão "Adicionar Subcategoria" acima.',
+            ENTER_CATEGORY_PLACEHOLDER: "Digite o nome da categoria e pressione Enter",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Digite o nome da subcategoria e pressione Enter",
+            DELETE_CATEGORY_CONFIRM: "Tem certeza que deseja excluir a categoria \"{name}\"? Esta ação é irreversível.",
+            DELETE_SUBCATEGORY_CONFIRM: "Tem certeza que deseja excluir a subcategoria \"{name}\"? Esta ação é irreversível.",
+            ITEM_NAME_EMPTY_ERROR: "O nome da {itemType} não pode estar vazio.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'Não é possível excluir "{name}": Ainda contém subcategorias. Por favor, exclua-as primeiro.',
+        
+            // Tags
+            ADD_TAG_BUTTON: "Adicionar Etiqueta",
+            NO_TAGS_YET: "Ainda não há etiquetas.",
+            ADD_FIRST_TAG_PROMPT: 'Clique em "Adicionar Etiqueta" para criar a primeira.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "A gestão de etiquetas ainda não foi implementada.",
+        
+            // Banners
+            BANNER_MSG_1: "🎥 Compartilhando conhecimento que muda vidas - Um vídeo de cada vez",
+            BANNER_MSG_2: "🌱 Construindo resiliência através de tecnologias apropriadas",
+        
+            // Navigation Titles
+            NAV_LINK_WEBSITE_TITLE: "Visitar Site Principal",
+            NAV_LINK_NEW_TITLE: "Adicionar Novo Conteúdo",
+            TOGGLE_DARK_MODE_TITLE: "Alternar Modo Escuro/Claro",
+            PROFILE_MENU_TITLE: "Menu do Usuário",
+        
+            // Dropdown Items
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+            DROPDOWN_PENDING: "Pendente",
+            DROPDOWN_HOMEPAGE: "Admin Principal",
+            DROPDOWN_TAXONOMY: "Editor de Taxonomia",
+            DROPDOWN_SIGN_OUT: "Sair",
+        
+            // Item Types
+            CATEGORY: "Categoria",
+            SUBCATEGORY: "Subcategoria",
+            TAG: "Etiqueta",
+        
+            // Errors & Status
+            ERROR_PREFIX: "Erro",
+            CRITICAL_ERROR_MSG: "Erro Crítico: Não foi possível inicializar o aplicativo. {error} Verifique o console e atualize.",
+            NETWORK_ERROR_CACHE_FALLBACK: "Erro de rede: {error}. Tentando dados locais.",
+            NETWORK_ERROR_NO_CACHE: "Erro de rede: {error}. Não há dados locais disponíveis.",
+            CACHE_ERROR: "Erro de cache: {error}. Não foi possível carregar dados locais.",
+            DB_INIT_ERROR: "Falha ao inicializar o banco de dados local: {error}",
+            FAILED_OPERATION: "Falha ao {operation}: {error}",
+            UNEXPECTED_ERROR: "Ocorreu um erro inesperado: {error}",
+        },
+        ar: {
+            PORTAL_TITLE: "مدير بوابة الفيديو Approvideo",
+            TAXONOMY_TITLE: "إدارة التصنيف",
+            TAXONOMY_DESC: "نظّم محتواك حسب الفئات والفئات الفرعية. انقر على أي اسم لتحريره.",
+            CATEGORIES_HEADER: "الفئات والفئات الفرعية",
+            TAG_MANAGEMENT_HEADER: "إدارة العلامات",
+            
+            LOADING: "جاري التحميل",
+            SAVE_BUTTON: "حفظ",
+            CANCEL_BUTTON: "إلغاء",
+            DELETE_BUTTON: "حذف",
+            EDIT_HINT: "انقر على الاسم لتحريره",
+            SLUG_LABEL: "Slug:",
+            STATUS_SAVING: "جاري الحفظ...",
+            STATUS_SAVED: "تم الحفظ!",  // Missing comma added
+            STATUS_ERROR: "خطأ",
+            CONFIRM_ACTION_TITLE: "تأكيد الإجراء",
+            
+            // الفئات والفئات الفرعية
+            ADD_CATEGORY_BUTTON: "إضافة فئة",
+            ADD_SUBCATEGORY_BUTTON: "إضافة فئة فرعية",
+            LOADING_CATEGORIES: "جاري تحميل الفئات...",
+            NO_CATEGORIES_YET: "لا توجد فئات حتى الآن.",
+            ADD_FIRST_CATEGORY_PROMPT: 'انقر فوق "إضافة فئة" لإنشاء الفئة الأولى.',
+            NO_SUBCATEGORIES_YET: "لا توجد فئات فرعية حتى الآن.",
+            ADD_SUB_PROMPT: 'استخدم زر "إضافة فئة فرعية" أعلاه.',
+            ENTER_CATEGORY_PLACEHOLDER: "أدخل اسم الفئة واضغط على Enter",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "أدخل اسم الفئة الفرعية واضغط على Enter",
+            DELETE_CATEGORY_CONFIRM: "هل أنت متأكد من حذف الفئة \"{name}\"؟ هذا الإجراء لا رجعة فيه.",
+            DELETE_SUBCATEGORY_CONFIRM: "هل أنت متأكد من حذف الفئة الفرعية \"{name}\"؟ هذا الإجراء لا رجعة فيه.",
+            ITEM_NAME_EMPTY_ERROR: "لا يمكن أن يكون اسم {itemType} فارغًا.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'لا يمكن حذف "{name}": لا يزال يحتوي على فئات فرعية. يرجى حذفها أولاً.',  // Fixed quote and period
+            
+            // العلامات
+            ADD_TAG_BUTTON: "إضافة علامة",
+            NO_TAGS_YET: "لا توجد علامات حتى الآن.",
+            ADD_FIRST_TAG_PROMPT: 'انقر فوق "إضافة علامة" لإنشاء العلامة الأولى.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "لم يتم تنفيذ إدارة العلامات بعد.",
+            
+            // لافتات
+            BANNER_MSG_1: "🎥 مشاركة المعرفة التي تُغيّر الحياة - مقطع فيديو واحد في كل مرة",
+            BANNER_MSG_2: "🌱 بناء المرونة من خلال التقنيات المناسبة",
+            
+            // عناوين التنقل
+            NAV_LINK_WEBSITE_TITLE: "زيارة الموقع الرئيسي",
+            NAV_LINK_NEW_TITLE: "إضافة محتوى جديد",
+            TOGGLE_DARK_MODE_TITLE: "تبديل الوضع الداكن/الفاتح",
+            PROFILE_MENU_TITLE: "قائمة المستخدم",
+            
+            // عناصر القائمة المنسدلة
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+            DROPDOWN_PENDING: "معلق",  // Missing comma added
+            DROPDOWN_HOMEPAGE: "المسؤول الرئيسي",
+            DROPDOWN_TAXONOMY: "محرر التصنيف",
+            DROPDOWN_SIGN_OUT: "تسجيل الخروج",
+            CATEGORY: "الفئة",
+            SUBCATEGORY: "الفئة الفرعية",
+            TAG: "العلامة",
+                
+            // الأخطاء والحالة
+            ERROR_PREFIX: "خطأ",
+            CRITICAL_ERROR_MSG: "خطأ حرج: تعذر تهيئة التطبيق. {error} يرجى التحقق من وحدة التحكم والتحديث.",
+            NETWORK_ERROR_CACHE_FALLBACK: "خطأ في الشبكة: {error}. محاولة الوصول إلى بيانات محلية.",  // Missing comma added
+            NETWORK_ERROR_NO_CACHE: "خطأ في الشبكة: {error}. لا توجد بيانات محلية متاحة.",
+            CACHE_ERROR: "خطأ في ذاكرة التخزين المؤقت: {error}. تعذر تحميل البيانات المحلية.",
+            DB_INIT_ERROR: "فشل تهيئة قاعدة البيانات المحلية: {error}",
+            FAILED_OPERATION: "فشلت {العملية}: {خطأ}",
+            UNEXPECTED_ERROR: "حدث خطأ غير متوقع: {error}",
+        },
+        // Swahili Translation
+    sw: {
+        PORTAL_TITLE: "Appro🎥video Meneja wa Tovuti ya Video🎥",
+        TAXONOMY_TITLE: "Usimamizi wa Uainishaji",
+        TAXONOMY_DESC: "Panga maudhui yako kwa kutumia vikundi na vikundi vidogo. Bofya jina lolote ili kuhariri.",
+        CATEGORIES_HEADER: "Vikundi na Vikundi Vidogo",
+        TAG_MANAGEMENT_HEADER: "Usimamizi wa Lebo",
+        LOADING: "Inapakia...",
+        SAVE_BUTTON: "Hifadhi",
+        CANCEL_BUTTON: "Ghairi",
+        DELETE_BUTTON: "Futa",
+        EDIT_HINT: "Bofya jina ili kuhariri",
+        SLUG_LABEL: "Slug:",
+        STATUS_SAVING: "Inahifadhi...",
+        STATUS_SAVED: "Imehifadhiwa!",
+        STATUS_ERROR: "Hitilafu",
+        CONFIRM_ACTION_TITLE: "Thibitisha Kitendo",
+    
+        // Categories & Subcategories
+        ADD_CATEGORY_BUTTON: "Ongeza Kikundi",
+        ADD_SUBCATEGORY_BUTTON: "Ongeza Kikundi Kidogo",
+        LOADING_CATEGORIES: "Inapakia vikundi...",
+        NO_CATEGORIES_YET: "Bado hakuna vikundi.",
+        ADD_FIRST_CATEGORY_PROMPT: 'Bofya "Ongeza Kikundi" kuunda cha kwanza.',
+        NO_SUBCATEGORIES_YET: "Bado hakuna vikundi vidogo.",
+        ADD_SUB_PROMPT: 'Tumia kitufe cha "Ongeza Kikundi Kidogo" hapo juu.',
+        ENTER_CATEGORY_PLACEHOLDER: "Andika jina la kikundi kisha bonyeza Enter",
+        ENTER_SUBCATEGORY_PLACEHOLDER: "Andika jina la kikundi kidogo kisha bonyeza Enter",
+        DELETE_CATEGORY_CONFIRM: "Je, una uhakika unataka kufuta kikundi \"{name}\"? Kitendo hiki hakiwezi kutenduliwa.",
+        DELETE_SUBCATEGORY_CONFIRM: "Je, una uhakika unataka kufuta kikundi kidogo \"{name}\"? Kitendo hiki hakiwezi kutenduliwa.",
+        ITEM_NAME_EMPTY_ERROR: "Jina la {itemType} haliwezi kuwa tupu.",
+        CATEGORY_DELETE_HAS_SUBS_ERROR: 'Haiwezekani kufuta "{name}": Kina vikundi vidogo. Tafadhali vifute kwanza.',
+    
+        // Tags
+        ADD_TAG_BUTTON: "Ongeza Lebo",
+        NO_TAGS_YET: "Bado hakuna lebo.",
+        ADD_FIRST_TAG_PROMPT: 'Bofya "Ongeza Lebo" kuunda ya kwanza.',
+        TAG_FEATURE_NOT_IMPLEMENTED: "Usimamizi wa lebo bado haujatekelezwa.",
+    
+        // Banners
+        BANNER_MSG_1: "🎥 Kushiriki maarifa yanayobadilisha maisha - Video moja kwa wakati",
+        BANNER_MSG_2: "🌱 Kujenga uthabiti kupitia teknolojia sahihi",
+    
+        // Navigation Titles
+        NAV_LINK_WEBSITE_TITLE: "Tembelea Tovuti Kuu",
+        NAV_LINK_NEW_TITLE: "Ongeza Maudhui Mapya",
+        TOGGLE_DARK_MODE_TITLE: "Badili Modi Nyeusi/Nyeupe",
+        PROFILE_MENU_TITLE: "Menyu ya Mtumiaji",
+    
+        // Dropdown Items
+        DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+        DROPDOWN_PENDING: "Inasubiri",
+        DROPDOWN_HOMEPAGE: "Admin Kuu",
+        DROPDOWN_TAXONOMY: "Kihariri cha Uainishaji",
+        DROPDOWN_SIGN_OUT: "Ondoka",
+    
+        // Item Types
+        CATEGORY: "Kikundi",
+        SUBCATEGORY: "Kikundi Kidogo",
+        TAG: "Lebo",
+    
+        // Errors & Status
+        ERROR_PREFIX: "Hitilafu",
+        CRITICAL_ERROR_MSG: "Hitilafu Kubwa: Imeshindikana kuanzisha programu. {error} Tafadhali angalia koni na uboreshe.",
+        NETWORK_ERROR_CACHE_FALLBACK: "Hitilafu ya mtandao: {error}. Inajaribu kutumia data za ndani.",
+        NETWORK_ERROR_NO_CACHE: "Hitilafu ya mtandao: {error}. Hakuna data za ndani zilizopo.",
+        CACHE_ERROR: "Hitilafu ya hifadhi: {error}. Imeshindikana kupakia data za ndani.",
+        DB_INIT_ERROR: "Imeshindikana kuanzisha hifadhidata ya ndani: {error}",
+        FAILED_OPERATION: "Imeshindikana kufanya {operation}: {error}",
+        UNEXPECTED_ERROR: "Hitilafu isiyotarajiwa imetokea: {error}",
+    },
+    hi: {
+        PORTAL_TITLE: "Appro🎥video वीडियो पोर्टल प्रबंधक🎥",
+        TAXONOMY_TITLE: "वर्गीकरण प्रबंधन",
+        TAXONOMY_DESC: "श्रेणियों और उप-श्रेणियों के साथ अपनी सामग्री व्यवस्थित करें। संपादित करने के लिए नाम पर क्लिक करें।",
+        CATEGORIES_HEADER: "श्रेणियाँ और उप-श्रेणियाँ",
+        TAG_MANAGEMENT_HEADER: "टैग प्रबंधन",
+        LOADING: "लोड हो रहा है...",
+        SAVE_BUTTON: "सहेजें",
+        CANCEL_BUTTON: "रद्द करें",
+        DELETE_BUTTON: "हटाएँ",
+        EDIT_HINT: "संपादित करने के लिए नाम पर क्लिक करें",
+        SLUG_LABEL: "स्लग:",
+        STATUS_SAVING: "सहेजा जा रहा है...",
+        STATUS_SAVED: "सहेजा गया!",
+        STATUS_ERROR: "त्रुटि",
+        CONFIRM_ACTION_TITLE: "कार्रवाई की पुष्टि करें",
+    
+        // Categories & Subcategories
+        ADD_CATEGORY_BUTTON: "श्रेणी जोड़ें",
+        ADD_SUBCATEGORY_BUTTON: "उप-श्रेणी जोड़ें",
+        LOADING_CATEGORIES: "श्रेणियाँ लोड हो रही हैं...",
+        NO_CATEGORIES_YET: "अभी तक कोई श्रेणी नहीं।",
+        ADD_FIRST_CATEGORY_PROMPT: 'पहली श्रेणी बनाने के लिए "श्रेणी जोड़ें" पर क्लिक करें।',
+        NO_SUBCATEGORIES_YET: "अभी तक कोई उप-श्रेणी नहीं।",
+        ADD_SUB_PROMPT: 'ऊपर दिए गए "उप-श्रेणी जोड़ें" बटन का उपयोग करें।',
+        ENTER_CATEGORY_PLACEHOLDER: "श्रेणी का नाम लिखें और Enter दबाएँ",
+        ENTER_SUBCATEGORY_PLACEHOLDER: "उप-श्रेणी का नाम लिखें और Enter दबाएँ",
+        DELETE_CATEGORY_CONFIRM: "क्या आप वाकई श्रेणी \"{name}\" हटाना चाहते हैं? यह कार्रवाई अपरिवर्तनीय है।",
+        DELETE_SUBCATEGORY_CONFIRM: "क्या आप वाकई उप-श्रेणी \"{name}\" हटाना चाहते हैं? यह कार्रवाई अपरिवर्तनीय है।",
+        ITEM_NAME_EMPTY_ERROR: "{itemType} का नाम खाली नहीं हो सकता।",
+        CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" को हटाना असंभव है: इसमें अभी भी उप-श्रेणियाँ मौजूद हैं। कृपया पहले उन्हें हटाएँ।',
+    
+        // Tags
+        ADD_TAG_BUTTON: "टैग जोड़ें",
+        NO_TAGS_YET: "अभी तक कोई टैग नहीं।",
+        ADD_FIRST_TAG_PROMPT: 'पहला टैग बनाने के लिए "टैग जोड़ें" पर क्लिक करें।',
+        TAG_FEATURE_NOT_IMPLEMENTED: "टैग प्रबंधन अभी तक लागू नहीं किया गया है।",
+    
+        // Banners
+        BANNER_MSG_1: "🎥 ज्ञान साझा करें जो जीवन बदलता है - एक वीडियो प्रति बार",
+        BANNER_MSG_2: "🌱 उचित तकनीकों के माध्यम से लचीलापन विकसित करें",
+    
+        // Navigation Titles
+        NAV_LINK_WEBSITE_TITLE: "मुख्य साइट देखें",
+        NAV_LINK_NEW_TITLE: "नई सामग्री जोड़ें",
+        TOGGLE_DARK_MODE_TITLE: "डार्क/लाइट मोड स्विच करें",
+        PROFILE_MENU_TITLE: "उपयोगकर्ता मेनू",
+    
+        // Dropdown Items
+        DROPDOWN_APPROVIDEO_BETA: "Approvideo बीटा",
+        DROPDOWN_PENDING: "लंबित",
+        DROPDOWN_HOMEPAGE: "मुख्य एडमिन",
+        DROPDOWN_TAXONOMY: "वर्गीकरण संपादक",
+        DROPDOWN_SIGN_OUT: "लॉगआउट",
+    
+        // Item Types
+        CATEGORY: "श्रेणी",
+        SUBCATEGORY: "उप-श्रेणी",
+        TAG: "टैग",
+    
+        // Errors & Status
+        ERROR_PREFIX: "त्रुटि",
+        CRITICAL_ERROR_MSG: "गंभीर त्रुटि: एप्लिकेशन प्रारंभ नहीं कर सका। {error} कृपया कंसोल जांचें और रिफ्रेश करें।",
+        NETWORK_ERROR_CACHE_FALLBACK: "नेटवर्क त्रुटि: {error}। स्थानीय डेटा का उपयोग करने की कोशिश।",
+        NETWORK_ERROR_NO_CACHE: "नेटवर्क त्रुटि: {error}। कोई स्थानीय डेटा उपलब्ध नहीं।",
+        CACHE_ERROR: "कैश त्रुटि: {error}। स्थानीय डेटा लोड नहीं कर सका।",
+        DB_INIT_ERROR: "स्थानीय डेटाबेस प्रारंभ करने में विफलता: {error}",
+        FAILED_OPERATION: "{operation} के दौरान विफलता: {error}",
+        UNEXPECTED_ERROR: "एक अप्रत्याशित त्रुटि हुई: {error}",
+    },
+            zh: {
+    PORTAL_TITLE: "Appro🎥video 视频门户管理器🎥",
+    TAXONOMY_TITLE: "分类管理",
+    TAXONOMY_DESC: "通过类别和子类别组织您的内容。点击名称进行编辑。",
+    CATEGORIES_HEADER: "类别和子类别",
+    TAG_MANAGEMENT_HEADER: "标签管理",
+    LOADING: "加载中...",
+    SAVE_BUTTON: "保存",
+    CANCEL_BUTTON: "取消",
+    DELETE_BUTTON: "删除",
+    EDIT_HINT: "点击名称以编辑",
+    SLUG_LABEL: "Slug：",
+    STATUS_SAVING: "正在保存...",
+    STATUS_SAVED: "已保存！",
+    STATUS_ERROR: "错误",
+    CONFIRM_ACTION_TITLE: "确认操作",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "添加类别",
+    ADD_SUBCATEGORY_BUTTON: "添加子类别",
+    LOADING_CATEGORIES: "正在加载类别...",
+    NO_CATEGORIES_YET: "目前没有类别。",
+    ADD_FIRST_CATEGORY_PROMPT: '点击“添加类别”以创建第一个类别。',
+    NO_SUBCATEGORIES_YET: "目前没有子类别。",
+    ADD_SUB_PROMPT: '使用上方的“添加子类别”按钮。',
+    ENTER_CATEGORY_PLACEHOLDER: "输入类别名称并按回车键",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "输入子类别名称并按回车键",
+    DELETE_CATEGORY_CONFIRM: "您确定要删除类别“{name}”吗？此操作无法撤销。",
+    DELETE_SUBCATEGORY_CONFIRM: "您确定要删除子类别“{name}”吗？此操作无法撤销。",
+    ITEM_NAME_EMPTY_ERROR: "{itemType}名称不能为空。",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '无法删除“{name}”：仍然包含子类别。请先删除子类别。',
+
+    // Tags
+    ADD_TAG_BUTTON: "添加标签",
+    NO_TAGS_YET: "目前没有标签。",
+    ADD_FIRST_TAG_PROMPT: '点击“添加标签”以创建第一个标签。',
+    TAG_FEATURE_NOT_IMPLEMENTED: "标签管理功能尚未实现。",
+
+    // Banners
+    BANNER_MSG_1: "🎥 分享改变人生的知识——一次一个视频",
+    BANNER_MSG_2: "🌱 通过适用技术建立韧性",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "访问主站",
+    NAV_LINK_NEW_TITLE: "添加新内容",
+    TOGGLE_DARK_MODE_TITLE: "切换深色/浅色模式",
+    PROFILE_MENU_TITLE: "用户菜单",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo 测试版",
+    DROPDOWN_PENDING: "待处理",
+    DROPDOWN_HOMEPAGE: "主要管理页面",
+    DROPDOWN_TAXONOMY: "分类编辑器",
+    DROPDOWN_SIGN_OUT: "登出",
+
+    // Item Types
+    CATEGORY: "类别",
+    SUBCATEGORY: "子类别",
+    TAG: "标签",
+
+    // Errors & Status
+    ERROR_PREFIX: "错误",
+    CRITICAL_ERROR_MSG: "严重错误：无法初始化应用程序。{error} 请检查控制台并刷新。",
+    NETWORK_ERROR_CACHE_FALLBACK: "网络错误：{error}。正在尝试使用本地数据。",
+    NETWORK_ERROR_NO_CACHE: "网络错误：{error}。无可用本地数据。",
+    CACHE_ERROR: "缓存错误：{error}。无法加载本地数据。",
+    DB_INIT_ERROR: "本地数据库初始化失败：{error}",
+    FAILED_OPERATION: "在{operation}过程中失败：{error}",
+    UNEXPECTED_ERROR: "发生意外错误：{error}",
+}
+,
+bn: {
+    PORTAL_TITLE: "Appro🎥video ভিডিও পোর্টাল ব্যবস্থাপক🎥",
+    TAXONOMY_TITLE: "শ্রেণীবিভাগ ব্যবস্থাপনা",
+    TAXONOMY_DESC: "বিভাগ এবং উপ-বিভাগ ব্যবহার করে আপনার বিষয়বস্তু সংগঠিত করুন। সম্পাদনার জন্য নামের উপর ক্লিক করুন।",
+    CATEGORIES_HEADER: "বিভাগ ও উপ-বিভাগ",
+    TAG_MANAGEMENT_HEADER: "ট্যাগ ব্যবস্থাপনা",
+    LOADING: "লোড হচ্ছে...",
+    SAVE_BUTTON: "সংরক্ষণ করুন",
+    CANCEL_BUTTON: "বাতিল করুন",
+    DELETE_BUTTON: "মুছে ফেলুন",
+    EDIT_HINT: "সম্পাদনার জন্য নামের উপর ক্লিক করুন",
+    SLUG_LABEL: "স্লাগ:",
+    STATUS_SAVING: "সংরক্ষণ করা হচ্ছে...",
+    STATUS_SAVED: "সংরক্ষিত হয়েছে!",
+    STATUS_ERROR: "ত্রুটি",
+    CONFIRM_ACTION_TITLE: "কর্ম নিশ্চিত করুন",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "বিভাগ যোগ করুন",
+    ADD_SUBCATEGORY_BUTTON: "উপ-বিভাগ যোগ করুন",
+    LOADING_CATEGORIES: "বিভাগ লোড হচ্ছে...",
+    NO_CATEGORIES_YET: "এখনও কোনো বিভাগ নেই।",
+    ADD_FIRST_CATEGORY_PROMPT: 'প্রথম বিভাগ তৈরি করতে "বিভাগ যোগ করুন" বোতামে ক্লিক করুন।',
+    NO_SUBCATEGORIES_YET: "এখনও কোনো উপ-বিভাগ নেই।",
+    ADD_SUB_PROMPT: 'উপরে "উপ-বিভাগ যোগ করুন" বোতামটি ব্যবহার করুন।',
+    ENTER_CATEGORY_PLACEHOLDER: "বিভাগের নাম লিখুন এবং Enter চাপুন",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "উপ-বিভাগের নাম লিখুন এবং Enter চাপুন",
+    DELETE_CATEGORY_CONFIRM: "আপনি কি নিশ্চিতভাবে \"{name}\" বিভাগটি মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।",
+    DELETE_SUBCATEGORY_CONFIRM: "আপনি কি নিশ্চিতভাবে \"{name}\" উপ-বিভাগটি মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।",
+    ITEM_NAME_EMPTY_ERROR: "{itemType} নাম ফাঁকা হতে পারে না।",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" মুছে ফেলা সম্ভব নয়: এতে এখনও উপ-বিভাগ রয়েছে। প্রথমে উপ-বিভাগগুলি মুছে ফেলুন।',
+
+    // Tags
+    ADD_TAG_BUTTON: "ট্যাগ যোগ করুন",
+    NO_TAGS_YET: "এখনও কোনো ট্যাগ নেই।",
+    ADD_FIRST_TAG_PROMPT: 'প্রথম ট্যাগ তৈরি করতে "ট্যাগ যোগ করুন" বোতামে ক্লিক করুন।',
+    TAG_FEATURE_NOT_IMPLEMENTED: "ট্যাগ ব্যবস্থাপনা এখনো বাস্তবায়িত হয়নি।",
+
+    // Banners
+    BANNER_MSG_1: "🎥 জীবন পরিবর্তনের জ্ঞান শেয়ার করুন—একটি ভিডিও একবারে",
+    BANNER_MSG_2: "🌱 উপযুক্ত প্রযুক্তির মাধ্যমে স্থিতিস্থাপকতা তৈরি করুন",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "প্রধান সাইট দেখুন",
+    NAV_LINK_NEW_TITLE: "নতুন বিষয়বস্তু যোগ করুন",
+    TOGGLE_DARK_MODE_TITLE: "ডার্ক/লাইট মোড পরিবর্তন করুন",
+    PROFILE_MENU_TITLE: "ব্যবহারকারী মেনু",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo বিটা",
+    DROPDOWN_PENDING: "অপেক্ষমাণ",
+    DROPDOWN_HOMEPAGE: "প্রধান অ্যাডমিন",
+    DROPDOWN_TAXONOMY: "শ্রেণীবিভাগ সম্পাদক",
+    DROPDOWN_SIGN_OUT: "সাইন আউট",
+
+    // Item Types
+    CATEGORY: "বিভাগ",
+    SUBCATEGORY: "উপ-বিভাগ",
+    TAG: "ট্যাগ",
+
+    // Errors & Status
+    ERROR_PREFIX: "ত্রুটি",
+    CRITICAL_ERROR_MSG: "গুরুতর ত্রুটি: অ্যাপ্লিকেশন শুরু করা যায়নি। {error} অনুগ্রহ করে কনসোল চেক করুন এবং রিফ্রেশ করুন।",
+    NETWORK_ERROR_CACHE_FALLBACK: "নেটওয়ার্ক ত্রুটি: {error}। স্থানীয় ডেটা ব্যবহার করার চেষ্টা করা হচ্ছে।",
+    NETWORK_ERROR_NO_CACHE: "নেটওয়ার্ক ত্রুটি: {error}। স্থানীয় কোনো ডেটা উপলব্ধ নেই।",
+    CACHE_ERROR: "ক্যাশে ত্রুটি: {error}। স্থানীয় ডেটা লোড করা যায়নি।",
+    DB_INIT_ERROR: "স্থানীয় ডাটাবেস শুরু করতে ব্যর্থ হয়েছে: {error}",
+    FAILED_OPERATION: "{operation} সময় ব্যর্থ হয়েছে: {error}",
+    UNEXPECTED_ERROR: "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে: {error}",
+},
+ru: {
+    PORTAL_TITLE: "Appro🎥video Менеджер видеопортала🎥",
+    TAXONOMY_TITLE: "Управление таксономией",
+    TAXONOMY_DESC: "Организуйте контент с помощью категорий и подкатегорий. Нажмите на название для редактирования.",
+    CATEGORIES_HEADER: "Категории и подкатегории",
+    TAG_MANAGEMENT_HEADER: "Управление тегами",
+    LOADING: "Загрузка...",
+    SAVE_BUTTON: "Сохранить",
+    CANCEL_BUTTON: "Отмена",
+    DELETE_BUTTON: "Удалить",
+    EDIT_HINT: "Нажмите на название для редактирования",
+    SLUG_LABEL: "Slug:",
+    STATUS_SAVING: "Сохранение...",
+    STATUS_SAVED: "Сохранено!",
+    STATUS_ERROR: "Ошибка",
+    CONFIRM_ACTION_TITLE: "Подтвердите действие",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "Добавить категорию",
+    ADD_SUBCATEGORY_BUTTON: "Добавить подкатегорию",
+    LOADING_CATEGORIES: "Загрузка категорий...",
+    NO_CATEGORIES_YET: "Категории пока отсутствуют.",
+    ADD_FIRST_CATEGORY_PROMPT: 'Нажмите "Добавить категорию", чтобы создать первую категорию.',
+    NO_SUBCATEGORIES_YET: "Подкатегории пока отсутствуют.",
+    ADD_SUB_PROMPT: 'Используйте кнопку "Добавить подкатегорию" выше.',
+    ENTER_CATEGORY_PLACEHOLDER: "Введите название категории и нажмите Enter",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "Введите название подкатегории и нажмите Enter",
+    DELETE_CATEGORY_CONFIRM: "Вы уверены, что хотите удалить категорию \"{name}\"? Это действие необратимо.",
+    DELETE_SUBCATEGORY_CONFIRM: "Вы уверены, что хотите удалить подкатегорию \"{name}\"? Это действие необратимо.",
+    ITEM_NAME_EMPTY_ERROR: "Название {itemType} не может быть пустым.",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: 'Невозможно удалить "{name}": в ней ещё есть подкатегории. Сначала удалите их.',
+
+    // Tags
+    ADD_TAG_BUTTON: "Добавить тег",
+    NO_TAGS_YET: "Теги пока отсутствуют.",
+    ADD_FIRST_TAG_PROMPT: 'Нажмите "Добавить тег", чтобы создать первый тег.',
+    TAG_FEATURE_NOT_IMPLEMENTED: "Управление тегами ещё не реализовано.",
+
+    // Banners
+    BANNER_MSG_1: "🎥 Делитесь знаниями, которые меняют жизнь — одно видео за раз",
+    BANNER_MSG_2: "🌱 Повышайте устойчивость с помощью подходящих технологий",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "Посетить основной сайт",
+    NAV_LINK_NEW_TITLE: "Добавить новый контент",
+    TOGGLE_DARK_MODE_TITLE: "Переключить тёмный/светлый режим",
+    PROFILE_MENU_TITLE: "Меню пользователя",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo бета",
+    DROPDOWN_PENDING: "Ожидающие",
+    DROPDOWN_HOMEPAGE: "Главная админ-страница",
+    DROPDOWN_TAXONOMY: "Редактор таксономии",
+    DROPDOWN_SIGN_OUT: "Выйти",
+
+    // Item Types
+    CATEGORY: "Категория",
+    SUBCATEGORY: "Подкатегория",
+    TAG: "Тег",
+
+    // Errors & Status
+    ERROR_PREFIX: "Ошибка",
+    CRITICAL_ERROR_MSG: "Критическая ошибка: невозможно запустить приложение. {error} Проверьте консоль и обновите страницу.",
+    NETWORK_ERROR_CACHE_FALLBACK: "Ошибка сети: {error}. Попытка использовать локальные данные.",
+    NETWORK_ERROR_NO_CACHE: "Ошибка сети: {error}. Локальные данные отсутствуют.",
+    CACHE_ERROR: "Ошибка кеша: {error}. Невозможно загрузить локальные данные.",
+    DB_INIT_ERROR: "Ошибка инициализации локальной базы данных: {error}",
+    FAILED_OPERATION: "Ошибка при выполнении операции {operation}: {error}",
+    UNEXPECTED_ERROR: "Произошла непредвиденная ошибка: {error}",
+},
+ur: {
+    PORTAL_TITLE: "Appro🎥video ویڈیو پورٹل مینیجر🎥",
+    TAXONOMY_TITLE: "زمرہ بندی انتظام",
+    TAXONOMY_DESC: "اپنے مواد کو زمرہ جات اور ذیلی زمرہ جات کے ذریعے منظم کریں۔ تدوین کرنے کے لئے نام پر کلک کریں۔",
+    CATEGORIES_HEADER: "زمرہ جات اور ذیلی زمرہ جات",
+    TAG_MANAGEMENT_HEADER: "ٹیگز انتظام",
+    LOADING: "لوڈ ہو رہا ہے...",
+    SAVE_BUTTON: "محفوظ کریں",
+    CANCEL_BUTTON: "منسوخ کریں",
+    DELETE_BUTTON: "حذف کریں",
+    EDIT_HINT: "تدوین کرنے کے لیے نام پر کلک کریں",
+    SLUG_LABEL: "سلگ:",
+    STATUS_SAVING: "محفوظ ہو رہا ہے...",
+    STATUS_SAVED: "محفوظ ہو گیا!",
+    STATUS_ERROR: "خرابی",
+    CONFIRM_ACTION_TITLE: "عمل کی تصدیق کریں",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "زمرہ شامل کریں",
+    ADD_SUBCATEGORY_BUTTON: "ذیلی زمرہ شامل کریں",
+    LOADING_CATEGORIES: "زمرہ جات لوڈ ہو رہے ہیں...",
+    NO_CATEGORIES_YET: "ابھی تک کوئی زمرہ موجود نہیں ہے۔",
+    ADD_FIRST_CATEGORY_PROMPT: 'پہلا زمرہ بنانے کے لئے "زمرہ شامل کریں" پر کلک کریں۔',
+    NO_SUBCATEGORIES_YET: "ابھی تک کوئی ذیلی زمرہ موجود نہیں ہے۔",
+    ADD_SUB_PROMPT: 'اوپر دیئے گئے "ذیلی زمرہ شامل کریں" بٹن کو استعمال کریں۔',
+    ENTER_CATEGORY_PLACEHOLDER: "زمرے کا نام لکھیں اور Enter دبائیں",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "ذیلی زمرے کا نام لکھیں اور Enter دبائیں",
+    DELETE_CATEGORY_CONFIRM: "کیا آپ واقعی زمرہ \"{name}\" حذف کرنا چاہتے ہیں؟ یہ عمل ناقابل واپسی ہے۔",
+    DELETE_SUBCATEGORY_CONFIRM: "کیا آپ واقعی ذیلی زمرہ \"{name}\" حذف کرنا چاہتے ہیں؟ یہ عمل ناقابل واپسی ہے۔",
+    ITEM_NAME_EMPTY_ERROR: "{itemType} کا نام خالی نہیں ہو سکتا۔",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" کو حذف نہیں کیا جا سکتا کیونکہ اس میں ابھی بھی ذیلی زمرے موجود ہیں۔ پہلے انہیں حذف کریں۔',
+
+    // Tags
+    ADD_TAG_BUTTON: "ٹیگ شامل کریں",
+    NO_TAGS_YET: "ابھی تک کوئی ٹیگ موجود نہیں ہے۔",
+    ADD_FIRST_TAG_PROMPT: 'پہلا ٹیگ بنانے کے لئے "ٹیگ شامل کریں" پر کلک کریں۔',
+    TAG_FEATURE_NOT_IMPLEMENTED: "ٹیگ انتظام ابھی تک نافذ نہیں کیا گیا۔",
+
+    // Banners
+    BANNER_MSG_1: "🎥 زندگی بدلنے والا علم شیئر کریں - ایک وقت میں ایک ویڈیو",
+    BANNER_MSG_2: "🌱 موزوں ٹیکنالوجیز کے ذریعے استحکام پیدا کریں",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "مرکزی ویب سائٹ پر جائیں",
+    NAV_LINK_NEW_TITLE: "نیا مواد شامل کریں",
+    TOGGLE_DARK_MODE_TITLE: "ڈارک/لائٹ موڈ تبدیل کریں",
+    PROFILE_MENU_TITLE: "صارف مینو",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo بیٹا",
+    DROPDOWN_PENDING: "زیر التوا",
+    DROPDOWN_HOMEPAGE: "مرکزی ایڈمن پیج",
+    DROPDOWN_TAXONOMY: "زمرہ بندی ایڈیٹر",
+    DROPDOWN_SIGN_OUT: "سائن آؤٹ",
+
+    // Item Types
+    CATEGORY: "زمرہ",
+    SUBCATEGORY: "ذیلی زمرہ",
+    TAG: "ٹیگ",
+
+    // Errors & Status
+    ERROR_PREFIX: "خرابی",
+    CRITICAL_ERROR_MSG: "سنگین خرابی: ایپلیکیشن شروع نہیں ہو سکی۔ {error} براہ مہربانی کنسول چیک کریں اور صفحہ ریفریش کریں۔",
+    NETWORK_ERROR_CACHE_FALLBACK: "نیٹ ورک خرابی: {error}۔ مقامی ڈیٹا استعمال کرنے کی کوشش کر رہا ہے۔",
+    NETWORK_ERROR_NO_CACHE: "نیٹ ورک خرابی: {error}۔ کوئی مقامی ڈیٹا دستیاب نہیں ہے۔",
+    CACHE_ERROR: "کیشے خرابی: {error}۔ مقامی ڈیٹا لوڈ نہیں کیا جا سکا۔",
+    DB_INIT_ERROR: "مقامی ڈیٹابیس شروع کرنے میں ناکام: {error}",
+    FAILED_OPERATION: "{operation} کے دوران ناکامی: {error}",
+    UNEXPECTED_ERROR: "ایک غیر متوقع خرابی پیش آگئی ہے: {error}",
+    SELECT_LANGUAGE: "زبان منتخب کریں",
+}
+
+                
         // Add other language objects here (fr: {}, pt: {}, etc.)
     };
 
