@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-translate-title-key="PORTAL_TITLE">
 <head>
@@ -1932,9 +1931,13 @@ class CategoryManager {
         inputElement.disabled = true; // Disable input while saving
 
         try {
+            // Inside your saveEdit method in CategoryManager class, change this:
+
             if (type === 'category') {
-                const confirmMsg = `Rename category "<span class="math-inline">\{originalValue\}" to "</span>{newValue}"?`;
-                if (!window.confirm(confirmMsg)) { // Use standard confirm dialog
+                // Fix: Remove HTML and properly format the confirmation message
+                const confirmMsg = `Rename category "${originalValue}" to "${newValue}"?`;
+                
+                if (!window.confirm(confirmMsg)) {
                     console.log("Category rename cancelled by user.");
                     this.cancelEdit(); // Cancel the edit if user presses Cancel
                     return; // Stop the save process
