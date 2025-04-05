@@ -956,7 +956,7 @@
         }
     }
     // --- 2. TagManager Class (Stub Implementation) ---
-    // Basic structure, accepts getText, handles add button click and render empty state.
+    // Basic structure, accepts getText, handles add button click and  empty state.
     class TagManager {
         constructor(store, getTextFn) { // Accept getText
             this.store = store;
@@ -967,7 +967,7 @@
                  return;
             }
             this.bindEvents();
-            this.render(); // Initial render for empty state or existing tags
+            this.(); // Initial  for empty state or existing tags
         }
         bindEvents() {
             const addTagBtn = document.getElementById('add-tag-btn');
@@ -1074,7 +1074,9 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
     }
 }
 
-         
+   
+
+      
      
     const translations = {
         // English (Default)
@@ -1751,6 +1753,9 @@ class CategoryManager {
      * Creates UI for adding a new category.
      */
     createNewCategory() {
+
+        this.cleanupAnyActiveEdits();
+        
         if (this.containerEl.querySelector('.new-category')) {
             this.containerEl.querySelector('.new-category input')?.focus();
             return;
@@ -1827,6 +1832,9 @@ class CategoryManager {
      * Creates UI for adding a new subcategory.
      */
     createNewSubcategory(categoryId) {
+
+       this.cleanupAnyActiveEdits();
+        
        const categoryItem = this.containerEl.querySelector(`.category-item[data-category-id="${categoryId}"]`);
        if (!categoryItem) return; // Should not happen
 
@@ -1837,10 +1845,7 @@ class CategoryManager {
             subcategoriesContainer.querySelector('.new-subcategory input')?.focus();
             return;
        }
-        if (this.editingState.isEditing) {
-             console.warn("Attempted to create new subcategory while editing. Cancel first.");
-             return; // Block if editing something else
-        }
+
 
 
         const placeholderText = this.getText('ENTER_SUBCATEGORY_PLACEHOLDER');
@@ -1904,9 +1909,50 @@ class CategoryManager {
         inputField.focus();
     }
 
+
+
+/**
+ * Helper method to ensure there are no active edit fields in the UI.
+ * This is a safety measure that should be called before starting a new edit
+ * and during render.
+ */
+cleanupAnyActiveEdits() {
+    // Look for any inline-edit-field elements that might be lingering
+    const activeEditFields = this.containerEl.querySelectorAll('.inline-edit-field');
+    if (activeEditFields.length > 0) {
+        console.warn(`Found ${activeEditFields.length} active edit fields in the DOM. Cleaning up.`);
+        activeEditFields.forEach(field => {
+            // Find the parent item to remove editing class
+            const parentItem = field.closest('.category-item, .subcategory-item');
+            if (parentItem) {
+                parentItem.classList.remove('is-editing');
+            }
+            
+            // Remove the edit field
+            field.remove();
+        });
+    }
+    
+    // Also reset the editing state
+    if (this.editingState.isEditing) {
+        console.warn("Editing state was active but UI cleanup was needed. Resetting state.");
+        this.resetEditingState();
+    }
+    
+    // Look for any hidden original elements that should be visible
+    const hiddenElements = this.containerEl.querySelectorAll('.category-name[style*="display: none"], .subcategory-name[style*="display: none"]');
+    hiddenElements.forEach(element => {
+        console.warn("Found hidden name element. Restoring visibility.");
+        element.style.display = '';
+    });
+}
+    
     // --- Inline Editing Methods (Implementations) ---
 
     startEditing(element, type, id, categoryId = null) {
+        
+        this.cleanupAnyActiveEdits();
+        
         console.log(`Executing startEditing for type: ${type}, id: ${id}, categoryId: ${categoryId}`);
 
         if (this.editingState.isEditing) {
@@ -2042,6 +2088,11 @@ class CategoryManager {
         }
     }
 
+
+
+
+
+
     cancelEdit(isRendering = false) { 
         if (!this.editingState.isEditing) return;
         console.log(`Executing cancelEdit. Called by render: ${isRendering}`);
@@ -2140,6 +2191,9 @@ class CategoryManager {
      * Renders the UI, using getText for all user-facing strings.
      */
     render() {
+        
+        this.cleanupAnyActiveEdits();
+        
         // --- Cancel Edit State if Rendering Occurs ---
         console.log("Executing render(). Editing state:", this.editingState.isEditing);
     
