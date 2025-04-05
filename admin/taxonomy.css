@@ -22,7 +22,79 @@
             --delete-btn: #c49178;
             --delete-btn-hover: #e6927a;
         }
+
+        
+          /* Base styles */
+          #lang-buttons {
+            display: grid;
+            gap: 0.25rem;
+          }
+          
+          /* Mobile layout - stacked pairs of 3 */
+          @media (max-width: 767px) {
+            #lang-buttons {
+              grid-template-columns: repeat(2, 1fr);
+              grid-auto-flow: dense;
+            }
             
+            /* Create vertical groupings of 3 */
+            .lang-button:nth-child(6n+1),
+            .lang-button:nth-child(6n+2),
+            .lang-button:nth-child(6n+3) {
+              grid-column: 1;
+            }
+            
+            .lang-button:nth-child(6n+4),
+            .lang-button:nth-child(6n+5),
+            .lang-button:nth-child(6n+6) {
+              grid-column: 2;
+            }
+            
+            /* Space out the groups */
+            .lang-button:nth-child(6n+4) {
+              margin-top: -2.5rem; /* Align with first item in left column */
+            }
+            
+            .lang-button:nth-child(6n+1),
+            .lang-button:nth-child(6n+4) {
+              margin-top: 0.75rem; /* Add space between groups */
+            }
+            
+            /* First items don't need top margin */
+            .lang-button:nth-child(1),
+            .lang-button:nth-child(4) {
+              margin-top: 0 !important;
+            }
+            
+            #help-translate {
+              grid-column: span 2;
+              margin-top: 0.75rem;
+            }
+          }
+          
+          /* Tablet layout - 4 columns */
+          @media (min-width: 768px) and (max-width: 1023px) {
+            #lang-buttons {
+              grid-template-columns: repeat(4, 1fr);
+            }
+            
+            #help-translate {
+              grid-column: span 2;
+            }
+          }
+          
+          /* Desktop layout - 11 columns */
+          @media (min-width: 1024px) {
+            #lang-buttons {
+              grid-template-columns: repeat(11, 1fr);
+            }
+            
+            #help-translate {
+              grid-column: span 3;
+            }
+          }
+        
+
         /* Reset the existing pencil behavior */
         .category-name::before, 
         .subcategory-name::before {
