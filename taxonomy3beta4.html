@@ -35,12 +35,68 @@
             --delete-btn: #c49178;
             --delete-btn-hover: #e6927a;
         }
-    
-
-        /* --- Inline Editing & Feedback Styles --- */
+            
+        /* Reset the existing pencil behavior */
+        .category-name::before, 
+        .subcategory-name::before {
+            content: none;
+        }
         
-        /* Style for the input field when editing */
-        .inline-edit-field {
+        /* Remove the existing hover text decoration */
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            opacity: 0;
+        }
+        
+        /* Create a more elegant hover effect */
+        .category-name, .subcategory-name {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 2px 6px;
+            margin: -2px -6px;
+            border-radius: 4px;
+        }
+        
+        .category-name:hover, .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+        
+        .dark-mode .category-name:hover, 
+        .dark-mode .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.2);
+        }
+        
+        /* Subtle indicator on hover showing it's editable */
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 6px;
+            right: 6px;
+            height: 1px;
+            background-color: rgba(150, 176, 137, 0.6);
+            opacity: 1;
+        }
+        
+        /* Update the edit hint text to be more subtle */
+        .category-header .text-xs {
+            opacity: 0.65;
+            transition: opacity 0.2s ease;
+        }
+        
+        .category-item:hover .category-header .text-xs {
+            opacity: 1;
+        }
+
+            /* Styling the edited state */
+            .inline-edit-field {
+                font-size: inherit;
+                font-weight: inherit;
+                padding: 2px 6px;
+                margin: 0;
+
             /* Inherit font styles from parent for consistency */
             font-size: inherit;
             font-weight: inherit;
@@ -2139,41 +2195,36 @@ class CategoryManager {
             const subcategoriesHTML = category.subcategories && category.subcategories.length > 0 ?
                 category.subcategories.map(subcategory => `
                     <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-subcategory-id="${subcategory.id}">
-                         <div class="flex-grow mr-2">
-                             <span class="subcategory-name cursor-pointer font-medium text-sm">${subcategory.name}</span>
-                             ${subcategory.slug ? `<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(${subcategory.slug})</span>` : ''}
-                         </div>
-                         <div class="subcategory-controls opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-1">
-                             <button class="delete-subcategory-btn p-1 text-red-500 hover:text-red-700" title="${this.getText('DELETE_BUTTON')}">
-                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                              </button>
-                         </div>
-                    </div>`).join('') :
+                    <div class="flex-grow mr-2">
+                        <span class="subcategory-name cursor-pointer font-medium text-sm">${subcategory.name}</span>
+                        ${subcategory.slug ? `<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(${subcategory.slug})</span>` : ''}
+                    </div>
+                    <div class="subcategory-controls flex items-center space-x-1">
+                        <button class="delete-subcategory-btn p-1 text-red-500 hover:text-red-700" title="${this.getText('DELETE_BUTTON')}">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>`).join('') :
                 // Use getText for empty subcategory list message
                  `<p class="text-sm text-gray-500 dark:text-gray-400 px-2 py-1">${this.getText('NO_SUBCATEGORIES_YET')} ${this.getText('ADD_SUB_PROMPT')}</p>`;
 
             return `
-                <div class="category-item bg-white dark:bg-gray-800 rounded-lg shadow mb-4 group" data-category-id="${category.id}">
-                    <div class="category-header flex justify-between items-center p-3 border-b dark:border-gray-700">
-                        <div class="flex-grow mr-4">
-                             <h3 class="category-name cursor-pointer font-semibold text-lg">${category.name}</h3>
-                             <span class="text-xs text-gray-500 dark:text-gray-400">${this.getText('EDIT_HINT')}${category.slug ? `, ${this.getText('SLUG_LABEL')} ${category.slug}` : ''}</span>
-                         </div>
-                         <div class="category-controls flex items-center space-x-2">
-                             <button class="btn btn-blue add-subcategory-btn text-xs px-2 py-1" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
-                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                 ${this.getText('ADD_SUBCATEGORY_BUTTON')}
-                             </button>
-                             <button class="btn btn-red delete-category-btn text-xs px-2 py-1" title="${this.getText('DELETE_BUTTON')}">
-                                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                 ${this.getText('DELETE_BUTTON')}
-                             </button>
-                         </div>
-                    </div>
-                    <div class="subcategories p-2 space-y-1">
-                         ${subcategoriesHTML}
-                    </div>
-                </div>`;
+               <div class="category-header flex justify-between items-center p-3 border-b dark:border-gray-700">
+                <div class="flex-grow mr-4">
+                    <h3 class="category-name cursor-pointer font-semibold text-lg">${category.name}</h3>
+                    ${category.slug ? `<span class="text-xs text-gray-500 dark:text-gray-400">${this.getText('SLUG_LABEL')} ${category.slug}</span>` : ''}
+                </div>
+                <div class="category-controls flex items-center space-x-2">
+                    <button class="btn btn-blue add-subcategory-btn text-xs px-2 py-1" title="${this.getText('ADD_SUBCATEGORY_BUTTON')}">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        ${this.getText('ADD_SUBCATEGORY_BUTTON')}
+                    </button>
+                    <button class="btn btn-red delete-category-btn text-xs px-2 py-1" title="${this.getText('DELETE_BUTTON')}">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        ${this.getText('DELETE_BUTTON')}
+                    </button>
+                </div>
+            </div>`;
         }).join('');
 
         // --- Update Container ---
