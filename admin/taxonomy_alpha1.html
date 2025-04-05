@@ -49,52 +49,64 @@
                             </button>
                             
                               <!-- Language selector container -->
-<!-- Single language switcher with clean HTML -->
-<div id="lang-switcher" class="lang-switcher border-l border-gray-300 dark:border-gray-600 bg-sky-600 ml-2 md:ml-4 pl-2 md:pl-4 py-2 rounded">
-  <!-- Language buttons container -->
-  <div id="lang-buttons" class="grid gap-1">
-    <button data-lang="am" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">AM</button>
-    <button data-lang="ar" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">AR</button>
-    <button data-lang="bn" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">BN</button>
-    <button data-lang="de" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">DE</button>
-    <button data-lang="en" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">EN</button>
-    <button data-lang="es" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">ES</button>
-    <button data-lang="fa" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">FA</button>
-    <button data-lang="fr" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">FR</button>
-    <button data-lang="ha" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">HA</button>
-    <button data-lang="hi" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">HI</button>
-    <button data-lang="id" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">ID</button>
-    <button data-lang="it" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">IT</button>
-    <button data-lang="ja" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">JA</button>
-    <button data-lang="km" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">KM</button>
-    <button data-lang="ko" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">KO</button>
-    <button data-lang="ku" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">KU</button>
-    <button data-lang="ms" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">MS</button>
-    <button data-lang="my" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">MY</button>
-    <button data-lang="ne" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">NE</button>
-    <button data-lang="ps" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">PS</button>
-    <button data-lang="pt" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">PT</button>
-    <button data-lang="ru" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">RU</button>
-    <button data-lang="so" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">SO</button>
-    <button data-lang="sw" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">SW</button>
-    <button data-lang="ta" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">TA</button>
-    <button data-lang="th" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">TH</button>
-    <button data-lang="tl" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">TL</button>
-    <button data-lang="tr" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">TR</button>
-    <button data-lang="uk" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">UK</button>
-    <button data-lang="ur" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">UR</button>
-    <button data-lang="vi" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">VI</button>
-    <button data-lang="yo" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">YO</button>
-    <button data-lang="zh" class="lang-button bg-gray-700 p-1 text-xs font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700">ZH</button>
-  </div>
-  
-  <!-- Translation help button -->
-  <a href="https://github.com/yourusername/your-repo/tree/main/languages" id="help-translate" class="bg-green-600 hover:bg-green-700 text-white p-1 text-xs font-medium rounded flex items-center justify-center mt-2">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+<div id="lang-dropdown" class="relative">
+  <!-- Current language button that triggers dropdown -->
+  <button id="lang-toggle" class="flex items-center space-x-1 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md border border-gray-600 transition duration-150">
+    <span id="current-lang">EN</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
     </svg>
-    Help Translate
-  </a>
+  </button>
+  
+  <!-- Dropdown panel that appears when clicked -->
+  <div id="lang-panel" class="absolute right-0 mt-2 bg-gray-800 rounded-md shadow-lg z-50 border border-gray-700 hidden">
+    <div class="p-3">
+      <!-- Language grid container -->
+      <div id="lang-buttons" class="grid gap-2 max-h-[60vh] overflow-y-auto">
+        <button data-lang="am" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">AM</button>
+        <button data-lang="ar" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">AR</button>
+        <button data-lang="bn" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">BN</button>
+        <button data-lang="de" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">DE</button>
+        <button data-lang="en" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">EN</button>
+        <button data-lang="es" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">ES</button>
+        <button data-lang="fa" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">FA</button>
+        <button data-lang="fr" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">FR</button>
+        <button data-lang="ha" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">HA</button>
+        <button data-lang="hi" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">HI</button>
+        <button data-lang="id" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">ID</button>
+        <button data-lang="it" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">IT</button>
+        <button data-lang="ja" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">JA</button>
+        <button data-lang="km" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">KM</button>
+        <button data-lang="ko" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">KO</button>
+        <button data-lang="ku" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">KU</button>
+        <button data-lang="ms" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">MS</button>
+        <button data-lang="my" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">MY</button>
+        <button data-lang="ne" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">NE</button>
+        <button data-lang="ps" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">PS</button>
+        <button data-lang="pt" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">PT</button>
+        <button data-lang="ru" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">RU</button>
+        <button data-lang="so" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">SO</button>
+        <button data-lang="sw" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">SW</button>
+        <button data-lang="ta" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">TA</button>
+        <button data-lang="th" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">TH</button>
+        <button data-lang="tl" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">TL</button>
+        <button data-lang="tr" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">TR</button>
+        <button data-lang="uk" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">UK</button>
+        <button data-lang="ur" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">UR</button>
+        <button data-lang="vi" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">VI</button>
+        <button data-lang="yo" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">YO</button>
+        <button data-lang="zh" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">ZH</button>
+      </div>
+      
+      <!-- Translation help button -->
+      <a href="https://github.com/yourusername/your-repo/tree/main/languages" class="bg-green-600 hover:bg-green-500 text-white p-2 text-xs font-medium rounded flex items-center justify-center mt-3 border border-green-500 transition duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        Help Translate
+      </a>
+    </div>
+  </div>
 </div>
 
 
@@ -150,52 +162,76 @@
     </main>
 
     <script type="module">
-
-  // This script reorganizes the language buttons on mobile
-  document.addEventListener('DOMContentLoaded', function() {
-    function arrangeMobileLayout() {
-      if (window.innerWidth < 768) {
+    
+      // This script reorganizes the language buttons on mobile
+    
+      document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.getElementById('lang-toggle');
+        const panel = document.getElementById('lang-panel');
+        const currentLangSpan = document.getElementById('current-lang');
         const langButtons = document.querySelectorAll('.lang-button');
-        const container = document.getElementById('lang-buttons');
         
-        // Clear the container
-        while (container.firstChild) {
-          container.removeChild(container.firstChild);
-        }
+        // Set initial active language (assuming EN is default)
+        let currentLang = 'EN';
+        updateActiveButton();
         
-        // Create column wrappers
-        const leftCol = document.createElement('div');
-        leftCol.className = 'flex flex-col gap-1';
-        const rightCol = document.createElement('div');
-        rightCol.className = 'flex flex-col gap-1';
+        // Toggle dropdown when button is clicked
+        toggle.addEventListener('click', function() {
+          panel.classList.toggle('hidden');
+          panel.classList.toggle('show');
+          toggle.classList.toggle('active');
+        });
         
-        // Distribute buttons in groups of 3
-        langButtons.forEach((button, index) => {
-          const groupIndex = Math.floor(index / 3);
-          const isEvenGroup = groupIndex % 2 === 0;
-          
-          if (isEvenGroup) {
-            leftCol.appendChild(button.cloneNode(true));
-          } else {
-            rightCol.appendChild(button.cloneNode(true));
+        // Handle language selection
+        langButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            currentLang = lang;
+            currentLangSpan.textContent = lang;
+            
+            // Update active state
+            updateActiveButton();
+            
+            // Close dropdown
+            panel.classList.add('hidden');
+            panel.classList.remove('show');
+            toggle.classList.remove('active');
+            
+            // Here you would typically trigger language change in your app
+            // switchLanguage(lang);
+          });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('#lang-dropdown')) {
+            panel.classList.add('hidden');
+            panel.classList.remove('show');
+            toggle.classList.remove('active');
           }
         });
         
-        // Add columns to container
-        container.appendChild(leftCol);
-        container.appendChild(rightCol);
-      }
-    }
+        // Close dropdown when screen is resized
+        window.addEventListener('resize', function() {
+          panel.classList.add('hidden');
+          panel.classList.remove('show');
+          toggle.classList.remove('active');
+        });
+        
+        // Update the active language button
+        function updateActiveButton() {
+          langButtons.forEach(button => {
+            if (button.getAttribute('data-lang') === currentLang) {
+              button.setAttribute('data-active', 'true');
+              button.classList.add('ring-2', 'ring-blue-500');
+            } else {
+              button.setAttribute('data-active', 'false');
+              button.classList.remove('ring-2', 'ring-blue-500');
+            }
+          });
+        }
+      });
     
-    // Initial arrangement
-    arrangeMobileLayout();
-    
-    // Rearrange on resize
-    window.addEventListener('resize', arrangeMobileLayout);
-  });
-
-
-
 
 
 
