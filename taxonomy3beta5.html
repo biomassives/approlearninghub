@@ -967,7 +967,7 @@
                  return;
             }
             this.bindEvents();
-            this.(); // Initial  for empty state or existing tags
+            this.render(); // Initial  for empty state or existing tags
         }
         bindEvents() {
             const addTagBtn = document.getElementById('add-tag-btn');
@@ -984,8 +984,18 @@
             // Add delegated listeners for editing/deleting tags later if needed
              this.containerEl.addEventListener('click', (e) => { 
             
-            // area1
-        
+                console.log('Clicked inside container. Target:', e.target);
+                // --- Check if click is on a slug label ---
+                if (e.target.closest('.slug-label')) {
+                    console.log('Click was on a slug label. Ignoring.');
+                    return; // Don't process further
+                }
+                // --- Check if click is inside an existing edit field ---
+                if (e.target.closest('.inline-edit-field')) {
+                    console.log('Click was inside an existing edit field. Ignoring.');
+                    return; // Don't process further
+                }
+
         });
         }
         render() {
