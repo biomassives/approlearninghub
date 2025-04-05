@@ -836,10 +836,41 @@
                                 </svg>
                             </button>
                             
-                            <div id="lang-switcher" class="flex items-center border-l border-gray-300 dark:border-gray-600 ml-4 pl-4">
-                                <button data-lang="en" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">EN</button>
-                                <button data-lang="es" class="lang-button p-1 text-sm font-medium rounded hover:bg-gray-100 dark:hover:bg-gray-700 mx-1">ES</button>
+                            
+                            <div class="flex items-center space-x-6">
+                                <span id="offline-indicator" class="text-xs ml-2 font-semibold text-yellow-600 dark:text-yellow-400"></span>
+                                <a href="/" class="nav-link group ..." data-translate-title="NAV_LINK_WEBSITE_TITLE">
+                                    <svg class="w-6 h-6" ...></svg> </a>
+                                <a href="new.html" class="nav-link group ..." data-translate-title="NAV_LINK_NEW_TITLE">
+                                    <svg class="w-6 h-6" ...></svg> </a>
+                                <button id="darkModeToggle" class="p-2 ..." data-translate-title="TOGGLE_DARK_MODE_TITLE">
+                                    <svg class="w-6 h-6" ...></svg> </button>
+                            
+                                <div class="relative border-l border-gray-300 dark:border-gray-600 ml-4 pl-4" id="language-switcher-container">
+                                    <button id="language-toggle-button" type="button" class="flex items-center justify-center px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-green-500 transition-colors duration-150" aria-haspopup="true" aria-expanded="false" title="Select Language">
+                                        <span id="current-lang-display">EN</span> <svg class="w-4 h-4 ml-1 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </button>
+                            
+                                    <div id="language-mega-menu" class="absolute right-0 mt-2 w-96 origin-top-right rounded-md shadow-xl bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none transform opacity-0 scale-95 pointer-events-none transition ease-out duration-150" role="menu" aria-orientation="vertical" aria-labelledby="language-toggle-button" tabindex="-1">
+                                         <div class="p-4" role="none">
+                                             <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-3 px-2" data-translate-key="SELECT_LANGUAGE_HEADING">Select Language</p>
+                                             <div id="language-grid" class="grid grid-cols-3 gap-x-4 gap-y-1" role="none">
+                                                 </div>
+                                         </div>
+                                    </div>
                                 </div>
+                                <div class="relative">
+                                    <button id="profileButton" class="icon-button ..." data-translate-title="PROFILE_MENU_TITLE">
+                                        <svg>...</svg> </button>
+                                    <div id="profileDropdown" class="profile-dropdown dropdown-inactive ...">
+                                        </div>
+                                </div>
+                            </div>
+
+
+                            
 
                             <div class="relative">
                                 <button id="profileButton" class="icon-button ..." data-translate-title="PROFILE_MENU_TITLE">
@@ -1232,12 +1263,746 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "Fallo al inicializar la base de datos local: {error}",
             FAILED_OPERATION: "Fallo al {operation}: {error}",
             UNEXPECTED_ERROR: "Un error inesperado ocurrió: {error}",
-        }
-        // Add other language objects here (fr: {}, pt: {}, etc.)
+        },
+        // French Translation
+        fr: {
+            PORTAL_TITLE: "Appro🎥video Gestionnaire du Portail Vidéo🎥",
+            TAXONOMY_TITLE: "Gestion de la Taxonomie",
+            TAXONOMY_DESC: "Organisez votre contenu avec des catégories et sous-catégories. Cliquez sur un nom pour modifier.",
+            CATEGORIES_HEADER: "Catégories et Sous-catégories",
+            TAG_MANAGEMENT_HEADER: "Gestion des Étiquettes",
+            LOADING: "Chargement...",
+            SAVE_BUTTON: "Enregistrer",
+            CANCEL_BUTTON: "Annuler",
+            DELETE_BUTTON: "Supprimer",
+            EDIT_HINT: "Cliquez sur le nom pour modifier",
+            SLUG_LABEL: "Slug :",
+            STATUS_SAVING: "Enregistrement...",
+            STATUS_SAVED: "Enregistré !",
+            STATUS_ERROR: "Erreur",
+            CONFIRM_ACTION_TITLE: "Confirmer l'Action",
+        
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Ajouter Catégorie",
+            ADD_SUBCATEGORY_BUTTON: "Ajouter Sous-catégorie",
+            LOADING_CATEGORIES: "Chargement des catégories...",
+            NO_CATEGORIES_YET: "Aucune catégorie pour le moment.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Cliquez sur "Ajouter Catégorie" pour créer la première.',
+            NO_SUBCATEGORIES_YET: "Aucune sous-catégorie pour le moment.",
+            ADD_SUB_PROMPT: 'Utilisez le bouton "Ajouter Sous-catégorie" ci-dessus.',
+            ENTER_CATEGORY_PLACEHOLDER: "Entrez le nom de la catégorie et appuyez sur Entrée",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Entrez le nom de la sous-catégorie et appuyez sur Entrée",
+            DELETE_CATEGORY_CONFIRM: "Êtes-vous sûr de vouloir supprimer la catégorie \"{name}\" ? Cette action est irréversible.",
+            DELETE_SUBCATEGORY_CONFIRM: "Êtes-vous sûr de vouloir supprimer la sous-catégorie \"{name}\" ? Cette action est irréversible.",
+            ITEM_NAME_EMPTY_ERROR: "Le nom de {itemType} ne peut pas être vide.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'Impossible de supprimer "{name}" : elle contient encore des sous-catégories. Veuillez les supprimer d’abord.',
+        
+            // Tags
+            ADD_TAG_BUTTON: "Ajouter Étiquette",
+            NO_TAGS_YET: "Aucune étiquette pour le moment.",
+            ADD_FIRST_TAG_PROMPT: 'Cliquez sur "Ajouter Étiquette" pour créer la première.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "La gestion des étiquettes n'est pas encore implémentée.",
+        
+            // Banners
+            BANNER_MSG_1: "🎥 Partager des connaissances qui changent des vies - Une vidéo à la fois",
+            BANNER_MSG_2: "🌱 Construire la résilience grâce à des technologies adaptées",
+        
+            // Navigation Titles
+            NAV_LINK_WEBSITE_TITLE: "Visiter le Site Principal",
+            NAV_LINK_NEW_TITLE: "Ajouter Nouveau Contenu",
+            TOGGLE_DARK_MODE_TITLE: "Changer Mode Sombre/Clair",
+            PROFILE_MENU_TITLE: "Menu Utilisateur",
+        
+            // Dropdown Items
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo bêta",
+            DROPDOWN_PENDING: "En Attente",
+            DROPDOWN_HOMEPAGE: "Admin Principal",
+            DROPDOWN_TAXONOMY: "Éditeur de Taxonomie",
+            DROPDOWN_SIGN_OUT: "Déconnexion",
+        
+            // Item Types
+            CATEGORY: "Catégorie",
+            SUBCATEGORY: "Sous-catégorie",
+            TAG: "Étiquette",
+        
+            // Errors & Status
+            ERROR_PREFIX: "Erreur",
+            CRITICAL_ERROR_MSG: "Erreur Critique : Impossible d'initialiser l'application. {error} Veuillez vérifier la console et rafraîchir.",
+            NETWORK_ERROR_CACHE_FALLBACK: "Erreur réseau : {error}. Tentative d'utiliser les données locales.",
+            NETWORK_ERROR_NO_CACHE: "Erreur réseau : {error}. Aucune donnée locale disponible.",
+            CACHE_ERROR: "Erreur du cache : {error}. Impossible de charger les données locales.",
+            DB_INIT_ERROR: "Échec d'initialisation de la base de données locale : {error}",
+            FAILED_OPERATION: "Échec lors de {operation} : {error}",
+            UNEXPECTED_ERROR: "Une erreur inattendue est survenue : {error}",
+        },
+        
+        // Portuguese Translation
+        pt: {
+            PORTAL_TITLE: "Appro🎥video Gestor do Portal de Vídeos🎥",
+            TAXONOMY_TITLE: "Gestão de Taxonomia",
+            TAXONOMY_DESC: "Organize seu conteúdo com categorias e subcategorias. Clique em qualquer nome para editar.",
+            CATEGORIES_HEADER: "Categorias e Subcategorias",
+            TAG_MANAGEMENT_HEADER: "Gestão de Etiquetas",
+            LOADING: "Carregando...",
+            SAVE_BUTTON: "Salvar",
+            CANCEL_BUTTON: "Cancelar",
+            DELETE_BUTTON: "Excluir",
+            EDIT_HINT: "Clique no nome para editar",
+            SLUG_LABEL: "Slug:",
+            STATUS_SAVING: "Salvando...",
+            STATUS_SAVED: "Salvo!",
+            STATUS_ERROR: "Erro",
+            CONFIRM_ACTION_TITLE: "Confirmar Ação",
+        
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "Adicionar Categoria",
+            ADD_SUBCATEGORY_BUTTON: "Adicionar Subcategoria",
+            LOADING_CATEGORIES: "Carregando categorias...",
+            NO_CATEGORIES_YET: "Ainda não há categorias.",
+            ADD_FIRST_CATEGORY_PROMPT: 'Clique em "Adicionar Categoria" para criar a primeira.',
+            NO_SUBCATEGORIES_YET: "Ainda não há subcategorias.",
+            ADD_SUB_PROMPT: 'Use o botão "Adicionar Subcategoria" acima.',
+            ENTER_CATEGORY_PLACEHOLDER: "Digite o nome da categoria e pressione Enter",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "Digite o nome da subcategoria e pressione Enter",
+            DELETE_CATEGORY_CONFIRM: "Tem certeza que deseja excluir a categoria \"{name}\"? Esta ação é irreversível.",
+            DELETE_SUBCATEGORY_CONFIRM: "Tem certeza que deseja excluir a subcategoria \"{name}\"? Esta ação é irreversível.",
+            ITEM_NAME_EMPTY_ERROR: "O nome da {itemType} não pode estar vazio.",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'Não é possível excluir "{name}": Ainda contém subcategorias. Por favor, exclua-as primeiro.',
+        
+            // Tags
+            ADD_TAG_BUTTON: "Adicionar Etiqueta",
+            NO_TAGS_YET: "Ainda não há etiquetas.",
+            ADD_FIRST_TAG_PROMPT: 'Clique em "Adicionar Etiqueta" para criar a primeira.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "A gestão de etiquetas ainda não foi implementada.",
+        
+            // Banners
+            BANNER_MSG_1: "🎥 Compartilhando conhecimento que muda vidas - Um vídeo de cada vez",
+            BANNER_MSG_2: "🌱 Construindo resiliência através de tecnologias apropriadas",
+        
+            // Navigation Titles
+            NAV_LINK_WEBSITE_TITLE: "Visitar Site Principal",
+            NAV_LINK_NEW_TITLE: "Adicionar Novo Conteúdo",
+            TOGGLE_DARK_MODE_TITLE: "Alternar Modo Escuro/Claro",
+            PROFILE_MENU_TITLE: "Menu do Usuário",
+        
+            // Dropdown Items
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+            DROPDOWN_PENDING: "Pendente",
+            DROPDOWN_HOMEPAGE: "Admin Principal",
+            DROPDOWN_TAXONOMY: "Editor de Taxonomia",
+            DROPDOWN_SIGN_OUT: "Sair",
+        
+            // Item Types
+            CATEGORY: "Categoria",
+            SUBCATEGORY: "Subcategoria",
+            TAG: "Etiqueta",
+        
+            // Errors & Status
+            ERROR_PREFIX: "Erro",
+            CRITICAL_ERROR_MSG: "Erro Crítico: Não foi possível inicializar o aplicativo. {error} Verifique o console e atualize.",
+            NETWORK_ERROR_CACHE_FALLBACK: "Erro de rede: {error}. Tentando dados locais.",
+            NETWORK_ERROR_NO_CACHE: "Erro de rede: {error}. Não há dados locais disponíveis.",
+            CACHE_ERROR: "Erro de cache: {error}. Não foi possível carregar dados locais.",
+            DB_INIT_ERROR: "Falha ao inicializar o banco de dados local: {error}",
+            FAILED_OPERATION: "Falha ao {operation}: {error}",
+            UNEXPECTED_ERROR: "Ocorreu um erro inesperado: {error}",
+        },
+        ar: {
+            PORTAL_TITLE: "مدير بوابة الفيديو Appro🎥video🎥"،
+            TAXONOMY_TITLE: "إدارة التصنيف"،
+            TAXONOMY_DESC: "نظّم محتواك حسب الفئات والفئات الفرعية. انقر على أي اسم لتحريره."
+            CATEGORIES_HEADER: "الفئات والفئات الفرعية"،
+            TAG_MANAGEMENT_HEADER: "إدارة العلامات"،
+            جاري التحميل: "جاري التحميل..."،
+            SAVE_BUTTON: "حفظ"،
+            زر إلغاء: "إلغاء"،
+            DELETE_BUTTON: "حذف"،
+            EDIT_HINT: "انقر على الاسم لتحريره"،
+            SLUG_LABEL: "Slug:"،
+            STATUS_SAVING: "جاري الحفظ..."،
+            STATUS_SAVED: "تم الحفظ!"
+            STATUS_ERROR: "خطأ"،
+            CONFIRM_ACTION_TITLE: "تأكيد الإجراء"،
+            
+            // الفئات والفئات الفرعية
+            ADD_CATEGORY_BUTTON: "إضافة فئة"،
+            ADD_SUBCATEGORY_BUTTON: "إضافة فئة فرعية"،
+            LOADING_CATEGORIES: "جاري تحميل الفئات..."،
+            NO_CATEGORIES_YET: "لا توجد فئات حتى الآن."،
+            ADD_FIRST_CATEGORY_PROMPT: 'انقر فوق "إضافة فئة" لإنشاء الفئة الأولى.',
+            NO_SUBCATEGORIES_YET: "لا توجد فئات فرعية حتى الآن."،
+            ADD_SUB_PROMPT: 'استخدم زر "إضافة فئة فرعية" أعلاه.',
+            ENTER_CATEGORY_PLACEHOLDER: "أدخل اسم الفئة واضغط على Enter"،
+            ENTER_SUBCATEGORY_PLACEHOLDER: "أدخل اسم الفئة الفرعية واضغط على Enter"،
+            DELETE_CATEGORY_CONFIRM: "هل أنت متأكد من حذف الفئة \"{name}\"؟ هذا الإجراء لا رجعة فيه."،
+            DELETE_SUBCATEGORY_CONFIRM: "هل أنت متأكد من حذف الفئة الفرعية \"{name}\"؟ هذا الإجراء لا رجعة فيه."،
+            ITEM_NAME_EMPTY_ERROR: "لا يمكن أن يكون اسم {itemType} فارغًا."،
+            CATEGORY_DELETE_HAS_SUBS_ERROR: 'لا يمكن حذف "{name}": لا يزال يحتوي على فئات فرعية. "يرجى حذفها أولاً."
+            
+            // العلامات
+            ADD_TAG_BUTTON: "إضافة علامة"،
+            NO_TAGS_YET: "لا توجد علامات حتى الآن."،
+            ADD_FIRST_TAG_PROMPT: 'انقر فوق "إضافة علامة" لإنشاء العلامة الأولى.',
+            TAG_FEATURE_NOT_IMPLEMENTED: "لم يتم تنفيذ إدارة العلامات بعد."،
+            
+            // لافتات
+            BANNER_MSG_1: "🎥 مشاركة المعرفة التي تُغيّر الحياة - مقطع فيديو واحد في كل مرة"،
+            BANNER_MSG_2: "🌱 بناء المرونة من خلال التقنيات المناسبة"،
+            
+            // عناوين التنقل
+            NAV_LINK_WEBSITE_TITLE: "زيارة الموقع الرئيسي"،
+            NAV_LINK_NEW_TITLE: "إضافة محتوى جديد"،
+            TOGGLE_DARK_MODE_TITLE: "تبديل الوضع الداكن/الفاتح"،
+            PROFILE_MENU_TITLE: "قائمة المستخدم"،
+            
+            // عناصر القائمة المنسدلة
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo beta"،
+            DROPDOWN_PENDING: "معلق"
+            DROPDOWN_HOMEPAGE: "المسؤول الرئيسي"،
+            DROPDOWN_TAXONOMY: "محرر التصنيف"،
+            DROPDOWN_SIGN_OUT: "تسجيل الخروج"،
+            
+            // أنواع العناصر
+            الفئة: "الفئة"،
+            الفئة الفرعية: "الفئة الفرعية"،
+            العلامة: "العلامة"،
+            
+            // الأخطاء والحالة
+            ERROR_PREFIX: "خطأ"،
+            CRITICAL_ERROR_MSG: "خطأ حرج: تعذر تهيئة التطبيق. {error} يرجى التحقق من وحدة التحكم والتحديث."،
+            NETWORK_ERROR_CACHE_FALLBACK: "خطأ في الشبكة: {error}. محاولة الوصول إلى بيانات محلية."
+            NETWORK_ERROR_NO_CACHE: "خطأ في الشبكة: {error}. لا توجد بيانات محلية متاحة."،
+            CACHE_ERROR: "خطأ في ذاكرة التخزين المؤقت: {error}. تعذر تحميل البيانات المحلية."،
+            DB_INIT_ERROR: "فشل تهيئة قاعدة البيانات المحلية: {error}"،
+            FAILED_OPERATION: "فشلت {العملية}: {خطأ}"،
+            UNEXPECTED_ERROR: "حدث خطأ غير متوقع: {error}"،
+        },
+        // Swahili Translation
+    sw: {
+        PORTAL_TITLE: "Appro🎥video Meneja wa Tovuti ya Video🎥",
+        TAXONOMY_TITLE: "Usimamizi wa Uainishaji",
+        TAXONOMY_DESC: "Panga maudhui yako kwa kutumia vikundi na vikundi vidogo. Bofya jina lolote ili kuhariri.",
+        CATEGORIES_HEADER: "Vikundi na Vikundi Vidogo",
+        TAG_MANAGEMENT_HEADER: "Usimamizi wa Lebo",
+        LOADING: "Inapakia...",
+        SAVE_BUTTON: "Hifadhi",
+        CANCEL_BUTTON: "Ghairi",
+        DELETE_BUTTON: "Futa",
+        EDIT_HINT: "Bofya jina ili kuhariri",
+        SLUG_LABEL: "Slug:",
+        STATUS_SAVING: "Inahifadhi...",
+        STATUS_SAVED: "Imehifadhiwa!",
+        STATUS_ERROR: "Hitilafu",
+        CONFIRM_ACTION_TITLE: "Thibitisha Kitendo",
+    
+        // Categories & Subcategories
+        ADD_CATEGORY_BUTTON: "Ongeza Kikundi",
+        ADD_SUBCATEGORY_BUTTON: "Ongeza Kikundi Kidogo",
+        LOADING_CATEGORIES: "Inapakia vikundi...",
+        NO_CATEGORIES_YET: "Bado hakuna vikundi.",
+        ADD_FIRST_CATEGORY_PROMPT: 'Bofya "Ongeza Kikundi" kuunda cha kwanza.',
+        NO_SUBCATEGORIES_YET: "Bado hakuna vikundi vidogo.",
+        ADD_SUB_PROMPT: 'Tumia kitufe cha "Ongeza Kikundi Kidogo" hapo juu.',
+        ENTER_CATEGORY_PLACEHOLDER: "Andika jina la kikundi kisha bonyeza Enter",
+        ENTER_SUBCATEGORY_PLACEHOLDER: "Andika jina la kikundi kidogo kisha bonyeza Enter",
+        DELETE_CATEGORY_CONFIRM: "Je, una uhakika unataka kufuta kikundi \"{name}\"? Kitendo hiki hakiwezi kutenduliwa.",
+        DELETE_SUBCATEGORY_CONFIRM: "Je, una uhakika unataka kufuta kikundi kidogo \"{name}\"? Kitendo hiki hakiwezi kutenduliwa.",
+        ITEM_NAME_EMPTY_ERROR: "Jina la {itemType} haliwezi kuwa tupu.",
+        CATEGORY_DELETE_HAS_SUBS_ERROR: 'Haiwezekani kufuta "{name}": Kina vikundi vidogo. Tafadhali vifute kwanza.',
+    
+        // Tags
+        ADD_TAG_BUTTON: "Ongeza Lebo",
+        NO_TAGS_YET: "Bado hakuna lebo.",
+        ADD_FIRST_TAG_PROMPT: 'Bofya "Ongeza Lebo" kuunda ya kwanza.',
+        TAG_FEATURE_NOT_IMPLEMENTED: "Usimamizi wa lebo bado haujatekelezwa.",
+    
+        // Banners
+        BANNER_MSG_1: "🎥 Kushiriki maarifa yanayobadilisha maisha - Video moja kwa wakati",
+        BANNER_MSG_2: "🌱 Kujenga uthabiti kupitia teknolojia sahihi",
+    
+        // Navigation Titles
+        NAV_LINK_WEBSITE_TITLE: "Tembelea Tovuti Kuu",
+        NAV_LINK_NEW_TITLE: "Ongeza Maudhui Mapya",
+        TOGGLE_DARK_MODE_TITLE: "Badili Modi Nyeusi/Nyeupe",
+        PROFILE_MENU_TITLE: "Menyu ya Mtumiaji",
+    
+        // Dropdown Items
+        DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
+        DROPDOWN_PENDING: "Inasubiri",
+        DROPDOWN_HOMEPAGE: "Admin Kuu",
+        DROPDOWN_TAXONOMY: "Kihariri cha Uainishaji",
+        DROPDOWN_SIGN_OUT: "Ondoka",
+    
+        // Item Types
+        CATEGORY: "Kikundi",
+        SUBCATEGORY: "Kikundi Kidogo",
+        TAG: "Lebo",
+    
+        // Errors & Status
+        ERROR_PREFIX: "Hitilafu",
+        CRITICAL_ERROR_MSG: "Hitilafu Kubwa: Imeshindikana kuanzisha programu. {error} Tafadhali angalia koni na uboreshe.",
+        NETWORK_ERROR_CACHE_FALLBACK: "Hitilafu ya mtandao: {error}. Inajaribu kutumia data za ndani.",
+        NETWORK_ERROR_NO_CACHE: "Hitilafu ya mtandao: {error}. Hakuna data za ndani zilizopo.",
+        CACHE_ERROR: "Hitilafu ya hifadhi: {error}. Imeshindikana kupakia data za ndani.",
+        DB_INIT_ERROR: "Imeshindikana kuanzisha hifadhidata ya ndani: {error}",
+        FAILED_OPERATION: "Imeshindikana kufanya {operation}: {error}",
+        UNEXPECTED_ERROR: "Hitilafu isiyotarajiwa imetokea: {error}",
+    },
+    hi: {
+        PORTAL_TITLE: "Appro🎥video वीडियो पोर्टल प्रबंधक🎥",
+        TAXONOMY_TITLE: "वर्गीकरण प्रबंधन",
+        TAXONOMY_DESC: "श्रेणियों और उप-श्रेणियों के साथ अपनी सामग्री व्यवस्थित करें। संपादित करने के लिए नाम पर क्लिक करें।",
+        CATEGORIES_HEADER: "श्रेणियाँ और उप-श्रेणियाँ",
+        TAG_MANAGEMENT_HEADER: "टैग प्रबंधन",
+        LOADING: "लोड हो रहा है...",
+        SAVE_BUTTON: "सहेजें",
+        CANCEL_BUTTON: "रद्द करें",
+        DELETE_BUTTON: "हटाएँ",
+        EDIT_HINT: "संपादित करने के लिए नाम पर क्लिक करें",
+        SLUG_LABEL: "स्लग:",
+        STATUS_SAVING: "सहेजा जा रहा है...",
+        STATUS_SAVED: "सहेजा गया!",
+        STATUS_ERROR: "त्रुटि",
+        CONFIRM_ACTION_TITLE: "कार्रवाई की पुष्टि करें",
+    
+        // Categories & Subcategories
+        ADD_CATEGORY_BUTTON: "श्रेणी जोड़ें",
+        ADD_SUBCATEGORY_BUTTON: "उप-श्रेणी जोड़ें",
+        LOADING_CATEGORIES: "श्रेणियाँ लोड हो रही हैं...",
+        NO_CATEGORIES_YET: "अभी तक कोई श्रेणी नहीं।",
+        ADD_FIRST_CATEGORY_PROMPT: 'पहली श्रेणी बनाने के लिए "श्रेणी जोड़ें" पर क्लिक करें।',
+        NO_SUBCATEGORIES_YET: "अभी तक कोई उप-श्रेणी नहीं।",
+        ADD_SUB_PROMPT: 'ऊपर दिए गए "उप-श्रेणी जोड़ें" बटन का उपयोग करें।',
+        ENTER_CATEGORY_PLACEHOLDER: "श्रेणी का नाम लिखें और Enter दबाएँ",
+        ENTER_SUBCATEGORY_PLACEHOLDER: "उप-श्रेणी का नाम लिखें और Enter दबाएँ",
+        DELETE_CATEGORY_CONFIRM: "क्या आप वाकई श्रेणी \"{name}\" हटाना चाहते हैं? यह कार्रवाई अपरिवर्तनीय है।",
+        DELETE_SUBCATEGORY_CONFIRM: "क्या आप वाकई उप-श्रेणी \"{name}\" हटाना चाहते हैं? यह कार्रवाई अपरिवर्तनीय है।",
+        ITEM_NAME_EMPTY_ERROR: "{itemType} का नाम खाली नहीं हो सकता।",
+        CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" को हटाना असंभव है: इसमें अभी भी उप-श्रेणियाँ मौजूद हैं। कृपया पहले उन्हें हटाएँ।',
+    
+        // Tags
+        ADD_TAG_BUTTON: "टैग जोड़ें",
+        NO_TAGS_YET: "अभी तक कोई टैग नहीं।",
+        ADD_FIRST_TAG_PROMPT: 'पहला टैग बनाने के लिए "टैग जोड़ें" पर क्लिक करें।',
+        TAG_FEATURE_NOT_IMPLEMENTED: "टैग प्रबंधन अभी तक लागू नहीं किया गया है।",
+    
+        // Banners
+        BANNER_MSG_1: "🎥 ज्ञान साझा करें जो जीवन बदलता है - एक वीडियो प्रति बार",
+        BANNER_MSG_2: "🌱 उचित तकनीकों के माध्यम से लचीलापन विकसित करें",
+    
+        // Navigation Titles
+        NAV_LINK_WEBSITE_TITLE: "मुख्य साइट देखें",
+        NAV_LINK_NEW_TITLE: "नई सामग्री जोड़ें",
+        TOGGLE_DARK_MODE_TITLE: "डार्क/लाइट मोड स्विच करें",
+        PROFILE_MENU_TITLE: "उपयोगकर्ता मेनू",
+    
+        // Dropdown Items
+        DROPDOWN_APPROVIDEO_BETA: "Approvideo बीटा",
+        DROPDOWN_PENDING: "लंबित",
+        DROPDOWN_HOMEPAGE: "मुख्य एडमिन",
+        DROPDOWN_TAXONOMY: "वर्गीकरण संपादक",
+        DROPDOWN_SIGN_OUT: "लॉगआउट",
+    
+        // Item Types
+        CATEGORY: "श्रेणी",
+        SUBCATEGORY: "उप-श्रेणी",
+        TAG: "टैग",
+    
+        // Errors & Status
+        ERROR_PREFIX: "त्रुटि",
+        CRITICAL_ERROR_MSG: "गंभीर त्रुटि: एप्लिकेशन प्रारंभ नहीं कर सका। {error} कृपया कंसोल जांचें और रिफ्रेश करें।",
+        NETWORK_ERROR_CACHE_FALLBACK: "नेटवर्क त्रुटि: {error}। स्थानीय डेटा का उपयोग करने की कोशिश।",
+        NETWORK_ERROR_NO_CACHE: "नेटवर्क त्रुटि: {error}। कोई स्थानीय डेटा उपलब्ध नहीं।",
+        CACHE_ERROR: "कैश त्रुटि: {error}। स्थानीय डेटा लोड नहीं कर सका।",
+        DB_INIT_ERROR: "स्थानीय डेटाबेस प्रारंभ करने में विफलता: {error}",
+        FAILED_OPERATION: "{operation} के दौरान विफलता: {error}",
+        UNEXPECTED_ERROR: "एक अप्रत्याशित त्रुटि हुई: {error}",
+    },
+            zh: {
+    PORTAL_TITLE: "Appro🎥video 视频门户管理器🎥",
+    TAXONOMY_TITLE: "分类管理",
+    TAXONOMY_DESC: "通过类别和子类别组织您的内容。点击名称进行编辑。",
+    CATEGORIES_HEADER: "类别和子类别",
+    TAG_MANAGEMENT_HEADER: "标签管理",
+    LOADING: "加载中...",
+    SAVE_BUTTON: "保存",
+    CANCEL_BUTTON: "取消",
+    DELETE_BUTTON: "删除",
+    EDIT_HINT: "点击名称以编辑",
+    SLUG_LABEL: "Slug：",
+    STATUS_SAVING: "正在保存...",
+    STATUS_SAVED: "已保存！",
+    STATUS_ERROR: "错误",
+    CONFIRM_ACTION_TITLE: "确认操作",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "添加类别",
+    ADD_SUBCATEGORY_BUTTON: "添加子类别",
+    LOADING_CATEGORIES: "正在加载类别...",
+    NO_CATEGORIES_YET: "目前没有类别。",
+    ADD_FIRST_CATEGORY_PROMPT: '点击“添加类别”以创建第一个类别。',
+    NO_SUBCATEGORIES_YET: "目前没有子类别。",
+    ADD_SUB_PROMPT: '使用上方的“添加子类别”按钮。',
+    ENTER_CATEGORY_PLACEHOLDER: "输入类别名称并按回车键",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "输入子类别名称并按回车键",
+    DELETE_CATEGORY_CONFIRM: "您确定要删除类别“{name}”吗？此操作无法撤销。",
+    DELETE_SUBCATEGORY_CONFIRM: "您确定要删除子类别“{name}”吗？此操作无法撤销。",
+    ITEM_NAME_EMPTY_ERROR: "{itemType}名称不能为空。",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '无法删除“{name}”：仍然包含子类别。请先删除子类别。',
+
+    // Tags
+    ADD_TAG_BUTTON: "添加标签",
+    NO_TAGS_YET: "目前没有标签。",
+    ADD_FIRST_TAG_PROMPT: '点击“添加标签”以创建第一个标签。',
+    TAG_FEATURE_NOT_IMPLEMENTED: "标签管理功能尚未实现。",
+
+    // Banners
+    BANNER_MSG_1: "🎥 分享改变人生的知识——一次一个视频",
+    BANNER_MSG_2: "🌱 通过适用技术建立韧性",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "访问主站",
+    NAV_LINK_NEW_TITLE: "添加新内容",
+    TOGGLE_DARK_MODE_TITLE: "切换深色/浅色模式",
+    PROFILE_MENU_TITLE: "用户菜单",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo 测试版",
+    DROPDOWN_PENDING: "待处理",
+    DROPDOWN_HOMEPAGE: "主要管理页面",
+    DROPDOWN_TAXONOMY: "分类编辑器",
+    DROPDOWN_SIGN_OUT: "登出",
+
+    // Item Types
+    CATEGORY: "类别",
+    SUBCATEGORY: "子类别",
+    TAG: "标签",
+
+    // Errors & Status
+    ERROR_PREFIX: "错误",
+    CRITICAL_ERROR_MSG: "严重错误：无法初始化应用程序。{error} 请检查控制台并刷新。",
+    NETWORK_ERROR_CACHE_FALLBACK: "网络错误：{error}。正在尝试使用本地数据。",
+    NETWORK_ERROR_NO_CACHE: "网络错误：{error}。无可用本地数据。",
+    CACHE_ERROR: "缓存错误：{error}。无法加载本地数据。",
+    DB_INIT_ERROR: "本地数据库初始化失败：{error}",
+    FAILED_OPERATION: "在{operation}过程中失败：{error}",
+    UNEXPECTED_ERROR: "发生意外错误：{error}",
+}
+,
+bn: {
+    PORTAL_TITLE: "Appro🎥video ভিডিও পোর্টাল ব্যবস্থাপক🎥",
+    TAXONOMY_TITLE: "শ্রেণীবিভাগ ব্যবস্থাপনা",
+    TAXONOMY_DESC: "বিভাগ এবং উপ-বিভাগ ব্যবহার করে আপনার বিষয়বস্তু সংগঠিত করুন। সম্পাদনার জন্য নামের উপর ক্লিক করুন।",
+    CATEGORIES_HEADER: "বিভাগ ও উপ-বিভাগ",
+    TAG_MANAGEMENT_HEADER: "ট্যাগ ব্যবস্থাপনা",
+    LOADING: "লোড হচ্ছে...",
+    SAVE_BUTTON: "সংরক্ষণ করুন",
+    CANCEL_BUTTON: "বাতিল করুন",
+    DELETE_BUTTON: "মুছে ফেলুন",
+    EDIT_HINT: "সম্পাদনার জন্য নামের উপর ক্লিক করুন",
+    SLUG_LABEL: "স্লাগ:",
+    STATUS_SAVING: "সংরক্ষণ করা হচ্ছে...",
+    STATUS_SAVED: "সংরক্ষিত হয়েছে!",
+    STATUS_ERROR: "ত্রুটি",
+    CONFIRM_ACTION_TITLE: "কর্ম নিশ্চিত করুন",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "বিভাগ যোগ করুন",
+    ADD_SUBCATEGORY_BUTTON: "উপ-বিভাগ যোগ করুন",
+    LOADING_CATEGORIES: "বিভাগ লোড হচ্ছে...",
+    NO_CATEGORIES_YET: "এখনও কোনো বিভাগ নেই।",
+    ADD_FIRST_CATEGORY_PROMPT: 'প্রথম বিভাগ তৈরি করতে "বিভাগ যোগ করুন" বোতামে ক্লিক করুন।',
+    NO_SUBCATEGORIES_YET: "এখনও কোনো উপ-বিভাগ নেই।",
+    ADD_SUB_PROMPT: 'উপরে "উপ-বিভাগ যোগ করুন" বোতামটি ব্যবহার করুন।',
+    ENTER_CATEGORY_PLACEHOLDER: "বিভাগের নাম লিখুন এবং Enter চাপুন",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "উপ-বিভাগের নাম লিখুন এবং Enter চাপুন",
+    DELETE_CATEGORY_CONFIRM: "আপনি কি নিশ্চিতভাবে \"{name}\" বিভাগটি মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।",
+    DELETE_SUBCATEGORY_CONFIRM: "আপনি কি নিশ্চিতভাবে \"{name}\" উপ-বিভাগটি মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।",
+    ITEM_NAME_EMPTY_ERROR: "{itemType} নাম ফাঁকা হতে পারে না।",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" মুছে ফেলা সম্ভব নয়: এতে এখনও উপ-বিভাগ রয়েছে। প্রথমে উপ-বিভাগগুলি মুছে ফেলুন।',
+
+    // Tags
+    ADD_TAG_BUTTON: "ট্যাগ যোগ করুন",
+    NO_TAGS_YET: "এখনও কোনো ট্যাগ নেই।",
+    ADD_FIRST_TAG_PROMPT: 'প্রথম ট্যাগ তৈরি করতে "ট্যাগ যোগ করুন" বোতামে ক্লিক করুন।',
+    TAG_FEATURE_NOT_IMPLEMENTED: "ট্যাগ ব্যবস্থাপনা এখনো বাস্তবায়িত হয়নি।",
+
+    // Banners
+    BANNER_MSG_1: "🎥 জীবন পরিবর্তনের জ্ঞান শেয়ার করুন—একটি ভিডিও একবারে",
+    BANNER_MSG_2: "🌱 উপযুক্ত প্রযুক্তির মাধ্যমে স্থিতিস্থাপকতা তৈরি করুন",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "প্রধান সাইট দেখুন",
+    NAV_LINK_NEW_TITLE: "নতুন বিষয়বস্তু যোগ করুন",
+    TOGGLE_DARK_MODE_TITLE: "ডার্ক/লাইট মোড পরিবর্তন করুন",
+    PROFILE_MENU_TITLE: "ব্যবহারকারী মেনু",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo বিটা",
+    DROPDOWN_PENDING: "অপেক্ষমাণ",
+    DROPDOWN_HOMEPAGE: "প্রধান অ্যাডমিন",
+    DROPDOWN_TAXONOMY: "শ্রেণীবিভাগ সম্পাদক",
+    DROPDOWN_SIGN_OUT: "সাইন আউট",
+
+    // Item Types
+    CATEGORY: "বিভাগ",
+    SUBCATEGORY: "উপ-বিভাগ",
+    TAG: "ট্যাগ",
+
+    // Errors & Status
+    ERROR_PREFIX: "ত্রুটি",
+    CRITICAL_ERROR_MSG: "গুরুতর ত্রুটি: অ্যাপ্লিকেশন শুরু করা যায়নি। {error} অনুগ্রহ করে কনসোল চেক করুন এবং রিফ্রেশ করুন।",
+    NETWORK_ERROR_CACHE_FALLBACK: "নেটওয়ার্ক ত্রুটি: {error}। স্থানীয় ডেটা ব্যবহার করার চেষ্টা করা হচ্ছে।",
+    NETWORK_ERROR_NO_CACHE: "নেটওয়ার্ক ত্রুটি: {error}। স্থানীয় কোনো ডেটা উপলব্ধ নেই।",
+    CACHE_ERROR: "ক্যাশে ত্রুটি: {error}। স্থানীয় ডেটা লোড করা যায়নি।",
+    DB_INIT_ERROR: "স্থানীয় ডাটাবেস শুরু করতে ব্যর্থ হয়েছে: {error}",
+    FAILED_OPERATION: "{operation} সময় ব্যর্থ হয়েছে: {error}",
+    UNEXPECTED_ERROR: "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে: {error}",
+}
+
+        
+
+        
     };
 
     let currentLanguage = 'en'; // Default language
 
+// Assume supportedLanguages array and translations object are already defined as you provided
+
+document.addEventListener('DOMContentLoaded', () => {
+    const languageToggleButton = document.getElementById('language-toggle-button');
+    const languageMegaMenu = document.getElementById('language-mega-menu');
+    const languageGrid = document.getElementById('language-grid');
+    const currentLangDisplay = document.getElementById('current-lang-display');
+    const langSwitcherContainer = document.getElementById('language-switcher-container'); // Get container
+
+    // --- Populate the Mega Menu ---
+    function populateLanguageMenu() {
+        languageGrid.innerHTML = ''; // Clear existing items
+
+        supportedLanguages.forEach(lang => {
+            const button = document.createElement('button');
+            button.classList.add(
+                'lang-mega-button', 'block', 'w-full', 'text-left', 'px-3', 'py-1.5', 'text-sm',
+                'text-gray-700', 'dark:text-gray-200', 'rounded-md',
+                'hover:bg-green-100', 'dark:hover:bg-green-800', 'dark:hover:bg-opacity-50', // Daring hover!
+                'focus:outline-none', 'focus:bg-green-100', 'dark:focus:bg-green-800', 'dark:focus:bg-opacity-50',
+                'transition-colors', 'duration-100' // Smooth hover transition
+            );
+            button.setAttribute('role', 'menuitem');
+            button.setAttribute('tabindex', '-1');
+            button.setAttribute('data-lang', lang.code);
+
+            // Display native name prominently, code subtly
+            button.innerHTML = `
+                <span class="font-medium">${lang.nativeName}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">(${lang.code.toUpperCase()})</span>
+            `;
+
+            button.addEventListener('click', () => {
+                handleLanguageSelection(lang.code);
+                closeLanguageMenu(); // Close menu after selection
+            });
+
+            languageGrid.appendChild(button);
+        });
+    }
+
+    // --- Toggle Menu Visibility ---
+    function toggleLanguageMenu() {
+        const isExpanded = languageToggleButton.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+            closeLanguageMenu();
+        } else {
+            openLanguageMenu();
+        }
+    }
+
+    function openLanguageMenu() {
+        languageMegaMenu.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+        languageMegaMenu.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+        languageToggleButton.setAttribute('aria-expanded', 'true');
+         // Optional: Focus the first item when opened for keyboard navigation
+        // const firstLangButton = languageGrid.querySelector('.lang-mega-button');
+        // if (firstLangButton) firstLangButton.focus();
+    }
+
+    function closeLanguageMenu() {
+        languageMegaMenu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        languageMegaMenu.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+        languageToggleButton.setAttribute('aria-expanded', 'false');
+    }
+
+    // --- Handle Language Selection ---
+    function handleLanguageSelection(langCode) {
+        console.log(`Language selected: ${langCode}`);
+        // 1. Call your existing function to change the language and update UI text
+        // Assuming you have a function like this:
+        // setLanguage(langCode); // Uncomment and use your actual function name
+
+        // 2. Update the trigger button text
+        updateTriggerButtonDisplay(langCode);
+
+        // 3. Optional: Add visual cue to the selected language in the dropdown
+        highlightSelectedLanguage(langCode);
+
+        // Add any other logic needed after language change (e.g., save preference)
+    }
+
+    // --- Update Trigger Button ---
+    function updateTriggerButtonDisplay(langCode) {
+        if (currentLangDisplay) {
+            currentLangDisplay.textContent = langCode.toUpperCase();
+        }
+         // Add a title attribute to show full language name on hover
+         const selectedLang = supportedLanguages.find(l => l.code === langCode);
+         if(selectedLang && languageToggleButton) {
+            // Let's use the translation key for the title if available, otherwise fallback
+            const titleKey = "SELECT_LANGUAGE_TITLE"; // Add this key to your translations
+            let titleText = translations[langCode]?.[titleKey] || `Language: ${selectedLang.name}`;
+             languageToggleButton.setAttribute('title', titleText);
+         }
+    }
+
+    // --- Highlight Selected Language in Menu ---
+    function highlightSelectedLanguage(langCode) {
+        const allLangButtons = languageGrid.querySelectorAll('.lang-mega-button');
+        allLangButtons.forEach(btn => {
+            const btnLang = btn.getAttribute('data-lang');
+            if (btnLang === langCode) {
+                // Example: Add a bolder font or a subtle background/border
+                btn.classList.add('font-bold', 'bg-green-50', 'dark:bg-green-900'); // Adjust styling as needed
+                btn.classList.remove('hover:bg-green-100', 'dark:hover:bg-green-800/50'); // Maybe remove hover effect for active
+            } else {
+                btn.classList.remove('font-bold', 'bg-green-50', 'dark:bg-green-900');
+                btn.classList.add('hover:bg-green-100', 'dark:hover:bg-green-800/50');
+            }
+        });
+    }
+
+
+    // --- Event Listeners ---
+    if (languageToggleButton && languageMegaMenu) {
+        languageToggleButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent click from immediately closing via document listener
+            toggleLanguageMenu();
+        });
+
+        // Close menu if clicking outside of it
+        document.addEventListener('click', (event) => {
+            if (languageToggleButton.getAttribute('aria-expanded') === 'true' &&
+                !langSwitcherContainer.contains(event.target)) {
+                 closeLanguageMenu();
+            }
+        });
+
+        // Close menu on Escape key press
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && languageToggleButton.getAttribute('aria-expanded') === 'true') {
+                closeLanguageMenu();
+                languageToggleButton.focus(); // Return focus to the button
+            }
+        });
+
+         // Initial setup
+         populateLanguageMenu();
+         // TODO: Determine the initial language (e.g., from localStorage, URL, or browser settings)
+         const initialLang = 'en'; // Replace with your logic to get the current language
+         updateTriggerButtonDisplay(initialLang);
+         highlightSelectedLanguage(initialLang);
+         // Make sure to call your main translation function initially as well
+         // setLanguage(initialLang); // Uncomment and use
+
+    } else {
+        console.error("Language switcher elements not found!");
+    }
+
+    // Add a key for the dropdown heading to your translations
+    if(translations.en) {
+        translations.en.SELECT_LANGUAGE_HEADING = "Select Language";
+        translations.en.SELECT_LANGUAGE_TITLE = "Select Language"; // For the button title attribute
+    }
+    if(translations.es) {
+        translations.es.SELECT_LANGUAGE_HEADING = "Seleccionar Idioma";
+         translations.es.SELECT_LANGUAGE_TITLE = "Seleccionar Idioma";
+    }
+// French
+if (translations.fr) {
+    translations.fr.SELECT_LANGUAGE_HEADING = "Sélectionner la langue";
+    translations.fr.SELECT_LANGUAGE_TITLE = "Sélectionner la langue";
+}
+// Portuguese
+if (translations.pt) {
+    translations.pt.SELECT_LANGUAGE_HEADING = "Selecionar Idioma";
+    translations.pt.SELECT_LANGUAGE_TITLE = "Selecionar Idioma";
+}
+// Arabic
+if (translations.ar) {
+    translations.ar.SELECT_LANGUAGE_HEADING = "اختر اللغة";
+    translations.ar.SELECT_LANGUAGE_TITLE = "اختر اللغة";
+}
+// Swahili
+if (translations.sw) {
+    // Please verify Swahili translation
+    translations.sw.SELECT_LANGUAGE_HEADING = "Chagua Lugha";
+    translations.sw.SELECT_LANGUAGE_TITLE = "Chagua Lugha";
+}
+// Hindi
+if (translations.hi) {
+    translations.hi.SELECT_LANGUAGE_HEADING = "भाषा चुनें";
+    translations.hi.SELECT_LANGUAGE_TITLE = "भाषा चुनें";
+}
+// Chinese (Simplified)
+if (translations.zh) {
+    translations.zh.SELECT_LANGUAGE_HEADING = "选择语言";
+    translations.zh.SELECT_LANGUAGE_TITLE = "选择语言";
+}
+// Bengali
+if (translations.bn) {
+    // Please verify Bengali translation
+    translations.bn.SELECT_LANGUAGE_HEADING = "ভাষা নির্বাচন করুন";
+    translations.bn.SELECT_LANGUAGE_TITLE = "ভাষা নির্বাচন করুন";
+}
+// Russian
+if (translations.ru) {
+    translations.ru.SELECT_LANGUAGE_HEADING = "Выберите язык";
+    translations.ru.SELECT_LANGUAGE_TITLE = "Выберите язык";
+}
+// Urdu
+if (translations.ur) {
+    // Please verify Urdu translation
+    translations.ur.SELECT_LANGUAGE_HEADING = "زبان منتخب کریں";
+    translations.ur.SELECT_LANGUAGE_TITLE = "زبان منتخب کریں";
+}
+// Indonesian
+if (translations.id) {
+    translations.id.SELECT_LANGUAGE_HEADING = "Pilih Bahasa";
+    translations.id.SELECT_LANGUAGE_TITLE = "Pilih Bahasa";
+}
+// Hausa
+if (translations.ha) {
+    // Please verify Hausa translation
+    translations.ha.SELECT_LANGUAGE_HEADING = "Zaɓi Harshe";
+    translations.ha.SELECT_LANGUAGE_TITLE = "Zaɓi Harshe";
+}
+// Thai
+if (translations.th) {
+    translations.th.SELECT_LANGUAGE_HEADING = "เลือกภาษา";
+    translations.th.SELECT_LANGUAGE_TITLE = "เลือกภาษา";
+}
+// Turkish
+if (translations.tr) {
+    translations.tr.SELECT_LANGUAGE_HEADING = "Dil Seçin";
+    translations.tr.SELECT_LANGUAGE_TITLE = "Dil Seçin";
+}
+// Amharic
+if (translations.am) {
+    // Please verify Amharic translation
+    translations.am.SELECT_LANGUAGE_HEADING = "ቋንቋ ይ
+});
+
+
+        
     /**
      * Retrieves a translated string for a given key and language.
      * Handles fallback to English and simple interpolation.
