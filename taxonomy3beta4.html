@@ -1876,11 +1876,7 @@ class CategoryManager {
                 this.cancelEdit();
             }
         });
-
-        // Replace the content of the original element temporarily
-        // This preserves the original element structure better than insertBefore/remove
-        element.innerHTML = ''; // Clear the original text/nodes
-        element.appendChild(input); // Add the input inside
+ 
 
         // Hide the original element (<span> or <h3>)
         element.style.display = 'none';
