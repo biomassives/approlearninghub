@@ -163,6 +163,46 @@
     </main>
 
 <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+   <form id="newVideoForm" class="space-y-4">
+             {/* Title */}
+             <div>
+                 <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
+                 <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
+             </div>
+
+             {/* YouTube URL */}
+             <div>
+                 <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
+                 <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
+                 <div id="youtubeIdPreview" class="text-sm mt-1"></div> {/* For ID preview */}
+             </div>
+
+             {/* Description */}
+             <div>
+                 <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
+                 <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
+             </div>
+
+             {/* Tags */}
+             <div class="relative">
+                 <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
+                 <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
+                 <div id="tagSuggestions" class="absolute z-10 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                     {/* Tag suggestions will appear here */}
+                 </div>
+             </div>
+
+             {/* Submit Button */}
+             <div class="flex justify-end pt-2">
+                <button type="button" class="btn btn-secondary mr-2" onclick="closeModal()">Cancel</button> {/* Added Cancel button */}
+                <button type="submit" id="submitButton" class="btn btn-green">
+                    Add Video
+                </button>
+             </div>
+    </form>
+  
+    
     <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
         <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
             <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -194,9 +234,7 @@
     </body>
 
     <script type="module">
-        //  add content modal    
-
-        // --- Add Content Modal Logic ---
+    // --- Add Content Modal Logic ---
     const modal = document.getElementById('add-content-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
     let currentModalSubcategoryId = null; // Optional: Store context if needed later
@@ -252,7 +290,209 @@
         const panel = document.getElementById('lang-panel');
         const currentLangSpan = document.getElementById('current-lang');
         const langButtons = document.querySelectorAll('.lang-button');
-        
+// --- Add Content Modal Form Logic (Inside DOMContentLoaded)---
+        const newVideoForm = document.getElementById('newVideoForm');
+        const submitButton = document.getElementById('submitButton'); // Ensure this ID is on your submit button
+        const youtubeUrlInput = document.getElementById('newYoutubeUrl');
+        const youtubeIdPreview = document.getElementById('youtubeIdPreview');
+        const tagInput = document.getElementById('newTags');
+        const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+        // Tag Suggestions Setup
+        const tagSuggestions = [ "DIY", "Sustainability", "Environment", "Green Building", "Gardening", "Recycling", "Composting", "Solar", "Wind", "Permaculture", "Organic Farming", "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly", "Off-grid", "Resilience", "Community Development" ];
+
+        // Function to add tag to input (needs to be globally accessible if called from inline onclick)
+        window.addTag = function (tag) {
+            if (!tagInput) return;
+            const currentTags = tagInput.value.split(',')
+                .map(t => t.trim())
+                .filter(t => t !== ''); // Get current tags, filter empty ones
+
+            if (!currentTags.includes(tag)) { // Avoid adding duplicate tags
+                 currentTags.push(tag);
+            }
+
+            tagInput.value = currentTags.join(', '); // Update input field
+            tagSuggestionsDiv.classList.add('hidden'); // Hide suggestions
+            tagInput.focus(); // Keep focus on input
+        };
+
+        if (tagInput && tagSuggestionsDiv) {
+            tagInput.addEventListener('input', () => {
+                const inputText = tagInput.value.toLowerCase();
+                // Get the last part after comma to suggest based on current typing
+                const parts = tagInput.value.split(',');
+                const currentPart = parts[parts.length - 1].trim().toLowerCase();
+
+                const filteredSuggestions = tagSuggestions.filter(tag =>
+                    tag.toLowerCase().includes(currentPart) && currentPart !== ''
+                );
+
+                tagSuggestionsDiv.innerHTML = ''; // Clear previous suggestions
+
+                if (filteredSuggestions.length > 0) {
+                    filteredSuggestions.forEach(tag => {
+                        // Use a button for better accessibility and event handling
+                        const suggestionButton = document.createElement('button');
+                        suggestionButton.type = 'button'; // Prevent form submission
+                        suggestionButton.className = 'block w-full text-left cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 px-3 py-1 text-sm';
+                        suggestionButton.textContent = tag;
+                        suggestionButton.onclick = () => window.addTag(tag); // Call the addTag function
+                        tagSuggestionsDiv.appendChild(suggestionButton);
+                    });
+                    tagSuggestionsDiv.classList.remove('hidden');
+                } else {
+                    tagSuggestionsDiv.classList.add('hidden');
+                }
+            });
+
+            // Hide suggestions when clicking outside the input/suggestions
+             document.addEventListener('click', (event) => {
+                if (!tagInput.contains(event.target) && !tagSuggestionsDiv.contains(event.target)) {
+                    tagSuggestionsDiv.classList.add('hidden');
+                }
+            });
+        } else {
+             console.warn("Tag input or suggestion elements not found in modal.");
+        }
+
+
+        // YouTube URL Preview Logic
+        if (youtubeUrlInput && youtubeIdPreview) {
+            youtubeUrlInput.addEventListener('input', () => {
+                const url = youtubeUrlInput.value;
+                const extractedId = extractYoutubeId(url); // Use the helper function
+
+                if (extractedId && isValidYoutubeId(extractedId)) { // Use helper
+                    youtubeIdPreview.textContent = `Valid YouTube ID: ${extractedId}`;
+                    youtubeIdPreview.className = 'text-sm text-green-600 dark:text-green-400 mt-1';
+                } else {
+                    youtubeIdPreview.textContent = url ? 'Invalid or incomplete YouTube URL' : '';
+                    youtubeIdPreview.className = 'text-sm text-red-600 dark:text-red-400 mt-1';
+                }
+            });
+        } else {
+            console.warn("YouTube URL input or preview element not found in modal.");
+        }
+
+
+        // Form Submission Logic
+        if (newVideoForm && submitButton) {
+            newVideoForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                // Get form values INSIDE the handler
+                const title = document.getElementById('newTitle')?.value.trim();
+                const youtubeUrl = document.getElementById('newYoutubeUrl')?.value.trim();
+                const description = document.getElementById('newDescription')?.value.trim();
+                const tagsValue = document.getElementById('newTags')?.value;
+
+                // Get category/subcategory context from modal variables
+                const categoryId = currentModalCategoryId; // Use the variable set by openModal
+                const subcategoryId = currentModalSubcategoryId; // Use the variable set by openModal
+
+                let tags = [];
+                if (tagsValue) {
+                    tags = tagsValue.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+                }
+
+                // Extract YouTube ID
+                const youtubeId = extractYoutubeId(youtubeUrl); // Use helper
+
+                // --- Validation ---
+                if (!title || !youtubeUrl || !description || tags.length === 0) {
+                    showToast('Please fill in title, URL, description, and add at least one tag.', 'error');
+                    return;
+                }
+                if (!categoryId || !subcategoryId) {
+                     showToast('Error: Category context is missing. Please close and reopen the modal.', 'error');
+                     console.error("Missing categoryId or subcategoryId in form submission");
+                     return;
+                }
+                if (!youtubeId || !isValidYoutubeId(youtubeId)) { // Use helper
+                    showToast('Please enter a valid YouTube URL.', 'error');
+                    youtubeUrlInput?.focus(); // Focus the problematic input
+                    return;
+                }
+                // --- End Validation ---
+
+                try {
+                    // Disable submit button and show loading state
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Adding...';
+
+                    const now = new Date().toISOString();
+
+                    // Prepare video data - **ADJUST FIELD NAMES if your Supabase table is different**
+                    // Assuming your table uses 'category_id' and 'subcategory_id' for foreign keys
+                    const videoData = {
+                        // id: crypto.randomUUID(), // Supabase typically generates UUIDs if configured
+                        title: title,
+                        description: description,
+                        youtube_id: youtubeId, // Common naming convention
+                        category_id: categoryId, // Use the ID from context
+                        subcategory_id: subcategoryId, // Use the ID from context
+                        tags: tags, // Supabase often handles JSONB arrays directly
+                        // datePublished might be set automatically or differently based on workflow
+                        created_at: now, // Often handled by Supabase default value
+                        updated_at: now  // Often handled by Supabase default value or trigger
+                    };
+
+                    console.log('Inserting video data:', videoData);
+
+                    // Insert into Supabase (Ensure 'Video' table name is correct)
+                    const { data, error } = await supabase
+                        .from('Video') // Make sure 'Video' is your actual table name
+                        .insert(videoData)
+                        .select()
+                        .single();
+
+                    if (error) {
+                        console.error('Supabase insert error:', error);
+                        // Provide more specific feedback if possible
+                        let userMessage = 'Failed to add video. Please try again.';
+                        if (error.message.includes('duplicate key value violates unique constraint')) {
+                             userMessage = 'A video with this YouTube ID might already exist.';
+                        } else if (error.message.includes('violates foreign key constraint')) {
+                             userMessage = 'Error linking to category/subcategory. Please report this issue.';
+                        }
+                        throw new Error(userMessage); // Throw specific message for catch block
+                    }
+
+                    console.log('Supabase insert success:', data);
+                    showToast('Video added successfully!', 'success');
+
+                    // Reset form and close modal
+                    newVideoForm.reset();
+                    youtubeIdPreview.textContent = ''; // Clear preview
+                    tagSuggestionsDiv.classList.add('hidden'); // Hide suggestions
+                    closeModal(); // Close the modal on success
+
+                    // Optional: Trigger a refresh of the main content list if needed
+                    // await window.categoryManager.store.loadInitialData(); // Or a more targeted update
+
+                } catch (error) {
+                    console.error('Error adding video:', error);
+                    // Show the specific error message from the throw, or a generic one
+                    showToast(error.message || 'Failed to add video. Please check console.', 'error');
+                } finally {
+                    // Reset button state regardless of success/failure
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Add Video';
+                }
+            });
+        } else {
+             console.warn("Modal form or submit button not found. Form submission logic not attached.");
+        }
+
+        // --- End Add Content Modal Form Logic ---
+
+          
+
+
+
+
+
         // Set initial active language (assuming EN is default)
         let currentLang = 'EN';
         updateActiveButton();
@@ -342,6 +582,68 @@
     // Import Dexie-Encrypted as an ES Module (use version compatible with Dexie v3, e.g., 4.1.1)
     import * as dexieEncrypted from 'https://esm.run/dexie-encrypted';
 
+
+    /**
+     * Extracts YouTube video ID from various URL formats.
+     * @param {string} url - The YouTube URL.
+     * @returns {string|null} The 11-character video ID or null if not found.
+     */
+    function extractYoutubeId(url) {
+      if (!url) return null;
+      // Regular expression to cover various YouTube URL formats
+      const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regex);
+      return match ? match[1] : null;
+    }
+
+    /**
+     * Checks if a string is a valid 11-character YouTube ID.
+     * @param {string} id - The potential YouTube ID.
+     * @returns {boolean} True if valid, false otherwise.
+     */
+    function isValidYoutubeId(id) {
+      return typeof id === 'string' && /^[a-zA-Z0-9_-]{11}$/.test(id);
+    }
+
+    /**
+     * Displays a toast message (basic implementation).
+     * @param {string} message - The message to display.
+     * @param {'success' | 'error' | 'info'} type - The type of toast.
+     */
+    function showToast(message, type = 'info') {
+        // Reuse the existing toast container logic if possible
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            console.warn("Toast container not found, logging message to console:", message);
+            return;
+        }
+
+        const toast = document.createElement('div');
+        let bgColorClass = 'bg-blue-600'; // Default to info
+        if (type === 'success') {
+            bgColorClass = 'bg-green-600';
+        } else if (type === 'error') {
+            // Use the existing error toast function if available for consistency
+            if (window.showErrorToast) {
+                 window.showErrorToast(message); // Assumes showErrorToast handles display
+                 return;
+            }
+            bgColorClass = 'bg-red-600'; // Fallback if showErrorToast isn't defined
+        }
+
+        // Apply styling similar to the error toast
+        toast.className = `toast-message ${bgColorClass} text-white p-3 rounded-md shadow-lg max-w-sm animate-fadeInOut mb-2`; // Added mb-2 for stacking
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove the toast after a delay
+        setTimeout(() => {
+            toast.remove();
+        }, 3500); // Adjust timing as needed
+    }
+    // --- End Helper Functions ---
+        
 
     // --- I18N (Internationalization) Setup ---
 
