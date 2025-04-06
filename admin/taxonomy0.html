@@ -3215,6 +3215,8 @@ class CategoryManager {
             const deleteCategoryButton = e.target.closest('.delete-category-btn');
             const addSubcategoryButton = e.target.closest('.add-subcategory-btn');
             const deleteSubcategoryButton = e.target.closest('.delete-subcategory-btn');
+            const addContentButton = e.target.closest('.add-content-btn');
+
 
             // --- Decide action based on editing state and click target ---
             let clickedEditableElement = null;
@@ -3252,6 +3254,19 @@ class CategoryManager {
 
             } else {
                 // --- Not currently editing ---
+
+                    if (addContentButton) {
+                        console.log('Add content button clicked.');
+                        const subcategoryId = addContentButton.dataset.subcategoryId;
+                        const categoryId = addContentButton.dataset.categoryId;
+                    }
+                        
+                    if (subcategoryId && categoryId) {
+                        openModal(subcategoryId, categoryId); // Call the global modal function
+                    } else {
+                        console.error("Missing data attributes on add content button:", addContentButton);
+                    }
+                    return; // Handled
 
                 // 1. Handle direct button clicks first
                 if (deleteCategoryButton) {
