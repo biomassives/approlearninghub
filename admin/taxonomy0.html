@@ -173,6 +173,16 @@
             </button>
         </div>
         <div class="p-6">
+                <div class="mb-4 p-3 bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-md">
+                 <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Adding content to:</p>
+                 <p class="text-lg font-semibold text-blue-800 dark:text-blue-300">
+                     <span id="modal-category-context">Category...</span>
+                     <span class="mx-1 text-gray-500 dark:text-gray-400">&gt;</span>
+                     <span id="modal-subcategory-context">Subcategory...</span>
+                 </p>
+             </div>
+
+
              <form id="newVideoForm" class="space-y-4">
                  <div>
                      <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
@@ -214,48 +224,84 @@
     </body>
 
     <script type="module">
-    // --- Add Content Modal Logic ---
+// --- Add Content Modal Logic ---
     const modal = document.getElementById('add-content-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
-    let currentModalSubcategoryId = null; // Optional: Store context if needed later
-    let currentModalCategoryId = null;    // Optional: Store context if needed later
+    // Get references to the new display elements
+    const categoryContextEl = document.getElementById('modal-category-context');
+    const subcategoryContextEl = document.getElementById('modal-subcategory-context');
+
+    let currentModalSubcategoryId = null;
+    let currentModalCategoryId = null;
 
     function openModal(subcategoryId, categoryId) {
         currentModalSubcategoryId = subcategoryId;
         currentModalCategoryId = categoryId;
-        console.log(`Opening modal for subcategory: ${subcategoryId}, category: ${categoryId}`);
+
+        // --- Find Names and Update Display ---
+        let categoryName = 'Unknown Category';
+        let subcategoryName = 'Unknown Subcategory';
+
+        // Access the store data via the global categoryManager instance
+        if (window.categoryManager && window.categoryManager.store && window.categoryManager.store.categories) {
+            const category = window.categoryManager.store.categories.find(cat => cat.id === categoryId);
+            if (category) {
+                categoryName = category.name;
+                const subcategory = category.subcategories?.find(sub => sub.id === subcategoryId);
+                if (subcategory) {
+                    subcategoryName = subcategory.name;
+                }
+            }
+        } else {
+            console.error("Cannot access category store data to display context.");
+        }
+
+        // Update the text content of the placeholder elements
+        if (categoryContextEl) {
+            categoryContextEl.textContent = categoryName;
+        }
+        if (subcategoryContextEl) {
+            subcategoryContextEl.textContent = subcategoryName;
+        }
+        // --- End Name Finding ---
+
+        console.log(`Opening modal for: ${categoryName} > ${subcategoryName} (IDs: ${categoryId} > ${subcategoryId})`);
+
         modal.classList.remove('hidden');
-        modal.classList.add('flex'); // Use flex for centering
-        // Add fade-in effect
+        modal.classList.add('flex');
         requestAnimationFrame(() => {
              modal.style.opacity = '1';
         });
-        // Optional: Add logic here later using the IDs, like fetching data or setting titles
     }
 
     function closeModal() {
-         modal.style.opacity = '0'; // Start fade-out
-         // Wait for transition before hiding
+         modal.style.opacity = '0';
          setTimeout(() => {
              modal.classList.add('hidden');
              modal.classList.remove('flex');
-             currentModalSubcategoryId = null; // Clear context
+             currentModalSubcategoryId = null; // Clear context IDs
              currentModalCategoryId = null;
+
+             // --- Clear Display Elements ---
+             if (categoryContextEl) {
+                 categoryContextEl.textContent = ''; // Clear display
+             }
+             if (subcategoryContextEl) {
+                 subcategoryContextEl.textContent = ''; // Clear display
+             }
+             // --- End Clearing ---
+             // Optionally reset the form if needed (already happens on successful submit)
+             // document.getElementById('newVideoForm')?.reset();
+             // document.getElementById('youtubeIdPreview').textContent = '';
+             // document.getElementById('tagSuggestions').classList.add('hidden');
          }, 300); // Match CSS transition duration
     }
-
-    // Event listener for the modal's close button
     modalCloseBtn?.addEventListener('click', closeModal);
-
-    // Event listener to close modal when clicking the background overlay
     modal?.addEventListener('click', (event) => {
-        // Check if the click is directly on the modal background (the container div)
         if (event.target === modal) {
             closeModal();
         }
     });
-
-    // Event listener to close modal with the Escape key
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
             closeModal();
@@ -264,7 +310,6 @@
 
 
       // This script reorganizes the language buttons on mobile
-    
       document.addEventListener('DOMContentLoaded', function() {
         const toggle = document.getElementById('lang-toggle');
         const panel = document.getElementById('lang-panel');
