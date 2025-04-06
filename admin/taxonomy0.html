@@ -159,78 +159,68 @@
             </div>
             <div id="tag-cloud" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 </div>
-        </div>
-    </main>
+    </div>
 
-<div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-   <form id="newVideoForm" class="space-y-4">
-             {/* Title */}
-             <div>
-                 <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
-                 <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
-             </div>
-
-             {/* YouTube URL */}
-             <div>
-                 <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
-                 <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
-                 <div id="youtubeIdPreview" class="text-sm mt-1"></div> {/* For ID preview */}
-             </div>
-
-             {/* Description */}
-             <div>
-                 <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
-                 <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
-             </div>
-
-             {/* Tags */}
-             <div class="relative">
-                 <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
-                 <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
-                 <div id="tagSuggestions" class="absolute z-10 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
-                     {/* Tag suggestions will appear here */}
-                 </div>
-             </div>
-
-             {/* Submit Button */}
-             <div class="flex justify-end pt-2">
-                <button type="button" class="btn btn-secondary mr-2" onclick="closeModal()">Cancel</button> {/* Added Cancel button */}
-                <button type="submit" id="submitButton" class="btn btn-green">
-                    Add Video
-                </button>
-             </div>
-    </form>
-  
-    
+    <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
         <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
             <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
-                Add Supporting Content
+                Add New Video Content
             </h3>
-            <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="add-content-modal" aria-label="Close modal">
+            <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" aria-label="Close modal">
                 <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </button>
         </div>
-        <div class="p-6 space-y-4">
-             <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                Upload a document, image, video, or audio recording to support this subcategory. Soon, you'll be able to record audio directly here!
-            </p>
-            <div class="placeholder-box rounded-lg border-2 border-dashed border-sky-300 dark:border-sky-700 bg-gradient-to-br from-sky-50 to-cyan-100 dark:from-sky-900 dark:to-cyan-900 p-8 text-center">
-                <svg class="mx-auto h-12 w-12 text-sky-400 dark:text-sky-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.33-2.11 3.75 3.75 0 0 1 3.74 5.111" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                </svg>
-                <p class="text-sm font-semibold text-sky-700 dark:text-sky-300">Upload/Recorder Area</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Video, Audio, Image, Document upload or Web Recorder integration coming soon.</p>
+        <div class="p-6">
+             {/* The Form is now the direct content of the modal body */}
+             <form id="newVideoForm" class="space-y-4">
+                 {/* Title */}
+                 <div>
+                     <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
+                     <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
+                 </div>
+
+                 {/* YouTube URL */}
+                 <div>
+                     <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
+                     <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
+                     <div id="youtubeIdPreview" class="text-sm mt-1"></div> {/* For ID preview */}
+                 </div>
+
+                 {/* Description */}
+                 <div>
+                     <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
+                     <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
+                 </div>
+
+                 {/* Tags */}
+                 <div class="relative">
+                     <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
+                     <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
+                     <div id="tagSuggestions" class="absolute z-20 w-full bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                         {/* Tag suggestions will appear here */}
+                     </div>
+                 </div>
+
+                 {/* Submit/Cancel Buttons */}
+                 <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-4"> {/* Added top border and padding */}
+                    <button type="button" class="btn btn-secondary mr-3" onclick="closeModal()">Cancel</button> {/* Ensure btn-secondary is styled */}
+                    <button type="submit" id="submitButton" class="btn btn-green">
+                        Add Video
+                    </button>
+                 </div>
+             </form>
             </div>
         </div>
         </div>
+
+
+
+        
+
 </div>
-
-
-
-    
+</main>
     </body>
 
     <script type="module">
