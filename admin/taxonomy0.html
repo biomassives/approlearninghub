@@ -3183,12 +3183,12 @@ class CategoryManager {
         this.bindStoreEvents(); // Ensure this listener handles structured errors
     }
 
-    /**
+/**
      * Binds event listeners for user interactions (adding, deleting, editing).
      */
     bindEvents() {
-       // --- Add Category Button Listener ---
-       document.getElementById('add-category-btn')?.addEventListener('click', () => {
+        // --- Add Category Button Listener ---
+        document.getElementById('add-category-btn')?.addEventListener('click', () => {
             if (this.editingState.isEditing) {
                 console.log("Add Category clicked while editing. Canceling edit first.");
                 this.cancelEdit();
@@ -3197,11 +3197,11 @@ class CategoryManager {
             if (!this.editingState.isEditing) {
                 this.createNewCategory();
             }
-       });
+        });
 
-       // --- Main Container Click Listener ---
-       this.containerEl.addEventListener('click', (e) => {
-            console.log('Clicked inside container. Target:', e.target); // LOG 1
+        // --- Main Container Click Listener ---
+        this.containerEl.addEventListener('click', (e) => {
+            console.log('Clicked inside container. Target:', e.target);
 
             // --- Check if click is inside an existing edit field ---
             if (e.target.closest('.inline-edit-field')) {
@@ -3215,60 +3215,40 @@ class CategoryManager {
             const deleteCategoryButton = e.target.closest('.delete-category-btn');
             const addSubcategoryButton = e.target.closest('.add-subcategory-btn');
             const deleteSubcategoryButton = e.target.closest('.delete-subcategory-btn');
-            const addContentButton = e.target.closest('.add-content-btn');
-
-
-            // --- Decide action based on editing state and click target ---
-            let clickedEditableElement = null;
-            let editType = null;
-            let editId = null;
-            let editCategoryId = null;
-
-            if (categoryNameElement) {
-                clickedEditableElement = categoryNameElement;
-                editType = 'category';
-                editId = categoryNameElement.closest('.category-item')?.dataset.categoryId;
-                console.log(`Potential category edit target found. ID: ${editId}`); // LOG 2a
-            } else if (subcategoryNameElement) {
-                clickedEditableElement = subcategoryNameElement;
-                editType = 'subcategory';
-                editId = subcategoryNameElement.closest('.subcategory-item')?.dataset.subcategoryId;
-                editCategoryId = subcategoryNameElement.closest('.category-item')?.dataset.categoryId;
-                console.log(`Potential subcategory edit target found. ID: ${editId}, CategoryID: ${editCategoryId}`); // LOG 2b
-            }
+            const addContentButton = e.target.closest('.add-content-btn'); // Find the add content button
 
             // --- Logic based on whether currently editing ---
             if (this.editingState.isEditing) {
-                 // If already editing, clicking *outside* the current edit field's item should save/cancel
-                 // Check if the click target is NOT within the currently edited item's container
+                // --- Handle click outside current edit item ---
+                // Check if the click target is NOT within the currently edited item's container
                 const currentEditingItem = this.editingState.element?.closest('.category-item, .subcategory-item');
                 if (!currentEditingItem || !currentEditingItem.contains(e.target)) {
-                    console.log('Clicked outside current edit item while editing. Attempting save...'); // LOG 3
+                    console.log('Clicked outside current edit item while editing. Attempting save...');
                     this.saveEdit();
                     // We saved/cancelled, don't process this click further as an action
                     return;
                 } else {
-                     console.log('Clicked inside the currently edited item while editing. Ignoring.'); // LOG 4 (Allow input interaction)
+                     console.log('Clicked inside the currently edited item while editing. Ignoring.'); // Allow input interaction
                      return;
                 }
-
             } else {
-                // --- Not currently editing ---
+                // --- Not currently editing: Handle button clicks and edit starts ---
 
-                    if (addContentButton) {
-                        console.log('Add content button clicked.');
-                        const subcategoryId = addContentButton.dataset.subcategoryId;
-                        const categoryId = addContentButton.dataset.categoryId;
-                    }
-                        
+                // 1. Handle the Add Content Button FIRST
+                if (addContentButton) {
+                    console.log('Add content button clicked.');
+                    const subcategoryId = addContentButton.dataset.subcategoryId;
+                    const categoryId = addContentButton.dataset.categoryId;
                     if (subcategoryId && categoryId) {
-                        openModal(subcategoryId, categoryId); // Call the global modal function
+                        // Assuming openModal is accessible in the global module scope
+                        openModal(subcategoryId, categoryId);
                     } else {
                         console.error("Missing data attributes on add content button:", addContentButton);
                     }
-                    return; // Handled
+                    return; // Explicitly return after handling this button
+                }
 
-                // 1. Handle direct button clicks first
+                // 2. Handle other direct button clicks (if it wasn't the addContentButton)
                 if (deleteCategoryButton) {
                     console.log('Delete category button clicked.');
                     const categoryId = deleteCategoryButton.closest('.category-item')?.dataset.categoryId;
@@ -3289,39 +3269,54 @@ class CategoryManager {
                     return; // Handled
                 }
 
-                // 2. Handle clicks on editable names (if not editing and target found)
+                // 3. Handle clicks on editable names to start editing (if no button was clicked)
+                let clickedEditableElement = null;
+                let editType = null;
+                let editId = null;
+                let editCategoryId = null;
+                // Determine if an editable name was clicked
+                if (categoryNameElement) {
+                    clickedEditableElement = categoryNameElement;
+                    editType = 'category';
+                    editId = categoryNameElement.closest('.category-item')?.dataset.categoryId;
+                } else if (subcategoryNameElement) {
+                    clickedEditableElement = subcategoryNameElement;
+                    editType = 'subcategory';
+                    editId = subcategoryNameElement.closest('.subcategory-item')?.dataset.subcategoryId;
+                    editCategoryId = subcategoryNameElement.closest('.category-item')?.dataset.categoryId;
+                }
+                // If an editable element was identified, start editing
                 if (clickedEditableElement && editType && editId) {
-                    console.log(`Attempting to start editing ${editType} with ID ${editId}`); // LOG 5
-                    this.startEditing(clickedEditableElement, editType, editId, editCategoryId); // Pass categoryId if it's a subcat
+                    console.log(`Attempting to start editing ${editType} with ID ${editId}`);
+                    this.startEditing(clickedEditableElement, editType, editId, editCategoryId);
                     return; // Handled
                 }
             }
 
-            console.log('Click did not match any known interactive element.'); // LOG 6
-       });
+            // If the click didn't match any specific action above
+            console.log('Click did not match any known interactive element or edit start.');
+        });
 
-       // --- Document Listeners (Escape Key - others like click-outside might be added) ---
-       document.addEventListener('keydown', (e) => {
+        // --- Document Listeners (Escape Key & Click Outside for Edits) ---
+        document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.editingState.isEditing) {
                 console.log("Escape key pressed while editing. Canceling edit.");
                 this.cancelEdit();
             }
-       });
-
-       // Add a 'click outside' listener if needed, ensuring it correctly calls saveEdit or cancelEdit
-       // Be careful with using 'capture: true' if other listeners might interfere
+        });
+        // Using capture phase to catch clicks early for edit cancellation
         document.addEventListener('click', (e) => {
             if (this.editingState.isEditing) {
                 const editingItemElement = this.editingState.element?.closest('.category-item, .subcategory-item');
                 // If the click target is NOT the editing input AND not inside the item being edited...
                 if (e.target !== this.editingState.inputElement && (!editingItemElement || !editingItemElement.contains(e.target)) ) {
-                     console.log("Clicked outside the editing item. Canceling edit."); // Log updated
-                     this.cancelEdit(); 
+                     console.log("Clicked outside the editing item. Canceling edit.");
+                     this.cancelEdit();
                  }
             }
-        }, true); // Using capture phase to catch clicks early
-
-    }
+        }, true);
+    } // End bindEvents
+  
 
     /**
      * Binds listeners to events from the BlueprintStore.
