@@ -315,7 +315,7 @@
         const panel = document.getElementById('lang-panel');
         const currentLangSpan = document.getElementById('current-lang');
         const langButtons = document.querySelectorAll('.lang-button');
-// --- Add Content Modal Form Logic (Inside DOMContentLoaded)---
+        // --- Add Content Modal Form Logic (Inside DOMContentLoaded)---
         const newVideoForm = document.getElementById('newVideoForm');
         const submitButton = document.getElementById('submitButton'); // Ensure this ID is on your submit button
         const youtubeUrlInput = document.getElementById('newYoutubeUrl');
@@ -4258,7 +4258,7 @@ cleanupAnyActiveEdits() {
         const categoriesHTML = this.store.categories.map(category => {
             const subcategoriesHTML = category.subcategories && category.subcategories.length > 0 ?
                 category.subcategories.map(subcategory => `
-                    <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-subcategory-id="${subcategory.id}">
+                    <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 rounded" data-subcategory-id="${subcategory.id}">
                     <div class="flex-grow mr-2">
 
                             <button class="add-content-btn p-1 text-green-500 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 rounded-full hover:bg-green-100 dark:hover:bg-gray-600 mr-2"
