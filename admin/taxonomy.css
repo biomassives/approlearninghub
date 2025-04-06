@@ -376,7 +376,11 @@
         .dark-mode .nav-link {
             color: #e5e7eb;
         }
-    
+
+        .nav-link {
+            color: #000;
+        }
+
         .dark-mode #profileButton svg,
         .dark-mode #darkModeToggle svg {
             color: #e5e7eb;
