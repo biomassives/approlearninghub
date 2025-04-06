@@ -2493,13 +2493,301 @@ ha: {
         SELECT_LANGUAGE_TITLE: "மொழியைத் தேர்ந்தெடுக்கவும்",
     },
         
+ps: { // Pashto Translations (پښتو ژباړې)
+    PORTAL_TITLE: "اپرو🎥ویډیو ویډیو پورټل مدیر🎥",
+    TAXONOMY_TITLE: "د ډلبندۍ مدیریت",
+    TAXONOMY_DESC: "خپل منځپانګه د کټګوریو او فرعي کټګوریو سره تنظیم کړئ. د سمون لپاره په هر نوم کلیک وکړئ.",
+    CATEGORIES_HEADER: "کټګورۍ او فرعي کټګورۍ",
+    TAG_MANAGEMENT_HEADER: "د ټګ مدیریت",
+    LOADING: "بارول...",
+    SAVE_BUTTON: "خوندي کړئ",
+    CANCEL_BUTTON: "لغوه کړئ",
+    DELETE_BUTTON: "ړنګ کړئ",
+    EDIT_HINT: "د سمون لپاره نوم کلیک کړئ",
+    SLUG_LABEL: "سلګ:",
+    STATUS_SAVING: "خوندي کول...",
+    STATUS_SAVED: "خوندي شو!",
+    STATUS_ERROR: "تېروتنه",
+    CONFIRM_ACTION_TITLE: "عمل تایید کړئ",
 
+    // Categories & Subcategories (کټګورۍ او فرعي کټګورۍ)
+    ADD_CATEGORY_BUTTON: "کټګوري اضافه کړئ",
+    ADD_SUBCATEGORY_BUTTON: "فرعي کټګوري اضافه کړئ",
+    LOADING_CATEGORIES: "کټګورۍ بارول...",
+    NO_CATEGORIES_YET: "تر اوسه هیڅ کټګورۍ نشته.",
+    ADD_FIRST_CATEGORY_PROMPT: 'د خپلې لومړۍ کټګورۍ جوړولو لپاره "کټګوري اضافه کړئ" کلیک وکړئ.',
+    NO_SUBCATEGORIES_YET: "تر اوسه هیڅ فرعي کټګورۍ نشته.",
+    ADD_SUB_PROMPT: 'پورته "فرعي کټګوري اضافه کړئ" تڼۍ وکاروئ.',
+    ENTER_CATEGORY_PLACEHOLDER: "د کټګورۍ نوم دننه کړئ او اینټر فشار ورکړئ",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "د فرعي کټګورۍ نوم دننه کړئ او اینټر فشار ورکړئ",
+    DELETE_CATEGORY_CONFIRM: 'ایا تاسو ډاډه یاست چې غواړئ کټګوري "{name}" ړنګ کړئ؟ دا عمل بېرته نشي اخیستل کیدی.', // Placeholder {name} preserved
+    DELETE_SUBCATEGORY_CONFIRM: 'ایا تاسو ډاډه یاست چې غواړئ فرعي کټګوري "{name}" ړنګ کړئ؟ دا عمل بېرته نشي اخیستل کیدی.', // Placeholder {name} preserved
+    ITEM_NAME_EMPTY_ERROR: "د {itemType} نوم خالي نشي کیدی.", // Placeholder {itemType} preserved
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" ړنګ نشي کیدی: دا لاهم فرعي کټګورۍ لري. مهرباني وکړئ لومړی یې ړنګ کړئ.', // Placeholder {name} preserved
 
+    // Tags (ټګونه)
+    ADD_TAG_BUTTON: "ټګ اضافه کړئ",
+    NO_TAGS_YET: "تر اوسه هیڅ ټګ نشته.",
+    ADD_FIRST_TAG_PROMPT: 'د خپل لومړي ټګ جوړولو لپاره "ټګ اضافه کړئ" کلیک وکړئ.',
+    TAG_FEATURE_NOT_IMPLEMENTED: "د ټګ مدیریت ځانګړتیا لا تر اوسه نه ده پلي شوې.",
 
+    // Banners (بینرونه)
+    BANNER_MSG_1: "🎥 د پوهې شریکول چې ژوند بدلوي - په یو وخت کې یوه ویډیو",
+    BANNER_MSG_2: "🌱 د مناسبې ټیکنالوژۍ له لارې د مقاومت رامینځته کول",
 
-        
-            
-        // Add other language objects here (fr: {}, pt: {}, etc.)
+    // Navigation Titles (د نیویګیشن سرلیکونه)
+    NAV_LINK_WEBSITE_TITLE: "اصلي ویب پاڼه وګورئ",
+    NAV_LINK_NEW_TITLE: "نوی منځپانګه اضافه کړئ",
+    TOGGLE_DARK_MODE_TITLE: "تیاره/روښانه حالت بدل کړئ",
+    PROFILE_MENU_TITLE: "د کارونکي مینو",
+
+    // Dropdown Items (د ډراپ ډاون توکي)
+    DROPDOWN_APPROVIDEO_BETA: "اپروویډیو بیټا",
+    DROPDOWN_PENDING: "په تمه",
+    DROPDOWN_HOMEPAGE: "د کور پاڼې اډمین",
+    DROPDOWN_TAXONOMY: "د ډلبندۍ سمونګر",
+    DROPDOWN_SIGN_OUT: "وتل",
+
+    // Item Types (د توکو ډولونه)
+    CATEGORY: "کټګوري",
+    SUBCATEGORY: "فرعي کټګوري",
+    TAG: "ټګ",
+
+    // Errors & Status (تېروتنې او حالت)
+    ERROR_PREFIX: "تېروتنه",
+    CRITICAL_ERROR_MSG: "جدي تېروتنه: اپلیکیشن پیل نشو. {error} مهرباني وکړئ کنسول وګورئ او ریفریش کړئ.", 
+    NETWORK_ERROR_CACHE_FALLBACK: "د شبکې تېروتنه: {error}. د ځايي معلوماتو هڅه کول.", 
+    NETWORK_ERROR_NO_CACHE: "د شبکې تېروتنه: {error}. ځايي معلومات شتون نلري.", 
+    CACHE_ERROR: "د زیرمه تېروتنه: {error}. د ځايي معلوماتو بارولو توان نلري.", 
+    DB_INIT_ERROR: "د ځايي ډیټابیس پیلولو کې پاتې راغلی: {error}", 
+    FAILED_OPERATION: "په {operation} کې پاتې راغلی: {error}", 
+    UNEXPECTED_ERROR: "یوه ناڅاپي تېروتنه رامنځته شوه: {error}",
+
+    // Added based on previous context
+    SELECT_LANGUAGE_HEADING: "ژبه وټاکئ",
+    SELECT_LANGUAGE_TITLE: "ژبه وټاکئ",
+},
+my: { // Burmese Translations (မြန်မာဘာသာပြန်များ)
+    PORTAL_TITLE: "Appro🎥video ဗီဒီယို ပေါ်တယ် မန်နေဂျာ🎥",
+    TAXONOMY_TITLE: "အမျိုးအစားခွဲခြားမှု စီမံခန့်ခွဲခြင်း",
+    TAXONOMY_DESC: "သင်၏အကြောင်းအရာကို အမျိုးအစားများနှင့် အမျိုးအစားခွဲများဖြင့် စုစည်းပါ။ တည်းဖြတ်ရန် မည်သည့်အမည်ကိုမဆို နှိပ်ပါ။",
+    CATEGORIES_HEADER: "အမျိုးအစားများ & အမျိုးအစားခွဲများ",
+    TAG_MANAGEMENT_HEADER: "တက်ဂ် စီမံခန့်ခွဲခြင်း",
+    LOADING: "တင်နေသည်...",
+    SAVE_BUTTON: "သိမ်းဆည်းမည်",
+    CANCEL_BUTTON: "ပယ်ဖျက်မည်",
+    DELETE_BUTTON: "ဖျက်မည်",
+    EDIT_HINT: "တည်းဖြတ်ရန် အမည်ကို နှိပ်ပါ",
+    SLUG_LABEL: "အတိုကောက်အမည်:",
+    STATUS_SAVING: "သိမ်းဆည်းနေသည်...",
+    STATUS_SAVED: "သိမ်းဆည်းပြီးပါပြီ!",
+    STATUS_ERROR: "အမှား",
+    CONFIRM_ACTION_TITLE: "လုပ်ဆောင်ချက်ကို အတည်ပြုပါ",
+
+    // Categories & Subcategories (အမျိုးအစားများ & အမျိုးအစားခွဲများ)
+    ADD_CATEGORY_BUTTON: "အမျိုးအစား ထည့်ရန်",
+    ADD_SUBCATEGORY_BUTTON: "အမျိုးအစားခွဲ ထည့်ရန်",
+    LOADING_CATEGORIES: "အမျိုးအစားများ တင်နေသည်...",
+    NO_CATEGORIES_YET: "အမျိုးအစားများ မရှိသေးပါ။",
+    ADD_FIRST_CATEGORY_PROMPT: 'သင်၏ ပထမဆုံး အမျိုးအစားကို ဖန်တီးရန် "အမျိုးအစား ထည့်ရန်" ကို နှိပ်ပါ။',
+    NO_SUBCATEGORIES_YET: "အမျိုးအစားခွဲများ မရှိသေးပါ။",
+    ADD_SUB_PROMPT: 'အပေါ်ရှိ "အမျိုးအစားခွဲ ထည့်ရန်" ခလုတ်ကို အသုံးပြုပါ။',
+    ENTER_CATEGORY_PLACEHOLDER: "အမျိုးအစားအမည်ကို ထည့်သွင်းပြီး Enter နှိပ်ပါ",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "အမျိုးအစားခွဲအမည်ကို ထည့်သွင်းပြီး Enter နှိပ်ပါ",
+    DELETE_CATEGORY_CONFIRM: 'အမျိုးအစား "{name}" ကို ဖျက်လိုသည်မှာ သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်ဖျက်၍မရပါ။', // Placeholder {name} preserved
+    DELETE_SUBCATEGORY_CONFIRM: 'အမျိုးအစားခွဲ "{name}" ကို ဖျက်လိုသည်မှာ သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်ဖျက်၍မရပါ။', // Placeholder {name} preserved
+    ITEM_NAME_EMPTY_ERROR: "{itemType} အမည်သည် ကွက်လပ်မဖြစ်ရပါ။", // Placeholder {itemType} preserved
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" ကို ဖျက်၍မရပါ- ၎င်းတွင် အမျိုးအစားခွဲများ ပါဝင်နေဆဲဖြစ်သည်။ ကျေးဇူးပြု၍ ၎င်းတို့ကို ဦးစွာ ဖျက်ပါ။', // Placeholder {name} preserved
+
+    // Tags (တက်ဂ်များ)
+    ADD_TAG_BUTTON: "တက်ဂ် ထည့်ရန်",
+    NO_TAGS_YET: "တက်ဂ်များ မရှိသေးပါ။",
+    ADD_FIRST_TAG_PROMPT: 'သင်၏ ပထမဆုံး တက်ဂ်ကို ဖန်တီးရန် "တက်ဂ် ထည့်ရန်" ကို နှိပ်ပါ။',
+    TAG_FEATURE_NOT_IMPLEMENTED: "တက်ဂ် စီမံခန့်ခွဲခြင်း လုပ်ဆောင်ချက်ကို မထည့်သွင်းရသေးပါ။",
+
+    // Banners (ဘန်နာများ)
+    BANNER_MSG_1: "🎥 ဘဝကို ပြောင်းလဲစေသော အသိပညာကို မျှဝေခြင်း - တစ်ကြိမ်လျှင် ဗီဒီယိုတစ်ခု",
+    BANNER_MSG_2: "🌱 သင့်လျော်သော နည်းပညာဖြင့် ကြံ့ခိုင်မှုကို တည်ဆောက်ခြင်း",
+
+    // Navigation Titles (လမ်းညွှန် ခေါင်းစဉ်များ)
+    NAV_LINK_WEBSITE_TITLE: "ပင်မ ဝဘ်ဆိုက်သို့ သွားရောက်ကြည့်ရှုပါ",
+    NAV_LINK_NEW_TITLE: "အကြောင်းအရာအသစ် ထည့်ရန်",
+    TOGGLE_DARK_MODE_TITLE: "အမှောင်/အလင်း မုဒ် ပြောင်းရန်",
+    PROFILE_MENU_TITLE: "အသုံးပြုသူ မီနူး",
+
+    // Dropdown Items (ဒรอปဒေါင်း အရာများ)
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo ဘီတာ",
+    DROPDOWN_PENDING: "ဆိုင်းငံ့ထားသည်",
+    DROPDOWN_HOMEPAGE: "ပင်မစာမျက်နှာ အက်ဒမင်",
+    DROPDOWN_TAXONOMY: "အမျိုးအစားခွဲခြားမှု တည်းဖြတ်သူ",
+    DROPDOWN_SIGN_OUT: "ထွက်ရန်",
+
+    // Item Types (အရာ အမျိုးအစားများ)
+    CATEGORY: "အမျိုးအစား",
+    SUBCATEGORY: "အမျိုးအစားခွဲ",
+    TAG: "တက်ဂ်",
+
+    // Errors & Status (အမှားများ & အခြေအနေ)
+    ERROR_PREFIX: "အမှား",
+    CRITICAL_ERROR_MSG: "ဆိုးရွားသော အမှား- အပလီကေးရှင်းကို စတင်၍မရပါ။ {error} ကျေးဇူးပြု၍ ကွန်ဆိုးလ်ကို စစ်ဆေးပြီး ပြန်လည်စတင်ပါ။", // Placeholder {error} preserved
+    NETWORK_ERROR_CACHE_FALLBACK: "ကွန်ရက် အမှား- {error}။ ဒေသတွင်း ဒေတာကို ကြိုးစားအသုံးပြုနေသည်။", // Placeholder {error} preserved
+    NETWORK_ERROR_NO_CACHE: "ကွန်ရက် အမှား- {error}။ ဒေသတွင်း ဒေတာ မရရှိနိုင်ပါ။", // Placeholder {error} preserved
+    CACHE_ERROR: "ကက်ရှ် အမှား- {error}။ ဒေသတွင်း ဒေတာကို တင်၍မရပါ။", // Placeholder {error} preserved
+    DB_INIT_ERROR: "ဒေသတွင်း ဒေတာဘေ့စ်ကို စတင်ရန် ပျက်ကွက်သည်- {error}", // Placeholder {error} preserved
+    FAILED_OPERATION: "{operation} လုပ်ဆောင်ရန် ပျက်ကွက်သည်- {error}", // Placeholders {operation} and {error} preserved
+    UNEXPECTED_ERROR: "မမျှော်လင့်သော အမှားတစ်ခု ဖြစ်ပွားခဲ့သည်- {error}", // Placeholder {error} preserved
+
+    // Added based on previous context
+    SELECT_LANGUAGE_HEADING: "ဘာသာစကား ရွေးချယ်ရန်",
+    SELECT_LANGUAGE_TITLE: "ဘာသာစကား ရွေးချယ်ရန်",
+} ,     
+ku: { // Kurdish Translations
+    PORTAL_TITLE: "بەڕێوەبەری پۆرتاڵی ڤیدیۆ Appro🎥video🎥",
+    TAXONOMY_TITLE: "بەڕێوەبردنی پۆلێنکاری",
+    TAXONOMY_DESC: "ناوەڕۆکی خۆت بە پۆلەکان و ژێرپۆلەکان ڕێکبخە. بۆ دەستکاریکردن کلیک لەسەر هەر ناوێک بکە.",
+    CATEGORIES_HEADER: "پۆلەکان & ژێرپۆلەکان",
+    TAG_MANAGEMENT_HEADER: "بەڕێوەبردنی تاگەکان",
+    LOADING: "بارکردن...",
+    SAVE_BUTTON: "پاشەکەوتکردن",
+    CANCEL_BUTTON: "پاشگەزبوونەوە",
+    DELETE_BUTTON: "سڕینەوە",
+    EDIT_HINT: "بۆ دەستکاریکردن کلیک لەسەر ناو بکە",
+    SLUG_LABEL: "سلەگ:",
+    STATUS_SAVING: "پاشەکەوتکردن...",
+    STATUS_SAVED: "پاشەکەوتکرا!",
+    STATUS_ERROR: "هەڵە",
+    CONFIRM_ACTION_TITLE: "پشتڕاستکردنەوەی کردار",
+
+    // Categories & Subcategories
+    ADD_CATEGORY_BUTTON: "پۆل زیادبکە",
+    ADD_SUBCATEGORY_BUTTON: "ژێرپۆل زیادبکە",
+    LOADING_CATEGORIES: "بارکردنی پۆلەکان...",
+    NO_CATEGORIES_YET: "هێشتا هیچ پۆلێک نییە.",
+    ADD_FIRST_CATEGORY_PROMPT: 'بۆ دروستکردنی یەکەم پۆلی خۆت کلیک لە "پۆل زیادبکە" بکە.',
+    NO_SUBCATEGORIES_YET: "هێشتا هیچ ژێرپۆلێک نییە.",
+    ADD_SUB_PROMPT: 'دوگمەی "ژێرپۆل زیادبکە" لە سەرەوە بەکاربهێنە.',
+    ENTER_CATEGORY_PLACEHOLDER: "ناوی پۆل بنووسە و ئینتەر دابگرە",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "ناوی ژێرپۆل بنووسە و ئینتەر دابگرە",
+    DELETE_CATEGORY_CONFIRM: 'دڵنیایت دەتەوێت پۆلی "{name}" بسڕیتەوە؟ ئەم کردارە ناتوانرێت بگەڕێنرێتەوە.',
+    DELETE_SUBCATEGORY_CONFIRM: 'دڵنیایت دەتەوێت ژێرپۆلی "{name}" بسڕیتەوە؟ ئەم کردارە ناتوانرێت بگەڕێنرێتەوە.',
+    ITEM_NAME_EMPTY_ERROR: "{itemType} ناوی {itemType} نابێت بەتاڵ بێت.",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: 'ناتوانرێت "{name}" بسڕدرێتەوە: هێشتا ژێرپۆلی تێدایە. تکایە سەرەتا ئەوان بسڕەوە.',
+
+    // Tags
+    ADD_TAG_BUTTON: "تاگ زیادبکە",
+    NO_TAGS_YET: "هێشتا هیچ تاگێک نییە.",
+    ADD_FIRST_TAG_PROMPT: 'بۆ دروستکردنی یەکەم تاگی خۆت کلیک لە "تاگ زیادبکە" بکە.',
+    TAG_FEATURE_NOT_IMPLEMENTED: "تایبەتمەندی بەڕێوەبردنی تاگ هێشتا جێبەجێ نەکراوە.",
+
+    // Banners
+    BANNER_MSG_1: "🎥 هاوبەشکردنی زانیاری کە ژیان دەگۆڕێت - یەک ڤیدیۆ لە یەک کاتدا",
+    BANNER_MSG_2: "🌱 بنیادنانی خۆڕاگری لە ڕێگەی تەکنەلۆژیای گونجاوەوە",
+
+    // Navigation Titles
+    NAV_LINK_WEBSITE_TITLE: "سەردانی وێبسایتی سەرەکی بکە",
+    NAV_LINK_NEW_TITLE: "ناوەڕۆکی نوێ زیادبکە",
+    TOGGLE_DARK_MODE_TITLE: "گۆڕینی دۆخی تاریک/ڕووناک",
+    PROFILE_MENU_TITLE: "لیستی بەکارهێنەر",
+
+    // Dropdown Items
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo بێتا",
+    DROPDOWN_PENDING: "چاوەڕوانکراو",
+    DROPDOWN_HOMEPAGE: "بەڕێوەبەری پەڕەی سەرەکی",
+    DROPDOWN_TAXONOMY: "دەستکاریکەری پۆلێنکاری",
+    DROPDOWN_SIGN_OUT: "چوونەدەرەوە",
+
+    // Item Types
+    CATEGORY: "پۆل",
+    SUBCATEGORY: "ژێرپۆل",
+    TAG: "تاگ",
+
+    // Errors & Status
+    ERROR_PREFIX: "هەڵە",
+    CRITICAL_ERROR_MSG: "هەڵەی مەترسیدار: نەتوانرا ئەپلیکەیشنەکە دەستپێبکات. {error} تکایە کۆنسۆڵ بپشکنە و تازەی بکەرەوە.",
+    NETWORK_ERROR_CACHE_FALLBACK: "هەڵەی تۆڕ: {error}. هەوڵدان بۆ بەکارهێنانی داتای ناوخۆیی.",
+    NETWORK_ERROR_NO_CACHE: "هەڵەی تۆڕ: {error}. هیچ داتایەکی ناوخۆیی بەردەست نییە.",
+    CACHE_ERROR: "هەڵەی کاش: {error}. نەتوانرا داتای ناوخۆیی باربکرێت.",
+    DB_INIT_ERROR: "شکستهێنان لە دەستپێکردنی بنکەدراوەی ناوخۆیی: {error}",
+    FAILED_OPERATION: "شکستهێنان لە {operation}: {error}",
+    UNEXPECTED_ERROR: "هەڵەیەکی چاوەڕواننەکراو ڕوویدا: {error}",
+    
+    // Added based on the existing key in the first document
+    SELECT_LANGUAGE: "زمان هەڵبژێرە",
+},
+ko: { // Korean Translations (한국어 번역)
+    PORTAL_TITLE: "Appro🎥video 비디오 포털 관리자🎥",
+    TAXONOMY_TITLE: "분류 관리",
+    TAXONOMY_DESC: "카테고리와 하위 카테고리로 콘텐츠를 정리하세요. 편집하려면 이름을 클릭하세요.",
+    CATEGORIES_HEADER: "카테고리 & 하위 카테고리",
+    TAG_MANAGEMENT_HEADER: "태그 관리",
+    LOADING: "로딩 중...",
+    SAVE_BUTTON: "저장",
+    CANCEL_BUTTON: "취소",
+    DELETE_BUTTON: "삭제",
+    EDIT_HINT: "편집하려면 이름을 클릭하세요",
+    SLUG_LABEL: "슬러그:",
+    STATUS_SAVING: "저장 중...",
+    STATUS_SAVED: "저장되었습니다!",
+    STATUS_ERROR: "오류",
+    CONFIRM_ACTION_TITLE: "작업 확인",
+
+    // Categories & Subcategories (카테고리 & 하위 카테고리)
+    ADD_CATEGORY_BUTTON: "카테고리 추가",
+    ADD_SUBCATEGORY_BUTTON: "하위 카테고리 추가",
+    LOADING_CATEGORIES: "카테고리 로딩 중...",
+    NO_CATEGORIES_YET: "아직 카테고리가 없습니다.",
+    ADD_FIRST_CATEGORY_PROMPT: '첫 번째 카테고리를 만들려면 "카테고리 추가"를 클릭하세요.',
+    NO_SUBCATEGORIES_YET: "아직 하위 카테고리가 없습니다.",
+    ADD_SUB_PROMPT: '위의 "하위 카테고리 추가" 버튼을 사용하세요.',
+    ENTER_CATEGORY_PLACEHOLDER: "카테고리 이름을 입력하고 Enter를 누르세요",
+    ENTER_SUBCATEGORY_PLACEHOLDER: "하위 카테고리 이름을 입력하고 Enter를 누르세요",
+    DELETE_CATEGORY_CONFIRM: '카테고리 "{name}"을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
+    DELETE_SUBCATEGORY_CONFIRM: '하위 카테고리 "{name}"을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
+    ITEM_NAME_EMPTY_ERROR: "{itemType} 이름은 비워둘 수 없습니다.",
+    CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}"을(를) 삭제할 수 없습니다: 아직 하위 카테고리가 포함되어 있습니다. 먼저 해당 항목을 삭제해 주세요.',
+
+    // Tags (태그)
+    ADD_TAG_BUTTON: "태그 추가",
+    NO_TAGS_YET: "아직 태그가 없습니다.",
+    ADD_FIRST_TAG_PROMPT: '첫 번째 태그를 만들려면 "태그 추가"를 클릭하세요.',
+    TAG_FEATURE_NOT_IMPLEMENTED: "태그 관리 기능이 아직 구현되지 않았습니다.",
+
+    // Banners (배너)
+    BANNER_MSG_1: "🎥 삶을 변화시키는 지식 공유 - 한 번에 하나의 비디오",
+    BANNER_MSG_2: "🌱 적절한 기술을 통한 회복력 구축",
+
+    // Navigation Titles (네비게이션 제목)
+    NAV_LINK_WEBSITE_TITLE: "메인 웹사이트 방문",
+    NAV_LINK_NEW_TITLE: "새 콘텐츠 추가",
+    TOGGLE_DARK_MODE_TITLE: "다크/라이트 모드 전환",
+    PROFILE_MENU_TITLE: "사용자 메뉴",
+
+    // Dropdown Items (드롭다운 항목)
+    DROPDOWN_APPROVIDEO_BETA: "Approvideo 베타",
+    DROPDOWN_PENDING: "대기 중",
+    DROPDOWN_HOMEPAGE: "홈페이지 관리자",
+    DROPDOWN_TAXONOMY: "분류 편집기",
+    DROPDOWN_SIGN_OUT: "로그아웃",
+
+    // Item Types (항목 유형)
+    CATEGORY: "카테고리",
+    SUBCATEGORY: "하위 카테고리",
+    TAG: "태그",
+
+    // Errors & Status (오류 & 상태)
+    ERROR_PREFIX: "오류",
+    CRITICAL_ERROR_MSG: "심각한 오류: 애플리케이션을 초기화할 수 없습니다. {error} 콘솔을 확인하고 새로 고침하세요.",
+    NETWORK_ERROR_CACHE_FALLBACK: "네트워크 오류: {error}. 로컬 데이터를 시도합니다.",
+    NETWORK_ERROR_NO_CACHE: "네트워크 오류: {error}. 사용 가능한 로컬 데이터가 없습니다.",
+    CACHE_ERROR: "캐시 오류: {error}. 로컬 데이터를 로드할 수 없습니다.",
+    DB_INIT_ERROR: "로컬 데이터베이스 초기화 실패: {error}",
+    FAILED_OPERATION: "{operation} 실패: {error}",
+    UNEXPECTED_ERROR: "예상치 못한 오류가 발생했습니다: {error}",
+    
+    // Language selector
+    SELECT_LANGUAGE: "언어 선택",
+    }
+
     };
 
     let currentLanguage = 'en'; // Default language
