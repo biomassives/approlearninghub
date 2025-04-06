@@ -140,8 +140,8 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold" data-translate-key="CATEGORIES_HEADER">Categories & Subcategories</h2>
                 <button class="btn btn-green" id="add-category-btn">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
-                    <span data-translate-key="ADD_CATEGORY_BUTTON"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> Add Category</span>
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    <span data-translate-key="ADD_CATEGORY_BUTTON">Add Category</span>
                 </button>
             </div>
             <div id="categories-container" class="categories-wrapper">
@@ -151,7 +151,7 @@
 
          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold" data-translate-key="TAG_MANAGEMENT_HEADER">Areas of Experrtise Tags</h2>
+                <h2 class="text-2xl font-bold" data-translate-key="TAG_MANAGEMENT_HEADER">Area of Expertise Tags</h2>
                 <button id="add-tag-btn" class="btn btn-green">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg>
                      <span data-translate-key="ADD_TAG_BUTTON">Add Tag</span>
@@ -365,7 +365,12 @@
                 this.containerEl.innerHTML = tags.map(tag => `
                     <div class="tag-item flex justify-between items-center bg-white dark:bg-gray-700 p-2 rounded shadow-sm border dark:border-gray-600">
                         <span class="tag-name font-medium cursor-pointer hover:text-green-600">${tag.name}</span>
-                        <button class="delete-tag-btn text-red-500 hover:text-red-700 p-1" title="${this.getText('DELETE_BUTTON')}">
+
+                        <button class="delete-tag-btn text-emerald-600 hover:text-red-700 p-1" title="${this.getText('ADD_CONTENT')}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </button>
+                        
+                        <button class="delete-tag-btn text-red-300 hover:text-red-700 p-1" title="${this.getText('DELETE_BUTTON')}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
