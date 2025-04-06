@@ -161,6 +161,36 @@
                 </div>
         </div>
     </main>
+
+<div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
+        <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
+            <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
+                Add Supporting Content
+            </h3>
+            <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="add-content-modal" aria-label="Close modal">
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+        <div class="p-6 space-y-4">
+             <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                Upload a document, image, video, or audio recording to support this subcategory. Soon, you'll be able to record audio directly here!
+            </p>
+            <div class="placeholder-box rounded-lg border-2 border-dashed border-sky-300 dark:border-sky-700 bg-gradient-to-br from-sky-50 to-cyan-100 dark:from-sky-900 dark:to-cyan-900 p-8 text-center">
+                <svg class="mx-auto h-12 w-12 text-sky-400 dark:text-sky-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.33-2.11 3.75 3.75 0 0 1 3.74 5.111" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+                <p class="text-sm font-semibold text-sky-700 dark:text-sky-300">Upload/Recorder Area</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Video, Audio, Image, Document upload or Web Recorder integration coming soon.</p>
+            </div>
+        </div>
+        </div>
+</div>
+
+
+
+    
     </body>
 
     <script type="module">
@@ -3843,6 +3873,16 @@ cleanupAnyActiveEdits() {
                 category.subcategories.map(subcategory => `
                     <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-subcategory-id="${subcategory.id}">
                     <div class="flex-grow mr-2">
+
+                            <button class="add-content-btn p-1 text-green-500 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 rounded-full hover:bg-green-100 dark:hover:bg-gray-600 mr-2"
+                                    title="Add Supporting Content"
+                                    data-subcategory-id="${subcategory.id}"
+                                    data-category-id="${category.id}">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            </button>
+                    
                         <span class="subcategory-name text-slate-800 dark:text-slate-100 cursor-pointer font-medium text-sm">${subcategory.name}</span>
                         ${subcategory.slug ? `<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(${subcategory.slug})</span>` : ''}
                     </div>
