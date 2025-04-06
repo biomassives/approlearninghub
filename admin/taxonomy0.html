@@ -194,7 +194,57 @@
     </body>
 
     <script type="module">
-    
+        //  add content modal    
+
+        // --- Add Content Modal Logic ---
+    const modal = document.getElementById('add-content-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    let currentModalSubcategoryId = null; // Optional: Store context if needed later
+    let currentModalCategoryId = null;    // Optional: Store context if needed later
+
+    function openModal(subcategoryId, categoryId) {
+        currentModalSubcategoryId = subcategoryId;
+        currentModalCategoryId = categoryId;
+        console.log(`Opening modal for subcategory: ${subcategoryId}, category: ${categoryId}`);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex'); // Use flex for centering
+        // Add fade-in effect
+        requestAnimationFrame(() => {
+             modal.style.opacity = '1';
+        });
+        // Optional: Add logic here later using the IDs, like fetching data or setting titles
+    }
+
+    function closeModal() {
+         modal.style.opacity = '0'; // Start fade-out
+         // Wait for transition before hiding
+         setTimeout(() => {
+             modal.classList.add('hidden');
+             modal.classList.remove('flex');
+             currentModalSubcategoryId = null; // Clear context
+             currentModalCategoryId = null;
+         }, 300); // Match CSS transition duration
+    }
+
+    // Event listener for the modal's close button
+    modalCloseBtn?.addEventListener('click', closeModal);
+
+    // Event listener to close modal when clicking the background overlay
+    modal?.addEventListener('click', (event) => {
+        // Check if the click is directly on the modal background (the container div)
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Event listener to close modal with the Escape key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+
       // This script reorganizes the language buttons on mobile
     
       document.addEventListener('DOMContentLoaded', function() {
