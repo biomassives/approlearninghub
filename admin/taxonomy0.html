@@ -173,37 +173,27 @@
             </button>
         </div>
         <div class="p-6">
-             {/* The Form is now the direct content of the modal body */}
              <form id="newVideoForm" class="space-y-4">
-                 {/* Title */}
                  <div>
                      <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
                      <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
                  </div>
-
-                 {/* YouTube URL */}
                  <div>
                      <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
                      <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
                      <div id="youtubeIdPreview" class="text-sm mt-1"></div> {/* For ID preview */}
                  </div>
-
-                 {/* Description */}
                  <div>
                      <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
                      <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
                  </div>
-
-                 {/* Tags */}
                  <div class="relative">
                      <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
                      <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
                      <div id="tagSuggestions" class="absolute z-20 w-full bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
-                         {/* Tag suggestions will appear here */}
                      </div>
                  </div>
 
-                 {/* Submit/Cancel Buttons */}
                  <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-4"> {/* Added top border and padding */}
                     <button type="button" class="btn btn-secondary mr-3" onclick="closeModal()">Cancel</button> {/* Ensure btn-secondary is styled */}
                     <button type="submit" id="submitButton" class="btn btn-green">
