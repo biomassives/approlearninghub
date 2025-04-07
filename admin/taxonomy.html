@@ -161,60 +161,53 @@
                 </div>
     </div>
 
-
-    <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
-        <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
-            <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
-                Add New Video Content
-            </h3>
-            <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" aria-label="Close modal">
-                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </button>
-        </div>
-        <div class="p-6">
+<div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
+            <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
+                <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white" data-translate-key="MODAL_ADD_CONTENT_TITLE">
+                    Add New Video Content </h3>
+                <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-translate-aria-label="MODAL_CLOSE_BUTTON_ARIA_LABEL" aria-label="Close modal">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <div class="p-6">
                 <div class="mb-4 p-3 bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-md">
-                 <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Adding content to:</p>
-                 <p class="text-lg font-semibold text-blue-800 dark:text-blue-300">
-                     <span id="modal-category-context">Category...</span>
-                     <span class="mx-1 text-gray-500 dark:text-gray-400">&gt;</span>
-                     <span id="modal-subcategory-context">Subcategory...</span>
-                 </p>
-             </div>
+                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300" data-translate-key="MODAL_CONTEXT_LABEL">Adding content to:</p>
+                    <p class="text-lg font-semibold text-blue-800 dark:text-blue-300">
+                        <span id="modal-category-context">Category...</span> <span class="mx-1 text-gray-500 dark:text-gray-400">></span>
+                        <span id="modal-subcategory-context">Subcategory...</span> </p>
+                </div>
 
+                <form id="newVideoForm" class="space-y-4">
+                    <div>
+                        <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white" data-translate-key="MODAL_LABEL_VIDEO_TITLE">Video Title *</label>
+                        <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-translate-placeholder="MODAL_PLACEHOLDER_VIDEO_TITLE" placeholder="Enter video title" required>
+                    </div>
+                    <div>
+                        <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white" data-translate-key="MODAL_LABEL_YOUTUBE_URL">YouTube URL *</label>
+                        <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-translate-placeholder="MODAL_PLACEHOLDER_YOUTUBE_URL" placeholder="e.g., https://www.youtube.com/watch?v=..." required>
+                        <div id="youtubeIdPreview" class="text-sm mt-1"></div> </div>
+                    <div>
+                        <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white" data-translate-key="MODAL_LABEL_DESCRIPTION">Description *</label>
+                        <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-translate-placeholder="MODAL_PLACEHOLDER_DESCRIPTION" placeholder="Describe the video content..." required></textarea>
+                    </div>
+                    <div class="relative">
+                        <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white" data-translate-key="MODAL_LABEL_TAGS">Tags (comma-separated) *</label>
+                        <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" data-translate-placeholder="MODAL_PLACEHOLDER_TAGS" placeholder="e.g., DIY, Solar, Water" required>
+                         <div id="tagSuggestions" class="absolute z-20 w-full bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                        </div>
+                    </div>
 
-             <form id="newVideoForm" class="space-y-4">
-                 <div>
-                     <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
-                     <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
-                 </div>
-                 <div>
-                     <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
-                     <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
-                     <div id="youtubeIdPreview" class="text-sm mt-1"></div>
-                 </div>
-                 <div>
-                     <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
-                     <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
-                 </div>
-                 <div class="relative">
-                     <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
-                     <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
-                     <div id="tagSuggestions" class="absolute z-20 w-full bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
-                     </div>
-                 </div>
-
-                 <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-4"> 
-                    <button type="button" class="btn btn-secondary mr-3" onclick="closeModal()">Cancel</button>
-                    <button type="submit" id="submitButton" class="btn btn-green">
-                        Add Video
-                    </button>
-                 </div>
-             </form>
+                    <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+                        <button type="button" class="btn btn-secondary mr-3" onclick="closeModal()" data-translate-key="MODAL_BUTTON_CANCEL">Cancel</button>
+                        <button type="submit" id="submitButton" class="btn btn-green">
+                            <span data-translate-key="MODAL_BUTTON_ADD_VIDEO">Add Video</span> </button>
+                    </div>
+                </form>
             </div>
         </div>
-        </div>
-
+    </div>
+    
 
 
         
@@ -224,7 +217,7 @@
     </body>
 
     <script type="module">
-// --- Add Content Modal Logic ---
+    // --- Add Content Modal Logic ---
     const modal = document.getElementById('add-content-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
     // Get references to the new display elements
@@ -239,33 +232,45 @@
         currentModalCategoryId = categoryId;
 
         // --- Find Names and Update Display ---
-        let categoryName = 'Unknown Category';
-        let subcategoryName = 'Unknown Subcategory';
+        let categoryName = getText('MODAL_UNKNOWN_CATEGORY');
+        let subcategoryName  = getText('MODAL_UNKNOWN_SUBCATEGORY');
 
-        // Access the store data via the global categoryManager instance
-        if (window.categoryManager && window.categoryManager.store && window.categoryManager.store.categories) {
+               if (window.categoryManager?.store?.categories) {
             const category = window.categoryManager.store.categories.find(cat => cat.id === categoryId);
             if (category) {
-                categoryName = category.name;
+                categoryName = category.name; // Use actual name if found
                 const subcategory = category.subcategories?.find(sub => sub.id === subcategoryId);
                 if (subcategory) {
-                    subcategoryName = subcategory.name;
+                    subcategoryName = subcategory.name; // Use actual name if found
                 }
             }
         } else {
             console.error("Cannot access category store data to display context.");
         }
 
-        // Update the text content of the placeholder elements
-        if (categoryContextEl) {
-            categoryContextEl.textContent = categoryName;
-        }
-        if (subcategoryContextEl) {
-            subcategoryContextEl.textContent = subcategoryName;
-        }
-        // --- End Name Finding ---
+        if (categoryContextEl) categoryContextEl.textContent = categoryName;
+        if (subcategoryContextEl) subcategoryContextEl.textContent = subcategoryName;
 
         console.log(`Opening modal for: ${categoryName} > ${subcategoryName} (IDs: ${categoryId} > ${subcategoryId})`);
+
+        // Translate the static parts of the modal *when it opens*
+        // This ensures elements created dynamically or hidden initially are translated.
+        modal.querySelectorAll('[data-translate-key]').forEach(element => {
+            const key = element.dataset.translateKey;
+            // Avoid re-translating dynamic context spans
+            if (element.id !== 'modal-category-context' && element.id !== 'modal-subcategory-context') {
+                 element.textContent = getText(key);
+            }
+        });
+        modal.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+            const key = element.dataset.translatePlaceholder;
+            element.placeholder = getText(key);
+        });
+         modal.querySelectorAll('[data-translate-aria-label]').forEach(element => {
+            const key = element.dataset.translateAriaLabel;
+            element.setAttribute('aria-label', getText(key));
+         });
+
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -273,6 +278,7 @@
              modal.style.opacity = '1';
         });
     }
+
 
     function closeModal() {
          modal.style.opacity = '0';
@@ -916,6 +922,35 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "Failed to initialize local database: {error}",
             FAILED_OPERATION: "Failed to {operation}: {error}", // Generic failure, placeholders {operation}, {error}
             UNEXPECTED_ERROR: "An unexpected error occurred: {error}",
+            MODAL_ADD_CONTENT_TITLE: "Add New Video Content",
+            MODAL_CONTEXT_LABEL: "Adding content to:",
+            MODAL_UNKNOWN_CATEGORY: "Unknown Category", // Fallback if names aren't found
+            MODAL_UNKNOWN_SUBCATEGORY: "Unknown Subcategory", // Fallback
+            MODAL_LABEL_VIDEO_TITLE: "Video Title *",
+            MODAL_PLACEHOLDER_VIDEO_TITLE: "Enter video title",
+            MODAL_LABEL_YOUTUBE_URL: "YouTube URL *",
+            MODAL_PLACEHOLDER_YOUTUBE_URL: "e.g., https://www.youtube.com/watch?v=...",
+            MODAL_VALID_YOUTUBE_ID: "Valid YouTube ID: {id}", // Dynamic text
+            MODAL_INVALID_YOUTUBE_URL: "Invalid or incomplete YouTube URL", // Dynamic text
+            MODAL_LABEL_DESCRIPTION: "Description *",
+            MODAL_PLACEHOLDER_DESCRIPTION: "Describe the video content...",
+            MODAL_LABEL_TAGS: "Tags (comma-separated) *",
+            MODAL_PLACEHOLDER_TAGS: "e.g., DIY, Solar, Water",
+            MODAL_BUTTON_CANCEL: "Cancel", // Reusing existing CANCEL_BUTTON is also fine
+            MODAL_BUTTON_ADD_VIDEO: "Add Video",
+            MODAL_BUTTON_ADDING_VIDEO: "Adding...", // Dynamic button state
+            MODAL_CLOSE_BUTTON_ARIA_LABEL: "Close modal",
+            MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Please fill in title, URL, description, and add at least one tag.",
+            MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Error: Category context is missing. Please close and reopen the modal.",
+            MODAL_TOAST_VALIDATION_INVALID_URL: "Please enter a valid YouTube URL.",
+            MODAL_TOAST_ADD_SUCCESS: "Video added successfully!",
+            MODAL_TOAST_ADD_FAILURE: "Failed to add video. Please try again.", // Generic failure
+            MODAL_TOAST_ADD_FAILURE_DUPLICATE: "A video with this YouTube ID might already exist.",
+            MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Error linking to category/subcategory. Please report this issue.",
+            MODAL_TAG_SUGGESTION_ARIA_LABEL: "Add tag: {tag}", // For suggestion buttons accessibility
+
+
+            
         },
         // Spanish Example
         es: {
@@ -987,6 +1022,33 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "Fallo al inicializar la base de datos local: {error}",
             FAILED_OPERATION: "Fallo al {operation}: {error}",
             UNEXPECTED_ERROR: "Un error inesperado ocurrió: {error}",
+     MODAL_ADD_CONTENT_TITLE: "Añadir Nuevo Contenido de Vídeo",
+            MODAL_CONTEXT_LABEL: "Añadiendo contenido a:",
+            MODAL_UNKNOWN_CATEGORY: "Categoría Desconocida",
+            MODAL_UNKNOWN_SUBCATEGORY: "Subcategoría Desconocida",
+            MODAL_LABEL_VIDEO_TITLE: "Título del Vídeo *",
+            MODAL_PLACEHOLDER_VIDEO_TITLE: "Introduce el título del vídeo",
+            MODAL_LABEL_YOUTUBE_URL: "URL de YouTube *",
+            MODAL_PLACEHOLDER_YOUTUBE_URL: "ej., https://www.youtube.com/watch?v=...",
+            MODAL_VALID_YOUTUBE_ID: "ID de YouTube válido: {id}",
+            MODAL_INVALID_YOUTUBE_URL: "URL de YouTube inválida o incompleta",
+            MODAL_LABEL_DESCRIPTION: "Descripción *",
+            MODAL_PLACEHOLDER_DESCRIPTION: "Describe el contenido del vídeo...",
+            MODAL_LABEL_TAGS: "Etiquetas (separadas por coma) *",
+            MODAL_PLACEHOLDER_TAGS: "ej., DIY, Solar, Agua",
+            MODAL_BUTTON_CANCEL: "Cancelar",
+            MODAL_BUTTON_ADD_VIDEO: "Añadir Vídeo",
+            MODAL_BUTTON_ADDING_VIDEO: "Añadiendo...",
+            MODAL_CLOSE_BUTTON_ARIA_LABEL: "Cerrar modal",
+            MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Por favor, completa título, URL, descripción y añade al menos una etiqueta.",
+            MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Error: Falta el contexto de categoría. Por favor, cierra y vuelve a abrir el modal.",
+            MODAL_TOAST_VALIDATION_INVALID_URL: "Por favor, introduce una URL de YouTube válida.",
+            MODAL_TOAST_ADD_SUCCESS: "¡Vídeo añadido con éxito!",
+            MODAL_TOAST_ADD_FAILURE: "Fallo al añadir vídeo. Por favor, inténtalo de nuevo.",
+            MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Puede que ya exista un vídeo con este ID de YouTube.",
+            MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Error al enlazar con categoría/subcategoría. Por favor, reporta este problema.",
+            MODAL_TAG_SUGGESTION_ARIA_LABEL: "Añadir etiqueta: {tag}",
+            
         },
      // French Translation
         fr: {
@@ -1130,6 +1192,38 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "Falha ao inicializar o banco de dados local: {error}",
             FAILED_OPERATION: "Falha ao {operation}: {error}",
             UNEXPECTED_ERROR: "Ocorreu um erro inesperado: {error}",
+            MODAL_ADD_CONTENT_TITLE: "Adicionar Novo Conteúdo de Vídeo",
+            MODAL_CONTEXT_LABEL: "Adicionando conteúdo a:",
+            MODAL_UNKNOWN_CATEGORY: "Categoria Desconhecida",
+            MODAL_UNKNOWN_SUBCATEGORY: "Subcategoria Desconhecida",
+            MODAL_LABEL_VIDEO_TITLE: "Título do Vídeo *",
+            MODAL_PLACEHOLDER_VIDEO_TITLE: "Insira o título do vídeo",
+            MODAL_LABEL_YOUTUBE_URL: "URL do YouTube *",
+            MODAL_PLACEHOLDER_YOUTUBE_URL: "ex., https://www.youtube.com/watch?v=...",
+            MODAL_VALID_YOUTUBE_ID: "ID do YouTube válido: {id}",
+            MODAL_INVALID_YOUTUBE_URL: "URL do YouTube inválida ou incompleta",
+            MODAL_LABEL_DESCRIPTION: "Descrição *",
+            MODAL_PLACEHOLDER_DESCRIPTION: "Descreva o conteúdo do vídeo...",
+            MODAL_LABEL_TAGS: "Etiquetas (separadas por vírgula) *",
+            MODAL_PLACEHOLDER_TAGS: "ex., DIY, Solar, Água",
+            MODAL_BUTTON_CANCEL: "Cancelar", // Reusing CANCEL_BUTTON
+            MODAL_BUTTON_ADD_VIDEO: "Adicionar Vídeo",
+            MODAL_BUTTON_ADDING_VIDEO: "Adicionando...",
+            MODAL_CLOSE_BUTTON_ARIA_LABEL: "Fechar modal",
+            MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Por favor, preencha o título, URL, descrição e adicione pelo menos uma etiqueta.",
+            MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Erro: Contexto de categoria ausente. Por favor, feche e reabra o modal.",
+            MODAL_TOAST_VALIDATION_INVALID_URL: "Por favor, insira um URL do YouTube válido.",
+            MODAL_TOAST_ADD_SUCCESS: "Vídeo adicionado com sucesso!",
+            MODAL_TOAST_ADD_FAILURE: "Falha ao adicionar vídeo. Por favor, tente novamente.",
+            MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Um vídeo com este ID do YouTube já pode existir.",
+            MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Erro ao vincular à categoria/subcategoria. Por favor, reporte este problema.",
+            MODAL_TAG_SUGGESTION_ARIA_LABEL: "Adicionar etiqueta: {tag}",
+            // ...
+
+
+
+
+            
         },
         ar: {
             PORTAL_TITLE: "مدير بوابة الفيديو Approvideo",
@@ -1199,6 +1293,32 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
             DB_INIT_ERROR: "فشل تهيئة قاعدة البيانات المحلية: {error}",
             FAILED_OPERATION: "فشلت {العملية}: {خطأ}",
             UNEXPECTED_ERROR: "حدث خطأ غير متوقع: {error}",
+            MODAL_ADD_CONTENT_TITLE: "إضافة محتوى فيديو جديد",
+            MODAL_CONTEXT_LABEL: "إضافة المحتوى إلى:",
+            MODAL_UNKNOWN_CATEGORY: "فئة غير معروفة",
+            MODAL_UNKNOWN_SUBCATEGORY: "فئة فرعية غير معروفة",
+            MODAL_LABEL_VIDEO_TITLE: "عنوان الفيديو *",
+            MODAL_PLACEHOLDER_VIDEO_TITLE: "أدخل عنوان الفيديو",
+            MODAL_LABEL_YOUTUBE_URL: "رابط يوتيوب *",
+            MODAL_PLACEHOLDER_YOUTUBE_URL: "مثال: https://www.youtube.com/watch?v=...",
+            MODAL_VALID_YOUTUBE_ID: "معرّف يوتيوب صالح: {id}",
+            MODAL_INVALID_YOUTUBE_URL: "رابط يوتيوب غير صالح أو غير مكتمل",
+            MODAL_LABEL_DESCRIPTION: "الوصف *",
+            MODAL_PLACEHOLDER_DESCRIPTION: "صف محتوى الفيديو...",
+            MODAL_LABEL_TAGS: "العلامات (مفصولة بفاصلة) *",
+            MODAL_PLACEHOLDER_TAGS: "مثال: DIY, طاقة شمسية, ماء",
+            MODAL_BUTTON_CANCEL: "إلغاء", // Reusing CANCEL_BUTTON
+            MODAL_BUTTON_ADD_VIDEO: "إضافة فيديو",
+            MODAL_BUTTON_ADDING_VIDEO: "جارٍ الإضافة...",
+            MODAL_CLOSE_BUTTON_ARIA_LABEL: "إغلاق النافذة",
+            MODAL_TOAST_VALIDATION_MISSING_FIELDS: "يرجى ملء العنوان والرابط والوصف وإضافة علامة واحدة على الأقل.",
+            MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "خطأ: سياق الفئة مفقود. يرجى إغلاق النافذة وإعادة فتحها.",
+            MODAL_TOAST_VALIDATION_INVALID_URL: "يرجى إدخال رابط يوتيوب صالح.",
+            MODAL_TOAST_ADD_SUCCESS: "تمت إضافة الفيديو بنجاح!",
+            MODAL_TOAST_ADD_FAILURE: "فشل إضافة الفيديو. يرجى المحاولة مرة أخرى.",
+            MODAL_TOAST_ADD_FAILURE_DUPLICATE: "قد يكون هناك فيديو بهذا المعرف على يوتيوب بالفعل.",
+            MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "خطأ في الربط بالفئة/الفئة الفرعية. يرجى الإبلاغ عن هذه المشكلة.",
+            MODAL_TAG_SUGGESTION_ARIA_LABEL: "إضافة علامة: {tag}", 
         },
         // Swahili Translation
     sw: {
@@ -1217,7 +1337,6 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         STATUS_SAVED: "Imehifadhiwa!",
         STATUS_ERROR: "Hitilafu",
         CONFIRM_ACTION_TITLE: "Thibitisha Kitendo",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "Ongeza Kikundi",
         ADD_SUBCATEGORY_BUTTON: "Ongeza Kikundi Kidogo",
@@ -1232,35 +1351,29 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         DELETE_SUBCATEGORY_CONFIRM: "Je, una uhakika unataka kufuta kikundi kidogo \"{name}\"? Kitendo hiki hakiwezi kutenduliwa.",
         ITEM_NAME_EMPTY_ERROR: "Jina la {itemType} haliwezi kuwa tupu.",
         CATEGORY_DELETE_HAS_SUBS_ERROR: 'Haiwezekani kufuta "{name}": Kina vikundi vidogo. Tafadhali vifute kwanza.',
-    
         // Tags
         ADD_TAG_BUTTON: "Ongeza Lebo",
         NO_TAGS_YET: "Bado hakuna lebo.",
         ADD_FIRST_TAG_PROMPT: 'Bofya "Ongeza Lebo" kuunda ya kwanza.',
         TAG_FEATURE_NOT_IMPLEMENTED: "Usimamizi wa lebo bado haujatekelezwa.",
-    
         // Banners
         BANNER_MSG_1: "🎥 Kushiriki maarifa yanayobadilisha maisha - Video moja kwa wakati",
         BANNER_MSG_2: "🌱 Kujenga uthabiti kupitia teknolojia sahihi",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "Tembelea Tovuti Kuu",
         NAV_LINK_NEW_TITLE: "Ongeza Maudhui Mapya",
         TOGGLE_DARK_MODE_TITLE: "Badili Modi Nyeusi/Nyeupe",
         PROFILE_MENU_TITLE: "Menyu ya Mtumiaji",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo beta",
         DROPDOWN_PENDING: "Inasubiri",
         DROPDOWN_HOMEPAGE: "Admin Kuu",
         DROPDOWN_TAXONOMY: "Kihariri cha Uainishaji",
         DROPDOWN_SIGN_OUT: "Ondoka",
-    
         // Item Types
         CATEGORY: "Kikundi",
         SUBCATEGORY: "Kikundi Kidogo",
         TAG: "Lebo",
-    
         // Errors & Status
         ERROR_PREFIX: "Hitilafu",
         CRITICAL_ERROR_MSG: "Hitilafu Kubwa: Imeshindikana kuanzisha programu. {error} Tafadhali angalia koni na uboreshe.",
@@ -1270,6 +1383,32 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         DB_INIT_ERROR: "Imeshindikana kuanzisha hifadhidata ya ndani: {error}",
         FAILED_OPERATION: "Imeshindikana kufanya {operation}: {error}",
         UNEXPECTED_ERROR: "Hitilafu isiyotarajiwa imetokea: {error}",
+          MODAL_ADD_CONTENT_TITLE: "Ongeza Maudhui Mapya ya Video",
+          MODAL_CONTEXT_LABEL: "Kuongeza maudhui katika:",
+          MODAL_UNKNOWN_CATEGORY: "Kategoria Isiyojulikana",
+          MODAL_UNKNOWN_SUBCATEGORY: "Kategoria-Ndogo Isiyojulikana",
+          MODAL_LABEL_VIDEO_TITLE: "Kichwa cha Video *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Ingiza kichwa cha video",
+          MODAL_LABEL_YOUTUBE_URL: "URL ya YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "mfano, https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "Kitambulisho cha YouTube halali: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "URL ya YouTube isiyo sahihi au isiyo kamili",
+          MODAL_LABEL_DESCRIPTION: "Maelezo *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Elezea maudhui ya video...",
+          MODAL_LABEL_TAGS: "Lebo (zitenganishwe kwa koma) *",
+          MODAL_PLACEHOLDER_TAGS: "mfano, DIY, Sola, Maji",
+          MODAL_BUTTON_CANCEL: "Ghairi",
+          MODAL_BUTTON_ADD_VIDEO: "Ongeza Video",
+          MODAL_BUTTON_ADDING_VIDEO: "Inaongeza...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Funga modal",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Tafadhali jaza kichwa, URL, maelezo na uongeze angalau lebo moja.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Hitilafu: Muktadha wa kategoria umekosekana. Tafadhali funga na ufungue upya modal.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Tafadhali ingiza URL halali ya YouTube.",
+          MODAL_TOAST_ADD_SUCCESS: "Video imeongezwa kwa mafanikio!",
+          MODAL_TOAST_ADD_FAILURE: "Imeshindwa kuongeza video. Tafadhali jaribu tena.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Video yenye kitambulisho hiki cha YouTube inaweza kuwa tayari ipo.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Hitilafu katika kuunganisha na kategoria/kategoria-ndogo. Tafadhali ripoti tatizo hili.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Ongeza lebo: {tag}",
     },
     hi: {
         PORTAL_TITLE: "Appro🎥video वीडियो पोर्टल प्रबंधक🎥",
@@ -1318,19 +1457,16 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         NAV_LINK_NEW_TITLE: "नई सामग्री जोड़ें",
         TOGGLE_DARK_MODE_TITLE: "डार्क/लाइट मोड स्विच करें",
         PROFILE_MENU_TITLE: "उपयोगकर्ता मेनू",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo बीटा",
         DROPDOWN_PENDING: "लंबित",
         DROPDOWN_HOMEPAGE: "मुख्य एडमिन",
         DROPDOWN_TAXONOMY: "वर्गीकरण संपादक",
         DROPDOWN_SIGN_OUT: "लॉगआउट",
-    
         // Item Types
         CATEGORY: "श्रेणी",
         SUBCATEGORY: "उप-श्रेणी",
         TAG: "टैग",
-    
         // Errors & Status
         ERROR_PREFIX: "त्रुटि",
         CRITICAL_ERROR_MSG: "गंभीर त्रुटि: एप्लिकेशन प्रारंभ नहीं कर सका। {error} कृपया कंसोल जांचें और रिफ्रेश करें।",
@@ -1340,76 +1476,128 @@ async function getEncryptionKey(passphrase, salt = 'a-fixed-salt-for-demo-only')
         DB_INIT_ERROR: "स्थानीय डेटाबेस प्रारंभ करने में विफलता: {error}",
         FAILED_OPERATION: "{operation} के दौरान विफलता: {error}",
         UNEXPECTED_ERROR: "एक अप्रत्याशित त्रुटि हुई: {error}",
+ MODAL_ADD_CONTENT_TITLE: "नई वीडियो सामग्री जोड़ें",
+  MODAL_CONTEXT_LABEL: "यहां सामग्री जोड़ रहे हैं:",
+  MODAL_UNKNOWN_CATEGORY: "अज्ञात श्रेणी",
+  MODAL_UNKNOWN_SUBCATEGORY: "अज्ञात उपश्रेणी",
+  MODAL_LABEL_VIDEO_TITLE: "वीडियो का शीर्षक *",
+  MODAL_PLACEHOLDER_VIDEO_TITLE: "वीडियो का शीर्षक दर्ज करें",
+  MODAL_LABEL_YOUTUBE_URL: "YouTube URL *",
+  MODAL_PLACEHOLDER_YOUTUBE_URL: "उदा., https://www.youtube.com/watch?v=...",
+  MODAL_VALID_YOUTUBE_ID: "मान्य YouTube आईडी: {id}",
+  MODAL_INVALID_YOUTUBE_URL: "अमान्य या अपूर्ण YouTube URL",
+  MODAL_LABEL_DESCRIPTION: "विवरण *",
+  MODAL_PLACEHOLDER_DESCRIPTION: "वीडियो की सामग्री का वर्णन करें...",
+  MODAL_LABEL_TAGS: "टैग (अल्पविराम से अलग किए गए) *",
+  MODAL_PLACEHOLDER_TAGS: "उदा., DIY, सोलर, पानी",
+  MODAL_BUTTON_CANCEL: "रद्द करें",
+  MODAL_BUTTON_ADD_VIDEO: "वीडियो जोड़ें",
+  MODAL_BUTTON_ADDING_VIDEO: "जोड़ रहे हैं...",
+  MODAL_CLOSE_BUTTON_ARIA_LABEL: "मॉडल बंद करें",
+  MODAL_TOAST_VALIDATION_MISSING_FIELDS: "कृपया शीर्षक, URL, विवरण भरें और कम से कम एक टैग जोड़ें।",
+  MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "त्रुटि: श्रेणी संदर्भ अनुपलब्ध है। कृपया मॉडल को बंद करें और फिर से खोलें।",
+  MODAL_TOAST_VALIDATION_INVALID_URL: "कृपया एक वैध YouTube URL दर्ज करें।",
+  MODAL_TOAST_ADD_SUCCESS: "वीडियो सफलतापूर्वक जोड़ा गया!",
+  MODAL_TOAST_ADD_FAILURE: "वीडियो जोड़ने में विफल। कृपया पुनः प्रयास करें।",
+  MODAL_TOAST_ADD_FAILURE_DUPLICATE: "इस YouTube आईडी वाला वीडियो पहले से मौजूद हो सकता है।",
+  MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "श्रेणी/उपश्रेणी से लिंक करने में त्रुटि। कृपया इस समस्या की रिपोर्ट करें।",
+  MODAL_TAG_SUGGESTION_ARIA_LABEL: "टैग जोड़ें: {tag}",          
     },
 zh: {
-        PORTAL_TITLE: "Appro🎥video 视频门户管理器🎥",
-        TAXONOMY_TITLE: "分类管理",
-        TAXONOMY_DESC: "通过类别和子类别组织您的内容。点击名称进行编辑。",
-        CATEGORIES_HEADER: "类别和子类别",
-        TAG_MANAGEMENT_HEADER: "标签管理",
-        LOADING: "加载中...",
-        SAVE_BUTTON: "保存",
-        CANCEL_BUTTON: "取消",
-        DELETE_BUTTON: "删除",
-        EDIT_HINT: "点击名称以编辑",
-        SLUG_LABEL: "Slug：",
-        STATUS_SAVING: "正在保存...",
-        STATUS_SAVED: "已保存！",
-        STATUS_ERROR: "错误",
-        CONFIRM_ACTION_TITLE: "确认操作",
-    
-        // Categories & Subcategories
-        ADD_CATEGORY_BUTTON: "添加类别",
-        ADD_SUBCATEGORY_BUTTON: "添加子类别",
-        LOADING_CATEGORIES: "正在加载类别...",
-        NO_CATEGORIES_YET: "目前没有类别。",
-        ADD_FIRST_CATEGORY_PROMPT: '点击“添加类别”以创建第一个类别。',
-        NO_SUBCATEGORIES_YET: "目前没有子类别。",
-        ADD_SUB_PROMPT: '使用上方的“添加子类别”按钮。',
-        ENTER_CATEGORY_PLACEHOLDER: "输入类别名称并按回车键",
-        ENTER_SUBCATEGORY_PLACEHOLDER: "输入子类别名称并按回车键",
-        DELETE_CATEGORY_CONFIRM: "您确定要删除类别“{name}”吗？此操作无法撤销。",
-        DELETE_SUBCATEGORY_CONFIRM: "您确定要删除子类别“{name}”吗？此操作无法撤销。",
-        ITEM_NAME_EMPTY_ERROR: "{itemType}名称不能为空。",
-        CATEGORY_DELETE_HAS_SUBS_ERROR: '无法删除“{name}”：仍然包含子类别。请先删除子类别。',
-    
-        // Tags
-        ADD_TAG_BUTTON: "添加标签",
-        NO_TAGS_YET: "目前没有标签。",
-        ADD_FIRST_TAG_PROMPT: '点击“添加标签”以创建第一个标签。',
-        TAG_FEATURE_NOT_IMPLEMENTED: "标签管理功能尚未实现。",
-    
-        // Banners
-        BANNER_MSG_1: "🎥 分享改变人生的知识——一次一个视频",
-        BANNER_MSG_2: "🌱 通过适用技术建立韧性",
-    
-        // Navigation Titles
-        NAV_LINK_WEBSITE_TITLE: "访问主站",
-        NAV_LINK_NEW_TITLE: "添加新内容",
-        TOGGLE_DARK_MODE_TITLE: "切换深色/浅色模式",
-        PROFILE_MENU_TITLE: "用户菜单",
-    
-        // Dropdown Items
-        DROPDOWN_APPROVIDEO_BETA: "Approvideo 测试版",
-        DROPDOWN_PENDING: "待处理",
-        DROPDOWN_HOMEPAGE: "主要管理页面",
-        DROPDOWN_TAXONOMY: "分类编辑器",
-        DROPDOWN_SIGN_OUT: "登出",
-    
-        // Item Types
-        CATEGORY: "类别",
-        SUBCATEGORY: "子类别",
-        TAG: "标签",
-    
-        // Errors & Status
-        ERROR_PREFIX: "错误",
-        CRITICAL_ERROR_MSG: "严重错误：无法初始化应用程序。{error} 请检查控制台并刷新。",
-        NETWORK_ERROR_CACHE_FALLBACK: "网络错误：{error}。正在尝试使用本地数据。",
-        NETWORK_ERROR_NO_CACHE: "网络错误：{error}。无可用本地数据。",
-        CACHE_ERROR: "缓存错误：{error}。无法加载本地数据。",
-        DB_INIT_ERROR: "本地数据库初始化失败：{error}",
-        FAILED_OPERATION: "在{operation}过程中失败：{error}",
-        UNEXPECTED_ERROR: "发生意外错误：{error}",
+            PORTAL_TITLE: "Appro🎥video 视频门户管理器🎥",
+            TAXONOMY_TITLE: "分类管理",
+            TAXONOMY_DESC: "通过类别和子类别组织您的内容。点击名称进行编辑。",
+            CATEGORIES_HEADER: "类别和子类别",
+            TAG_MANAGEMENT_HEADER: "标签管理",
+            LOADING: "加载中...",
+            SAVE_BUTTON: "保存",
+            CANCEL_BUTTON: "取消",
+            DELETE_BUTTON: "删除",
+            EDIT_HINT: "点击名称以编辑",
+            SLUG_LABEL: "Slug：",
+            STATUS_SAVING: "正在保存...",
+            STATUS_SAVED: "已保存！",
+            STATUS_ERROR: "错误",
+            CONFIRM_ACTION_TITLE: "确认操作",
+        
+            // Categories & Subcategories
+            ADD_CATEGORY_BUTTON: "添加类别",
+            ADD_SUBCATEGORY_BUTTON: "添加子类别",
+            LOADING_CATEGORIES: "正在加载类别...",
+            NO_CATEGORIES_YET: "目前没有类别。",
+            ADD_FIRST_CATEGORY_PROMPT: '点击“添加类别”以创建第一个类别。',
+            NO_SUBCATEGORIES_YET: "目前没有子类别。",
+            ADD_SUB_PROMPT: '使用上方的“添加子类别”按钮。',
+            ENTER_CATEGORY_PLACEHOLDER: "输入类别名称并按回车键",
+            ENTER_SUBCATEGORY_PLACEHOLDER: "输入子类别名称并按回车键",
+            DELETE_CATEGORY_CONFIRM: "您确定要删除类别“{name}”吗？此操作无法撤销。",
+            DELETE_SUBCATEGORY_CONFIRM: "您确定要删除子类别“{name}”吗？此操作无法撤销。",
+            ITEM_NAME_EMPTY_ERROR: "{itemType}名称不能为空。",
+            CATEGORY_DELETE_HAS_SUBS_ERROR: '无法删除“{name}”：仍然包含子类别。请先删除子类别。',
+        
+            // Tags
+            ADD_TAG_BUTTON: "添加标签",
+            NO_TAGS_YET: "目前没有标签。",
+            ADD_FIRST_TAG_PROMPT: '点击“添加标签”以创建第一个标签。',
+            TAG_FEATURE_NOT_IMPLEMENTED: "标签管理功能尚未实现。",
+        
+            // Banners
+            BANNER_MSG_1: "🎥 分享改变人生的知识——一次一个视频",
+            BANNER_MSG_2: "🌱 通过适用技术建立韧性",
+        
+            // Navigation Titles
+            NAV_LINK_WEBSITE_TITLE: "访问主站",
+            NAV_LINK_NEW_TITLE: "添加新内容",
+            TOGGLE_DARK_MODE_TITLE: "切换深色/浅色模式",
+            PROFILE_MENU_TITLE: "用户菜单",
+        
+            // Dropdown Items
+            DROPDOWN_APPROVIDEO_BETA: "Approvideo 测试版",
+            DROPDOWN_PENDING: "待处理",
+            DROPDOWN_HOMEPAGE: "主要管理页面",
+            DROPDOWN_TAXONOMY: "分类编辑器",
+            DROPDOWN_SIGN_OUT: "登出",
+        
+            // Item Types
+            CATEGORY: "类别",
+            SUBCATEGORY: "子类别",
+            TAG: "标签",
+        
+            // Errors & Status
+            ERROR_PREFIX: "错误",
+            CRITICAL_ERROR_MSG: "严重错误：无法初始化应用程序。{error} 请检查控制台并刷新。",
+            NETWORK_ERROR_CACHE_FALLBACK: "网络错误：{error}。正在尝试使用本地数据。",
+            NETWORK_ERROR_NO_CACHE: "网络错误：{error}。无可用本地数据。",
+            CACHE_ERROR: "缓存错误：{error}。无法加载本地数据。",
+            DB_INIT_ERROR: "本地数据库初始化失败：{error}",
+            FAILED_OPERATION: "在{operation}过程中失败：{error}",
+            UNEXPECTED_ERROR: "发生意外错误：{error}",
+          MODAL_ADD_CONTENT_TITLE: "添加新视频内容",
+          MODAL_CONTEXT_LABEL: "正在添加内容到：",
+          MODAL_UNKNOWN_CATEGORY: "未知类别",
+          MODAL_UNKNOWN_SUBCATEGORY: "未知子类别",
+          MODAL_LABEL_VIDEO_TITLE: "视频标题 *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "输入视频标题",
+          MODAL_LABEL_YOUTUBE_URL: "YouTube 网址 *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "例如，https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "有效的 YouTube ID：{id}",
+          MODAL_INVALID_YOUTUBE_URL: "无效或不完整的 YouTube 网址",
+          MODAL_LABEL_DESCRIPTION: "描述 *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "描述视频内容...",
+          MODAL_LABEL_TAGS: "标签（用逗号分隔）*",
+          MODAL_PLACEHOLDER_TAGS: "例如，DIY，太阳能，水",
+          MODAL_BUTTON_CANCEL: "取消",
+          MODAL_BUTTON_ADD_VIDEO: "添加视频",
+          MODAL_BUTTON_ADDING_VIDEO: "添加中...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "关闭模态框",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "请填写标题、网址、描述并至少添加一个标签。",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "错误：缺少类别上下文。请关闭并重新打开模态框。",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "请输入有效的 YouTube 网址。",
+          MODAL_TOAST_ADD_SUCCESS: "视频添加成功！",
+          MODAL_TOAST_ADD_FAILURE: "添加视频失败。请重试。",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "具有此 YouTube ID 的视频可能已存在。",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "链接到类别/子类别时出错。请报告此问题。",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "添加标签：{tag}",
 },
 bn: {
         PORTAL_TITLE: "Appro🎥video ভিডিও পোর্টাল ব্যবস্থাপক🎥",
@@ -1480,6 +1668,36 @@ bn: {
         DB_INIT_ERROR: "স্থানীয় ডাটাবেস শুরু করতে ব্যর্থ হয়েছে: {error}",
         FAILED_OPERATION: "{operation} সময় ব্যর্থ হয়েছে: {error}",
         UNEXPECTED_ERROR: "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে: {error}",
+        MODAL_ADD_CONTENT_TITLE: "নতুন ভিডিও কন্টেন্ট যোগ করুন",
+          MODAL_CONTEXT_LABEL: "এখানে কন্টেন্ট যোগ করছেন:",
+          MODAL_UNKNOWN_CATEGORY: "অজানা বিভাগ",
+          MODAL_UNKNOWN_SUBCATEGORY: "অজানা উপবিভাগ",
+          MODAL_LABEL_VIDEO_TITLE: "ভিডিও শিরোনাম *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "ভিডিও শিরোনাম লিখুন",
+          MODAL_LABEL_YOUTUBE_URL: "YouTube URL *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "উদা., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "বৈধ YouTube আইডি: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "অবৈধ বা অসম্পূর্ণ YouTube URL",
+          MODAL_LABEL_DESCRIPTION: "বিবরণ *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "ভিডিওর বিষয়বস্তু বর্ণনা করুন...",
+          MODAL_LABEL_TAGS: "ট্যাগ (কমা দ্বারা আলাদা করুন) *",
+          MODAL_PLACEHOLDER_TAGS: "উদা., DIY, সোলার, পানি",
+          MODAL_BUTTON_CANCEL: "বাতিল করুন",
+          MODAL_BUTTON_ADD_VIDEO: "ভিডিও যোগ করুন",
+          MODAL_BUTTON_ADDING_VIDEO: "যোগ করা হচ্ছে...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "মোডাল বন্ধ করুন",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "অনুগ্রহ করে শিরোনাম, URL, বিবরণ পূরণ করুন এবং কমপক্ষে একটি ট্যাগ যোগ করুন।",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "ত্রুটি: বিভাগ প্রসঙ্গ অনুপস্থিত। অনুগ্রহ করে মোডাল বন্ধ করে আবার খুলুন।",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "অনুগ্রহ করে একটি বৈধ YouTube URL লিখুন।",
+          MODAL_TOAST_ADD_SUCCESS: "ভিডিও সফলভাবে যোগ করা হয়েছে!",
+          MODAL_TOAST_ADD_FAILURE: "ভিডিও যোগ করতে ব্যর্থ। অনুগ্রহ করে আবার চেষ্টা করুন।",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "এই YouTube আইডি সহ একটি ভিডিও ইতিমধ্যে বিদ্যমান থাকতে পারে।",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "বিভাগ/উপবিভাগের সাথে লিঙ্ক করতে ত্রুটি। অনুগ্রহ করে এই সমস্যাটি রিপোর্ট করুন।",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "ট্যাগ যোগ করুন: {tag}",
+
+
+
+    
 },
 ru: {
         PORTAL_TITLE: "Appro🎥video Менеджер видеопортала🎥",
@@ -1497,7 +1715,6 @@ ru: {
         STATUS_SAVED: "Сохранено!",
         STATUS_ERROR: "Ошибка",
         CONFIRM_ACTION_TITLE: "Подтвердите действие",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "Добавить категорию",
         ADD_SUBCATEGORY_BUTTON: "Добавить подкатегорию",
@@ -1512,35 +1729,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "Вы уверены, что хотите удалить подкатегорию \"{name}\"? Это действие необратимо.",
         ITEM_NAME_EMPTY_ERROR: "Название {itemType} не может быть пустым.",
         CATEGORY_DELETE_HAS_SUBS_ERROR: 'Невозможно удалить "{name}": в ней ещё есть подкатегории. Сначала удалите их.',
-    
         // Tags
         ADD_TAG_BUTTON: "Добавить тег",
         NO_TAGS_YET: "Теги пока отсутствуют.",
         ADD_FIRST_TAG_PROMPT: 'Нажмите "Добавить тег", чтобы создать первый тег.',
         TAG_FEATURE_NOT_IMPLEMENTED: "Управление тегами ещё не реализовано.",
-    
         // Banners
         BANNER_MSG_1: "🎥 Делитесь знаниями, которые меняют жизнь — одно видео за раз",
         BANNER_MSG_2: "🌱 Повышайте устойчивость с помощью подходящих технологий",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "Посетить основной сайт",
         NAV_LINK_NEW_TITLE: "Добавить новый контент",
         TOGGLE_DARK_MODE_TITLE: "Переключить тёмный/светлый режим",
         PROFILE_MENU_TITLE: "Меню пользователя",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo бета",
         DROPDOWN_PENDING: "Ожидающие",
         DROPDOWN_HOMEPAGE: "Главная админ-страница",
         DROPDOWN_TAXONOMY: "Редактор таксономии",
         DROPDOWN_SIGN_OUT: "Выйти",
-    
         // Item Types
         CATEGORY: "Категория",
         SUBCATEGORY: "Подкатегория",
         TAG: "Тег",
-    
         // Errors & Status
         ERROR_PREFIX: "Ошибка",
         CRITICAL_ERROR_MSG: "Критическая ошибка: невозможно запустить приложение. {error} Проверьте консоль и обновите страницу.",
@@ -1550,6 +1761,32 @@ ru: {
         DB_INIT_ERROR: "Ошибка инициализации локальной базы данных: {error}",
         FAILED_OPERATION: "Ошибка при выполнении операции {operation}: {error}",
         UNEXPECTED_ERROR: "Произошла непредвиденная ошибка: {error}",
+        MODAL_ADD_CONTENT_TITLE: "Добавить новый видеоконтент",
+          MODAL_CONTEXT_LABEL: "Добавление контента в:",
+          MODAL_UNKNOWN_CATEGORY: "Неизвестная категория",
+          MODAL_UNKNOWN_SUBCATEGORY: "Неизвестная подкатегория",
+          MODAL_LABEL_VIDEO_TITLE: "Название видео *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Введите название видео",
+          MODAL_LABEL_YOUTUBE_URL: "URL YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "напр., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "Действительный ID YouTube: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "Недействительный или неполный URL YouTube",
+          MODAL_LABEL_DESCRIPTION: "Описание *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Опишите содержание видео...",
+          MODAL_LABEL_TAGS: "Теги (разделенные запятыми) *",
+          MODAL_PLACEHOLDER_TAGS: "напр., DIY, Солнечная энергия, Вода",
+          MODAL_BUTTON_CANCEL: "Отмена",
+          MODAL_BUTTON_ADD_VIDEO: "Добавить видео",
+          MODAL_BUTTON_ADDING_VIDEO: "Добавление...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Закрыть модальное окно",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Пожалуйста, заполните название, URL, описание и добавьте хотя бы один тег.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Ошибка: Отсутствует контекст категории. Пожалуйста, закройте и снова откройте модальное окно.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Пожалуйста, введите действительный URL YouTube.",
+          MODAL_TOAST_ADD_SUCCESS: "Видео успешно добавлено!",
+          MODAL_TOAST_ADD_FAILURE: "Не удалось добавить видео. Пожалуйста, попробуйте снова.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Видео с этим ID YouTube, возможно, уже существует.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Ошибка при связывании с категорией/подкатегорией. Пожалуйста, сообщите об этой проблеме.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Добавить тег: {tag}",
     },
     ur: {
         PORTAL_TITLE: "Appro🎥video ویڈیو پورٹل مینیجر🎥",
@@ -1567,7 +1804,6 @@ ru: {
         STATUS_SAVED: "محفوظ ہو گیا!",
         STATUS_ERROR: "خرابی",
         CONFIRM_ACTION_TITLE: "عمل کی تصدیق کریں",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "زمرہ شامل کریں",
         ADD_SUBCATEGORY_BUTTON: "ذیلی زمرہ شامل کریں",
@@ -1582,35 +1818,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "کیا آپ واقعی ذیلی زمرہ \"{name}\" حذف کرنا چاہتے ہیں؟ یہ عمل ناقابل واپسی ہے۔",
         ITEM_NAME_EMPTY_ERROR: "{itemType} کا نام خالی نہیں ہو سکتا۔",
         CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" کو حذف نہیں کیا جا سکتا کیونکہ اس میں ابھی بھی ذیلی زمرے موجود ہیں۔ پہلے انہیں حذف کریں۔',
-    
         // Tags
         ADD_TAG_BUTTON: "ٹیگ شامل کریں",
         NO_TAGS_YET: "ابھی تک کوئی ٹیگ موجود نہیں ہے۔",
         ADD_FIRST_TAG_PROMPT: 'پہلا ٹیگ بنانے کے لئے "ٹیگ شامل کریں" پر کلک کریں۔',
         TAG_FEATURE_NOT_IMPLEMENTED: "ٹیگ انتظام ابھی تک نافذ نہیں کیا گیا۔",
-    
         // Banners
         BANNER_MSG_1: "🎥 زندگی بدلنے والا علم شیئر کریں - ایک وقت میں ایک ویڈیو",
         BANNER_MSG_2: "🌱 موزوں ٹیکنالوجیز کے ذریعے استحکام پیدا کریں",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "مرکزی ویب سائٹ پر جائیں",
         NAV_LINK_NEW_TITLE: "نیا مواد شامل کریں",
         TOGGLE_DARK_MODE_TITLE: "ڈارک/لائٹ موڈ تبدیل کریں",
         PROFILE_MENU_TITLE: "صارف مینو",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo بیٹا",
         DROPDOWN_PENDING: "زیر التوا",
         DROPDOWN_HOMEPAGE: "مرکزی ایڈمن پیج",
         DROPDOWN_TAXONOMY: "زمرہ بندی ایڈیٹر",
         DROPDOWN_SIGN_OUT: "سائن آؤٹ",
-    
         // Item Types
         CATEGORY: "زمرہ",
         SUBCATEGORY: "ذیلی زمرہ",
         TAG: "ٹیگ",
-    
         // Errors & Status
         ERROR_PREFIX: "خرابی",
         CRITICAL_ERROR_MSG: "سنگین خرابی: ایپلیکیشن شروع نہیں ہو سکی۔ {error} براہ مہربانی کنسول چیک کریں اور صفحہ ریفریش کریں۔",
@@ -1621,6 +1851,32 @@ ru: {
         FAILED_OPERATION: "{operation} کے دوران ناکامی: {error}",
         UNEXPECTED_ERROR: "ایک غیر متوقع خرابی پیش آگئی ہے: {error}",
         SELECT_LANGUAGE: "زبان منتخب کریں",
+          MODAL_ADD_CONTENT_TITLE: "نئی ویڈیو مواد شامل کریں",
+          MODAL_CONTEXT_LABEL: "مواد شامل کر رہے ہیں:",
+          MODAL_UNKNOWN_CATEGORY: "نامعلوم زمرہ",
+          MODAL_UNKNOWN_SUBCATEGORY: "نامعلوم ذیلی زمرہ",
+          MODAL_LABEL_VIDEO_TITLE: "ویڈیو کا عنوان *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "ویڈیو کا عنوان درج کریں",
+          MODAL_LABEL_YOUTUBE_URL: "یوٹیوب یو آر ایل *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "مثال، https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "درست یوٹیوب آئی ڈی: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "غلط یا نامکمل یوٹیوب یو آر ایل",
+          MODAL_LABEL_DESCRIPTION: "تفصیل *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "ویڈیو کے مواد کی تفصیل...",
+          MODAL_LABEL_TAGS: "ٹیگز (کاما سے الگ کریں) *",
+          MODAL_PLACEHOLDER_TAGS: "مثال، DIY، سولر، پانی",
+          MODAL_BUTTON_CANCEL: "منسوخ کریں",
+          MODAL_BUTTON_ADD_VIDEO: "ویڈیو شامل کریں",
+          MODAL_BUTTON_ADDING_VIDEO: "شامل کر رہے ہیں...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "موڈل بند کریں",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "براہ کرم عنوان، یو آر ایل، تفصیل بھریں اور کم از کم ایک ٹیگ شامل کریں۔",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "خرابی: زمرہ کا سیاق و سباق غائب ہے۔ براہ کرم موڈل بند کریں اور دوبارہ کھولیں۔",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "براہ کرم درست یوٹیوب یو آر ایل درج کریں۔",
+          MODAL_TOAST_ADD_SUCCESS: "ویڈیو کامیابی سے شامل کی گئی!",
+          MODAL_TOAST_ADD_FAILURE: "ویڈیو شامل کرنے میں ناکام۔ براہ کرم دوبارہ کوشش کریں۔",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "اس یوٹیوب آئی ڈی والی ویڈیو پہلے سے موجود ہو سکتی ہے۔",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "زمرہ/ذیلی زمرہ سے لنک کرنے میں خرابی۔ براہ کرم اس مسئلہ کی اطلاع دیں۔",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "ٹیگ شامل کریں: {tag}",
     },  
     ms: {
         PORTAL_TITLE: "Appro🎥video Pengurus Portal Video🎥",
@@ -1638,7 +1894,6 @@ ru: {
         STATUS_SAVED: "Disimpan!",
         STATUS_ERROR: "Ralat",
         CONFIRM_ACTION_TITLE: "Sahkan Tindakan",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "Tambah Kategori",
         ADD_SUBCATEGORY_BUTTON: "Tambah Subkategori",
@@ -1653,35 +1908,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "Adakah anda pasti mahu padam subkategori \"{name}\"? Tindakan ini tidak boleh dibuat asal.",
         ITEM_NAME_EMPTY_ERROR: "Nama {itemType} tidak boleh kosong.",
         CATEGORY_DELETE_HAS_SUBS_ERROR: 'Tidak boleh padam "{name}": masih mempunyai subkategori. Sila padamkannya terlebih dahulu.',
-    
         // Tags
         ADD_TAG_BUTTON: "Tambah Tag",
         NO_TAGS_YET: "Tiada tag buat masa ini.",
         ADD_FIRST_TAG_PROMPT: 'Klik "Tambah Tag" untuk buat yang pertama.',
         TAG_FEATURE_NOT_IMPLEMENTED: "Pengurusan tag masih belum dilaksanakan.",
-    
         // Banners
         BANNER_MSG_1: "🎥 Kongsi ilmu yang mengubah hidup — satu video pada satu masa",
         BANNER_MSG_2: "🌱 Bina daya tahan melalui teknologi yang sesuai",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "Lawat Laman Utama",
         NAV_LINK_NEW_TITLE: "Tambah Kandungan Baharu",
         TOGGLE_DARK_MODE_TITLE: "Tukar Mod Gelap/Cerah",
         PROFILE_MENU_TITLE: "Menu Pengguna",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo Beta",
         DROPDOWN_PENDING: "Menunggu",
         DROPDOWN_HOMEPAGE: "Laman Utama Admin",
         DROPDOWN_TAXONOMY: "Penyunting Taksonomi",
         DROPDOWN_SIGN_OUT: "Log Keluar",
-    
         // Item Types
         CATEGORY: "Kategori",
         SUBCATEGORY: "Subkategori",
         TAG: "Tag",
-    
         // Errors & Status
         ERROR_PREFIX: "Ralat",
         CRITICAL_ERROR_MSG: "Ralat Kritikal: Tidak dapat memulakan aplikasi. {error} Sila semak konsol dan muat semula halaman.",
@@ -1691,8 +1940,37 @@ ru: {
         DB_INIT_ERROR: "Gagal memulakan pangkalan data tempatan: {error}",
         FAILED_OPERATION: "Gagal semasa {operation}: {error}",
         UNEXPECTED_ERROR: "Ralat tidak dijangka berlaku: {error}",
-    
         SELECT_LANGUAGE: "Pilih Bahasa",
+          MODAL_ADD_CONTENT_TITLE: "Tambah Kandungan Video Baharu",
+          MODAL_CONTEXT_LABEL: "Menambah kandungan kepada:",
+          MODAL_UNKNOWN_CATEGORY: "Kategori Tidak Diketahui",
+          MODAL_UNKNOWN_SUBCATEGORY: "Subkategori Tidak Diketahui",
+          MODAL_LABEL_VIDEO_TITLE: "Tajuk Video *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Masukkan tajuk video",
+          MODAL_LABEL_YOUTUBE_URL: "URL YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "cth., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "ID YouTube yang sah: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "URL YouTube tidak sah atau tidak lengkap",
+          MODAL_LABEL_DESCRIPTION: "Penerangan *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Jelaskan kandungan video...",
+          MODAL_LABEL_TAGS: "Tag (dipisahkan dengan koma) *",
+          MODAL_PLACEHOLDER_TAGS: "cth., DIY, Solar, Air",
+          MODAL_BUTTON_CANCEL: "Batal",
+          MODAL_BUTTON_ADD_VIDEO: "Tambah Video",
+          MODAL_BUTTON_ADDING_VIDEO: "Menambah...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Tutup modal",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Sila isi tajuk, URL, penerangan dan tambah sekurang-kurangnya satu tag.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Ralat: Konteks kategori hilang. Sila tutup dan buka semula modal.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Sila masukkan URL YouTube yang sah.",
+          MODAL_TOAST_ADD_SUCCESS: "Video berjaya ditambah!",
+          MODAL_TOAST_ADD_FAILURE: "Gagal menambah video. Sila cuba lagi.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Video dengan ID YouTube ini mungkin sudah wujud.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Ralat semasa menghubungkan ke kategori/subkategori. Sila laporkan masalah ini.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Tambah tag: {tag}",
+
+
+
+    
     },   
     km: {
         PORTAL_TITLE: "Appro🎥video គ្រប់គ្រងទីផ្សារវីដេអូ🎥",
@@ -1710,7 +1988,6 @@ ru: {
         STATUS_SAVED: "បានរក្សាទុក!",
         STATUS_ERROR: "បញ្ហា",
         CONFIRM_ACTION_TITLE: "បញ្ជាក់សកម្មភាព",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "បន្ថែមប្រភេទ",
         ADD_SUBCATEGORY_BUTTON: "បន្ថែមប្រភេទរង",
@@ -1725,35 +2002,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "តើអ្នកប្រាកដថាចង់លុបប្រភេទរង \"{name}\" ឬ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។",
         ITEM_NAME_EMPTY_ERROR: "ឈ្មោះ {itemType} មិនអាចទទេ។",
         CATEGORY_DELETE_HAS_SUBS_ERROR: 'មិនអាចលុប "{name}" ទេ: វានៅមានប្រភេទរង។ សូមលុបវាជាមុន។',
-    
         // Tags
         ADD_TAG_BUTTON: "បន្ថែមស្លាក",
         NO_TAGS_YET: "មិនទាន់មានស្លាក។",
         ADD_FIRST_TAG_PROMPT: 'ចុច "បន្ថែមស្លាក" ដើម្បីបង្កើតស្លាកដំបូង។',
         TAG_FEATURE_NOT_IMPLEMENTED: "មុខងារគ្រប់គ្រងស្លាកមិនទាន់មាន។",
-    
         // Banners
         BANNER_MSG_1: "🎥 ចែករំលែកចំណេះដឹងដែលអាចផ្លាស់ប្តូរជីវិត — វីដេអូមួយក្នុងមួយពេល",
         BANNER_MSG_2: "🌱 ស្ថាបនាចំណេះដឹងដោយបច្ចេកវិទ្យាដែលសមរម្យ",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "ទស្សនាគេហទំព័រចម្បង",
         NAV_LINK_NEW_TITLE: "បន្ថែមមាតិកាថ្មី",
         TOGGLE_DARK_MODE_TITLE: "ប្ដូរម៉ូដងងឹត/ភ្លឺ",
         PROFILE_MENU_TITLE: "ម៉ឺនុយអ្នកប្រើ",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo បេតា",
         DROPDOWN_PENDING: "កំពុងរងចាំ",
         DROPDOWN_HOMEPAGE: "គ្រប់គ្រងចម្បង",
         DROPDOWN_TAXONOMY: "កម្មវិធីកែសម្រួលចំណាត់ថ្នាក់",
         DROPDOWN_SIGN_OUT: "ចាកចេញ",
-    
         // Item Types
         CATEGORY: "ប្រភេទ",
         SUBCATEGORY: "ប្រភេទរង",
         TAG: "ស្លាក",
-    
         // Errors & Status
         ERROR_PREFIX: "បញ្ហា",
         CRITICAL_ERROR_MSG: "បញ្ហាសំខាន់៖ មិនអាចចាប់ផ្តើមកម្មវិធីបានទេ។ {error} សូមពិនិត្យ Console ហើយសូម Reload។",
@@ -1763,8 +2034,33 @@ ru: {
         DB_INIT_ERROR: "បរាជ័យក្នុងការចាប់ផ្តើម Database ក្នុងម៉ាស៊ីន៖ {error}",
         FAILED_OPERATION: "បរាជ័យក្នុង {operation}៖ {error}",
         UNEXPECTED_ERROR: "កើតមានបញ្ហាដែលមិនបានរំពឹងទុក៖ {error}",
-    
         SELECT_LANGUAGE: "ជ្រើសរើសភាសា",
+          MODAL_ADD_CONTENT_TITLE: "Tambah Kandungan Video Baharu",
+          MODAL_CONTEXT_LABEL: "Menambah kandungan kepada:",
+          MODAL_UNKNOWN_CATEGORY: "Kategori Tidak Diketahui",
+          MODAL_UNKNOWN_SUBCATEGORY: "Subkategori Tidak Diketahui",
+          MODAL_LABEL_VIDEO_TITLE: "Tajuk Video *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Masukkan tajuk video",
+          MODAL_LABEL_YOUTUBE_URL: "URL YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "cth., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "ID YouTube yang sah: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "URL YouTube tidak sah atau tidak lengkap",
+          MODAL_LABEL_DESCRIPTION: "Penerangan *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Jelaskan kandungan video...",
+          MODAL_LABEL_TAGS: "Tag (dipisahkan dengan koma) *",
+          MODAL_PLACEHOLDER_TAGS: "cth., DIY, Solar, Air",
+          MODAL_BUTTON_CANCEL: "Batal",
+          MODAL_BUTTON_ADD_VIDEO: "Tambah Video",
+          MODAL_BUTTON_ADDING_VIDEO: "Menambah...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Tutup modal",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Sila isi tajuk, URL, penerangan dan tambah sekurang-kurangnya satu tag.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Ralat: Konteks kategori hilang. Sila tutup dan buka semula modal.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Sila masukkan URL YouTube yang sah.",
+          MODAL_TOAST_ADD_SUCCESS: "Video berjaya ditambah!",
+          MODAL_TOAST_ADD_FAILURE: "Gagal menambah video. Sila cuba lagi.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Video dengan ID YouTube ini mungkin sudah wujud.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Ralat semasa menghubungkan ke kategori/subkategori. Sila laporkan masalah ini.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Tambah tag: {tag}",
     },
     so: {
         PORTAL_TITLE: "Appro🎥video Maareeyaha Albaabka Fiidyaha🎥",
@@ -1782,7 +2078,6 @@ ru: {
         STATUS_SAVED: "La Kaydiyay!",
         STATUS_ERROR: "Khalad",
         CONFIRM_ACTION_TITLE: "Xaqiiji Ficilka",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "Ku dar Qayb",
         ADD_SUBCATEGORY_BUTTON: "Ku dar Qayb-hoosaad",
@@ -1797,35 +2092,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "Ma hubtaa inaad tirtirayso qayb-hoosaadka \"{name}\"? Ficilkan lama celin karo.",
         ITEM_NAME_EMPTY_ERROR: "Magaca {itemType} ma noqon karo madhan.",
         CATEGORY_DELETE_HAS_SUBS_ERROR: 'Ma tirtiri karo "{name}": wali waxay leedahay qayb-hoosaadyo. Fadlan marka hore tirtir kuwaas.',
-    
         // Tags
         ADD_TAG_BUTTON: "Ku dar Tag",
         NO_TAGS_YET: "Weli Tags ma jiraan.",
         ADD_FIRST_TAG_PROMPT: 'Guji "Ku dar Tag" si aad u abuurto kii ugu horreeyay.',
         TAG_FEATURE_NOT_IMPLEMENTED: "Shaqada maamulka tag weli lama hirgelin.",
-    
         // Banners
         BANNER_MSG_1: "🎥 Wadaag aqoon beddeli karta nolosha — hal fiidyo mar kasta",
         BANNER_MSG_2: "🌱 Dhis adkaysi adoo adeegsanaya teknoolojiyad ku habboon",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "Booqo Bogga Ugu Muhiimsan",
         NAV_LINK_NEW_TITLE: "Ku dar Waxyaabo Cusub",
         TOGGLE_DARK_MODE_TITLE: "Beddel Habka Madow/Iftiin",
         PROFILE_MENU_TITLE: "Liiska Isticmaalaha",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo Beta",
         DROPDOWN_PENDING: "Sugayaal",
         DROPDOWN_HOMEPAGE: "Maamulaha Guud",
         DROPDOWN_TAXONOMY: "Tifatiraha Qaybaha",
         DROPDOWN_SIGN_OUT: "Ka Bax",
-    
         // Item Types
         CATEGORY: "Qayb",
         SUBCATEGORY: "Qayb-hoosaad",
         TAG: "Tag",
-    
         // Errors & Status
         ERROR_PREFIX: "Khalad",
         CRITICAL_ERROR_MSG: "Khalad Xun: App-ka lama bilaabi karo. {error} Fadlan fiiri console oo dib u cusbooneysii bogga.",
@@ -1835,8 +2124,33 @@ ru: {
         DB_INIT_ERROR: "Khalad ayaa ka dhacay bilowga xogta deegaanka: {error}",
         FAILED_OPERATION: "Howshu waxay ku guuldareysatay inta lagu jiro {operation}: {error}",
         UNEXPECTED_ERROR: "Khalad lama filaan ah ayaa dhacay: {error}",
-    
         SELECT_LANGUAGE: "Dooro Luuqad",
+         MODAL_ADD_CONTENT_TITLE: "Ku dar Waxyaabo Fiidiyow oo Cusub",
+          MODAL_CONTEXT_LABEL: "Ku darista waxyaabaha:",
+          MODAL_UNKNOWN_CATEGORY: "Qaybta aan la Aqoon",
+          MODAL_UNKNOWN_SUBCATEGORY: "Qaybta-hoose aan la Aqoon",
+          MODAL_LABEL_VIDEO_TITLE: "Cinwaanka Fiidiyowga *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Geli cinwaanka fiidiyowga",
+          MODAL_LABEL_YOUTUBE_URL: "URL-ka YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "tus., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "Aqoonsiga YouTube-ka oo sax ah: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "URL-ka YouTube-ka oo aan sax ahayn ama aan dhammaystirnayn",
+          MODAL_LABEL_DESCRIPTION: "Sharaxaad *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Sharax waxa ku jira fiidiyowga...",
+          MODAL_LABEL_TAGS: "Calaamado (oo lagu kala sooco hakad) *",
+          MODAL_PLACEHOLDER_TAGS: "tus., DIY, Cadceedda, Biyaha",
+          MODAL_BUTTON_CANCEL: "Jooji",
+          MODAL_BUTTON_ADD_VIDEO: "Ku dar Fiidiyow",
+          MODAL_BUTTON_ADDING_VIDEO: "Ku darista...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Xir modal-ka",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Fadlan buuxi cinwaanka, URL-ka, sharaxaadda, oo ku dar ugu yaraan hal calaamad.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Khalad: Xaaladda qaybta ayaa maqan. Fadlan xir oo dib u fur modal-ka.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Fadlan geli URL YouTube oo sax ah.",
+          MODAL_TOAST_ADD_SUCCESS: "Fiidiyowga si guul leh ayaa loogu daray!",
+          MODAL_TOAST_ADD_FAILURE: "Ku darista fiidiyowga way fashilantay. Fadlan isku day mar kale.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Fiidiyow leh aqoonsigan YouTube ayaa horay u jiri kara.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Khalad ku xirista qaybta/qaybta-hoose. Fadlan warbixin ka bixi dhibaatadan.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Ku dar calaamadda: {tag}",
     },
     ne: {
         PORTAL_TITLE: "उपयुक्त🎥भिडियो भिडियो पोर्टल प्रबन्धक🎥",
@@ -1854,7 +2168,6 @@ ru: {
         STATUS_SAVED: "बचत गरियो!",
         STATUS_ERROR: "त्रुटि",
         CONFIRM_ACTION_TITLE: "कार्य पुष्टि गर्नुहोस्",
-        
         // कोटीहरू र उपश्रेणीहरू
         ADD_CATEGORY_BUTTON: "श्रेणी थप्नुहोस्",
         ADD_SUBCATEGORY_BUTTON: "उपश्रेणी थप्नुहोस्",
@@ -1869,35 +2182,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "के तपाईं \"{name}\" उपश्रेणी मेटाउन चाहनुहुन्छ? यो कार्य अपरिवर्तनीय छ।",
         ITEM_NAME_EMPTY_ERROR: "{itemType} को नाम खाली हुन सक्दैन।",
         CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" मेटाउन सकिँदैन: यसमा अझै पनि उपश्रेणीहरू छन्। कृपया पहिले तिनीहरूलाई मेटाउनुहोस्।',
-        
         // ट्यागहरू
         ADD_TAG_BUTTON: "ट्याग थप्नुहोस्",
         NO_TAGS_YET: "अहिलेसम्म कुनै ट्याग छैन।",
         ADD_FIRST_TAG_PROMPT: 'पहिलो सिर्जना गर्न "ट्याग थप्नुहोस्" मा क्लिक गर्नुहोस्।',
         TAG_FEATURE_NOT_IMPLEMENTED: "ट्याग व्यवस्थापन अझै कार्यान्वयन गरिएको छैन।",
-        
         // ब्यानरहरू
         BANNER_MSG_1: "🎥 जीवन परिवर्तन गर्ने ज्ञान बाँड्ने - एक पटकमा एउटा भिडियो",
         BANNER_MSG_2: "🌱 उपयुक्त प्रविधिहरू मार्फत लचिलोपन निर्माण गर्दै",
-        
         // नेभिगेसन शीर्षकहरू
         NAV_LINK_WEBSITE_TITLE: "मुख्य साइटमा जानुहोस्",
         NAV_LINK_NEW_TITLE: "नयाँ सामग्री थप्नुहोस्",
         TOGGLE_DARK_MODE_TITLE: "गाढा/हल्का मोड टगल गर्नुहोस्",
         PROFILE_MENU_TITLE: "प्रयोगकर्ता मेनु",
-        
         // ड्रपडाउन वस्तुहरू
         DROPDOWN_APPROVIDEO_BETA: "अनुमोदित भिडियो बिटा",
         DROPDOWN_PENDING: "विचाराधिन",
         DROPDOWN_HOMEPAGE: "गृह प्रशासक",
         DROPDOWN_TAXONOMY: "ट्याक्सोनोमी सम्पादक",
         DROPDOWN_SIGN_OUT: "साइन आउट",
-        
         // वस्तु प्रकारहरू
         CATEGORY: "श्रेणी",
         SUBCATEGORY: "उपश्रेणी",
         TAG: "ट्याग",
-        
         // त्रुटिहरू र स्थिति
         ERROR_PREFIX: "त्रुटि",
         CRITICAL_ERROR_MSG: "गम्भीर त्रुटि: अनुप्रयोग सुरु गर्न असमर्थ। {error} कृपया कन्सोल जाँच गर्नुहोस् र रिफ्रेस गर्नुहोस्।",
@@ -1907,6 +2214,33 @@ ru: {
         DB_INIT_ERROR: "स्थानीय डाटाबेस सुरु गर्न असफल: {त्रुटि}",
         FAILED_OPERATION: "{सञ्चालन} गर्न असफल: {त्रुटि}",
         UNEXPECTED_ERROR: "एउटा अनपेक्षित त्रुटि भयो: {error}",
+ MODAL_ADD_CONTENT_TITLE: "नयाँ भिडियो सामग्री थप्नुहोस्",
+  MODAL_CONTEXT_LABEL: "यहाँ सामग्री थप्दै:",
+  MODAL_UNKNOWN_CATEGORY: "अज्ञात श्रेणी",
+  MODAL_UNKNOWN_SUBCATEGORY: "अज्ञात उपश्रेणी",
+  MODAL_LABEL_VIDEO_TITLE: "भिडियो शीर्षक *",
+  MODAL_PLACEHOLDER_VIDEO_TITLE: "भिडियो शीर्षक प्रविष्ट गर्नुहोस्",
+  MODAL_LABEL_YOUTUBE_URL: "YouTube URL *",
+  MODAL_PLACEHOLDER_YOUTUBE_URL: "उदा., https://www.youtube.com/watch?v=...",
+  MODAL_VALID_YOUTUBE_ID: "मान्य YouTube आईडी: {id}",
+  MODAL_INVALID_YOUTUBE_URL: "अमान्य वा अपूर्ण YouTube URL",
+  MODAL_LABEL_DESCRIPTION: "विवरण *",
+  MODAL_PLACEHOLDER_DESCRIPTION: "भिडियो सामग्रीको विवरण दिनुहोस्...",
+  MODAL_LABEL_TAGS: "ट्यागहरू (अल्पविरामले छुट्याइएको) *",
+  MODAL_PLACEHOLDER_TAGS: "उदा., DIY, सौर्य, पानी",
+  MODAL_BUTTON_CANCEL: "रद्द गर्नुहोस्",
+  MODAL_BUTTON_ADD_VIDEO: "भिडियो थप्नुहोस्",
+  MODAL_BUTTON_ADDING_VIDEO: "थप्दै...",
+  MODAL_CLOSE_BUTTON_ARIA_LABEL: "मोडल बन्द गर्नुहोस्",
+  MODAL_TOAST_VALIDATION_MISSING_FIELDS: "कृपया शीर्षक, URL, विवरण भर्नुहोस् र कम्तिमा एउटा ट्याग थप्नुहोस्।",
+  MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "त्रुटि: श्रेणी सन्दर्भ हराइरहेको छ। कृपया मोडल बन्द गरेर फेरि खोल्नुहोस्।",
+  MODAL_TOAST_VALIDATION_INVALID_URL: "कृपया मान्य YouTube URL प्रविष्ट गर्नुहोस्।",
+  MODAL_TOAST_ADD_SUCCESS: "भिडियो सफलतापूर्वक थपियो!",
+  MODAL_TOAST_ADD_FAILURE: "भिडियो थप्न असफल। कृपया फेरि प्रयास गर्नुहोस्।",
+  MODAL_TOAST_ADD_FAILURE_DUPLICATE: "यो YouTube आईडी भएको भिडियो पहिले नै अवस्थित हुन सक्छ।",
+  MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "श्रेणी/उपश्रेणीसँग लिङ्क गर्दा त्रुटि। कृपया यो समस्या रिपोर्ट गर्नुहोस्।",
+  MODAL_TAG_SUGGESTION_ARIA_LABEL: "ट्याग थप्नुहोस्: {tag}",
+
     },
     id: {
         PORTAL_TITLE: "Appro🎥video Manajer Portal Video🎥",
@@ -1979,6 +2313,33 @@ ru: {
         UNEXPECTED_ERROR: "Terjadi kesalahan tak terduga: {error}",
     
         SELECT_LANGUAGE: "Pilih Bahasa",
+
+        MODAL_ADD_CONTENT_TITLE: "Tambahkan Konten Video Baru",
+          MODAL_CONTEXT_LABEL: "Menambahkan konten ke:",
+          MODAL_UNKNOWN_CATEGORY: "Kategori Tidak Dikenal",
+          MODAL_UNKNOWN_SUBCATEGORY: "Subkategori Tidak Dikenal",
+          MODAL_LABEL_VIDEO_TITLE: "Judul Video *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Masukkan judul video",
+          MODAL_LABEL_YOUTUBE_URL: "URL YouTube *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "mis., https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "ID YouTube valid: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "URL YouTube tidak valid atau tidak lengkap",
+          MODAL_LABEL_DESCRIPTION: "Deskripsi *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Jelaskan konten video...",
+          MODAL_LABEL_TAGS: "Tag (dipisahkan dengan koma) *",
+          MODAL_PLACEHOLDER_TAGS: "mis., DIY, Tenaga Surya, Air",
+          MODAL_BUTTON_CANCEL: "Batal",
+          MODAL_BUTTON_ADD_VIDEO: "Tambahkan Video",
+          MODAL_BUTTON_ADDING_VIDEO: "Menambahkan...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Tutup modal",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Harap isi judul, URL, deskripsi, dan tambahkan setidaknya satu tag.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Kesalahan: Konteks kategori tidak ada. Harap tutup dan buka kembali modal.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Harap masukkan URL YouTube yang valid.",
+          MODAL_TOAST_ADD_SUCCESS: "Video berhasil ditambahkan!",
+          MODAL_TOAST_ADD_FAILURE: "Gagal menambahkan video. Silakan coba lagi.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Video dengan ID YouTube ini mungkin sudah ada.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Kesalahan saat menghubungkan ke kategori/subkategori. Harap laporkan masalah ini.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Tambahkan tag: {tag}",
     },
     de: {
         PORTAL_TITLE: "Appro🎥video Videoportal-Manager🎥",
@@ -1996,7 +2357,6 @@ ru: {
         STATUS_SAVED: "Gespeichert!",
         STATUS_ERROR: "Fehler",
         CONFIRM_ACTION_TITLE: "Aktion bestätigen",
-    
         // Categories & Subcategories
         ADD_CATEGORY_BUTTON: "Kategorie hinzufügen",
         ADD_SUBCATEGORY_BUTTON: "Unterkategorie hinzufügen",
@@ -2011,35 +2371,29 @@ ru: {
         DELETE_SUBCATEGORY_CONFIRM: "Möchten Sie die Unterkategorie \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
         ITEM_NAME_EMPTY_ERROR: "Der Name von {itemType} darf nicht leer sein.",
         CATEGORY_DELETE_HAS_SUBS_ERROR: '"{name}" kann nicht gelöscht werden: Es enthält noch Unterkategorien. Bitte löschen Sie diese zuerst.',
-    
         // Tags
         ADD_TAG_BUTTON: "Tag hinzufügen",
         NO_TAGS_YET: "Noch keine Tags vorhanden.",
         ADD_FIRST_TAG_PROMPT: 'Klicken Sie auf "Tag hinzufügen", um den ersten zu erstellen.',
         TAG_FEATURE_NOT_IMPLEMENTED: "Die Tag-Verwaltung ist noch nicht implementiert.",
-    
         // Banners
         BANNER_MSG_1: "🎥 Wissen teilen, das Leben verändert — ein Video nach dem anderen",
         BANNER_MSG_2: "🌱 Resilienz aufbauen durch passende Technologien",
-    
         // Navigation Titles
         NAV_LINK_WEBSITE_TITLE: "Hauptseite besuchen",
         NAV_LINK_NEW_TITLE: "Neuen Inhalt hinzufügen",
         TOGGLE_DARK_MODE_TITLE: "Dunkel-/Hellmodus umschalten",
         PROFILE_MENU_TITLE: "Benutzermenü",
-    
         // Dropdown Items
         DROPDOWN_APPROVIDEO_BETA: "Approvideo Beta",
         DROPDOWN_PENDING: "Ausstehend",
         DROPDOWN_HOMEPAGE: "Hauptadmin",
         DROPDOWN_TAXONOMY: "Taxonomie-Editor",
         DROPDOWN_SIGN_OUT: "Abmelden",
-    
         // Item Types
         CATEGORY: "Kategorie",
         SUBCATEGORY: "Unterkategorie",
         TAG: "Tag",
-    
         // Errors & Status
         ERROR_PREFIX: "Fehler",
         CRITICAL_ERROR_MSG: "Kritischer Fehler: Die Anwendung konnte nicht gestartet werden. {error} Bitte überprüfen Sie die Konsole und laden Sie die Seite neu.",
@@ -2049,8 +2403,33 @@ ru: {
         DB_INIT_ERROR: "Initialisierung der lokalen Datenbank fehlgeschlagen: {error}",
         FAILED_OPERATION: "Fehler bei {operation}: {error}",
         UNEXPECTED_ERROR: "Ein unerwarteter Fehler ist aufgetreten: {error}",
-    
         SELECT_LANGUAGE: "Sprache auswählen",
+        MODAL_ADD_CONTENT_TITLE: "Neuen Videoinhalt hinzufügen",
+          MODAL_CONTEXT_LABEL: "Inhalt hinzufügen zu:",
+          MODAL_UNKNOWN_CATEGORY: "Unbekannte Kategorie",
+          MODAL_UNKNOWN_SUBCATEGORY: "Unbekannte Unterkategorie",
+          MODAL_LABEL_VIDEO_TITLE: "Videotitel *",
+          MODAL_PLACEHOLDER_VIDEO_TITLE: "Videotitel eingeben",
+          MODAL_LABEL_YOUTUBE_URL: "YouTube-URL *",
+          MODAL_PLACEHOLDER_YOUTUBE_URL: "z.B. https://www.youtube.com/watch?v=...",
+          MODAL_VALID_YOUTUBE_ID: "Gültige YouTube-ID: {id}",
+          MODAL_INVALID_YOUTUBE_URL: "Ungültige oder unvollständige YouTube-URL",
+          MODAL_LABEL_DESCRIPTION: "Beschreibung *",
+          MODAL_PLACEHOLDER_DESCRIPTION: "Beschreiben Sie den Videoinhalt...",
+          MODAL_LABEL_TAGS: "Tags (durch Komma getrennt) *",
+          MODAL_PLACEHOLDER_TAGS: "z.B. DIY, Solar, Wasser",
+          MODAL_BUTTON_CANCEL: "Abbrechen",
+          MODAL_BUTTON_ADD_VIDEO: "Video hinzufügen",
+          MODAL_BUTTON_ADDING_VIDEO: "Wird hinzugefügt...",
+          MODAL_CLOSE_BUTTON_ARIA_LABEL: "Modal schließen",
+          MODAL_TOAST_VALIDATION_MISSING_FIELDS: "Bitte füllen Sie Titel, URL, Beschreibung aus und fügen Sie mindestens ein Tag hinzu.",
+          MODAL_TOAST_VALIDATION_MISSING_CONTEXT: "Fehler: Kategoriekontext fehlt. Bitte schließen Sie das Modal und öffnen Sie es erneut.",
+          MODAL_TOAST_VALIDATION_INVALID_URL: "Bitte geben Sie eine gültige YouTube-URL ein.",
+          MODAL_TOAST_ADD_SUCCESS: "Video erfolgreich hinzugefügt!",
+          MODAL_TOAST_ADD_FAILURE: "Fehler beim Hinzufügen des Videos. Bitte versuchen Sie es erneut.",
+          MODAL_TOAST_ADD_FAILURE_DUPLICATE: "Ein Video mit dieser YouTube-ID existiert möglicherweise bereits.",
+          MODAL_TOAST_ADD_FAILURE_FOREIGN_KEY: "Fehler beim Verknüpfen mit Kategorie/Unterkategorie. Bitte melden Sie dieses Problem.",
+          MODAL_TAG_SUGGESTION_ARIA_LABEL: "Tag hinzufügen: {tag}",
     },   
     am: {
         PORTAL_TITLE: "Appro🎥video የቪዲዮ ፖርታል አስተዳዳሪ🎥",
@@ -4261,7 +4640,7 @@ cleanupAnyActiveEdits() {
                     <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 rounded" data-subcategory-id="${subcategory.id}">
                     <div class="flex-grow mr-2">
 
-                            <button class="add-content-btn p-1 text-green-500 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 rounded-full hover:bg-green-100 dark:hover:bg-gray-600 mr-2"
+                            <button class="nt-btn p-1 text-green-500 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 rounded-full hover:bg-green-100 dark:hover:bg-gray-600 mr-2"
                                     title="Add Supporting Content"
                                     data-subcategory-id="${subcategory.id}"
                                     data-category-id="${category.id}">
