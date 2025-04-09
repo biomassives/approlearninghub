@@ -574,13 +574,16 @@
             const agreeCheckbox = document.getElementById('agreeCheckbox');
             const termsErrorMessage = document.getElementById('termsErrorMessage');
             
-            // Configuration
+
             const config = {
-                siteKey: 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY', // Replace with your actual site key
-                apiEndpoint: '/api/signup', // Replace with your actual API endpoint
-                termsMarkdownUrl: '/terms-and-conditions.md', // URL to your terms markdown file
+                siteKey: '0x4AAAAAABHfsloPaPOmywDZ', // Your Cloudflare Turnstile site key
+                supabaseUrl: 'https://dsqhmcjxgcwxcuincibs.supabase.co', // Your Supabase project URL
+                supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzcWhtY2p4Z2N3eGN1aW5jaWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyNzg0MjksImV4cCI6MjA1ODg1NDQyOX0.lTMJOniqzbgkpADjNUnPaDfdp7Ps_34GX9_2f9eBvXE', // Your Supabase anon/public key
+                termsMarkdownUrl: '/terms-and-conditions.md',
+                dashboardUrl: '/dashboard.html', // Where to redirect after successful signup
                 debugMode: true // Set to false in production
             };
+
             
             // Global state
             window.appState = {
