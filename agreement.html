@@ -576,8 +576,8 @@
             
 
             const config = {
-                siteKey: '1x00000000000000000000AA',
-                // siteKey: '0x4AAAAAABHfsloPaPOmywDZ', // Your Cloudflare Turnstile site key
+                // sitekey: '1x00000000000000000000AA',
+                sitekey: '0x4AAAAAABHfsloPaPOmywDZ', // Your Cloudflare Turnstile site key
                 supabaseUrl: 'https://dsqhmcjxgcwxcuincibs.supabase.co', // Your Supabase project URL
                 supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzcWhtY2p4Z2N3eGN1aW5jaWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyNzg0MjksImV4cCI6MjA1ODg1NDQyOX0.lTMJOniqzbgkpADjNUnPaDfdp7Ps_34GX9_2f9eBvXE', // Your Supabase anon/public key
                 termsMarkdownUrl: '/terms-and-conditions.md',
@@ -692,7 +692,7 @@ By accessing or using the Service, you represent that you have read, understood,
                 try {
                     if (window.turnstile) {
                         window.appState.turnstileWidgetId = turnstile.render('#cloudflare-turnstile', {
-                            sitekey: config.siteKey,
+                            sitekey: config.siteKey, // This is the problem - config.siteKey is a string, as required
                             callback: function(token) {
                                 logDebug('Turnstile callback received token:', token);
                                 window.appState.turnstileToken = token;
