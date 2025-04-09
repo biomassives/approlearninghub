@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approvideo Learning Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+    header {
+      background-color: #4a6cf7;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left svg {
+      width: 32px;
+      height: 32px;
+      margin-right: 0.5rem;
+    }
+    .menu {
+      position: relative;
+    }
+    .menu-button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      background: white;
+      color: #1f2937;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .menu-dropdown a:hover {
+      background-color: #f3f4f6;
+    }
+    .dashboard-container {
+      padding: 2rem;
+    }
+    .admin-buttons button {
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s;
+    }
+    .admin-buttons button:hover {
+      background-color: #3b5bd9;
+    }
+    #gaant-chart {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+    .modal-content button {
+      background-color: #4a6cf7;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10"/></svg>
+      <h1 id="dashboard-title">Approvideo Learning Hub</h1>
+    </div>
+    <div class="menu">
+      <button class="menu-button">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <a href="profile.html">Profile & Settings</a>
+        <a href="library.html">Review Library</a>
+        <a href="clinics.html">Clinics</a>
+        <a href="modules.html">Modules</a>
+        <a href="calendar.html">Calendar</a>
+        <a href="logout.html">Log Out</a>
+        <select id="language-select">
+          <option value="en">English</option>
+          <option value="sw">Kiswahili</option>
+        </select>
+      </div>
+    </div>
+  </header>
+  <div class="dashboard-container">
+    <div class="admin-buttons">
+      <button id="approve-modules-btn">Approve Modules</button>
+      <button id="make-announcement-btn">Make Announcement</button>
+      <button id="form-clinic-btn">Form New Clinic</button>
+    </div>
+    <div id="gaant-chart">[Gantt Chart Will Be Embedded Here]</div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal" id="announcement-modal">
+    <div class="modal-content">
+      <h2>Make Announcement</h2>
+      <input type="text" id="announcement-title" placeholder="Title" />
+      <textarea id="announcement-body" placeholder="Body"></textarea>
+      <button id="submit-announcement">Submit</button>
+    </div>
+  </div>
+
+  <div class="modal" id="clinic-modal">
+    <div class="modal-content">
+      <h2>Form New Clinic</h2>
+      <input type="text" id="clinic-name" placeholder="Clinic Name" />
+      <input type="text" id="clinic-location" placeholder="Location" />
+      <button id="submit-clinic">Create Clinic</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from './supabase-config.js';
+
+    const translations = {
+      en: {
+        dashboardTitle: 'Approvideo Learning Hub',
+        approveModules: 'Approve Modules',
+        makeAnnouncement: 'Make Announcement',
+        formClinic: 'Form New Clinic'
+      },
+      sw: {
+        dashboardTitle: 'Kitovu cha Kujifunza cha Approvideo',
+        approveModules: 'Idhinisha Moduli',
+        makeAnnouncement: 'Toa Taarifa',
+        formClinic: 'Unda Kliniki Mpya'
+      }
+    };
+
+    const langSelect = document.getElementById('language-select');
+    const lang = localStorage.getItem('preferredLanguage') || (navigator.language.startsWith('sw') ? 'sw' : 'en');
+    langSelect.value = lang;
+
+    function setLanguage(language) {
+      document.getElementById('dashboard-title').innerText = translations[language].dashboardTitle;
+      document.getElementById('approve-modules-btn').innerText = translations[language].approveModules;
+      document.getElementById('make-announcement-btn').innerText = translations[language].makeAnnouncement;
+      document.getElementById('form-clinic-btn').innerText = translations[language].formClinic;
+      localStorage.setItem('preferredLanguage', language);
+    }
+
+    langSelect.addEventListener('change', () => setLanguage(langSelect.value));
+    setLanguage(lang);
+
+    // Button click handlers
+    document.querySelector('.menu-button').addEventListener('click', () => {
+      const dropdown = document.getElementById('menu-dropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.getElementById('make-announcement-btn').addEventListener('click', () => {
+      document.getElementById('announcement-modal').style.display = 'flex';
+    });
+
+    document.getElementById('form-clinic-btn').addEventListener('click', () => {
+      document.getElementById('clinic-modal').style.display = 'flex';
+    });
+
+    document.getElementById('submit-announcement').addEventListener('click', async () => {
+      const title = document.getElementById('announcement-title').value;
+      const body = document.getElementById('announcement-body').value;
+      const { error } = await supabase.from('announcements').insert([{ title, body }]);
+      if (!error) alert('Announcement posted.');
+      document.getElementById('announcement-modal').style.display = 'none';
+    });
+
+    document.getElementById('submit-clinic').addEventListener('click', async () => {
+      const name = document.getElementById('clinic-name').value;
+      const location = document.getElementById('clinic-location').value;
+      const { error } = await supabase.from('clinics').insert([{ name, location }]);
+      if (!error) alert('Clinic created.');
+      document.getElementById('clinic-modal').style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
