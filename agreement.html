@@ -563,9 +563,12 @@
     <!-- Cloudflare Turnstile API -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     
-    <script>
+    <script type="module">
 
         import { signUp } from './supabase-auth.js';
+    </script>
+    <script>
+    
         
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
