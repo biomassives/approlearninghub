@@ -74,7 +74,8 @@ export async function signUp(email, password) {
         email, 
         password,
         options: {
-          emailRedirectTo: AUTH_REDIRECTS.signUp
+          emailRedirectTo: AUTH_REDIRECTS.signUp,
+          data: metadata, 
         }
       });
       
