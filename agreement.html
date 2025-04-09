@@ -692,7 +692,7 @@ By accessing or using the Service, you represent that you have read, understood,
                 try {
                     if (window.turnstile) {
                         window.appState.turnstileWidgetId = turnstile.render('#cloudflare-turnstile', {
-                            sitekey: config.sitekey, // This is the problem - config.siteKey is a string, as required
+                            sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
                             callback: function(token) {
                                 logDebug('Turnstile callback received token:', token);
                                 window.appState.turnstileToken = token;
