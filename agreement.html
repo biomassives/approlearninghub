@@ -564,6 +564,9 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     
     <script>
+
+        import { signUp } from './supabase-auth.js';
+        
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const openModalBtn = document.getElementById('openTermsModal');
@@ -838,94 +841,71 @@ By accessing or using the Service, you represent that you have read, understood,
                 });
             });
             
-            // Handle form submission
-            submitSignupButton.addEventListener('click', function() {
-                // Show loading state
-                submitSignupButton.disabled = true;
-                submitSignupButton.innerHTML = '<span class="spinner"></span> Creating Account...';
-                
-                const form = document.getElementById('signupForm');
-                if (!form.checkValidity()) {
-                    // Trigger browser's built-in validation UI
-                    form.reportValidity();
-                    submitSignupButton.disabled = false;
-                    submitSignupButton.innerHTML = 'Create Account';
-                    return;
-                }
-                
-                // Get form values
-                const fullName = document.getElementById('fullName').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const userParticipationType = document.getElementById('participationType').value;
-                
-                // Get selected expertise areas if applicable
-                const selectedExpertiseAreas = [];
-                if (userParticipationType === 'expert') {
-                    expertiseCheckboxes.forEach(checkbox => {
-                        if (checkbox.checked) {
-                            selectedExpertiseAreas.push(checkbox.value);
-                        }
-                    });
-                }
-                
-                // Combine with terms agreement data
-                const userData = {
-                    ...window.userAgreementData,
-                    fullName,
-                    email,
-                    password,
-                    participationType: userParticipationType,
-                    expertise: selectedExpertiseAreas
-                };
-                
-                logDebug('Complete signup data:', userData);
-                
-                // Send data to server with proper error handling
-                if (config.debugMode) {
-                    // In debug mode, simulate a successful signup
-                    setTimeout(() => {
-                        submitSignupButton.disabled = false;
-                        submitSignupButton.innerHTML = 'Create Account';
-                        showMessage(signupMessage, 'Account created successfully! (Debug Mode)', false);
-                        
-                        // Optional: redirect to dashboard after success
-                        setTimeout(() => {
-                            signupModal.style.display = 'none';
-                            // window.location.href = '/dashboard';
-                        }, 2000);
-                    }, 1500);
-                } else {
-                    // Production mode - actual API call
-                    fetch(config.apiEndpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(userData)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Server returned status ' + response.status);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        submitSignupButton.disabled = false;
-                        submitSignupButton.innerHTML = 'Create Account';
-                        showMessage(signupMessage, 'Account created successfully!', false);
-                        
-                        // Redirect to dashboard after success
-                        setTimeout(() => {
-                            window.location.href = '/dashboard';
-                        }, 1500);
-                    })
-                    .catch(error => {
-                        logDebug('Error submitting form:', error);
-                        submitSignupButton.disabled = false;
-                        submitSignupButton.innerHTML = 'Create Account';
-                        showMessage(signupMessage, 'An error occurred during signup. Please try again.', true);
-                    });
-                }
-            });
+            // Handle form submissionsubmitSignupButton.addEventListener('click', async function () {
+    submitSignupButton.disabled = true;
+    submitSignupButton.innerHTML = '<span class="spinner"></span> Creating Account...';
+
+    const form = document.getElementById('signupForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        submitSignupButton.disabled = false;
+        submitSignupButton.innerHTML = 'Create Account';
+        return;
+    }
+
+    // Gather form values
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const userParticipationType = document.getElementById('participationType').value;
+
+    const selectedExpertiseAreas = [];
+    if (userParticipationType === 'expert') {
+        expertiseCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedExpertiseAreas.push(checkbox.value);
+            }
+        });
+    }
+
+    const userData = {
+        ...window.userAgreementData,
+        fullName,
+        email,
+        password,
+        participationType: userParticipationType,
+        expertise: selectedExpertiseAreas
+    };
+
+    logDebug('Complete signup data:', userData);
+
+    try {
+        // Use Supabase signup
+        const result = await signUp(email, password, {
+            fullName: userData.fullName,
+            participationType: userData.participationType,
+            expertise: userData.expertise,
+            cfTurnstileToken: userData.cfTurnstileToken
+        });
+
+        if (result.success) {
+            showMessage(signupMessage, 'Account created successfully!', false);
+
+            // Redirect to dashboard after short delay
+            setTimeout(() => {
+                window.location.href = config.dashboardUrl || '/dashboard.html';
+            }, 1500);
+        } else {
+            showMessage(signupMessage, result.error || 'Signup failed. Please try again.', true);
+        }
+    } catch (error) {
+        logDebug('Signup error:', error);
+        showMessage(signupMessage, 'An unexpected error occurred. Please try again.', true);
+    } finally {
+        submitSignupButton.disabled = false;
+        submitSignupButton.innerHTML = 'Create Account';
+    }
+});
             
             // Close signup modal if clicked outside
             window.addEventListener('click', function(event) {
