@@ -6,9 +6,8 @@
   <title>Log In</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <div class="auth-container">
@@ -55,6 +54,15 @@
 
     // Store Turnstile token
     let turnstileToken = null;
+
+    window.onTurnstileLoad = function () {
+      window.turnstile.render('#cloudflare-turnstile', {
+        sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
+        callback: (token) => (turnstileToken = token),
+        'expired-callback': () => (turnstileToken = null),
+        'error-callback': () => (turnstileToken = null)
+      });
+    };
 
     window.onload = () => {
       if (window.turnstile) {
