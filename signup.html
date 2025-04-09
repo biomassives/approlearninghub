@@ -1,121 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h1>Create Account</h1>
-            
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <small>Password must be at least 8 characters</small>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" required>
-                </div>
-                
-                <button type="submit" class="btn-primary">Sign Up</button>
-                
-                <div id="error-container" class="error-message hidden"></div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Already have an account? <a href="login.html">Log In</a></p>
-            </div>
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1>Create Account</h1>
+
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
         </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+          <small>Password must be at least 8 characters</small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="role">Select Your Role</label>
+          <select id="role" name="role" required>
+            <option value="">-- Select a Role --</option>
+            <option value="expert">Expert / Workshop Leader</option>
+            <option value="learner">Learner / Volunteer</option>
+            <option value="researcher">Research Contributor</option>
+            <option value="resources">Resource Finder</option>
+            <option value="organizer">Organizer / Coordinator</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary">Sign Up</button>
+
+        <div id="error-container" class="error-message hidden"></div>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Log In</a></p>
+      </div>
     </div>
-    
-    <script type="module">
-        // Import auth functions using the new abstraction layer
-        import { signUp } from './supabase-auth.js';
-        import { AUTH_REDIRECTS } from './supabase-config.js';
-        
-        // Get form elements
-        const form = document.getElementById('signup-form');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm-password');
-        const errorContainer = document.getElementById('error-container');
-        
-        // Handle form submission
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Clear previous errors
-            errorContainer.textContent = '';
-            errorContainer.classList.add('hidden');
-            
-            // Validate form
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            const confirmPassword = confirmPasswordInput.value;
-            
-            // Check password match
-            if (password !== confirmPassword) {
-                showError("Passwords don't match");
-                return;
-            }
-            
-            // Check password length
-            if (password.length < 8) {
-                showError("Password must be at least 8 characters");
-                return;
-            }
-            
-            // Disable form during signup
-            setFormDisabled(true);
-            
-            try {
-                // Submit signup request
-                const result = await signUp(email, password);
-                
-                if (result.success) {
-                    // Show success and redirect to verification page
-                    window.location.href = 'signup-success.html';
-                } else {
-                    showError(result.error || 'An error occurred during signup');
-                }
-            } catch (error) {
-                console.error('Signup error:', error);
-                showError('An unexpected error occurred');
-            } finally {
-                // Re-enable form
-                setFormDisabled(false);
-            }
-        });
-        
-        // Helper to show error message
-        function showError(message) {
-            errorContainer.textContent = message;
-            errorContainer.classList.remove('hidden');
+  </div>
+
+  <script type="module">
+    import { signUp } from './supabase-auth.js';
+    import { AUTH_REDIRECTS } from './supabase-config.js';
+
+    const form = document.getElementById('signup-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const roleInput = document.getElementById('role');
+    const errorContainer = document.getElementById('error-container');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      errorContainer.textContent = '';
+      errorContainer.classList.add('hidden');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const role = roleInput.value;
+
+      if (password !== confirmPassword) {
+        showError("Passwords don't match");
+        return;
+      }
+
+      if (password.length < 8) {
+        showError('Password must be at least 8 characters');
+        return;
+      }
+
+      if (!role) {
+        showError('Please select a role to continue');
+        return;
+      }
+
+      setFormDisabled(true);
+
+      try {
+        const result = await signUp(email, password, { role });
+
+        if (result.success) {
+          window.location.href = AUTH_REDIRECTS.signUp || 'signup-success.html';
+        } else {
+          showError(result.error || 'An error occurred during signup');
         }
-        
-        // Helper to disable/enable form
-        function setFormDisabled(disabled) {
-            const elements = form.elements;
-            for (let i = 0; i < elements.length; i++) {
-                elements[i].disabled = disabled;
-            }
-            
-            // Change button text
-            const submitButton = form.querySelector('button[type="submit"]');
-            submitButton.textContent = disabled ? 'Processing...' : 'Sign Up';
-        }
-    </script>
+      } catch (error) {
+        console.error('Signup error:', error);
+        showError('An unexpected error occurred');
+      } finally {
+        setFormDisabled(false);
+      }
+    });
+
+    function showError(message) {
+      errorContainer.textContent = message;
+      errorContainer.classList.remove('hidden');
+    }
+
+    function setFormDisabled(disabled) {
+      const elements = form.elements;
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].disabled = disabled;
+      }
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.textContent = disabled ? 'Processing...' : 'Sign Up';
+    }
+  </script>
 </body>
 </html>
