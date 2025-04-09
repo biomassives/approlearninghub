@@ -6,8 +6,25 @@
   <title>Log In</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
 
+  <!-- Declare callback BEFORE Turnstile script -->
+  <script>
+    let turnstileToken = null;
+
+    window.onTurnstileLoad = function () {
+      if (window.turnstile) {
+        window.turnstile.render('#cloudflare-turnstile', {
+          sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
+          callback: (token) => (turnstileToken = token),
+          'expired-callback': () => (turnstileToken = null),
+          'error-callback': () => (turnstileToken = null)
+        });
+      }
+    };
+  </script>
+
+  <!-- Cloudflare Turnstile script -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
 </head>
 <body>
   <div class="auth-container">
@@ -43,6 +60,7 @@
     </div>
   </div>
 
+  <!-- Login script (keep this as module) -->
   <script type="module">
     import { signIn, getCurrentUser } from './supabase-auth.js';
     import { AUTH_REDIRECTS } from './supabase-config.js';
@@ -52,35 +70,12 @@
     const passwordInput = document.getElementById('password');
     const errorContainer = document.getElementById('error-container');
 
-    // Store Turnstile token
-    let turnstileToken = null;
-
-    window.onTurnstileLoad = function () {
-      window.turnstile.render('#cloudflare-turnstile', {
-        sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
-        callback: (token) => (turnstileToken = token),
-        'expired-callback': () => (turnstileToken = null),
-        'error-callback': () => (turnstileToken = null)
-      });
-    };
-
-    window.onload = () => {
-      if (window.turnstile) {
-        window.turnstile.render('#cloudflare-turnstile', {
-          sitekey: '0x4AAAAAABHfsloPaPOmywDZ', // Your sitekey
-          callback: (token) => (turnstileToken = token),
-          'expired-callback': () => (turnstileToken = null),
-          'error-callback': () => (turnstileToken = null)
-        });
-      }
-    };
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errorContainer.textContent = '';
       errorContainer.classList.add('hidden');
 
-      if (!turnstileToken) {
+      if (!window.turnstileToken) {
         showError("Please complete the verification.");
         return;
       }
