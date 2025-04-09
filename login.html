@@ -9,8 +9,6 @@
 
   <!-- Cloudflare Turnstile -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-  <!-- CSP Headers should allow: script-src 'self' https://challenges.cloudflare.com -->
 </head>
 <body>
   <div class="auth-container">
@@ -28,21 +26,26 @@
           <input type="password" id="password" name="password" required />
         </div>
 
-        <!-- Cloudflare Turnstile -->
-        <div id="cloudflare-turnstile" class="cf-turnstile" style="margin: 1rem 0;"></div>
+        <!-- Cloudflare Turnstile widget -->
+        <div id="cloudflare-turnstile" class="cf-turnstile" style="margin-bottom: 1rem;"></div>
 
         <div class="form-options">
           <a href="reset-password-request.html" class="text-sm">Forgot Password?</a>
         </div>
 
         <button type="submit" class="btn-primary">Log In</button>
+
         <div id="error-container" class="error-message hidden"></div>
       </form>
+
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+      </div>
     </div>
   </div>
 
   <script type="module">
-    import { signIn } from './supabase-auth.js';
+    import { signIn, getCurrentUser } from './supabase-auth.js';
     import { AUTH_REDIRECTS } from './supabase-config.js';
 
     const form = document.getElementById('login-form');
@@ -50,58 +53,49 @@
     const passwordInput = document.getElementById('password');
     const errorContainer = document.getElementById('error-container');
 
+    // Store Turnstile token
     let turnstileToken = null;
 
-    function initTurnstile() {
+    window.onload = () => {
       if (window.turnstile) {
-        turnstile.render('#cloudflare-turnstile', {
-          sitekey: '0x4AAAAAABHfsloPaPOmywDZ', // <-- Your actual sitekey
-          callback: token => {
-            turnstileToken = token;
-          },
-          'error-callback': () => {
-            turnstileToken = null;
-            showError('Verification failed. Please try again.');
-          },
-          'expired-callback': () => {
-            turnstileToken = null;
-          }
+        window.turnstile.render('#cloudflare-turnstile', {
+          sitekey: '0x4AAAAAABHfsloPaPOmywDZ', // Your sitekey
+          callback: (token) => (turnstileToken = token),
+          'expired-callback': () => (turnstileToken = null),
+          'error-callback': () => (turnstileToken = null)
         });
-      } else {
-        setTimeout(initTurnstile, 1000);
       }
-    }
+    };
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initTurnstile();
-    });
-
-    form.addEventListener('submit', async e => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      clearErrors();
+      errorContainer.textContent = '';
+      errorContainer.classList.add('hidden');
 
       if (!turnstileToken) {
-        showError('Please complete the verification challenge.');
+        showError("Please complete the verification.");
         return;
       }
 
       const email = emailInput.value.trim();
       const password = passwordInput.value;
+
       setFormDisabled(true);
 
       try {
         const result = await signIn(email, password);
+
         if (result.success) {
-          // Redirect based on role (optional)
-          const role = result.data?.user?.role || 'user';
-          const redirectURL = AUTH_REDIRECTS[role] || AUTH_REDIRECTS.login;
-          window.location.href = redirectURL;
+          const user = await getCurrentUser();
+          const role = user?.role || 'user';
+          const redirectTo = AUTH_REDIRECTS[role] || AUTH_REDIRECTS.user;
+          window.location.href = redirectTo;
         } else {
-          showError(result.error || 'Invalid credentials');
+          showError(result.error || 'Invalid email or password');
         }
       } catch (error) {
         console.error('Login error:', error);
-        showError('Unexpected error. Try again later.');
+        showError('An unexpected error occurred');
       } finally {
         setFormDisabled(false);
       }
@@ -112,18 +106,14 @@
       errorContainer.classList.remove('hidden');
     }
 
-    function clearErrors() {
-      errorContainer.textContent = '';
-      errorContainer.classList.add('hidden');
-    }
-
     function setFormDisabled(disabled) {
       const elements = form.elements;
       for (let i = 0; i < elements.length; i++) {
         elements[i].disabled = disabled;
       }
-      const btn = form.querySelector('button[type="submit"]');
-      btn.textContent = disabled ? 'Logging in...' : 'Log In';
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      submitButton.textContent = disabled ? 'Logging in...' : 'Log In';
     }
   </script>
 </body>
