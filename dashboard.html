@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appro Learning Hub Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+
+<body>
+  <header>
+    <h1>Appro Learning Hub</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
+
+  <div class="container">
+    <h2>Dashboard</h2>
+    <p>This space is dedicated to assisting users in coordinating technology clinics and preparing reusable support information.</p>
+
+    <div class="content-grid">
+      <div class="card">
+        <h3>User Content</h3>
+        <p>This content is visible to all authenticated users.</p>
+        <p>Email: <span id="user-email"></span></p>
+        <p>Role: <span id="user-role"></span></p>
+      </div>
+
+      <div class="card" id="editor-content">
+        <h3>Editor Content</h3>
+        <p class="content">This content is only visible to users with editor or admin roles.</p>
+        <p class="permission-denied hidden">You need editor permissions to view this content.</p>
+      </div>
+
+      <div class="card" id="admin-content">
+        <h3>Admin Content</h3>
+        <p class="content">This content is only visible to users with admin role.</p>
+        <p class="permission-denied hidden">You need admin permissions to view this content.</p>
+      </div>
+    </div>
+
+    <div id="settings-message-container" class="message"></div>
+  </div>
+
+  <script type="module">
+    import { requireAuth, getCurrentUser, checkAccess, signOut } from './supabase-auth.js';
+    import { showMessage } from './shared-utils.js';
+
+    const userEmailElement = document.getElementById('user-email');
+    const userRoleElement = document.getElementById('user-role');
+    const editorContent = document.getElementById('editor-content');
+    const adminContent = document.getElementById('admin-content');
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      const result = await signOut();
+      if (result.success) {
+        window.location.href = '/login.html';
+      } else {
+        showMessage('Logout failed', 'error');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+      const user = await getCurrentUser();
+      userEmailElement.textContent = user.email;
+      userRoleElement.textContent = user.role || 'user';
+
+      const editorAccess = await checkAccess('editor')();
+      if (!editorAccess.allowed) {
+        editorContent.querySelector('.content').classList.add('hidden');
+        editorContent.querySelector('.permission-denied').classList.remove('hidden');
+      }
+
+      const adminAccess = await checkAccess('admin')();
+      if (!adminAccess.allowed) {
+        adminContent.querySelector('.content').classList.add('hidden');
+        adminContent.querySelector('.permission-denied').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+
+</html>
