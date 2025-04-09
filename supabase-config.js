@@ -46,7 +46,14 @@ export const AUTH_REDIRECTS = {
   passwordReset: `${SUPABASE_CONFIG.redirectBaseUrl}/reset-password.html`,
   login: `${SUPABASE_CONFIG.redirectBaseUrl}/dashboard.html`,
   logout: `${SUPABASE_CONFIG.redirectBaseUrl}/login.html`,
+  user: `${SUPABASE_CONFIG.redirectBaseUrl}/dashboard.html`,
+  admin: `${SUPABASE_CONFIG.redirectBaseUrl}/admin-panel.html`,
+  expert: `${SUPABASE_CONFIG.redirectBaseUrl}/dashboard.html`,
 };
+
+
+  login: '/dashboard.html',
+
 
 // Functions for data table access
 export const DataAccess = {
