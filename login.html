@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Log In</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
-  <!-- Turnstile callback + token setup -->
-  <script src="/login.js" defer></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
+  <script type="module" src="/login.js" defer></script>
 </head>
 <body>
   <div class="auth-container">
@@ -18,15 +14,11 @@
       <form id="login-form">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <div id="cloudflare-turnstile" class="cf-turnstile" style="margin-bottom: 1rem;"></div>
-        <div class="form-options">
-          <a href="reset-password-request.html" class="text-sm">Forgot Password?</a>
+          <input type="password" id="password" required />
         </div>
         <button type="submit" class="btn-primary">Log In</button>
         <div id="error-container" class="error-message hidden"></div>
