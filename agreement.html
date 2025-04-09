@@ -3,7 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approvideo Terms and Conditions</title>
+    <title>Approvideo - Educational Video Platform for Sustainable Development</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Approvideo - Educational Video Platform for Sustainable Development">
+    <meta name="description" content="Discover and engage with educational videos on water and sanitation, sustainable development, and community resilience.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://approvideo.org/">
+    <meta property="og:title" content="Approvideo - Educational Video Platform for Sustainable Development">
+    <meta property="og:description" content="Discover and engage with educational videos on water and sanitation, sustainable development, and community resilience.">
+    <meta property="og:image" content="https://approvideo.org/images/approvideo-social-card.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://approvideo.org/">
+    <meta property="twitter:title" content="Approvideo - Educational Video Platform for Sustainable Development">
+    <meta property="twitter:description" content="Discover and engage with educational videos on water and sanitation, sustainable development, and community resilience.">
+    <meta property="twitter:image" content="https://approvideo.org/images/approvideo-social-card.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://approvideo.org/favicon.png">
+    
     <style>
         /* Base styles */
         :root {
@@ -13,6 +35,8 @@
             --text-color: #1f2937;
             --border-color: #e5e7eb;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --error-color: #ef4444;
+            --success-color: #10b981;
         }
         
         body {
@@ -251,6 +275,54 @@
         .cf-turnstile {
             margin: 1rem 0;
         }
+        
+        /* Error and success messages */
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+        
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(74, 108, 247, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .expertise-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+        }
     </style>
 </head>
 <body>
@@ -275,6 +347,9 @@
                     <label for="agreeCheckbox">I have read and agree to the Terms and Conditions</label>
                 </div>
                 
+                <!-- Error message container -->
+                <div id="termsErrorMessage" class="message error-message" style="display: none;"></div>
+                
                 <!-- Cloudflare Turnstile will be rendered here -->
                 <div id="cloudflare-turnstile" class="cf-turnstile"></div>
             </div>
@@ -293,6 +368,9 @@
                 <button class="modal-close" id="closeSignupModal">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- Error/success message container -->
+                <div id="signupMessage" class="message" style="display: none;"></div>
+                
                 <form id="signupForm">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
@@ -494,9 +572,25 @@
             const continueButton = document.getElementById('continueButton');
             const termsContent = document.getElementById('termsContent');
             const agreeCheckbox = document.getElementById('agreeCheckbox');
+            const termsErrorMessage = document.getElementById('termsErrorMessage');
             
-            // Terms and Conditions markdown content
-            const termsMarkdown = `# APPROVIDEO TERMS AND CONDITIONS
+            // Configuration
+            const config = {
+                siteKey: 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY', // Replace with your actual site key
+                apiEndpoint: '/api/signup', // Replace with your actual API endpoint
+                termsMarkdownUrl: '/terms-and-conditions.md', // URL to your terms markdown file
+                debugMode: true // Set to false in production
+            };
+            
+            // Global state
+            window.appState = {
+                turnstileToken: null,
+                turnstileWidgetId: null,
+                termsMarkdown: null
+            };
+            
+            // Terms and Conditions markdown content (fallback if fetch fails)
+            const fallbackTermsMarkdown = `# APPROVIDEO TERMS AND CONDITIONS
 
 **Last Updated: April 8, 2025**
 
@@ -508,48 +602,127 @@ Approvideo provides a platform for educators and learners to discover and engage
 
 ## 2. ACCEPTANCE OF TERMS
 
-By accessing or using the Service, you represent that you have read, understood, and agree to be bound by these Terms. If you are using the Service on behalf of an organization, you represent and warrant that you have the authority to bind that organization to these Terms.
-
-## 3. CHANGES TO TERMS
-
-We reserve the right to modify these Terms at any time. Any changes will be effective immediately upon posting the updated Terms on the Service. Your continued use of the Service after any such changes constitutes your acceptance of the new Terms.
-
-## 4. ELIGIBILITY
-
-You must be at least 13 years of age to use the Service. If you are under 18 years of age, you represent that you have the permission of a parent or guardian to use the Service.
-
-## 5. ACCOUNT REGISTRATION
-
-To access certain features of the Service, you may need to register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.
-
-You are responsible for safeguarding your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.`;
+By accessing or using the Service, you represent that you have read, understood, and agree to be bound by these Terms. If you are using the Service on behalf of an organization, you represent and warrant that you have the authority to bind that organization to these Terms.`;
+            
+            // Helper functions
+            function showError(element, message) {
+                element.textContent = message;
+                element.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+            
+            function showMessage(element, message, isError = false) {
+                element.textContent = message;
+                element.className = isError ? 'message error-message' : 'message success-message';
+                element.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+            
+            function logDebug(...args) {
+                if (config.debugMode) {
+                    console.log(...args);
+                }
+            }
             
             // Convert markdown to HTML and display in the modal
             function loadTermsContent() {
+                // Check if we already have the terms content
+                if (window.appState.termsMarkdown) {
+                    renderTermsMarkdown(window.appState.termsMarkdown);
+                    return;
+                }
+                
+                // Try to fetch the terms content from the server
+                fetch(config.termsMarkdownUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load terms and conditions');
+                        }
+                        return response.text();
+                    })
+                    .then(markdown => {
+                        window.appState.termsMarkdown = markdown;
+                        renderTermsMarkdown(markdown);
+                    })
+                    .catch(error => {
+                        logDebug('Error loading terms from server:', error);
+                        renderTermsMarkdown(fallbackTermsMarkdown);
+                    });
+            }
+            
+            function renderTermsMarkdown(markdown) {
                 if (window.marked) {
-                    termsContent.innerHTML = marked.parse(termsMarkdown);
+                    termsContent.innerHTML = marked.parse(markdown);
                 } else {
                     termsContent.innerHTML = '<p>Failed to load markdown parser. Please refresh the page or contact support.</p>';
+                    showError(termsErrorMessage, 'Failed to load terms formatting. Please try again later.');
                 }
             }
             
             // Initialize Cloudflare Turnstile
             function initTurnstile() {
-                if (window.turnstile) {
-                    turnstile.render('#cloudflare-turnstile', {
-                        sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
-                        callback: function(token) {
-                            // Enable the continue button if the checkbox is also checked
-                            updateContinueButton(token);
-                        },
-                    });
+                // Clear previous turnstile token and any existing widgets
+                window.appState.turnstileToken = null;
+                
+                if (window.appState.turnstileWidgetId) {
+                    try {
+                        turnstile.reset(window.appState.turnstileWidgetId);
+                    } catch (e) {
+                        logDebug('Error resetting turnstile:', e);
+                    }
+                }
+                
+                // Clear the container
+                const turnstileContainer = document.getElementById('cloudflare-turnstile');
+                turnstileContainer.innerHTML = '';
+                
+                // Initialize turnstile with proper error handling
+                try {
+                    if (window.turnstile) {
+                        window.appState.turnstileWidgetId = turnstile.render('#cloudflare-turnstile', {
+                            sitekey: config.siteKey,
+                            callback: function(token) {
+                                logDebug('Turnstile callback received token:', token);
+                                window.appState.turnstileToken = token;
+                                updateContinueButton();
+                            },
+                            'error-callback': function() {
+                                logDebug('Turnstile encountered an error');
+                                window.appState.turnstileToken = null;
+                                updateContinueButton();
+                                showError(termsErrorMessage, 'Verification challenge failed. Please try again.');
+                            },
+                            'expired-callback': function() {
+                                logDebug('Turnstile token expired');
+                                window.appState.turnstileToken = null;
+                                updateContinueButton();
+                            }
+                        });
+                        logDebug('Turnstile initialized with widget ID:', window.appState.turnstileWidgetId);
+                    } else {
+                        logDebug('Turnstile not loaded yet, retrying in 1 second');
+                        setTimeout(initTurnstile, 1000);
+                    }
+                } catch (error) {
+                    logDebug('Error initializing Turnstile:', error);
+                    showError(termsErrorMessage, 'Failed to initialize verification. Please refresh the page.');
                 }
             }
             
             // Check if we can enable the continue button
-            function updateContinueButton(turnstileToken) {
-                const isTurnstileVerified = !!turnstileToken;
+            function updateContinueButton() {
+                const isTurnstileVerified = !!window.appState.turnstileToken;
                 const isAgreed = agreeCheckbox.checked;
+                
+                logDebug('Updating continue button state:', { isTurnstileVerified, isAgreed });
                 
                 if (isAgreed && isTurnstileVerified) {
                     continueButton.classList.remove('btn-disabled');
@@ -576,16 +749,17 @@ You are responsible for safeguarding your account credentials and for all activi
             });
             
             agreeCheckbox.addEventListener('change', function() {
-                // Get the current Turnstile token (if any)
-                const turnstileResponse = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
-                const turnstileToken = turnstileResponse ? true : false;
-                
-                updateContinueButton(turnstileToken);
+                updateContinueButton();
             });
             
             continueButton.addEventListener('click', function() {
-                // Get the Turnstile token
-                const turnstileToken = document.querySelector('#cloudflare-turnstile textarea[name="cf-turnstile-response"]').value;
+                // Get the Turnstile token with robust error handling
+                const turnstileToken = window.appState.turnstileToken;
+                
+                if (!turnstileToken) {
+                    showError(termsErrorMessage, 'Verification token is missing. Please complete the verification challenge.');
+                    return;
+                }
                 
                 // Store terms agreement data to combine with signup form later
                 window.userAgreementData = {
@@ -594,7 +768,7 @@ You are responsible for safeguarding your account credentials and for all activi
                     timestamp: new Date().toISOString()
                 };
                 
-                console.log('User agreement data:', window.userAgreementData);
+                logDebug('User agreement data:', window.userAgreementData);
                 
                 // Hide terms modal and show signup form
                 modal.style.display = 'none';
@@ -617,6 +791,7 @@ You are responsible for safeguarding your account credentials and for all activi
             const expertiseSection = document.getElementById('expertiseSection');
             const expertiseCheckboxes = document.querySelectorAll('.expertise-checkbox');
             const expertiseWarning = document.getElementById('expertiseWarning');
+            const signupMessage = document.getElementById('signupMessage');
             
             // Close signup modal
             closeSignupModalBtn.addEventListener('click', function() {
@@ -660,10 +835,16 @@ You are responsible for safeguarding your account credentials and for all activi
             
             // Handle form submission
             submitSignupButton.addEventListener('click', function() {
+                // Show loading state
+                submitSignupButton.disabled = true;
+                submitSignupButton.innerHTML = '<span class="spinner"></span> Creating Account...';
+                
                 const form = document.getElementById('signupForm');
                 if (!form.checkValidity()) {
                     // Trigger browser's built-in validation UI
                     form.reportValidity();
+                    submitSignupButton.disabled = false;
+                    submitSignupButton.innerHTML = 'Create Account';
                     return;
                 }
                 
@@ -671,11 +852,11 @@ You are responsible for safeguarding your account credentials and for all activi
                 const fullName = document.getElementById('fullName').value;
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                const participationType = document.getElementById('participationType').value;
+                const userParticipationType = document.getElementById('participationType').value;
                 
                 // Get selected expertise areas if applicable
                 const selectedExpertiseAreas = [];
-                if (participationType === 'expert') {
+                if (userParticipationType === 'expert') {
                     expertiseCheckboxes.forEach(checkbox => {
                         if (checkbox.checked) {
                             selectedExpertiseAreas.push(checkbox.value);
@@ -689,31 +870,56 @@ You are responsible for safeguarding your account credentials and for all activi
                     fullName,
                     email,
                     password,
-                    participationType,
+                    participationType: userParticipationType,
                     expertise: selectedExpertiseAreas
                 };
                 
-                console.log('Complete signup data:', userData);
+                logDebug('Complete signup data:', userData);
                 
-                // Here you would typically send this data to your server
-                // fetch('/api/signup', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(userData)
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     // Handle successful signup
-                //     window.location.href = '/dashboard';
-                // })
-                // .catch(error => {
-                //     console.error('Error:', error);
-                //     alert('An error occurred during signup. Please try again.');
-                // });
-                
-                // For demo purposes
-                alert('Account created successfully! (Demo only)');
-                signupModal.style.display = 'none';
+                // Send data to server with proper error handling
+                if (config.debugMode) {
+                    // In debug mode, simulate a successful signup
+                    setTimeout(() => {
+                        submitSignupButton.disabled = false;
+                        submitSignupButton.innerHTML = 'Create Account';
+                        showMessage(signupMessage, 'Account created successfully! (Debug Mode)', false);
+                        
+                        // Optional: redirect to dashboard after success
+                        setTimeout(() => {
+                            signupModal.style.display = 'none';
+                            // window.location.href = '/dashboard';
+                        }, 2000);
+                    }, 1500);
+                } else {
+                    // Production mode - actual API call
+                    fetch(config.apiEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(userData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Server returned status ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        submitSignupButton.disabled = false;
+                        submitSignupButton.innerHTML = 'Create Account';
+                        showMessage(signupMessage, 'Account created successfully!', false);
+                        
+                        // Redirect to dashboard after success
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1500);
+                    })
+                    .catch(error => {
+                        logDebug('Error submitting form:', error);
+                        submitSignupButton.disabled = false;
+                        submitSignupButton.innerHTML = 'Create Account';
+                        showMessage(signupMessage, 'An error occurred during signup. Please try again.', true);
+                    });
+                }
             });
             
             // Close signup modal if clicked outside
@@ -723,21 +929,25 @@ You are responsible for safeguarding your account credentials and for all activi
                 }
             });
             
-            // Load the full terms and conditions from an external file (optional implementation)
-            function loadFullTermsFromFile() {
-                fetch('terms-and-conditions.md')
-                    .then(response => response.text())
+            // Load the full terms and conditions from the server
+            function loadFullTermsFromServer() {
+                fetch(config.termsMarkdownUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load terms');
+                        }
+                        return response.text();
+                    })
                     .then(markdown => {
-                        // Store the full markdown for use when the modal is opened
-                        window.fullTermsMarkdown = markdown;
+                        window.appState.termsMarkdown = markdown;
                     })
                     .catch(error => {
-                        console.error('Error loading terms:', error);
+                        logDebug('Error loading terms from server:', error);
                     });
             }
             
-            // Uncomment this to load terms from an external file instead of using the embedded markdown
-            // loadFullTermsFromFile();
+            // Preload terms so they're ready when needed
+            loadFullTermsFromServer();
         });
     </script>
 </body>
