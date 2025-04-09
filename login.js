@@ -1,70 +1,54 @@
-import { signIn, getCurrentUser } from './supabase-auth.js';
-import { AUTH_REDIRECTS } from './supabase-config.js';
+// login.js
+import { saveSecureSession } from './session-crypto.js';
 
-let turnstileToken = null;
+const form = document.getElementById('login-form');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const errorContainer = document.getElementById('error-container');
 
-window.onTurnstileLoad = function () {
-  if (window.turnstile) {
-    window.turnstile.render('#cloudflare-turnstile', {
-      sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
-      callback: (token) => (turnstileToken = token),
-      'expired-callback': () => (turnstileToken = null),
-      'error-callback': () => (turnstileToken = null)
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  errorContainer.textContent = '';
+  errorContainer.classList.add('hidden');
+
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
     });
-  }
-};
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('login-form');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const errorContainer = document.getElementById('error-container');
+    const result = await res.json();
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errorContainer.textContent = '';
-    errorContainer.classList.add('hidden');
+    if (result.success) {
+      await saveSecureSession({
+        token: result.token,
+        refreshToken: result.refreshToken,
+        role: result.user.role,
+        email: result.user.email
+      });
 
-    if (!turnstileToken) {
-      showError("Please complete the verification.");
-      return;
+      const redirectTo = {
+        admin: '/admin-dashboard.html',
+        user: '/dashboard.html',
+        expert: '/expert-dashboard.html'
+      }[result.user.role] || '/dashboard.html';
+
+      window.location.href = redirectTo;
+    } else {
+      showError(result.error || 'Login failed');
     }
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    setFormDisabled(true);
-
-    try {
-      const result = await signIn(email, password);
-
-      if (result.success) {
-        const user = await getCurrentUser();
-        const role = user?.role || 'user';
-        const redirectTo = AUTH_REDIRECTS[role] || AUTH_REDIRECTS.user;
-        window.location.href = redirectTo;
-      } else {
-        showError(result.error || 'Invalid email or password');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      showError('An unexpected error occurred');
-    } finally {
-      setFormDisabled(false);
-    }
-  });
-
-  function showError(message) {
-    errorContainer.textContent = message;
-    errorContainer.classList.remove('hidden');
-  }
-
-  function setFormDisabled(disabled) {
-    const elements = form.elements;
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].disabled = disabled;
-    }
-    const submitButton = form.querySelector('button[type="submit"]');
-    submitButton.textContent = disabled ? 'Logging in...' : 'Log In';
+  } catch (err) {
+    console.error('Login error:', err);
+    showError('An unexpected error occurred.');
   }
 });
+
+function showError(msg) {
+  errorContainer.textContent = msg;
+  errorContainer.classList.remove('hidden');
+}
