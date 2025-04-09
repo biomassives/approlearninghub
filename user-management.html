@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Management | Approvideo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>User Management</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
+
+  <main class="container">
+    <p>Manage user roles and view user data.</p>
+    <div id="user-list">Loading users...</div>
+    <div id="settings-message-container" class="message"></div>
+  </main>
+
+  <script type="module">
+    import { requireAuth, getCurrentUser, checkAccess, signOut, updateUserRole } from './supabase-auth.js';
+    import { showToast, showMessage, capitalize } from './shared-utils.js';
+
+    const userList = document.getElementById('user-list');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    logoutBtn.addEventListener('click', async () => {
+      const result = await signOut();
+      if (result.success) window.location.href = '/login.html';
+      else showToast('Logout failed', 'error');
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      const user = await getCurrentUser();
+      const access = await checkAccess('admin')();
+      if (!access.allowed) {
+        showToast('Access denied: Admins only', 'error');
+        window.location.href = '/dashboard.html';
+        return;
+      }
+
+      loadUsers();
+    });
+
+    async function loadUsers() {
+      try {
+        const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+        const supabase = createClient(
+          'https://dsqhmcjxgcwxcuincibs.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        );
+
+        const { data: users, error } = await supabase
+          .from('user_roles')
+          .select('user_id, role, users (email)')
+          .order('role');
+
+        if (error) throw error;
+        userList.innerHTML = '';
+
+        users.forEach(user => {
+          if (!user.users || !user.users.email) return;
+
+          const userItem = document.createElement('div');
+          userItem.className = 'user-item';
+          userItem.innerHTML = `
+            <div class="badge">${capitalize(user.role)}</div>
+            <span class="email">${user.users.email}</span>
+            <select data-user-id="${user.user_id}">
+              <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+              <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
+              <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+            </select>
+            <button class="save-role" data-user-id="${user.user_id}">Save</button>
+          `;
+          userList.appendChild(userItem);
+        });
+
+        document.querySelectorAll('.save-role').forEach(btn => {
+          btn.addEventListener('click', async e => {
+            const userId = e.target.dataset.userId;
+            const select = document.querySelector(`select[data-user-id='${userId}']`);
+            const newRole = select.value;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+            const success = await updateUserRole(userId, newRole);
+            btn.textContent = 'Save';
+            btn.disabled = false;
+            success ? showToast('Role updated', 'success') : showMessage('Failed to update role', 'error');
+          });
+        });
+      } catch (err) {
+        console.error('Error loading users:', err);
+        showMessage('Could not load users', 'error');
+      }
+    }
+  </script>
+
+  <style>
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    .badge {
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-weight: bold;
+      background-color: #f3f4f6;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+    .badge.admin {
+      background-color: #4a6cf7;
+      color: #fff;
+    }
+    .badge.editor {
+      background-color: #10b981;
+      color: #fff;
+    }
+    .badge.user {
+      background-color: #e5e7eb;
+      color: #111827;
+    }
+    .email {
+      flex: 1;
+    }
+    .save-role {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      background-color: #4a6cf7;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</body>
+</html>
