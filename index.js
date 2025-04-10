@@ -1,6 +1,8 @@
 // index.js (or wherever your main script runs)
 
-import { loadSecureSession } from './session-crypto.js'; // Adjust path if needed
+import safeHtml from './safeHtmlUtils.js'; // Use this to import the singleton instance
+import { loadSecureSession } from './session-crypto.js';
+
 
 // Assuming safeHtml is still imported or available globally if needed
 // import safeHtml from './safeHtmlUtils.js';
