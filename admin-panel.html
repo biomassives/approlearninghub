@@ -3,245 +3,148 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Approvideo Learning Hub</title>
+  <title>Admin Panel | Approvideo</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9fafb;
-      color: #1f2937;
-    }
-    header {
-      background-color: #4a6cf7;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header-left {
-      display: flex;
-      align-items: center;
-    }
-    .header-left svg {
-      width: 32px;
-      height: 32px;
-      margin-right: 0.5rem;
-    }
-    .menu {
-      position: relative;
-    }
-    .menu-button {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .menu-dropdown {
-      display: none;
-      position: absolute;
-      top: 2.5rem;
-      right: 0;
-      background: white;
-      color: #1f2937;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-    .menu-dropdown a {
-      display: block;
-      padding: 0.75rem 1rem;
-      text-decoration: none;
-      color: inherit;
-    }
-    .menu-dropdown a:hover {
-      background-color: #f3f4f6;
-    }
-    .dashboard-container {
-      padding: 2rem;
-    }
-    .admin-buttons button {
-      background-color: #4a6cf7;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-right: 1rem;
-      margin-bottom: 1rem;
-      transition: background-color 0.3s;
-    }
-    .admin-buttons button:hover {
-      background-color: #3b5bd9;
-    }
-    #gaant-chart {
-      margin-top: 2rem;
-      padding: 1rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: white;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 500px;
-      width: 90%;
-    }
-    .modal-content h2 {
-      margin-top: 0;
-    }
-    .modal-content input,
-    .modal-content textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-    }
-    .modal-content button {
-      background-color: #4a6cf7;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
   <header>
-    <div class="header-left">
-      <svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10"/></svg>
-      <h1 id="dashboard-title">Approvideo Learning Hub</h1>
-    </div>
-    <div class="menu">
-      <button class="menu-button">☰</button>
-      <div class="menu-dropdown" id="menu-dropdown">
-        <a href="profile.html">Profile & Settings</a>
-        <a href="library.html">Review Library</a>
-        <a href="clinics.html">Clinics</a>
-        <a href="modules.html">Modules</a>
-        <a href="calendar.html">Calendar</a>
-        <a href="logout.html">Log Out</a>
-        <select id="language-select">
-          <option value="en">English</option>
-          <option value="sw">Kiswahili</option>
-        </select>
-      </div>
-    </div>
+    <h1>Admin Panel</h1>
+    <button id="logout-btn">Logout</button>
   </header>
-  <div class="dashboard-container">
-    <div class="admin-buttons">
-      <button id="approve-modules-btn">Approve Modules</button>
-      <button id="make-announcement-btn">Make Announcement</button>
-      <button id="form-clinic-btn">Form New Clinic</button>
-    </div>
-    <div id="gaant-chart">[Gantt Chart Will Be Embedded Here]</div>
-  </div>
 
-  <!-- Modals -->
-  <div class="modal" id="announcement-modal">
-    <div class="modal-content">
-      <h2>Make Announcement</h2>
-      <input type="text" id="announcement-title" placeholder="Title" />
-      <textarea id="announcement-body" placeholder="Body"></textarea>
-      <button id="submit-announcement">Submit</button>
-    </div>
-  </div>
+  <main class="container">
+    <p>Welcome, Admin. Manage users and review system metrics below.</p>
 
-  <div class="modal" id="clinic-modal">
-    <div class="modal-content">
-      <h2>Form New Clinic</h2>
-      <input type="text" id="clinic-name" placeholder="Clinic Name" />
-      <input type="text" id="clinic-location" placeholder="Location" />
-      <button id="submit-clinic">Create Clinic</button>
-    </div>
-  </div>
+    <section>
+      <h2>Pending Approvals</h2>
+      <div id="pending-videos">Loading videos...</div>
+      <div id="pending-clinics">Loading clinics...</div>
+      <div id="pending-modules">Loading modules...</div>
+    </section>
+
+    <section>
+      <h2>User Roles & Delegation</h2>
+      <div id="user-list">Loading users...</div>
+    </section>
+
+    <section>
+      <h2>Notifications</h2>
+      <input type="text" id="notification-title" placeholder="Notification title" />
+      <textarea id="notification-body" placeholder="Message body"></textarea>
+      <button id="send-notification">Send Notification</button>
+    </section>
+
+    <div id="settings-message-container" class="message"></div>
+  </main>
 
   <script type="module">
+    import { requireAuth, getCurrentUser, checkAccess, signOut, updateUserRole } from './supabase-auth.js';
+    import { showMessage, showToast } from './shared-utils.js';
     import { supabase } from './supabase-config.js';
 
-    const translations = {
-      en: {
-        dashboardTitle: 'Approvideo Learning Hub',
-        approveModules: 'Approve Modules',
-        makeAnnouncement: 'Make Announcement',
-        formClinic: 'Form New Clinic'
-      },
-      sw: {
-        dashboardTitle: 'Kitovu cha Kujifunza cha Approvideo',
-        approveModules: 'Idhinisha Moduli',
-        makeAnnouncement: 'Toa Taarifa',
-        formClinic: 'Unda Kliniki Mpya'
+    const userList = document.getElementById('user-list');
+    const logoutBtn = document.getElementById('logout-btn');
+    const pendingVideos = document.getElementById('pending-videos');
+    const pendingClinics = document.getElementById('pending-clinics');
+    const pendingModules = document.getElementById('pending-modules');
+    const notifBtn = document.getElementById('send-notification');
+
+    logoutBtn.addEventListener('click', async () => {
+      const result = await signOut();
+      if (result.success) window.location.href = '/login.html';
+      else showToast('Logout failed', 'error');
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const isAuthenticated = await requireAuth();
+      if (!isAuthenticated) return;
+
+      const user = await getCurrentUser();
+      const access = await checkAccess('admin')();
+      if (!access.allowed) {
+        showToast('Access denied: Admins only', 'error');
+        window.location.href = '/dashboard.html';
+        return;
       }
-    };
 
-    const langSelect = document.getElementById('language-select');
-    const lang = localStorage.getItem('preferredLanguage') || (navigator.language.startsWith('sw') ? 'sw' : 'en');
-    langSelect.value = lang;
+      loadUsers();
+      loadPendingItems();
+    });
 
-    function setLanguage(language) {
-      document.getElementById('dashboard-title').innerText = translations[language].dashboardTitle;
-      document.getElementById('approve-modules-btn').innerText = translations[language].approveModules;
-      document.getElementById('make-announcement-btn').innerText = translations[language].makeAnnouncement;
-      document.getElementById('form-clinic-btn').innerText = translations[language].formClinic;
-      localStorage.setItem('preferredLanguage', language);
+    async function loadUsers() {
+      try {
+        const { data: users, error } = await supabase
+          .from('user_roles')
+          .select('user_id, role, users (email)')
+          .order('role');
+
+        if (error) throw error;
+        userList.innerHTML = '';
+
+        users.forEach(user => {
+          const userItem = document.createElement('div');
+          userItem.className = 'user-item';
+          userItem.innerHTML = `
+            <span>${user.users?.email || 'N/A'}</span>
+            <select data-user-id="${user.user_id}">
+              <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+              <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
+              <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+            </select>
+            <button data-user-id="${user.user_id}" class="save-role">Save</button>
+          `;
+          userList.appendChild(userItem);
+        });
+
+        document.querySelectorAll('.save-role').forEach(btn => {
+          btn.addEventListener('click', async e => {
+            const userId = e.target.dataset.userId;
+            const select = document.querySelector(`select[data-user-id='${userId}']`);
+            const newRole = select.value;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            const success = await updateUserRole(userId, newRole);
+            btn.textContent = 'Save';
+            btn.disabled = false;
+
+            if (success) showToast('Role updated', 'success');
+            else showMessage('Failed to update role', 'error');
+          });
+        });
+      } catch (err) {
+        console.error('Load user error:', err);
+        userList.innerHTML = '<p class="error">Error loading users.</p>';
+        showMessage('Could not load users', 'error');
+      }
     }
 
-    langSelect.addEventListener('change', () => setLanguage(langSelect.value));
-    setLanguage(lang);
+    async function loadPendingItems() {
+      const videoQuery = supabase.from('Video').select('*').eq('status', 'pending');
+      const clinicQuery = supabase.from('clinics').select('*').eq('status', 'pending');
+      const moduleQuery = supabase.from('training_modules').select('*').eq('status', 'pending');
 
-    // Button click handlers
-    document.querySelector('.menu-button').addEventListener('click', () => {
-      const dropdown = document.getElementById('menu-dropdown');
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    });
+      const [videos, clinics, modules] = await Promise.all([
+        videoQuery, clinicQuery, moduleQuery
+      ]);
 
-    document.getElementById('make-announcement-btn').addEventListener('click', () => {
-      document.getElementById('announcement-modal').style.display = 'flex';
-    });
-
-    document.getElementById('form-clinic-btn').addEventListener('click', () => {
-      document.getElementById('clinic-modal').style.display = 'flex';
-    });
-
-    document.getElementById('submit-announcement').addEventListener('click', async () => {
-      const title = document.getElementById('announcement-title').value;
-      const body = document.getElementById('announcement-body').value;
-      const { error } = await supabase.from('announcements').insert([{ title, body }]);
-      if (!error) alert('Announcement posted.');
-      document.getElementById('announcement-modal').style.display = 'none';
-    });
-
-    document.getElementById('submit-clinic').addEventListener('click', async () => {
-      const name = document.getElementById('clinic-name').value;
-      const location = document.getElementById('clinic-location').value;
-      const { error } = await supabase.from('clinics').insert([{ name, location }]);
-      if (!error) alert('Clinic created.');
-      document.getElementById('clinic-modal').style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
+      if (!videos.error) {
+        pendingVideos.innerHTML = '<h3>Pending Videos</h3>' + videos.data.map(v => `<p>${v.title}</p>`).join('');
       }
+      if (!clinics.error) {
+        pendingClinics.innerHTML = '<h3>Pending Clinics</h3>' + clinics.data.map(c => `<p>${c.title}</p>`).join('');
+      }
+      if (!modules.error) {
+        pendingModules.innerHTML = '<h3>Pending Modules</h3>' + modules.data.map(m => `<p>${m.title}</p>`).join('');
+      }
+    }
+
+    notifBtn.addEventListener('click', async () => {
+      const title = document.getElementById('notification-title').value;
+      const body = document.getElementById('notification-body').value;
+      const { error } = await supabase.from('notifications').insert([{ title, body }]);
+      if (!error) showToast('Notification sent', 'success');
+      else showToast('Failed to send notification', 'error');
     });
   </script>
 </body>
