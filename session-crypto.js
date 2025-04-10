@@ -81,15 +81,20 @@ export async function saveSecureSession(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 }
 
-export async function loadSecureSession() {
+export async function loadSecureSession(autoGenerate = true, fallback = { role: 'guest', email: 'unknown@example.com' }) {
   const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw && autoGenerate) {
+    await saveSecureSession(fallback);
+    return fallback;
+  }
+
   if (!raw) return null;
 
-  const payload = JSON.parse(raw);
-  const { iv, data } = payload;
-  if (!iv || !data) return null;
-
   try {
+    const payload = JSON.parse(raw);
+    const { iv, data } = payload;
+    if (!iv || !data) return null;
+
     const key = await getOrCreateKey();
     const decrypted = await crypto.subtle.decrypt(
       { name: 'AES-GCM', iv: base64ToBuf(iv) },
@@ -109,12 +114,29 @@ export function clearSecureSession() {
 }
 
 export async function verifyLatticeMatch(expectedHash) {
-  const session = await loadSecureSession();
+  const session = await loadSecureSession(false);
   if (!session?.metaLattice) return false;
 
   const currentHash = await hashMetaLattice(session.metaLattice);
   return currentHash === expectedHash;
 }
 
-// Example Supabase update (should be in a separate API file or called from signup/login)
-// await supabase.from('profiles').update({ lattice_hash: latticeHash }).eq('id', user.id);
+// Debugging tools
+export async function printSession(debug = false) {
+  const session = await loadSecureSession(false);
+  if (!session) {
+    console.warn('No session found');
+    return;
+  }
+  if (debug) {
+    console.debug('Session object:', session);
+  } else {
+    console.log(`Session email: ${session.email}\nRole: ${session.role}\nHash: ${session.latticeHash}`);
+  }
+}
+
+export async function validateSessionWithHash(externalHash) {
+  const match = await verifyLatticeMatch(externalHash);
+  console.log(`Lattice match: ${match ? '✅ MATCH' : '❌ MISMATCH'}`);
+  return match;
+}
