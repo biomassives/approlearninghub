@@ -13,8 +13,9 @@
   </header>
 
   <main class="container">
-    <p>Welcome, Admin. Manage users and review system metrics below.</p>
+    <p>Welcome, Admin. Manage users, approve content, and notify your network.</p>
 
+    <!-- Pending approvals section -->
     <section>
       <h2>Pending Approvals</h2>
       <div id="pending-videos">Loading videos...</div>
@@ -22,13 +23,15 @@
       <div id="pending-modules">Loading modules...</div>
     </section>
 
+    <!-- Role delegation section -->
     <section>
       <h2>User Roles & Delegation</h2>
       <div id="user-list">Loading users...</div>
     </section>
 
+    <!-- Notification center section -->
     <section>
-      <h2>Notifications</h2>
+      <h2>Send Notification</h2>
       <input type="text" id="notification-title" placeholder="Notification title" />
       <textarea id="notification-body" placeholder="Message body"></textarea>
       <button id="send-notification">Send Notification</button>
@@ -38,23 +41,27 @@
   </main>
 
   <script type="module">
+    // Import necessary utilities
     import { requireAuth, getCurrentUser, checkAccess, signOut, updateUserRole } from './supabase-auth.js';
     import { showMessage, showToast } from './shared-utils.js';
     import { supabase } from './supabase-config.js';
 
-    const userList = document.getElementById('user-list');
+    // DOM references
     const logoutBtn = document.getElementById('logout-btn');
+    const userList = document.getElementById('user-list');
     const pendingVideos = document.getElementById('pending-videos');
     const pendingClinics = document.getElementById('pending-clinics');
     const pendingModules = document.getElementById('pending-modules');
     const notifBtn = document.getElementById('send-notification');
 
+    // Logout logic
     logoutBtn.addEventListener('click', async () => {
       const result = await signOut();
       if (result.success) window.location.href = '/login.html';
       else showToast('Logout failed', 'error');
     });
 
+    // On load
     document.addEventListener('DOMContentLoaded', async () => {
       const isAuthenticated = await requireAuth();
       if (!isAuthenticated) return;
@@ -67,10 +74,38 @@
         return;
       }
 
+      // Load everything
       loadUsers();
       loadPendingItems();
     });
 
+    // Load pending approvals
+    async function loadPendingItems() {
+      const videoQuery = supabase.from('Video').select('*').eq('status', 'pending');
+      const clinicQuery = supabase.from('clinics').select('*').eq('status', 'pending');
+      const moduleQuery = supabase.from('training_modules').select('*').eq('status', 'pending');
+
+      const [videos, clinics, modules] = await Promise.all([
+        videoQuery, clinicQuery, moduleQuery
+      ]);
+
+      if (!videos.error) {
+        pendingVideos.innerHTML = '<h3>Pending Videos</h3>' +
+          videos.data.map(v => `<p>${v.title}</p>`).join('');
+      }
+
+      if (!clinics.error) {
+        pendingClinics.innerHTML = '<h3>Pending Clinics</h3>' +
+          clinics.data.map(c => `<p>${c.title}</p>`).join('');
+      }
+
+      if (!modules.error) {
+        pendingModules.innerHTML = '<h3>Pending Modules</h3>' +
+          modules.data.map(m => `<p>${m.title}</p>`).join('');
+      }
+    }
+
+    // Load and render user roles for delegation
     async function loadUsers() {
       try {
         const { data: users, error } = await supabase
@@ -79,8 +114,8 @@
           .order('role');
 
         if (error) throw error;
-        userList.innerHTML = '';
 
+        userList.innerHTML = '';
         users.forEach(user => {
           const userItem = document.createElement('div');
           userItem.className = 'user-item';
@@ -96,15 +131,18 @@
           userList.appendChild(userItem);
         });
 
+        // Hook up Save buttons
         document.querySelectorAll('.save-role').forEach(btn => {
           btn.addEventListener('click', async e => {
             const userId = e.target.dataset.userId;
             const select = document.querySelector(`select[data-user-id='${userId}']`);
             const newRole = select.value;
+
             btn.textContent = 'Saving...';
             btn.disabled = true;
 
             const success = await updateUserRole(userId, newRole);
+
             btn.textContent = 'Save';
             btn.disabled = false;
 
@@ -119,30 +157,15 @@
       }
     }
 
-    async function loadPendingItems() {
-      const videoQuery = supabase.from('Video').select('*').eq('status', 'pending');
-      const clinicQuery = supabase.from('clinics').select('*').eq('status', 'pending');
-      const moduleQuery = supabase.from('training_modules').select('*').eq('status', 'pending');
-
-      const [videos, clinics, modules] = await Promise.all([
-        videoQuery, clinicQuery, moduleQuery
-      ]);
-
-      if (!videos.error) {
-        pendingVideos.innerHTML = '<h3>Pending Videos</h3>' + videos.data.map(v => `<p>${v.title}</p>`).join('');
-      }
-      if (!clinics.error) {
-        pendingClinics.innerHTML = '<h3>Pending Clinics</h3>' + clinics.data.map(c => `<p>${c.title}</p>`).join('');
-      }
-      if (!modules.error) {
-        pendingModules.innerHTML = '<h3>Pending Modules</h3>' + modules.data.map(m => `<p>${m.title}</p>`).join('');
-      }
-    }
-
+    // Send announcement or update notification
     notifBtn.addEventListener('click', async () => {
       const title = document.getElementById('notification-title').value;
       const body = document.getElementById('notification-body').value;
-      const { error } = await supabase.from('notifications').insert([{ title, body }]);
+
+      const { error } = await supabase
+        .from('notifications')
+        .insert([{ title, body }]);
+
       if (!error) showToast('Notification sent', 'success');
       else showToast('Failed to send notification', 'error');
     });
