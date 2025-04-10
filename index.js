@@ -222,6 +222,10 @@ class PublicVideoPortal {
   createVideoCard(video) { // Keep as is, ensure video object structure matches API response
     // Double check video object properties match what the API now sends
     // Especially `tags` and `panels` should be arrays from the backend now.
+
+         const videoTitle = this.safeHtml.escape(video.title || 'Untitled Video');
+
+    
     const safeVideo = this.safeHtml.escapeObject ? this.safeHtml.escapeObject(video) : video; // Handle potential removal of safeHtml
 
     // Original youtubeId link construction - verify this still works or adjust if needed
@@ -278,10 +282,10 @@ class PublicVideoPortal {
     `;
   }
 
-  renderTags(tags) { // Keep as is, assuming API returns tags as an array
+
+  renderTags(tags) { 
     if (!tags || !Array.isArray(tags) || !tags.length) return '';
-     // Ensure safeHtml is available or remove escaping
-    const escape = this.safeHtml?.escape || (str => str);
+    const escape = this.safeHtml.escape; // Use the escape method
     return tags.map(tag => `
       <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
         ${escape(tag.trim())}
@@ -289,7 +293,7 @@ class PublicVideoPortal {
     `).join('');
   }
 
-  getCategoryIcon(category) { // Keep as is or update icons
+  getCategoryIcon(category) { 
      const icons = {
       'shelter': 'fa-building', // From HTML
       'water': 'fa-tint', // From HTML
