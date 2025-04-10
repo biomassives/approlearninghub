@@ -1,6 +1,5 @@
 // index.js (or wherever your main script runs)
 
-import safeHtml from './safeHtmlUtils.js'; // Use this to import the singleton instance
 import { loadSecureSession } from './session-crypto.js';
 
 
@@ -11,7 +10,6 @@ class PublicVideoPortal {
   constructor() {
     // REMOVED: this.supabase initialization
 
-    this.safeHtml = safeHtml; // Keep if used in render methods
     this.currentPage = 0;
     this.isLoading = false;
     this.hasMore = true;
@@ -219,79 +217,181 @@ class PublicVideoPortal {
     this.loadVideos();
   }
 
-  createVideoCard(video) { // Keep as is, ensure video object structure matches API response
-    // Double check video object properties match what the API now sends
-    // Especially `tags` and `panels` should be arrays from the backend now.
+createVideoCard(video) {
+    // --- Create Main Container ---
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'video-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col';
+    cardDiv.setAttribute('data-video-id', video.id || '');
 
-         const videoTitle = this.safeHtml.escape(video.title || 'Untitled Video');
+    // --- Create Image/Link Section ---
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'relative aspect-video';
 
-    
-    const safeVideo = this.safeHtml.escapeObject ? this.safeHtml.escapeObject(video) : video; // Handle potential removal of safeHtml
+    const videoLink = document.createElement('a');
+    const videoId = video.youtubeId || ''; // Ensure videoId is defined
+    const videoUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '#'; // Standard watch URL
+    videoLink.href = videoUrl;
+    videoLink.target = '_blank';
+    videoLink.rel = 'noopener noreferrer';
 
-    // Original youtubeId link construction - verify this still works or adjust if needed
-    const thumbnailUrl = `https://img.youtube.com/vi/$${safeVideo.youtubeId}/maxresdefault.jpg`;
-    const fallbackThumbnailUrl = `https://img.youtube.com/vi/$${safeVideo.youtubeId}/0.jpg`;
-    const videoUrl = `https://www.youtube.com/watch?v=$${safeVideo.youtubeId}`; // Verify this is the correct video link format
+    const img = document.createElement('img');
+    const highResThumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : '';
+    const mediumQualityThumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : 'images/placeholder.png'; // Provide a real placeholder path
+    img.src = highResThumbnail;
+    img.alt = video.title || 'Video thumbnail'; // Use textContent safety via alt attribute
+    img.className = 'w-full h-full object-cover';
+    img.loading = 'lazy';
+    img.onerror = function() { // Use function to preserve `this` correctly
+        this.onerror = null; // Prevent infinite loops if fallback also fails
+        this.src = mediumQualityThumbnail;
+    };
 
-    return `
-      <div class="video-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col" data-video-id="${safeVideo.id}">
-        <div class="relative aspect-video">
-          <a target="_blank" rel="noopener noreferrer" href="${videoUrl}">
-            <img
-              src="${thumbnailUrl}"
-              alt="${safeVideo.title || 'Video thumbnail'}"
-              class="w-full h-full object-cover"
-              onerror="this.onerror=null; this.src='${fallbackThumbnailUrl}';"
-              loading="lazy"
-            >
-          </a>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <h3 class="video-title text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title || 'Untitled Video'}</h3>
-          <p class="video-description text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3 flex-grow">${safeVideo.description || 'No description available.'}</p>
-          <div class="flex items-center gap-2 mb-3 text-sm text-gray-500 dark:text-gray-400">
-            <i class="fas ${this.getCategoryIcon(safeVideo.category)}"></i>
-            <span>${safeVideo.category || 'General'}</span>
-            ${safeVideo.subcategory ? `
-              <span class="mx-1">/</span>
-              <span>${safeVideo.subcategory}</span>
-            ` : ''}
-          </div>
-          ${this.renderPanels(safeVideo.panels)}
-          <div class="flex flex-wrap gap-1 mt-3">
-            ${this.renderTags(safeVideo.tags)}
-          </div>
-        </div>
-      </div>
-    `;
-  }
+    videoLink.appendChild(img);
+    imageContainer.appendChild(videoLink);
+    cardDiv.appendChild(imageContainer);
 
-  renderPanels(panels) { // Keep as is, assuming API returns panels as an array
-    if (!panels || !Array.isArray(panels) || !panels.length) return '';
-     // Ensure safeHtml is available or remove escaping if API guarantees safety
-    const escape = this.safeHtml?.escape || (str => str);
-    return `
-      <div class="mt-2 space-y-1">
-        ${panels.map(panel => `
-          <details class="bg-gray-50 dark:bg-gray-700 p-2 rounded text-sm group">
-             <summary class="font-medium cursor-pointer group-open:mb-1">${escape(panel.title || 'Details')}</summary>
-             <p class="text-gray-600 dark:text-gray-300">${escape(panel.content || '')}</p>
-          </details>
-        `).join('')}
-      </div>
-    `;
-  }
+    // --- Create Text Content Section ---
+    const textContainer = document.createElement('div');
+    textContainer.className = 'p-4 flex flex-col flex-grow';
+
+    const title = document.createElement('h3');
+    title.className = 'video-title text-lg font-semibold mb-2 line-clamp-2';
+    title.textContent = video.title || 'Untitled Video'; // Use textContent
+    textContainer.appendChild(title);
+
+    const description = document.createElement('p');
+    description.className = 'video-description text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3 flex-grow';
+    description.textContent = video.description || 'No description available.'; // Use textContent
+    textContainer.appendChild(description);
+
+    // --- Create Category Info ---
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'flex items-center gap-2 mb-3 text-sm text-gray-500 dark:text-gray-400';
+
+    const categoryIcon = document.createElement('i');
+    categoryIcon.className = `fas ${this.getCategoryIcon(video.category)}`; // getCategoryIcon remains the same
+    categoryDiv.appendChild(categoryIcon);
+
+    const categorySpan = document.createElement('span');
+    categorySpan.textContent = video.category || 'General';
+    categoryDiv.appendChild(categorySpan);
+
+    if (video.subcategory) {
+        const separator = document.createElement('span');
+        separator.className = 'mx-1';
+        separator.textContent = '/';
+        categoryDiv.appendChild(separator);
+
+        const subcategorySpan = document.createElement('span');
+        subcategorySpan.textContent = video.subcategory;
+        categoryDiv.appendChild(subcategorySpan);
+    }
+    textContainer.appendChild(categoryDiv);
+
+    // --- Append Panels (if any) ---
+    const panelsContainer = this.renderPanels(video.panels); // Now returns a DOM element or null
+    if (panelsContainer) {
+        textContainer.appendChild(panelsContainer);
+    }
+
+    // --- Append Tags (if any) ---
+    const tagsContainer = document.createElement('div');
+    tagsContainer.className = 'flex flex-wrap gap-1 mt-3';
+    const tagElements = this.renderTags(video.tags); // Now returns an array of DOM elements
+    tagElements.forEach(tagElement => {
+        tagsContainer.appendChild(tagElement);
+    });
+    if (tagElements.length > 0) {
+        textContainer.appendChild(tagsContainer);
+    }
+
+    // --- Final Assembly ---
+    cardDiv.appendChild(textContainer);
+
+    return cardDiv; // Return the complete DOM element
+}
+
+renderVideos(videos) {
+    const videoGrid = document.getElementById('videoGrid');
+    if (!videoGrid) {
+        console.error("Video grid element not found!");
+        return;
+    }
+
+    // Create a Document Fragment for efficient appending
+    const fragment = document.createDocumentFragment();
+    videos.forEach(video => {
+        const cardElement = this.createVideoCard(video); // Returns a DOM element
+        if (cardElement) {
+            fragment.appendChild(cardElement);
+        }
+    });
+
+    if (this.currentPage === 0) { // First batch
+        videoGrid.innerHTML = ''; // Clear previous content (including any "no results" message)
+        if (fragment.childElementCount === 0) {
+            // Create and append the "No videos found" message element
+            const noResultsMessage = document.createElement('p');
+            noResultsMessage.className = 'col-span-full text-center text-gray-500 py-8';
+            // Customize message based on filters (as suggested before)
+            let message = "No videos found matching your criteria.";
+             if (this.selectedCategory) { message = `No videos found for category "${this.selectedCategory}".`; }
+             else if (this.searchQuery) { message = `No videos found matching "${this.searchQuery}".`; }
+            noResultsMessage.textContent = message;
+            videoGrid.appendChild(noResultsMessage);
+        } else {
+            videoGrid.appendChild(fragment); // Append all new cards
+        }
+    } else { // Subsequent pages (infinite scroll)
+        videoGrid.appendChild(fragment); // Append new cards
+    }
+}
 
 
-  renderTags(tags) { 
-    if (!tags || !Array.isArray(tags) || !tags.length) return '';
-    const escape = this.safeHtml.escape; // Use the escape method
-    return tags.map(tag => `
-      <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
-        ${escape(tag.trim())}
-      </span>
-    `).join('');
-  }
+renderPanels(panels) {
+    if (!panels || !Array.isArray(panels) || !panels.length) {
+        return null; // Return null if no panels to render
+    }
+
+    const container = document.createElement('div');
+    container.className = 'mt-2 space-y-1'; // Apply Tailwind classes
+
+    panels.forEach(panel => {
+        const details = document.createElement('details');
+        details.className = 'bg-gray-50 dark:bg-gray-700 p-2 rounded text-sm group';
+
+        const summary = document.createElement('summary');
+        summary.className = 'font-medium cursor-pointer group-open:mb-1';
+        summary.textContent = panel.title || 'Details'; // Use textContent for safety
+
+        const content = document.createElement('p');
+        content.className = 'text-gray-600 dark:text-gray-300';
+        content.textContent = panel.content || ''; // Use textContent for safety
+
+        details.appendChild(summary);
+        details.appendChild(content);
+        container.appendChild(details);
+    });
+
+    return container; // Return the container element
+}
+
+
+// Replace the existing renderTags method in PublicVideoPortal with this:
+renderTags(tags) {
+    if (!tags || !Array.isArray(tags) || !tags.length) {
+        return []; // Return an empty array if no tags
+    }
+
+    return tags.map(tag => {
+        const span = document.createElement('span');
+        span.className = 'px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium';
+        span.textContent = tag.trim(); // Use textContent, no escaping needed here
+        return span; // Return the span DOM element
+    });
+}
+
+
 
   getCategoryIcon(category) { 
      const icons = {
@@ -315,7 +415,7 @@ class PublicVideoPortal {
     return icons[category?.toLowerCase()] || icons['default'];
   }
 
-  // *** UPDATED handleSort ***
+
   handleSort(sortValue) {
     console.log('Sort changed to:', sortValue);
     // sortValue should be 'newest', 'popular', 'az' from the select options
@@ -323,14 +423,15 @@ class PublicVideoPortal {
     this.resetAndReload();
   }
 
-  showError(message) { // Keep as is
+showError(message) {
     const videoGrid = document.getElementById('videoGrid');
     if (!videoGrid) return;
-    const escape = this.safeHtml?.escape || (str => str); // Ensure safeHtml if used
+    // Remove the escape call, assuming message is safe or basic text
+    const messageText = message || 'An unknown error occurred.';
     videoGrid.innerHTML = `
       <div class="col-span-full text-center py-8">
         <p class="text-red-600 mb-2 text-lg">Oops! Something went wrong.</p>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">${escape(message)}</p>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">${messageText}</p> {/* Direct insertion */}
         <button
           onclick="window.location.reload()"
           class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -339,9 +440,7 @@ class PublicVideoPortal {
         </button>
       </div>
     `;
-    // Hide loader if error occurs
     document.getElementById('skeletonLoader')?.classList.add('hidden');
-  }
 }
 
 
@@ -599,145 +698,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Make sure PublicVideoPortal class definition comes before this
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize the Portal (Handles data loading, search, sort, infinite scroll)
-  //    Make sure this line runs before attaching listeners that use 'portal'
-  const portal = new PublicVideoPortal();
-
-  // 2. Banner Rotation (Keep as is)
-  const banner = document.querySelector('.bg-gradient-to-r.from-green-600');
-  // Make sure bannerMessages array is defined here or globally
-  const bannerMessages = [
-      "🎥 Sharing knowledge that changes lives - One video at a time",
-      "🌱 Building resilience through appropriate technology",
-      "💧 Clean water, safe shelter, better lives",
-      "🌟 Empowering communities with sustainable solutions",
-      "🤝 Technology that serves humanity",
-      "🏗️ Building bridges to a sustainable future",
-      "💪 Local solutions, global impact",
-      "🌍 Every community deserves access to vital knowledge"
-  ];
-  if (banner && bannerMessages && bannerMessages.length > 0) {
-    let currentMessageIndex = 0;
-    function updateBannerMessage() {
-        if(banner) banner.textContent = bannerMessages[currentMessageIndex];
-        currentMessageIndex = (currentMessageIndex + 1) % bannerMessages.length;
-    }
-    updateBannerMessage();
-    setInterval(updateBannerMessage, 5000);
-  }
-
-  // 3. Theme Toggle (Ensure only one mechanism is active - either here or CategoryManager)
-  // Example logic if handling theme toggle here:
-  const darkModeToggle = document.getElementById('themeToggle'); // Make sure this ID exists on your toggle button
-  const html = document.documentElement;
-  function updateTheme(isDark) {
-      html.classList.toggle('dark', isDark);
-      localStorage.setItem('darkMode', isDark);
-  }
-  if (darkModeToggle) {
-      // Check saved preference
-      if (localStorage.getItem('darkMode') === 'true' ||
-          (!localStorage.getItem('darkMode') &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        updateTheme(true);
-      } else {
-        updateTheme(false); // Explicitly set light mode if no dark preference
-      }
-      // Add click listener
-      darkModeToggle.addEventListener('click', () => {
-        updateTheme(!html.classList.contains('dark'));
-      });
-  }
-
-
-  // --- 4. Category & Subcategory Filtering Listeners ---
-  //    These listeners will call portal.filterByCategory
-
-  // Listener for MAIN Category Icons/Links
-  // Selects the <a> tag within the .group div that has a data-category attribute
-  const mainCategoryLinks = document.querySelectorAll('.group > a[data-category]');
-  mainCategoryLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault(); // Prevent default link navigation
-
-      // Get the category slug from the main link itself
-      const categorySlug = link.getAttribute('data-category');
-
-      if (categorySlug) {
-        console.log('Main category link clicked:', categorySlug);
-        portal.filterByCategory(categorySlug); // Call the filtering method
-
-        // Optional: Close all drop-up menus after a main category is clicked for filtering
-        document.querySelectorAll('.drop-up-menu').forEach(menu => {
-            // You might need a more sophisticated way if you want menus to stay open on hover
-            // This example hides them on click
-           // menu.classList.add('hidden');
-        });
-        // Optional: Close the Mondrian box if it was open
-        document.getElementById('mondrian-box')?.classList.add('hidden');
-
-      } else {
-          console.warn("Clicked main category link missing data-category attribute.");
-      }
-    });
-  });
-
-  // Listener for SUBcategory Links (using event delegation)
-  // Attaches one listener to the container where subcategory links are dynamically added
-  const subcategoryLinksContainer = document.getElementById('subcategory-links');
-  if (subcategoryLinksContainer) {
-    subcategoryLinksContainer.addEventListener('click', (e) => {
-      // Check if the clicked element or its parent is a subcategory link
-      const targetLink = e.target.closest('.drop-up-item[data-category]');
-
-      if (targetLink) {
-        e.preventDefault(); // Prevent default link navigation
-        const categorySlug = targetLink.getAttribute('data-category');
-
-        if (categorySlug) {
-          console.log('Subcategory link clicked:', categorySlug);
-          portal.filterByCategory(categorySlug); // Call the filtering method
-
-          // Close the subcategory display box after selection
-          document.getElementById('mondrian-box')?.classList.add('hidden');
-        } else {
-            console.warn("Clicked subcategory link missing data-category attribute.");
-        }
-      }
-    });
-  } else {
-      console.warn("Element with ID 'subcategory-links' not found. Subcategory click filtering might not work.");
-  }
-
-  // --- 5. Remove Redundant/Conflicting Logic ---
-  // IMPORTANT: Go through the rest of your DOMContentLoaded listener and REMOVE
-  // any other event listeners or code sections that were previously handling
-  // category clicks, client-side search filtering, or client-side sorting,
-  // as these functionalities are now managed within the PublicVideoPortal class
-  // and triggered by the listeners added above or within the class itself.
-
-  // --- 6. Modals & Footer Setup (Keep as is) ---
-    const sponsorButton = document.getElementById('sponsor-us');
-    const editorButton = document.getElementById('be-an-editor');
-    const sponsorModal = document.getElementById('sponsor-modal');
-    const editorModal = document.getElementById('editor-modal');
-    const closeSponsor = document.getElementById('close-sponsor-modal');
-    const closeEditor = document.getElementById('close-editor-modal');
-
-    sponsorButton?.addEventListener('click', () => sponsorModal?.classList.remove('hidden'));
-    editorButton?.addEventListener('click', () => editorModal?.classList.remove('hidden'));
-    closeSponsor?.addEventListener('click', () => sponsorModal?.classList.add('hidden'));
-    closeEditor?.addEventListener('click', () => editorModal?.classList.add('hidden'));
-
-    // Mission reveal
-    const missionReveal = document.getElementById('mission-reveal');
-    missionReveal?.addEventListener('click', () => {
-        missionReveal.querySelector('.mission-text')?.classList.toggle('hidden');
-    });
-
-
-  
-  // ... any other non-conflicting initial setup code ...
-
-}); // End of DOMContentLoaded
