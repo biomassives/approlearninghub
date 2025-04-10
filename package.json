@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@pvermeer/dexie-encrypted-addon": "^3.0.0",
+    "@supabase/supabase-js": "^2.x.x",
     "express": "^4.18.2"
   },
   "devDependencies": {
