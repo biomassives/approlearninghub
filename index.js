@@ -1,5 +1,6 @@
 // index.js (or wherever your main script runs)
 
+import { loadSecureSession } from './session-crypto.js'; // Adjust path if needed
 
 // Assuming safeHtml is still imported or available globally if needed
 // import safeHtml from './safeHtmlUtils.js';
@@ -432,7 +433,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    // Function to check local session status
+    async function checkAuthStatus() {
+        try {
+            // Call loadSecureSession with 'false' to prevent auto-generating a guest session
+            // We only want to know if a *real* session exists.
+            const session = await loadSecureSession(false);
+    
+            // Determine if logged in:
+            // A session exists AND it has a token (more reliable than just checking role != 'guest')
+            const isLoggedIn = !!session && !!session.token;
+    
+            return {
+                isLoggedIn: isLoggedIn,
+                userRole: session?.role || null // Return role if session exists
+            };
+        } catch (error) {
+            console.error('Error loading secure session for auth check:', error);
+            return { isLoggedIn: false, userRole: null }; // Assume not logged in on error
+        }
+    }
 
+
+
+  
     // --- Event Listener for dynamically shown SUBCATEGORIES ---
     if (subcategoryLinksContainer) {
 
