@@ -41,6 +41,157 @@
                       </button>
                  </div>
                  <!-- Auth Buttons -->
+
+                 <!-- Language Toggle Button -->
+                  <button id="language-dropdown-button" class="flex items-center px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm">
+                    <span id="current-language-display">EN</span>
+                    <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                  </button>
+                  
+                  <!-- Language Dropdown Menu -->
+                  <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
+                    <div class="p-3">
+                      <!-- Search input -->
+                      <input type="text" id="language-search" placeholder="Search languages..." class="w-full p-2 mb-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 text-sm">
+                      
+                      <!-- Language grid -->
+                      <div id="language-grid" class="grid grid-cols-3 gap-2">
+                        <button data-lang="am" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Amharic</span>
+                        </button>
+                        <button data-lang="ar" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Arabic</span>
+                        </button>
+                        <button data-lang="bn" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">BN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Bengali</span>
+                        </button>
+                        <button data-lang="de" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">DE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">German</span>
+                        </button>
+                        <button data-lang="en" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">EN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">English</span>
+                        </button>
+                        <button data-lang="es" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ES</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Spanish</span>
+                        </button>
+                        <button data-lang="fa" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Persian</span>
+                        </button>
+                        <button data-lang="fr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">French</span>
+                        </button>
+                        <button data-lang="ha" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hausa</span>
+                        </button>
+                        <button data-lang="hi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hindi</span>
+                        </button>
+                        <button data-lang="id" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ID</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Indonesian</span>
+                        </button>
+                        <button data-lang="it" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">IT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Italian</span>
+                        </button>
+                        <button data-lang="jp" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">JP</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Japanese</span>
+                        </button>
+                        <button data-lang="km" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Khmer</span>
+                        </button>
+                        <button data-lang="ko" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Korean</span>
+                        </button>
+                        <button data-lang="ku" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Kurdish</span>
+                        </button>
+                        <button data-lang="ms" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Malay</span>
+                        </button>
+                        <button data-lang="my" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MY</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Burmese</span>
+                        </button>
+                        <button data-lang="ne" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">NE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Nepali</span>
+                        </button>
+                        <button data-lang="ps" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Pashto</span>
+                        </button>
+                        <button data-lang="pt" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Portuguese</span>
+                        </button>
+                        <button data-lang="ru" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">RU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Russian</span>
+                        </button>
+                        <button data-lang="so" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Somali</span>
+                        </button>
+                        <button data-lang="sw" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SW</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Swahili</span>
+                        </button>
+                        <button data-lang="ta" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tamil</span>
+                        </button>
+                        <button data-lang="th" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Thai</span>
+                        </button>
+                        <button data-lang="tl" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TL</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tagalog</span>
+                        </button>
+                        <button data-lang="tr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Turkish</span>
+                        </button>
+                        <button data-lang="uk" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UK</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Ukrainian</span>
+                        </button>
+                        <button data-lang="ur" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Urdu</span>
+                        </button>
+                        <button data-lang="vi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">VI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Vietnamese</span>
+                        </button>
+                        <button data-lang="yo" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">YO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Yoruba</span>
+                        </button>
+                        <button data-lang="zh" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ZH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Chinese</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                  <div class="hidden sm:flex items-center space-x-2"> <!-- Hide on extra-small, flex on small+ -->
                       <button id="loginButton" class="px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 hidden">Login</button>
                       <button id="signupButton" class="px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 hidden">Sign Up</button>
@@ -409,7 +560,101 @@
             profileDropdown.classList.remove('dropdown-active');
           });
 
-
+document.addEventListener('DOMContentLoaded', function() {
+  // Elements
+  const languageButton = document.getElementById('language-dropdown-button');
+  const languageMenu = document.getElementById('language-dropdown-menu');
+  const languageSearch = document.getElementById('language-search');
+  const languageButtons = document.querySelectorAll('.lang-button');
+  const currentLangDisplay = document.getElementById('current-language-display');
+  
+  // Get saved language or default to English
+  const savedLanguage = localStorage.getItem('approVideoLanguage') || 'en';
+  updateActiveLanguage(savedLanguage);
+  
+  // Toggle dropdown when button is clicked
+  languageButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    languageMenu.classList.toggle('hidden');
+  });
+  
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!languageButton.contains(e.target) && !languageMenu.contains(e.target)) {
+      languageMenu.classList.add('hidden');
+    }
+  });
+  
+  // Search functionality
+  languageSearch.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    languageButtons.forEach(button => {
+      const lang = button.getAttribute('data-lang').toLowerCase();
+      const langName = button.querySelector('span:last-child').textContent.toLowerCase();
+      
+      if (lang.includes(searchTerm) || langName.includes(searchTerm) || searchTerm === '') {
+        button.style.display = '';
+      } else {
+        button.style.display = 'none';
+      }
+    });
+  });
+  
+  // Language selection
+  languageButtons.forEach(button => {
+    // Highlight active language
+    if (button.getAttribute('data-lang').toLowerCase() === savedLanguage.toLowerCase()) {
+      button.classList.add('bg-blue-500', 'text-white');
+      button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+    }
+    
+    // Handle click
+    button.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      
+      // Save language preference
+      localStorage.setItem('approVideoLanguage', lang);
+      
+      // Update UI
+      updateActiveLanguage(lang);
+      
+      // Hide dropdown
+      languageMenu.classList.add('hidden');
+      
+      // Dispatch event for language change
+      document.dispatchEvent(new CustomEvent('languageChanged', {
+        detail: { language: lang }
+      }));
+      
+      // Reload page to apply language
+      // Comment this line if you're using a client-side translation system
+      // window.location.reload();
+    });
+  });
+  
+  // Update active language display
+  function updateActiveLanguage(lang) {
+    // Update display
+    currentLangDisplay.textContent = lang.toUpperCase();
+    
+    // Update active button styling
+    languageButtons.forEach(button => {
+      const buttonLang = button.getAttribute('data-lang');
+      const isActive = buttonLang.toLowerCase() === lang.toLowerCase();
+      
+      // Reset all buttons first
+      button.classList.remove('bg-blue-500', 'text-white');
+      button.querySelector('span:last-child').classList.add('text-gray-600', 'dark:text-gray-300');
+      
+      // Then style the active one
+      if (isActive) {
+        button.classList.add('bg-blue-500', 'text-white');
+        button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+      }
+    });
+  }
+});
   
 
 </script>
