@@ -5,6 +5,10 @@
       "src": "api/index.js",
       "use": "@vercel/node"
     },
+    { 
+      "src": "*.js", 
+      "use": "@vercel/static" 
+    },  
     {
       "src": "*.html",
       "use": "@vercel/static"
