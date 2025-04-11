@@ -1,15 +1,16 @@
 {
-  "name": "learning-modules-app",
+  "name": "approvideo-learning-hub-app",
   "version": "1.0.0",
   "description": "Learning modules application with URL routing",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "deploy": "vercel deploy"
+    "dev": "node api/index.js",
+    "build": "echo 'Build step completed'",
+    "start": "node api/index.js",
+    "vercel-dev": "vercel dev"
   },
   "dependencies": {
     "@pvermeer/dexie-encrypted-addon": "^3.0.0",
-    "@supabase/supabase-js": "^2.x.x",
+    "@supabase/supabase-js": "^2.38.4",
     "express": "^4.18.2"
   },
   "devDependencies": {
