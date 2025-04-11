@@ -7,7 +7,25 @@
   <script src="https://cdn.tailwindcss.com" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="stylenew.css" rel="stylesheet">  
+  <link href="stylenew.css" rel="stylesheet">
+  <style>
+    /* Add to your stylenew.css file or keep here */
+    #userMenuDropdown {
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform-origin: top right;
+    }
+
+    #userMenuDropdown.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    #userMenuDropdown:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
   <script type="module" src="index.js"></script>
 </head>
 
@@ -15,46 +33,25 @@
 
 <div class="border-b border-gray-700 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-md">
     <div class="container mx-auto px-4">
-        <!-- Main Header Row -->
-        <div class="flex items-center justify-between h-16"> <!-- Use flex, align center, set height -->
-            <!-- Left Side (Logo/Title) -->
-            <div class="flex-shrink-0"> <!-- Prevent shrinking -->
-                 <a href="/" class="text-xl font-bold"> <!-- Link to homepage -->
-                    🌿 ApproVideo 🌱
+        <div class="flex items-center justify-between h-16"> <div class="flex-shrink-0"> <a href="/" class="text-xl font-bold"> 🌿 ApproVideo 🌱
                  </a>
             </div>
 
-            <!-- Center (Main Categories - visible on larger screens) -->
-            <div class="hidden md:flex md:justify-center md:flex-grow"> <!-- Hide on small, flex on medium+ -->
-                 <div class="flex items-center space-x-4 lg:space-x-6"> <!-- Adjust spacing -->
-                      <!-- Main category .group divs go here -->
-                 </div>
+            <div class="hidden md:flex md:justify-center md:flex-grow"> <div class="flex items-center space-x-4 lg:space-x-6"> </div>
             </div>
 
-            <!-- Right Side (Theme/Auth/Mobile Menu Toggle) -->
             <div class="flex items-center space-x-2">
-                 <!-- Theme Toggle -->
-                 <div class="hidden sm:block"> <!-- Hide on extra-small? -->
-                      <button id="darkModeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                 <div class="hidden sm:block"> <button id="darkModeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                            <i class="fas fa-moon dark:hidden"></i>
                            <i class="fas fa-sun hidden dark:block"></i>
                       </button>
                  </div>
-                 <!-- Auth Buttons -->
-
-                 <!-- Language Toggle Button -->
-                  <button id="language-dropdown-button" class="flex items-center px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm">
+                 <button id="language-dropdown-button" class="flex items-center px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm">
                     <span id="current-language-display">EN</span>
                     <i class="fas fa-chevron-down ml-2 text-xs"></i>
                   </button>
-                  
-                  <!-- Language Dropdown Menu -->
-                  <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
-                    <div class="p-3">
-                      <!-- Search input -->
+                  <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50" style="top: 4rem;"> <div class="p-3">
                       <input type="text" id="language-search" placeholder="Search languages..." class="w-full p-2 mb-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 text-sm">
-                      
-                      <!-- Language grid -->
                       <div id="language-grid" class="grid grid-cols-3 gap-2">
                         <button data-lang="am" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
                           <span class="text-sm font-bold">AM</span>
@@ -192,34 +189,71 @@
                     </div>
                   </div>
 
-                 <div class="hidden sm:flex items-center space-x-2"> <!-- Hide on extra-small, flex on small+ -->
-                      <button id="loginButton" class="px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 hidden">Login</button>
+                 <div class="relative ml-3">
+                    <div>
+                        <button type="button" id="userMenuButton" class="flex items-center px-3 py-2 rounded-lg bg-green-100 dark:bg-green-800 hover:bg-green-200 dark:hover:bg-green-700 transition-colors text-sm">
+                            <i class="fas fa-user-circle mr-2 text-green-600 dark:text-green-400"></i>
+                            <span id="user-menu-label">Account</span>
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                    </div>
+                    <div id="userMenuDropdown" class="absolute right-0 mt-2 w-56 max-h-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
+                        <div class="p-3">
+                            <div id="guestOptions">
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+                                    Sign in to contribute to ApproVideo
+                                </div>
+                                <button id="menuLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-sign-in-alt mr-2 text-blue-500"></i>
+                                    <span>Login</span>
+                                </button>
+                                <button id="menuSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center">
+                                    <i class="fas fa-user-plus mr-2 text-green-500"></i>
+                                    <span>Sign Up</span>
+                                </button>
+                            </div>
+                            <div id="userOptions" class="hidden">
+                                <div id="userMenuInfo" class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+                                    Signed in as <span id="userMenuEmail">user@example.com</span>
+                                </div>
+                            </div>
+                            <div class="pt-2 mt-2 border-t border-gray-200 dark:border-gray-700">
+                                <button id="suggestResourceButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>
+                                    <span>Suggest a Resource</span>
+                                </button>
+                                <button id="proposeClinicButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-chalkboard-teacher mr-2 text-purple-500"></i>
+                                    <span>Propose a Knowledge Clinic</span>
+                                </button>
+                                <button id="menuLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mt-2 flex items-center hidden">
+                                    <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="hidden sm:flex items-center space-x-2"> <button id="loginButton" class="px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 hidden">Login</button>
                       <button id="signupButton" class="px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 hidden">Sign Up</button>
                       <span id="userInfo" class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm hidden items-center whitespace-nowrap"></span>
                       <button id="logoutButton" class="px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 hidden">Logout</button>
                  </div>
-                 <!-- Mobile Menu Button (Hamburger) -->
-                 <div class="md:hidden flex items-center"> <!-- Show only on small screens (opposite of hidden md:flex) -->
-                      <button id="mobileMenuButton" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                 <div class="md:hidden flex items-center"> <button id="mobileMenuButton" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                            <i class="fas fa-bars"></i>
                       </button>
                  </div>
             </div>
         </div>
 
-         <!-- Mobile Menu Panel (Hidden by default) -->
          <div id="mobileMenuPanel" class="md:hidden hidden py-4 border-t border-gray-200 dark:border-gray-700">
-             <!-- Navigation links for mobile -->
              <div class="flex flex-col space-y-2 mb-4">
-                  <!-- Duplicate Main Category links here for mobile -->
-             </div>
-             <!-- Auth buttons for mobile -->
+                  </div>
              <div class="flex flex-col space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
                   <button id="mobileLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Login</button>
                   <button id="mobileSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Sign Up</button>
                   <span id="mobileUserInfo" class="px-3 py-2 text-gray-500 dark:text-gray-400 hidden"></span>
                   <button id="mobileLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Logout</button>
-                   <!-- Mobile Theme Toggle -->
                    <button id="mobileThemeToggle" class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                        <span>Toggle Theme</span>
                        <span class="text-sm">
@@ -232,198 +266,192 @@
           </div>
       </div>
 
-      
-      <div class="flex justify-center space-x-8 py-4"> 
-        <div class="group">   
 
-                
-        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+      <div class="flex justify-center space-x-8 py-4">
+        <div class="group">
+
+
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">
                             <button class="icon-button relative group" data-category="diy">
-                  <div class="bg-gradient-to-r from-red-600 to-zinc-400 
-                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                  <div class="bg-gradient-to-r from-red-600 to-zinc-400
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200
                               hover:scale-105 hover:shadow-xl
-                              float-1 
-                              flex items-center justify-center"> 
+                              float-1
+                              flex items-center justify-center">
                     <i class="fas fa-2x fa-building"></i>
                   </div>
                    Shelter
                 </button>
-              
-        </a>                    
-        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">   
-        <a href="#" 
-           class="main-category-icon main-category-icon drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="low-cost-construction"  
+
+        </a>
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">
+        <a href="#"
+           class="main-category-icon main-category-icon drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="low-cost-construction"
            data-text="Discover practical techniques for building durable structures affordably.">
            Low-cost, Durable Construction Methods
         </a>
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="local-materials" 
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="local-materials"
            data-text="Explore how to use nearby resources to construct sustainable, efficient buildings.">
            Locally Available Materials
         </a>
-        </div>                
-    </div>                       
-    <div class="group">                    
-        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-text="Water system information" data-category="Water">                        
+        </div>
+    </div>
+    <div class="group">
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-text="Water system information" data-category="Water">
                 <button class="icon-button relative group" data-category="drinking-water">
-                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
-                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200
                               hover:scale-105 hover:shadow-xl
-                              float-2 
-                              flex items-center justify-center"> 
+                              float-2
+                              flex items-center justify-center">
                     <i class="fas fa-2x fa-tint"></i>
                   </div>
                  Water
                 </button>
-              
-        </a>                 
-        <div class="drop-up-menu">                        
-          
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="waterpurification" 
+
+        </a>
+        <div class="drop-up-menu">
+
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="waterpurification"
            data-text="Learn how to purify water effectively and ensure a clean, safe supply.">
            Purification
         </a>
-        
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="desalination" 
+
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="desalination"
            data-text="Explore methods to remove salt from seawater, making it usable for drinking and irrigation.">
            Desalination
         </a>
-        
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="waterdistribution" 
+
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="waterdistribution"
            data-text="Discover efficient ways to distribute water across urban and rural communities.">
            Efficient Distribution
         </a>
-          
-        </div>                
-    </div>                
-                         
-                           
-    <div class="group">                    
-        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+
+        </div>
+    </div>
+
+
+    <div class="group">
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">
                             <button class="icon-button relative group" data-category="energy-systems">
-                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600 
-                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200
                               hover:scale-105 hover:shadow-xl
-                              float-4 
-                              flex items-center justify-center"> 
+                              float-4
+                              flex items-center justify-center">
                     <i class="fas fa-2x fa-bolt"></i>
                   </div>
                 Energy
-                </button>   
-        </a>                   
-        <div class="drop-up-menu">                     
-        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+                </button>
+        </a>
+        <div class="drop-up-menu">
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform
           transition-all border-3 border-blue m-2" data-category="diysolar">DIY Solar Energy</a>
-        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform
           transition-all border-3 border-blue m-2" data-category="biogas">Biogas Generation</a>
-        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
-          transition-all border-3 border-blue m-2" data-category="microgrids">Microgrids for Sustainable Power</a>                 
-       
-        </div>                
-    </div>                
-    <div class="group">                    
-        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">                        
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform
+          transition-all border-3 border-blue m-2" data-category="microgrids">Microgrids for Sustainable Power</a>
+
+        </div>
+    </div>
+    <div class="group">
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">
                             <button class="icon-button relative group" data-category="health">
-                  <div class="bg-gradient-to-r from-red-700 to-violet-600 
-                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                  <div class="bg-gradient-to-r from-red-700 to-violet-600
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200
                               hover:scale-105 hover:shadow-xl
-                              float-4 
-                              flex items-center justify-center"> 
+                              float-4
+                              flex items-center justify-center">
                     <i class="fas fa-2x fa-heartbeat"></i>
                   </div>
                 Health
                 </button>
-              
-        </a>                      
-        <div class="drop-up-menu">  
 
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="emtskills" 
+        </a>
+        <div class="drop-up-menu">
+
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="emtskills"
            data-text="Gain the essential emergency medical skills to respond to urgent situations.">
            EMT Skills
         </a>
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="telemedicine" 
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="telemedicine"
            data-text="Discover how telemedicine bridges gaps in healthcare access and treatment.">
            Telemedicine
         </a>
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="firstaid" 
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="firstaid"
            data-text="Learn essential first-aid techniques to address minor injuries and emergencies.">
            First Aid
         </a>
-        <a href="#" 
-           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
-           data-category="selfsufficienthealthcare" 
+        <a href="#"
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2"
+           data-category="selfsufficienthealthcare"
            data-text="Explore strategies for self-reliant healthcare in remote or resource-limited settings.">
            Self-sufficient Healthcare
         </a>
-   </div>                
-    </div>            
-    <div class="group">                
-        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+   </div>
+    </div>
+    <div class="group">
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">
                             <button class="icon-button relative group" data-category="agriculure">
-                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
-                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200
                               hover:scale-105 hover:shadow-xl
-                              float-6 
-                              flex items-center justify-center"> 
+                              float-6
+                              flex items-center justify-center">
                     <i class="fas fa-2x fa-seedling"></i>
                   </div>
                   Food
                 </button>
-               
-        </a>                 
-        <div class="drop-up-menu">                    
+
+        </a>
+        <div class="drop-up-menu">
               <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="urbanfood">Urban Gardening</a>
               <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="hydroponics">Hydroponics</a>
-              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="sustainableag">Sustainable Agriculture Techniques</a>  
-        </div>            
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="sustainableag">Sustainable Agriculture Techniques</a>
+        </div>
     </div>
 
 
 
     </div>
   </div>
-  
-  <!-- Hero Section with Mondrian Overlay -->
+
   <div class="relative">
 
-  
-    <!-- Hero Content -->
 
-  
-    <!-- Mondrian Overlay -->
     <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
       <div class="absolute inset-0 p-8">
         <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
-          <!-- Subcategories will be dynamically inserted here -->
-        </div>
+          </div>
       </div>
       <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
         <i class="fas fa-times"></i>
       </button>
     </div>
   </div>
-    
+
   <div class="floating-icons">
     <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
     <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
     <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
     <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
 </div>
-    
+
 <div class="header relative overflow-hidden">
 
 <div class="container mx-auto flex justify-center space-x-8">
@@ -432,10 +460,9 @@
 
 
 
-       
             </div>
 
-                
+
             <div class="floating-icons">
                 <div class="floating-icons">
                     <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
@@ -460,7 +487,7 @@
 
         <div id="hero" class=" mb-1">
         </div>
-    
+
     </div>
 
     <div class="container mx-auto px-4">
@@ -474,22 +501,21 @@
     </div>
 
 
-    
+
     <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
-    <!-- Search and Sort Controls -->
     <div class="flex flex-col md:flex-row gap-4 mb-8">
       <div class="flex-1">
-        <input 
-          type="text" 
+        <input
+          type="text"
           id="searchInput"
-          placeholder="Search solutions..." 
+          placeholder="Search solutions..."
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
         >
       </div>
       <div class="flex-shrink-0">
-        <select 
-          id="sortSelect" 
+        <select
+          id="sortSelect"
           class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
         >
           <option value="newest">Newest First</option>
@@ -499,21 +525,16 @@
       </div>
     </div>
 
-    <!-- Loading Skeleton -->
     <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Skeleton cards will be injected here -->
-    </div>
+      </div>
 
-    <!-- Video Grid -->
     <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
-      <!-- Videos will be dynamically inserted here -->
-    </div>
+      </div>
 
-    <!-- Infinite Scroll Trigger -->
     <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
 
-  
+
       <script>
 
 
@@ -538,7 +559,7 @@
 
           // Check saved preference
           if (localStorage.getItem('darkMode') === 'true' ||
-              (!localStorage.getItem('darkMode') && 
+              (!localStorage.getItem('darkMode') &&
                window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             updateTheme(true);
           }
@@ -547,20 +568,20 @@
             updateTheme(!html.classList.contains('dark'));
           });
 
-          // Profile Dropdown
+          // Profile Dropdown - OLD - Keeping for reference if needed, but replaced by User Menu
           //const profileButton = document.getElementById('profileButton');
           //const profileDropdown = document.getElementById('profileDropdown');
-          
-/*  
+
+/*
             profileButton.addEventListener('click', (e) => {
             e.stopPropagation();
             profileDropdown.classList.toggle('dropdown-active');
           });
 */
 
-          document.addEventListener('click', () => {
-            profileDropdown.classList.remove('dropdown-active');
-          });
+          // document.addEventListener('click', () => {
+          //   profileDropdown.classList.remove('dropdown-active');
+          // });
 
 document.addEventListener('DOMContentLoaded', function() {
   // Elements
@@ -569,114 +590,551 @@ document.addEventListener('DOMContentLoaded', function() {
   const languageSearch = document.getElementById('language-search');
   const languageButtons = document.querySelectorAll('.lang-button');
   const currentLangDisplay = document.getElementById('current-language-display');
-  
+
   // Get saved language or default to English
   const savedLanguage = localStorage.getItem('approVideoLanguage') || 'en';
   updateActiveLanguage(savedLanguage);
-  
+
   // Toggle dropdown when button is clicked
-  languageButton.addEventListener('click', function(e) {
-    e.stopPropagation();
-    languageMenu.classList.toggle('hidden');
-  });
-  
+  if (languageButton && languageMenu) { // Add checks
+    languageButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      languageMenu.classList.toggle('hidden');
+    });
+  }
+
   // Hide dropdown when clicking outside
   document.addEventListener('click', function(e) {
-    if (!languageButton.contains(e.target) && !languageMenu.contains(e.target)) {
+    if (languageButton && languageMenu && !languageButton.contains(e.target) && !languageMenu.contains(e.target)) {
       languageMenu.classList.add('hidden');
     }
   });
-  
+
   // Search functionality
-  languageSearch.addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    
-    languageButtons.forEach(button => {
-      const lang = button.getAttribute('data-lang').toLowerCase();
-      const langName = button.querySelector('span:last-child').textContent.toLowerCase();
-      
-      if (lang.includes(searchTerm) || langName.includes(searchTerm) || searchTerm === '') {
-        button.style.display = '';
-      } else {
-        button.style.display = 'none';
-      }
-    });
-  });
-  
+  if (languageSearch) { // Add check
+      languageSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+
+        languageButtons.forEach(button => {
+          const lang = button.getAttribute('data-lang').toLowerCase();
+          const langName = button.querySelector('span:last-child').textContent.toLowerCase();
+
+          if (lang.includes(searchTerm) || langName.includes(searchTerm) || searchTerm === '') {
+            button.style.display = 'flex'; // Use flex to restore layout
+          } else {
+            button.style.display = 'none';
+          }
+        });
+      });
+  }
+
   // Language selection
   languageButtons.forEach(button => {
     // Highlight active language
     if (button.getAttribute('data-lang').toLowerCase() === savedLanguage.toLowerCase()) {
       button.classList.add('bg-blue-500', 'text-white');
-      button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+      const langNameSpan = button.querySelector('span:last-child');
+      if (langNameSpan) langNameSpan.classList.remove('text-gray-600', 'dark:text-gray-300');
     }
-    
+
     // Handle click
     button.addEventListener('click', function() {
       const lang = this.getAttribute('data-lang');
-      
+
       // Save language preference
       localStorage.setItem('approVideoLanguage', lang);
-      
+
       // Update UI
       updateActiveLanguage(lang);
-      
+
       // Hide dropdown
-      languageMenu.classList.add('hidden');
-      
+      if (languageMenu) languageMenu.classList.add('hidden'); // Add check
+
       // Dispatch event for language change
       document.dispatchEvent(new CustomEvent('languageChanged', {
         detail: { language: lang }
       }));
-      
+
       // Reload page to apply language
       // Comment this line if you're using a client-side translation system
       // window.location.reload();
     });
   });
-  
+
   // Update active language display
   function updateActiveLanguage(lang) {
     // Update display
-    currentLangDisplay.textContent = lang.toUpperCase();
-    
+    if (currentLangDisplay) { // Add check
+        currentLangDisplay.textContent = lang.toUpperCase();
+    }
+
     // Update active button styling
     languageButtons.forEach(button => {
       const buttonLang = button.getAttribute('data-lang');
       const isActive = buttonLang.toLowerCase() === lang.toLowerCase();
-      
+      const langNameSpan = button.querySelector('span:last-child');
+
       // Reset all buttons first
       button.classList.remove('bg-blue-500', 'text-white');
-      button.querySelector('span:last-child').classList.add('text-gray-600', 'dark:text-gray-300');
-      
+      if (langNameSpan) langNameSpan.classList.add('text-gray-600', 'dark:text-gray-300');
+
       // Then style the active one
       if (isActive) {
         button.classList.add('bg-blue-500', 'text-white');
-        button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+        if (langNameSpan) langNameSpan.classList.remove('text-gray-600', 'dark:text-gray-300');
       }
     });
   }
 });
-  
+
+
+// START: User Menu JS Integration
+// User Menu Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Menu elements
+  const userMenuButton = document.getElementById('userMenuButton');
+  const userMenuDropdown = document.getElementById('userMenuDropdown');
+  const userMenuLabel = document.getElementById('user-menu-label');
+  const guestOptions = document.getElementById('guestOptions');
+  const userOptions = document.getElementById('userOptions');
+  const userMenuEmail = document.getElementById('userMenuEmail');
+  const menuLoginButton = document.getElementById('menuLoginButton');
+  const menuSignupButton = document.getElementById('menuSignupButton');
+  const menuLogoutButton = document.getElementById('menuLogoutButton');
+  const suggestResourceButton = document.getElementById('suggestResourceButton');
+  const proposeClinicButton = document.getElementById('proposeClinicButton');
+
+  // Reference to existing modal elements/triggers
+  const loginButton = document.getElementById('loginButton'); // Your main login button
+  const signupButton = document.getElementById('signupButton'); // Your main signup button
+  const logoutButton = document.getElementById('logoutButton'); // Your main logout button
+  const editorModal = document.getElementById('editor-modal'); // Assuming editor modal is triggered by login
+
+  // Toggle dropdown when button is clicked
+  if (userMenuButton && userMenuDropdown) {
+    userMenuButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userMenuDropdown.classList.toggle('hidden');
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!userMenuButton.contains(e.target) && !userMenuDropdown.contains(e.target)) {
+        userMenuDropdown.classList.add('hidden');
+      }
+    });
+  }
+
+  // Button actions
+  if (menuLoginButton && loginButton) {
+    menuLoginButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing login button/modal functionality
+      loginButton.click(); // Or trigger whatever function opens your login modal
+    });
+  }
+
+  if (menuSignupButton && signupButton) {
+    menuSignupButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing signup button/modal functionality
+      signupButton.click(); // Or trigger whatever function opens your signup modal
+    });
+  }
+
+  if (menuLogoutButton && logoutButton) {
+    menuLogoutButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing logout button functionality
+      logoutButton.click(); // Or call your logout function
+    });
+  }
+
+  // Resource suggestion modal
+  if (suggestResourceButton) {
+    suggestResourceButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showResourceSuggestionModal();
+    });
+  }
+
+  // Clinic proposal modal
+  if (proposeClinicButton) {
+    proposeClinicButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showClinicProposalModal();
+    });
+  }
+
+  // Update the user menu based on login state
+  // Make this globally accessible or ensure it's called correctly
+  window.updateUserMenu = function(user) {
+    if (!userMenuLabel || !guestOptions || !userOptions || !menuLogoutButton) return;
+
+    if (user && user.email && user.email !== 'unknown@example.com') {
+      // User is logged in
+      userMenuLabel.textContent = user.name || 'Account'; // Use name if available
+      guestOptions.classList.add('hidden');
+      userOptions.classList.remove('hidden');
+      menuLogoutButton.classList.remove('hidden');
+
+      if (userMenuEmail) {
+        userMenuEmail.textContent = user.email;
+      }
+    } else {
+      // User is a guest
+      userMenuLabel.textContent = 'Account';
+      guestOptions.classList.remove('hidden');
+      userOptions.classList.add('hidden');
+      menuLogoutButton.classList.add('hidden');
+    }
+  };
+
+  // Initial update on page load (assuming loadSecureSession handles this)
+  // Ensure this runs *after* loadSecureSession completes
+  // Consider using Promises or callbacks if loadSecureSession is async
+  if (typeof loadSecureSession === 'function') {
+    // If loadSecureSession is async and returns a Promise:
+    loadSecureSession().then(session => {
+      if (window.updateUserMenu) {
+        window.updateUserMenu(session);
+      }
+    }).catch(error => {
+      console.warn('Session loading failed, showing guest options:', error);
+      if (window.updateUserMenu) {
+        window.updateUserMenu(null); // Ensure menu shows guest state on failure
+      }
+    });
+    // If loadSecureSession is synchronous or uses a callback, adjust accordingly
+  } else {
+    // Fallback if loadSecureSession isn't defined, assume guest
+     if (window.updateUserMenu) {
+        window.updateUserMenu(null);
+     }
+  }
+});
+
+// Resource suggestion modal function
+function showResourceSuggestionModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('resource-suggestion-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'resource-suggestion-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Suggest a Resource</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Help expand our collection by suggesting educational resources that address appropriate technology solutions.
+            </p>
+            <form id="resource-suggestion-form" class="space-y-4">
+              <div>
+                <label for="resource-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Resource Title</label>
+                <input type="text" id="resource-title" name="title" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="resource-url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL (YouTube, website, etc.)</label>
+                <input type="url" id="resource-url" name="url" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="resource-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                <select id="resource-category" name="category" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a category</option>
+                  <option value="Water">Water</option>
+                  <option value="Shelter">Shelter</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Health">Health</option>
+                  <option value="Agronomy">Food/Agriculture</option>
+                  </select>
+              </div>
+              <div>
+                <label for="resource-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                <textarea id="resource-description" name="description" rows="3" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+              <div>
+                <label for="resource-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Email (optional, for follow-up)</label>
+                <input type="email" id="resource-email" name="email" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="resource-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                  Submit Suggestion
+                </button>
+              </div>
+            </form>
+            <p id="resource-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('resource-suggestion-form');
+    const message = document.getElementById('resource-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for your suggestion! Our team will review it soon.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Resource suggestion (needs API integration):', data);
+      // Example: fetch('/api/suggestions/resource', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //  .then(response => response.json())
+      //  .then(result => { /* Handle success */ })
+      //  .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+        setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('resource-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
+}
+
+
+// Clinic proposal modal function
+function showClinicProposalModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('clinic-proposal-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'clinic-proposal-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Propose a Knowledge Clinic</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Suggest a topic for a knowledge clinic to address gaps in appropriate technology understanding and skills.
+            </p>
+            <form id="clinic-proposal-form" class="space-y-4">
+              <div>
+                <label for="clinic-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Clinic Topic/Title</label>
+                <input type="text" id="clinic-title" name="title" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="clinic-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Field/Category</label>
+                <select id="clinic-category" name="category" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a category</option>
+                  <option value="Water">Water</option>
+                  <option value="Shelter">Shelter</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Health">Health</option>
+                  <option value="Food">Food/Agriculture</option>
+                  <option value="Other">Other</option>
+                  </select>
+              </div>
+              <div>
+                <label for="clinic-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">What knowledge gap would this address?</label>
+                <textarea id="clinic-description" name="description" rows="3" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+              <div>
+                <label for="clinic-format" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Suggested Format</label>
+                <select id="clinic-format" name="format" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a format</option>
+                  <option value="online">Online Workshop</option>
+                  <option value="in-person">In-Person Workshop</option>
+                  <option value="tutorial">Video Tutorial Series</option>
+                  <option value="guide">Comprehensive Guide</option>
+                  <option value="other">Other (please specify in description)</option>
+                </select>
+              </div>
+              <div>
+                <label for="clinic-contact" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Email (for follow-up)</label>
+                <input type="email" id="clinic-contact" name="email" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="clinic-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                  Submit Proposal
+                </button>
+              </div>
+            </form>
+            <p id="clinic-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('clinic-proposal-form');
+    const message = document.getElementById('clinic-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for your clinic proposal! Our team will review it and contact you soon.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Clinic proposal (needs API integration):', data);
+      // Example: fetch('/api/proposals/clinic', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //   .then(response => response.json())
+      //   .then(result => { /* Handle success */ })
+      //   .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+         setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('clinic-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
+}
+
+
+// Modify the existing updateUIForUser function (if it exists globally)
+// to also update the user menu. Create it if it doesn't exist.
+const originalUpdateUIForUser = window.updateUIForUser || function(session) {
+    // This function might contain your original logic to show/hide
+    // login/logout/signup buttons, user info span, etc.
+    // Find elements like loginButton, signupButton, userInfo, logoutButton
+    // and update their visibility and content based on the 'session' object.
+    // Example (adapt based on your actual implementation):
+    const loginBtn = document.getElementById('loginButton');
+    const signupBtn = document.getElementById('signupButton');
+    const userInfoSpan = document.getElementById('userInfo');
+    const logoutBtn = document.getElementById('logoutButton');
+    const mobileLoginBtn = document.getElementById('mobileLoginButton');
+    const mobileSignupBtn = document.getElementById('mobileSignupButton');
+    const mobileUserInfoSpan = document.getElementById('mobileUserInfo');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutButton');
+
+    const isLoggedIn = session && session.email && session.email !== 'unknown@example.com';
+
+    if (isLoggedIn) {
+        if (loginBtn) loginBtn.classList.add('hidden');
+        if (signupBtn) signupBtn.classList.add('hidden');
+        if (userInfoSpan) {
+            userInfoSpan.textContent = `Welcome, ${session.name || session.email}`;
+            userInfoSpan.classList.remove('hidden');
+             userInfoSpan.classList.add('flex', 'items-center'); // Ensure it's displayed correctly
+        }
+        if (logoutBtn) logoutBtn.classList.remove('hidden');
+
+        if (mobileLoginBtn) mobileLoginBtn.classList.add('hidden');
+        if (mobileSignupBtn) mobileSignupBtn.classList.add('hidden');
+        if (mobileUserInfoSpan) {
+             mobileUserInfoSpan.textContent = `Welcome, ${session.name || session.email}`;
+             mobileUserInfoSpan.classList.remove('hidden');
+             mobileUserInfoSpan.classList.add('block'); // Or appropriate display class
+        }
+        if (mobileLogoutBtn) mobileLogoutBtn.classList.remove('hidden');
+
+    } else {
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (signupBtn) signupBtn.classList.remove('hidden');
+        if (userInfoSpan) userInfoSpan.classList.add('hidden');
+        if (logoutBtn) logoutBtn.classList.add('hidden');
+
+        if (mobileLoginBtn) mobileLoginBtn.classList.remove('hidden');
+        if (mobileSignupBtn) mobileSignupBtn.classList.remove('hidden');
+        if (mobileUserInfoSpan) mobileUserInfoSpan.classList.add('hidden');
+        if (mobileLogoutBtn) mobileLogoutBtn.classList.add('hidden');
+    }
+};
+
+window.updateUIForUser = function(session) {
+  // Call the original logic first
+  originalUpdateUIForUser(session);
+
+  // Then, update the user menu state
+  if (window.updateUserMenu) {
+    window.updateUserMenu(session);
+  }
+};
+// END: User Menu JS Integration
 
 </script>
 
 
 <div class="container mx-auto px-4 mb-8">
-  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">    
+  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">
       Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
-      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee 
-      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with 
+      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee
+      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with
       YouTube's terms of service. We encourage transformative use, proper attribution, and respect for copyright.
   </div>
 </div>
-    
 
-    
+
+
     <BR><BR><BR>
 
 
-    
+
 
 <footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
     <div class="landscape">
@@ -685,7 +1143,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 
    <BR><BR><BR>
-    
+
     <div class="container mx-auto px-4">
         <div class="flex flex-wrap justify-between items-start">
             <div class="w-full md:w-1/3 mb-8 md:mb-0">
@@ -735,8 +1193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="text-sm text-gray-500">
                     Approvideo can use your help curating useful content about DIY appropriate technology. Donation? paypal ecocommunity@protonmail.com
                 </p>
-                <!-- Add sponsorship options or a form here -->
-            </div>
+                </div>
             <div class="items-center px-4 py-3">
                 <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
                     Close
@@ -781,7 +1238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
-  
+
 </footer>
 
 </body>

@@ -153,25 +153,26 @@ export function isCryptoBypassed() {
 
 
 export async function saveSecureSession(data) {
-  const key = await getOrCreateKey();
-  const quaternion = generateNormalizedQuaternion();
-  const iv = generateQuaternionIV(quaternion);
-  const latticeHash = await hashMetaLattice(quaternion);
+  try {
+    const key = await getOrCreateKey();
+    const quaternion = generateNormalizedQuaternion();
+    const iv = generateQuaternionIV(quaternion);
+    const latticeHash = await hashMetaLattice(quaternion);
 
-  const sessionWithLattice = {
-    ...data,
-    metaLattice: quaternion,
-    latticeHash,
-    timestamp: Date.now()
-  };
+    const sessionWithLattice = {
+      ...data,
+      metaLattice: quaternion,
+      latticeHash,
+      timestamp: Date.now()
+    };
 
-  const encoded = strToBuf(JSON.stringify(sessionWithLattice));
-  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+    const encoded = strToBuf(JSON.stringify(sessionWithLattice));
+    const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
 
-  const payload = {
-    iv: bufToBase64(iv),
-    data: bufToBase64(ciphertext)
-  };
+    const payload = {
+      iv: bufToBase64(iv),
+      data: bufToBase64(ciphertext)
+    };
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     return true;
@@ -189,7 +190,7 @@ export async function saveSecureSession(data) {
     }
   }
 
-
+}
 
 
 export async function loadSecureSession(autoGenerate = true, fallback = { role: 'guest', email: 'unknown@example.com' }) {

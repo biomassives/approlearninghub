@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="stylenew.css" rel="stylesheet">  
+  <script type="module" src="index.js"></script>
+</head>
+
+<body class="theme-transition">
+
+<div class="border-b border-gray-700 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-md">
+    <div class="container mx-auto px-4">
+        <!-- Main Header Row -->
+        <div class="flex items-center justify-between h-16"> <!-- Use flex, align center, set height -->
+            <!-- Left Side (Logo/Title) -->
+            <div class="flex-shrink-0"> <!-- Prevent shrinking -->
+                 <a href="/" class="text-xl font-bold"> <!-- Link to homepage -->
+                    🌿 ApproVideo 🌱
+                 </a>
+            </div>
+
+            <!-- Center (Main Categories - visible on larger screens) -->
+            <div class="hidden md:flex md:justify-center md:flex-grow"> <!-- Hide on small, flex on medium+ -->
+                 <div class="flex items-center space-x-4 lg:space-x-6"> <!-- Adjust spacing -->
+                      <!-- Main category .group divs go here -->
+                 </div>
+            </div>
+
+            <!-- Right Side (Theme/Auth/Mobile Menu Toggle) -->
+            <div class="flex items-center space-x-2">
+                 <!-- Theme Toggle -->
+                 <div class="hidden sm:block"> <!-- Hide on extra-small? -->
+                      <button id="darkModeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                      </button>
+                 </div>
+                 <!-- Auth Buttons -->
+
+                 <!-- Language Toggle Button -->
+                  <button id="language-dropdown-button" class="flex items-center px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm">
+                    <span id="current-language-display">EN</span>
+                    <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                  </button>
+                  
+                  <!-- Language Dropdown Menu -->
+                  <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
+                    <div class="p-3">
+                      <!-- Search input -->
+                      <input type="text" id="language-search" placeholder="Search languages..." class="w-full p-2 mb-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 text-sm">
+                      
+                      <!-- Language grid -->
+                      <div id="language-grid" class="grid grid-cols-3 gap-2">
+                        <button data-lang="am" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Amharic</span>
+                        </button>
+                        <button data-lang="ar" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Arabic</span>
+                        </button>
+                        <button data-lang="bn" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">BN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Bengali</span>
+                        </button>
+                        <button data-lang="de" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">DE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">German</span>
+                        </button>
+                        <button data-lang="en" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">EN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">English</span>
+                        </button>
+                        <button data-lang="es" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ES</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Spanish</span>
+                        </button>
+                        <button data-lang="fa" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Persian</span>
+                        </button>
+                        <button data-lang="fr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">French</span>
+                        </button>
+                        <button data-lang="ha" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hausa</span>
+                        </button>
+                        <button data-lang="hi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hindi</span>
+                        </button>
+                        <button data-lang="id" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ID</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Indonesian</span>
+                        </button>
+                        <button data-lang="it" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">IT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Italian</span>
+                        </button>
+                        <button data-lang="jp" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">JP</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Japanese</span>
+                        </button>
+                        <button data-lang="km" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Khmer</span>
+                        </button>
+                        <button data-lang="ko" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Korean</span>
+                        </button>
+                        <button data-lang="ku" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Kurdish</span>
+                        </button>
+                        <button data-lang="ms" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Malay</span>
+                        </button>
+                        <button data-lang="my" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MY</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Burmese</span>
+                        </button>
+                        <button data-lang="ne" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">NE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Nepali</span>
+                        </button>
+                        <button data-lang="ps" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Pashto</span>
+                        </button>
+                        <button data-lang="pt" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Portuguese</span>
+                        </button>
+                        <button data-lang="ru" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">RU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Russian</span>
+                        </button>
+                        <button data-lang="so" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Somali</span>
+                        </button>
+                        <button data-lang="sw" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SW</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Swahili</span>
+                        </button>
+                        <button data-lang="ta" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tamil</span>
+                        </button>
+                        <button data-lang="th" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Thai</span>
+                        </button>
+                        <button data-lang="tl" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TL</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tagalog</span>
+                        </button>
+                        <button data-lang="tr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Turkish</span>
+                        </button>
+                        <button data-lang="uk" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UK</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Ukrainian</span>
+                        </button>
+                        <button data-lang="ur" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Urdu</span>
+                        </button>
+                        <button data-lang="vi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">VI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Vietnamese</span>
+                        </button>
+                        <button data-lang="yo" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">YO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Yoruba</span>
+                        </button>
+                        <button data-lang="zh" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ZH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Chinese</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                 <div class="hidden sm:flex items-center space-x-2"> <!-- Hide on extra-small, flex on small+ -->
+                      <button id="loginButton" class="px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 hidden">Login</button>
+                      <button id="signupButton" class="px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 hidden">Sign Up</button>
+                      <span id="userInfo" class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm hidden items-center whitespace-nowrap"></span>
+                      <button id="logoutButton" class="px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 hidden">Logout</button>
+                 </div>
+                 <!-- Mobile Menu Button (Hamburger) -->
+                 <div class="md:hidden flex items-center"> <!-- Show only on small screens (opposite of hidden md:flex) -->
+                      <button id="mobileMenuButton" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-bars"></i>
+                      </button>
+                 </div>
+            </div>
+        </div>
+
+         <!-- Mobile Menu Panel (Hidden by default) -->
+         <div id="mobileMenuPanel" class="md:hidden hidden py-4 border-t border-gray-200 dark:border-gray-700">
+             <!-- Navigation links for mobile -->
+             <div class="flex flex-col space-y-2 mb-4">
+                  <!-- Duplicate Main Category links here for mobile -->
+             </div>
+             <!-- Auth buttons for mobile -->
+             <div class="flex flex-col space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <button id="mobileLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Login</button>
+                  <button id="mobileSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Sign Up</button>
+                  <span id="mobileUserInfo" class="px-3 py-2 text-gray-500 dark:text-gray-400 hidden"></span>
+                  <button id="mobileLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Logout</button>
+                   <!-- Mobile Theme Toggle -->
+                   <button id="mobileThemeToggle" class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                       <span>Toggle Theme</span>
+                       <span class="text-sm">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                       </span>
+                   </button>
+                   </div>
+               </div>
+          </div>
+      </div>
+
+      
+      <div class="flex justify-center space-x-8 py-4"> 
+        <div class="group">   
+
+                
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+                            <button class="icon-button relative group" data-category="diy">
+                  <div class="bg-gradient-to-r from-red-600 to-zinc-400 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-1 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-building"></i>
+                  </div>
+                   Shelter
+                </button>
+              
+        </a>                    
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">   
+        <a href="#" 
+           class="main-category-icon main-category-icon drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="low-cost-construction"  
+           data-text="Discover practical techniques for building durable structures affordably.">
+           Low-cost, Durable Construction Methods
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="local-materials" 
+           data-text="Explore how to use nearby resources to construct sustainable, efficient buildings.">
+           Locally Available Materials
+        </a>
+        </div>                
+    </div>                       
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-text="Water system information" data-category="Water">                        
+                <button class="icon-button relative group" data-category="drinking-water">
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-2 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-tint"></i>
+                  </div>
+                 Water
+                </button>
+              
+        </a>                 
+        <div class="drop-up-menu">                        
+          
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterpurification" 
+           data-text="Learn how to purify water effectively and ensure a clean, safe supply.">
+           Purification
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="desalination" 
+           data-text="Explore methods to remove salt from seawater, making it usable for drinking and irrigation.">
+           Desalination
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterdistribution" 
+           data-text="Discover efficient ways to distribute water across urban and rural communities.">
+           Efficient Distribution
+        </a>
+          
+        </div>                
+    </div>                
+                         
+                           
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+                            <button class="icon-button relative group" data-category="energy-systems">
+                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-bolt"></i>
+                  </div>
+                Energy
+                </button>   
+        </a>                   
+        <div class="drop-up-menu">                     
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="diysolar">DIY Solar Energy</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="biogas">Biogas Generation</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="microgrids">Microgrids for Sustainable Power</a>                 
+       
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">                        
+                            <button class="icon-button relative group" data-category="health">
+                  <div class="bg-gradient-to-r from-red-700 to-violet-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-heartbeat"></i>
+                  </div>
+                Health
+                </button>
+              
+        </a>                      
+        <div class="drop-up-menu">  
+
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="emtskills" 
+           data-text="Gain the essential emergency medical skills to respond to urgent situations.">
+           EMT Skills
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="telemedicine" 
+           data-text="Discover how telemedicine bridges gaps in healthcare access and treatment.">
+           Telemedicine
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="firstaid" 
+           data-text="Learn essential first-aid techniques to address minor injuries and emergencies.">
+           First Aid
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="selfsufficienthealthcare" 
+           data-text="Explore strategies for self-reliant healthcare in remote or resource-limited settings.">
+           Self-sufficient Healthcare
+        </a>
+   </div>                
+    </div>            
+    <div class="group">                
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+                            <button class="icon-button relative group" data-category="agriculure">
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-6 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-seedling"></i>
+                  </div>
+                  Food
+                </button>
+               
+        </a>                 
+        <div class="drop-up-menu">                    
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="urbanfood">Urban Gardening</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="hydroponics">Hydroponics</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="sustainableag">Sustainable Agriculture Techniques</a>  
+        </div>            
+    </div>
+
+
+
+    </div>
+  </div>
+  
+  <!-- Hero Section with Mondrian Overlay -->
+  <div class="relative">
+
+  
+    <!-- Hero Content -->
+
+  
+    <!-- Mondrian Overlay -->
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          <!-- Subcategories will be dynamically inserted here -->
+        </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+
+  <div id="subheader" class="subheader"> Approvideo is a DIY learning network that supports hands on learning and community level collaboration. </div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+    
+    </div>
+
+    <div class="container mx-auto px-4">
+
+    <div id="intro-text-display" class="container mx-auto px-4 my-6 hidden bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+      <h3 id="intro-title" class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200"></h3>
+      <p id="intro-text" class="text-gray-700 dark:text-gray-300 mb-3"></p>
+      <a id="add-resource-link" href="#" class="inline-block px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
+          <i class="fas fa-plus-circle mr-1"></i> Add Resource to this Area
+      </a>
+    </div>
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Search and Sort Controls -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Search solutions..." 
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+      </div>
+      <div class="flex-shrink-0">
+        <select 
+          id="sortSelect" 
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Skeleton cards will be injected here -->
+    </div>
+
+    <!-- Video Grid -->
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      <!-- Videos will be dynamically inserted here -->
+    </div>
+
+    <!-- Infinite Scroll Trigger -->
+    <div id="infiniteScrollTrigger" class="h-20"></div>
+  </div>
+
+  
+      <script>
+
+
+
+      function getRandomColor() {
+        // Using HSL color space for more vibrant colors
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 100;
+        const lightness = Math.random() * 100;
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
+
+
+          // Theme Toggle
+          const darkModeToggle = document.getElementById('darkModeToggle');
+          const html = document.documentElement;
+
+          function updateTheme(isDark) {
+            html.classList.toggle('dark', isDark);
+            localStorage.setItem('darkMode', isDark);
+          }
+
+          // Check saved preference
+          if (localStorage.getItem('darkMode') === 'true' ||
+              (!localStorage.getItem('darkMode') && 
+               window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            updateTheme(true);
+          }
+
+          darkModeToggle.addEventListener('click', () => {
+            updateTheme(!html.classList.contains('dark'));
+          });
+
+          // Profile Dropdown
+          //const profileButton = document.getElementById('profileButton');
+          //const profileDropdown = document.getElementById('profileDropdown');
+          
+/*  
+            profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('dropdown-active');
+          });
+*/
+
+          document.addEventListener('click', () => {
+            profileDropdown.classList.remove('dropdown-active');
+          });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Elements
+  const languageButton = document.getElementById('language-dropdown-button');
+  const languageMenu = document.getElementById('language-dropdown-menu');
+  const languageSearch = document.getElementById('language-search');
+  const languageButtons = document.querySelectorAll('.lang-button');
+  const currentLangDisplay = document.getElementById('current-language-display');
+  
+  // Get saved language or default to English
+  const savedLanguage = localStorage.getItem('approVideoLanguage') || 'en';
+  updateActiveLanguage(savedLanguage);
+  
+  // Toggle dropdown when button is clicked
+  languageButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    languageMenu.classList.toggle('hidden');
+  });
+  
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!languageButton.contains(e.target) && !languageMenu.contains(e.target)) {
+      languageMenu.classList.add('hidden');
+    }
+  });
+  
+  // Search functionality
+  languageSearch.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    languageButtons.forEach(button => {
+      const lang = button.getAttribute('data-lang').toLowerCase();
+      const langName = button.querySelector('span:last-child').textContent.toLowerCase();
+      
+      if (lang.includes(searchTerm) || langName.includes(searchTerm) || searchTerm === '') {
+        button.style.display = '';
+      } else {
+        button.style.display = 'none';
+      }
+    });
+  });
+  
+  // Language selection
+  languageButtons.forEach(button => {
+    // Highlight active language
+    if (button.getAttribute('data-lang').toLowerCase() === savedLanguage.toLowerCase()) {
+      button.classList.add('bg-blue-500', 'text-white');
+      button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+    }
+    
+    // Handle click
+    button.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      
+      // Save language preference
+      localStorage.setItem('approVideoLanguage', lang);
+      
+      // Update UI
+      updateActiveLanguage(lang);
+      
+      // Hide dropdown
+      languageMenu.classList.add('hidden');
+      
+      // Dispatch event for language change
+      document.dispatchEvent(new CustomEvent('languageChanged', {
+        detail: { language: lang }
+      }));
+      
+      // Reload page to apply language
+      // Comment this line if you're using a client-side translation system
+      // window.location.reload();
+    });
+  });
+  
+  // Update active language display
+  function updateActiveLanguage(lang) {
+    // Update display
+    currentLangDisplay.textContent = lang.toUpperCase();
+    
+    // Update active button styling
+    languageButtons.forEach(button => {
+      const buttonLang = button.getAttribute('data-lang');
+      const isActive = buttonLang.toLowerCase() === lang.toLowerCase();
+      
+      // Reset all buttons first
+      button.classList.remove('bg-blue-500', 'text-white');
+      button.querySelector('span:last-child').classList.add('text-gray-600', 'dark:text-gray-300');
+      
+      // Then style the active one
+      if (isActive) {
+        button.classList.add('bg-blue-500', 'text-white');
+        button.querySelector('span:last-child').classList.remove('text-gray-600', 'dark:text-gray-300');
+      }
+    });
+  }
+});
+  
+
+</script>
+
+
+<div class="container mx-auto px-4 mb-8">
+  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">    
+      Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
+      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee 
+      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with 
+      YouTube's terms of service. We encourage transformative use, proper attribution, and respect for copyright.
+  </div>
+</div>
+    
+
+    
+    <BR><BR><BR>
+
+
+    
+
+<footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
+    <div class="landscape">
+        <img src="images/windmill.svg" alt="Windmill">
+        <img src="images/leaf.svg" alt="Leaf">
+    </div>
+
+   <BR><BR><BR>
+    
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-start">
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h3 class="footer-title mb-2 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">ApproVideo</h3>
+                <p class="footer-subtitle text-lg">Appropriate Technology Videos for the DIY Sector</p>
+                <div class="mt-4 relative overflow-hidden cursor-pointer" id="mission-reveal">
+                    <p class="text-sm font-semibold">Our Mission (Click to reveal)</p>
+                    <div class="mission-text hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out">
+                        <p>To empower individuals and communities with accessible, sustainable technology solutions through educational videos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4 text-blue-600 dark:text-blue-400">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>GitHub Repository</a></li>
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla/issues" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>Comments/ Issues </a></li>
+                    <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-balance-scale mr-2"></i>GPL v3 License</a></li>
+                    <li><a href="https://scdhub.org" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-globe mr-2"></i>SCD Hub</a></li>
+                </ul>
+            </div>
+
+            <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
+                <button id="sponsor-us" class="footer-button bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mb-4 transform hover:scale-105">
+                    Donate
+                </button>
+                <button id="be-an-editor" class="footer-button bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transform hover:scale-105 transition duration-300">
+                    Share a Video
+                </button>
+            </div>
+
+
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 dark:border-gray-300 text-center text-sm">
+            <p>© 2025 ApproVideo. All rights repected. | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Privacy Policy</a> | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Terms of Service</a></p>
+            <p class="mt-2">A project of SCD Hub 501(c)(3)</p>
+        </div>
+    </div>
+
+
+
+<div id="sponsor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Support ApproVideo</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Approvideo can use your help curating useful content about DIY appropriate technology. Donation? paypal ecocommunity@protonmail.com
+                </p>
+                <!-- Add sponsorship options or a form here -->
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Share a Video</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Join our team of editors and help curate high-quality content on appropriate technology. Share your expertise with the world!
+                </p>
+                  <form id="editor-login-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <p id="login-message" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-editor-modal" class="px-4 py-2 bg-purple-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  
+</footer>
+
+</body>
+</html>
