@@ -4,23 +4,24 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/modules/:context/:mod/",
-      "dest": "/module.html?context=:context&mod=:mod"
-    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
     },
     {
-      "handle": "filesystem"
+      "src": "^/$",
+      "dest": "/public/index.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "src": "/(.+)",
+      "dest": "/public/$1"
     }
   ]
 }

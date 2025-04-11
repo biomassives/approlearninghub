@@ -35,7 +35,7 @@
             <div class="flex items-center space-x-2">
                  <!-- Theme Toggle -->
                  <div class="hidden sm:block"> <!-- Hide on extra-small? -->
-                      <button id="themeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                      <button id="darkModeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                            <i class="fas fa-moon dark:hidden"></i>
                            <i class="fas fa-sun hidden dark:block"></i>
                       </button>
@@ -548,13 +548,15 @@
           });
 
           // Profile Dropdown
-          const profileButton = document.getElementById('profileButton');
-          const profileDropdown = document.getElementById('profileDropdown');
+          //const profileButton = document.getElementById('profileButton');
+          //const profileDropdown = document.getElementById('profileDropdown');
           
-          profileButton.addEventListener('click', (e) => {
+/*  
+            profileButton.addEventListener('click', (e) => {
             e.stopPropagation();
             profileDropdown.classList.toggle('dropdown-active');
           });
+*/
 
           document.addEventListener('click', () => {
             profileDropdown.classList.remove('dropdown-active');
