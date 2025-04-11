@@ -9,7 +9,7 @@
       "src": "assets/**/*", 
       "use": "@vercel/static"
     },
-    {Logs
+    {
       "src": "data/**/*.json",
       "use": "@vercel/static"
     }
