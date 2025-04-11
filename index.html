@@ -12,18 +12,75 @@
 </head>
 
 <body class="theme-transition">
-<div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm banner-message">💧 Clean water, safe shelter, better lives</div>
 
-  
-  <div class="border-b border-gray-700">
+<div class="border-b border-gray-700 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-md">
     <div class="container mx-auto px-4">
-      <div class="flex justify-center space-x-8 py-4">🌿A P P R O V I D E O 🌱🌳🌱 </div>
+        <!-- Main Header Row -->
+        <div class="flex items-center justify-between h-16"> <!-- Use flex, align center, set height -->
+            <!-- Left Side (Logo/Title) -->
+            <div class="flex-shrink-0"> <!-- Prevent shrinking -->
+                 <a href="/" class="text-xl font-bold"> <!-- Link to homepage -->
+                    🌿 ApproVideo 🌱
+                 </a>
+            </div>
 
-      <div class="absolute right-4 top-4"> <button id="themeToggle" class="p-2 rounded-lg text-white dark:text-gray-300 hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors">
-        <i class="fas fa-moon dark:hidden"></i>
-        <i class="fas fa-sun hidden dark:block"></i>
-      </button>
-    </div>
+            <!-- Center (Main Categories - visible on larger screens) -->
+            <div class="hidden md:flex md:justify-center md:flex-grow"> <!-- Hide on small, flex on medium+ -->
+                 <div class="flex items-center space-x-4 lg:space-x-6"> <!-- Adjust spacing -->
+                      <!-- Main category .group divs go here -->
+                 </div>
+            </div>
+
+            <!-- Right Side (Theme/Auth/Mobile Menu Toggle) -->
+            <div class="flex items-center space-x-2">
+                 <!-- Theme Toggle -->
+                 <div class="hidden sm:block"> <!-- Hide on extra-small? -->
+                      <button id="themeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                      </button>
+                 </div>
+                 <!-- Auth Buttons -->
+                 <div class="hidden sm:flex items-center space-x-2"> <!-- Hide on extra-small, flex on small+ -->
+                      <button id="loginButton" class="px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 hidden">Login</button>
+                      <button id="signupButton" class="px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 hidden">Sign Up</button>
+                      <span id="userInfo" class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm hidden items-center whitespace-nowrap"></span>
+                      <button id="logoutButton" class="px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 hidden">Logout</button>
+                 </div>
+                 <!-- Mobile Menu Button (Hamburger) -->
+                 <div class="md:hidden flex items-center"> <!-- Show only on small screens (opposite of hidden md:flex) -->
+                      <button id="mobileMenuButton" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-bars"></i>
+                      </button>
+                 </div>
+            </div>
+        </div>
+
+         <!-- Mobile Menu Panel (Hidden by default) -->
+         <div id="mobileMenuPanel" class="md:hidden hidden py-4 border-t border-gray-200 dark:border-gray-700">
+             <!-- Navigation links for mobile -->
+             <div class="flex flex-col space-y-2 mb-4">
+                  <!-- Duplicate Main Category links here for mobile -->
+             </div>
+             <!-- Auth buttons for mobile -->
+             <div class="flex flex-col space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <button id="mobileLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Login</button>
+                  <button id="mobileSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Sign Up</button>
+                  <span id="mobileUserInfo" class="px-3 py-2 text-gray-500 dark:text-gray-400 hidden"></span>
+                  <button id="mobileLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Logout</button>
+                   <!-- Mobile Theme Toggle -->
+                   <button id="mobileThemeToggle" class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                       <span>Toggle Theme</span>
+                       <span class="text-sm">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                       </span>
+                   </button>
+                   </div>
+               </div>
+          </div>
+      </div>
+
       
       <div class="flex justify-center space-x-8 py-4"> 
         <div class="group">   
