@@ -4,30 +4,25 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "assets/**/*", 
-      "use": "@vercel/static"
-    },
-    {
-      "src": "data/**/*.json",
-      "use": "@vercel/static"
     }
+    // Removed the builds for assets/**/* and data/**/*.json
+    // because their contents, if static, should now be in public/
+    // and handled automatically by Vercel.
   ],
   "routes": [
     {
       "src": "/modules/:context/:mod/",
-      "dest": "/module.html?context=:context&mod=:mod"
+      "dest": "/module.html?context=:context&mod=:mod" // Assuming public/module.html exists
     },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
     },
     {
-      "handle": "filesystem" 
+      "handle": "filesystem" // Serves files from public/ (like index.html, style.css)
     },
     {
-      "src": "/(.*)",
+      "src": "/(.*)", // Generic fallback/rewrite
       "dest": "/$1"
     }
   ]
