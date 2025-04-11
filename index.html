@@ -1,134 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Approvideo Learning Hub</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f0f0f0;
-  text-align: center;
-  background-image: url('assets/approdec.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-    }
-
-    header {
-      background: #059669;
-      color: white;
-      padding: 1rem;
-    }
-
-    .carousel {
-      max-width: 800px;
-      margin: 2rem auto;
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-
-    .slide {
-      min-width: 100%;
-      box-sizing: border-box;
-    }
-
-    .slide img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .carousel-buttons {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-    }
-
-    .carousel-buttons button {
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: white;
-      padding: 1rem;
-      cursor: pointer;
-      font-size: 1.5rem;
-    }
-
-    .actions {
-      margin-top: 2rem;
-    }
-
-    .actions a {
-      display: inline-block;
-      margin: 0 1rem;
-      padding: 0.75rem 1.5rem;
-      background: #4285f4;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="stylenew.css" rel="stylesheet">  
+  <script type="module" src="index.js"></script>
 </head>
-<body>
-  <header>
-    <h1>Approvideo Learning Hub</h1>
-    <p>Appropriate Technology Videos for the DIY Sector </p>
-  </header>
 
-  <div class="carousel">
-    <div class="slides" id="slides">
-      <div class="slide" id="watersec-slide"><img src="/assets/drinkwater.gif" alt="Water Security" />Water Security</div>
-      <div class="slide" id="wastemgmt-slide"><img src="/assets/images/peacewatersolidwaste.gif" alt="Waste Management" />Waste Management</div>
-      <div class="slide" id="shelter-slide"><img src="/assets/shelter.gif" alt="Shelter" />Shelter</div>
-      <div class="slide" id="renewables-slide"><img src="/assets/energy.gif" alt="Renewable Energy" />Renewable Energy</div>
-      <div class="slide" id="health-slide"><img src="/assets/health.gif" alt="Slide 3" />Self Sufficient Healthcare</div>
-      <div class="slide" id="ag-slide"><img src="/assets/" alt="Sustainable Agriculture" />Food</div> 
+<body class="theme-transition">
+<div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm banner-message">💧 Clean water, safe shelter, better lives</div>
+
+  
+  <div class="border-b border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-8 py-4">🌿A P P R O V I D E O 🌱🌳🌱 </div>
+
+      <div class="absolute right-4 top-4"> <button id="themeToggle" class="p-2 rounded-lg text-white dark:text-gray-300 hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:block"></i>
+      </button>
     </div>
-    <div class="carousel-buttons">
-      <button onclick="prevSlide()">❮</button>
-      <button onclick="nextSlide()">❯</button>
+      
+      <div class="flex justify-center space-x-8 py-4"> 
+        <div class="group">   
+
+                
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+                            <button class="icon-button relative group" data-category="diy">
+                  <div class="bg-gradient-to-r from-red-600 to-zinc-400 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-1 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-building"></i>
+                  </div>
+                   Shelter
+                </button>
+              
+        </a>                    
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">   
+        <a href="#" 
+           class="main-category-icon main-category-icon drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="low-cost-construction"  
+           data-text="Discover practical techniques for building durable structures affordably.">
+           Low-cost, Durable Construction Methods
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="local-materials" 
+           data-text="Explore how to use nearby resources to construct sustainable, efficient buildings.">
+           Locally Available Materials
+        </a>
+        </div>                
+    </div>                       
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-text="Water system information" data-category="Water">                        
+                <button class="icon-button relative group" data-category="drinking-water">
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-2 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-tint"></i>
+                  </div>
+                 Water
+                </button>
+              
+        </a>                 
+        <div class="drop-up-menu">                        
+          
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterpurification" 
+           data-text="Learn how to purify water effectively and ensure a clean, safe supply.">
+           Purification
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="desalination" 
+           data-text="Explore methods to remove salt from seawater, making it usable for drinking and irrigation.">
+           Desalination
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterdistribution" 
+           data-text="Discover efficient ways to distribute water across urban and rural communities.">
+           Efficient Distribution
+        </a>
+          
+        </div>                
+    </div>                
+                         
+                           
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+                            <button class="icon-button relative group" data-category="energy-systems">
+                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-bolt"></i>
+                  </div>
+                Energy
+                </button>   
+        </a>                   
+        <div class="drop-up-menu">                     
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="diysolar">DIY Solar Energy</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="biogas">Biogas Generation</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="microgrids">Microgrids for Sustainable Power</a>                 
+       
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="main-category-icon flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">                        
+                            <button class="icon-button relative group" data-category="health">
+                  <div class="bg-gradient-to-r from-red-700 to-violet-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-heartbeat"></i>
+                  </div>
+                Health
+                </button>
+              
+        </a>                      
+        <div class="drop-up-menu">  
+
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="emtskills" 
+           data-text="Gain the essential emergency medical skills to respond to urgent situations.">
+           EMT Skills
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="telemedicine" 
+           data-text="Discover how telemedicine bridges gaps in healthcare access and treatment.">
+           Telemedicine
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="firstaid" 
+           data-text="Learn essential first-aid techniques to address minor injuries and emergencies.">
+           First Aid
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="selfsufficienthealthcare" 
+           data-text="Explore strategies for self-reliant healthcare in remote or resource-limited settings.">
+           Self-sufficient Healthcare
+        </a>
+   </div>                
+    </div>            
+    <div class="group">                
+        <a href="#" class="main-category-icon flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+                            <button class="icon-button relative group" data-category="agriculure">
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-6 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-seedling"></i>
+                  </div>
+                  Food
+                </button>
+               
+        </a>                 
+        <div class="drop-up-menu">                    
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="urbanfood">Urban Gardening</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="hydroponics">Hydroponics</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="sustainableag">Sustainable Agriculture Techniques</a>  
+        </div>            
+    </div>
+
+
+
     </div>
   </div>
+  
+  <!-- Hero Section with Mondrian Overlay -->
+  <div class="relative">
 
-  <div class="actions">
-    <a href="login.html">Login</a>
-    <a href="signup.html">Sign Up</a>
+  
+    <!-- Hero Content -->
+
+  
+    <!-- Mondrian Overlay -->
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          <!-- Subcategories will be dynamically inserted here -->
+        </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+
+  <div id="subheader" class="subheader"> Approvideo is a DIY learning network that supports hands on learning and community level collaboration. </div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+    
+    </div>
+
+    <div class="container mx-auto px-4">
+
+    <div id="intro-text-display" class="container mx-auto px-4 my-6 hidden bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+      <h3 id="intro-title" class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200"></h3>
+      <p id="intro-text" class="text-gray-700 dark:text-gray-300 mb-3"></p>
+      <a id="add-resource-link" href="#" class="inline-block px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
+          <i class="fas fa-plus-circle mr-1"></i> Add Resource to this Area
+      </a>
+    </div>
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Search and Sort Controls -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Search solutions..." 
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+      </div>
+      <div class="flex-shrink-0">
+        <select 
+          id="sortSelect" 
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Skeleton cards will be injected here -->
+    </div>
+
+    <!-- Video Grid -->
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      <!-- Videos will be dynamically inserted here -->
+    </div>
+
+    <!-- Infinite Scroll Trigger -->
+    <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
 
-  <script>
-    const slides = document.getElementById("slides");
-    const totalSlides = slides.children.length;
-    let currentIndex = 0;
+  
+      <script>
 
-    function updateSlide() {
-      slides.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
 
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateSlide();
-    }
 
-    function prevSlide() {
-      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-      updateSlide();
-    }
+      getRandomColor() {
+        // Using HSL color space for more vibrant colors
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 100;
+        const lightness = Math.random() * 100;
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
 
-    setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
-  </script>
+
+          // Theme Toggle
+          const darkModeToggle = document.getElementById('darkModeToggle');
+          const html = document.documentElement;
+
+          function updateTheme(isDark) {
+            html.classList.toggle('dark', isDark);
+            localStorage.setItem('darkMode', isDark);
+          }
+
+          // Check saved preference
+          if (localStorage.getItem('darkMode') === 'true' ||
+              (!localStorage.getItem('darkMode') && 
+               window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            updateTheme(true);
+          }
+
+          darkModeToggle.addEventListener('click', () => {
+            updateTheme(!html.classList.contains('dark'));
+          });
+
+          // Profile Dropdown
+          const profileButton = document.getElementById('profileButton');
+          const profileDropdown = document.getElementById('profileDropdown');
+          
+          profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('dropdown-active');
+          });
+
+          document.addEventListener('click', () => {
+            profileDropdown.classList.remove('dropdown-active');
+          });
+
+
+  
+
+</script>
+
+
+<div class="container mx-auto px-4 mb-8">
+  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">    
+      Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
+      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee 
+      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with 
+      YouTube's terms of service. We encourage transformative use, proper attribution, and respect for copyright.
+  </div>
+</div>
+    
+
+    
+    <BR><BR><BR>
+
+
+    
+
+<footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
+    <div class="landscape">
+        <img src="images/windmill.svg" alt="Windmill">
+        <img src="images/leaf.svg" alt="Leaf">
+    </div>
+
+   <BR><BR><BR>
+    
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-start">
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h3 class="footer-title mb-2 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">ApproVideo</h3>
+                <p class="footer-subtitle text-lg">Appropriate Technology Videos for the DIY Sector</p>
+                <div class="mt-4 relative overflow-hidden cursor-pointer" id="mission-reveal">
+                    <p class="text-sm font-semibold">Our Mission (Click to reveal)</p>
+                    <div class="mission-text hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out">
+                        <p>To empower individuals and communities with accessible, sustainable technology solutions through educational videos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4 text-blue-600 dark:text-blue-400">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>GitHub Repository</a></li>
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla/issues" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>Comments/ Issues </a></li>
+                    <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-balance-scale mr-2"></i>GPL v3 License</a></li>
+                    <li><a href="https://scdhub.org" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-globe mr-2"></i>SCD Hub</a></li>
+                </ul>
+            </div>
+
+            <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
+                <button id="sponsor-us" class="footer-button bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mb-4 transform hover:scale-105">
+                    Donate
+                </button>
+                <button id="be-an-editor" class="footer-button bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transform hover:scale-105 transition duration-300">
+                    Share a Video
+                </button>
+            </div>
+
+
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 dark:border-gray-300 text-center text-sm">
+            <p>© 2025 ApproVideo. All rights repected. | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Privacy Policy</a> | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Terms of Service</a></p>
+            <p class="mt-2">A project of SCD Hub 501(c)(3)</p>
+        </div>
+    </div>
+
+
+
+<div id="sponsor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Support ApproVideo</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Approvideo can use your help curating useful content about DIY appropriate technology. Donation? paypal ecocommunity@protonmail.com
+                </p>
+                <!-- Add sponsorship options or a form here -->
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Share a Video</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Join our team of editors and help curate high-quality content on appropriate technology. Share your expertise with the world!
+                </p>
+                  <form id="editor-login-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <p id="login-message" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-editor-modal" class="px-4 py-2 bg-purple-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  
+</footer>
+
 </body>
 </html>
