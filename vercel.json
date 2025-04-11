@@ -4,19 +4,16 @@
     {
       "src": "api/index.js",
       "use": "@vercel/node"
-    }, 
+    },
     {
-      "src": "assets/*.(svg|webp|png|gif|jpg|jpeg)",
+      "src": "assets/**/*", 
       "use": "@vercel/static"
-    }, 
-    { 
-      "src": "*.(js|css|html)", 
-      "use": "@vercel/static" 
     },
     {
       "src": "data/**/*.json",
       "use": "@vercel/static"
-    }, 
+    }
+ 
   ],
   "routes": [
     {
@@ -27,9 +24,16 @@
       "src": "/api/(.*)",
       "dest": "/api/index.js"
     },
+    // This route should handle serving static files from the output root
+    // including index.html and your root css file IF they were correctly
+    // placed in the output by the build process (or Vercel defaults).
+    {
+      "handle": "filesystem" 
+    },
     {
       "src": "/(.*)",
       "dest": "/$1"
     }
+ 
   ]
 }
