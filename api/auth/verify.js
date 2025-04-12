@@ -1,6 +1,4 @@
-// api/auth/verify.js
-// Serverless function to verify lattice integrity
-
+// pages/api/auth/verify.js
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client - these would be environment variables in production
@@ -21,19 +19,24 @@ async function hashMetaLattice(quat) {
 }
 
 export default async function handler(req, res) {
-  // Only allow POST requests
+  // Allow GET requests for health checks/status
+  if (req.method === 'GET') {
+    return res.status(200).json({ message: 'Verification API is running' });
+  }
+  
+  // Only allow POST requests for actual verification
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
+  
   try {
     // Get the user ID and lattice data from the request
     const { userId, metaLattice, token } = req.body;
-
+    
     if (!userId || !metaLattice || !token) {
       return res.status(400).json({ error: 'Missing required parameters' });
     }
-
+    
     // Verify the JWT token first for authentication
     const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
     
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
     if (tokenData.user.id !== userId) {
       return res.status(403).json({ error: 'Token user ID mismatch' });
     }
-
+    
     // Get the stored lattice hash from the database
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -56,23 +59,38 @@ export default async function handler(req, res) {
     if (profileError) {
       return res.status(404).json({ error: 'User profile not found' });
     }
-
+    
     if (!profile.lattice_hash) {
       return res.status(400).json({ error: 'No lattice hash stored for this user' });
     }
-
+    
     // Calculate the hash of the provided lattice
     const calculatedHash = await hashMetaLattice(metaLattice);
-
+    
     // Compare the calculated hash with the stored hash
     const isValid = calculatedHash === profile.lattice_hash;
-
+    
+    // Log this verification attempt (optional, for security auditing)
+    await supabase
+      .from('auth_activity_log')
+      .insert({
+        user_id: userId,
+        action: 'verify_lattice',
+        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+        result: isValid ? 'success' : 'failure'
+      })
+      .catch(error => {
+        // Non-critical error, just log it
+        console.error('Failed to log verification activity:', error);
+      });
+    
     // Return the result
     return res.status(200).json({
       valid: isValid,
       // Return a partial hash preview for debugging/logging
       hashPreview: isValid ? profile.lattice_hash.substring(0, 8) + '...' : null
     });
+    
   } catch (error) {
     console.error('Lattice verification error:', error);
     return res.status(500).json({ error: 'Server error during verification' });

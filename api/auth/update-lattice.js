@@ -1,6 +1,5 @@
-// api/auth/update-lattice.js
+// pages/api/auth/update-lattice.js
 // Serverless function to update user's lattice hash
-
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -21,19 +20,24 @@ async function hashMetaLattice(quat) {
 }
 
 export default async function handler(req, res) {
-  // Only allow POST requests
+  // Allow GET for API health check
+  if (req.method === 'GET') {
+    return res.status(200).json({ message: 'Lattice update API is running' });
+  }
+
+  // Handle POST requests for lattice updates
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
+  
   try {
     // Get the user ID, lattice data, and token from the request
     const { userId, metaLattice, token } = req.body;
-
+    
     if (!userId || !metaLattice || !token) {
       return res.status(400).json({ error: 'Missing required parameters' });
     }
-
+    
     // Verify the JWT token first for authentication
     const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
     
@@ -45,15 +49,15 @@ export default async function handler(req, res) {
     if (tokenData.user.id !== userId) {
       return res.status(403).json({ error: 'Token user ID mismatch' });
     }
-
+    
     // Calculate the hash of the provided lattice
     const latticeHash = await hashMetaLattice(metaLattice);
-
+    
     // Update the user's profile with the new lattice hash
     const { data, error } = await supabase
       .from('profiles')
-      .upsert({ 
-        user_id: userId, 
+      .upsert({
+        user_id: userId,
         lattice_hash: latticeHash,
         lattice_updated_at: new Date().toISOString()
       }, {
@@ -64,7 +68,21 @@ export default async function handler(req, res) {
       console.error('Database update error:', error);
       return res.status(500).json({ error: 'Failed to update lattice hash' });
     }
-
+    
+    // Log this lattice update for security auditing
+    await supabase
+      .from('auth_activity_log')
+      .insert({
+        user_id: userId,
+        action: 'lattice_update',
+        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+        details: 'Lattice hash updated'
+      })
+      .catch(error => {
+        // Non-critical error, just log it
+        console.error('Failed to log lattice update activity:', error);
+      });
+    
     // Return success with hash preview
     return res.status(200).json({
       success: true,

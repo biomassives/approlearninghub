@@ -1,4 +1,4 @@
-// api/auth/user-data.js
+// pages/api/auth/user-data.js
 // Serverless function to retrieve user data
 
 import { createClient } from '@supabase/supabase-js';
@@ -26,11 +26,11 @@ export default async function handler(req, res) {
 
     // Verify the JWT token
     const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-    
+
     if (tokenError || !tokenData.user) {
       return res.status(401).json({ error: 'Invalid authentication token' });
     }
-    
+
     // Ensure the token belongs to the user requesting their data
     // (or an admin requesting another user's data)
     if (tokenData.user.id !== userId) {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         .select('role')
         .eq('user_id', tokenData.user.id)
         .maybeSingle();
-        
+
       if (adminCheckError || !adminCheck || adminCheck.role !== 'admin') {
         return res.status(403).json({ error: 'Unauthorized to access this user data' });
       }
@@ -52,30 +52,30 @@ export default async function handler(req, res) {
       .select('*')
       .eq('user_id', userId)
       .maybeSingle();
-      
+
     if (profileError && profileError.code !== 'PGRST116') {
       console.error('Error fetching user profile:', profileError);
     }
-    
+
     // Get user role
     const { data: roleData, error: roleError } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', userId)
       .maybeSingle();
-      
+
     if (roleError && roleError.code !== 'PGRST116') {
       console.error('Error fetching user role:', roleError);
     }
-    
+
     // Get user auth details from Supabase Auth
     const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
-    
+
     if (userError) {
       console.error('Error fetching user auth data:', userError);
       return res.status(404).json({ error: 'User not found' });
     }
-    
+
     // Get user activity logs
     const { data: activityLogs, error: logsError } = await supabase
       .from('auth_activity_log')
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(10);
-      
+
     if (logsError && logsError.code !== 'PGRST116') {
       console.error('Error fetching activity logs:', logsError);
     }
@@ -105,7 +105,7 @@ export default async function handler(req, res) {
         lastPasswordChange: profileData?.password_last_changed || null
       }
     };
-    
+
     // Log data access
     await supabase
       .from('auth_activity_log')
