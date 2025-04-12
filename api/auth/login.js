@@ -1,6 +1,13 @@
 // api/auth/login.js
 // Serverless function to enhance login security and create session lattice
 
+// Routes
+app.get('/api/auth/login.js', (req, res) => {
+  res.json({ message: 'API is running' });
+});
+
+
+
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
