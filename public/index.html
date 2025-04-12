@@ -749,6 +749,14 @@ document.addEventListener('DOMContentLoaded', function() {
       logoutButton.click(); // Or call your logout function
     });
   }
+  
+  // Resource suggestion modal
+  if (loginButton) {
+    loginButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showLoginModal();
+    });
+  }
 
   // Resource suggestion modal
   if (suggestResourceButton) {
@@ -1052,6 +1060,102 @@ function showClinicProposalModal() {
 
   // Show the modal
   modal.classList.remove('hidden');
+
+
+//  login modal function
+function loginModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('login-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'login-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Log in</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Manage learning, teaching, modules and clinics
+            </p>
+            <form id="login-form" class="space-y-4">
+              <div>
+                <label for="clinic-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                <input type="text" id="email" name="email" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="clinic-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                <input type="password" id="password" name="password" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="login-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                 Submit 
+                </button>
+              </div>
+            </form>
+            <p id="login-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('login-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for being a participant.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Login ( API integration):', data);
+      // Example: fetch('/api/verify', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //   .then(response => response.json())
+      //   .then(result => { /* Handle success */ })
+      //   .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+         setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('login-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
 }
 
 
@@ -1061,8 +1165,8 @@ const originalUpdateUIForUser = window.updateUIForUser || function(session) {
     // This function might contain your original logic to show/hide
     // login/logout/signup buttons, user info span, etc.
     // Find elements like loginButton, signupButton, userInfo, logoutButton
-    // and update their visibility and content based on the 'session' object.
-    // Example (adapt based on your actual implementation):
+    // Update element visibility and content based on the 'session' object.
+
     const loginBtn = document.getElementById('loginButton');
     const signupBtn = document.getElementById('signupButton');
     const userInfoSpan = document.getElementById('userInfo');

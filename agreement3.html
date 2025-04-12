@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approvideo Terms and Conditions</title>
+    <style>
+        /* Base styles */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6b7280;
+            --bg-color: #f9fafb;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.15s ease-in-out;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        /* Expertise grid styles */
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .expertise-category {
+            background-color: var(--bg-color);
+            border-radius: 6px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .expertise-category h4 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        
+        .expertise-checkbox:hover {
+            cursor: pointer;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-color);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        
+        .modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        .terms-content {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+        }
+        
+        .modal-footer {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Agreement checkbox */
+        .agreement-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .agreement-checkbox {
+            margin-right: 0.5rem;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3b5bd9;
+        }
+        
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* Markdown styling */
+        .terms-content h1 {
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+        
+        .terms-content h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .terms-content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.25rem;
+        }
+        
+        .terms-content p, .terms-content ul, .terms-content ol {
+            margin-bottom: 1rem;
+        }
+        
+        .terms-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .terms-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .terms-content strong {
+            font-weight: 600;
+        }
+        
+        .terms-content ul, .terms-content ol {
+            padding-left: 2rem;
+        }
+        
+        /* Cloudflare Turnstile container */
+        .cf-turnstile {
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Button to open the modal (for demo purposes) -->
+    <button id="openTermsModal" class="btn btn-primary">Sign Up</button>
+
+    <!-- Terms and Conditions Modal -->
+    <div id="termsModal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Approvideo Terms and Conditions</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="terms-content" id="termsContent">
+                    <!-- Terms content will be loaded here -->
+                    <p>Loading terms and conditions...</p>
+                </div>
+                
+                <div class="agreement-container">
+                    <input type="checkbox" id="agreeCheckbox" class="agreement-checkbox">
+                    <label for="agreeCheckbox">I have read and agree to the Terms and Conditions</label>
+                </div>
+                
+                <!-- Cloudflare Turnstile will be rendered here -->
+                <div id="cloudflare-turnstile" class="cf-turnstile"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelButton">Cancel</button>
+                <button class="btn btn-primary btn-disabled" id="continueButton" disabled>Continue</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Signup Form Modal (appears after terms agreement) -->
+    <div id="signupModal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Your Approvideo Account</h2>
+                <button class="modal-close" id="closeSignupModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="participationType">How would you like to participate?</label>
+                        <select id="participationType" name="participationType" class="form-control" required>
+                            <option value="">-- Select your participation type --</option>
+                            <option value="expert">Lead clinic workshops as an expert</option>
+                            <option value="learner">Learn and help others</option>
+                            <option value="researcher">Support bibliographical research</option>
+                            <option value="resources">Help locate resources</option>
+                            <option value="organizer">Organize in other ways for a clinic</option>
+                        </select>
+                    </div>
+                    
+                    <div id="expertiseSection" style="display: none;">
+                        <h3>Areas of Expertise</h3>
+                        <p>Please select up to six areas of expertise relevant to your work:</p>
+                        
+                        <div class="expertise-grid">
+                            <!-- Water & Sanitation -->
+                            <div class="expertise-category">
+                                <h4>Water & Sanitation</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-water-treatment" name="expertise" value="water-treatment" class="expertise-checkbox">
+                                        <label for="skill-water-treatment">Water Treatment & Purification</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-sanitation" name="expertise" value="sanitation-systems" class="expertise-checkbox">
+                                        <label for="skill-sanitation">Sanitation Systems Design</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-hydrology" name="expertise" value="hydrology" class="expertise-checkbox">
+                                        <label for="skill-hydrology">Hydrology & Watershed Management</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-wastewater" name="expertise" value="wastewater" class="expertise-checkbox">
+                                        <label for="skill-wastewater">Wastewater Treatment</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Infrastructure -->
+                            <div class="expertise-category">
+                                <h4>Infrastructure</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-civil" name="expertise" value="civil-engineering" class="expertise-checkbox">
+                                        <label for="skill-civil">Civil Engineering</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-structural" name="expertise" value="structural-design" class="expertise-checkbox">
+                                        <label for="skill-structural">Structural Design</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-construction" name="expertise" value="construction-mgmt" class="expertise-checkbox">
+                                        <label for="skill-construction">Construction Management</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-transportation" name="expertise" value="transportation" class="expertise-checkbox">
+                                        <label for="skill-transportation">Transportation Systems</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Energy & Resources -->
+                            <div class="expertise-category">
+                                <h4>Energy & Resources</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-renewable" name="expertise" value="renewable-energy" class="expertise-checkbox">
+                                        <label for="skill-renewable">Renewable Energy Systems</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-resource" name="expertise" value="resource-mgmt" class="expertise-checkbox">
+                                        <label for="skill-resource">Resource Management</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-waste" name="expertise" value="waste-mgmt" class="expertise-checkbox">
+                                        <label for="skill-waste">Waste Management & Recycling</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-environmental" name="expertise" value="environmental-science" class="expertise-checkbox">
+                                        <label for="skill-environmental">Environmental Science</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Community Development -->
+                            <div class="expertise-category">
+                                <h4>Community Development</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-community" name="expertise" value="community-organizing" class="expertise-checkbox">
+                                        <label for="skill-community">Community Organizing</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-participatory" name="expertise" value="participatory-design" class="expertise-checkbox">
+                                        <label for="skill-participatory">Participatory Design</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-education" name="expertise" value="education-training" class="expertise-checkbox">
+                                        <label for="skill-education">Education & Training</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-policy" name="expertise" value="policy-advocacy" class="expertise-checkbox">
+                                        <label for="skill-policy">Policy & Advocacy</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Resilience & Adaptation -->
+                            <div class="expertise-category">
+                                <h4>Resilience & Adaptation</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-disaster" name="expertise" value="disaster-risk" class="expertise-checkbox">
+                                        <label for="skill-disaster">Disaster Risk Reduction</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-climate" name="expertise" value="climate-adaptation" class="expertise-checkbox">
+                                        <label for="skill-climate">Climate Change Adaptation</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-emergency" name="expertise" value="emergency-response" class="expertise-checkbox">
+                                        <label for="skill-emergency">Emergency Response</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-resilience" name="expertise" value="resilience-planning" class="expertise-checkbox">
+                                        <label for="skill-resilience">Resilience Planning</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Technical Skills -->
+                            <div class="expertise-category">
+                                <h4>Technical Skills</h4>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-gis" name="expertise" value="gis-mapping" class="expertise-checkbox">
+                                        <label for="skill-gis">GIS & Mapping</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-monitoring" name="expertise" value="monitoring-evaluation" class="expertise-checkbox">
+                                        <label for="skill-monitoring">Monitoring & Evaluation</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-data" name="expertise" value="data-analysis" class="expertise-checkbox">
+                                        <label for="skill-data">Data Analysis</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="skill-project" name="expertise" value="project-mgmt" class="expertise-checkbox">
+                                        <label for="skill-project">Project Management</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="expertiseWarning" style="display: none; color: red; margin-top: 10px;">
+                            Please select no more than 6 areas of expertise.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="backButton">Back</button>
+                <button class="btn btn-primary" id="submitSignupButton">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Markdown parser library (marked.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
+    
+    <!-- Cloudflare Turnstile API -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const openModalBtn = document.getElementById('openTermsModal');
+            const modal = document.getElementById('termsModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const cancelButton = document.getElementById('cancelButton');
+            const continueButton = document.getElementById('continueButton');
+            const termsContent = document.getElementById('termsContent');
+            const agreeCheckbox = document.getElementById('agreeCheckbox');
+            
+            // Terms and Conditions markdown content
+            const termsMarkdown = `# APPROVIDEO TERMS AND CONDITIONS
+
+**Last Updated: April 8, 2025**
+
+## 1. INTRODUCTION
+
+Welcome to Approvideo ("we," "our," or "us"). These Terms and Conditions ("Terms") govern your access to and use of the Approvideo platform, including any website, mobile application, or other online services that link to these Terms (collectively, the "Service").
+
+Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos. We do not track users with cookies or sell advertising on our platform. By accessing or using our Service, you agree to be bound by these Terms. If you do not agree to these Terms, you may not access or use the Service.
+
+## 2. ACCEPTANCE OF TERMS
+
+By accessing or using the Service, you represent that you have read, understood, and agree to be bound by these Terms. If you are using the Service on behalf of an organization, you represent and warrant that you have the authority to bind that organization to these Terms.
+
+## 3. CHANGES TO TERMS
+
+We reserve the right to modify these Terms at any time. Any changes will be effective immediately upon posting the updated Terms on the Service. Your continued use of the Service after any such changes constitutes your acceptance of the new Terms.
+
+## 4. ELIGIBILITY
+
+You must be at least 13 years of age to use the Service. If you are under 18 years of age, you represent that you have the permission of a parent or guardian to use the Service.
+
+## 5. ACCOUNT REGISTRATION
+
+To access certain features of the Service, you may need to register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.
+
+You are responsible for safeguarding your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.`;
+            
+            // Convert markdown to HTML and display in the modal
+            function loadTermsContent() {
+                if (window.marked) {
+                    termsContent.innerHTML = marked.parse(termsMarkdown);
+                } else {
+                    termsContent.innerHTML = '<p>Failed to load markdown parser. Please refresh the page or contact support.</p>';
+                }
+            }
+            
+            // Initialize Cloudflare Turnstile
+            function initTurnstile() {
+                if (window.turnstile) {
+                    turnstile.render('#cloudflare-turnstile', {
+                        sitekey: '0x4AAAAAABHfsloPaPOmywDZ',
+                        callback: function(token) {
+                            // Enable the continue button if the checkbox is also checked
+                            updateContinueButton(token);
+                        },
+                    });
+                }
+            }
+            
+            // Check if we can enable the continue button
+            function updateContinueButton(turnstileToken) {
+                const isTurnstileVerified = !!turnstileToken;
+                const isAgreed = agreeCheckbox.checked;
+                
+                if (isAgreed && isTurnstileVerified) {
+                    continueButton.classList.remove('btn-disabled');
+                    continueButton.disabled = false;
+                } else {
+                    continueButton.classList.add('btn-disabled');
+                    continueButton.disabled = true;
+                }
+            }
+            
+            // Event Listeners
+            openModalBtn.addEventListener('click', function() {
+                modal.style.display = 'flex';
+                loadTermsContent();
+                initTurnstile();
+            });
+            
+            closeModalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            cancelButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            agreeCheckbox.addEventListener('change', function() {
+                // Get the current Turnstile token (if any)
+                const turnstileResponse = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
+                const turnstileToken = turnstileResponse ? true : false;
+                
+                updateContinueButton(turnstileToken);
+            });
+            
+            continueButton.addEventListener('click', function() {
+                // Get the Turnstile token
+                const turnstileToken = document.querySelector('#cloudflare-turnstile textarea[name="cf-turnstile-response"]').value;
+                
+                // Store terms agreement data to combine with signup form later
+                window.userAgreementData = {
+                    agreedToTerms: true,
+                    cfTurnstileToken: turnstileToken,
+                    timestamp: new Date().toISOString()
+                };
+                
+                console.log('User agreement data:', window.userAgreementData);
+                
+                // Hide terms modal and show signup form
+                modal.style.display = 'none';
+                document.getElementById('signupModal').style.display = 'flex';
+            });
+            
+            // Close modal if clicked outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // ===== Signup Form Modal Logic =====
+            const signupModal = document.getElementById('signupModal');
+            const closeSignupModalBtn = document.getElementById('closeSignupModal');
+            const backButton = document.getElementById('backButton');
+            const submitSignupButton = document.getElementById('submitSignupButton');
+            const participationType = document.getElementById('participationType');
+            const expertiseSection = document.getElementById('expertiseSection');
+            const expertiseCheckboxes =/key document.querySelectorAll('.expertise-checkbox');
+            const expertiseWarning = document.getElementById('expertiseWarning');
+            
+            // Close signup modal
+            closeSignupModalBtn.addEventListener('click', function() {
+                signupModal.style.display = 'none';
+            });
+            
+            // Go back to terms modal
+            backButton.addEventListener('click', function() {
+                signupModal.style.display = 'none';
+                modal.style.display = 'flex';
+            });
+            
+            // Show/hide expertise section based on participation type
+            participationType.addEventListener('change', function() {
+                if (this.value === 'expert') {
+                    expertiseSection.style.display = 'block';
+                } else {
+                    expertiseSection.style.display = 'none';
+                    // Uncheck all expertise checkboxes when switching away from expert
+                    expertiseCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                }
+            });
+            
+            // Limit expertise selection to max 6
+            let selectedExpertise = 0;
+            expertiseCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    selectedExpertise = document.querySelectorAll('.expertise-checkbox:checked').length;
+                    
+                    if (selectedExpertise > 6) {
+                        this.checked = false;
+                        selectedExpertise = 6;
+                        expertiseWarning.style.display = 'block';
+                    } else {
+                        expertiseWarning.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Handle form submission
+            submitSignupButton.addEventListener('click', function() {
+                const form = document.getElementById('signupForm');
+                if (!form.checkValidity()) {
+                    // Trigger browser's built-in validation UI
+                    form.reportValidity();
+                    return;
+                }
+                
+                // Get form values
+                const fullName = document.getElementById('fullName').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const participationType = document.getElementById('participationType').value;
+                
+                // Get selected expertise areas if applicable
+                const selectedExpertiseAreas = [];
+                if (participationType === 'expert') {
+                    expertiseCheckboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            selectedExpertiseAreas.push(checkbox.value);
+                        }
+                    });
+                }
+                
+                // Combine with terms agreement data
+                const userData = {
+                    ...window.userAgreementData,
+                    fullName,
+                    email,
+                    password,
+                    participationType,
+                    expertise: selectedExpertiseAreas
+                };
+                
+                console.log('Complete signup data:', userData);
+                
+                // Here you would typically send this data to your server
+                // fetch('/api/signup', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(userData)
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     // Handle successful signup
+                //     window.location.href = '/dashboard';
+                // })
+                // .catch(error => {
+                //     console.error('Error:', error);
+                //     alert('An error occurred during signup. Please try again.');
+                // });
+                
+                // For demo purposes
+                alert('Account created successfully! (Demo only)');
+                signupModal.style.display = 'none';
+            });
+            
+            // Close signup modal if clicked outside
+            window.addEventListener('click', function(event) {
+                if (event.target === signupModal) {
+                    signupModal.style.display = 'none';
+                }
+            });
+            
+            // Load the full terms and conditions from an external file (optional implementation)
+            function loadFullTermsFromFile() {
+                fetch('terms-and-conditions.md')
+                    .then(response => response.text())
+                    .then(markdown => {
+                        // Store the full markdown for use when the modal is opened
+                        window.fullTermsMarkdown = markdown;
+                    })
+                    .catch(error => {
+                        console.error('Error loading terms:', error);
+                    });
+            }
+            
+            // Uncomment this to load terms from an external file instead of using the embedded markdown
+            // loadFullTermsFromFile();
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,6 @@
 // api/videos.js
+import express from 'express';
+const app = express();
 
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs').promises; // Using promises version of fs
