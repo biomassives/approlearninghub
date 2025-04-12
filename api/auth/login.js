@@ -1,4 +1,11 @@
 // pages/api/auth/login.js
+
+
+// Routes
+app.get('/api/auth/login', (req, res) => {
+  res.json({ message: 'API is running' });
+});
+
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
