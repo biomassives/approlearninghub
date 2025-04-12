@@ -5,6 +5,14 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+app.get('/api/videos', (req, res) => {
+  // --- Handler logic goes here ---
+  console.log(`Received request for /api/videos with query:`, req.query);
+  // Example response:
+  res.status(200).json({ videos: [], page: req.query.page || 1 });
+  // --- ---
+});
+
 // Routes
 app.get('/api', (req, res) => {
   res.json({ message: 'API is running' });
@@ -28,14 +36,6 @@ app.get('/api/modules/:context/:id', (req, res) => {
     content: 'This is the module content.'
   });
 });
-
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
 
 // Export for Vercel
 module.exports = app;
