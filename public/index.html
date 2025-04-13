@@ -25,6 +25,95 @@
       opacity: 1;
       transform: scale(1);
     }
+    .promo-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.promo-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.promo-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+}
+
+.promo-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.promo-card h3 {
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.promo-card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.promo-meta {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 25px;
+}
+
+.promo-button {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.promo-button:hover {
+    background-color: #2980b9;
+}
+
+.promo-button.secondary {
+    background-color: #2ecc71;
+}
+
+.promo-button.secondary:hover {
+    background-color: #27ae60;
+}
+
+@media (max-width: 768px) {
+    .promo-section {
+        padding: 40px 0;
+    }
+    
+    .promo-grid {
+        gap: 20px;
+    }
+}
+
   </style>
   <script type="module" src="index.js"></script>
 </head>
@@ -501,6 +590,27 @@
     </div>
 
 
+<section class="promo-section">
+    <div class="container">
+        <h2>Science & Technology Timelines</h2>
+        <div class="promo-grid">
+            <div class="promo-card">
+                <div class="promo-icon">📊</div>
+                <h3>Public Timeline</h3>
+                <p>View upcoming science-technology workshops, library development progress, and learning module milestones.</p>
+                <p class="promo-meta">No login required • Updated weekly</p>
+                <a href="/public-timeline" class="promo-button">View Public Timeline</a>
+            </div>
+            <div class="promo-card">
+                <div class="promo-icon">🔒</div>
+                <h3>Community Milestones</h3>
+                <p>Access the complete timeline with all events, meetings, and development tracking. Add your own events to the timeline.</p>
+                <p class="promo-meta">Login required • Role-based access</p>
+                <a href="/community-milestones" class="promo-button secondary">View Community Milestones</a>
+            </div>
+        </div>
+    </div>
+</section>
 
     <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 

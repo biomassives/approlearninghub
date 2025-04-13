@@ -10,6 +10,13 @@
       "use": "@vercel/static"
     }
   ],
+  "crons": [
+    {
+     "path": "/api/cron/cleanup-rate-limits",
+     "schedule": "0 10 * * *"
+    }
+  ],
+
   "routes": [
     {
       "src": "/api/auth/login",
@@ -36,8 +43,44 @@
       "dest": "/api/auth/user-role.js"
     },
     {
+      "src": "/api/dashboards/gaant-data",
+      "dest": "/api/dashboards/gaant-data.js"
+    },
+    {
+      "src": "/api/dashboards/timeline-data",
+      "dest": "/api/dashboards/timeline-data.js"
+    },
+    {
+      "src": "/api/dashboards/timeline-events",
+      "dest": "/api/dashboards/timeline-events.js"
+    },
+    {
+      "src": "/api/public/timeline-data",
+      "dest": "/api/public/timeline-data.js"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "/user-management",
+      "dest": "/public/user-management.html"
+    },
+    {
+      "src": "/expert-dashboard",
+      "dest": "/public/expert-dashboard.html"
+    },
+    {
+      "src": "/community-milestones",
+      "dest": "/public/community-milestones.html"
+    },
+    {
+      "src": "/public-timeline",
+      "dest": "/public/public-timeline.html"
     },
     {
       "src": "^/$",

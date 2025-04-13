@@ -2,6 +2,10 @@
 const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
 const app = express();
+const crypto = require('crypto');
+
+// Create rate limiter line 737 uses subapase table
+
 
 // Middleware for parsing JSON
 app.use(express.json());
@@ -11,8 +15,32 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+// Utility functions
 
+async function hashMetaLattice(quat) {
+  const str = `${quat.x.toFixed(6)}:${quat.y.toFixed(6)}:${quat.z.toFixed(6)}:${quat.w.toFixed(6)}`;
+  const hash = crypto.createHash('sha256');
+  hash.update(str);
+  return hash.digest('hex');
+}
 
+function generateNormalizedQuaternion() {
+  const values = new Float32Array(4);
+  for (let i = 0; i < 4; i++) {
+    values[i] = Math.random(); // Use Math.random() as a simple alternative
+  }
+  const [x, y, z, w] = values;
+  const mag = Math.sqrt(x * x + y * y + z * z + w * w);
+  return {
+    x: x / mag,
+    y: y / mag,
+    z: z / mag,
+    w: w / mag
+  };
+}
+
+// Add this near the top of your file
+// Simple in-memory rate limiter
 class RateLimiter {
   constructor(windowMs = 15 * 60 * 1000, maxRequests = 100) {
     this.windowMs = windowMs;
@@ -73,51 +101,25 @@ function rateLimitMiddleware(limiter) {
 }
 
 // Apply to authentication routes
-app.use('/api/auth/', rateLimitMiddleware(authLimiter));
+app.use('/auth/', rateLimitMiddleware(authLimiter));
 // Apply to general API routes
-app.use('/api/', rateLimitMiddleware(generalLimiter));
+app.use('./', rateLimitMiddleware(generalLimiter));
 
 
 
 
-
-
-
-
-// Utility functions
-async function hashMetaLattice(quat) {
-  const str = `${quat.x.toFixed(6)}:${quat.y.toFixed(6)}:${quat.z.toFixed(6)}:${quat.w.toFixed(6)}`;
-  const buffer = new TextEncoder().encode(str);
-  const digest = await crypto.subtle.digest('SHA-256', buffer);
-  return Array.from(new Uint8Array(digest))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function generateNormalizedQuaternion() {
-  const values = new Float32Array(4);
-  crypto.getRandomValues(values);
-  const [x, y, z, w] = values;
-  const mag = Math.sqrt(x * x + y * y + z * z + w * w);
-  return {
-    x: x / mag,
-    y: y / mag,
-    z: z / mag,
-    w: w / mag
-  };
-}
 
 // Root API route
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.json({ message: 'ApproVideo API is running' });
 });
 
 // ====== LOGIN ENDPOINT ======
-app.get('/api/auth/login', (req, res) => {
+app.get('/auth/login', (req, res) => {
   res.json({ message: 'Login API is running' });
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/auth/login', async (req, res) => {
   try {
     const { token, userId } = req.body;
     
@@ -187,11 +189,11 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // ====== VERIFY ENDPOINT ======
-app.get('/api/auth/verify', (req, res) => {
+app.get('/auth/verify', (req, res) => {
   res.json({ message: 'Verification API is running' });
 });
 
-app.post('/api/auth/verify', async (req, res) => {
+app.post('/auth/verify', async (req, res) => {
   try {
     // Get the user ID and lattice data from the request
     const { userId, metaLattice, token } = req.body;
@@ -259,11 +261,11 @@ app.post('/api/auth/verify', async (req, res) => {
 });
 
 // ====== UPDATE LATTICE ENDPOINT ======
-app.get('/api/auth/update-lattice', (req, res) => {
+app.get('/auth/update-lattice', (req, res) => {
   res.json({ message: 'Lattice update API is running' });
 });
 
-app.post('/api/auth/update-lattice', async (req, res) => {
+app.post('/auth/update-lattice', async (req, res) => {
   try {
     const { userId, metaLattice, token } = req.body;
     
@@ -327,11 +329,11 @@ app.post('/api/auth/update-lattice', async (req, res) => {
 });
 
 // ====== LOGOUT ENDPOINT ======
-app.get('/api/auth/logout', (req, res) => {
+app.get('/auth/logout', (req, res) => {
   res.json({ message: 'Logout API is running' });
 });
 
-app.post('/api/auth/logout', async (req, res) => {
+app.post('/auth/logout', async (req, res) => {
   try {
     const { userId, token } = req.body;
     
@@ -404,7 +406,7 @@ app.post('/api/auth/logout', async (req, res) => {
 });
 
 // ====== USER DATA ENDPOINT ======
-app.get('/api/auth/user-data', async (req, res) => {
+app.get('/auth/user-data', async (req, res) => {
   try {
     const { userId, token } = req.query;
 
@@ -518,7 +520,7 @@ app.get('/api/auth/user-data', async (req, res) => {
 });
 
 // ====== USER ROLE ENDPOINT ======
-app.get('/api/auth/user-role', async (req, res) => {
+app.get('/auth/user-role', async (req, res) => {
   const { userId, token } = req.query;
 
   if (!userId || !token) {
@@ -556,7 +558,7 @@ app.get('/api/auth/user-role', async (req, res) => {
   }
 });
 
-app.post('/api/auth/user-role', async (req, res) => {
+app.post('/auth/user-role', async (req, res) => {
   const { targetUserId, newRole, token } = req.body;
 
   if (!targetUserId || !newRole || !token) {
@@ -639,72 +641,8 @@ app.post('/api/auth/user-role', async (req, res) => {
   }
 });
 
-// ====== VIDEOS ENDPOINT ======
-app.get('/videos', async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
-    const sort = req.query.sort || 'newest';
-    
-    // Calculate offset for pagination
-    const offset = (page - 1) * limit;
-    
-    // Determine sort order
-    let sortField, sortOrder;
-    switch(sort) {
-      case 'newest':
-        sortField = 'created_at';
-        sortOrder = { ascending: false };
-        break;
-      case 'oldest':
-        sortField = 'created_at';
-        sortOrder = { ascending: true };
-        break;
-      case 'popular':
-        sortField = 'view_count';
-        sortOrder = { ascending: false };
-        break;
-      default:
-        sortField = 'created_at';
-        sortOrder = { ascending: false };
-    }
-    
-    // Query the database
-    const { data, error, count } = await supabase
-      .from('videos')
-      .select('*', { count: 'exact' })
-      .order(sortField, sortOrder)
-      .range(offset, offset + limit - 1);
-      
-    if (error) {
-      console.error('Error fetching videos:', error);
-      return res.status(500).json({ error: 'Failed to fetch videos' });
-    }
-    
-    // Return the paginated results
-    return res.status(200).json({
-      videos: data,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(count / limit),
-        totalItems: count,
-        itemsPerPage: limit
-      }
-    });
-    
-  } catch (error) {
-    console.error('Server error in videos endpoint:', error);
-    return res.status(500).json({ error: 'Server error processing videos request' });
-  }
-});
-
-
-
-
-
-
 // Handle 404s for API routes
-app.use('/api/*', (req, res) => {
+app.use('*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
@@ -719,12 +657,108 @@ module.exports = (req, res) => {
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
- 
-  // Strip /api prefix if it exists
-  if (req.url.startsWith('/api')) {
-    req.url = req.url.replace(/^\/api/, '');
-  }
- 
+  
   // Pass the request to the Express app
   return app(req, res);
 };
+
+
+// Add this after initializing the Supabase client in your index.js
+
+// Supabase-based Rate Limiter for serverless environments
+class SupabaseRateLimiter {
+  constructor(supabaseClient, windowMs = 15 * 60 * 1000, maxRequests = 100) {
+    this.supabase = supabaseClient;
+    this.windowMs = windowMs;
+    this.maxRequests = maxRequests;
+    this.table = 'rate_limits'; // Make sure this table exists in your Supabase database
+  }
+
+  async check(ip) {
+    try {
+      const now = new Date().toISOString();
+      const windowStart = new Date(Date.now() - this.windowMs).toISOString();
+      
+      // Get current count for this IP in the time window
+      const { data, error } = await this.supabase
+        .from(this.table)
+        .select('count')
+        .eq('ip', ip)
+        .gte('reset_time', now)
+        .maybeSingle();
+      
+      if (error) {
+        console.error('Error checking rate limit:', error);
+        return true; // Allow the request if there's an error checking
+      }
+      
+      if (!data) {
+        // No existing record, create a new one
+        await this.supabase
+          .from(this.table)
+          .insert({
+            ip: ip,
+            count: 1,
+            reset_time: new Date(Date.now() + this.windowMs).toISOString(),
+            last_request: now
+          });
+        return true;
+      }
+      
+      if (data.count >= this.maxRequests) {
+        return false; // Rate limit exceeded
+      }
+      
+      // Update existing record
+      await this.supabase
+        .from(this.table)
+        .update({
+          count: data.count + 1,
+          last_request: now
+        })
+        .eq('ip', ip);
+      
+      return true;
+    } catch (error) {
+      console.error('Rate limiter error:', error);
+      return true; // Allow the request if there's an error
+    }
+  }
+  
+  // Method to clean up old records - can be called periodically
+  async cleanup() {
+    const now = new Date().toISOString();
+    await this.supabase
+      .from(this.table)
+      .delete()
+      .lt('reset_time', now);
+  }
+}
+
+
+// Create rate limiter instances
+const authLimiter = new SupabaseRateLimiter(supabase, 15 * 60 * 1000, 20); // 20 requests per 15 minutes
+const generalLimiter = new SupabaseRateLimiter(supabase, 60 * 1000, 60); // 60 requests per minute
+
+// Update middleware for rate limiting
+async function rateLimitMiddleware(limiter) {
+  return async (req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const allowed = await limiter.check(ip);
+    
+    if (!allowed) {
+      return res.status(429).json({ error: 'Too many requests, please try again later' });
+    }
+    
+    next();
+  };
+}
+
+// Apply middleware to routes
+app.use('/auth/', async (req, res, next) => {
+  await rateLimitMiddleware(authLimiter)(req, res, next);
+});
+
+app.use('/', async (req, res, next) => {
+  await rateLimitMiddleware(generalLimiter)(req, res, next);
+});
