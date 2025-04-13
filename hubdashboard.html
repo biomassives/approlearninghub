@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ApproVideo Hub</title>
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/role-based-navigation.css">
+  
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard-container {
+      padding: 2rem;
+    }
+    
+    .dashboard-header {
+      align-items: center;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+    }
+    
+    .dashboard-title {
+      color: var(--primary-color, #007bff);
+      flex: 1;
+      margin: 0;
+    }
+    
+    .dashboard-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .dashboard-content {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .dashboard-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .dashboard-card-header {
+      background-color: var(--primary-color, #007bff);
+      color: white;
+      padding: 1rem;
+    }
+    
+    .dashboard-card-body {
+      padding: 1.5rem;
+    }
+    
+    .dashboard-card-title {
+      margin: 0;
+    }
+    
+    /* Role-specific styling */
+    .admin-panel {
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.2);
+      border-radius: 0.5rem;
+      margin-top: 2rem;
+      padding: 1.5rem;
+    }
+    
+    .developer-panel {
+      background-color: rgba(111, 66, 193, 0.1);
+      border: 1px solid rgba(111, 66, 193, 0.2);
+      border-radius: 0.5rem;
+      margin-top: 2rem;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Component -->
+  <nav id="app-navigation">
+    <!-- Will be populated by role-based-navigation.js -->
+  </nav>
+  
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1 class="dashboard-title">Dashboard</h1>
+      
+      <!-- Only shown to users with edit permission -->
+      <div class="dashboard-actions for-editor">
+        <button id="edit-dashboard-btn" class="btn btn-primary">Edit Dashboard</button>
+        <button id="save-dashboard-btn" class="btn btn-success" style="display: none;">Save Changes</button>
+        <button id="cancel-edit-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
+      </div>
+    </header>
+    
+    <!-- Main dashboard content -->
+    <div class="dashboard-content">
+      <!-- Basic dashboard cards visible to all users -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Overview</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>Welcome to your dashboard. Here you'll find an overview of your project data.</p>
+          <div id="overview-chart" style="height: 200px; background-color: #f8f9fa; margin-top: 1rem;"></div>
+        </div>
+      </div>
+      
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Recent Activity</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>Recent activity will be displayed here.</p>
+          <ul id="activity-list">
+            <li>Dashboard initialized</li>
+            <li>User logged in</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Editor-specific card -->
+      <div class="dashboard-card for-editor">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Content Management</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>As an editor, you can manage content here.</p>
+          <button class="btn btn-sm btn-primary">Create New Content</button>
+        </div>
+      </div>
+      
+      <!-- Expert-specific card -->
+      <div class="dashboard-card for-expert">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Expert Review</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>As an expert, you can review and approve content here.</p>
+          <div id="approval-queue">
+            <p>No items waiting for approval</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Admin-specific card -->
+      <div class="dashboard-card for-admin">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Admin Controls</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>Administrative controls and system settings.</p>
+          <button class="btn btn-sm btn-danger">System Settings</button>
+        </div>
+      </div>
+      
+      <!-- Developer-specific card -->
+      <div class="dashboard-card for-developer">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title">Developer Tools</h3>
+        </div>
+        <div class="dashboard-card-body">
+          <p>Developer tools and API access.</p>
+          <button class="btn btn-sm btn-info">Open API Console</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Admin panel (only visible to admins) -->
+    <div class="admin-panel for-admin">
+      <h2>Administrative Controls</h2>
+      <p>This section is only visible to administrators and developers.</p>
+      
+      <div class="permission-indicator has-permission">
+        <div class="permission-icon">✓</div>
+        <div class="permission-text">
+          <strong>You have administrator access</strong>
+          <p>You can manage users, system settings, and view all content.</p>
+        </div>
+      </div>
+      
+      <button class="btn btn-danger">Access User Management</button>
+    </div>
+    
+    <!-- Developer panel (only visible to developers) -->
+    <div class="developer-panel for-developer">
+      <h2>Developer Controls</h2>
+      <p>This section is only visible to developers.</p>
+      
+      <div class="permission-indicator has-permission">
+        <div class="permission-icon">✓</div>
+        <div class="permission-text">
+          <strong>You have developer access</strong>
+          <p>You can access all system components, API tools, and developer settings.</p>
+        </div>
+      </div>
+      
+      <div class="developer-tools">
+        <h3>Debug Tools</h3>
+        <button id="update-lattice-btn" class="btn btn-info">Update Lattice Key</button>
+        <button id="test-api-btn" class="btn btn-secondary">Test API Connection</button>
+        <button id="clear-cache-btn" class="btn btn-warning">Clear Local Cache</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript Files -->
+  <script src="/auth-service.js"></script>
+  <script src="/role-based-navigation.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize auth service
+      const authService = new AuthService();
+      
+      // Check if user is authenticated
+      if (!authService.isAuthenticated()) {
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Verify the user has access to this dashboard
+      const { success, hasAccess } = await authService.checkAccess('dashboard/dashboard');
+      
+      if (!success || !hasAccess) {
+        // Show access denied message or redirect
+        const mainContent = document.querySelector('.dashboard-container');
+        mainContent.innerHTML = `
+          <div class="permission-indicator no-permission">
+            <div class="permission-icon">✗</div>
+            <div class="permission-text">
+              <strong>Access Denied</strong>
+              <p>You don't have permission to view this dashboard. Please contact your administrator.</p>
+            </div>
+            <div class="permission-action">
+              <button onclick="window.location.href='/'" class="btn btn-primary">Go to Homepage</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      // Set up edit mode for editors and above
+      const editBtn = document.getElementById('edit-dashboard-btn');
+      const saveBtn = document.getElementById('save-dashboard-btn');
+      const cancelBtn = document.getElementById('cancel-edit-btn');
+      
+      if (editBtn && saveBtn && cancelBtn) {
+        editBtn.addEventListener('click', () => {
+          editBtn.style.display = 'none';
+          saveBtn.style.display = 'inline-block';
+          cancelBtn.style.display = 'inline-block';
+          
+          // Enable edit mode on dashboard elements
+          document.body.classList.add('edit-mode');
+          
+          // Add edit controls to dashboard cards
+          const cards = document.querySelectorAll('.dashboard-card');
+          cards.forEach(card => {
+            const editControls = document.createElement('div');
+            editControls.className = 'card-edit-controls';
+            editControls.innerHTML = `
+              <button class="btn btn-sm btn-outline-primary edit-card-btn">Edit</button>
+              <button class="btn btn-sm btn-outline-danger remove-card-btn">Remove</button>
+            `;
+            card.appendChild(editControls);
+          });
+        });
+        
+        saveBtn.addEventListener('click', async () => {
+          // Save dashboard changes
+          editBtn.style.display = 'inline-block';
+          saveBtn.style.display = 'none';
+          cancelBtn.style.display = 'none';
+          
+          // Remove edit mode
+          document.body.classList.remove('edit-mode');
+          
+          // Remove edit controls
+          const editControls = document.querySelectorAll('.card-edit-controls');
+          editControls.forEach(control => control.remove());
+          
+          // Show confirmation message
+          const message = document.createElement('div');
+          message.className = 'alert alert-success';
+          message.textContent = 'Dashboard changes saved successfully!';
+          document.querySelector('.dashboard-header').appendChild(message);
+          
+          // Remove message after 3 seconds
+          setTimeout(() => {
+            message.remove();
+          }, 3000);
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+          // Cancel edit mode
+          editBtn.style.display = 'inline-block';
+          saveBtn.style.display = 'none';
+          cancelBtn.style.display = 'none';
+          
+          // Remove edit mode
+          document.body.classList.remove('edit-mode');
+          
+          // Remove edit controls
+          const editControls = document.querySelectorAll('.card-edit-controls');
+          editControls.forEach(control => control.remove());
+        });
+      }
+      
+      // Set up developer tools if user has developer role
+      if (authService.hasPermission('canAccessDevTools')) {
+        const updateLatticeBtn = document.getElementById('update-lattice-btn');
+        const testApiBtn = document.getElementById('test-api-btn');
+        const clearCacheBtn = document.getElementById('clear-cache-btn');
+        
+        if (updateLatticeBtn) {
+          updateLatticeBtn.addEventListener('click', async () => {
+            const result = await authService.updateLatticeKey();
+            alert(result.message);
+          });
+        }
+        
+        if (testApiBtn) {
+          testApiBtn.addEventListener('click', async () => {
+            try {
+              const response = await fetch('/api/diagnostics/test-endpoint', {
+                method: 'GET',
+                headers: authService.getAuthHeaders()
+              });
+              
+              const data = await response.json();
+              console.log('API Test Results:', data);
+              
+              alert(`API test successful! Status: ${response.status}`);
+            } catch (error) {
+              console.error('API Test Error:', error);
+              alert(`API test failed: ${error.message}`);
+            }
+          });
+        }
+        
+        if (clearCacheBtn) {
+          clearCacheBtn.addEventListener('click', () => {
+            localStorage.clear();
+            alert('Local cache cleared. You will be redirected to login.');
+            window.location.href = '/login.html';
+          });
+        }
+      }
+      
+      // Simulate loading dashboard data
+      setTimeout(() => {
+        // Update overview chart
+        const overviewChart = document.getElementById('overview-chart');
+        if (overviewChart) {
+          overviewChart.innerHTML = `
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+              <div style="background-color: var(--primary-color, #007bff); height: 70%; width: 20%; margin: 0 5px;"></div>
+              <div style="background-color: var(--primary-color, #007bff); height: 45%; width: 20%; margin: 0 5px;"></div>
+              <div style="background-color: var(--primary-color, #007bff); height: 80%; width: 20%; margin: 0 5px;"></div>
+              <div style="background-color: var(--primary-color, #007bff); height: 60%; width: 20%; margin: 0 5px;"></div>
+            </div>
+          `;
+        }
+        
+        // Update activity list
+        const activityList = document.getElementById('activity-list');
+        if (activityList) {
+          const newActivities = [
+            'Dashboard data loaded',
+            'New content added by user',
+            'System update completed'
+          ];
+          
+          newActivities.forEach(activity => {
+            const li = document.createElement('li');
+            li.textContent = activity;
+            activityList.appendChild(li);
+          });
+        }
+        
+        // Update approval queue for experts
+        if (authService.hasPermission('canApproveContent')) {
+          const approvalQueue = document.getElementById('approval-queue');
+          if (approvalQueue) {
+            approvalQueue.innerHTML = `
+              <div class="approval-item">
+                <p><strong>Video: Introduction to ApproVideo</strong></p>
+                <p>Submitted by: john.doe@example.com</p>
+                <div class="approval-actions">
+                  <button class="btn btn-sm btn-success">Approve</button>
+                  <button class="btn btn-sm btn-danger">Reject</button>
+                </div>
+              </div>
+            `;
+          }
+        }
+      }, 1000);
+    });
