@@ -11,41 +11,17 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/auth/login",
-      "dest": "/api/auth/login.js"
-    },
-    {
-      "src": "/api/auth/verify",
-      "dest": "/api/auth/verify.js"
-    },
-    {
-      "src": "/api/auth/update-lattice",
-      "dest": "/api/auth/update-lattice.js"
-    },
-    {
-      "src": "/api/auth/logout",
-      "dest": "/api/auth/logout.js"
-    },
-    {
-      "src": "/api/auth/user-data",
-      "dest": "/api/auth/user-data.js"
-    },
-    {
-      "src": "/api/auth/user-role",
-      "dest": "/api/auth/user-role.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "^/$",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/(.+)",
-      "dest": "/public/$1"
-    }
+   {
+     "src": "/api/(.*)",
+     "dest": "/api/index.js"
+   },
+   {
+     "src": "^/$",
+     "dest": "/public/index.html"
+   },
+   {
+     "src": "/(.+)",
+     "dest": "/public/$1"
+   }
   ]
 }
