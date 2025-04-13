@@ -11,6 +11,79 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+
+
+class RateLimiter {
+  constructor(windowMs = 15 * 60 * 1000, maxRequests = 100) {
+    this.windowMs = windowMs;
+    this.maxRequests = maxRequests;
+    this.clients = {};
+  }
+
+  check(ip) {
+    const now = Date.now();
+    if (!this.clients[ip]) {
+      this.clients[ip] = { count: 1, resetTime: now + this.windowMs };
+      return true;
+    }
+    
+    if (now > this.clients[ip].resetTime) {
+      this.clients[ip] = { count: 1, resetTime: now + this.windowMs };
+      return true;
+    }
+    
+    if (this.clients[ip].count >= this.maxRequests) {
+      return false;
+    }
+    
+    this.clients[ip].count++;
+    return true;
+  }
+  
+  // Cleanup old entries periodically
+  cleanup() {
+    const now = Date.now();
+    Object.keys(this.clients).forEach(ip => {
+      if (now > this.clients[ip].resetTime) {
+        delete this.clients[ip];
+      }
+    });
+  }
+}
+
+// Create limiter instances
+const authLimiter = new RateLimiter(15 * 60 * 1000, 20); // 20 requests per 15 minutes
+const generalLimiter = new RateLimiter(60 * 1000, 60); // 60 requests per minute
+
+// Schedule cleanup
+setInterval(() => {
+  authLimiter.cleanup();
+  generalLimiter.cleanup();
+}, 5 * 60 * 1000);
+
+// Add middleware for rate limiting
+function rateLimitMiddleware(limiter) {
+  return (req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    if (!limiter.check(ip)) {
+      return res.status(429).json({ error: 'Too many requests, please try again later' });
+    }
+    next();
+  };
+}
+
+// Apply to authentication routes
+app.use('/api/auth/', rateLimitMiddleware(authLimiter));
+// Apply to general API routes
+app.use('/api/', rateLimitMiddleware(generalLimiter));
+
+
+
+
+
+
+
+
 // Utility functions
 async function hashMetaLattice(quat) {
   const str = `${quat.x.toFixed(6)}:${quat.y.toFixed(6)}:${quat.z.toFixed(6)}:${quat.w.toFixed(6)}`;
@@ -566,6 +639,70 @@ app.post('/api/auth/user-role', async (req, res) => {
   }
 });
 
+// ====== VIDEOS ENDPOINT ======
+app.get('/videos', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const sort = req.query.sort || 'newest';
+    
+    // Calculate offset for pagination
+    const offset = (page - 1) * limit;
+    
+    // Determine sort order
+    let sortField, sortOrder;
+    switch(sort) {
+      case 'newest':
+        sortField = 'created_at';
+        sortOrder = { ascending: false };
+        break;
+      case 'oldest':
+        sortField = 'created_at';
+        sortOrder = { ascending: true };
+        break;
+      case 'popular':
+        sortField = 'view_count';
+        sortOrder = { ascending: false };
+        break;
+      default:
+        sortField = 'created_at';
+        sortOrder = { ascending: false };
+    }
+    
+    // Query the database
+    const { data, error, count } = await supabase
+      .from('videos')
+      .select('*', { count: 'exact' })
+      .order(sortField, sortOrder)
+      .range(offset, offset + limit - 1);
+      
+    if (error) {
+      console.error('Error fetching videos:', error);
+      return res.status(500).json({ error: 'Failed to fetch videos' });
+    }
+    
+    // Return the paginated results
+    return res.status(200).json({
+      videos: data,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(count / limit),
+        totalItems: count,
+        itemsPerPage: limit
+      }
+    });
+    
+  } catch (error) {
+    console.error('Server error in videos endpoint:', error);
+    return res.status(500).json({ error: 'Server error processing videos request' });
+  }
+});
+
+
+
+
+
+
 // Handle 404s for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: 'API endpoint not found' });
@@ -582,7 +719,12 @@ module.exports = (req, res) => {
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-  
+ 
+  // Strip /api prefix if it exists
+  if (req.url.startsWith('/api')) {
+    req.url = req.url.replace(/^\/api/, '');
+  }
+ 
   // Pass the request to the Express app
   return app(req, res);
 };
