@@ -1,12 +1,6 @@
-// pages/api/auth/login.js
-
-
-// Routes
-app.get('/api/auth/login', (req, res) => {
-  res.json({ message: 'API is running' });
-});
-
-import { createClient } from '@supabase/supabase-js';
+// api/auth/login.js
+// Serverless function to enhance login security and create session lattice
+const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -40,35 +34,37 @@ function generateNormalizedQuaternion() {
   };
 }
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   // Handle GET requests for health checks
   if (req.method === 'GET') {
-    return res.status(200).json({ message: 'API is running' });
+    return res.status(200).json({ message: 'Login API is running' });
   }
-  
+
   // Only allow POST requests for actual login
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-  
+
   try {
     // Get data from request
     const { token, userId } = req.body;
+    
     if (!token || !userId) {
       return res.status(400).json({ error: 'Missing required parameters' });
     }
-    
+
     // Verify the JWT token
     const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
+    
     if (tokenError || !tokenData.user) {
       return res.status(401).json({ error: 'Invalid authentication token' });
     }
-    
+
     // Ensure the token belongs to the user in question
     if (tokenData.user.id !== userId) {
       return res.status(403).json({ error: 'Token user ID mismatch' });
     }
-    
+
     // Generate a secure quaternion for this session
     const quaternion = generateNormalizedQuaternion();
     
@@ -91,7 +87,7 @@ export default async function handler(req, res) {
       console.error('Database update error:', updateError);
       return res.status(500).json({ error: 'Failed to update lattice hash' });
     }
-    
+
     // Log the login activity for security auditing
     await supabase
       .from('auth_activity_log')
@@ -106,7 +102,7 @@ export default async function handler(req, res) {
         // Non-critical error, just log it
         console.error('Failed to log auth activity:', error);
       });
-    
+
     // Return the quaternion and hash for the client
     return res.status(200).json({
       success: true,
@@ -119,3 +115,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Server error during login enhancement' });
   }
 }
+
+// Export the handler function
+module.exports = handler;

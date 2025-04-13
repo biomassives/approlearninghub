@@ -1,41 +1,49 @@
-// api/index.js
+// api/index.js - Main API Router
 const express = require('express');
+const path = require('path');
 const app = express();
 
-// Middleware
+// Middleware for parsing JSON
 app.use(express.json());
 
-app.get('/api/videos', (req, res) => {
-  // --- Handler logic goes here ---
-  console.log(`Received request for /api/videos with query:`, req.query);
-  // Example response:
-  res.status(200).json({ videos: [], page: req.query.page || 1 });
-  // --- ---
-});
+// Import API handlers
+const loginHandler = require('./auth/login');
+const verifyHandler = require('./auth/verify');
+const updateLatticeHandler = require('./auth/update-lattice');
+const logoutHandler = require('./auth/logout');
+const userDataHandler = require('./auth/user-data');
+const userRoleHandler = require('./auth/user-role');
 
-// Routes
+// Set up routes
+app.all('/api/auth/login', (req, res) => loginHandler(req, res));
+app.all('/api/auth/verify', (req, res) => verifyHandler(req, res));
+app.all('/api/auth/update-lattice', (req, res) => updateLatticeHandler(req, res));
+app.all('/api/auth/logout', (req, res) => logoutHandler(req, res));
+app.all('/api/auth/user-data', (req, res) => userDataHandler(req, res));
+app.all('/api/auth/user-role', (req, res) => userRoleHandler(req, res));
+
+// Root API route
 app.get('/api', (req, res) => {
-  res.json({ message: 'API is running' });
+  res.json({ message: 'ApproVideo API is running' });
 });
 
-app.get('/api/modules', (req, res) => {
-  // Example response - replace with your actual data
-  res.json([
-    { id: 'mod1', name: 'Module 1', context: 'context1' },
-    { id: 'mod2', name: 'Module 2', context: 'context2' }
-  ]);
+// Handle 404s for API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
 });
 
-app.get('/api/modules/:context/:id', (req, res) => {
-  const { context, id } = req.params;
-  // Example response - replace with your actual data
-  res.json({
-    id,
-    context,
-    name: `Module ${id}`,
-    content: 'This is the module content.'
-  });
-});
-
-// Export for Vercel
-module.exports = app;
+// Export the serverless function handler
+module.exports = (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle OPTIONS requests for CORS preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  // Pass the request to the Express app
+  return app(req, res);
+};
