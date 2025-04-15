@@ -16,11 +16,12 @@
 
   <main class="container">
     <p>Welcome, Admin. Manage users and review system metrics below.</p>
-
+    <div id="welcome-content"></div>
     <div id="user-list">Loading users...</div>
     <div id="settings-message-container" class="message"></div>
   </main>
 
+  <script type="module" src="/js/admin-dashboard.js"></script>
   <script type="module">
     import { requireAuth, getCurrentUser, checkAccess, signOut, updateUserRole } from './supabase-auth.js';
     import { showMessage, showToast } from './shared-utils.js';
@@ -81,6 +82,48 @@
             <button data-user-id="${user.user_id}" class="save-role">Save</button>
           `;
           userList.appendChild(userItem);
+        });
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+          try {
+            const response = await fetch('/api/admin?type=welcome', {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+              }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              const container = document.getElementById('welcome-content');
+
+              result.welcomeContent.forEach(item => {
+                const section = document.createElement('div');
+                section.classList.add('welcome-section');
+
+                const title = document.createElement('h2');
+                title.textContent = item.title;
+
+                const description = document.createElement('p');
+                description.textContent = item.description;
+
+                const link = document.createElement('a');
+                link.href = item.link;
+                link.textContent = 'Go to section';
+
+                section.appendChild(title);
+                section.appendChild(description);
+                section.appendChild(link);
+
+                container.appendChild(section);
+              });
+            } else {
+              console.error('Failed to load welcome content:', result.error);
+            }
+          } catch (error) {
+            console.error('Error fetching welcome content:', error);
+          }
         });
 
         document.querySelectorAll('.save-role').forEach(btn => {

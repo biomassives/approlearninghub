@@ -1,10 +1,11 @@
-// login.js
-import { saveSecureSession } from './session-crypto.js';
+// public/login.js
+
+import { saveSecureSession } from './js/serverless-enhanced-auth.js';
 
 const form = document.getElementById('login-form');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
-const errorContainer = document.getElementById('error-container');
+const statusMessage = document.getElementById('status-message');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -12,8 +13,8 @@ form.addEventListener('submit', async (e) => {
   const email = emailInput.value.trim();
   const password = passwordInput.value;
 
-  errorContainer.textContent = '';
-  errorContainer.classList.add('hidden');
+  statusMessage.textContent = '';
+  statusMessage.classList.remove('text-red-600', 'text-green-600');
 
   try {
     const res = await fetch('/api/auth/login', {
@@ -32,13 +33,18 @@ form.addEventListener('submit', async (e) => {
         email: result.user.email
       });
 
+      statusMessage.textContent = 'Login successful! Redirecting...';
+      statusMessage.classList.add('text-green-600');
+
       const redirectTo = {
         admin: '/admin-dashboard.html',
         user: '/dashboard.html',
         expert: '/expert-dashboard.html'
       }[result.user.role] || '/dashboard.html';
 
-      window.location.href = redirectTo;
+      setTimeout(() => {
+        window.location.href = redirectTo;
+      }, 1000);
     } else {
       showError(result.error || 'Login failed');
     }
@@ -49,6 +55,6 @@ form.addEventListener('submit', async (e) => {
 });
 
 function showError(msg) {
-  errorContainer.textContent = msg;
-  errorContainer.classList.remove('hidden');
+  statusMessage.textContent = msg;
+  statusMessage.classList.add('text-red-600');
 }

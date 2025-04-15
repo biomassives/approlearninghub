@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="stylenew.css" rel="stylesheet">
+  <style>
+    /* Add to your stylenew.css file or keep here */
+    #userMenuDropdown {
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform-origin: top right;
+    }
+
+    #userMenuDropdown.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    #userMenuDropdown:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .promo-section {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.promo-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.promo-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+}
+
+.promo-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.promo-card h3 {
+    margin-bottom: 15px;
+    color: #3498db;
+}
+
+.promo-card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.promo-meta {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 25px;
+}
+
+.promo-button {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.promo-button:hover {
+    background-color: #2980b9;
+}
+
+.promo-button.secondary {
+    background-color: #2ecc71;
+}
+
+.promo-button.secondary:hover {
+    background-color: #27ae60;
+}
+
+@media (max-width: 768px) {
+    .promo-section {
+        padding: 40px 0;
+    }
+    
+    .promo-grid {
+        gap: 20px;
+    }
+}
+<style>
+  .category-group {
+    position: relative;
+    display: inline-block;
+    margin: 1em;
+  }
+
+  .category-button {
+    text-decoration: none;
+  }
+
+  .icon-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+    fill: white;
+  }
+
+  .category-label {
+    margin-top: 0.5em;
+    font-weight: bold;
+    color: #222;
+  }
+
+  .subcategory-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5em 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .subcategory-menu a {
+    display: block;
+    padding: 0.5em 1em;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: background 0.2s ease;
+  }
+
+  .subcategory-menu a:hover {
+    background-color: #f0f0f0;
+  }
+
+  .category-group:hover .subcategory-menu {
+    display: block;
+  }
+
+  /* Icon backgrounds */
+  .health-icon { background: linear-gradient(to right, #b71c1c, #7e57c2); }
+  .water-icon { background: linear-gradient(to right, #00bcd4, #2196f3); }
+  .shelter-icon { background: linear-gradient(to right, #e53935, #757575); }
+  .energy-icon { background: linear-gradient(to right, #fbc02d, #ffa000); }
+  .agronomy-icon { background: linear-gradient(to right, #43a047, #388e3c); }
+
+  </style>
+  <script type="module" src="index.js"></script>
+</head>
+
+<body class="theme-transition">
+
+<div class="border-b border-gray-700 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 shadow-md">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-16"> <div class="flex-shrink-0"> <a href="/" class="text-xl font-bold"> 🌿 ApproVideo 🌱
+                 </a>
+            </div>
+
+            <div class="hidden md:flex md:justify-center md:flex-grow"> <div class="flex items-center space-x-4 lg:space-x-6"> </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                 <div class="hidden sm:block"> <button id="darkModeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                      </button>
+                 </div>
+                 <button id="language-dropdown-button" class="flex items-center px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm">
+                    <span id="current-language-display">EN</span>
+                    <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                  </button>
+                  <div id="language-dropdown-menu" class="absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50" style="top: 4rem;"> <div class="p-3">
+                      <input type="text" id="language-search" placeholder="Search languages..." class="w-full p-2 mb-3 bg-gray-100 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600 text-sm">
+                      <div id="language-grid" class="grid grid-cols-3 gap-2">
+                        <button data-lang="am" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Amharic</span>
+                        </button>
+                        <button data-lang="ar" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">AR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Arabic</span>
+                        </button>
+                        <button data-lang="bn" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">BN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Bengali</span>
+                        </button>
+                        <button data-lang="de" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">DE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">German</span>
+                        </button>
+                        <button data-lang="en" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">EN</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">English</span>
+                        </button>
+                        <button data-lang="es" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ES</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Spanish</span>
+                        </button>
+                        <button data-lang="fa" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Persian</span>
+                        </button>
+                        <button data-lang="fr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">FR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">French</span>
+                        </button>
+                        <button data-lang="ha" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hausa</span>
+                        </button>
+                        <button data-lang="hi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">HI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Hindi</span>
+                        </button>
+                        <button data-lang="id" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ID</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Indonesian</span>
+                        </button>
+                        <button data-lang="it" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">IT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Italian</span>
+                        </button>
+                        <button data-lang="jp" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">JP</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Japanese</span>
+                        </button>
+                        <button data-lang="km" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KM</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Khmer</span>
+                        </button>
+                        <button data-lang="ko" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Korean</span>
+                        </button>
+                        <button data-lang="ku" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">KU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Kurdish</span>
+                        </button>
+                        <button data-lang="ms" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Malay</span>
+                        </button>
+                        <button data-lang="my" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">MY</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Burmese</span>
+                        </button>
+                        <button data-lang="ne" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">NE</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Nepali</span>
+                        </button>
+                        <button data-lang="ps" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PS</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Pashto</span>
+                        </button>
+                        <button data-lang="pt" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">PT</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Portuguese</span>
+                        </button>
+                        <button data-lang="ru" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">RU</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Russian</span>
+                        </button>
+                        <button data-lang="so" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Somali</span>
+                        </button>
+                        <button data-lang="sw" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">SW</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Swahili</span>
+                        </button>
+                        <button data-lang="ta" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TA</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tamil</span>
+                        </button>
+                        <button data-lang="th" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Thai</span>
+                        </button>
+                        <button data-lang="tl" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TL</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Tagalog</span>
+                        </button>
+                        <button data-lang="tr" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">TR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Turkish</span>
+                        </button>
+                        <button data-lang="uk" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UK</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Ukrainian</span>
+                        </button>
+                        <button data-lang="ur" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">UR</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Urdu</span>
+                        </button>
+                        <button data-lang="vi" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">VI</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Vietnamese</span>
+                        </button>
+                        <button data-lang="yo" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">YO</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Yoruba</span>
+                        </button>
+                        <button data-lang="zh" class="lang-button flex flex-col items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-center">
+                          <span class="text-sm font-bold">ZH</span>
+                          <span class="text-xs mt-1 text-gray-600 dark:text-gray-300">Chinese</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                 <div class="relative ml-3">
+                    <div>
+                        <button type="button" id="userMenuButton" class="flex items-center px-3 py-2 rounded-lg bg-green-100 dark:bg-green-800 hover:bg-green-200 dark:hover:bg-green-700 transition-colors text-sm">
+                            <i class="fas fa-user-circle mr-2 text-green-600 dark:text-green-400"></i>
+                            <span id="user-menu-label">Account</span>
+                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                        </button>
+                    </div>
+                    <div id="userMenuDropdown" class="absolute right-0 mt-2 w-56 max-h-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
+                        <div class="p-3">
+                            <div id="guestOptions">
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+                                    Sign in to contribute to ApproVideo
+                                </div>
+                                <button id="menuLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-sign-in-alt mr-2 text-blue-500"></i>
+                                    <span>Login</span>
+                                </button>
+                                <button id="menuSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center">
+                                    <i class="fas fa-user-plus mr-2 text-green-500"></i>
+                                    <span>Sign Up</span>
+                                </button>
+                            </div>
+                            <div id="userOptions" class="hidden">
+                                <div id="userMenuInfo" class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+                                    Signed in as <span id="userMenuEmail">user@example.com</span>
+                                </div>
+                            </div>
+                            <div class="pt-2 mt-2 border-t border-gray-200 dark:border-gray-700">
+                                <button id="suggestResourceButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>
+                                    <span>Suggest a Resource</span>
+                                </button>
+                                <button id="proposeClinicButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mb-1 flex items-center">
+                                    <i class="fas fa-chalkboard-teacher mr-2 text-purple-500"></i>
+                                    <span>Propose a Knowledge Clinic</span>
+                                </button>
+                                <button id="menuLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 mt-2 flex items-center hidden">
+                                    <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="hidden sm:flex items-center space-x-2"> 
+
+                      <span id="userInfo" class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm hidden items-center whitespace-nowrap"></span>
+                      <button id="logoutButton" class="px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 hidden">Logout</button>
+                 </div>
+                 <div class="md:hidden flex items-center"> <button id="mobileMenuButton" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                           <i class="fas fa-bars"></i>
+                      </button>
+                 </div>
+            </div>
+        </div>
+
+         <div id="mobileMenuPanel" class="md:hidden hidden py-4 border-t border-gray-200 dark:border-gray-700">
+             <div class="flex flex-col space-y-2 mb-4">
+                  </div>
+             <div class="flex flex-col space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <button id="mobileLoginButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Login</button>
+                  <button id="mobileSignupButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Sign Up</button>
+                  <span id="mobileUserInfo" class="px-3 py-2 text-gray-500 dark:text-gray-400 hidden"></span>
+                  <button id="mobileLogoutButton" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 hidden">Logout</button>
+                   <button id="mobileThemeToggle" class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                       <span>Toggle Theme</span>
+                       <span class="text-sm">
+                           <i class="fas fa-moon dark:hidden"></i>
+                           <i class="fas fa-sun hidden dark:block"></i>
+                       </span>
+                   </button>
+                   </div>
+               </div>
+          </div>
+      </div>
+
+
+      <div class="flex justify-center space-x-8 py-4">
+        <div class="category-group">
+          <a href="#" class="category-button">
+            <button class="icon-button" data-category="health">
+              <div class="icon-circle health-icon">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                   2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09
+                   C13.09 4.01 14.76 3 16.5 3
+                   19.58 3 22 5.42 22 8.5
+                   c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+              <span class="category-label">Health</span>
+            </button>
+          </a>
+          <div class="subcategory-menu">
+            <a href="#">🩹 First Aid</a>
+            <a href="#">🧑‍💻 Telemedicine</a>
+            <a href="#">🧯 EMT Skills</a>
+            <a href="#">🌱 Self-sufficient Healthcare</a>
+          </div>
+        </div>
+        
+        <div class="category-group">
+          <a href="#" class="category-button">
+            <button class="icon-button" data-category="water">
+              <div class="icon-circle water-icon">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M12 3C12 3 6 10.5 6 14.5C6 17.54 8.46 20 11.5 20
+                  S17 17.54 17 14.5C17 10.5 12 3 12 3Z"/>
+                </svg>
+              </div>
+              <span class="category-label">Water</span>
+            </button>
+          </a>
+          <div class="subcategory-menu">
+            <a href="#">💧 Purification</a>
+            <a href="#">🌊 Desalination</a>
+            <a href="#">🚰 Distribution</a>
+          </div>
+        </div>
+        
+        <div class="category-group">
+          <a href="#" class="category-button">
+            <button class="icon-button" data-category="shelter">
+              <div class="icon-circle shelter-icon">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+              </div>
+              <span class="category-label">Shelter</span>
+            </button>
+          </a>
+          <div class="subcategory-menu">
+            <a href="#">🏗️ Low-Cost Construction</a>
+            <a href="#">🧱 Local Materials</a>
+          </div>
+        </div>
+        
+        <div class="category-group">
+          <a href="#" class="category-button">
+            <button class="icon-button" data-category="energy">
+              <div class="icon-circle energy-icon">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M7 2v13h3v7l7-12h-4l4-8z"/>
+                </svg>
+              </div>
+              <span class="category-label">Energy</span>
+            </button>
+          </a>
+          <div class="subcategory-menu">
+            <a href="#">🔋 DIY Solar</a>
+            <a href="#">🔥 Biogas</a>
+            <a href="#">⚡ Microgrids</a>
+          </div>
+        </div>
+        
+        <div class="category-group">
+          <a href="#" class="category-button">
+            <button class="icon-button" data-category="agronomy">
+              <div class="icon-circle agronomy-icon">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M12 2C10 4 8 7 8 9c0 3 2 5 4 5s4-2 4-5c0-2-2-5-4-7zm0 15c-4.42 0-8 1.79-8 4v1h16v-1c0-2.21-3.58-4-8-4z"/>
+                </svg>
+              </div>
+              <span class="category-label">Food</span>
+            </button>
+          </a>
+          <div class="subcategory-menu">
+            <a href="#">🌿 Urban Gardening</a>
+            <a href="#">💧 Hydroponics</a>
+            <a href="#">🌾 Sustainable Agriculture</a>
+          </div>
+        </div>
+        
+
+
+    </div>
+  </div>
+
+  <div class="relative">
+
+
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+            </div>
+
+
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+
+  <div id="subheader" class="subheader"> Approvideo is a DIY learning network that supports hands on learning and community level collaboration. </div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+
+    </div>
+
+    <div class="container mx-auto px-4">
+
+    <div id="intro-text-display" class="container mx-auto px-4 my-6 hidden bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+      <h3 id="intro-title" class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200"></h3>
+      <p id="intro-text" class="text-gray-700 dark:text-gray-300 mb-3"></p>
+      <a id="add-resource-link" href="#" class="inline-block px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
+          <i class="fas fa-plus-circle mr-1"></i> Add Resource to this Area
+      </a>
+    </div>
+
+
+<section class="promo-section">
+    <div class="container">
+        <h2>Science & Technology Timelines</h2>
+        <div class="promo-grid">
+            <div class="promo-card">
+                <div class="promo-icon">📊</div>
+                <h3>Public Timeline</h3>
+                <p>View upcoming science-technology workshops, library development progress, and learning module milestones.</p>
+                <p class="promo-meta">No login required • Updated weekly</p>
+                <a href="/public-timeline" class="promo-button">View Public Timeline</a>
+            </div>
+            <div class="promo-card">
+                <div class="promo-icon">🔒</div>
+                <h3>Community Milestones</h3>
+                <p>Access the complete timeline with all events, meetings, and development tracking. Add your own events to the timeline.</p>
+                <p class="promo-meta">Login required • Role-based access</p>
+                <a href="/community-milestones" class="promo-button secondary">View Community Milestones</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search solutions..."
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+      </div>
+      <div class="flex-shrink-0">
+        <select
+          id="sortSelect"
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      </div>
+
+    <div id="infiniteScrollTrigger" class="h-20"></div>
+  </div>
+
+
+      <script>
+
+
+
+      function getRandomColor() {
+        // Using HSL color space for more vibrant colors
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 100;
+        const lightness = Math.random() * 100;
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
+
+
+          // Theme Toggle
+          const darkModeToggle = document.getElementById('darkModeToggle');
+          const html = document.documentElement;
+
+          function updateTheme(isDark) {
+            html.classList.toggle('dark', isDark);
+            localStorage.setItem('darkMode', isDark);
+          }
+
+          // Check saved preference
+          if (localStorage.getItem('darkMode') === 'true' ||
+              (!localStorage.getItem('darkMode') &&
+               window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            updateTheme(true);
+          }
+
+          darkModeToggle.addEventListener('click', () => {
+            updateTheme(!html.classList.contains('dark'));
+          });
+
+          // Profile Dropdown - OLD - Keeping for reference if needed, but replaced by User Menu
+          //const profileButton = document.getElementById('profileButton');
+          //const profileDropdown = document.getElementById('profileDropdown');
+
+/*
+            profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('dropdown-active');
+          });
+*/
+
+          // document.addEventListener('click', () => {
+          //   profileDropdown.classList.remove('dropdown-active');
+          // });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Elements
+  const languageButton = document.getElementById('language-dropdown-button');
+  const languageMenu = document.getElementById('language-dropdown-menu');
+  const languageSearch = document.getElementById('language-search');
+  const languageButtons = document.querySelectorAll('.lang-button');
+  const currentLangDisplay = document.getElementById('current-language-display');
+
+  // Get saved language or default to English
+  const savedLanguage = localStorage.getItem('approVideoLanguage') || 'en';
+  updateActiveLanguage(savedLanguage);
+
+  // Toggle dropdown when button is clicked
+  if (languageButton && languageMenu) { // Add checks
+    languageButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      languageMenu.classList.toggle('hidden');
+    });
+  }
+
+  // Hide dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (languageButton && languageMenu && !languageButton.contains(e.target) && !languageMenu.contains(e.target)) {
+      languageMenu.classList.add('hidden');
+    }
+  });
+
+  // Search functionality
+  if (languageSearch) { // Add check
+      languageSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+
+        languageButtons.forEach(button => {
+          const lang = button.getAttribute('data-lang').toLowerCase();
+          const langName = button.querySelector('span:last-child').textContent.toLowerCase();
+
+          if (lang.includes(searchTerm) || langName.includes(searchTerm) || searchTerm === '') {
+            button.style.display = 'flex'; // Use flex to restore layout
+          } else {
+            button.style.display = 'none';
+          }
+        });
+      });
+  }
+
+  // Language selection
+  languageButtons.forEach(button => {
+    // Highlight active language
+    if (button.getAttribute('data-lang').toLowerCase() === savedLanguage.toLowerCase()) {
+      button.classList.add('bg-blue-500', 'text-white');
+      const langNameSpan = button.querySelector('span:last-child');
+      if (langNameSpan) langNameSpan.classList.remove('text-gray-600', 'dark:text-gray-300');
+    }
+
+    // Handle click
+    button.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+
+      // Save language preference
+      localStorage.setItem('approVideoLanguage', lang);
+
+      // Update UI
+      updateActiveLanguage(lang);
+
+      // Hide dropdown
+      if (languageMenu) languageMenu.classList.add('hidden'); // Add check
+
+      // Dispatch event for language change
+      document.dispatchEvent(new CustomEvent('languageChanged', {
+        detail: { language: lang }
+      }));
+
+      // Reload page to apply language
+      // Comment this line if you're using a client-side translation system
+      // window.location.reload();
+    });
+  });
+
+  // Update active language display
+  function updateActiveLanguage(lang) {
+    // Update display
+    if (currentLangDisplay) { // Add check
+        currentLangDisplay.textContent = lang.toUpperCase();
+    }
+
+    // Update active button styling
+    languageButtons.forEach(button => {
+      const buttonLang = button.getAttribute('data-lang');
+      const isActive = buttonLang.toLowerCase() === lang.toLowerCase();
+      const langNameSpan = button.querySelector('span:last-child');
+
+      // Reset all buttons first
+      button.classList.remove('bg-blue-500', 'text-white');
+      if (langNameSpan) langNameSpan.classList.add('text-gray-600', 'dark:text-gray-300');
+
+      // Then style the active one
+      if (isActive) {
+        button.classList.add('bg-blue-500', 'text-white');
+        if (langNameSpan) langNameSpan.classList.remove('text-gray-600', 'dark:text-gray-300');
+      }
+    });
+  }
+});
+
+
+// START: User Menu JS Integration
+// User Menu Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Menu elements
+  const userMenuButton = document.getElementById('userMenuButton');
+  const userMenuDropdown = document.getElementById('userMenuDropdown');
+  const userMenuLabel = document.getElementById('user-menu-label');
+  const guestOptions = document.getElementById('guestOptions');
+  const userOptions = document.getElementById('userOptions');
+  const userMenuEmail = document.getElementById('userMenuEmail');
+  const menuLoginButton = document.getElementById('menuLoginButton');
+  const menuSignupButton = document.getElementById('menuSignupButton');
+  const menuLogoutButton = document.getElementById('menuLogoutButton');
+  const suggestResourceButton = document.getElementById('suggestResourceButton');
+  const proposeClinicButton = document.getElementById('proposeClinicButton');
+
+  // Reference to existing modal elements/triggers
+  const loginButton = document.getElementById('loginButton'); // Your main login button
+  const signupButton = document.getElementById('signupButton'); // Your main signup button
+  const logoutButton = document.getElementById('logoutButton'); // Your main logout button
+  const editorModal = document.getElementById('editor-modal'); // Assuming editor modal is triggered by login
+
+  // Toggle dropdown when button is clicked
+  if (userMenuButton && userMenuDropdown) {
+    userMenuButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userMenuDropdown.classList.toggle('hidden');
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!userMenuButton.contains(e.target) && !userMenuDropdown.contains(e.target)) {
+        userMenuDropdown.classList.add('hidden');
+      }
+    });
+  }
+
+  // Button actions
+  if (menuLoginButton && loginButton) {
+    menuLoginButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing login button/modal functionality
+      loginButton.click(); // Or trigger whatever function opens your login modal
+    });
+  }
+
+  if (menuSignupButton && signupButton) {
+    menuSignupButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing signup button/modal functionality
+      signupButton.click(); // Or trigger whatever function opens your signup modal
+    });
+  }
+
+  if (menuLogoutButton && logoutButton) {
+    menuLogoutButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      // Trigger the existing logout button functionality
+      logoutButton.click(); // Or call your logout function
+    });
+  }
+  
+  // Resource suggestion modal
+  if (loginButton) {
+    loginButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showLoginModal();
+    });
+  }
+
+  // Resource suggestion modal
+  if (suggestResourceButton) {
+    suggestResourceButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showResourceSuggestionModal();
+    });
+  }
+
+  // Clinic proposal modal
+  if (proposeClinicButton) {
+    proposeClinicButton.addEventListener('click', function() {
+      if(userMenuDropdown) userMenuDropdown.classList.add('hidden');
+      showClinicProposalModal();
+    });
+  }
+
+  // Update the user menu based on login state
+  // Make this globally accessible or ensure it's called correctly
+  window.updateUserMenu = function(user) {
+    if (!userMenuLabel || !guestOptions || !userOptions || !menuLogoutButton) return;
+
+    if (user && user.email && user.email !== 'unknown@example.com') {
+      // User is logged in
+      userMenuLabel.textContent = user.name || 'Account'; // Use name if available
+      guestOptions.classList.add('hidden');
+      userOptions.classList.remove('hidden');
+      menuLogoutButton.classList.remove('hidden');
+
+      if (userMenuEmail) {
+        userMenuEmail.textContent = user.email;
+      }
+    } else {
+      // User is a guest
+      userMenuLabel.textContent = 'Account';
+      guestOptions.classList.remove('hidden');
+      userOptions.classList.add('hidden');
+      menuLogoutButton.classList.add('hidden');
+    }
+  };
+
+  // Initial update on page load (assuming loadSecureSession handles this)
+  // Ensure this runs *after* loadSecureSession completes
+  // Consider using Promises or callbacks if loadSecureSession is async
+  if (typeof loadSecureSession === 'function') {
+    // If loadSecureSession is async and returns a Promise:
+    loadSecureSession().then(session => {
+      if (window.updateUserMenu) {
+        window.updateUserMenu(session);
+      }
+    }).catch(error => {
+      console.warn('Session loading failed, showing guest options:', error);
+      if (window.updateUserMenu) {
+        window.updateUserMenu(null); // Ensure menu shows guest state on failure
+      }
+    });
+    // If loadSecureSession is synchronous or uses a callback, adjust accordingly
+  } else {
+    // Fallback if loadSecureSession isn't defined, assume guest
+     if (window.updateUserMenu) {
+        window.updateUserMenu(null);
+     }
+  }
+});
+
+// Resource suggestion modal function
+function showResourceSuggestionModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('resource-suggestion-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'resource-suggestion-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Suggest a Resource</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Help expand our collection by suggesting educational resources that address appropriate technology solutions.
+            </p>
+            <form id="resource-suggestion-form" class="space-y-4">
+              <div>
+                <label for="resource-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Resource Title</label>
+                <input type="text" id="resource-title" name="title" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="resource-url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL (YouTube, website, etc.)</label>
+                <input type="url" id="resource-url" name="url" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="resource-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                <select id="resource-category" name="category" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a category</option>
+                  <option value="Water">Water</option>
+                  <option value="Shelter">Shelter</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Health">Health</option>
+                  <option value="Agronomy">Food/Agriculture</option>
+                  </select>
+              </div>
+              <div>
+                <label for="resource-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                <textarea id="resource-description" name="description" rows="3" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+              <div>
+                <label for="resource-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Email (optional, for follow-up)</label>
+                <input type="email" id="resource-email" name="email" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="resource-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                  Submit Suggestion
+                </button>
+              </div>
+            </form>
+            <p id="resource-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('resource-suggestion-form');
+    const message = document.getElementById('resource-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for your suggestion! Our team will review it soon.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Resource suggestion (needs API integration):', data);
+      // Example: fetch('/api/suggestions/resource', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //  .then(response => response.json())
+      //  .then(result => { /* Handle success */ })
+      //  .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+        setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('resource-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
+}
+
+
+// Clinic proposal modal function
+function showClinicProposalModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('clinic-proposal-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'clinic-proposal-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Propose a Knowledge Clinic</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Suggest a topic for a knowledge clinic to address gaps in appropriate technology understanding and skills.
+            </p>
+            <form id="clinic-proposal-form" class="space-y-4">
+              <div>
+                <label for="clinic-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Clinic Topic/Title</label>
+                <input type="text" id="clinic-title" name="title" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="clinic-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Field/Category</label>
+                <select id="clinic-category" name="category" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a category</option>
+                  <option value="Water">Water</option>
+                  <option value="Shelter">Shelter</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Health">Health</option>
+                  <option value="Food">Food/Agriculture</option>
+                  <option value="Other">Other</option>
+                  </select>
+              </div>
+              <div>
+                <label for="clinic-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">What knowledge gap would this address?</label>
+                <textarea id="clinic-description" name="description" rows="3" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+              <div>
+                <label for="clinic-format" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Suggested Format</label>
+                <select id="clinic-format" name="format" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="">Select a format</option>
+                  <option value="online">Online Workshop</option>
+                  <option value="in-person">In-Person Workshop</option>
+                  <option value="tutorial">Video Tutorial Series</option>
+                  <option value="guide">Comprehensive Guide</option>
+                  <option value="other">Other (please specify in description)</option>
+                </select>
+              </div>
+              <div>
+                <label for="clinic-contact" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Email (for follow-up)</label>
+                <input type="email" id="clinic-contact" name="email" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="clinic-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                  Submit Proposal
+                </button>
+              </div>
+            </form>
+            <p id="clinic-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('clinic-proposal-form');
+    const message = document.getElementById('clinic-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for your clinic proposal! Our team will review it and contact you soon.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Clinic proposal (needs API integration):', data);
+      // Example: fetch('/api/proposals/clinic', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //   .then(response => response.json())
+      //   .then(result => { /* Handle success */ })
+      //   .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+         setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('clinic-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
+}
+
+
+menuLoginButton.addEventListener('click', function() {
+  if (userMenuDropdown) userMenuDropdown.classList.add('hidden');
+  loginModal(); // call directly instead of clicking a non-existent button
+});
+
+
+
+
+//  login modal function
+function loginModal() {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('login-modal');
+
+  if (!modal) {
+    // Create the modal element
+    modal = document.createElement('div');
+    modal.id = 'login-modal';
+    modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center'; // Added flex for centering
+
+    modal.innerHTML = `
+      <div class="relative p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 text-center">Log in</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+              Manage learning, teaching, modules and clinics
+            </p>
+            <form id="login-form" class="space-y-4">
+              <div>
+                <label for="clinic-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                <input type="text" id="email" name="email" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="clinic-category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                <input type="password" id="password" name="password" required class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" id="login-cancel" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                 Submit 
+                </button>
+              </div>
+            </form>
+            <p id="login-message" class="mt-4 text-sm text-center hidden"></p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Form submission logic
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('login-message');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      message.classList.remove('text-red-500', 'text-green-500', 'hidden');
+      message.classList.add('text-green-500');
+      message.textContent = 'Thank you for being a participant.';
+
+      // TODO: Send this data to your API endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log('Login ( API integration):', data);
+      // Example: fetch('/api/verify', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} })
+      //   .then(response => response.json())
+      //   .then(result => { /* Handle success */ })
+      //   .catch(error => { /* Handle error */ });
+
+      // Reset form after a delay and hide modal
+      setTimeout(() => {
+        form.reset();
+        message.classList.add('hidden'); // Hide message before modal closes
+         setTimeout(() => {
+          modal.classList.add('hidden'); // Hide the modal itself
+        }, 1000); // Wait a bit after hiding the message
+      }, 2000); // Show message for 2 seconds
+    });
+
+    // Cancel button logic
+    const cancelButton = document.getElementById('login-cancel');
+    cancelButton.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      form.reset(); // Reset form on cancel
+      message.classList.add('hidden'); // Hide any previous message
+    });
+
+    // Optional: Close modal if clicking outside the content area
+     modal.addEventListener('click', function(e) {
+        if (e.target === modal) { // Check if click is on the background overlay
+            modal.classList.add('hidden');
+            form.reset();
+            message.classList.add('hidden');
+        }
+     });
+  }
+
+  // Show the modal
+  modal.classList.remove('hidden');
+}
+
+
+// Modify the existing updateUIForUser function (if it exists globally)
+// to also update the user menu. Create it if it doesn't exist.
+const originalUpdateUIForUser = window.updateUIForUser || function(session) {
+    // This function might contain your original logic to show/hide
+    // login/logout/signup buttons, user info span, etc.
+    // Find elements like loginButton, signupButton, userInfo, logoutButton
+    // Update element visibility and content based on the 'session' object.
+
+    const loginBtn = document.getElementById('loginButton');
+    const signupBtn = document.getElementById('signupButton');
+    const userInfoSpan = document.getElementById('userInfo');
+    const logoutBtn = document.getElementById('logoutButton');
+    const mobileLoginBtn = document.getElementById('mobileLoginButton');
+    const mobileSignupBtn = document.getElementById('mobileSignupButton');
+    const mobileUserInfoSpan = document.getElementById('mobileUserInfo');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutButton');
+
+    const isLoggedIn = session && session.email && session.email !== 'unknown@example.com';
+
+    if (isLoggedIn) {
+        if (loginBtn) loginBtn.classList.add('hidden');
+        if (signupBtn) signupBtn.classList.add('hidden');
+        if (userInfoSpan) {
+            userInfoSpan.textContent = `Welcome, ${session.name || session.email}`;
+            userInfoSpan.classList.remove('hidden');
+             userInfoSpan.classList.add('flex', 'items-center'); // Ensure it's displayed correctly
+        }
+        if (logoutBtn) logoutBtn.classList.remove('hidden');
+
+        if (mobileLoginBtn) mobileLoginBtn.classList.add('hidden');
+        if (mobileSignupBtn) mobileSignupBtn.classList.add('hidden');
+        if (mobileUserInfoSpan) {
+             mobileUserInfoSpan.textContent = `Welcome, ${session.name || session.email}`;
+             mobileUserInfoSpan.classList.remove('hidden');
+             mobileUserInfoSpan.classList.add('block'); // Or appropriate display class
+        }
+        if (mobileLogoutBtn) mobileLogoutBtn.classList.remove('hidden');
+
+    } else {
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (signupBtn) signupBtn.classList.remove('hidden');
+        if (userInfoSpan) userInfoSpan.classList.add('hidden');
+        if (logoutBtn) logoutBtn.classList.add('hidden');
+
+        if (mobileLoginBtn) mobileLoginBtn.classList.remove('hidden');
+        if (mobileSignupBtn) mobileSignupBtn.classList.remove('hidden');
+        if (mobileUserInfoSpan) mobileUserInfoSpan.classList.add('hidden');
+        if (mobileLogoutBtn) mobileLogoutBtn.classList.add('hidden');
+    }
+};
+
+window.updateUIForUser = function(session) {
+  // Call the original logic first
+  originalUpdateUIForUser(session);
+
+  // Then, update the user menu state
+  if (window.updateUserMenu) {
+    window.updateUserMenu(session);
+  }
+};
+// END: User Menu JS Integration
+
+</script>
+
+
+<div class="container mx-auto px-4 mb-8">
+  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">
+      Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
+      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee
+      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with
+      YouTube's terms of service. We encourage transformative use, proper attribution, and respect for copyright.
+  </div>
+</div>
+
+
+
+    <BR><BR><BR>
+
+
+
+
+<footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
+    <div class="landscape">
+        <img src="images/windmill.svg" alt="Windmill">
+        <img src="images/leaf.svg" alt="Leaf">
+    </div>
+
+   <BR><BR><BR>
+
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-start">
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h3 class="footer-title mb-2 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">ApproVideo</h3>
+                <p class="footer-subtitle text-lg">Appropriate Technology Videos for the DIY Sector</p>
+                <div class="mt-4 relative overflow-hidden cursor-pointer" id="mission-reveal">
+                    <p class="text-sm font-semibold">Our Mission (Click to reveal)</p>
+                    <div class="mission-text hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out">
+                        <p>To empower individuals and communities with accessible, sustainable technology solutions through educational videos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4 text-blue-600 dark:text-blue-400">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>GitHub Repository</a></li>
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla/issues" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>Comments/ Issues </a></li>
+                    <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-balance-scale mr-2"></i>GPL v3 License</a></li>
+                    <li><a href="https://scdhub.org" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-globe mr-2"></i>SCD Hub</a></li>
+                </ul>
+            </div>
+
+            <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
+                <button id="sponsor-us" class="footer-button bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mb-4 transform hover:scale-105">
+                    Donate
+                </button>
+                <button id="be-an-editor" class="footer-button bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transform hover:scale-105 transition duration-300">
+                    Share a Video
+                </button>
+            </div>
+
+
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 dark:border-gray-300 text-center text-sm">
+            <p>© 2025 ApproVideo. All rights repected. | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Privacy Policy</a> | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Terms of Service</a></p>
+            <p class="mt-2">A project of SCD Hub 501(c)(3)</p>
+        </div>
+    </div>
+
+
+
+<div id="sponsor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Support ApproVideo</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Approvideo can use your help curating useful content about DIY appropriate technology. Donation? paypal ecocommunity@protonmail.com
+                </p>
+                </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Share a Video</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Join our team of editors and help curate high-quality content on appropriate technology. Share your expertise with the world!
+                </p>
+                  <form id="editor-login-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <p id="login-message" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-editor-modal" class="px-4 py-2 bg-purple-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</footer>
+
+</body>
+</html>

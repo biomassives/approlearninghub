@@ -1,502 +1,432 @@
-// Main JavaScript file for ApproVideo
-import { 
-  loadSecureSession, 
-  saveSecureSession, 
-  clearSecureSession, 
-  setBypassCrypto, 
-  isCryptoBypassed, 
-  printSession 
-} from './session-crypto.js';
+import {
+  initCategoryUI,
+  renderCategories,
+  renderSubcategories,
+  updateBreadcrumb,
+  addPreferredCategory,
+  getPreferredCategories,
+  setActiveCategory
+} from './js/modules/categorySearchUI.js';
+import { debounce, formatDuration, formatDate, formatViews } from './js/modules/utils.js';
 
-// DOM references
-const searchInput = document.getElementById('searchInput');
-const sortSelect = document.getElementById('sortSelect');
-const videoGrid = document.getElementById('videoGrid');
-const skeletonLoader = document.getElementById('skeletonLoader');
-const infiniteScrollTrigger = document.getElementById('infiniteScrollTrigger');
+const API_BASE_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3001/api'
+  : '/api';
 
-// Global state
-let currentCategory = '';
-let currentPage = 1;
-let isLoading = false;
-let hasMoreContent = true;
+let categoriesData = [];
+let currentCategory = null;
+let currentSubcategory = null;
+let currentSearchTerm = '';
+let currentSort = 'date';
+let displayList = [];
+let itemsLoaded = 0;
+const pageSize = 16;
 
-// Configuration
-const API_BASE_URL = '/api'; // Set to relative path
-const ITEMS_PER_PAGE = 12;
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-  // Set up event listeners first
-  setupEventListeners();
-  
-  // Handle crypto bypass via URL parameter for testing
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('bypass_crypto')) {
-    setBypassCrypto(urlParams.get('bypass_crypto') === 'true');
-    console.log(`Crypto bypass ${isCryptoBypassed() ? 'ENABLED' : 'DISABLED'} for testing`);
-  }
-  
-  // Initialize session
-  initializeSession();
-  
-  // Load initial content
-  loadFeaturedContent();
-});
-
-// Initialize session with error handling
-async function initializeSession() {
+// Fetch and display content based on current filters
+async function loadContent() {
   try {
-    const session = await loadSecureSession();
-    updateUIForUser(session);
+    // Show loading state
+    const contentContainer = document.getElementById('content-container');
+    const subcategoryContainer = document.getElementById('subcategory-container');
+    const resultsInfo = document.getElementById('results-info');
     
-    // Debug info in console (only in development)
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      printSession(false);
+    if (itemsLoaded === 0) {
+      contentContainer.innerHTML = '<div class="loading">Loading content...</div>';
     }
-  } catch (error) {
-    console.error('Error initializing session, proceeding as guest:', error);
-    // Fallback to treating user as guest
-    updateUIForUser({ role: 'guest', email: 'unknown@example.com' });
-    
-    // Auto-enable bypass if there's an initialization error
-    setBypassCrypto(true);
-  }
-}
 
-// Set up all event listeners
-function setupEventListeners() {
-  // Search functionality
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce(handleSearch, 500));
-  }
-  
-  // Sorting functionality
-  if (sortSelect) {
-    sortSelect.addEventListener('change', handleSort);
-  }
-  
-  // Category navigation
-  document.querySelectorAll('.main-category-icon').forEach(icon => {
-    icon.addEventListener('click', handleCategoryClick);
-  });
-  
-  // Infinite scroll
-  if (infiniteScrollTrigger) {
-    const observer = new IntersectionObserver(handleInfiniteScroll, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
-    });
-    
-    observer.observe(infiniteScrollTrigger);
-  }
-}
-
-// Handle search input
-function handleSearch() {
-  const searchTerm = searchInput.value.trim();
-  if (searchTerm.length >= 2) {
-    currentPage = 1;
-    hasMoreContent = true;
-    loadSearchResults(searchTerm);
-  } else if (searchTerm.length === 0) {
-    loadFeaturedContent();
-  }
-}
-
-// Handle sort selection
-function handleSort() {
-  if (!sortSelect) return;
-  
-  const sortBy = sortSelect.value;
-  
-  // Reload current view with new sort
-  currentPage = 1;
-  hasMoreContent = true;
-  
-  if (currentCategory) {
-    loadCategoryContent(currentCategory);
-  } else if (searchInput && searchInput.value.trim().length >= 2) {
-    loadSearchResults(searchInput.value.trim());
-  } else {
-    loadFeaturedContent();
-  }
-}
-
-// Handle category click
-function handleCategoryClick(e) {
-  e.preventDefault();
-  const category = e.currentTarget.dataset.category;
-  
-  if (!category) return;
-  
-  // Update UI to show selected category
-  document.querySelectorAll('.main-category-icon').forEach(icon => {
-    icon.classList.remove('active');
-  });
-  e.currentTarget.classList.add('active');
-  
-  // Load content for this category
-  currentCategory = category;
-  currentPage = 1;
-  hasMoreContent = true;
-  loadCategoryContent(category);
-  
-  // Show any intro text if available
-  updateIntroText(e.currentTarget);
-}
-
-// Handle infinite scroll
-function handleInfiniteScroll(entries) {
-  if (entries[0].isIntersecting && !isLoading && hasMoreContent) {
-    currentPage++;
-    if (currentCategory) {
-      loadCategoryContent(currentCategory, currentPage);
-    } else if (searchInput && searchInput.value.trim().length >= 2) {
-      loadSearchResults(searchInput.value.trim(), currentPage);
+    // Handle main page view vs category view vs subcategory view
+    if (!currentCategory) {
+      // Main homepage view - only show categories, hide subcategories and content
+      if (subcategoryContainer) subcategoryContainer.style.display = 'none';
+      if (contentContainer) contentContainer.style.display = 'none';
+      if (resultsInfo) resultsInfo.style.display = 'none';
+      return;
     } else {
-      loadFeaturedContent(currentPage);
+      // Category selected - show subcategories
+      if (subcategoryContainer) subcategoryContainer.style.display = 'block';
+      
+      // If no subcategory is selected yet, don't load content
+      if (!currentSubcategory && !currentSearchTerm) {
+        if (contentContainer) contentContainer.style.display = 'none';
+        if (resultsInfo) resultsInfo.style.display = 'none';
+        return;
+      } else {
+        // Subcategory or search term exists - show content area
+        if (contentContainer) contentContainer.style.display = 'block';
+        if (resultsInfo) resultsInfo.style.display = 'block';
+      }
     }
+
+    // Build query parameters
+    const params = new URLSearchParams();
+    if (currentCategory) params.append('category', currentCategory);
+    if (currentSubcategory) params.append('subcategory', currentSubcategory);
+    if (currentSearchTerm) params.append('search', currentSearchTerm);
+    params.append('sort', currentSort);
+    params.append('offset', itemsLoaded);
+    params.append('limit', pageSize);
+
+    // Fetch content from API
+    const url = `${API_BASE_URL}/content?${params.toString()}`;
+    console.log(`Fetching content with URL: ${url}`);
+    
+    let response;
+    try {
+      response = await fetch(url);
+    } catch (err) {
+      console.warn('API fetch failed, falling back to static data:', err);
+      // Fallback to static data file if API fails
+      response = await fetch('/data/content.json');
+    }
+    
+    if (!response.ok) {
+      throw new Error(`Failed to load content: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    let items = [];
+    
+    // Handle both API response format and static JSON format
+    if (Array.isArray(data)) {
+      // Static JSON format
+      items = data;
+      
+      // Apply filters manually for static data
+      if (currentCategory) {
+        items = items.filter(item => 
+          item.category && item.category.toLowerCase() === currentCategory.toLowerCase()
+        );
+      }
+      
+      if (currentSubcategory) {
+        items = items.filter(item => 
+          item.subcategory && item.subcategory.toLowerCase() === currentSubcategory.toLowerCase()
+        );
+      }
+      
+      if (currentSearchTerm) {
+        const searchLower = currentSearchTerm.toLowerCase();
+        items = items.filter(item => 
+          (item.title && item.title.toLowerCase().includes(searchLower)) ||
+          (item.description && item.description.toLowerCase().includes(searchLower)) ||
+          (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchLower)))
+        );
+      }
+      
+      // Manual sorting for static data
+      switch (currentSort) {
+        case 'date':
+          items.sort((a, b) => new Date(b.date) - new Date(a.date));
+          break;
+        case 'views':
+          items.sort((a, b) => (b.views || 0) - (a.views || 0));
+          break;
+        case 'title':
+          items.sort((a, b) => a.title.localeCompare(b.title));
+          break;
+        case 'duration':
+          items.sort((a, b) => (b.duration || 0) - (a.duration || 0));
+          break;
+      }
+      
+      // Manual pagination
+      const total = items.length;
+      items = items.slice(itemsLoaded, itemsLoaded + pageSize);
+      
+      // First load - replace content
+      if (itemsLoaded === 0) {
+        displayList = items;
+        contentContainer.innerHTML = '';
+      } else {
+        // Append content
+        displayList = [...displayList, ...items];
+      }
+      
+      // Update loaded items count
+      itemsLoaded = displayList.length;
+      
+      // Show/hide load more button based on if there are more items
+      const loadMoreBtn = document.getElementById('load-more');
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = itemsLoaded < total ? 'block' : 'none';
+      }
+      
+      // Update results count
+      const resultsCount = document.getElementById('results-count');
+      if (resultsCount) {
+        resultsCount.textContent = `${total} results`;
+      }
+    } else {
+      // API response format
+      items = data.items || [];
+      
+      // First load - replace content
+      if (itemsLoaded === 0) {
+        displayList = items;
+        contentContainer.innerHTML = '';
+      } else {
+        // Append content
+        displayList = [...displayList, ...items];
+      }
+      
+      // Update loaded items count
+      itemsLoaded = displayList.length;
+      
+      // Show/hide load more button based on if there are more items
+      const loadMoreBtn = document.getElementById('load-more');
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = data.hasMore ? 'block' : 'none';
+      }
+      
+      // Update results count
+      const resultsCount = document.getElementById('results-count');
+      if (resultsCount) {
+        resultsCount.textContent = `${data.total} results`;
+      }
+    }
+    
+    // Render content items
+    renderContentItems(displayList, contentContainer);
+    
+  } catch (err) {
+    console.error('Error loading content:', err);
+    const contentContainer = document.getElementById('content-container');
+    contentContainer.innerHTML = '<div class="error">Failed to load content. Please try again later.</div>';
   }
 }
 
-// Load featured content
-async function loadFeaturedContent(page = 1) {
-  if (isLoading) return;
-  
-  isLoading = true;
-  toggleLoader(true);
-  
-  try {
-    // Real API call to your backend
-    const response = await fetchAPI('/videos', {
-      page,
-      limit: ITEMS_PER_PAGE,
-      sort: sortSelect ? sortSelect.value : 'newest'
-    });
-    
-    if (page === 1) {
-      clearContent();
-    }
-    
-    renderContent(response.data);
-    hasMoreContent = response.pagination.hasMore;
-  } catch (error) {
-    console.error('Error loading featured content:', error);
-    showErrorMessage('Failed to load content. Please try again later.');
-  } finally {
-    isLoading = false;
-    toggleLoader(false);
-  }
-}
-
-// Load category content
-async function loadCategoryContent(category, page = 1) {
-  if (isLoading) return;
-  
-  isLoading = true;
-  toggleLoader(true);
-  
-  try {
-    // Real API call with category filter
-    const response = await fetchAPI('/videos', {
-      page,
-      limit: ITEMS_PER_PAGE,
-      category,
-      sort: sortSelect ? sortSelect.value : 'newest'
-    });
-    
-    if (page === 1) {
-      clearContent();
-    }
-    
-    renderContent(response.data);
-    hasMoreContent = response.pagination.hasMore;
-    
-    // Update page title
-    document.title = `${category} - ApproVideo`;
-  } catch (error) {
-    console.error(`Error loading content for category ${category}:`, error);
-    showErrorMessage('Failed to load category content. Please try again later.');
-  } finally {
-    isLoading = false;
-    toggleLoader(false);
-  }
-}
-
-// Load search results
-async function loadSearchResults(term, page = 1) {
-  if (isLoading) return;
-  
-  isLoading = true;
-  toggleLoader(true);
-  
-  try {
-    // Real API call with search parameter
-    const response = await fetchAPI('/videos', {
-      page,
-      limit: ITEMS_PER_PAGE,
-      search: term,
-      sort: sortSelect ? sortSelect.value : 'newest'
-    });
-    
-    if (page === 1) {
-      clearContent();
-    }
-    
-    renderContent(response.data);
-    hasMoreContent = response.pagination.hasMore;
-    
-    // Update page title
-    document.title = `Search: ${term} - ApproVideo`;
-  } catch (error) {
-    console.error(`Error searching for "${term}":`, error);
-    showErrorMessage('Failed to load search results. Please try again later.');
-  } finally {
-    isLoading = false;
-    toggleLoader(false);
-  }
-}
-
-// Helper function to make API calls
-async function fetchAPI(endpoint, params = {}) {
-  // Build query string from params
-  const queryParams = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      queryParams.append(key, value);
-    }
-  });
-  
-  const url = `${API_BASE_URL}${endpoint}?${queryParams.toString()}`;
-  
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
-  }
-  
-  return await response.json();
-}
-
-// Render content to the page
-function renderContent(items) {
-  if (!videoGrid || !items || !Array.isArray(items)) return;
-  
-  videoGrid.classList.remove('hidden');
-  
-  if (items.length === 0) {
-    showNoResultsMessage();
+// Render content items to the container
+function renderContentItems(items, container) {
+  if (items.length === 0 && itemsLoaded === 0) {
+    container.innerHTML = '<div class="no-results">No content found. Try adjusting your filters.</div>';
     return;
   }
   
-  items.forEach(item => {
-    const card = createVideoCard(item);
-    videoGrid.appendChild(card);
+  // For initial load, clear the container first
+  if (itemsLoaded === 0) {
+    container.innerHTML = '';
+  }
+  
+  // Create and append content item elements
+  items.forEach((item, index) => {
+    // Only render new items (avoid duplicates)
+    if (index >= itemsLoaded - items.length) {
+      const itemElement = createContentItemElement(item);
+      container.appendChild(itemElement);
+    }
   });
 }
 
-// Create a video card element
-function createVideoCard(item) {
-  const card = document.createElement('div');
-  card.className = 'bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-102';
-  card.dataset.date = new Date(item.createdAt || item.created_at || Date.now()).getTime();
-  card.dataset.views = item.views || 0;
-  card.dataset.title = item.title || 'Untitled Video';
+// Create a DOM element for a content item
+function createContentItemElement(item) {
+  const itemElement = document.createElement('div');
+  itemElement.className = 'content-item';
+  itemElement.dataset.id = item.id;
   
-  // Format tags
-  const tagsHtml = Array.isArray(item.tags) && item.tags.length > 0 
-    ? `<div class="flex flex-wrap mt-2 gap-1">
-         ${item.tags.slice(0, 3).map(tag => 
-           `<span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">${tag}</span>`
-         ).join('')}
-         ${item.tags.length > 3 ? `<span class="text-xs text-gray-500">+${item.tags.length - 3} more</span>` : ''}
-       </div>`
-    : '';
-  
-  // Get thumbnail, fall back to placeholder if not found
-  const thumbnail = item.thumbnail || item.thumbnailUrl || `https://picsum.photos/400/225?random=${item.id}`;
-  
-  // Determine video duration
-  const duration = item.duration || item.length || Math.floor(Math.random() * 600) + 30;
-  
-  card.innerHTML = `
-    <a href="/video/${item.id}" class="block">
-      <div class="relative pb-[56.25%]">
-        <img src="${thumbnail}" alt="${item.title}" class="absolute inset-0 w-full h-full object-cover">
-        <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-          ${formatDuration(duration)}
-        </div>
-      </div>
-      <div class="p-4">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 line-clamp-2">${item.title}</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">${item.description || ''}</p>
-        ${tagsHtml}
-        <div class="flex items-center justify-between mt-4">
-          <span class="text-xs text-gray-500 dark:text-gray-500">${formatDate(item.createdAt || item.created_at)}</span>
-          <span class="text-xs text-gray-500 dark:text-gray-500">${formatViews(item.views || 0)} views</span>
-        </div>
-      </div>
-    </a>
-  `;
-  
-  return card;
-}
-
-// Show no results message
-function showNoResultsMessage() {
-  const messageElement = document.createElement('div');
-  messageElement.className = 'col-span-full p-8 text-center';
-  messageElement.innerHTML = `
-    <div class="text-gray-400 dark:text-gray-500 text-xl mb-4">
-      <i class="fas fa-search fa-3x mb-4"></i>
-      <h3 class="font-semibold">No results found</h3>
+  // Create thumbnail with play button overlay
+  const thumbnail = document.createElement('div');
+  thumbnail.className = 'thumbnail';
+  thumbnail.innerHTML = `
+    <img src="${item.thumbnail || '/images/placeholder.jpg'}" alt="${item.title}">
+    <div class="play-overlay">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
     </div>
-    <p class="text-gray-500 dark:text-gray-400">Try adjusting your search or filters to find what you're looking for.</p>
+    <div class="duration">${formatDuration(item.duration)}</div>
   `;
   
-  if (videoGrid) {
-    videoGrid.appendChild(messageElement);
-  }
+  // Create content details
+  const details = document.createElement('div');
+  details.className = 'item-details';
+  details.innerHTML = `
+    <h3 class="item-title">${item.title}</h3>
+    <div class="item-meta">
+      <span class="item-date">${formatDate(item.date)}</span>
+      <span class="item-views">${formatViews(item.views)} views</span>
+    </div>
+    <p class="item-description">${item.description || ''}</p>
+  `;
+  
+  // Append elements to item
+  itemElement.appendChild(thumbnail);
+  itemElement.appendChild(details);
+  
+  // Add click handler to navigate to content
+  itemElement.addEventListener('click', () => {
+    window.location.href = `/view/${item.id}`;
+  });
+  
+  return itemElement;
 }
 
-// Clear content container
-function clearContent() {
-  if (videoGrid) {
-    videoGrid.innerHTML = '';
-  }
-}
-
-// Toggle loader visibility
-function toggleLoader(show) {
-  if (skeletonLoader) {
-    skeletonLoader.classList.toggle('hidden', !show);
-  }
-}
-
-// Show error message
-function showErrorMessage(message) {
-  const errorElement = document.createElement('div');
-  errorElement.className = 'col-span-full p-4 text-center text-red-500';
-  errorElement.textContent = message;
-  
-  if (videoGrid) {
-    clearContent();
-    videoGrid.appendChild(errorElement);
-    videoGrid.classList.remove('hidden');
-  }
-}
-
-// Update UI based on user session
-function updateUIForUser(session) {
-  const loginButton = document.getElementById('loginButton');
-  const signupButton = document.getElementById('signupButton');
-  const logoutButton = document.getElementById('logoutButton');
-  const userInfo = document.getElementById('userInfo');
-  const mobileLoginButton = document.getElementById('mobileLoginButton');
-  const mobileSignupButton = document.getElementById('mobileSignupButton');
-  const mobileLogoutButton = document.getElementById('mobileLogoutButton');
-  const mobileUserInfo = document.getElementById('mobileUserInfo');
-  
-  if (session && session.email !== 'unknown@example.com') {
-    // User is logged in
-    if (loginButton) loginButton.classList.add('hidden');
-    if (signupButton) signupButton.classList.add('hidden');
-    if (logoutButton) logoutButton.classList.remove('hidden');
-    if (userInfo) {
-      userInfo.classList.remove('hidden');
-      userInfo.textContent = session.email;
-    }
-    
-    if (mobileLoginButton) mobileLoginButton.classList.add('hidden');
-    if (mobileSignupButton) mobileSignupButton.classList.add('hidden');
-    if (mobileLogoutButton) mobileLogoutButton.classList.remove('hidden');
-    if (mobileUserInfo) {
-      mobileUserInfo.classList.remove('hidden');
-      mobileUserInfo.textContent = session.email;
-    }
-  } else {
-    // User is not logged in
-    if (loginButton) loginButton.classList.remove('hidden');
-    if (signupButton) signupButton.classList.remove('hidden');
-    if (logoutButton) logoutButton.classList.add('hidden');
-    if (userInfo) userInfo.classList.add('hidden');
-    
-    if (mobileLoginButton) mobileLoginButton.classList.remove('hidden');
-    if (mobileSignupButton) mobileSignupButton.classList.remove('hidden');
-    if (mobileLogoutButton) mobileLogoutButton.classList.add('hidden');
-    if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
-  }
-}
-
-// Update intro text based on selected category
-function updateIntroText(element) {
-  const introTitle = document.getElementById('intro-title');
-  const introText = document.getElementById('intro-text');
-  const introDisplay = document.getElementById('intro-text-display');
-  
-  if (introTitle && introText && introDisplay && element.dataset.text) {
-    introTitle.textContent = element.dataset.category || 'Category';
-    introText.textContent = element.dataset.text;
-    introDisplay.classList.remove('hidden');
-  } else if (introDisplay) {
-    introDisplay.classList.add('hidden');
-  }
-}
-
-// Helper functions
-function formatDuration(seconds) {
-  if (!seconds || isNaN(seconds)) return '0:00';
-  
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  
-  if (minutes >= 60) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  }
-  
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-function formatDate(dateString) {
-  if (!dateString) return 'Unknown date';
-  
+// Fetch category data dynamically
+async function loadCategories() {
   try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  } catch (e) {
-    return 'Invalid date';
+    // Fetch categories from the local JSON file
+    const res = await fetch('/data/categories.json');
+    if (!res.ok) throw new Error('Failed to load categories');
+    
+    const data = await res.json();
+    
+    // Transform category structure for compatibility with your UI modules
+    categoriesData = data.map(area => ({
+      id: area.area,
+      name: area.area,
+      subcategories: area.subcategories.map((sub, i) => ({
+        id: `${area.area.toLowerCase().replace(/\s+/g, '-')}-${i}`,
+        name: sub.title,
+        description: sub.description,
+        tags: sub.tags
+      }))
+    }));
+    
+    initCategoryUI(categoriesData);
+    renderCategories(document.getElementById('category-container'));
+    updateBreadcrumb(document.getElementById('breadcrumb'));
+    
+    // Check for preferred category
+    const preferredCats = getPreferredCategories();
+    if (preferredCats.length > 0) {
+      const defaultCat = preferredCats[0];
+      currentCategory = defaultCat;
+      setActiveCategory(defaultCat);
+      renderSubcategories(document.getElementById('subcategory-links'), defaultCat);
+      updateBreadcrumb(document.getElementById('breadcrumb'), defaultCat);
+    } else {
+      updateBreadcrumb(document.getElementById('breadcrumb'));
+    }
+    
+    loadContent();
+  } catch (err) {
+    console.error('Error loading categories:', err);
+    const categoryContainer = document.getElementById('category-container');
+    if (categoryContainer) {
+      categoryContainer.innerHTML = '<div class="error">Failed to load categories. Please try again later.</div>';
+    }
   }
 }
 
-function formatViews(views) {
-  if (!views || isNaN(views)) return '0';
+// Event handlers for UI interactions
+function setupEventListeners() {
+  // Search input
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', debounce((e) => {
+      currentSearchTerm = e.target.value.trim();
+      itemsLoaded = 0; // Reset for new search
+      loadContent();
+    }, 500));
+  }
   
-  if (views >= 1000000) {
-    return `${(views / 1000000).toFixed(1)}M`;
-  } else if (views >= 1000) {
-    return `${(views / 1000).toFixed(1)}K`;
+  // Sort selector
+  const sortSelector = document.getElementById('sort-selector');
+  if (sortSelector) {
+    sortSelector.addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      itemsLoaded = 0; // Reset for new sort
+      loadContent();
+    });
   }
-  return views.toString();
+  
+  // Load more button
+  const loadMoreBtn = document.getElementById('load-more');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      loadContent(); // Will load next page based on current itemsLoaded
+    });
+  }
+  
+  // Category selection (delegate to parent)
+  const categoryContainer = document.getElementById('category-container');
+  if (categoryContainer) {
+    categoryContainer.addEventListener('click', (e) => {
+      const catElement = e.target.closest('[data-category-id]');
+      if (catElement) {
+        const categoryId = catElement.dataset.categoryId;
+        currentCategory = categoryId;
+        currentSubcategory = null;
+        itemsLoaded = 0; // Reset for new category
+        
+        // Update UI
+        setActiveCategory(categoryId);
+        renderSubcategories(document.getElementById('subcategory-links'), categoryId);
+        updateBreadcrumb(document.getElementById('breadcrumb'), categoryId);
+        
+        // Add to preferred categories
+        addPreferredCategory(categoryId);
+        
+        // Load filtered content - this will just show subcategories since no subcategory is selected
+        loadContent();
+      }
+    });
+  }
+  
+  // Subcategory selection (delegate to parent)
+  const subcategoryLinks = document.getElementById('subcategory-links');
+  if (subcategoryLinks) {
+    subcategoryLinks.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A' || e.target.closest('a')) {
+        e.preventDefault();
+        const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+        const subcategoryId = link.dataset.subcategoryId;
+        const categoryId = link.dataset.categoryId;
+        
+        currentSubcategory = subcategoryId;
+        itemsLoaded = 0; // Reset for new subcategory
+        
+        // Update UI
+        const activeLinks = subcategoryLinks.querySelectorAll('.active');
+        activeLinks.forEach(el => el.classList.remove('active'));
+        link.classList.add('active');
+        
+        updateBreadcrumb(
+          document.getElementById('breadcrumb'), 
+          categoryId, 
+          subcategoryId
+        );
+        
+        // Load filtered content - now will show the subcategory content
+        loadContent();
+      }
+    });
+  }
+  
+  // "Show all" link (if it exists in your UI)
+  const showAllLink = document.getElementById('show-all-link');
+  if (showAllLink) {
+    showAllLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      currentSubcategory = null;
+      currentSearchTerm = '';
+      itemsLoaded = 0;
+      
+      // Update UI - remove active state from all subcategory links
+      const subcategoryLinks = document.getElementById('subcategory-links');
+      if (subcategoryLinks) {
+        const activeLinks = subcategoryLinks.querySelectorAll('.active');
+        activeLinks.forEach(el => el.classList.remove('active'));
+      }
+      
+      // Update search input 
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      
+      updateBreadcrumb(document.getElementById('breadcrumb'), currentCategory);
+      
+      // Load all content for the current category
+      loadContent();
+    });
+  }
 }
 
-function debounce(func, wait) {
-  let timeout;
-  return function() {
-    const context = this;
-    const args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
-  };
+// Initialize the application
+function init() {
+  loadCategories();
+  setupEventListeners();
 }
 
-// Export for testing
-export {
-  handleSearch,
-  handleSort,
-  loadFeaturedContent,
-  loadCategoryContent
-};
+// Start the application
+init();

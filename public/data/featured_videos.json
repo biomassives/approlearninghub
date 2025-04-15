@@ -1,0 +1,27 @@
+[
+    {
+      "id": "vid1",
+      "title": "How to Build with Bamboo",
+      "category": "Shelter",
+      "subcategory": "Locally Available Materials",
+      "description": "A quick guide on making strong, durable frames with bamboo.",
+      "date": "2024-10-01",
+      "views": 122,
+      "duration": 240,
+      "tags": ["bamboo", "building", "sustainability"],
+      "thumbnail": "/thumbnails/bamboo.jpg"
+    },
+    {
+      "id": "vid2",
+      "title": "DIY Water Filter",
+      "category": "Water",
+      "subcategory": "Purification",
+      "description": "Turn dirty water into drinking water using sand, charcoal, and bottles.",
+      "date": "2024-11-15",
+      "views": 230,
+      "duration": 300,
+      "tags": ["filtration", "clean water", "charcoal"],
+      "thumbnail": "/thumbnails/water-filter.jpg"
+    }
+  ]
+  

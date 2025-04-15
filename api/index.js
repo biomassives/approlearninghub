@@ -39,49 +39,77 @@ function generateNormalizedQuaternion() {
   };
 }
 
-// Add this near the top of your file
-// Simple in-memory rate limiter
-class RateLimiter {
-  constructor(windowMs = 15 * 60 * 1000, maxRequests = 100) {
+
+// Supabase-based Rate Limiter for serverless environments
+class SupabaseRateLimiter {
+  constructor(supabaseClient, windowMs = 15 * 60 * 1000, maxRequests = 100) {
+    this.supabase = supabaseClient;
     this.windowMs = windowMs;
     this.maxRequests = maxRequests;
-    this.clients = {};
+    this.table = 'rate_limits'; // Make sure this table exists in your Supabase database
   }
 
-  check(ip) {
-    const now = Date.now();
-    if (!this.clients[ip]) {
-      this.clients[ip] = { count: 1, resetTime: now + this.windowMs };
+  async check(ip) {
+    try {
+      const now = new Date().toISOString();
+      const windowStart = new Date(Date.now() - this.windowMs).toISOString();
+      
+      // Get current count for this IP in the time window
+      const { data, error } = await this.supabase
+        .from(this.table)
+        .select('count')
+        .eq('ip', ip)
+        .gte('reset_time', now)
+        .maybeSingle();
+      
+      if (error) {
+        console.error('Error checking rate limit:', error);
+        return true; // Allow the request if there's an error checking
+      }
+      
+      if (!data) {
+        // No existing record, create a new one
+        await this.supabase
+          .from(this.table)
+          .insert({
+            ip: ip,
+            count: 1,
+            reset_time: new Date(Date.now() + this.windowMs).toISOString(),
+            last_request: now
+          });
+        return true;
+      }
+      
+      if (data.count >= this.maxRequests) {
+        return false; // Rate limit exceeded
+      }
+      
+      // Update existing record
+      await this.supabase
+        .from(this.table)
+        .update({
+          count: data.count + 1,
+          last_request: now
+        })
+        .eq('ip', ip);
+      
       return true;
+    } catch (error) {
+      console.error('Rate limiter error:', error);
+      return true; // Allow the request if there's an error
     }
-    
-    if (now > this.clients[ip].resetTime) {
-      this.clients[ip] = { count: 1, resetTime: now + this.windowMs };
-      return true;
-    }
-    
-    if (this.clients[ip].count >= this.maxRequests) {
-      return false;
-    }
-    
-    this.clients[ip].count++;
-    return true;
   }
   
-  // Cleanup old entries periodically
-  cleanup() {
-    const now = Date.now();
-    Object.keys(this.clients).forEach(ip => {
-      if (now > this.clients[ip].resetTime) {
-        delete this.clients[ip];
-      }
-    });
+  // Method to clean up old records - can be called periodically
+  async cleanup() {
+    const now = new Date().toISOString();
+    await this.supabase
+      .from(this.table)
+      .delete()
+      .lt('reset_time', now);
   }
 }
 
-// Create limiter instances
-const authLimiter = new RateLimiter(15 * 60 * 1000, 20); // 20 requests per 15 minutes
-const generalLimiter = new RateLimiter(60 * 1000, 60); // 60 requests per minute
 
 // Schedule cleanup
 setInterval(() => {
@@ -103,7 +131,7 @@ function rateLimitMiddleware(limiter) {
 // Apply to authentication routes
 app.use('/auth/', rateLimitMiddleware(authLimiter));
 // Apply to general API routes
-app.use('./', rateLimitMiddleware(generalLimiter));
+app.use('/', rateLimitMiddleware(generalLimiter));
 
 
 
@@ -558,6 +586,27 @@ app.get('/auth/user-role', async (req, res) => {
   }
 });
 
+
+app.get('/videos', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('videos').select('*');
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    return res.status(200).json({ data });
+  } catch (err) {
+    console.error('Server error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+
+
 app.post('/auth/user-role', async (req, res) => {
   const { targetUserId, newRole, token } = req.body;
 
@@ -661,104 +710,3 @@ module.exports = (req, res) => {
   // Pass the request to the Express app
   return app(req, res);
 };
-
-
-// Add this after initializing the Supabase client in your index.js
-
-// Supabase-based Rate Limiter for serverless environments
-class SupabaseRateLimiter {
-  constructor(supabaseClient, windowMs = 15 * 60 * 1000, maxRequests = 100) {
-    this.supabase = supabaseClient;
-    this.windowMs = windowMs;
-    this.maxRequests = maxRequests;
-    this.table = 'rate_limits'; // Make sure this table exists in your Supabase database
-  }
-
-  async check(ip) {
-    try {
-      const now = new Date().toISOString();
-      const windowStart = new Date(Date.now() - this.windowMs).toISOString();
-      
-      // Get current count for this IP in the time window
-      const { data, error } = await this.supabase
-        .from(this.table)
-        .select('count')
-        .eq('ip', ip)
-        .gte('reset_time', now)
-        .maybeSingle();
-      
-      if (error) {
-        console.error('Error checking rate limit:', error);
-        return true; // Allow the request if there's an error checking
-      }
-      
-      if (!data) {
-        // No existing record, create a new one
-        await this.supabase
-          .from(this.table)
-          .insert({
-            ip: ip,
-            count: 1,
-            reset_time: new Date(Date.now() + this.windowMs).toISOString(),
-            last_request: now
-          });
-        return true;
-      }
-      
-      if (data.count >= this.maxRequests) {
-        return false; // Rate limit exceeded
-      }
-      
-      // Update existing record
-      await this.supabase
-        .from(this.table)
-        .update({
-          count: data.count + 1,
-          last_request: now
-        })
-        .eq('ip', ip);
-      
-      return true;
-    } catch (error) {
-      console.error('Rate limiter error:', error);
-      return true; // Allow the request if there's an error
-    }
-  }
-  
-  // Method to clean up old records - can be called periodically
-  async cleanup() {
-    const now = new Date().toISOString();
-    await this.supabase
-      .from(this.table)
-      .delete()
-      .lt('reset_time', now);
-  }
-}
-
-
-// Create rate limiter instances
-const authLimiter = new SupabaseRateLimiter(supabase, 15 * 60 * 1000, 20); // 20 requests per 15 minutes
-const generalLimiter = new SupabaseRateLimiter(supabase, 60 * 1000, 60); // 60 requests per minute
-
-// Update middleware for rate limiting
-async function rateLimitMiddleware(limiter) {
-  return async (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const allowed = await limiter.check(ip);
-    
-    if (!allowed) {
-      return res.status(429).json({ error: 'Too many requests, please try again later' });
-    }
-    
-    next();
-  };
-}
-
-// Apply middleware to routes
-app.use('/auth/', async (req, res, next) => {
-  await rateLimitMiddleware(authLimiter)(req, res, next);
-});
-
-app.use('/', async (req, res, next) => {
-  await rateLimitMiddleware(generalLimiter)(req, res, next);
-});
