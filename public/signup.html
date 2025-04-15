@@ -2,58 +2,187 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - ApproVideo Hub</title>
+  <link rel="stylesheet" href="./css/main.css"/>
 </head>
-<body>
-  <div class="auth-container">
-    <div class="auth-card">
-      <h1>Create Account</h1>
+<body class="bg-gray-100 flex flex-col items-center justify-start pt-12 px-4">
 
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
-        </div>
+  <!-- 🌱 Brand Header -->
+  <header class="absolute top-4 left-4 flex items-center space-x-2 text-green-700 font-semibold text-lg">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <span>ApproVideo Hub</span>
+  </header>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-          <small>Password must be at least 8 characters</small>
-        </div>
+  <!-- 🌐 Language Switcher -->
+  <div class="w-full max-w-md text-right mb-4">
+    <label for="lang-switch" class="text-sm text-gray-600 mr-2">Language:</label>
+    <select id="lang-switch" class="text-sm border rounded p-1">
+      <option value="en">🇬🇧 English</option>
+      <option value="fr">🇫🇷 Français</option>
+    </select>
+  </div>
 
-        <div class="form-group">
-          <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" name="confirm-password" required />
-        </div>
+  <!-- 📝 Signup Form Card -->
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Create Account</h1>
 
-        <div class="form-group">
-          <label for="role">Select Your Role</label>
-          <select id="role" name="role" required>
-            <option value="">-- Select a Role --</option>
-            <option value="expert">Expert / Workshop Leader</option>
-            <option value="learner">Learner / Volunteer</option>
-            <option value="researcher">Research Contributor</option>
-            <option value="resources">Resource Finder</option>
-            <option value="organizer">Organizer / Coordinator</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn-primary">Sign Up</button>
-
-        <div id="error-container" class="error-message hidden"></div>
-      </form>
-
-      <div class="auth-footer">
-        <p>Already have an account? <a href="login.html">Log In</a></p>
+    <form id="signup-form" class="space-y-4">
+      <div>
+        <label for="email">Email</label>
+        <input id="email" type="email" required class="input"/>
       </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" required class="input"/>
+        <small>Password must be at least 8 characters</small>
+      </div>
+
+      <div>
+        <label for="confirm-password">Confirm Password</label>
+        <input id="confirm-password" type="password" required class="input"/>
+      </div>
+
+      <div>
+        <label for="role">Select Your Role</label>
+        <select id="role" required class="input">
+          <option value="">-- Select a Role --</option>
+          <option value="expert">Expert / Workshop Leader</option>
+          <option value="learner">Learner / Volunteer</option>
+          <option value="researcher">Research Contributor</option>
+          <option value="resources">Resource Finder</option>
+          <option value="organizer">Organizer / Coordinator</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">Sign Up</button>
+      <div id="error-container" class="text-red-600 text-sm text-center hidden mt-2"></div>
+    </form>
+
+    <div class="mt-4 text-center">
+      <a href="login.html" class="text-sm text-indigo-600 hover:text-indigo-500">
+        Already have an account? Log In
+      </a>
     </div>
   </div>
 
-  
-  
-  <script type="module" src="signup.js"></script>
+  <!-- ✨ i18n & Signup Logic -->
+  <script type="module">
+    import { saveSecureSession } from './js/serverless-enhanced-auth.js';
+
+    const form = document.getElementById('signup-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const roleInput = document.getElementById('role');
+    const errorContainer = document.getElementById('error-container');
+
+    const queryLang = new URLSearchParams(window.location.search).get('lang');
+    const browserLang = navigator.language.slice(0, 2);
+    const savedLang = localStorage.getItem('preferredLang');
+    const lang = queryLang || savedLang || browserLang;
+
+    const langFile = await import(`./lang/${lang}.js`).catch(() =>
+      import('./lang/en.js')
+    );
+    const { translations } = langFile;
+    const t = key => translations[key] || key;
+    window.T = t;
+
+    document.querySelector('h1').textContent = t('signup_title') || 'Create Account';
+    document.querySelector('button[type="submit"]').textContent = t('signup_button') || 'Sign Up';
+    document.querySelector('a[href="login.html"]').textContent = t('already_have_account') || 'Already have an account? Log In';
+
+    const langSwitcher = document.getElementById('lang-switch');
+    langSwitcher.value = lang;
+    langSwitcher.addEventListener('change', e => {
+      const selected = e.target.value;
+      localStorage.setItem('preferredLang', selected);
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', selected);
+      window.location.href = url.toString();
+    });
+
+    function showError(msg) {
+      errorContainer.textContent = msg;
+      errorContainer.classList.remove('hidden');
+    }
+
+    function setFormDisabled(disabled) {
+      Array.from(form.elements).forEach(el => el.disabled = disabled);
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = disabled ? t('processing') || 'Processing...' : t('signup_button') || 'Sign Up';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirm = confirmPasswordInput.value;
+      const role = roleInput.value;
+
+      showError('');
+      setFormDisabled(true);
+
+      if (password !== confirm) {
+        showError(t('error_password_mismatch') || "❌ Passwords don't match");
+        return setFormDisabled(false);
+      }
+
+      if (password.length < 8) {
+        showError(t('error_password_length') || '❌ Password must be at least 8 characters');
+        return setFormDisabled(false);
+      }
+
+      if (!role) {
+        showError(t('error_select_role') || '❌ Please select a role');
+        return setFormDisabled(false);
+      }
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role })
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          const { token, refreshToken, user } = result;
+
+          await saveSecureSession({
+            token,
+            refreshToken,
+            email: user.email,
+            role: user.role,
+            id: user.id
+          });
+
+          const redirect = {
+            admin: '/admin-dashboard.html',
+            expert: '/expert-dashboard.html',
+            learner: '/dashboard.html',
+            resources: '/dashboard.html',
+            researcher: '/dashboard.html',
+            organizer: '/dashboard.html'
+          }[user.role] || '/dashboard.html';
+
+          window.location.href = redirect;
+        } else {
+          showError(result.error || t('signup_failed') || 'Signup failed.');
+        }
+      } catch (err) {
+        console.error('[Signup] Unexpected error:', err);
+        showError(t('unexpected_error') || 'An unexpected error occurred.');
+      } finally {
+        setFormDisabled(false);
+      }
+    });
+  </script>
 </body>
 </html>
