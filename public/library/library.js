@@ -63,15 +63,24 @@
       
       data.forEach(cat => {
         const btn = document.createElement('button');
-        btn.className = `
+        btn.className = 'category-btn';
+        /*btn.className = `
           category-btn p-6 bg-white shadow rounded-lg
           hover:scale-105 transition
-        `;
-        btn.innerHTML = `
+        `;*/
+        btn.textContent = cat.name;
+        /*btn.innerHTML = `
           <i class="fa fa-folder-open fa-2x mb-2"></i><br>
           <span class="font-semibold">${cat.name}</span>
-        `;
-        btn.onclick = () => showSubcategories(cat);
+        `;*/
+        
+        if (typeof showSubcategories === 'function') {
+            btn.onclick = () => showSubcategories(cat);
+        } else {
+           console.error('showSubcategories function missing for', cat.name);
+        }
+
+
         categoryIcons.appendChild(btn);
       });
     } catch (err) {
