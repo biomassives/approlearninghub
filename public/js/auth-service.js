@@ -51,30 +51,157 @@ class AuthService {
         console.log('Signup response:', data);
         
         if (data.success && data.user) {
-          // Store user data for immediate access
-          this.currentUser = data.user;
-          localStorage.setItem('userRole', data.user.role);
-          localStorage.setItem('user_info', JSON.stringify(data.user));
-          
-          // Store token if provided
-          if (data.token) {
-            this.token = data.token;
-            localStorage.setItem('auth_token', data.token);
-            localStorage.setItem('token', data.token); // For backward compatibility
+            // Store user data for immediate access
+            this.currentUser = data.user;
+            localStorage.setItem('userRole', data.user.role);
+            localStorage.setItem('user_info', JSON.stringify(data.user));
             
-            // Optional: Store encrypted session if SessionCrypto is available
-            if (window.SessionCrypto) {
-              this.encryptSession(data.user, data.token);
+            // Store token if provided in BOTH locations for compatibility
+            if (data.token) {
+              this.token = data.token;
+              localStorage.setItem('auth_token', data.token);
+              localStorage.setItem('token', data.token);
+              console.log('Tokens stored in localStorage');
             }
+            
+            // Prevent immediate redirect to avoid loops
+            sessionStorage.setItem('signup_success', 'true');
+            sessionStorage.setItem('last_auth_action', Date.now().toString());
+            sessionStorage.setItem('user_role', data.user.role || 'resources');
+            console.log('Signup success data stored in sessionStorage');
           }
+          
+          return data;
+        } catch (error) {
+          console.error('Signup error:', error);
+          throw error;
         }
+      }
         
-        return data;
-      } catch (error) {
-        console.error('Signup error:', error);
-        throw error;
+
+// Add this to manage manual redirection after signup
+manualRedirectAfterSignup() {
+    if (sessionStorage.getItem('signup_success') === 'true') {
+      const lastAction = parseInt(sessionStorage.getItem('last_auth_action') || '0');
+      const now = Date.now();
+      
+      // Only redirect if it's been at least 2 seconds since signup
+      if (now - lastAction > 2000) {
+        const role = sessionStorage.getItem('user_role') || 'resources';
+        
+        // Clear the signup flags
+        sessionStorage.removeItem('signup_success');
+        sessionStorage.removeItem('last_auth_action');
+        sessionStorage.removeItem('user_role');
+        
+        // Build the redirect URL
+        const dashboardRoutes = {
+          expert: '/expert-dashboard.html',
+          learner: '/learner-dashboard.html',
+          researcher: '/researcher-dashboard.html',
+          resources: '/resources-dashboard.html',
+          organizer: '/organizer-dashboard.html'
+        };
+        
+        const redirectUrl = dashboardRoutes[role] || '/dashboard.html';
+        console.log(`Manual redirect to ${redirectUrl} with role ${role}`);
+        
+        // Perform the redirect
+        window.location.href = redirectUrl;
+        return true;
       }
     }
+    return false;
+  }
+  
+  /**
+   * Check authentication and redirect if needed
+   */
+  checkAuthAndRedirect() {
+    // Check for manual post-signup redirect first
+    if (this.manualRedirectAfterSignup()) {
+      return;
+    }
+    
+    // Debug the current auth state
+    this.debugAuthState();
+    
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    const currentPage = window.location.pathname;
+    
+    // Anti-loop mechanism
+    const lastRedirect = sessionStorage.getItem('last_redirect');
+    const currentTime = Date.now();
+    
+    // Don't redirect if we've already redirected in the last 5 seconds
+    if (lastRedirect && (currentTime - parseInt(lastRedirect)) < 5000) {
+      console.log('Preventing redirect loop - too soon since last redirect');
+      return;
+    }
+    
+    // If we have a token and we're on the login page, redirect to dashboard
+    if (token && (
+        currentPage.includes('login.html') || 
+        currentPage === '/' || 
+        currentPage.includes('signup')
+      )) {
+      // Get user role for proper dashboard redirection
+      const userRole = this.getUserRole() || 'resources';
+      const dashboardRoutes = {
+        expert: '/expert-dashboard.html',
+        learner: '/learner-dashboard.html',
+        researcher: '/researcher-dashboard.html',
+        resources: '/resources-dashboard.html',
+        organizer: '/organizer-dashboard.html'
+      };
+      
+      // Track this redirect to prevent loops
+      sessionStorage.setItem('last_redirect', currentTime.toString());
+      
+      // Log the redirection happening
+      console.log(`Redirecting to ${dashboardRoutes[userRole] || '/dashboard.html'} with role ${userRole}`);
+      
+      // Perform the redirect
+      window.location.href = dashboardRoutes[userRole] || '/dashboard.html';
+      return;
+    }
+    
+    // If we don't have a token and we're on a protected page, redirect to login
+    if (!token && (
+        currentPage.includes('dashboard') || 
+        currentPage.includes('resources-dashboard')
+      )) {
+      // Track this redirect to prevent loops
+      sessionStorage.setItem('last_redirect', currentTime.toString());
+      
+      console.log('No authentication token, redirecting to login page');
+      window.location.href = '/login.html';
+      return;
+    }
+  }
+  
+  /**
+   * Debug the current authentication state
+   * This helps identify why redirection is happening
+   */
+  debugAuthState() {
+    const authToken = localStorage.getItem('auth_token');
+    const legacyToken = localStorage.getItem('token');
+    const userInfo = localStorage.getItem('user_info');
+    const userRole = localStorage.getItem('userRole');
+    
+    console.log('=== Auth State Debug ===');
+    console.log('auth_token exists:', !!authToken);
+    console.log('token exists:', !!legacyToken);
+    console.log('user_info exists:', !!userInfo);
+    console.log('userRole:', userRole);
+    console.log('Current page:', window.location.pathname);
+    console.log('this.token:', !!this.token);
+    console.log('this.currentUser:', !!this.currentUser);
+    console.log('=== End Auth Debug ===');
+  }
+
+
   
     /**
      * Log in an existing user
@@ -151,64 +278,6 @@ class AuthService {
       }
     }
 
-    /**
-     * Check authentication and redirect if needed
-     */
-    
-checkAuthAndRedirect() {
-    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-    const currentPage = window.location.pathname;
-    
-    // Anti-loop mechanism
-    const lastRedirect = sessionStorage.getItem('last_redirect');
-    const currentTime = new Date().getTime();
-    
-    // Don't redirect if we've already redirected in the last 3 seconds
-    if (lastRedirect && (currentTime - parseInt(lastRedirect)) < 3000) {
-      console.log('Preventing redirect loop - too soon since last redirect');
-      return;
-    }
-    
-    // If we're on a login/signup page but have a token, redirect to dashboard
-    if (token && (
-        currentPage.includes('login.html') || 
-        currentPage === '/' || 
-        currentPage.includes('signup')
-      )) {
-      // Get user role for proper dashboard redirection
-      const userRole = this.getUserRole() || 'resources';
-      const dashboardRoutes = {
-        expert: '/expert-dashboard.html',
-        learner: '/learner-dashboard.html',
-        researcher: '/researcher-dashboard.html',
-        resources: '/resources-dashboard.html',
-        organizer: '/organizer-dashboard.html'
-      };
-      
-      // Track this redirect to prevent loops
-      sessionStorage.setItem('last_redirect', currentTime.toString());
-      
-      // Log the redirection happening
-      console.log(`Redirecting to ${dashboardRoutes[userRole] || '/dashboard.html'} with role ${userRole}`);
-      
-      // Perform the redirect
-      window.location.href = dashboardRoutes[userRole] || '/dashboard.html';
-      return;
-    }
-    
-    // If we don't have a token and we're on a protected page, redirect to login
-    if (!token && (
-        currentPage.includes('dashboard') || 
-        currentPage.includes('resources-dashboard')
-      )) {
-      // Track this redirect to prevent loops
-      sessionStorage.setItem('last_redirect', currentTime.toString());
-      
-      console.log('No authentication token, redirecting to login page');
-      window.location.href = '/login.html';
-      return;
-    }
-  }
 
     /**
      * Log out the current user

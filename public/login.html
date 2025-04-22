@@ -163,51 +163,76 @@
       const disableDuring = (btn, fn) => async e => { btn.disabled = true; try { await fn(e); } finally { btn.disabled = false; } };
 
       // Signup handler
-      signupForm.addEventListener('submit', disableDuring(signupButton, async e => {
-        e.preventDefault();
-        // Clear errors
-        ['email','password','confirm-password','role','terms'].forEach(f => { document.getElementById(`signup-${f}-error`).textContent = ''; });
-        document.getElementById('signup-status-area').textContent = '';
+    
+signupForm.addEventListener('submit', disableDuring(signupButton, async e => {
+  e.preventDefault();
+  // Clear errors
+  ['email','password','confirm-password','role','terms'].forEach(f => { document.getElementById(`signup-${f}-error`).textContent = ''; });
+  document.getElementById('signup-status-area').textContent = '';
 
-        // Collect
-        const email    = signupForm['email'].value.trim();
-        const password = signupForm['password'].value;
-        const confirm  = signupForm['confirm-password'].value;
-        const role     = signupForm['role'].value;
-        const terms    = signupForm['terms'].checked;
+  // Collect
+  const email    = signupForm['email'].value.trim();
+  const password = signupForm['password'].value;
+  const confirm  = signupForm['confirm-password'].value;
+  const role     = signupForm['role'].value;
+  const terms    = signupForm['terms'].checked;
 
-        // Client-side validation
-        let valid = true;
-        if (!email || !/.+@.+\..+/.test(email)) {
-          document.getElementById('signup-email-error').textContent = window.T('email_invalid'); valid = false;
-        }
-        if (password.length < 6) {
-          document.getElementById('signup-password-error').textContent = window.T('password_too_short'); valid = false;
-        }
-        if (password !== confirm) {
-          document.getElementById('signup-confirm-password-error').textContent = window.T('confirm_password_mismatch'); valid = false;
-        }
-        if (!role) {
-          document.getElementById('signup-role-error').textContent = window.T('role_required'); valid = false;
-        }
-        if (!terms) {
-          document.getElementById('signup-terms-error').textContent = window.T('terms_required'); valid = false;
-        }
-        if (!valid) return;
+  // Client-side validation
+  let valid = true;
+  if (!email || !/.+@.+\..+/.test(email)) {
+    document.getElementById('signup-email-error').textContent = window.T('email_invalid'); valid = false;
+  }
+  if (password.length < 6) {
+    document.getElementById('signup-password-error').textContent = window.T('password_too_short'); valid = false;
+  }
+  if (password !== confirm) {
+    document.getElementById('signup-confirm-password-error').textContent = window.T('confirm_password_mismatch'); valid = false;
+  }
+  if (!role) {
+    document.getElementById('signup-role-error').textContent = window.T('role_required'); valid = false;
+  }
+  if (!terms) {
+    document.getElementById('signup-terms-error').textContent = window.T('terms_required'); valid = false;
+  }
+  if (!valid) return;
 
-        try {
-          const response = await authService.signup(email, password, role);
-          if (response.success) {
-            document.getElementById('signup-status-area').textContent = window.T('signup_success');
-            setTimeout(() => redirectToDashboard(response.user.role), 1000);
-          } else {
-            document.getElementById('signup-status-area').textContent = response.error || window.T('signup_failed');
-          }
-        } catch (err) {
-          console.error('Signup exception:', err);
-          document.getElementById('signup-status-area').textContent = window.T('unexpected_error');
-        }
-      }));
+  try {
+    // Call the signup method
+    const response = await authService.signup(email, password, role);
+    if (response.success) {
+      document.getElementById('signup-status-area').textContent = window.T('signup_success');
+      
+      // Store redirect info in sessionStorage
+      sessionStorage.setItem('signup_success', 'true');
+      sessionStorage.setItem('last_auth_action', Date.now().toString());
+      sessionStorage.setItem('user_role', role);
+      
+      // Important: Use setTimeout to delay redirect and avoid loops
+      setTimeout(() => {
+        // Build the redirect URL
+        const dashboardRoutes = {
+          expert: '/expert-dashboard.html',
+          learner: '/learner-dashboard.html',
+          researcher: '/researcher-dashboard.html',
+          resources: '/resources-dashboard.html',
+          organizer: '/organizer-dashboard.html'
+        };
+        
+        const redirectUrl = dashboardRoutes[role] || '/dashboard.html';
+        console.log(`Redirecting to ${redirectUrl} with role ${role} after signup`);
+        
+        window.location.href = redirectUrl;
+      }, 2000); // 2 second delay to allow message to show and prevent redirect loops
+      
+    } else {
+      document.getElementById('signup-status-area').textContent = response.error || window.T('signup_failed');
+    }
+  } catch (err) {
+    console.error('Signup exception:', err);
+    document.getElementById('signup-status-area').textContent = window.T('unexpected_error');
+  }
+}));
+
 
       // Login handler
       loginForm.addEventListener('submit', disableDuring(loginButton, async e => {
