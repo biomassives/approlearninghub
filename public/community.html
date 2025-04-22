@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="community_title">ApproVideo Hub - Community</title>
+  <title data-i18n="community_title">WATSAN Dev Hub - Community</title>
   <link rel="stylesheet" href="style.css">
-  <meta name="description" content="ApproVideo Hub Community - Connect with peers and experts">
+  <meta name="description" content="WATSAN Dev Hub Community - Connect with fellow scientists, mentors, and discuss sustainable solutions.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-  
+
   <style>
     /* Community specific styles */
     .community-container {
@@ -15,7 +15,7 @@
       margin: 0 auto;
       padding: 20px;
     }
-    
+
     .welcome-section {
       background-color: white;
       padding: 20px;
@@ -23,13 +23,13 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
-    
+
     .community-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 20px;
     }
-    
+
     .community-card {
       background-color: white;
       border-radius: 8px;
@@ -37,7 +37,7 @@
       padding: 20px;
       margin-bottom: 20px;
     }
-    
+
     .community-card h2 {
       margin-top: 0;
       border-bottom: 1px solid #eee;
@@ -45,7 +45,7 @@
       margin-bottom: 15px;
       color: #333;
     }
-    
+
     .post-card {
       border: 1px solid #eee;
       border-radius: 8px;
@@ -53,12 +53,12 @@
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    
+
     .post-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    
+
     .post-card-header {
       padding: 15px;
       background-color: #f9f9f9;
@@ -66,12 +66,12 @@
       display: flex;
       align-items: center;
     }
-    
+
     .user-avatar {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: #007bff;
+      background-color: #007bff; /* Consider changing color theme if desired */
       color: white;
       display: flex;
       align-items: center;
@@ -79,27 +79,27 @@
       font-weight: bold;
       margin-right: 10px;
     }
-    
+
     .post-author {
       font-weight: bold;
     }
-    
+
     .post-date {
       color: #777;
       font-size: 0.9em;
       margin-left: auto;
     }
-    
+
     .post-card-body {
       padding: 15px;
     }
-    
+
     .post-card-title {
       margin-top: 0;
       margin-bottom: 5px;
       color: #333;
     }
-    
+
     .post-card-footer {
       padding: 10px 15px;
       background-color: #f9f9f9;
@@ -108,7 +108,7 @@
       align-items: center;
       gap: 15px;
     }
-    
+
     .post-action {
       display: flex;
       align-items: center;
@@ -117,11 +117,11 @@
       font-size: 0.9em;
       cursor: pointer;
     }
-    
+
     .post-action:hover {
       color: #007bff;
     }
-    
+
     .discussion-group {
       border: 1px solid #eee;
       border-radius: 8px;
@@ -129,27 +129,27 @@
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    
+
     .discussion-group:hover {
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    
+
     .discussion-group-header {
       background-color: #f9f9f9;
       padding: 15px;
       border-bottom: 1px solid #eee;
     }
-    
+
     .discussion-group-title {
       margin: 0;
       color: #333;
     }
-    
+
     .discussion-group-body {
       padding: 15px;
     }
-    
+
     .discussion-group-stats {
       display: flex;
       justify-content: space-between;
@@ -157,7 +157,7 @@
       font-size: 0.9em;
       margin-top: 10px;
     }
-    
+
     .btn-primary {
       display: inline-block;
       background-color: #007bff;
@@ -169,11 +169,11 @@
       cursor: pointer;
       font-size: 1em;
     }
-    
+
     .btn-primary:hover {
       background-color: #0069d9;
     }
-    
+
     .btn-outline {
       display: inline-block;
       background-color: transparent;
@@ -185,12 +185,12 @@
       cursor: pointer;
       font-size: 1em;
     }
-    
+
     .btn-outline:hover {
       background-color: #f0f8ff;
     }
-    
-    .event-card {
+
+    .event-card { /* Represents a Workshop/Clinic/Session */
       display: flex;
       border: 1px solid #eee;
       border-radius: 8px;
@@ -198,12 +198,12 @@
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    
+
     .event-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    
+
     .event-date {
       background-color: #007bff;
       color: white;
@@ -214,38 +214,38 @@
       align-items: center;
       justify-content: center;
     }
-    
+
     .event-day {
       font-size: 1.5em;
       font-weight: bold;
     }
-    
+
     .event-month {
       text-transform: uppercase;
       font-size: 0.9em;
     }
-    
+
     .event-details {
       padding: 15px;
       flex-grow: 1;
     }
-    
+
     .event-title {
       margin-top: 0;
       margin-bottom: 5px;
     }
-    
+
     .event-meta {
       color: #666;
       font-size: 0.9em;
       margin-bottom: 10px;
     }
-    
+
     .search-form {
       display: flex;
       margin-bottom: 20px;
     }
-    
+
     .search-input {
       flex-grow: 1;
       padding: 10px;
@@ -253,7 +253,7 @@
       border-radius: 4px 0 0 4px;
       font-size: 1em;
     }
-    
+
     .search-button {
       background-color: #007bff;
       color: white;
@@ -262,68 +262,70 @@
       border-radius: 0 4px 4px 0;
       cursor: pointer;
     }
-    
+
     .tag-list {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 10px;
     }
-    
+
     .tag {
-      background-color: #f0f8ff;
-      color: #007bff;
+      background-color: #e7f3ff; /* Slightly adjusted tag color */
+      color: #0056b3;
       padding: 5px 10px;
       border-radius: 20px;
       font-size: 0.9em;
     }
-    
+
     .tabs {
       display: flex;
       border-bottom: 1px solid #eee;
       margin-bottom: 20px;
+      flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
     }
-    
+
     .tab {
-      padding: 10px 20px;
+      padding: 10px 15px; /* Slightly reduce padding for potentially longer names */
       cursor: pointer;
       border-bottom: 3px solid transparent;
+      text-align: center;
     }
-    
+
     .tab.active {
       border-bottom-color: #007bff;
       color: #007bff;
       font-weight: bold;
     }
-    
+
     .main-nav ul {
       display: flex;
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    
+
     .main-nav li {
       margin-right: 20px;
     }
-    
+
     .main-nav a {
       text-decoration: none;
       color: white;
       font-weight: 500;
       padding: 5px 0;
     }
-    
+
     .main-nav a.active {
       border-bottom: 2px solid white;
     }
-    
+
     .user-controls {
       display: flex;
       align-items: center;
       gap: 15px;
     }
-    
+
     #logout-button {
       background-color: transparent;
       border: 1px solid #dc3545;
@@ -332,25 +334,28 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    
+
     #logout-button:hover {
       background-color: #dc3545;
       color: white;
     }
-    
+
     .actions-bar {
       display: flex;
       justify-content: space-between;
+      align-items: center; /* Align items vertically */
       margin-bottom: 20px;
+      flex-wrap: wrap; /* Allow wrapping */
+      gap: 10px; /* Add gap for wrapped items */
     }
-    
+
     .pagination {
       display: flex;
       justify-content: center;
       margin-top: 20px;
       gap: 5px;
     }
-    
+
     .pagination a {
       display: inline-block;
       padding: 5px 10px;
@@ -359,50 +364,180 @@
       text-decoration: none;
       color: #333;
     }
-    
+
     .pagination a.active {
       background-color: #007bff;
       color: white;
       border-color: #007bff;
     }
-    
+
     @media (max-width: 768px) {
       .community-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .user-controls {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
       }
-      
+
       .main-nav ul {
         flex-direction: column;
         gap: 10px;
       }
-      
+
       .main-nav li {
         margin-right: 0;
       }
-      
+
       .actions-bar {
         flex-direction: column;
+        align-items: flex-start; /* Align wrapped items to start */
         gap: 10px;
       }
+       .tabs {
+           justify-content: flex-start; /* Prevent centering when wrapped */
+       }
     }
+
+/* --- Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Dim background */
+  display: flex; /* Use flex to center the modal box */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+  opacity: 0; /* Start hidden */
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Fade transition */
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.modal-box {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 1001;
+  width: 90%;
+  max-width: 600px; /* Adjust max width as needed */
+  max-height: 90vh; /* Prevent modal from being too tall */
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95); /* Start slightly smaller */
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-box {
+   transform: scale(1); /* Scale to full size when active */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0 5px; /* Easier to click */
+  line-height: 1;
+}
+.modal-close-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  overflow-y: auto; /* Allow scrolling for long content */
+  margin-bottom: 20px;
+  flex-grow: 1; /* Allow body to take up available space */
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+/* Form specific styles within modal */
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box; /* Include padding in width */
+}
+.form-group textarea {
+  resize: vertical; /* Allow vertical resize */
+  min-height: 100px;
+}
+
+/* Specific Branding for Featured Modal */
+.featured-modal-branding {
+  border-top: 5px solid #0056b3; /* Example branding color */
+}
+.featured-modal-branding .modal-header {
+    /* Optional: Adjust header style */
+    border-bottom: none;
+    padding-bottom: 10px;
+}
+.featured-modal-branding .modal-body img { /* Style images within featured content */
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+
+
+
   </style>
 </head>
 <body>
   <header class="page-header">
-    <div class="brand-name" data-i18n="brand_name">ApproVideo Hub</div>
+    <div class="brand-name" data-i18n="brand_name">WATSAN Dev Hub</div>
     <nav class="main-nav">
       <ul>
         <li><a href="/dashboard.html" data-i18n="nav_dashboard">Dashboard</a></li>
-        <li><a href="/library.html" data-i18n="nav_library">Library</a></li>
-        <li><a href="/community.html" class="active" data-i18n="nav_community">Community</a></li>
-        <li><a href="/expert.html" id="expert-nav-link" style="display: none;" data-i18n="nav_expert">Expert Zone</a></li>
-      </ul>
+        <li><a href="/library.html" data-i18n="nav_library">Resources</a></li> <li><a href="/community.html" class="active" data-i18n="nav_community">Community</a></li>
+        <li><a href="/expert.html" id="expert-nav-link" style="display: none;" data-i18n="nav_expert">Expert Mentorship</a></li> </ul>
     </nav>
     <div class="user-controls">
       <span id="user-name">...</span>
@@ -412,11 +547,11 @@
 
   <main class="community-container" role="main">
     <section class="welcome-section">
-      <h1 data-i18n="community_welcome">Community Hub</h1>
-      <p data-i18n="community_description">Connect with other learners, share insights, and join discussions about video production and editing techniques.</p>
-      
+      <h1 data-i18n="community_welcome">WATSAN & Sustainable Development Community</h1>
+      <p data-i18n="community_description">Connect with fellow scientists, share field insights, discuss community challenges, and collaborate on WATSAN & sustainable technology solutions.</p>
+
       <form class="search-form">
-        <input type="text" class="search-input" placeholder="Search discussions, posts, and events..." data-i18n="search_placeholder">
+         <input type="text" class="search-input" placeholder="Search discussions, projects, resources..." data-i18n="search_placeholder">
         <button type="submit" class="search-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -428,250 +563,181 @@
     <div class="actions-bar">
       <div class="tabs">
         <div class="tab active" data-tab="discussions" data-i18n="tab_discussions">Discussions</div>
-        <div class="tab" data-tab="events" data-i18n="tab_events">Events</div>
-        <div class="tab" data-tab="members" data-i18n="tab_members">Members</div>
-      </div>
-      
-      <div>
-        <button class="btn-primary" id="new-post-button" data-i18n="new_post_button">New Post</button>
-      </div>
+        <div class="tab" data-tab="events" data-i18n="tab_events">Clinics & Workshops</div>
+         <div class="tab" data-tab="members" data-i18n="tab_members">Members</div> <div class="tab" data-tab="facilitators" data-i18n="tab_facilitators" style="display: none;">Facilitator Zone</div>
+        </div>
+
+    <div>
+        <button class="btn-primary" id="new-post-button" data-i18n="new_post_button">New Discussion</button>
+    </div>
     </div>
 
     <div class="community-grid">
       <div class="main-content">
-        <div class="community-card">
-          <h2 data-i18n="recent_discussions">Recent Discussions</h2>
-          
-          <div id="discussions-container">
-            <!-- Discussion posts will be loaded here -->
-            <div class="post-card">
-              <div class="post-card-header">
-                <div class="user-avatar">JD</div>
-                <span class="post-author">John Doe</span>
-                <span class="post-date">2 hours ago</span>
-              </div>
-              <div class="post-card-body">
-                <h3 class="post-card-title">Best approaches for color grading in low light</h3>
-                <p>I've been struggling with color grading footage shot in low light conditions. What tools and techniques do you recommend for preserving details while enhancing colors?</p>
-                <div class="tag-list">
-                  <span class="tag">Color Grading</span>
-                  <span class="tag">Low Light</span>
-                  <span class="tag">Post-Production</span>
+        <div class="community-card" id="main-content-area"> <h2 data-i18n="recent_discussions">Recent Discussions</h2>
+            <div id="discussions-container">
+                <div class="post-card">
+                    <div class="post-card-header">
+                        <div class="user-avatar">LS</div> <span class="post-author">Lila Sharma</span>
+                        <span class="post-date">4 hours ago</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">Optimizing Biosand Filter performance in high turbidity water</h3>
+                        <p>Discussing challenges and modifications for improving biosand filter efficiency with source water above 50 NTU. Has anyone tried adding a pre-filter stage?</p>
+                        <div class="tag-list">
+                            <span class="tag">Water Treatment</span>
+                            <span class="tag">Biosand Filter</span>
+                            <span class="tag">Turbidity</span>
+                        </div>
+                    </div>
+                    <div class="post-card-footer">
+                        <div class="post-action"> <svg>...</svg> <span>15 Likes</span> </div>
+                        <div class="post-action"> <svg>...</svg> <span>6 Comments</span> </div>
+                        <div class="post-action"> <svg>...</svg> <span>Share</span> </div>
+                    </div>
                 </div>
-              </div>
-              <div class="post-card-footer">
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                  </svg>
-                  <span>12 Likes</span>
+
+                <div class="post-card">
+                    <div class="post-card-header">
+                        <div classclass="user-avatar">KA</div> <span class="post-author">Kwame Adu</span>
+                        <span class="post-date">Yesterday</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">Community engagement strategies for sanitation projects</h3>
+                        <p>Seeking advice on effective methods for community participation and ownership in rural sanitation initiatives, particularly for promoting latrine usage.</p>
+                        <div class="tag-list">
+                            <span class="tag">Sanitation</span>
+                            <span class="tag">Community Engagement</span>
+                            <span class="tag">Behavior Change</span>
+                        </div>
+                    </div>
+                    <div class="post-card-footer">
+                         <div class="post-action"> <svg>...</svg> <span>28 Likes</span> </div>
+                         <div class="post-action"> <svg>...</svg> <span>11 Comments</span> </div>
+                         <div class="post-action"> <svg>...</svg> <span>Share</span> </div>
+                    </div>
                 </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                  </svg>
-                  <span>8 Comments</span>
+
+                <div class="post-card">
+                    <div class="post-card-header">
+                         <div class="user-avatar">MF</div> <span class="post-author">Maria Flores</span>
+                         <span class="post-date">2 days ago</span>
+                    </div>
+                    <div class="post-card-body">
+                         <h3 class="post-card-title">Low-cost rainwater harvesting systems for arid regions</h3>
+                         <p>Sharing designs and experiences with affordable rainwater harvesting techniques implemented in small communities. Looking for feedback on material sourcing.</p>
+                         <div class="tag-list">
+                             <span class="tag">Rainwater Harvesting</span>
+                             <span class="tag">Appropriate Technology</span>
+                             <span class="tag">Water Scarcity</span>
+                         </div>
+                    </div>
+                    <div class="post-card-footer">
+                          <div class="post-action"> <svg>...</svg> <span>19 Likes</span> </div>
+                          <div class="post-action"> <svg>...</svg> <span>5 Comments</span> </div>
+                          <div class="post-action"> <svg>...</svg> <span>Share</span> </div>
+                    </div>
                 </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                  </svg>
-                  <span>Share</span>
-                </div>
-              </div>
             </div>
-            
-            <div class="post-card">
-              <div class="post-card-header">
-                <div class="user-avatar">AS</div>
-                <span class="post-author">Alex Smith</span>
-                <span class="post-date">Yesterday</span>
-              </div>
-              <div class="post-card-body">
-                <h3 class="post-card-title">Recommended camera setup for documentary filmmaking</h3>
-                <p>I'm starting a documentary project and looking for recommendations on camera setup, lenses, and audio equipment that offers good quality while being relatively portable.</p>
-                <div class="tag-list">
-                  <span class="tag">Equipment</span>
-                  <span class="tag">Documentary</span>
-                  <span class="tag">Camera Setup</span>
-                </div>
-              </div>
-              <div class="post-card-footer">
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                  </svg>
-                  <span>24 Likes</span>
-                </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                  </svg>
-                  <span>16 Comments</span>
-                </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                  </svg>
-                  <span>Share</span>
-                </div>
-              </div>
+
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">&raquo;</a>
             </div>
-            
-            <div class="post-card">
-              <div class="post-card-header">
-                <div class="user-avatar">EM</div>
-                <span class="post-author">Emily Martinez</span>
-                <span class="post-date">3 days ago</span>
-              </div>
-              <div class="post-card-body">
-                <h3 class="post-card-title">Tips for shooting interviews with non-professional subjects</h3>
-                <p>I'm working on a project involving interviews with people who aren't used to being on camera. Any advice on making them comfortable and getting natural responses?</p>
-                <div class="tag-list">
-                  <span class="tag">Interviews</span>
-                  <span class="tag">Directing</span>
-                  <span class="tag">Production</span>
-                </div>
-              </div>
-              <div class="post-card-footer">
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                  </svg>
-                  <span>31 Likes</span>
-                </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                  </svg>
-                  <span>22 Comments</span>
-                </div>
-                <div class="post-action">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                  </svg>
-                  <span>Share</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="pagination">
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">&raquo;</a>
-          </div>
         </div>
-      </div>
-      
-      <div class="sidebar">
+      </div> <div class="sidebar">
         <div class="community-card">
-          <h2 data-i18n="upcoming_events">Upcoming Events</h2>
+           <h2 data-i18n="upcoming_events">Upcoming Clinics & Workshops</h2>
           <div id="events-container">
-            <!-- Events will be loaded here -->
             <div class="event-card">
-              <div class="event-date">
-                <span class="event-day">15</span>
-                <span class="event-month">May</span>
-              </div>
-              <div class="event-details">
-                <h3 class="event-title">Lighting Workshop</h3>
-                <div class="event-meta">Online • 2:00 PM EST</div>
-                <p>Learn essential lighting techniques for different shooting environments.</p>
-                <button class="btn-outline">RSVP</button>
-              </div>
+                <div class="event-date">
+                    <span class="event-day">28</span>
+                    <span class="event-month">APR</span> </div>
+                <div class="event-details">
+                    <h3 class="event-title">Remote Sensing for Water Resource Mapping</h3>
+                    <div class="event-meta">Online Workshop • 1:00 PM UTC</div> <p>Online workshop on using open-source satellite imagery for mapping potential water sources.</p>
+                    <button class="btn-outline" data-i18n="rsvp_button">Register</button> </div>
             </div>
-            
+
             <div class="event-card">
-              <div class="event-date">
-                <span class="event-day">22</span>
-                <span class="event-month">May</span>
-              </div>
-              <div class="event-details">
-                <h3 class="event-title">Editing Masterclass</h3>
-                <div class="event-meta">Online • 3:30 PM EST</div>
-                <p>Advanced techniques for narrative editing with industry professionals.</p>
-                <button class="btn-outline">RSVP</button>
-              </div>
+                <div class="event-date">
+                    <span class="event-day">05</span>
+                    <span class="event-month">MAY</span> </div>
+                <div class="event-details">
+                    <h3 class="event-title">Expert Mentorship: Solar Water Pump Troubleshooting</h3>
+                    <div class="event-meta">Zoom Session • 3:00 PM UTC</div> <p>Join Dr. Anya Sharma for a Q&A session on diagnosing common issues with solar water pumps in the field.</p>
+                    <button class="btn-outline" data-i18n="rsvp_button">Register</button> </div>
             </div>
-          </div>
+            </div>
         </div>
-        
+
         <div class="community-card">
-          <h2 data-i18n="discussion_groups">Discussion Groups</h2>
+            <h2 data-i18n="discussion_groups">Thematic Groups</h2>
           <div id="groups-container">
-            <!-- Groups will be loaded here -->
             <div class="discussion-group">
-              <div class="discussion-group-header">
-                <h3 class="discussion-group-title">Video Editing Techniques</h3>
-              </div>
-              <div class="discussion-group-body">
-                <p>Share and learn about advanced editing workflows and software tips.</p>
-                <div class="discussion-group-stats">
-                  <span>1,245 Members</span>
-                  <span>Active</span>
+                <div class="discussion-group-header">
+                    <h3 class="discussion-group-title">Household Water Treatment</h3>
                 </div>
-              </div>
+                <div class="discussion-group-body">
+                    <p>Discussing point-of-use water treatment methods, effectiveness, and user adoption challenges.</p>
+                    <div class="discussion-group-stats">
+                        <span>45 Members</span> <span>Active</span>
+                    </div>
+                </div>
             </div>
-            
+
             <div class="discussion-group">
-              <div class="discussion-group-header">
-                <h3 class="discussion-group-title">Cinematography</h3>
-              </div>
-              <div class="discussion-group-body">
-                <p>Explore camera techniques, movement, framing, and visual storytelling.</p>
-                <div class="discussion-group-stats">
-                  <span>982 Members</span>
-                  <span>Active</span>
+                <div class="discussion-group-header">
+                    <h3 class="discussion-group-title">Sustainable Sanitation Solutions</h3>
                 </div>
-              </div>
+                <div class="discussion-group-body">
+                    <p>Exploring ecological sanitation, composting toilets, and community-led total sanitation (CLTS).</p>
+                    <div class="discussion-group-stats">
+                        <span>62 Members</span> <span>Active</span>
+                    </div>
+                </div>
             </div>
-            
+
             <div class="discussion-group">
-              <div class="discussion-group-header">
-                <h3 class="discussion-group-title">Audio for Video</h3>
-              </div>
-              <div class="discussion-group-body">
-                <p>Discussion about recording, mixing, and enhancing audio for video productions.</p>
-                <div class="discussion-group-stats">
-                  <span>764 Members</span>
-                  <span>Active</span>
+                <div class="discussion-group-header">
+                    <h3 class="discussion-group-title">Appropriate Technology Design</h3>
                 </div>
-              </div>
+                <div class="discussion-group-body">
+                    <p>Collaborative design, local material sourcing, and testing of locally relevant WATSAN technologies.</p>
+                    <div class="discussion-group-stats">
+                        <span>38 Members</span> <span>Active</span>
+                    </div>
+                </div>
             </div>
           </div>
-          
+
           <div style="text-align: center; margin-top: 15px;">
-            <a href="#" class="btn-outline">View All Groups</a>
+            <a href="#" class="btn-outline" data-i18n="view_all_groups_button">View All Groups</a>
           </div>
         </div>
-        
+
         <div class="community-card">
           <h2 data-i18n="popular_tags">Popular Tags</h2>
           <div class="tag-list" style="margin-bottom: 10px;">
-            <span class="tag">Editing</span>
-            <span class="tag">Production</span>
-            <span class="tag">Cinematography</span>
-            <span class="tag">Audio</span>
-            <span class="tag">Lighting</span>
-            <span class="tag">Color Grading</span>
-            <span class="tag">Equipment</span>
-            <span class="tag">Software</span>
-            <span class="tag">Post-Production</span>
-            <span class="tag">Tutorials</span>
+            <span class="tag">Water Quality</span>
+            <span class="tag">Sanitation</span>
+            <span class="tag">Hygiene (WASH)</span>
+            <span class="tag">Appropriate Tech</span>
+            <span class="tag">Community Health</span>
+            <span class="tag">Sustainable Development</span>
+            <span class="tag">Mentorship</span>
+            <span class="tag">Field Work</span>
+            <span class="tag">Data Collection</span>
+            <span class="tag">Project Design</span>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
+      </div> </div> </main>
 
   <footer class="page-footer">
     <p>
-      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | 
+      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> |
       <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a>
     </p>
   </footer>
@@ -679,552 +745,966 @@
   <script type="module">
     import authService from './js/auth-service.js';
     import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
-    import { secureDataFetch } from './js/lattice-method.js'; // Lattice method for data security
-    
-    // Local data cache
+    import { secureDataFetch } from './js/lattice-method.js';
+
     const localDataCache = {
-      discussions: null,
-      events: null,
-      expertData: null,
-      integrations: null
+        discussions: null,
+        events: null, // Represents clinics/workshops
+        members: null, // Represents members/scientists data if needed for that tab
+        expertData: null,
+        integrations: null,
+        facilitatorData: null
     };
-    
+
     let currentUser = null;
     let isExpert = false;
-    
+    let isFacilitator = false;
+
+
+
+    // --- Modal Utility Functions ---
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = ''; // Clear potential display:none
+            // Use timeout to allow display property to apply before transition starts
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10); // Small delay
+            console.log(`Showing modal: ${modalId}`);
+        } else {
+            console.error(`Modal with ID ${modalId} not found.`);
+        }
+    }
+
+    function hideModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('active');
+            // Wait for transition to finish before setting display: none
+            // Match the transition duration in CSS (0.3s = 300ms)
+            setTimeout(() => {
+                // Only hide if it wasn't immediately reopened
+                if (!modal.classList.contains('active')) {
+                    modal.style.display = 'none';
+                }
+            }, 300);
+             console.log(`Hiding modal: ${modalId}`);
+        } else {
+             console.error(`Modal with ID ${modalId} not found.`);
+        }
+    }
+
+
+
+
+
     // Check authentication
     async function checkAuth() {
-      try {
-        const result = await authService.checkAccess();
-        
-        if (!result.success) {
-          // Redirect to login page
-          window.location.href = '/index.html';
-          return;
+        try {
+            const result = await authService.checkAccess();
+
+            if (!result.success) {
+                window.location.href = '/index.html';
+                return;
+            }
+
+            currentUser = result.user;
+            isExpert = currentUser.roles && currentUser.roles.includes('expert');
+            isFacilitator = currentUser.roles && (currentUser.roles.includes('facilitator') || currentUser.roles.includes('champion'));
+
+            document.getElementById('user-name').textContent = currentUser.email;
+
+            const tabsContainer = document.querySelector('.tabs');
+            if (isExpert) {
+                loadExpertData(); // Preload data
+                const expertNavLink = document.getElementById('expert-nav-link');
+                if (expertNavLink) expertNavLink.style.display = 'block';
+
+                if (tabsContainer && !document.querySelector('[data-tab="expert"]')) {
+                    const expertTab = document.createElement('div');
+                    expertTab.className = 'tab';
+                    expertTab.dataset.tab = 'expert';
+                    // CONTEXT CHANGE: Expert Zone Label
+                    expertTab.setAttribute('data-i18n', 'tab_expert');
+                    expertTab.textContent = 'Expert Mentorship';
+                    tabsContainer.appendChild(expertTab);
+                }
+            }
+
+            if (isFacilitator) {
+                loadFacilitatorData(); // Preload data
+                const facilitatorTab = document.querySelector('[data-tab="facilitators"]');
+                if (facilitatorTab) facilitatorTab.style.display = '';
+            }
+
+            await applyTranslations(); // Translate everything, including potentially added tabs
+            setupTabs(); // Setup listeners on all visible tabs
+
+        } catch (error) {
+            console.error('Auth check error:', error);
+            window.location.href = '/index.html';
         }
-        
-        // User is authenticated
-        currentUser = result.user;
-        
-        // Check if user is an expert
-        isExpert = currentUser.roles && currentUser.roles.includes('expert');
-        
-        // Update UI with user info
-        document.getElementById('user-name').textContent = currentUser.email;
-        
-        // If user is an expert, load expert-specific data and show expert UI elements
-        if (isExpert) {
-          loadExpertData();
-          
-          // Show expert navigation link
-          const expertNavLink = document.getElementById('expert-nav-link');
-          if (expertNavLink) {
-            expertNavLink.style.display = 'block';
-          }
-          
-          // Add expert tab if not already present
-          const tabsContainer = document.querySelector('.tabs');
-          if (tabsContainer && !document.querySelector('[data-tab="expert"]')) {
-            const expertTab = document.createElement('div');
-            expertTab.className = 'tab';
-            expertTab.dataset.tab = 'expert';
-            expertTab.setAttribute('data-i18n', 'tab_expert');
-            expertTab.textContent = 'Expert Zone';
-            tabsContainer.appendChild(expertTab);
-            
-            // Reinitialize tabs
-            setupTabs();
-          }
-        }
-          
-      } catch (error) {
-        console.error('Auth check error:', error);
-        // Redirect to login page
-        window.location.href = '/index.html';
-      }
     }
-    
-    // Load expert-specific data
+
+    // Load Facilitator Data
+    async function loadFacilitatorData() {
+        if (!isFacilitator || localDataCache.facilitatorData) return;
+        try {
+            console.log("Loading facilitator data...");
+            const facilitatorInfo = await secureDataFetch('/api/facilitator/dashboard');
+            localDataCache.facilitatorData = facilitatorInfo;
+            console.log('Facilitator data loaded:', facilitatorInfo);
+            // Refresh UI if tab is active
+            const activeTab = document.querySelector('.tabs .tab.active');
+            if (activeTab?.dataset.tab === 'facilitators') {
+                const facilitatorContent = document.getElementById('facilitator-content');
+                if (facilitatorContent) populateFacilitatorContent(facilitatorContent, facilitatorInfo);
+            }
+        } catch (error) {
+            console.error('Error loading facilitator data:', error);
+             // Optionally display error in the UI if tab is active
+        }
+    }
+
+    // Load Expert Data
     async function loadExpertData() {
-      try {
-        // Fetch expert modules and pending reviews
-        const [expertHomeData, expertModulesData, pendingReviewsData] = await Promise.all([
-          secureDataFetch('/api/expert/home'),
-          secureDataFetch('/api/expert/modules'),
-          secureDataFetch('/api/expert/pending-reviews')
-        ]);
-        
-        // Store in local cache
-        localDataCache.expertData = {
-          home: expertHomeData,
-          modules: expertModulesData,
-          pendingReviews: pendingReviewsData
-        };
-        
-        console.log('Expert data loaded', localDataCache.expertData);
-        
-        // Update UI if needed
-        // This would be implemented based on specific requirements
-        
-      } catch (error) {
-        console.error('Error loading expert data:', error);
-      }
+        if (!isExpert || localDataCache.expertData) return;
+        try {
+            console.log("Loading expert data...");
+            const [home, modules, reviews] = await Promise.all([
+                secureDataFetch('/api/expert/home').catch(e => ({})),
+                secureDataFetch('/api/expert/modules').catch(e => []),
+                // CONTEXT CHANGE: Assuming 'pending-reviews' means proposals, field reports etc.
+                secureDataFetch('/api/expert/pending-reviews').catch(e => [])
+            ]);
+            localDataCache.expertData = { home, modules, pendingReviews: reviews };
+            console.log('Expert data loaded', localDataCache.expertData);
+            // Refresh UI if tab is active
+            const activeTab = document.querySelector('.tabs .tab.active');
+            if (activeTab?.dataset.tab === 'expert') {
+                 const expertContent = document.getElementById('expert-content');
+                 if (expertContent) showExpertTab(document.querySelector('.community-grid')); // Pass parent
+            }
+        } catch (error) {
+            console.error('Error loading expert data:', error);
+            // Optionally display error in the UI if tab is active
+        }
     }
-    
-    // Load integration settings
+
+    // Load Integration Settings (Zoom)
     async function loadIntegrationSettings() {
-      if (!currentUser) return;
-      
-      try {
-        const [integrationSettings, zoomTemplates] = await Promise.all([
-          secureDataFetch('/api/integrations/settings'),
-          secureDataFetch('/api/integrations/zoom-templates')
+        if (!currentUser || localDataCache.integrations) return;
+        try {
+            console.log("Loading integration settings...");
+            const [settings, zoomTemplates] = await Promise.all([
+                secureDataFetch('/api/integrations/settings').catch(e => ({})),
+                secureDataFetch('/api/integrations/zoom-templates').catch(e => ({ templates: [] }))
+            ]);
+            localDataCache.integrations = { settings, zoomTemplates };
+            console.log('Integration data loaded', localDataCache.integrations);
+            updateIntegrationsUI();
+        } catch (error) {
+            console.error('Error loading integration settings:', error);
+        }
+    }
+
+    // Update Integrations UI (Zoom)
+    function updateIntegrationsUI() {
+        const integrations = localDataCache.integrations;
+        if (!integrations?.zoomTemplates?.templates?.length || document.getElementById('zoom-integration-section')) return;
+
+        const sidebarEventsContainer = document.getElementById('events-container');
+        if (sidebarEventsContainer) {
+            const zoomSection = document.createElement('div');
+            zoomSection.id = 'zoom-integration-section';
+            zoomSection.innerHTML = `
+                <h4 style="margin-top: 20px; margin-bottom: 10px;" data-i18n="zoom_schedule_title">Schedule Zoom Meeting</h4>
+                <p data-i18n="zoom_schedule_prompt">Quick schedule using a template:</p>
+                <div class="tag-list">
+                    ${integrations.zoomTemplates.templates.slice(0, 3).map(t =>
+                        `<span class="tag" data-template-id="${t.id}" style="cursor: pointer;">${t.name}</span>`
+                    ).join('')}
+                </div>`;
+            sidebarEventsContainer.appendChild(zoomSection);
+            zoomSection.querySelectorAll('.tag[data-template-id]').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    console.log(`Creating Zoom meeting with template ID: ${tag.dataset.templateId}`);
+                    alert(`Zoom meeting creation with template "${tag.textContent}" to be implemented.`);
+                });
+            });
+            applyTranslations(zoomSection);
+        }
+    }
+
+    // Setup Tab Switching Logic
+    function setupTabs() {
+        const tabs = document.querySelectorAll('.tabs .tab');
+        const mainContentContainer = document.getElementById('main-content-area'); // Specific container for main tabs
+        const gridContainer = document.querySelector('.community-grid');
+
+        tabs.forEach(tab => {
+            const newTab = tab.cloneNode(true);
+            tab.parentNode.replaceChild(newTab, tab);
+
+            newTab.addEventListener('click', () => {
+                tabs.forEach(t => document.querySelector(`[data-tab="${t.dataset.tab}"]`)?.classList.remove('active'));
+                newTab.classList.add('active');
+
+                const tabName = newTab.dataset.tab;
+                console.log(`Switched to ${tabName} tab`);
+
+                // Hide all specific content areas first
+                document.getElementById('expert-content')?.remove(); // Remove instead of hide to simplify DOM
+                document.getElementById('facilitator-content')?.remove();
+                if (mainContentContainer) mainContentContainer.style.display = 'none';
+
+
+                // Show the relevant content
+                if (tabName === 'expert' && isExpert) {
+                    showExpertTab(gridContainer);
+                } else if (tabName === 'facilitators' && isFacilitator) {
+                    showFacilitatorTab(gridContainer);
+                } else {
+                     if (mainContentContainer) {
+                        mainContentContainer.style.display = 'block';
+                        // Update content within the main area based on the selected tab
+                        updateMainContentArea(tabName, mainContentContainer);
+                     }
+                }
+            });
+        });
+
+        // Handle initial page load state
+        const activeTab = document.querySelector('.tabs .tab.active');
+        if (activeTab) {
+            const tabName = activeTab.dataset.tab;
+            document.getElementById('expert-content')?.remove();
+            document.getElementById('facilitator-content')?.remove();
+            if (mainContentContainer) mainContentContainer.style.display = 'none';
+
+            if (tabName === 'expert' && isExpert) showExpertTab(gridContainer);
+            else if (tabName === 'facilitators' && isFacilitator) showFacilitatorTab(gridContainer);
+            else if (mainContentContainer) {
+                mainContentContainer.style.display = 'block';
+                updateMainContentArea(tabName, mainContentContainer); // Load initial main content
+            }
+        } else {
+             // Fallback: Activate discussions tab
+             document.querySelector('[data-tab="discussions"]')?.classList.add('active');
+             if (mainContentContainer) {
+                 mainContentContainer.style.display = 'block';
+                 updateMainContentArea('discussions', mainContentContainer);
+             }
+        }
+    }
+
+    function updateMainContentArea(tabName, container) {
+        // Clear previous content? Or selectively show/hide sections?
+        // For simplicity here, we'll replace content. More complex apps might reuse elements.
+
+        let titleKey = '';
+        let contentLoader = null;
+
+        switch(tabName) {
+            case 'discussions':
+                titleKey = 'recent_discussions';
+                contentLoader = loadDiscussions; // This function needs to target `#discussions-container` inside `container`
+                container.innerHTML = `<h2 data-i18n="${titleKey}">Recent Discussions</h2><div id="discussions-container"></div><div class="pagination">...</div>`; // Basic structure
+                break;
+            case 'events': // Clinics & Workshops
+                titleKey = 'upcoming_clinics_workshops'; // New i18n key needed
+                contentLoader = loadClinicsWorkshops; // New function needed
+                container.innerHTML = `<h2 data-i18n="${titleKey}">Clinics & Workshops</h2><div id="clinics-workshops-container"></div><div class="pagination">...</div>`; // Basic structure
+                break;
+            case 'members': // Members or Learning Modules
+                titleKey = 'members_list'; // New i18n key needed (or 'learning_modules_list')
+                contentLoader = loadMembers; // New function needed
+                container.innerHTML = `<h2 data-i18n="${titleKey}">Members</h2><div id="members-container"></div><div class="pagination">...</div>`; // Basic structure
+                break;
+            default:
+                 console.warn(`No content handler for tab: ${tabName}`);
+                 container.innerHTML = `<h2 data-i18n="discussions">Discussions</h2><div id="discussions-container"><p>Welcome!</p></div>`; // Default fallback
+                 contentLoader = loadDiscussions;
+                 break;
+
+        }
+        applyTranslations(container); // Translate the new structure
+
+        if (contentLoader) {
+             // Pass the specific inner container ID to the loader function if needed
+             // e.g., contentLoader('discussions-container');
+             contentLoader(); // Assuming loader targets the ID defined above
+        }
+         // Update pagination if applicable
+         setupPagination(container.querySelector('.pagination'), tabName);
+    }
+
+     // ** Placeholder for loading Clinics/Workshops in main area **
+     async function loadClinicsWorkshops() {
+         const container = document.getElementById('clinics-workshops-container');
+         if (!container) return;
+         container.innerHTML = `<p data-i18n="loading_clinics_workshops">Loading clinics & workshops...</p>`;
+         applyTranslations(container);
+         // TODO: Fetch actual clinic/workshop list via API
+         // For now, use placeholder text
+         await new Promise(resolve => setTimeout(resolve, 300)); // Simulate load
+         container.innerHTML = `<p><i>Full list of clinics and workshops will be loaded here dynamically.</i></p>
+            <div class="event-card"> ... Workshop details ... </div>
+            <div class="event-card"> ... Clinic details ... </div>
+         `;
+     }
+
+     // ** Placeholder for loading Members/Modules in main area **
+     async function loadMembers() {
+         const container = document.getElementById('members-container');
+         if (!container) return;
+         container.innerHTML = `<p data-i18n="loading_members">Loading members...</p>`;
+         applyTranslations(container);
+         // TODO: Fetch actual member/module list via API
+         await new Promise(resolve => setTimeout(resolve, 300));
+         container.innerHTML = `<p><i>Member directory or Learning Module list will appear here.</i></p>
+            <div class="post-card"> ... Member Profile Card or Module Card ... </div>
+         `;
+     }
+
+     // ** Placeholder for Pagination Setup **
+     function setupPagination(paginationContainer, contentType) {
+         if (!paginationContainer) return;
+         console.log(`Setting up pagination for: ${contentType}`);
+         // TODO: Implement actual pagination logic based on API response
+         paginationContainer.innerHTML = `
+             <a href="#" class="active">1</a>
+             <a href="#">2</a>
+             <a href="#">3</a>
+             <a href="#">&raquo;</a>`;
+     }
+
+
+    // Show Expert Tab Content
+    function showExpertTab(gridContainer) {
+        const mainContentArea = document.getElementById('main-content-area');
+        if(mainContentArea) mainContentArea.style.display = 'none'; // Hide main content area
+        document.getElementById('facilitator-content')?.remove(); // Remove facilitator if present
+
+        let expertContent = document.getElementById('expert-content');
+        if (!expertContent && gridContainer) {
+            expertContent = document.createElement('div');
+            expertContent.id = 'expert-content';
+            expertContent.className = 'community-card expert-zone-content';
+            expertContent.style.marginBottom = '20px';
+            gridContainer.insertBefore(expertContent, gridContainer.querySelector('.sidebar')); // Insert before sidebar
+        }
+
+        if (expertContent) {
+            expertContent.style.display = 'block';
+            const expertData = localDataCache.expertData;
+            if (!expertData) {
+                expertContent.innerHTML = '<p data-i18n="loading_expert_data">Loading expert data...</p>';
+                applyTranslations(expertContent);
+                loadExpertData(); // Attempt to load if not available
+            } else {
+                populateExpertContent(expertContent, expertData);
+            }
+        }
+    }
+
+    // Populate Expert Content
+    function populateExpertContent(container, data) {
+        container.innerHTML = `
+            <h2 data-i18n="expert_dashboard_title">Expert Mentorship Dashboard</h2> <div class="tabs" style="margin: 20px 0;">
+                <div class="tab active" data-expert-tab="reviews" data-i18n="expert_tab_reviews">Pending Reviews (Proposals/Reports)</div>
+                <div class="tab" data-expert-tab="sessions" data-i18n="expert_tab_sessions">My Mentorship Sessions</div>
+                <div class="tab" data-expert-tab="modules" data-i18n="expert_tab_modules">My Resources</div>
+            </div>
+            <div id="expert-tab-content">
+                <div id="pending-reviews"> ${data.pendingReviews && data.pendingReviews.length > 0 ?
+                        data.pendingReviews.map(review => `
+                            <div class="post-card">
+                                <div class="post-card-header">
+                                    <div class="user-avatar">${review.submitter?.substring(0, 2).toUpperCase() || '??'}</div>
+                                    <span class="post-author">${review.title || 'Submission for Review'}</span>
+                                    <span class="post-date">${review.submittedDate ? new Date(review.submittedDate).toLocaleDateString() : 'Pending'}</span>
+                                </div>
+                                <div class="post-card-body">
+                                    <p>${review.description || 'No description provided'}</p>
+                                    <div class="tag-list">
+                                         <span class="tag">${review.type || 'Project Proposal'}</span>
+                                        <span class="tag">${review.status || 'Pending'}</span>
+                                    </div>
+                                </div>
+                                <div class="post-card-footer">
+                                    <a href="/expert/review/${review.id}" class="btn-primary" data-i18n="review_button">Review</a>
+                                    <button class="btn-outline" data-review-id="${review.id}" data-action="annotate" data-i18n="annotate_button">Annotate (Coming Soon)</button>
+                                </div>
+                            </div>
+                        `).join('') :
+                        '<p data-i18n="no_pending_reviews">No submissions currently pending review.</p>' // CONTEXT CHANGE
+                    }
+                </div>
+            </div>`;
+
+        applyTranslations(container);
+
+        // Setup inner expert tabs
+        container.querySelectorAll('[data-expert-tab]').forEach(tab => {
+            const newInnerTab = tab.cloneNode(true);
+            tab.parentNode.replaceChild(newInnerTab, tab);
+            newInnerTab.addEventListener('click', () => {
+                container.querySelectorAll('[data-expert-tab]').forEach(t => t.classList.remove('active'));
+                newInnerTab.classList.add('active');
+                const expertTabName = newInnerTab.dataset.expertTab;
+                const contentArea = container.querySelector('#expert-tab-content');
+                if (!contentArea) return;
+
+                switch (expertTabName) {
+
+
+                    case 'reviews':
+                        const expertData = localDataCache.expertData; // Make sure expertData is available here
+                        let reviewsHTML = '<p data-i18n="no_pending_reviews">No pending reviews at this time.</p>'; // Default message
+
+                        if (expertData?.pendingReviews && expertData.pendingReviews.length > 0) {
+                            // Regenerate the HTML for the reviews list
+                            reviewsHTML = expertData.pendingReviews.map(review => `
+                                <div class="post-card" data-review-id="${review.id}">
+                                <div class="post-card-header">
+                                    <div class="user-avatar">
+                                    ${review.submitter ? review.submitter.substring(0, 2).toUpperCase() : 'AN'}
+                                    </div>
+                                    <span class="post-author">${review.title || 'Submission for Review'}</span>
+                                    <span class="post-date">${review.submittedDate ? new Date(review.submittedDate).toLocaleDateString() : 'Pending'}</span>
+                                </div>
+                                <div class="post-card-body">
+                                    <p>${review.description || 'No description provided'}</p>
+                                    <div class="tag-list">
+                                    <span class="tag">${review.type || 'General'}</span>
+                                    <span class="tag">${review.status || 'Pending'}</span>
+                                    </div>
+                                </div>
+                                <div class="post-card-footer">
+                                    <a href="/expert/review/${review.id}" class="btn-primary">Review</a>
+                                    <button class="btn-outline action-button" data-action="annotate">Annotate</button>
+                                    <button class="btn-outline action-button" data-action="assign">Assign</button>
+                                </div>
+                                </div>
+                            `).join(''); // Join the array of HTML strings into one big string
+                        }
+
+                        // Set the innerHTML using the generated reviewsHTML string
+                        contentArea.innerHTML = `<div id="pending-reviews">${reviewsHTML}</div>`;
+
+                        // Apply translations and re-attach event listeners to the new content
+                        applyTranslations(contentArea);
+                        setupExpertActionButtons(contentArea); // Ensure this function correctly finds buttons within contentArea
+                        break; // Don't forget the break statement
+                    case 'sessions': loadExpertSessions(contentArea); break;
+                    case 'modules': loadExpertModules(contentArea); break; // Now loads "My Resources"
+                }
+            });
+        });
+        setupExpertActionButtons(container); // Setup buttons in initial view
+    }
+
+    // Setup Expert Action Buttons
+    function setupExpertActionButtons(container) {
+        container.querySelectorAll('[data-action="annotate"]').forEach(button => {
+            const buttonClone = button.cloneNode(true);
+            button.parentNode.replaceChild(buttonClone, button);
+            buttonClone.addEventListener('click', () => {
+                alert(`Annotation feature for review ${buttonClone.dataset.reviewId} is under development.`);
+            });
+        });
+    }
+
+    // Show Facilitator Tab Content
+    function showFacilitatorTab(gridContainer) {
+        const mainContentArea = document.getElementById('main-content-area');
+        if(mainContentArea) mainContentArea.style.display = 'none';
+        document.getElementById('expert-content')?.remove();
+
+        let facilitatorContent = document.getElementById('facilitator-content');
+        if (!facilitatorContent && gridContainer) {
+            facilitatorContent = document.createElement('div');
+            facilitatorContent.id = 'facilitator-content';
+            facilitatorContent.className = 'community-card facilitator-zone-content';
+            facilitatorContent.style.marginBottom = '20px';
+            gridContainer.insertBefore(facilitatorContent, gridContainer.querySelector('.sidebar'));
+        }
+
+        if (facilitatorContent) {
+            facilitatorContent.style.display = 'block';
+            const facilitatorData = localDataCache.facilitatorData;
+            if (!facilitatorData) {
+                facilitatorContent.innerHTML = '<p data-i18n="loading_facilitator_resources">Loading facilitator resources...</p>';
+                applyTranslations(facilitatorContent);
+                loadFacilitatorData(); // Attempt load
+            } else {
+                populateFacilitatorContent(facilitatorContent, facilitatorData);
+            }
+        }
+    }
+
+    // Populate Facilitator Content
+    function populateFacilitatorContent(container, data) {
+        // CONTEXT CHANGE: Updated example data and text
+        container.innerHTML = `
+            <h2 data-i18n="facilitator_zone_title">Facilitator & Champion Zone</h2>
+            <p data-i18n="facilitator_welcome">Welcome! Manage your clinics, championed projects, and access resources.</p>
+
+            ${data.clinics && data.clinics.length > 0 ? `
+                <h3 data-i18n="upcoming_clinics">Upcoming Learning Clinics</h3>
+                ${data.clinics.map(clinic => `
+                    <div class="event-card">
+                        <div class="event-date"> /* Date */ </div>
+                        <div class="event-details">
+                            <h4 class="event-title">${clinic.title || 'WATSAN Clinic'}</h4>
+                            <div class="event-meta">${clinic.time || ''} - <span data-i18n="facilitator">Facilitator</span>: ${clinic.facilitator || 'You'}</div>
+                            <p>${clinic.description || 'Focusing on practical WATSAN skills.'}</p>
+                            <button class="btn-outline" data-clinic-id="${clinic.id}" data-i18n="manage_clinic_button">Manage Clinic</button>
+                        </div>
+                    </div>`).join('')} `
+             : '<p data-i18n="no_upcoming_clinics">No upcoming clinics scheduled.</p>'}
+
+            ${data.projects && data.projects.length > 0 ? `
+                <h3 data-i18n="championed_projects">Championed Community Projects</h3>
+                ${data.projects.map(project => `
+                    <div class="post-card">
+                        <div class="post-card-header">
+                            <span class="post-author">${project.name || 'Community Initiative'}</span>
+                            <span class="post-date"><span data-i18n="status">Status</span>: ${project.status || 'Ongoing'}</span>
+                        </div>
+                        <div class="post-card-body">
+                            <p>${project.goal || 'Addressing local WATSAN challenges.'}</p>
+                            <div class="tag-list">
+                                ${project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '<span class="tag">Community Project</span>'}
+                            </div>
+                        </div>
+                        <div class="post-card-footer">
+                            <button class="btn-primary" data-project-id="${project.id}" data-i18n="view_project_updates">View Updates</button> </div>
+                    </div>`).join('')}`
+             : '<p data-i18n="no_championed_projects">No projects currently championed.</p>'}
+
+            ${data.resources && data.resources.length > 0 ? `
+                <h3 data-i18n="facilitator_resources">Facilitator Resources</h3>
+                <ul>
+                    ${data.resources.map(res => `<li><a href="${res.url}" target="_blank" rel="noopener noreferrer">${res.name || 'Resource Link'}</a></li>`).join('')}
+                </ul>`
+             : ''}`;
+
+        applyTranslations(container);
+
+        // Add event listeners for buttons
+         container.querySelectorAll('[data-clinic-id]').forEach(button => {
+             const btnClone = button.cloneNode(true); button.parentNode.replaceChild(btnClone, button);
+             btnClone.addEventListener('click', () => alert(`Clinic management for ${btnClone.dataset.clinicId} to be implemented.`));
+         });
+         container.querySelectorAll('[data-project-id]').forEach(button => {
+             const btnClone = button.cloneNode(true); button.parentNode.replaceChild(btnClone, button);
+             btnClone.addEventListener('click', () => alert(`Project update view for ${btnClone.dataset.projectId} to be implemented.`));
+         });
+    }
+
+
+    // Load Expert Sessions (Mentorship Sessions)
+    async function loadExpertSessions(container) {
+        container.innerHTML = `<p data-i18n="loading_sessions">Loading mentorship sessions...</p>`; // CONTEXT CHANGE
+        applyTranslations(container);
+        try {
+            const sessionData = await secureDataFetch('/api/expert/sessions'); // API endpoint might need renaming
+            if (!sessionData || sessionData.length === 0) {
+                container.innerHTML = `<p data-i18n="no_sessions_scheduled">No mentorship sessions scheduled.</p>`; // CONTEXT CHANGE
+                applyTranslations(container); return;
+            }
+            container.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <button class="btn-primary" id="create-session-button" data-i18n="schedule_new_session_button">Schedule New Mentorship Session</button> </div>
+                ${sessionData.map(session => `
+                    <div class="event-card">
+                         <div class="event-date"> /* Date */ </div>
+                         <div class="event-details">
+                            <h3 class="event-title">${session.title || 'Mentorship Session'}</h3> <div class="event-meta">${session.type || 'Zoom Call'} • ${new Date(session.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            <p>${session.description || 'Discussing project progress or specific challenges.'}</p> <div style="display: flex; gap: 10px;">
+                                <a href="${session.zoomLink || '#'}" class="btn-primary" target="_blank" rel="noopener noreferrer" data-i18n="join_button">Join Session</a>
+                                <button class="btn-outline" data-session-id="${session.id}" data-i18n="cancel_button">Cancel</button>
+                            </div>
+                        </div>
+                    </div>`).join('')}`;
+            applyTranslations(container);
+            // Add button listeners
+             const createBtn = container.querySelector('#create-session-button');
+             if(createBtn) {
+                const btnClone = createBtn.cloneNode(true); createBtn.parentNode.replaceChild(btnClone, createBtn);
+                btnClone.addEventListener('click', () => alert('Mentorship session scheduling to be implemented.'));
+             }
+             container.querySelectorAll('[data-session-id]').forEach(button => {
+                 const btnClone = button.cloneNode(true); button.parentNode.replaceChild(btnClone, button);
+                 btnClone.addEventListener('click', () => alert(`Session cancellation for ${btnClone.dataset.sessionId} to be implemented.`));
+             });
+        } catch (error) {
+            console.error('Error loading expert sessions:', error);
+            container.innerHTML = `<p data-i18n="error_loading_sessions">Error loading sessions.</p>`;
+            applyTranslations(container);
+        }
+    }
+
+    // Load Expert Modules (Resources)
+    async function loadExpertModules(container) {
+        // CONTEXT CHANGE: Renamed to "Resources"
+        container.innerHTML = `<p data-i18n="loading_resources">Loading resources...</p>`;
+        applyTranslations(container);
+        try {
+            let modulesData = localDataCache.expertData?.modules;
+            if (!modulesData) {
+                modulesData = await secureDataFetch('/api/expert/modules'); // API endpoint might need renaming
+                if (localDataCache.expertData) localDataCache.expertData.modules = modulesData;
+                else localDataCache.expertData = { modules: modulesData };
+            }
+            if (!modulesData || modulesData.length === 0) {
+                container.innerHTML = `<p data-i18n="no_resources_assigned">No resources currently assigned or created.</p>`; // CONTEXT CHANGE
+                applyTranslations(container); return;
+            }
+            container.innerHTML = `
+                <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                    ${modulesData.map(module => `
+                        <div class="content-card" style="height: 100%; margin-bottom: 0;">
+                             <div class="content-card-image" style="background-image: url('${module.thumbnail || '/images/default-resource.png'}')"></div>
+                            <div class="content-card-body">
+                                <h3 class="content-card-title">${module.title || 'Resource Item'}</h3> <div class="content-card-meta">${module.type || 'Guide'}</div> <p>${module.description || 'Helpful resource for WATSAN projects.'}</p> <a href="/expert/resource/${module.id}" class="content-card-link" data-i18n="manage_link">Manage</a> </div>
+                        </div>`).join('')}
+                </div>`;
+            applyTranslations(container);
+        } catch (error) {
+            console.error('Error loading expert resources:', error);
+            container.innerHTML = `<p data-i18n="error_loading_resources">Error loading resources.</p>`; // CONTEXT CHANGE
+            applyTranslations(container);
+        }
+    }
+
+
+
+    // Load Discussion Posts (Using static placeholders, context already updated)
+    async function loadDiscussions() {
+        const container = document.getElementById('discussions-container');
+        if (!container) return;
+        try {
+            container.innerHTML = `<p data-i18n="loading_discussions">Loading discussions...</p>`;
+            applyTranslations(container);
+            await new Promise(resolve => setTimeout(resolve, 200)); // Simulate load
+
+            const currentContainer = document.getElementById('discussions-container');
+            if (!currentContainer) return;
+            // Restore static content (already updated with context)
+            currentContainer.innerHTML = `
+                 <div class="post-card"> <div class="post-card-header">...Lila Sharma...</div> <div class="post-card-body"><h3>Optimizing Biosand Filter...</h3>...</div><div class="post-card-footer">...</div></div>
+                 <div class="post-card"> <div class="post-card-header">...Kwame Adu...</div> <div class="post-card-body"><h3>Community engagement...</h3>...</div><div class="post-card-footer">...</div></div>
+                 <div class="post-card"> <div class="post-card-header">...Maria Flores...</div> <div class="post-card-body"><h3>Low-cost rainwater harvesting...</h3>...</div><div class="post-card-footer">...</div></div>
+                 `;
+             // Add listeners for like/comment/share if they become dynamic
+        } catch (error) {
+            console.error('Error loading discussions:', error);
+            const currentContainer = document.getElementById('discussions-container');
+            if(currentContainer) {
+                currentContainer.innerHTML = `<p data-i18n="error_loading_discussions">Error loading discussions.</p>`;
+                applyTranslations(currentContainer);
+            }
+        }
+    }
+
+
+    // Load Upcoming Events (Clinics/Workshops in Sidebar - static placeholders updated)
+    async function loadEvents() {
+        const container = document.getElementById('events-container');
+        if (!container) return;
+        try {
+            console.log('Loading sidebar events (using static placeholders)');
+            const existingIntegrationContent = container.querySelector('#zoom-integration-section');
+            // Restore static content (already updated with context)
+            container.innerHTML = `
+                 <div class="event-card"> <div class="event-date">APR 28</div> <div class="event-details"> <h3 class="event-title">Remote Sensing...</h3>...<button class="btn-outline">Register</button></div></div>
+                 <div class="event-card"> <div class="event-date">MAY 05</div> <div class="event-details"> <h3 class="event-title">Expert Mentorship: Solar Pump...</h3>...<button class="btn-outline">Register</button></div></div>
+             `;
+            if (existingIntegrationContent) container.appendChild(existingIntegrationContent);
+            // Add listeners
+            container.querySelectorAll('.event-card .btn-outline').forEach(button => {
+                 const btnClone = button.cloneNode(true); button.parentNode.replaceChild(btnClone, button);
+                 btnClone.addEventListener('click', () => alert('Registration link/process to be implemented.'));
+            });
+        } catch (error) {
+            console.error('Error loading sidebar events:', error);
+            container.innerHTML = `<p data-i18n="error_loading_events">Error loading events.</p>`;
+            applyTranslations(container);
+        }
+    }
+
+
+    function setupNewPostButton() {
+        const newPostButton = document.getElementById('new-post-button');
+        if (newPostButton) {
+            const buttonClone = newPostButton.cloneNode(true);
+            newPostButton.parentNode.replaceChild(buttonClone, newPostButton);
+            buttonClone.addEventListener('click', () => {
+                console.log('New Discussion button clicked');
+                 // CONTEXT CHANGE: Prompt text
+                if (localDataCache.integrations?.zoomTemplates?.templates?.length > 0) {
+                    const createPostConfirm = confirm('Start a new discussion thread or schedule a Zoom meeting? (OK=Discussion, Cancel=Meeting)');
+                    if (createPostConfirm) {
+                        alert('Discussion creation feature will be implemented.'); // TODO: Link to creation form/modal
+                    } else {
+                        alert('Zoom meeting scheduling feature will be implemented.'); // TODO: Link to scheduling form/modal
+                    }
+                } else {
+                    alert('Discussion creation feature will be implemented.'); // TODO: Link to creation form/modal
+                }
+            });
+        }
+    }
+
+
+
+// Inside community3.html script
+async function loadIntegrationSettings() {
+    if (!currentUser) return; // Ensure user context exists
+
+    console.log("Attempting to load integration settings..."); // New log
+    try {
+        // Use Promise.all to fetch concurrently
+        const results = await Promise.all([
+            secureDataFetch('/api/integrations/settings'),
+            secureDataFetch('/api/integrations/zoom-templates')
+            // secureDataFetch returns parsed JSON on success or throws error
         ]);
-        
-        // Store in local cache
+
+        // Both fetches succeeded if we reach here
+        const settingsData = results[0];
+        const zoomTemplatesData = results[1];
+
+        // Basic validation of successful structure (adjust as needed)
+        if (!settingsData || typeof settingsData !== 'object' || !zoomTemplatesData || typeof zoomTemplatesData !== 'object') {
+             throw new Error("Received invalid data structure for integration settings or templates.");
+        }
+
+        // Store in local cache (assuming JSON structure like { settings: {...} } and { templates: [...] })
+         // Adjust property names based on actual API response
         localDataCache.integrations = {
-          settings: integrationSettings,
-          zoomTemplates: zoomTemplates
+            settings: settingsData.settings || settingsData, // Adapt based on actual API response
+            zoomTemplates: zoomTemplatesData.templates || zoomTemplatesData // Adapt based on actual API response
         };
-        
-        console.log('Integration data loaded', localDataCache.integrations);
-        
+
+        console.log('Integration data loaded successfully:', localDataCache.integrations); // Log success *after* processing
+
         // Update UI if needed
         updateIntegrationsUI();
-        
-      } catch (error) {
-        console.error('Error loading integration settings:', error);
-      }
+
+    } catch (error) {
+        // This block catches errors from secureDataFetch OR Promise.all itself
+        console.error('Failed to load integration settings:', error);
+        // Do NOT log "Integration data loaded" here
+        // Optionally clear any previously cached integration data
+        localDataCache.integrations = null;
+        // Optionally update UI to reflect the error state
+        // updateIntegrationsUIWithError();
     }
-    
-    // Update integrations UI
-    function updateIntegrationsUI() {
-      const integrationsData = localDataCache.integrations;
-      if (!integrationsData) return;
-      
-      // Example: Update Zoom templates in the sidebar if the container exists
-      const eventsContainer = document.getElementById('events-container');
-      if (eventsContainer && integrationsData.zoomTemplates?.templates?.length > 0) {
-        const zoomSection = document.createElement('div');
-        zoomSection.innerHTML = `
-          <h4 style="margin-top: 20px; margin-bottom: 10px;">Schedule with Zoom</h4>
-          <p>Create a meeting using one of your templates:</p>
-          <div class="tag-list">
-            ${integrationsData.zoomTemplates.templates.slice(0, 3).map(template => 
-              `<span class="tag" data-template-id="${template.id}" style="cursor: pointer;">${template.name}</span>`
-            ).join('')}
-          </div>
-        `;
-        
-        // Add click events to template tags
-        eventsContainer.appendChild(zoomSection);
-        eventsContainer.querySelectorAll('.tag[data-template-id]').forEach(tag => {
-          tag.addEventListener('click', () => {
-            const templateId = tag.dataset.templateId;
-            console.log(`Creating meeting with template ID: ${templateId}`);
-            // In production, this would open a modal or navigate to a creation page
-            alert(`Meeting creation with template ${tag.textContent} will be implemented in the next update.`);
-          });
-        });
-      }
-    }
-    
-    // Tab switching functionality
-    function setupTabs() {
-      const tabs = document.querySelectorAll('.tab');
-      
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          // Remove active class from all tabs
-          tabs.forEach(t => t.classList.remove('active'));
-          
-          // Add active class to clicked tab
-          tab.classList.add('active');
-          
-          const tabName = tab.dataset.tab;
-          console.log(`Switched to ${tabName} tab`);
-          
-          // Handle special tabs
-          if (tabName === 'expert' && isExpert) {
-            showExpertTab();
-          } else {
-            // Hide expert content if visible
-            const expertContent = document.getElementById('expert-content');
-            if (expertContent) {
-              expertContent.style.display = 'none';
-            }
-            
-            // Show main content
-            const mainContent = document.querySelector('.main-content');
-            if (mainContent) {
-              mainContent.style.display = 'block';
-            }
-          }
-        });
-      });
-    }
-    
-    // Show expert tab content
-    function showExpertTab() {
-      // Hide main content
-      const mainContent = document.querySelector('.main-content');
-      if (mainContent) {
-        mainContent.style.display = 'none';
-      }
-      
-      // Create or show expert content
-      let expertContent = document.getElementById('expert-content');
-      
-      if (!expertContent) {
-        expertContent = document.createElement('div');
-        expertContent.id = 'expert-content';
-        expertContent.className = 'community-card';
-        expertContent.style.marginBottom = '20px';
-        
-        // Insert before sidebar
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.parentNode.insertBefore(expertContent, sidebar);
-      }
-      
-      expertContent.style.display = 'block';
-      
-      // Populate expert content
-      const expertData = localDataCache.expertData;
-      if (!expertData) {
-        expertContent.innerHTML = '<p>Loading expert data...</p>';
-        loadExpertData();
-        return;
-      }
-      
-      expertContent.innerHTML = `
-        <h2>Expert Dashboard</h2>
-        
-        <div class="tabs" style="margin: 20px 0;">
-          <div class="tab active" data-expert-tab="reviews">Pending Reviews</div>
-          <div class="tab" data-expert-tab="sessions">My Sessions</div>
-          <div class="tab" data-expert-tab="modules">Modules</div>
-        </div>
-        
-        <div id="expert-tab-content">
-          <div id="pending-reviews">
-            ${expertData.pendingReviews && expertData.pendingReviews.length > 0 ? 
-              expertData.pendingReviews.map(review => `
-                <div class="post-card">
-                  <div class="post-card-header">
-                    <div class="user-avatar">
-                      ${review.submitter ? review.submitter.substring(0, 2).toUpperCase() : 'AN'}
-                    </div>
-                    <span class="post-author">${review.title || 'Submission for Review'}</span>
-                    <span class="post-date">${review.submittedDate || 'Pending'}</span>
-                  </div>
-                  <div class="post-card-body">
-                    <p>${review.description || 'No description provided'}</p>
-                    <div class="tag-list">
-                      <span class="tag">${review.type || 'General'}</span>
-                      <span class="tag">${review.status || 'Pending'}</span>
-                    </div>
-                  </div>
-                  <div class="post-card-footer">
-                    <a href="/expert/review/${review.id}" class="btn-primary">Review</a>
-                    <button class="btn-outline" data-review-id="${review.id}" data-action="annotate">Annotate</button>
-                  </div>
-                </div>
-              `).join('') : 
-              '<p>No pending reviews at this time.</p>'
-            }
-          </div>
-        </div>
-      `;
-      
-      // Set up expert tab navigation
-      expertContent.querySelectorAll('[data-expert-tab]').forEach(tab => {
-        tab.addEventListener('click', () => {
-          // Remove active class from all expert tabs
-          expertContent.querySelectorAll('[data-expert-tab]').forEach(t => t.classList.remove('active'));
-          
-          // Add active class to clicked tab
-          tab.classList.add('active');
-          
-          const expertTabName = tab.dataset.expertTab;
-          console.log(`Switched to expert tab: ${expertTabName}`);
-          
-          // Update content based on selected tab
-          const tabContentContainer = document.getElementById('expert-tab-content');
-          
-          switch (expertTabName) {
-            case 'reviews':
-              tabContentContainer.innerHTML = document.getElementById('pending-reviews').innerHTML;
-              break;
-            case 'sessions':
-              loadExpertSessions(tabContentContainer);
-              break;
-            case 'modules':
-              loadExpertModules(tabContentContainer);
-              break;
-          }
-        });
-      });
-      
-      // Set up action buttons
-      expertContent.querySelectorAll('[data-action="annotate"]').forEach(button => {
-        button.addEventListener('click', () => {
-          const reviewId = button.dataset.reviewId;
-          console.log(`Annotate review: ${reviewId}`);
-          alert(`Annotation feature will be implemented in the next update.`);
-        });
-      });
-    }
-    
-    // Load expert sessions
-    async function loadExpertSessions(container) {
-      container.innerHTML = '<p>Loading sessions...</p>';
-      
-      try {
-        const sessionData = await secureDataFetch('/api/expert/sessions');
-        
-        if (!sessionData || sessionData.length === 0) {
-          container.innerHTML = '<p>No sessions scheduled at this time.</p>';
-          return;
-        }
-        
-        container.innerHTML = `
-          <div style="margin-bottom: 15px;">
-            <button class="btn-primary" id="create-session-button">Schedule New Session</button>
-          </div>
-          
-          ${sessionData.map(session => `
-            <div class="event-card">
-              <div class="event-date">
-                <span class="event-day">${new Date(session.date).getDate()}</span>
-                <span class="event-month">${new Date(session.date).toLocaleString('default', { month: 'short' })}</span>
-              </div>
-              <div class="event-details">
-                <h3 class="event-title">${session.title}</h3>
-                <div class="event-meta">${session.type} • ${new Date(session.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                <p>${session.description || 'No description provided'}</p>
-                <div style="display: flex; gap: 10px;">
-                  <a href="${session.zoomLink || '#'}" class="btn-primary" target="_blank">Join</a>
-                  <button class="btn-outline" data-session-id="${session.id}">Cancel</button>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        `;
-        
-        // Set up create session button
-        const createButton = container.querySelector('#create-session-button');
-        if (createButton) {
-          createButton.addEventListener('click', () => {
-            console.log('Create new session');
-            // In production, this would open a modal or redirect to a creation page
-            if (localDataCache.integrations?.zoomTemplates) {
-              alert(`You can create a session using your Zoom templates. This feature will be implemented in the next update.`);
-            } else {
-              alert(`Session creation will be implemented in the next update.`);
-            }
-          });
-        }
-        
-        // Set up cancel buttons
-        container.querySelectorAll('[data-session-id]').forEach(button => {
-          button.addEventListener('click', () => {
-            const sessionId = button.dataset.sessionId;
-            console.log(`Cancel session: ${sessionId}`);
-            alert(`Session cancellation will be implemented in the next update.`);
-          });
-        });
-        
-      } catch (error) {
-        console.error('Error loading expert sessions:', error);
-        container.innerHTML = '<p>Error loading sessions. Please try again later.</p>';
-      }
-    }
-    
-    // Load expert modules
-    async function loadExpertModules(container) {
-      container.innerHTML = '<p>Loading modules...</p>';
-      
-      try {
-        // Use cached module data if available
-        let modulesData = localDataCache.expertData?.modules;
-        
-        if (!modulesData) {
-          modulesData = await secureDataFetch('/api/expert/modules');
-          if (localDataCache.expertData) {
-            localDataCache.expertData.modules = modulesData;
-          }
-        }
-        
-        if (!modulesData || modulesData.length === 0) {
-          container.innerHTML = '<p>No modules assigned at this time.</p>';
-          return;
-        }
-        
-        container.innerHTML = `
-          <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
-            ${modulesData.map(module => `
-              <div class="content-card" style="height: 100%; margin-bottom: 0;">
-                <div class="content-card-image" style="background-image: url('${module.thumbnail || '/images/default-module.jpg'}')"></div>
-                <div class="content-card-body">
-                  <h3 class="content-card-title">${module.title}</h3>
-                  <div class="content-card-meta">${module.type || 'Module'}</div>
-                  <p>${module.description || ''}</p>
-                  <a href="/expert/module/${module.id}" class="content-card-link">Manage</a>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-        
-      } catch (error) {
-        console.error('Error loading expert modules:', error);
-        container.innerHTML = '<p>Error loading modules. Please try again later.</p>';
-      }
-    }
-    
-    // Load discussion posts from API
-    async function loadDiscussions() {
-      try {
-        // Check if we have cached data
-        if (localDataCache.discussions) {
-          return;
-        }
-        
-        // In a real implementation, this would fetch from an API
-        console.log('Loading discussions from API/local data');
-        
-        // For demonstration, we're using static HTML
-        // In production, you would use secureDataFetch to get data:
-        /*
-        const discussionsData = await secureDataFetch('/api/community/discussions?page=1&limit=5');
-        localDataCache.discussions = discussionsData;
-        
-        const container = document.getElementById('discussions-container');
-        
-        if (!discussionsData || discussionsData.length === 0) {
-          container.innerHTML = '<p>No discussions available at this time.</p>';
-          return;
-        }
-        
-        let html = '';
-        discussionsData.forEach(post => {
-          // Build HTML for each post
-        });
-        
-        container.innerHTML = html;
-        */
-        
-      } catch (error) {
-        console.error('Error loading discussions:', error);
-        document.getElementById('discussions-container').innerHTML = 
-          '<p>Error loading discussions. Please try again later.</p>';
-      }
-    }
-    
-    // Load upcoming events
-    async function loadEvents() {
-      try {
-        // Check if we have cached data
-        if (localDataCache.events) {
-          return;
-        }
-        
-        console.log('Loading events from API/local data');
-        
-        // In production, you would use secureDataFetch:
-        /*
-        const eventsData = await secureDataFetch('/api/community/events');
-        localDataCache.events = eventsData;
-        
-        // Update UI with events data
-        */
-        
-      } catch (error) {
-        console.error('Error loading events:', error);
-        document.getElementById('events-container').innerHTML = 
-          '<p>Error loading events. Please try again later.</p>';
-      }
-    }
-    
-    // Handle new post button
-    function setupNewPostButton() {
-      const newPostButton = document.getElementById('new-post-button');
-      if (newPostButton) {
-        newPostButton.addEventListener('click', () => {
-          console.log('New post button clicked');
-          
-          // In production, this would show a modal or redirect to a new post page
-          // If integration with Zoom is available, offer it as an option
-          if (localDataCache.integrations?.zoomTemplates) {
-            const createPostConfirm = confirm('Would you like to create a discussion post or schedule a video session?');
-            if (createPostConfirm) {
-              alert('Post creation feature will be implemented in the next update.');
-            } else {
-              alert('Session scheduling feature will be implemented in the next update.');
-            }
-          } else {
-            alert('Post creation feature will be implemented in the next update.');
-          }
-        });
-      }
-    }
-    
-    // Handle logout
+}
+
+
+    // Handle Logout Button
     function setupLogout() {
-      const logoutButton = document.getElementById('logout-button');
-      if (logoutButton) {
-        logoutButton.addEventListener('click', async () => {
-          try {
-            await authService.logout();
-            window.location.href = '/index.html';
-          } catch (error) {
-            console.error('Logout error:', error);
-            alert('Failed to log out. Please try again.');
-          }
-        });
-      }
+        const logoutButton = document.getElementById('logout-button');
+        if (logoutButton) {
+            const buttonClone = logoutButton.cloneNode(true);
+            logoutButton.parentNode.replaceChild(buttonClone, logoutButton);
+            buttonClone.addEventListener('click', async () => {
+                try {
+                    await authService.logout();
+                    window.location.href = '/index.html';
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('Failed to log out. Please try again.');
+                }
+            });
+        }
     }
-    
-    // Initialize when DOM is ready
+
+
+    // Initialize Page
     document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        // Apply translations
-        await applyTranslations();
-        initLanguageSwitcher();
-        
-        // Check if user is authenticated
-        await checkAuth();
-        
-        // Set up UI interactivity
-        setupTabs();
-        setupNewPostButton();
-        setupLogout();
-        
-        // Load community content
-        loadDiscussions();
-        loadEvents();
-        
-        // Load integration settings
-        loadIntegrationSettings();
-        
-      } catch (error) {
-        console.error('Community page initialization error:', error);
-      }
+        try {
+            await applyTranslations();
+            initLanguageSwitcher();
+            await checkAuth(); // Sets up user, roles, shows tabs, calls setupTabs
+            setupNewPostButton();
+            setupLogout();
+            loadEvents(); // Load sidebar events/clinics
+            loadIntegrationSettings(); // Load Zoom info etc.
+             // Initial content for the default active tab is loaded via setupTabs -> updateMainContentArea
+        } catch (error) {
+            console.error('Community page initialization error:', error);
+            const mainContainer = document.querySelector('.community-container');
+            if (mainContainer) mainContainer.innerHTML = '<p>Error loading community page. Please refresh or contact support.</p>';
+        }
     });
-    
-    // Handle search form submission
+
+
+    async function loadAndShowFeaturedContent() {
+        console.log("Attempting to load featured content...");
+        try {
+             // Replace with your actual API endpoint for featured content
+             const featuredData = await secureDataFetch('/api/community/featured');
+
+             if (!featuredData || featuredData.length === 0) {
+                 console.log("No featured content available.");
+                 return; // Don't show modal if no content
+             }
+
+             // Assuming featuredData is an array, show the first item
+             // Adjust based on your actual JSON structure
+             const content = featuredData[0];
+
+             const modalBody = document.getElementById('featured-body');
+             const modalTitle = document.getElementById('featured-title'); // Get title element too
+
+             if (modalBody && modalTitle && content) {
+                 // Update title
+                 modalTitle.textContent = content.title || 'Featured Content';
+
+                 // Build body HTML (customize as needed)
+                 let bodyHtml = '';
+                 if (content.image) {
+                      // Make sure the image path is correct
+                     bodyHtml += `<img src="${content.image}" alt="${content.title || 'Featured Image'}">`;
+                 }
+                 if (content.text) {
+                     // Basic paragraph formatting, consider more complex rendering if needed
+                     bodyHtml += content.text.split('\n').map(p => `<p>${p}</p>`).join('');
+                 }
+                 if (content.link) {
+                     bodyHtml += `<p style="margin-top: 15px;"><a href="${content.link}" target="_blank" rel="noopener noreferrer" class="btn-outline">Learn More</a></p>`;
+                 }
+                 modalBody.innerHTML = bodyHtml || '<p>No details available for this featured item.</p>';
+
+                applyTranslations(modalBody); // Translate any dynamic text if needed
+                 showModal('featured-content-modal');
+             }
+
+        } catch (error) {
+             console.error("Error loading featured content:", error);
+             // Don't show modal on error, or show an error message if desired
+        }
+    }
+
+
+    // --- Page Initialization ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            await applyTranslations();
+            initLanguageSwitcher();
+            await checkAuth(); // Auth check now calls setupTabs internally
+            setupNewPostButton();
+            setupLogout();
+            setupNewPostForm(); // ** NEW: Setup form listener **
+
+            // Setup modal close buttons (delegated listener might be better, but this works)
+            document.querySelectorAll('.modal-close-button').forEach(button => {
+                const modalId = button.dataset.modalId;
+                if (modalId) {
+                    button.addEventListener('click', () => hideModal(modalId));
+                }
+            });
+            // Close modal when clicking overlay
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (event) => {
+                    // Only close if the overlay itself (not the modal box) was clicked
+                    if (event.target === overlay) {
+                        hideModal(overlay.id);
+                    }
+                });
+            });
+
+
+            loadEvents(); // Load sidebar events/clinics
+            loadIntegrationSettings();
+
+            // ** NEW: Load Featured Content (Example: Show on every load) **
+            // Consider adding logic (e.g., using localStorage) to show only once per session/day
+            loadAndShowFeaturedContent();
+
+        } catch (error) {
+            console.error('Community page initialization error:', error);
+            const mainContainer = document.querySelector('.community-container');
+            if (mainContainer) mainContainer.innerHTML = '<p>Error loading community page. Please refresh or contact support.</p>';
+        }
+    });
+
+
+    // --- Search Form --- (Keep existing)
     const searchForm = document.querySelector('.search-form');
     if (searchForm) {
-      searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const searchTerm = searchForm.querySelector('.search-input').value.trim();
-        if (searchTerm) {
-          console.log(`Searching for: ${searchTerm}`);
-          // In production, this would trigger a search API call and update the UI with results
-          alert(`Search functionality will be implemented in the next update.\nYou searched for: ${searchTerm}`);
-        }
-      });
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const searchTerm = searchForm.querySelector('.search-input').value.trim();
+            if (searchTerm) {
+                console.log(`Searching for: ${searchTerm}`);
+                alert(`Search functionality for "${searchTerm}" will be implemented.`); // TODO: Implement search API call
+            }
+        });
     }
+
   </script>
+
+
+
+
+<div id="new-post-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 data-i18n="new_discussion_title">Start New Discussion</h3>
+        <button class="modal-close-button" data-modal-id="new-post-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="new-post-form">
+          <div class="form-group">
+            <label for="post-title" data-i18n="post_title_label">Title:</label>
+            <input type="text" id="post-title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="post-body" data-i18n="post_body_label">Message:</label>
+            <textarea id="post-body" name="body" rows="6" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="post-tags" data-i18n="post_tags_label">Tags (comma-separated):</label>
+            <input type="text" id="post-tags" name="tags" placeholder="e.g., water quality, sanitation, field work">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline modal-close-button" data-modal-id="new-post-modal" data-i18n="cancel_button">Cancel</button>
+        <button type="submit" form="new-post-form" class="btn-primary" data-i18n="submit_post_button">Submit Post</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="featured-content-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box featured-modal-branding">
+      <div class="modal-header">
+         <img src="/images/watsan-hub-logo-small.png" alt="WATSAN Dev Hub" style="height: 30px; margin-right: 10px;"> <h3 id="featured-title" data-i18n="featured_content_title">Featured Content</h3>
+        <button class="modal-close-button" data-modal-id="featured-content-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="featured-body">
+        <p>Loading featured content...</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary modal-close-button" data-modal-id="featured-content-modal" data-i18n="close_button">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
 </body>
 </html>
