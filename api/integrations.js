@@ -1,20 +1,37 @@
 // api/integrations.js
-const { Router } = require('express');
-const {
-  handleFetchIntegrationSettings,
-  handleFetchZoomTemplates
-} = require('../lib/integrationHandlers');
-const { requireAuth } = require('../lib/authMiddleware');
+const express = require('express');
+const router = express.Router();
+const { authenticate, authorize } = require('./middleware/auth');
+const { getSupabase } = require('./lib/supabaseClient');
 
-const router = Router();
+// Use the shared Supabase client instance
+const supabase = getSupabase();
 
-// Both routes require a valid JWT / req.user
-router.use(requireAuth);
+console.log('📡 Integrations handler loaded');
 
-// Fetch saved Zoom & Notion settings
-router.get('/settings', handleFetchIntegrationSettings);
+// Define routes with authentication
+router.get('/integrations', authenticate, async (req, res) => {
+  try {
+    // Example implementation - modify as needed
+    const { data, error } = await supabase
+      .from('integrations')
+      .select('*');
+    
+    if (error) throw error;
+    
+    return res.status(200).json({
+      success: true,
+      data
+    });
+  } catch (error) {
+    console.error('Integration fetch error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch integrations',
+      error: error.message
+    });
+  }
+});
 
-// Fetch available Zoom meeting templates
-router.get('/zoom-templates', handleFetchZoomTemplates);
-
+// Export the router
 module.exports = router;

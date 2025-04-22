@@ -1462,52 +1462,6 @@
 
 
 
-// Inside community3.html script
-async function loadIntegrationSettings() {
-    if (!currentUser) return; // Ensure user context exists
-
-    console.log("Attempting to load integration settings..."); // New log
-    try {
-        // Use Promise.all to fetch concurrently
-        const results = await Promise.all([
-            secureDataFetch('/api/integrations/settings'),
-            secureDataFetch('/api/integrations/zoom-templates')
-            // secureDataFetch returns parsed JSON on success or throws error
-        ]);
-
-        // Both fetches succeeded if we reach here
-        const settingsData = results[0];
-        const zoomTemplatesData = results[1];
-
-        // Basic validation of successful structure (adjust as needed)
-        if (!settingsData || typeof settingsData !== 'object' || !zoomTemplatesData || typeof zoomTemplatesData !== 'object') {
-             throw new Error("Received invalid data structure for integration settings or templates.");
-        }
-
-        // Store in local cache (assuming JSON structure like { settings: {...} } and { templates: [...] })
-         // Adjust property names based on actual API response
-        localDataCache.integrations = {
-            settings: settingsData.settings || settingsData, // Adapt based on actual API response
-            zoomTemplates: zoomTemplatesData.templates || zoomTemplatesData // Adapt based on actual API response
-        };
-
-        console.log('Integration data loaded successfully:', localDataCache.integrations); // Log success *after* processing
-
-        // Update UI if needed
-        updateIntegrationsUI();
-
-    } catch (error) {
-        // This block catches errors from secureDataFetch OR Promise.all itself
-        console.error('Failed to load integration settings:', error);
-        // Do NOT log "Integration data loaded" here
-        // Optionally clear any previously cached integration data
-        localDataCache.integrations = null;
-        // Optionally update UI to reflect the error state
-        // updateIntegrationsUIWithError();
-    }
-}
-
-
     // Handle Logout Button
     function setupLogout() {
         const logoutButton = document.getElementById('logout-button');

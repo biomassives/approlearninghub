@@ -34,6 +34,7 @@ const contentRouter = require('./content');
 const profilesRouter = require('./profiles');
 const videosRouter = require('./videos');
 const categoriesRouter = require('./categories');
+const integrationsRouter = require('./integrations');
 //const tagsRouter = require('./tags');
 //const panelsRouter = require('./panels');
 //const trainingRouter = require('./training');
@@ -132,6 +133,8 @@ app.use('/api/content', contentRouter);
 app.use('/api/profiles', authenticate, profilesRouter);
 app.use('/api/videos', videosRouter); // Public access for videos
 app.use('/api/categories', categoriesRouter); // Public access for categories
+app.use('/api/integrations', integrationsRouter);
+
 //app.use('/api/tags', tagsRouter); // Public access for tags
 //app.use('/api/panels', panelsRouter);
 //app.use('/api/training', authenticate, trainingRouter);
