@@ -1,5 +1,9 @@
 // api/cron/cleanup-rate-limits.js
-const { createClient } = require('@supabase/supabase-js');
+
+
+const supabase = require('../lib/supabaseClient');
+
+const createClient =  supabase(); 
 
 module.exports = async (req, res) => {
   console.log("Rate limits cleanup cron job started");

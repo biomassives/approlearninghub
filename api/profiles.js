@@ -1,13 +1,14 @@
 // /api/profiles.js
+
 const express = require('express');
 const router = express.Router();
-const { createClient } = require('@supabase/supabase-js');
-const { authenticate, authorize } = require('./middleware/auth');
+const supabase = require('../lib/supabaseClient');
+const { requireAuth } = require('../lib/authMiddleware');
+const { authenticate }  = require('./middleware/auth');
 
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Protect all admin routes
+router.use(requireAuth);
+
 
 // Lattice security method as per requirements
 const applyLatticeMethod = (profileData) => {

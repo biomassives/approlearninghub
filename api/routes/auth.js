@@ -1,4 +1,4 @@
-// /api/auth.js - Adjusted to match client expectations
+// /api/routes/auth.js - Adjusted to match client expectations
 const express = require('express');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SERVICE_ROLE_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // JWT secret for token signing

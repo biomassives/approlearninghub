@@ -1,13 +1,9 @@
 // /api/videos.js
 const express = require('express');
 const router = express.Router();
-const { createClient } = require('@supabase/supabase-js');
 const { authenticate, authorize } = require('./middleware/auth');
 
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = require('./lib/supabaseClient');
 
 // Local data cache with seed data approach
 let cachedVideos = null;
