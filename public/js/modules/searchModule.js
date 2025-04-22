@@ -1,3 +1,6 @@
+// /js/modules/searchModule.js
+
+
 import subcategoryData from './subcategory-fallback.json' assert { type: 'json' };
 
 const apiEndpoint = '/api/search'; // adjust to match your real endpoint

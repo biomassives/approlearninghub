@@ -1,304 +1,294 @@
-// auth.js - Authentication management for Approvideo Hub
+// /api/auth.js - Using Supabase Auth
+const express = require('express');
+const router = express.Router();
+const { createClient } = require('@supabase/supabase-js');
 
-// Initialize Dexie.js database for local authentication
-const db = new Dexie('ApprovideoHub');
-db.version(1).stores({
-  users: '++id, email, password, name, role, createdAt'
+// Initialize Supabase client with service role key
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SERVICE_ROLE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Lattice security method as per requirements
+const applyLatticeMethod = (userData) => {
+  // Strip sensitive data and apply security transformations
+  const secureUserData = {
+    id: userData.id,
+    email: userData.email,
+    role: userData.role || 'learner', // Default to learner if no role
+    created_at: userData.created_at
+  };
+  return secureUserData;
+};
+
+/**
+ * User signup endpoint
+ */
+router.post('/signup', async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
+    
+    if (!email || !password || !role) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email, password, and role are required' 
+      });
+    }
+    
+    // Use Supabase Auth to create user
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if (authError) {
+      console.error('Supabase Auth signup error:', authError);
+      return res.status(400).json({ 
+        success: false, 
+        message: authError.message 
+      });
+    }
+    
+    // If auth was successful, create/update the user record in your users table
+    // with additional information like role
+    if (authData.user) {
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .upsert([
+          {
+            id: authData.user.id, // Use the same ID from auth
+            email: email,
+            role: role,
+            is_admin: role === 'admin',
+            username: email.split('@')[0], // Default username
+            created_at: new Date(),
+            updated_at: new Date(),
+            joined: new Date()
+          }
+        ])
+        .select()
+        .single();
+      
+      if (userError) {
+        console.error('User data creation error:', userError);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Account created but failed to set role information'
+        });
+      }
+      
+      // Apply lattice security method
+      const secureUserData = applyLatticeMethod(userData);
+      
+      // Get the session token from Supabase
+      return res.status(201).json({
+        success: true,
+        message: 'Account created successfully',
+        user: secureUserData,
+        token: authData.session?.access_token || ''
+      });
+    } else {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Failed to create user account'
+      });
+    }
+  } catch (err) {
+    console.error('Signup error:', err);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'An unexpected error occurred'
+    });
+  }
 });
 
-// Initialize Supabase client (you'll need to replace with your actual credentials)
-const supabaseUrl = 'https://your-supabase-url.supabase.co';
-const supabaseKey = 'your-supabase-anon-key';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-// Auth configuration object
-const authConfig = {
-  // Default to local authentication using Dexie.js
-  useSupabase: false,
-  
-  // Load config from localStorage if available
-  loadConfig() {
-    const savedConfig = localStorage.getItem('authConfig');
-    if (savedConfig) {
-      const parsedConfig = JSON.parse(savedConfig);
-      this.useSupabase = parsedConfig.useSupabase;
-    }
-    return this;
-  },
-  
-  // Save config to localStorage
-  saveConfig() {
-    localStorage.setItem('authConfig', JSON.stringify({
-      useSupabase: this.useSupabase
-    }));
-    return this;
-  },
-  
-  // Toggle authentication method
-  toggleAuthMethod(useSupabase) {
-    this.useSupabase = useSupabase;
-    this.saveConfig();
-    return this;
-  }
-};
-
-// Authentication service
-const authService = {
-  // Current user state
-  currentUser: null,
-  
-  // Initialize auth service
-  async init() {
-    // Load auth configuration
-    authConfig.loadConfig();
+/**
+ * User login endpoint
+ */
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
     
-    // Try to restore session
-    if (authConfig.useSupabase) {
-      // Check for existing Supabase session
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        const { data: userData } = await supabase.auth.getUser();
-        if (userData.user) {
-          this.currentUser = {
-            id: userData.user.id,
-            email: userData.user.email,
-            name: userData.user.user_metadata.name || 'User',
-            role: userData.user.user_metadata.role || 'user'
-          };
+    if (!email || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email and password are required' 
+      });
+    }
+    
+    // Use Supabase Auth to sign in
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (authError) {
+      console.error('Supabase Auth login error:', authError);
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid email or password'
+      });
+    }
+    
+    if (authData.user) {
+      // Get user data from your users table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single();
+      
+      if (userError) {
+        console.error('User data fetch error:', userError);
+        
+        // If user record doesn't exist yet, create it with default role
+        const { data: newUser, error: createError } = await supabase
+          .from('users')
+          .upsert([
+            {
+              id: authData.user.id,
+              email: email,
+              role: 'learner', // Default role
+              is_admin: false,
+              username: email.split('@')[0],
+              created_at: new Date(),
+              updated_at: new Date(),
+              joined: new Date()
+            }
+          ])
+          .select()
+          .single();
+        
+        if (createError) {
+          console.error('User creation error:', createError);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'Failed to retrieve or create user data'
+          });
         }
+        
+        // Apply lattice security method
+        const secureUserData = applyLatticeMethod(newUser);
+        
+        return res.json({
+          success: true,
+          message: 'Login successful',
+          user: secureUserData,
+          token: authData.session?.access_token || ''
+        });
       }
+      
+      // Apply lattice security method
+      const secureUserData = applyLatticeMethod(userData);
+      
+      return res.json({
+        success: true,
+        message: 'Login successful',
+        user: secureUserData,
+        token: authData.session?.access_token || ''
+      });
     } else {
-      // Check for local session
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        this.currentUser = JSON.parse(storedUser);
-      }
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid login credentials'
+      });
     }
-    
-    // Update UI based on authentication state
-    this.updateAuthUI();
-  },
-  
-  // Register a new user
-  async register(email, password, name, role = 'user') {
-    try {
-      if (authConfig.useSupabase) {
-        // Register with Supabase
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { name, role }
-          }
-        });
-        
-        if (error) throw error;
-        
-        // Set current user if registration was successful
-        if (data.user) {
-          this.currentUser = {
-            id: data.user.id,
-            email: data.user.email,
-            name,
-            role
-          };
-          localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-          this.updateAuthUI();
-          return { success: true, user: this.currentUser };
-        }
-      } else {
-        // Check if user already exists in local DB
-        const existingUser = await db.users.where({ email }).first();
-        if (existingUser) {
-          throw new Error('User with this email already exists');
-        }
-        
-        // Add user to local database
-        const userId = await db.users.add({
-          email,
-          // In a real app, you should hash the password
-          password, 
-          name,
-          role,
-          createdAt: new Date()
-        });
-        
-        // Set current user
-        this.currentUser = {
-          id: userId,
-          email,
-          name,
-          role
-        };
-        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-        this.updateAuthUI();
-        return { success: true, user: this.currentUser };
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { success: false, error: error.message };
-    }
-  },
-  
-  // Login user
-  async login(email, password) {
-    try {
-      if (authConfig.useSupabase) {
-        // Login with Supabase
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (error) throw error;
-        
-        // Set current user if login was successful
-        if (data.user) {
-          // Get user metadata
-          const { data: userData } = await supabase.auth.getUser();
-          
-          this.currentUser = {
-            id: data.user.id,
-            email: data.user.email,
-            name: userData.user.user_metadata.name || 'User',
-            role: userData.user.user_metadata.role || 'user'
-          };
-          localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-          this.updateAuthUI();
-          return { success: true, user: this.currentUser };
-        }
-      } else {
-        // Find user in local database
-        const user = await db.users.where({ email }).first();
-        if (!user) {
-          throw new Error('User not found');
-        }
-        
-        // In a real app, you should properly compare hashed passwords
-        if (user.password !== password) { 
-          throw new Error('Invalid password');
-        }
-        
-        // Set current user
-        this.currentUser = {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role
-        };
-        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-        this.updateAuthUI();
-        return { success: true, user: this.currentUser };
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: error.message };
-    }
-  },
-  
-  // Logout user
-  async logout() {
-    if (authConfig.useSupabase) {
-      // Logout from Supabase
-      await supabase.auth.signOut();
-    }
-    
-    // Clear current user
-    this.currentUser = null;
-    localStorage.removeItem('currentUser');
-    this.updateAuthUI();
-    return { success: true };
-  },
-  
-  // Update UI based on authentication state
-  updateAuthUI() {
-    const isLoggedIn = !!this.currentUser;
-    
-    // Update top-right auth elements
-    const authLoggedInTopRight = document.getElementById('auth-logged-in-top-right');
-    const authLoggedOutTopRight = document.getElementById('auth-logged-out-top-right');
-    const userNameTopRight = document.getElementById('user-name-top-right');
-    
-    // Update dashboard elements
-    const dashboardLoggedIn = document.getElementById('dashboard-logged-in');
-    const dashboardLoggedOut = document.getElementById('dashboard-logged-out');
-    const dashboardWelcomeMessage = document.getElementById('dashboard-welcome-message');
-    const roleBasedDashboardContent = document.getElementById('role-based-dashboard-content');
-    
-    // Update chat elements
-    const chatContainer = document.getElementById('chat-container');
-    
-    if (isLoggedIn) {
-      // User is logged in
-      authLoggedOutTopRight.classList.add('hidden');
-      authLoggedInTopRight.classList.remove('hidden');
-      
-      dashboardLoggedOut.classList.add('hidden');
-      dashboardLoggedIn.classList.remove('hidden');
-      
-      // Set user name and role
-      const userName = this.currentUser.name;
-      const userRole = this.currentUser.role;
-      
-      if (userNameTopRight) {
-        userNameTopRight.textContent = userName;
-      }
-      
-      if (dashboardWelcomeMessage) {
-        dashboardWelcomeMessage.textContent = `Welcome, ${userName}! (${userRole})`;
-      }
-      
-      // Update role-based content
-      if (roleBasedDashboardContent) {
-        this.renderRoleBasedContent(roleBasedDashboardContent, userRole);
-      }
-      
-      // Show chat for logged in users
-      if (chatContainer) {
-        chatContainer.classList.remove('hidden');
-      }
-    } else {
-      // User is not logged in
-      authLoggedInTopRight.classList.add('hidden');
-      authLoggedOutTopRight.classList.remove('hidden');
-      
-      dashboardLoggedIn.classList.add('hidden');
-      dashboardLoggedOut.classList.remove('hidden');
-      
-      // Hide chat for logged out users
-      if (chatContainer) {
-        chatContainer.classList.add('hidden');
-      }
-    }
-  },
-  
-  // Render role-based content
-  renderRoleBasedContent(container, role) {
-    const roleContent = {
-      'user': '<p>Welcome to your user dashboard. Explore learning modules and health clinics.</p>',
-      'project leader': '<p>Project Leader Dashboard: Manage projects and team members.</p>',
-      'expert mentor': '<p>Expert Mentor Dashboard: Guide and mentor learners.</p>',
-      'research assistance': '<p>Research Assistant Dashboard: Contribute to research projects.</p>',
-      'member of effected community': '<p>Community Member Dashboard: Access resources and community forums.</p>',
-      'software admin': '<p>Software Admin Dashboard: System administration and user management.</p>',
-      'default': '<p>Generic dashboard content for logged-in users.</p>'
-    };
-    
-    let content = roleContent[role] || roleContent['default'];
-    container.innerHTML = content;
-  },
-  
-  // Get current authentication status
-  isAuthenticated() {
-    return !!this.currentUser;
-  },
-  
-  // Get current user
-  getCurrentUser() {
-    return this.currentUser;
+  } catch (err) {
+    console.error('Login error:', err);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'An unexpected error occurred'
+    });
   }
-};
+});
 
-// Export objects for use in other scripts
-window.authConfig = authConfig;
-window.authService = authService;
+/**
+ * Logout endpoint
+ */
+router.post('/logout', async (req, res) => {
+  try {
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      
+      // Use Supabase Auth to sign out
+      const { error } = await supabase.auth.signOut({
+        token: token
+      });
+      
+      if (error) {
+        console.error('Supabase Auth logout error:', error);
+      }
+    }
+    
+    return res.json({
+      success: true,
+      message: 'Logged out successfully'
+    });
+  } catch (err) {
+    console.error('Logout error:', err);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'An unexpected error occurred'
+    });
+  }
+});
+
+/**
+ * Check access token validity
+ */
+router.get('/access-check', async (req, res) => {
+  try {
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'No token provided' 
+      });
+    }
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Verify token with Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !authData.user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid token'
+      });
+    }
+    
+    // Get user data from your users table
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', authData.user.id)
+      .single();
+    
+    if (userError) {
+      console.error('User data fetch error:', userError);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Failed to retrieve user data'
+      });
+    }
+    
+    // Apply lattice security method
+    const secureUserData = applyLatticeMethod(userData);
+    
+    return res.json({
+      success: true,
+      user: secureUserData
+    });
+  } catch (err) {
+    console.error('Access check error:', err);
+    return res.status(401).json({ 
+      success: false, 
+      message: 'Invalid token'
+    });
+  }
+});
+
+module.exports = router;

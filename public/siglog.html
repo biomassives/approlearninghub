@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Login - ApproVideo Hub</title>
+    <link rel="stylesheet" href="style.css"> <meta name="description" content="Login or Create an account on ApproVideo Hub - Sustainable Solutions Platform">
+
+    <style>
+        /* Basic styles - move to style.css later */
+        body {
+            font-family: sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Styles for Toggling --- */
+        /* Class to hide sections */
+        .hidden {
+            display: none;
+        }
+
+        /* Basic Card Styling (Example - improve in style.css) */
+        .auth-card {
+             background-color: white;
+             padding: 30px;
+             border-radius: 8px;
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+             width: 100%;
+             max-width: 450px; /* Adjust as needed */
+             margin-top: 20px;
+        }
+        .auth-card h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold;}
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .button-primary { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        .button-primary:hover { background-color: #0056b3; }
+        .alternate-action { text-align: center; margin-top: 20px; }
+        .alternate-action a { color: #007bff; text-decoration: none; cursor: pointer; } /* Added cursor: pointer */
+        .alternate-action a:hover { text-decoration: underline; }
+
+        /* --- Header Styling (Example) --- */
+         .page-header { display: flex; justify-content: space-between; width: 100%; max-width: 1000px; margin-bottom: 20px; align-items: center;}
+         .brand-name { font-size: 1.5em; font-weight: bold; }
+         .header-controls { font-size: 0.9em; }
+
+         /* --- Footer Styling (Example) --- */
+         .page-footer { margin-top: auto; padding-top: 30px; font-size: 0.8em; color: #666; text-align: center; }
+         .page-footer a { color: #666; }
+
+
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <div class="brand-name">ApproVideo Hub</div>
+        <div class="header-controls">
+             <span class="security-info">Secure Connection</span>
+        </div>
+    </header>
+
+    <main class="auth-container">
+
+        <div id="signup-section" class="auth-card"> <h1>Create Account</h1>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label> <input type="email" id="signup-email" name="email" required placeholder="your.email@example.com">
+                    <p class="error-message" id="signup-email-error" style="display: none;"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label> <input type="password" id="signup-password" name="password" required>
+                    <p class="error-message" id="signup-password-error" style="display: none;"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label> <input type="password" id="signup-confirm-password" name="confirm-password" required>
+                    <p class="error-message" id="signup-confirm-password-error" style="display: none;"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-role">Select Your Role</label> <select id="signup-role" name="role" required>
+                        <option value="" disabled selected>-- Select a Role --</option>
+                        <option value="expert">Expert / Workshop Leader</option>
+                        <option value="learner">Learner / Volunteer</option>
+                        <option value="researcher">Research Contributor</option>
+                        <option value="resources">Resource Finder</option>
+                        <option value="organizer">Organizer / Coordinator</option>
+                    </select>
+                     <p class="error-message" id="signup-role-error" style="display: none;"></p>
+                </div>
+                <div class="form-group form-group-checkbox">
+                     <input type="checkbox" id="signup-terms" name="terms" required> <label for="signup-terms" class="checkbox-label">
+                         I agree to the <a href="/terms.html" target="_blank">Terms of Service</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a>
+                     </label>
+                     <p class="error-message" id="signup-terms-error" style="display: none;"></p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="button-primary">Create Account</button>
+                </div>
+                 <div class="status-box" id="signup-status-area" style="display: none;"></div>
+            </form>
+            <div class="alternate-action">
+                <p>Already have an account? <a id="show-login-link">Log in</a></p> </div>
+        </div>
+
+        <div id="login-section" class="auth-card hidden"> <h1>Login</h1>
+            <form id="login-form">
+                 <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" required placeholder="your.email@example.com">
+                    <p class="error-message" id="login-email-error" style="display: none;"></p>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                     <p class="error-message" id="login-password-error" style="display: none;"></p>
+                </div>
+                 <div class="form-group">
+                    <button type="submit" class="button-primary">Log In</button>
+                </div>
+                 <div class="status-box" id="login-status-area" style="display: none;"></div>
+            </form>
+             <div class="alternate-action">
+                <p>Need an account? <a id="show-signup-link">Sign up</a></p> </div>
+        </div>
+
+    </main>
+
+    <footer class="page-footer">
+        <p><a href="/privacy.html" target="_blank">Privacy Policy</a> | <a href="/terms.html" target="_blank">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const signupSection = document.getElementById('signup-section');
+            const loginSection = document.getElementById('login-section');
+            const showLoginLink = document.getElementById('show-login-link');
+            const showSignupLink = document.getElementById('show-signup-link');
+
+            showLoginLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                loginSection.classList.remove('hidden'); // Show login form
+                signupSection.classList.add('hidden'); // Hide signup form
+            });
+
+            showSignupLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                signupSection.classList.remove('hidden'); // Show signup form
+                loginSection.classList.add('hidden'); // Hide login form
+            });
+
+            // Add form submission logic here later for signup-form and login-form
+            // e.g., document.getElementById('signup-form').addEventListener('submit', handleSignup);
+            // e.g., document.getElementById('login-form').addEventListener('submit', handleLogin);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,357 +1,193 @@
-// auth-service.js
-// Client-side authentication service with role-based dashboard access support
+// /public/js/auth-service.js
 
+/**
+ * Authentication service for handling user auth operations
+ */
 class AuthService {
-  constructor() {
-    this.apiBase = '/api/auth';
-    this.latticeKey = this.generateLatticeKey();
-    this.token = localStorage.getItem('authToken');
-    this.userData = JSON.parse(localStorage.getItem('userData') || '{}');
-    this.accessibleDashboards = JSON.parse(localStorage.getItem('userDashboards') || '[]');
-    this.permissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
-  }
-
-  // Generate a secure lattice key
-  generateLatticeKey() {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
-  }
-
-  // Apply lattice security to data before sending
-  secureLatticeData(data) {
-    const secured = {};
-    for (const key in data) {
-      if (typeof data[key] === 'string') {
-        secured[key] = btoa(data[key] + this.latticeKey);
-      }
+    constructor() {
+      this.apiBase = '/api/auth';
+      this.currentUser = null;
+      this.token = localStorage.getItem('token');
     }
-    return secured;
-  }
-
-  // Get authentication headers for API requests
-  getAuthHeaders() {
-    return {
-      'Authorization': `Bearer ${this.token}`,
-      'Content-Type': 'application/json'
-    };
-  }
-
-  // Login with email and password
-  async login(email, password) {
-    try {
-      // Apply lattice security
-      const securedData = this.secureLatticeData({
-        email,
-        password
-      });
-      
-      const response = await fetch(`${this.apiBase}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(securedData)
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP error ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      if (data.success && data.token) {
-        // Store auth data
-        this.token = data.token;
-        localStorage.setItem('authToken', data.token);
-        
-        // Store user data
-        this.userData = {
-          id: data.user.id,
-          email: data.user.email,
-          role: data.role,
-          lastLogin: new Date().toISOString()
-        };
-        localStorage.setItem('userData', JSON.stringify(this.userData));
-        
-        // Store accessible dashboards
-        this.accessibleDashboards = data.dashboards || [];
-        localStorage.setItem('userDashboards', JSON.stringify(this.accessibleDashboards));
-        
-        // Store permissions
-        this.permissions = data.permissions || {};
-        localStorage.setItem('userPermissions', JSON.stringify(this.permissions));
-        
-        return { 
-          success: true, 
-          user: this.userData,
-          dashboards: this.accessibleDashboards,
-          permissions: this.permissions
-        };
-      } else {
-        return { success: false, message: data.message || 'Login failed' };
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, message: error.message };
-    }
-  }
-
-  // Verify current auth token
-  async verifyToken() {
-    if (!this.token) {
-      return { success: false, message: 'No authentication token found' };
-    }
-    
-    try {
-      const response = await fetch(`${this.apiBase}/verify`, {
-        method: 'POST',
-        headers: this.getAuthHeaders()
-      });
-      
-      if (!response.ok) {
-        // Clear invalid token
-        if (response.status === 401) {
-          this.logout(false); // Silent logout (no API call)
-        }
-        return { success: false, message: 'Invalid or expired token' };
-      }
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update user role in case it changed
-        this.userData = {
-          ...this.userData,
-          role: data.role
-        };
-        localStorage.setItem('userData', JSON.stringify(this.userData));
-        
-        return { success: true, user: data.user, role: data.role };
-      } else {
-        return { success: false, message: data.message || 'Token verification failed' };
-      }
-    } catch (error) {
-      console.error('Token verification error:', error);
-      return { success: false, message: error.message };
-    }
-  }
-
-  // Logout user
-  async logout(callApi = true) {
-    try {
-      // Call logout API if requested and token exists
-      if (callApi && this.token) {
-        await fetch(`${this.apiBase}/logout`, {
+  
+    /**
+     * Register a new user
+     * @param {string} email - User's email
+     * @param {string} password - User's password
+     * @param {string} role - User's role
+     * @returns {Promise<Object>} - Response from signup API
+     */
+    async signup(email, password, role) {
+      try {
+        console.log(`Signing up user with email: ${email}, role: ${role}`);
+        const response = await fetch(`${this.apiBase}/signup`, {
           method: 'POST',
-          headers: this.getAuthHeaders()
-        }).catch(err => console.error('Logout API error:', err));
-      }
-      
-      // Clear all auth data regardless of API call result
-      this.token = null;
-      this.userData = {};
-      this.accessibleDashboards = [];
-      this.permissions = {};
-      
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userData');
-      localStorage.removeItem('userDashboards');
-      localStorage.removeItem('userPermissions');
-      
-      return { success: true, message: 'Logged out successfully' };
-    } catch (error) {
-      console.error('Logout error:', error);
-      return { success: false, message: error.message };
-    }
-  }
-
-  // Get user data with role and permissions
-  async getUserData() {
-    if (!this.token) {
-      return { success: false, message: 'Not authenticated' };
-    }
-    
-    try {
-      const response = await fetch(`${this.apiBase}/user-data`, {
-        method: 'GET',
-        headers: this.getAuthHeaders()
-      });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          this.logout(false); // Silent logout
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, role }),
+        });
+  
+        const data = await response.json();
+        console.log('Signup response:', data);
+        
+        if (data.success && data.user) {
+          // Store user data for immediate access
+          this.currentUser = data.user;
+          localStorage.setItem('userRole', data.user.role);
+          
+          // Store token if provided
+          if (data.token) {
+            this.token = data.token;
+            localStorage.setItem('token', data.token);
+          }
         }
-        return { success: false, message: 'Failed to get user data' };
+        
+        return data;
+      } catch (error) {
+        console.error('Signup error:', error);
+        throw error;
       }
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update stored user data
-        this.userData = {
-          id: data.user.id,
-          email: data.user.email,
-          role: data.user.role,
-          lastLogin: new Date().toISOString()
-        };
-        localStorage.setItem('userData', JSON.stringify(this.userData));
-        
-        // Update accessible dashboards
-        this.accessibleDashboards = data.user.dashboards || [];
-        localStorage.setItem('userDashboards', JSON.stringify(this.accessibleDashboards));
-        
-        // Update permissions
-        this.permissions = data.user.permissions || {};
-        localStorage.setItem('userPermissions', JSON.stringify(this.permissions));
-        
-        return { 
-          success: true, 
-          user: data.user 
-        };
-      } else {
-        return { success: false, message: data.message || 'Failed to get user data' };
-      }
-    } catch (error) {
-      console.error('Get user data error:', error);
-      return { success: false, message: error.message };
     }
-  }
-
-  // Check if user has access to a specific dashboard or resource
-  async checkAccess(resource, requiredRole = null) {
-    if (!this.token) {
-      return { success: false, hasAccess: false, message: 'Not authenticated' };
-    }
-    
-    try {
-      const response = await fetch(`${this.apiBase}/access-check`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({ resource, requiredRole })
-      });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          this.logout(false); // Silent logout
+  
+    /**
+     * Log in an existing user
+     * @param {string} email - User's email
+     * @param {string} password - User's password
+     * @returns {Promise<Object>} - Response from login API
+     */
+    async login(email, password) {
+      try {
+        console.log(`Logging in user with email: ${email}`);
+        const response = await fetch(`${this.apiBase}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+  
+        const data = await response.json();
+        console.log('Login response:', data);
+        
+        if (data.success && data.user) {
+          // Store user data in memory
+          this.currentUser = data.user;
+          localStorage.setItem('userRole', data.user.role);
+          
+          // If token is provided, store it
+          if (data.token) {
+            this.token = data.token;
+            localStorage.setItem('token', data.token);
+          }
         }
-        return { success: false, hasAccess: false, message: 'Access check failed' };
+        
+        return data;
+      } catch (error) {
+        console.error('Login error:', error);
+        throw error;
       }
-      
-      const data = await response.json();
-      
-      return {
-        success: true,
-        hasAccess: data.hasAccess,
-        userRole: data.userRole,
-        resource: data.resource
+    }
+  
+    /**
+     * Log out the current user
+     * @returns {Promise<Object>} - Response from logout API
+     */
+    async logout() {
+      try {
+        const response = await fetch(`${this.apiBase}/logout`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+        });
+  
+        const data = await response.json();
+        
+        // Clear stored auth data
+        this.currentUser = null;
+        this.token = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        
+        return data;
+      } catch (error) {
+        console.error('Logout error:', error);
+        throw error;
+      }
+    }
+  
+    /**
+     * Check if user has valid access token
+     * @returns {Promise<Object>} - Current user if valid, null otherwise
+     */
+    async checkAccess() {
+      if (!this.token) {
+        return { success: false };
+      }
+  
+      try {
+        const response = await fetch(`${this.apiBase}/access-check`, {
+          method: 'GET',
+          headers: this.getAuthHeaders(),
+        });
+  
+        const data = await response.json();
+        
+        if (data.success && data.user) {
+          this.currentUser = data.user;
+          return data;
+        } else {
+          // Clear invalid token
+          this.token = null;
+          localStorage.removeItem('token');
+          return { success: false };
+        }
+      } catch (error) {
+        console.error('Access check error:', error);
+        return { success: false, error: error.message };
+      }
+    }
+  
+    /**
+     * Get auth headers including token if available
+     * @returns {Object} - Headers object
+     */
+    getAuthHeaders() {
+      const headers = {
+        'Content-Type': 'application/json',
       };
-    } catch (error) {
-      console.error('Access check error:', error);
-      return { success: false, hasAccess: false, message: error.message };
-    }
-  }
-  
-  // Get all accessible dashboards for the current user
-  async getAccessibleDashboards() {
-    if (!this.token) {
-      return { success: false, dashboards: [], message: 'Not authenticated' };
-    }
-    
-    // First try to use cached dashboards if available
-    if (this.accessibleDashboards && this.accessibleDashboards.length > 0) {
-      return { 
-        success: true, 
-        dashboards: this.accessibleDashboards,
-        fromCache: true
-      };
-    }
-    
-    try {
-      const response = await fetch(`${this.apiBase}/dashboards-access`, {
-        method: 'GET',
-        headers: this.getAuthHeaders()
-      });
       
-      if (!response.ok) {
-        if (response.status === 401) {
-          this.logout(false); // Silent logout
-        }
-        return { success: false, dashboards: [], message: 'Failed to get dashboards' };
+      if (this.token) {
+        headers['Authorization'] = `Bearer ${this.token}`;
       }
       
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update cached dashboards
-        this.accessibleDashboards = data.dashboards || [];
-        localStorage.setItem('userDashboards', JSON.stringify(this.accessibleDashboards));
-        
-        return { 
-          success: true, 
-          dashboards: data.dashboards,
-          details: data.details,
-          userRole: data.userRole 
-        };
-      } else {
-        return { success: false, dashboards: [], message: data.message || 'Failed to get dashboards' };
-      }
-    } catch (error) {
-      console.error('Get dashboards error:', error);
-      return { success: false, dashboards: [], message: error.message };
+      return headers;
+    }
+  
+    /**
+     * Get current user
+     * @returns {Object|null} - Current user object or null
+     */
+    getUser() {
+      return this.currentUser;
+    }
+  
+    /**
+     * Get current user role
+     * @returns {string|null} - User role or null
+     */
+    getUserRole() {
+      return this.currentUser?.role || localStorage.getItem('userRole');
+    }
+  
+    /**
+     * Check if user is logged in
+     * @returns {boolean} - True if logged in
+     */
+    isLoggedIn() {
+      return !!this.currentUser || !!this.token;
     }
   }
   
-  // Check if user is authenticated
-  isAuthenticated() {
-    return !!this.token;
-  }
-  
-  // Get current user role
-  getUserRole() {
-    return this.userData?.role || 'viewer';
-  }
-  
-  // Check if user has specific permission
-  hasPermission(permission) {
-    return !!this.permissions[permission];
-  }
-  
-  // Update lattice key (requires admin/developer permissions)
-  async updateLatticeKey() {
-    if (!this.token) {
-      return { success: false, message: 'Not authenticated' };
-    }
-    
-    try {
-      // Generate a new lattice key
-      const newLatticeKey = this.generateLatticeKey();
-      
-      const response = await fetch(`${this.apiBase}/update-lattice`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({ newKey: newLatticeKey })
-      });
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          this.logout(false); // Silent logout
-        }
-        return { success: false, message: 'Failed to update lattice key' };
-      }
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update the lattice key
-        this.latticeKey = newLatticeKey;
-        return { success: true, message: 'Lattice key updated successfully' };
-      } else {
-        return { success: false, message: data.message || 'Failed to update lattice key' };
-      }
-    } catch (error) {
-      console.error('Update lattice key error:', error);
-      return { success: false, message: error.message };
-    }
-  }
-}
+  // Create and export singleton instance
+  const authService = new AuthService();
+  export default authService;

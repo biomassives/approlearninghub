@@ -1,124 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ApproVideo - Practical Knowledge Platform</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApproVideo - Simple Layout API Driven</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <link href="css/aprilHomeStyles.css" rel="stylesheet">
+
+    <script type="module" src="index.js" defer></script>
+
 </head>
-<body>
-  <header>
-    <div class="container">
-      <div class="logo">
-        <a href="/">ApproVideo</a>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/browse">Browse</a></li>
-          <li><a href="/favorites">Favorites</a></li>
-          <li><a href="/account">Account</a></li>
-        </ul>
-      </nav>
-      <div class="search-container">
-        <input type="text" id="search-input" placeholder="Search videos...">
-        <button class="search-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </header>
+<body class="bg-gray-50">
+    <header class="text-center py-6 bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-md">
+        <h1 class="text-3xl font-bold">🌿 ApproVideo DIY Solutions 🌱</h1>
+        <p class="text-lg">Empowering communities through practical knowledge</p>
+        </header>
 
-  <main>
-    <div class="container">
-      <!-- Breadcrumb Navigation -->
-      <div id="breadcrumb" class="breadcrumb">
-        <!-- Will be populated by JavaScript -->
-      </div>
-      
-      <!-- Main Content Area - Two-tiered structure -->
-      <div class="content-wrapper">
-        <!-- Categories (First Tier) -->
-        <section class="categories-section">
-          <h2>Knowledge Areas</h2>
-          <div id="category-container" class="category-grid">
-            <!-- Will be populated by JavaScript -->
-          </div>
-        </section>
-        
-        <!-- Subcategories (Second Tier) -->
-        <section id="subcategory-container" class="subcategories-section">
-          <h2>Topics</h2>
-          <div id="subcategory-links" class="subcategory-grid">
-            <!-- Will be populated by JavaScript -->
-          </div>
-          <div class="subcategory-actions">
-            <a href="#" id="show-all-link" class="btn-text">Show all content in this area</a>
-          </div>
-        </section>
-        
-        <!-- Content Results Area -->
-        <section id="results-section" class="results-section">
-          <div id="results-info" class="results-info">
-            <div id="results-count" class="results-count">0 results</div>
-            <div class="sort-control">
-              <label for="sort-selector">Sort by:</label>
-              <select id="sort-selector">
-                <option value="date">Newest</option>
-                <option value="views">Most Viewed</option>
-                <option value="title">A-Z</option>
-                <option value="duration">Duration</option>
-              </select>
+    <main class="container mx-auto py-8">
+        <section id="category-section">
+            <h2 class="text-2xl font-semibold mb-4 text-center text-gray-700">1. Select a Category</h2>
+            <div id="category-icons" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 text-center">
+                <div class="p-4 text-center text-gray-500 col-span-full">Loading categories...</div>
             </div>
-          </div>
-          
-          <div id="content-container" class="content-grid">
-            <!-- Will be populated by JavaScript -->
-          </div>
-          
-          <div class="load-more-container">
-            <button id="load-more" class="btn-primary">Load More</button>
-          </div>
         </section>
-      </div>
-    </div>
-  </main>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>About ApproVideo</h3>
-          <p>Practical knowledge for sustainable living and community resilience.</p>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/contribute">Contribute</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Connect</h3>
-          <div class="social-links">
-            <a href="#" class="social-link">Facebook</a>
-            <a href="#" class="social-link">Twitter</a>
-            <a href="#" class="social-link">Instagram</a>
-            <a href="#" class="social-link">YouTube</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 ApproVideo. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+        <section id="subcategory-section" class="mt-8 hidden">
+            <h2 id="subcategory-title" class="text-2xl font-semibold mb-4 text-center text-gray-700">2. Select a Subcategory</h2>
+            <div id="subcategories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                </div>
+        </section>
 
-  <script type="module" src="/index.js"></script>
-</body>
+        <section id="controls-section" class="my-8 p-4 bg-gray-100 rounded-lg shadow">
+            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <div class="flex-grow w-full md:w-auto relative">
+                     <label for="search-input" class="sr-only">Search Videos</label>
+                    <input type="search" id="search-input" placeholder="Search or select category..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" autocomplete="off">
+                    <div id="search-suggestions" class="absolute top-full left-0 right-0 mt-1 max-h-80 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg hidden z-20">
+                         <div class="p-4 text-center text-gray-500 text-sm">Loading suggestions...</div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-full md:w-auto">
+                     <label for="sort-selector" class="sr-only">Sort Videos</label>
+                    <select id="sort-selector" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="newest">Sort by Newest</option>
+                        <option value="popular">Sort by Popular</option>
+                        <option value="az">Sort by Title (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-container" class="mt-8">
+             <h2 id="content-title" class="text-2xl font-semibold mb-6 text-center text-gray-700">Browse Videos</h2>
+             <div id="loading-indicator" class="hidden text-center py-4">
+                 <div class="loader"></div>
+             </div>
+             <div id="content-details" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div class="p-4 text-center text-gray-500 col-span-full">Loading videos...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center mt-12 py-4 border-t text-gray-500">
+        <p>© 2025 ApproVideo | Powered by Community</p>
+        </footer>
+
+    </body>
 </html>

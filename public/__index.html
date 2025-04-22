@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ApproVideo - Practical Knowledge Platform</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo"><a href="/">ApproVideo</a></div>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/browse">Browse</a></li>
+          <li><a href="/favorites">Favorites</a></li>
+          <li><a href="/account">Account</a></li>
+        </ul>
+      </nav>
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search videos..." />
+        <button class="search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- Language Menu and Icons -->
+      <section class="main-icon-menu">
+        <h2 data-i18n-key="mainMenu">Main Knowledge Areas</h2>
+        <div class="icon-button-grid">
+          <button class="icon-btn" data-category-id="shelter">
+            🏠<span data-i18n-key="shelter">Shelter</span>
+          </button>
+          <button class="icon-btn" data-category-id="water">
+            💧<span data-i18n-key="water">Water</span>
+          </button>
+          <button class="icon-btn" data-category-id="energy">
+            ⚡<span data-i18n-key="energy">Energy</span>
+          </button>
+          <button class="icon-btn" data-category-id="health">
+            🏥<span data-i18n-key="health">Health</span>
+          </button>
+          <button class="icon-btn" data-category-id="food">
+            🌾<span data-i18n-key="food">Food</span>
+          </button>
+          <button class="icon-btn" data-category-id="waste">
+            ♻️<span data-i18n-key="waste">Waste</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Breadcrumb Navigation -->
+      <div id="breadcrumb" class="breadcrumb"></div>
+
+      <!-- Category and Subcategory Grid -->
+      <div class="content-wrapper">
+        <section class="categories-section">
+          <h2 data-i18n-key="areas">Knowledge Areas</h2>
+          <div id="category-container" class="category-grid"></div>
+        </section>
+
+        <section id="subcategory-container" class="subcategories-section">
+          <h2 data-i18n-key="topics">Topics</h2>
+          <div id="subcategory-links" class="subcategory-grid"></div>
+          <div class="subcategory-actions">
+            <a href="#" id="show-all-link" class="btn-text" data-i18n-key="showAll">Show all content in this area</a>
+          </div>
+        </section>
+
+        <section id="results-section" class="results-section">
+          <div id="results-info" class="results-info">
+            <div id="results-count" class="results-count">0 results</div>
+            <div class="sort-control">
+              <label for="sort-selector" data-i18n-key="sortBy">Sort by:</label>
+              <select id="sort-selector">
+                <option value="date" data-i18n-key="sortDate">Newest</option>
+                <option value="views" data-i18n-key="sortViews">Most Viewed</option>
+                <option value="title" data-i18n-key="sortTitle">A-Z</option>
+                <option value="duration" data-i18n-key="sortDuration">Duration</option>
+              </select>
+            </div>
+          </div>
+          <div id="content-container" class="content-grid"></div>
+          <div class="load-more-container">
+            <button id="load-more" class="btn-primary" data-i18n-key="loadMore">Load More</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Video Detail Panel -->
+  <div id="video-detail-panel" class="video-panel-overlay" style="display:none;"></div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About ApproVideo</h3>
+          <p>Practical knowledge for sustainable living and community resilience.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/contribute">Contribute</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect</h3>
+          <div class="social-links">
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">Twitter</a>
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">YouTube</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 ApproVideo. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/index.js"></script>
+</body>
+</html>

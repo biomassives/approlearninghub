@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "api/index.js",
       "use": "@vercel/node"
     },
     {
@@ -10,72 +10,17 @@
       "use": "@vercel/static"
     }
   ],
-  "crons": [
-    {
-      "path": "/api/cron/index",
-      "schedule": "0 10 * * *"
-    }
-  ],
   "routes": [
-    {
-      "src": "/api/auth/(.*)",
-      "dest": "/api/auth/index.js"
-    },
-    {
-      "src": "/api/cron/(.*)",
-      "dest": "/api/cron/index.js"
-    },
-    {
-      "src": "/api/dashboards/(.*)",
-      "dest": "/api/dashboards/index.js"
-    },
-    {
-      "src": "/api/diagnostics/(.*)",
-      "dest": "/api/diagnostics/index.js"
-    },
-    {
-      "src": "/api/public/(.*)",
-      "dest": "/api/public/index.js"
-    },
-    {
-      "src": "/api/content/(.*)",
-      "dest": "/api/content/index.js"
-    },
-    {
-      "src": "/api/update",
-      "dest": "/api/update.js"
-    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
     },
     {
-      "src": "/dashboard",
-      "dest": "/public/dashboard.html"
-    },
-    {
-      "src": "/user-management",
-      "dest": "/public/user-management.html"
-    },
-    {
-      "src": "/expert-dashboard",
-      "dest": "/public/expert-dashboard.html"
-    },
-    {
-      "src": "/community-milestones",
-      "dest": "/public/community-milestones.html"
-    },
-    {
-      "src": "/public-timeline",
-      "dest": "/public/public-timeline.html"
-    },
-    {
-      "src": "^/$",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/(.+)",
+      "src": "/(.*)",
       "dest": "/public/$1"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

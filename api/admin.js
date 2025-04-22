@@ -1,19 +1,8 @@
 // api/admin.js
-// ApproVideo Admin API Router
-// Supports:
-//   - welcome             => personalized admin panel setup
-//   - users               => view/manage users
-//   - update-role         => assign roles
-//   - pending             => review submissions
-//   - notify              => send internal messages
-//   - approve             => confirm/approve items
-//   - zoom-schedule       => schedule Zoom learning events (future-ready)
-//   - notion-sync         => map and sync Notion content to modules
-//   - module-prep         => track and store contributor prep for meetings
-//
-// (c) 2025 Sustainable Community Development Hub
-// Licensed under GNU GPL v3
-
+const express = require('express');
+const router = express.Router();
+const supabase = require('../lib/supabaseClient');
+const { requireAuth } = require('../lib/authMiddleware');
 const {
   handleAdminWelcome,
   handleAllUsers,
@@ -23,24 +12,47 @@ const {
   handleApproveItem,
   handleZoomSchedule,
   handleNotionSync,
-  handleModulePrep
+  handleModulePrep,
+  handleGetIntegrationSettings,
+  handleSaveIntegrationSettings,
+  handleGetZoomHostLink,
+  handleZoomConnectUrl,
+  handleNotionConnectUrl
 } = require('../lib/adminHandlers');
 
-module.exports = async function adminRouter(req, res) {
-  const action = req.query.action || req.body?.action;
+// Protect all admin routes
+router.use(requireAuth);
 
-  switch (action) {
-    case 'welcome': return handleAdminWelcome(req, res);
-    case 'users': return handleAllUsers(req, res);
-    case 'update-role': return handleUpdateUserRole(req, res);
-    case 'pending': return handlePendingItems(req, res);
-    case 'notify': return handleNotifications(req, res);
-    case 'approve': return handleApproveItem(req, res);
-    case 'zoom-schedule': return handleZoomSchedule(req, res);
-    case 'notion-sync': return handleNotionSync(req, res);
-    case 'module-prep': return handleModulePrep(req, res);
-    default:
-      return res.status(400).json({ success: false, error: 'Invalid admin action' });
-  }
-};
+// Welcome panel
+router.get('/welcome', handleAdminWelcome);
 
+// User management
+router.get('/users', handleAllUsers);
+router.post('/user-role', handleUpdateUserRole);
+
+// Pending submissions
+router.get('/pending-items', handlePendingItems);
+
+// Notifications & Approval
+router.get('/notifications', handleNotifications);
+router.post('/approve-item', handleApproveItem);
+
+// Zoom scheduling
+router.post('/zoom/schedule', handleZoomSchedule);
+
+// Notion sync and mapping
+router.post('/notion/sync', handleNotionSync);
+
+// Module preparation tasks
+router.post('/module-prep', handleModulePrep);
+
+// Integration settings
+router.get('/integrations', handleGetIntegrationSettings);
+router.put('/integrations', handleSaveIntegrationSettings);
+
+// Zoom & Notion connect URLs
+router.get('/zoom/host-link', handleGetZoomHostLink);
+router.get('/zoom/connect-url', handleZoomConnectUrl);
+router.get('/notion/connect-url', handleNotionConnectUrl);
+
+module.exports = router;

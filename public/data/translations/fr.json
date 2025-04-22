@@ -1,0 +1,27 @@
+{
+    "category": {
+      "shelter": "Abri",
+      "water": "Eau",
+      "energy": "Énergie",
+      "health": "Santé",
+      "food": "Alimentation"
+    },
+    "subcategory": {
+      "lowCostConstruction": "Méthodes de construction économiques et durables",
+      "localMaterials": "Matériaux disponibles localement",
+      "purification": "Purification",
+      "desalination": "Dessalement",
+      "waterDistribution": "Distribution efficace",
+      "diySolar": "Énergie solaire DIY",
+      "biogas": "Production de biogaz",
+      "microgrids": "Micro-réseaux pour une énergie durable",
+      "emtSkills": "Compétences EMT",
+      "telemedicine": "Télémédecine",
+      "firstAid": "Premiers secours",
+      "selfSufficientHealthcare": "Soins de santé autonomes",
+      "urbanFood": "Jardinage urbain",
+      "hydroponics": "Hydroponie",
+      "sustainableAgriculture": "Techniques agricoles durables"
+    }
+  }
+  

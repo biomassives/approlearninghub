@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApproVideo Interactive - API Driven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles from previous example - body, hidden, category-btn, subcategory-btn, etc. */
+        body { font-family: 'Poppins', sans-serif; background-color: #f9fafb; }
+        .hidden { display: none; }
+        .category-btn, .subcategory-btn { /* ... existing styles ... */ }
+        .category-btn:hover, .subcategory-btn:hover { /* ... existing styles ... */ }
+        .category-btn i { /* ... existing styles ... */ }
+        .subcategory-btn strong { display: block; }
+        .subcategory-btn p { font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; }
+        .container { max-width: 1200px; margin: auto; padding: 1rem; }
+        .grid { display: grid; gap: 1rem; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } /* Adjusted for Tailwind */
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } /* Added for video grid */
+        .gap-6 { gap: 1.5rem; }
+        .gap-4 { gap: 1rem; }
+        header h1, header p { color: white; }
+        #content-details h3 { margin-bottom: 0.5rem; }
+        #content-details p { margin-bottom: 0.5rem; }
+        #content-details strong { font-weight: 600; }
+
+        /* Video Card Styles */
+        .video-card {
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            background-color: white;
+            padding: 1rem; /* p-4 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow */
+            transition: box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .video-card:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); } /* shadow-md */
+        .video-card img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 0.375rem; /* rounded-md */
+            margin-bottom: 0.75rem; /* mb-3 */
+            background-color: #e5e7eb; /* gray-200 placeholder */
+        }
+        .video-card h4 { font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.4; } /* font-semibold mb-2 text-base */
+        .video-card .description { font-size: 0.875rem; color: #4b5563; margin-bottom: 0.75rem; } /* text-sm text-gray-600 mb-3 */
+        .video-card .tags { font-size: 0.75rem; color: #6b7280; } /* text-xs text-gray-500 */
+
+        /* Loader Style */
+        .loader {
+            border: 4px solid #f3f4f6; /* gray-100 */
+            border-top: 4px solid #3b82f6; /* blue-500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto; /* Center loader */
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Modal styles */
+        #video-detail { backdrop-filter: blur(4px); }
+        #video-detail iframe { width: 100%; aspect-ratio: 16 / 9; }
+
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="text-center py-6 bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-md">
+        <h1 class="text-3xl font-bold">🌿 ApproVideo DIY Solutions 🌱</h1>
+        <p class="text-lg">Empowering communities through practical knowledge</p>
+    </header>
+
+    <main class="container mx-auto py-8">
+        <section id="category-icons" class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center mb-8">
+            </section>
+
+        <section id="subcategory-section" class="mt-8 hidden mb-8">
+            <h2 id="subcategory-title" class="text-2xl font-semibold mb-4 text-center text-gray-700">Subcategories</h2>
+            <div id="subcategories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                </div>
+        </section>
+
+        <section id="search-section" class="mb-8">
+             <input type="search" id="search-input" placeholder="Search videos by title, description, or tag..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+         </section>
+
+        <section id="content-section" class="mt-8">
+             <h2 id="content-title" class="text-2xl font-semibold mb-6 text-center text-gray-700">Featured Videos</h2>
+            <div id="content-details" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                </div>
+            <div id="loading-indicator" class="hidden text-center py-6">
+                 <div class="loader"></div>
+            </div>
+             <div id="load-more-container" class="text-center mt-8 hidden">
+                 <button id="load-more-btn" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">
+                     Load More Videos
+                 </button>
+             </div>
+        </section>
+    </main>
+
+    <div id="video-detail" class="fixed inset-0 bg-black bg-opacity-60 overflow-y-auto h-full w-full flex items-center justify-center p-4 hidden z-40">
+         <div class="relative p-5 md:p-8 border w-full max-w-xl md:max-w-2xl lg:max-w-4xl shadow-lg rounded-lg bg-white dark:bg-gray-800">
+            <button id="close-detail-btn" title="Close" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white text-2xl p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 z-10">
+                <i class="fas fa-times"></i>
+           </button>
+            <div id="video-content" class="mt-4">
+                <h3 id="video-detail-title" class="text-xl md:text-2xl font-bold mb-3 text-gray-900 dark:text-white">Video Title</h3>
+                 <div id="video-detail-embed" class="mb-4 bg-black rounded">
+                      </div>
+                 <p id="video-detail-description" class="text-gray-700 dark:text-gray-300 mb-4">Video description...</p>
+                 <p id="video-detail-tags" class="text-sm text-gray-500 dark:text-gray-400 mb-2"><strong>Tags:</strong> </p>
+                 <div id="video-detail-panels">
+                      </div>
+            </div>
+         </div>
+    </div>
+
+
+    <script>
+        // --- Configuration ---
+        const API_BASE_URL = '/api/public'; // Assuming your API is served at this path
+        const VIDEOS_PER_PAGE = 12; // How many videos to load per request
+
+        // --- Category Structure (for UI Navigation) ---
+        // Using the structure you provided earlier
+        const categoryUIData = [
+            { area: "Shelter", icon: "fa-home", subcategories: [ { title: "Low-cost, Durable Construction Methods", /* ... */ }, { title: "Locally Available Materials", /* ... */ } ] },
+            { area: "Water", icon: "fa-tint", subcategories: [ { title: "Purification", /* ... */ }, { title: "Desalination", /* ... */ }, { title: "Efficient Distribution", /* ... */ } ] },
+            { area: "Waste Management", icon: "fa-recycle", subcategories: [ { title: "Composting", /* ... */ }, { title: "Recycling Systems", /* ... */ }, { title: "Upcycling", /* ... */ }, { title: "Wastewater Management", /* ... */ } ] },
+            { area: "Energy", icon: "fa-solar-panel", subcategories: [ { title: "DIY Solar Energy", /* ... */ }, { title: "Biogas Generation", /* ... */ }, { title: "Microgrids for Sustainable Power", /* ... */ }, { title: "Hand Pressed Heat & Cooking Fuel Briquettes", /* ... */ } ] },
+            { area: "Health", icon: "fa-heartbeat", subcategories: [ { title: "EMT Skills", /* ... */ }, { title: "Telemedicine", /* ... */ }, { title: "First Aid", /* ... */ }, { title: "Self-sufficient Healthcare", /* ... */ } ] },
+            { area: "Sustainable Food", icon: "fa-seedling", subcategories: [ { title: "Urban Gardening", /* ... */ }, { title: "Hydro/Aero/Fish -ponics", /* ... */ }, { title: "Sustainable Agriculture Techniques", /* ... */ }, { title: "Fungli, Algae, Insects, & Tech", /* ... */ } ] }
+        ]; // NOTE: Ensure descriptions/tags are included here if needed for subcategory buttons
+
+        // --- State Variables ---
+        let currentOffset = 0;
+        let currentCategory = null;
+        let currentSubcategory = null;
+        let currentSearchTerm = null;
+        let isLoading = false;
+        let hasMoreVideos = true;
+        let debounceTimer;
+
+        // --- DOM Elements ---
+        const categoryIconsContainer = document.getElementById('category-icons');
+        const subcategorySection = document.getElementById('subcategory-section');
+        const subcategoryTitle = document.getElementById('subcategory-title');
+        const subcategoriesContainer = document.getElementById('subcategories');
+        const contentSection = document.getElementById('content-section');
+        const contentTitle = document.getElementById('content-title');
+        const contentDetailsContainer = document.getElementById('content-details');
+        const searchInput = document.getElementById('search-input');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const loadMoreContainer = document.getElementById('load-more-container');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        // Video Detail Modal Elements
+        const videoDetailModal = document.getElementById('video-detail');
+        const closeDetailBtn = document.getElementById('close-detail-btn');
+        const videoDetailTitle = document.getElementById('video-detail-title');
+        const videoDetailEmbed = document.getElementById('video-detail-embed');
+        const videoDetailDescription = document.getElementById('video-detail-description');
+        const videoDetailTags = document.getElementById('video-detail-tags');
+        const videoDetailPanels = document.getElementById('video-detail-panels');
+
+
+        // --- API Fetch Function ---
+        async function fetchVideos(params = {}, append = false) {
+            if (isLoading) return; // Don't fetch if already loading
+            isLoading = true;
+            loadingIndicator.classList.remove('hidden');
+            if (!append) { // Hide load more button only if it's a fresh load
+                loadMoreContainer.classList.add('hidden');
+            }
+
+            const urlParams = new URLSearchParams({
+                action: 'videos',
+                limit: VIDEOS_PER_PAGE,
+                offset: append ? currentOffset : 0, // Use currentOffset if appending
+                ...params // Spread category, subcategory, or search
+            });
+
+            // Remove empty params
+            for (let key of Array.from(urlParams.keys())) {
+                if (!urlParams.get(key)) {
+                     urlParams.delete(key);
+                 }
+            }
+
+            const url = `${API_BASE_URL}?${urlParams.toString()}`;
+            console.log("Fetching:", url);
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.success) {
+                    displayVideoResults(data.items || [], append);
+                    hasMoreVideos = data.hasMore || false;
+                    // Update offset only after successful display
+                    currentOffset = (append ? currentOffset : 0) + (data.items?.length || 0);
+                     // Show/hide load more button based on hasMore
+                     loadMoreContainer.classList.toggle('hidden', !hasMoreVideos);
+                } else {
+                    console.error("API Error:", data.message);
+                    contentDetailsContainer.innerHTML = `<p class="col-span-full text-red-500 text-center">Error loading videos: ${data.message || 'Unknown error'}</p>`;
+                    hasMoreVideos = false;
+                     loadMoreContainer.classList.add('hidden');
+                }
+
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                 if (!append) { // Only show error in main container if it's a fresh load
+                    contentDetailsContainer.innerHTML = `<p class="col-span-full text-red-500 text-center">Could not connect to API or fetch videos.</p>`;
+                 } else {
+                     // Maybe disable load more button or show a small error message near it
+                     loadMoreBtn.textContent = 'Error Loading';
+                     loadMoreBtn.disabled = true;
+                 }
+                 hasMoreVideos = false;
+                 loadMoreContainer.classList.add('hidden');
+            } finally {
+                isLoading = false;
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        // --- Display Video Results ---
+        function displayVideoResults(videoItems, append = false) {
+            if (!append) {
+                contentDetailsContainer.innerHTML = ''; // Clear for new results
+                currentOffset = 0; // Reset offset for fresh display
+            }
+
+            if (videoItems.length === 0 && !append) {
+                 contentDetailsContainer.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No videos found matching your criteria.</p>`;
+                 return; // Exit early if no videos found on initial load
+            }
+
+            videoItems.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+
+                 // Construct YouTube thumbnail URL (default quality)
+                 const thumbnailUrl = video.youtubeId ? `https://i.ytimg.com/vi/${video.youtubeId}/mqdefault.jpg` : 'placeholder.png'; // Add a placeholder image path
+
+                 card.innerHTML = `
+                    <img src="${thumbnailUrl}" alt="${video.title || 'Video thumbnail'}" loading="lazy">
+                    <div>
+                        <h4>${video.title || 'Untitled Video'}</h4>
+                        <p class="description">${(video.description || '').substring(0, 100)}...</p>
+                        <p class="tags">Tags: ${(video.tags || []).join(', ')}</p>
+                    </div>
+                `;
+                 card.addEventListener('click', () => showVideoDetail(video));
+                 contentDetailsContainer.appendChild(card);
+            });
+        }
+
+        // --- Show Video Detail Modal ---
+         function showVideoDetail(video) {
+             console.log("Showing detail for:", video);
+             videoDetailTitle.textContent = video.title || 'Video Details';
+             videoDetailDescription.textContent = video.description || 'No description available.';
+             videoDetailTags.innerHTML = `<strong>Tags:</strong> ${(video.tags || []).join(', ')}`;
+
+             // Embed YouTube video
+             if (video.youtubeId) {
+                 videoDetailEmbed.innerHTML = `
+                    <iframe
+                        src="https://www.youtube.com/embed/${video.youtubeId}"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>`;
+             } else {
+                 videoDetailEmbed.innerHTML = '<p class="text-center text-gray-500 p-4">Video source not available.</p>';
+             }
+
+              // Display panels/chapters if available
+              videoDetailPanels.innerHTML = ''; // Clear previous panels
+              if (video.panels && video.panels.length > 0) {
+                  const panelsTitle = document.createElement('h4');
+                  panelsTitle.className = 'text-lg font-semibold mt-6 mb-2';
+                  panelsTitle.textContent = 'Chapters/Panels';
+                  videoDetailPanels.appendChild(panelsTitle);
+                  const panelsList = document.createElement('ul');
+                  panelsList.className = 'list-disc list-inside space-y-1 text-sm';
+                   video.panels.forEach(panel => {
+                       const li = document.createElement('li');
+                       li.textContent = `${panel.title || 'Panel'}: ${panel.content || ''}`; // Adjust as needed
+                       panelsList.appendChild(li);
+                   });
+                   videoDetailPanels.appendChild(panelsList);
+              }
+
+             videoDetailModal.classList.remove('hidden');
+             // Lock background scroll when modal is open
+             document.body.style.overflow = 'hidden';
+         }
+
+         // --- Close Video Detail Modal ---
+         function closeVideoDetail() {
+              videoDetailModal.classList.add('hidden');
+              videoDetailEmbed.innerHTML = ''; // Stop video playback by removing iframe
+              // Unlock background scroll
+              document.body.style.overflow = '';
+         }
+         closeDetailBtn?.addEventListener('click', closeVideoDetail);
+         // Optional: Close modal on clicking background overlay
+         videoDetailModal?.addEventListener('click', (event) => {
+             if (event.target === videoDetailModal) {
+                 closeVideoDetail();
+             }
+         });
+
+
+        // --- Display Subcategories (UI Only) ---
+        function displaySubcategories(category) {
+            subcategoriesContainer.innerHTML = ''; // Clear previous
+            subcategoryTitle.textContent = `Subcategories for ${category.area}`;
+
+            if (category.subcategories && category.subcategories.length > 0) {
+                category.subcategories.forEach(sub => {
+                    const subBtn = document.createElement('button');
+                    subBtn.className = 'subcategory-btn';
+                    // Display title and tags (from UI data)
+                    subBtn.innerHTML = `<strong>${sub.title}</strong><p>${(sub.tags || []).join(', ')}</p>`;
+
+                    subBtn.onclick = () => {
+                        // --- Trigger API fetch based on this subcategory ---
+                        currentCategory = category.area;
+                        currentSubcategory = sub.title;
+                        currentSearchTerm = null; // Clear search term
+                        contentTitle.textContent = `Videos for: ${category.area} - ${sub.title}`; // Update main content title
+                        fetchVideos({ category: currentCategory, subcategory: currentSubcategory }, false); // false = don't append
+                        // Scroll to content section
+                        contentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    };
+                    subcategoriesContainer.appendChild(subBtn);
+                });
+                subcategorySection.classList.remove('hidden');
+            } else {
+                subcategoriesContainer.innerHTML = `<p class="text-center text-gray-500 col-span-full">No subcategories defined.</p>`;
+                 subcategorySection.classList.remove('hidden');
+            }
+            // Hide content section when showing subcategories, let fetchVideos handle showing results
+            // contentSection.classList.add('hidden');
+            subcategorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // --- Load Categories (UI Only) ---
+        function loadCategories(categoryStructure) {
+             if (!categoryStructure || categoryStructure.length === 0) return;
+             categoryIconsContainer.innerHTML = ''; // Clear placeholder
+
+            categoryStructure.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn bg-gradient-to-r from-green-400 to-blue-400 text-white';
+                const iconClass = cat.icon ? `fas ${cat.icon}` : 'fas fa-leaf';
+                btn.innerHTML = `<i class="${iconClass} fa-2x"></i><br><span class="font-semibold">${cat.area}</span>`;
+
+                btn.onclick = () => {
+                    displaySubcategories(cat);
+                     // Maybe also fetch all videos for the main category?
+                     // currentCategory = cat.area;
+                     // currentSubcategory = null;
+                     // currentSearchTerm = null;
+                     // contentTitle.textContent = `Videos for: ${cat.area}`;
+                     // fetchVideos({ category: currentCategory }, false);
+                };
+                categoryIconsContainer.appendChild(btn);
+            });
+        }
+
+        // --- Search Input Handling ---
+        searchInput?.addEventListener('input', (e) => {
+             clearTimeout(debounceTimer);
+             const searchTerm = e.target.value.trim();
+
+             debounceTimer = setTimeout(() => {
+                 currentSearchTerm = searchTerm;
+                 currentCategory = null; // Clear category filters when searching
+                 currentSubcategory = null;
+                 contentTitle.textContent = searchTerm ? `Search Results for: "${searchTerm}"` : 'All Videos';
+                 fetchVideos({ search: currentSearchTerm }, false); // false = don't append
+                  // Hide subcategories when searching
+                  subcategorySection.classList.add('hidden');
+             }, 500); // Debounce for 500ms
+        });
+
+        // --- Load More Button Handling ---
+        loadMoreBtn?.addEventListener('click', () => {
+             if (!isLoading && hasMoreVideos) {
+                  // Fetch next page using current filters
+                  fetchVideos({
+                      category: currentCategory,
+                      subcategory: currentSubcategory,
+                      search: currentSearchTerm
+                  }, true); // true = append results
+             }
+        });
+
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategories(categoryUIData); // Load category UI buttons
+            fetchVideos({}, false); // Fetch initial set of videos (latest or featured depending on API default)
+        });
+
+    </script>
+
+</body>
+</html>

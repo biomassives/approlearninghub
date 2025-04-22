@@ -4,20 +4,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel | Approvideo</title>
+  <title id="title-admin">Admin Panel | Approvideo</title>
   <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="/js/dashboard-translations.js"></script>
 </head>
 
 <body>
   <header>
-    <h1>Admin Panel</h1>
+    <h1 id="title-admin">Admin Panel</h1>
     <button id="logout-btn">Logout</button>
   </header>
 
   <main class="container">
-    <p>Welcome, Admin. Manage users and review system metrics below.</p>
+    <p id="admin-welcome">Welcome, Admin. Manage users and review system metrics below.</p>
     <div id="welcome-content"></div>
     <div id="user-list">Loading users...</div>
+
+    <section id="translation-queue">
+      <h2>Translation Suggestions Queue</h2>
+      <p>Below are translations needing review and approval.</p>
+      <div id="suggestion-list">Loading suggestions...</div>
+    </section>
+
+    <section id="translation-invitations">
+      <h2>Send Translation Request</h2>
+      <form id="invite-form">
+        <label>Email of Invitee:</label>
+        <input type="email" id="invite-email" required />
+        <label>Language:</label>
+        <input type="text" id="invite-lang" required />
+        <label>Translation Key:</label>
+        <input type="text" id="invite-key" required />
+        <label>Suggested Role:</label>
+        <select id="invite-role">
+          <option value="reviewer">Reviewer</option>
+          <option value="editor">Editor</option>
+        </select>
+        <button type="submit">Send Invitation</button>
+      </form>
+      <div id="invite-status"></div>
+    </section>
+
     <div id="settings-message-container" class="message"></div>
   </main>
 
@@ -28,6 +55,9 @@
 
     const userList = document.getElementById('user-list');
     const logoutBtn = document.getElementById('logout-btn');
+    const suggestionList = document.getElementById('suggestion-list');
+    const inviteForm = document.getElementById('invite-form');
+    const inviteStatus = document.getElementById('invite-status');
 
     logoutBtn.addEventListener('click', async () => {
       const result = await signOut();
@@ -51,103 +81,83 @@
       }
 
       loadUsers();
+      loadWelcomeContent();
+      loadTranslationSuggestions();
     });
 
-    async function loadUsers() {
+    async function loadTranslationSuggestions() {
       try {
-        const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
-        const supabase = createClient(
-          'https://dsqhmcjxgcwxcuincibs.supabase.co',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-        );
+        const res = await fetch('/data/translation-suggestions.json');
+        const suggestions = await res.json();
+        suggestionList.innerHTML = '';
 
-        const { data: users, error } = await supabase
-          .from('user_roles')
-          .select('user_id, role, users (email)')
-          .order('role');
+        if (!suggestions.length) {
+          suggestionList.textContent = 'No suggestions pending review.';
+          return;
+        }
 
-        if (error) throw error;
-        userList.innerHTML = '';
-
-        users.forEach(user => {
-          const userItem = document.createElement('div');
-          userItem.className = 'user-item';
-          userItem.innerHTML = `
-            <span>${user.users?.email || 'N/A'}</span>
-            <select data-user-id="${user.user_id}">
-              <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
-              <option value="editor" ${user.role === 'editor' ? 'selected' : ''}>Editor</option>
-              <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-            </select>
-            <button data-user-id="${user.user_id}" class="save-role">Save</button>
+        suggestions.slice(-50).reverse().forEach((s, index) => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-entry';
+          div.innerHTML = `
+            <div><strong>${s.key}</strong> (${s.lang})</div>
+            <div><em>Suggested:</em> ${s.suggestion}</div>
+            <div><em>Original:</em> ${s.original || '—'}</div>
+            <div><small>by ${s.userEmail} at ${new Date(s.submittedAt).toLocaleString()}</small></div>
+            <button class="approve-btn" data-index="${index}">Approve</button>
+            <button class="reject-btn" data-index="${index}">Reject</button>
+            <hr />
           `;
-          userList.appendChild(userItem);
+          suggestionList.appendChild(div);
         });
 
-
-        document.addEventListener('DOMContentLoaded', async () => {
-          try {
-            const response = await fetch('/api/admin?type=welcome', {
-              headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-              }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-              const container = document.getElementById('welcome-content');
-
-              result.welcomeContent.forEach(item => {
-                const section = document.createElement('div');
-                section.classList.add('welcome-section');
-
-                const title = document.createElement('h2');
-                title.textContent = item.title;
-
-                const description = document.createElement('p');
-                description.textContent = item.description;
-
-                const link = document.createElement('a');
-                link.href = item.link;
-                link.textContent = 'Go to section';
-
-                section.appendChild(title);
-                section.appendChild(description);
-                section.appendChild(link);
-
-                container.appendChild(section);
-              });
-            } else {
-              console.error('Failed to load welcome content:', result.error);
-            }
-          } catch (error) {
-            console.error('Error fetching welcome content:', error);
-          }
+        suggestionList.querySelectorAll('.approve-btn').forEach(btn => {
+          btn.addEventListener('click', () => handleSuggestionAction(btn.dataset.index, 'approve'));
         });
-
-        document.querySelectorAll('.save-role').forEach(btn => {
-          btn.addEventListener('click', async e => {
-            const userId = e.target.dataset.userId;
-            const select = document.querySelector(`select[data-user-id='${userId}']`);
-            const newRole = select.value;
-            btn.textContent = 'Saving...';
-            btn.disabled = true;
-
-            const success = await updateUserRole(userId, newRole);
-            btn.textContent = 'Save';
-            btn.disabled = false;
-
-            if (success) showToast('Role updated', 'success');
-            else showMessage('Failed to update role', 'error');
-          });
+        suggestionList.querySelectorAll('.reject-btn').forEach(btn => {
+          btn.addEventListener('click', () => handleSuggestionAction(btn.dataset.index, 'reject'));
         });
-      } catch (err) {
-        console.error('Load user error:', err);
-        userList.innerHTML = '<p class="error">Error loading users.</p>';
-        showMessage('Could not load users', 'error');
+      } catch (error) {
+        console.error('Failed to load translation suggestions:', error);
+        suggestionList.textContent = 'Error loading suggestions.';
       }
     }
+
+    function handleSuggestionAction(index, action) {
+      const entry = document.querySelectorAll('.suggestion-entry')[index];
+      if (!entry) return;
+      entry.style.opacity = 0.3;
+      entry.innerHTML += `<div><em>${action === 'approve' ? 'Approved' : 'Rejected'} ✔</em></div>`;
+    }
+
+    inviteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('invite-email').value;
+      const lang = document.getElementById('invite-lang').value;
+      const key = document.getElementById('invite-key').value;
+      const role = document.getElementById('invite-role').value;
+
+      try {
+        const res = await fetch('/api/admin/invite-translator', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, lang, key, role })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          inviteStatus.textContent = `Invitation sent to ${email}`;
+          inviteStatus.style.color = 'green';
+          inviteForm.reset();
+        } else {
+          inviteStatus.textContent = `Failed to send: ${result.error}`;
+          inviteStatus.style.color = 'red';
+        }
+      } catch (err) {
+        inviteStatus.textContent = 'Error sending invitation';
+        inviteStatus.style.color = 'red';
+      }
+    });
   </script>
 </body>
 

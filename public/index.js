@@ -1,3 +1,6 @@
+// index.js – ApproVideo Homepage Entry Script
+// Handles dynamic category → subcategory → video display, initial JSON load, and merging API results
+
 import {
   initCategoryUI,
   renderCategories,
@@ -22,194 +25,88 @@ let displayList = [];
 let itemsLoaded = 0;
 const pageSize = 16;
 
-// Fetch and display content based on current filters
-async function loadContent() {
-  try {
-    // Show loading state
-    const contentContainer = document.getElementById('content-container');
-    const subcategoryContainer = document.getElementById('subcategory-container');
-    const resultsInfo = document.getElementById('results-info');
-    
-    if (itemsLoaded === 0) {
-      contentContainer.innerHTML = '<div class="loading">Loading content...</div>';
-    }
+// Basic schema validation for video items
+function isValidVideoItem(item) {
+  return (
+    item &&
+    typeof item === 'object' &&
+    typeof item.id === 'string' &&
+    typeof item.title === 'string' &&
+    typeof item.youtubeId === 'string'
+  );
+}
 
-    // Handle main page view vs category view vs subcategory view
-    if (!currentCategory) {
-      // Main homepage view - only show categories, hide subcategories and content
-      if (subcategoryContainer) subcategoryContainer.style.display = 'none';
-      if (contentContainer) contentContainer.style.display = 'none';
-      if (resultsInfo) resultsInfo.style.display = 'none';
-      return;
-    } else {
-      // Category selected - show subcategories
-      if (subcategoryContainer) subcategoryContainer.style.display = 'block';
-      
-      // If no subcategory is selected yet, don't load content
-      if (!currentSubcategory && !currentSearchTerm) {
-        if (contentContainer) contentContainer.style.display = 'none';
-        if (resultsInfo) resultsInfo.style.display = 'none';
-        return;
-      } else {
-        // Subcategory or search term exists - show content area
-        if (contentContainer) contentContainer.style.display = 'block';
-        if (resultsInfo) resultsInfo.style.display = 'block';
-      }
-    }
-
-    // Build query parameters
-    const params = new URLSearchParams();
-    if (currentCategory) params.append('category', currentCategory);
-    if (currentSubcategory) params.append('subcategory', currentSubcategory);
-    if (currentSearchTerm) params.append('search', currentSearchTerm);
-    params.append('sort', currentSort);
-    params.append('offset', itemsLoaded);
-    params.append('limit', pageSize);
-
-    // Fetch content from API
-    const url = `${API_BASE_URL}/content?${params.toString()}`;
-    console.log(`Fetching content with URL: ${url}`);
-    
-    let response;
-    try {
-      response = await fetch(url);
-    } catch (err) {
-      console.warn('API fetch failed, falling back to static data:', err);
-      // Fallback to static data file if API fails
-      response = await fetch('/data/content.json');
-    }
-    
-    if (!response.ok) {
-      throw new Error(`Failed to load content: ${response.status} ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    let items = [];
-    
-    // Handle both API response format and static JSON format
-    if (Array.isArray(data)) {
-      // Static JSON format
-      items = data;
-      
-      // Apply filters manually for static data
-      if (currentCategory) {
-        items = items.filter(item => 
-          item.category && item.category.toLowerCase() === currentCategory.toLowerCase()
-        );
-      }
-      
-      if (currentSubcategory) {
-        items = items.filter(item => 
-          item.subcategory && item.subcategory.toLowerCase() === currentSubcategory.toLowerCase()
-        );
-      }
-      
-      if (currentSearchTerm) {
-        const searchLower = currentSearchTerm.toLowerCase();
-        items = items.filter(item => 
-          (item.title && item.title.toLowerCase().includes(searchLower)) ||
-          (item.description && item.description.toLowerCase().includes(searchLower)) ||
-          (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchLower)))
-        );
-      }
-      
-      // Manual sorting for static data
-      switch (currentSort) {
-        case 'date':
-          items.sort((a, b) => new Date(b.date) - new Date(a.date));
-          break;
-        case 'views':
-          items.sort((a, b) => (b.views || 0) - (a.views || 0));
-          break;
-        case 'title':
-          items.sort((a, b) => a.title.localeCompare(b.title));
-          break;
-        case 'duration':
-          items.sort((a, b) => (b.duration || 0) - (a.duration || 0));
-          break;
-      }
-      
-      // Manual pagination
-      const total = items.length;
-      items = items.slice(itemsLoaded, itemsLoaded + pageSize);
-      
-      // First load - replace content
-      if (itemsLoaded === 0) {
-        displayList = items;
-        contentContainer.innerHTML = '';
-      } else {
-        // Append content
-        displayList = [...displayList, ...items];
-      }
-      
-      // Update loaded items count
-      itemsLoaded = displayList.length;
-      
-      // Show/hide load more button based on if there are more items
-      const loadMoreBtn = document.getElementById('load-more');
-      if (loadMoreBtn) {
-        loadMoreBtn.style.display = itemsLoaded < total ? 'block' : 'none';
-      }
-      
-      // Update results count
-      const resultsCount = document.getElementById('results-count');
-      if (resultsCount) {
-        resultsCount.textContent = `${total} results`;
-      }
-    } else {
-      // API response format
-      items = data.items || [];
-      
-      // First load - replace content
-      if (itemsLoaded === 0) {
-        displayList = items;
-        contentContainer.innerHTML = '';
-      } else {
-        // Append content
-        displayList = [...displayList, ...items];
-      }
-      
-      // Update loaded items count
-      itemsLoaded = displayList.length;
-      
-      // Show/hide load more button based on if there are more items
-      const loadMoreBtn = document.getElementById('load-more');
-      if (loadMoreBtn) {
-        loadMoreBtn.style.display = data.hasMore ? 'block' : 'none';
-      }
-      
-      // Update results count
-      const resultsCount = document.getElementById('results-count');
-      if (resultsCount) {
-        resultsCount.textContent = `${data.total} results`;
-      }
-    }
-    
-    // Render content items
-    renderContentItems(displayList, contentContainer);
-    
-  } catch (err) {
-    console.error('Error loading content:', err);
-    const contentContainer = document.getElementById('content-container');
-    contentContainer.innerHTML = '<div class="error">Failed to load content. Please try again later.</div>';
+function sortDisplayList() {
+  switch (currentSort) {
+    case 'views':
+      displayList.sort((a, b) => (b.views || 0) - (a.views || 0));
+      break;
+    case 'title':
+      displayList.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'duration':
+      displayList.sort((a, b) => (b.duration || 0) - (a.duration || 0));
+      break;
+    default:
+      displayList.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 }
 
-// Render content items to the container
+// New function: Load videos from local JSON and merge with API
+async function loadMergedContent() {
+  try {
+    const localRes = await fetch('/data/videos_org_site.json');
+    const localVideos = await localRes.json();
+
+    let mergedVideos = [...localVideos];
+
+    try {
+      const apiRes = await fetch(`${API_BASE_URL}/videos`);
+      if (apiRes.ok) {
+        const apiData = await apiRes.json();
+        const seen = new Set(localVideos.map(v => v.id));
+        const newItems = apiData.items?.filter(v => !seen.has(v.id)) || [];
+        mergedVideos = [...localVideos, ...newItems];
+      } else {
+        console.warn('API videos fetch failed:', apiRes.statusText);
+      }
+    } catch (apiErr) {
+      console.warn('Error contacting /api/videos:', apiErr);
+    }
+
+    // Filter with schema validation
+    displayList = mergedVideos.filter(isValidVideoItem);
+    itemsLoaded = displayList.length;
+
+    const contentContainer = document.getElementById('content-container');
+    contentContainer.innerHTML = '';
+    renderContentItems(displayList, contentContainer);
+
+    const loadMoreBtn = document.getElementById('load-more');
+    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+
+    const resultsCount = document.getElementById('results-count');
+    if (resultsCount) resultsCount.textContent = `${displayList.length} results`;
+
+  } catch (err) {
+    console.error('Error loading initial video data:', err);
+    const contentContainer = document.getElementById('content-container');
+    if (contentContainer) {
+      contentContainer.innerHTML = '<div class="error">Failed to load initial video data.</div>';
+    }
+  }
+}
+
 function renderContentItems(items, container) {
   if (items.length === 0 && itemsLoaded === 0) {
     container.innerHTML = '<div class="no-results">No content found. Try adjusting your filters.</div>';
     return;
   }
-  
-  // For initial load, clear the container first
   if (itemsLoaded === 0) {
     container.innerHTML = '';
   }
-  
-  // Create and append content item elements
   items.forEach((item, index) => {
-    // Only render new items (avoid duplicates)
+    if (!isValidVideoItem(item)) return;
     if (index >= itemsLoaded - items.length) {
       const itemElement = createContentItemElement(item);
       container.appendChild(itemElement);
@@ -217,17 +114,15 @@ function renderContentItems(items, container) {
   });
 }
 
-// Create a DOM element for a content item
 function createContentItemElement(item) {
   const itemElement = document.createElement('div');
   itemElement.className = 'content-item';
   itemElement.dataset.id = item.id;
-  
-  // Create thumbnail with play button overlay
+
   const thumbnail = document.createElement('div');
   thumbnail.className = 'thumbnail';
   thumbnail.innerHTML = `
-    <img src="${item.thumbnail || '/images/placeholder.jpg'}" alt="${item.title}">
+    <img src="${item.thumbnail || '/assets/placeholder.gif'}" alt="${item.title}">
     <div class="play-overlay">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -235,8 +130,7 @@ function createContentItemElement(item) {
     </div>
     <div class="duration">${formatDuration(item.duration)}</div>
   `;
-  
-  // Create content details
+
   const details = document.createElement('div');
   details.className = 'item-details';
   details.innerHTML = `
@@ -247,29 +141,44 @@ function createContentItemElement(item) {
     </div>
     <p class="item-description">${item.description || ''}</p>
   `;
-  
-  // Append elements to item
+
   itemElement.appendChild(thumbnail);
   itemElement.appendChild(details);
-  
-  // Add click handler to navigate to content
-  itemElement.addEventListener('click', () => {
-    window.location.href = `/view/${item.id}`;
-  });
-  
+
+  itemElement.addEventListener('click', () => openDetailPanel(item));
+
   return itemElement;
 }
 
-// Fetch category data dynamically
+function openDetailPanel(item) {
+  const panel = document.getElementById('video-detail-panel');
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="panel-overlay">
+      <div class="panel-content">
+        <button class="close-panel">×</button>
+        <h2>${item.title}</h2>
+        <iframe src="https://www.youtube.com/embed/${item.youtubeId}" frameborder="0" allowfullscreen></iframe>
+        <p>${item.description}</p>
+        <ul>
+          ${item.additionalInfo?.map(i => `<li>${i}</li>`).join('') || ''}
+        </ul>
+      </div>
+    </div>
+  `;
+  panel.style.display = 'block';
+  panel.querySelector('.close-panel').addEventListener('click', () => {
+    panel.style.display = 'none';
+    panel.innerHTML = '';
+  });
+}
+
 async function loadCategories() {
   try {
-    // Fetch categories from the local JSON file
     const res = await fetch('/data/categories.json');
     if (!res.ok) throw new Error('Failed to load categories');
-    
     const data = await res.json();
-    
-    // Transform category structure for compatibility with your UI modules
+
     categoriesData = data.map(area => ({
       id: area.area,
       name: area.area,
@@ -280,12 +189,11 @@ async function loadCategories() {
         tags: sub.tags
       }))
     }));
-    
+
     initCategoryUI(categoriesData);
     renderCategories(document.getElementById('category-container'));
     updateBreadcrumb(document.getElementById('breadcrumb'));
-    
-    // Check for preferred category
+
     const preferredCats = getPreferredCategories();
     if (preferredCats.length > 0) {
       const defaultCat = preferredCats[0];
@@ -296,8 +204,8 @@ async function loadCategories() {
     } else {
       updateBreadcrumb(document.getElementById('breadcrumb'));
     }
-    
-    loadContent();
+
+    loadMergedContent();
   } catch (err) {
     console.error('Error loading categories:', err);
     const categoryContainer = document.getElementById('category-container');
@@ -307,126 +215,38 @@ async function loadCategories() {
   }
 }
 
-// Event handlers for UI interactions
 function setupEventListeners() {
-  // Search input
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce((e) => {
-      currentSearchTerm = e.target.value.trim();
-      itemsLoaded = 0; // Reset for new search
-      loadContent();
-    }, 500));
-  }
+
+  document.getElementById('sort-selector').addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    sortDisplayList();
+    renderContentItems(displayList, document.getElementById('content-container'));
+  });
   
-  // Sort selector
-  const sortSelector = document.getElementById('sort-selector');
-  if (sortSelector) {
-    sortSelector.addEventListener('change', (e) => {
-      currentSort = e.target.value;
-      itemsLoaded = 0; // Reset for new sort
-      loadContent();
+  document.addEventListener('languageChanged', e => {
+    const lang = e.detail.language;
+    fetch(`/data/translations/${lang}.json`).then(res => res.json()).then(data => {
+      document.querySelectorAll('[data-i18n-key]').forEach(el => {
+        const key = el.dataset.i18nKey;
+        if (data.category?.[key]) el.textContent = data.category[key];
+        if (data.subcategory?.[key]) el.textContent = data.subcategory[key];
+      });
     });
-  }
-  
-  // Load more button
-  const loadMoreBtn = document.getElementById('load-more');
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => {
-      loadContent(); // Will load next page based on current itemsLoaded
-    });
-  }
-  
-  // Category selection (delegate to parent)
-  const categoryContainer = document.getElementById('category-container');
-  if (categoryContainer) {
-    categoryContainer.addEventListener('click', (e) => {
-      const catElement = e.target.closest('[data-category-id]');
-      if (catElement) {
-        const categoryId = catElement.dataset.categoryId;
-        currentCategory = categoryId;
-        currentSubcategory = null;
-        itemsLoaded = 0; // Reset for new category
-        
-        // Update UI
-        setActiveCategory(categoryId);
-        renderSubcategories(document.getElementById('subcategory-links'), categoryId);
-        updateBreadcrumb(document.getElementById('breadcrumb'), categoryId);
-        
-        // Add to preferred categories
-        addPreferredCategory(categoryId);
-        
-        // Load filtered content - this will just show subcategories since no subcategory is selected
-        loadContent();
-      }
-    });
-  }
-  
-  // Subcategory selection (delegate to parent)
-  const subcategoryLinks = document.getElementById('subcategory-links');
-  if (subcategoryLinks) {
-    subcategoryLinks.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A' || e.target.closest('a')) {
-        e.preventDefault();
-        const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
-        const subcategoryId = link.dataset.subcategoryId;
-        const categoryId = link.dataset.categoryId;
-        
-        currentSubcategory = subcategoryId;
-        itemsLoaded = 0; // Reset for new subcategory
-        
-        // Update UI
-        const activeLinks = subcategoryLinks.querySelectorAll('.active');
-        activeLinks.forEach(el => el.classList.remove('active'));
-        link.classList.add('active');
-        
-        updateBreadcrumb(
-          document.getElementById('breadcrumb'), 
-          categoryId, 
-          subcategoryId
-        );
-        
-        // Load filtered content - now will show the subcategory content
-        loadContent();
-      }
-    });
-  }
-  
-  // "Show all" link (if it exists in your UI)
-  const showAllLink = document.getElementById('show-all-link');
-  if (showAllLink) {
-    showAllLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      currentSubcategory = null;
-      currentSearchTerm = '';
-      itemsLoaded = 0;
-      
-      // Update UI - remove active state from all subcategory links
-      const subcategoryLinks = document.getElementById('subcategory-links');
-      if (subcategoryLinks) {
-        const activeLinks = subcategoryLinks.querySelectorAll('.active');
-        activeLinks.forEach(el => el.classList.remove('active'));
-      }
-      
-      // Update search input 
-      const searchInput = document.getElementById('search-input');
-      if (searchInput) {
-        searchInput.value = '';
-      }
-      
-      updateBreadcrumb(document.getElementById('breadcrumb'), currentCategory);
-      
-      // Load all content for the current category
-      loadContent();
-    });
-  }
+  });
 }
 
-// Initialize the application
 function init() {
   loadCategories();
   setupEventListeners();
 }
 
-// Start the application
 init();
+
+/*
+🟢 Launch Tips:
+1. Log load times for both JSON + API fetches to monitor performance.
+2. Add visual feedback if fallback occurs.
+3. Ensure /api/videos supports sorting/pagination if desired later.
+4. Periodically sync /data/videos_org_site.json with fresh curated data.
+5. Cache merged result in session/local storage for quick back-navigation.
+*/

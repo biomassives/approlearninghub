@@ -1,45 +1,305 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-    <head> 
-        <meta charset="UTF-8" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-        
-        <title>ApproVideo Dashboard</title> 
-        <link rel="stylesheet" href="/css/dashboard.css" /> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="dashboard_title">ApproVideo Hub - Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="ApproVideo Hub Dashboard - Access learning resources">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  
+  <style>
+    /* Dashboard specific styles */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
     
-    </head> 
-        
-        <body> <div class="container"> 
-            
-            <header> <h1>ApproVideo Dashboard</h1> <div class="header-controls"> 
-            <button id="logout-btn">Logout</button> 
-        </div> </header>
+    .welcome-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    
+    .dashboard-card h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .content-card {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    
+    .content-card-image {
+      height: 150px;
+      background-color: #f5f5f5;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .content-card-body {
+      padding: 15px;
+    }
+    
+    .content-card-title {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    
+    .content-card-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+    
+    .content-card-link {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    #logout-button {
+      background-color: transparent;
+      border: 1px solid #dc3545;
+      color: #dc3545;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    #logout-button:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .main-nav li {
+      margin-right: 20px;
+    }
+    
+    .main-nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      padding: 5px 0;
+    }
+    
+    .main-nav a.active {
+      border-bottom: 2px solid white;
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .main-nav li {
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand-name" data-i18n="brand_name">ApproVideo Hub</div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/dashboard.html" class="active" data-i18n="nav_dashboard">Dashboard</a></li>
+        <li><a href="/library.html" data-i18n="nav_library">Library</a></li>
+        <li><a href="/community.html" data-i18n="nav_community">Community</a></li>
+      </ul>
+    </nav>
+    <div class="user-controls">
+      <span id="user-name">...</span>
+      <button id="logout-button" data-i18n="logout_button">Logout</button>
+    </div>
+  </header>
 
-    <div id="auth-status" style="display: none;">
-      <h2>Authentication Required</h2>
-      <p>Please log in to access your dashboard.</p>
-      <button id="login-redirect">Go to Login</button>
-    </div>
-    
-    <div id="dashboard-content" style="display: none;">
-      <section class="dashboard-section">
-        <h2>Welcome, <span id="user-role-label"></span></h2>
-        <p>You have access to the following tools:</p>
-        <ul id="dashboard-tools-list"></ul>
-      </section>
-    
-      <section class="dashboard-section">
-        <h2>Quick Access</h2>
-        <div class="quick-links">
-          <a href="/community-milestones">View Milestones</a>
-          <a href="/library.html">Library</a>
-          <a href="/modules.html">Modules</a>
-          <a href="/clinics.html">Clinics</a>
+  <main class="dashboard-container" role="main">
+    <section class="welcome-section">
+      <h1 data-i18n="dashboard_welcome">Welcome to Your Dashboard</h1>
+      <p id="user-welcome-message" data-i18n="dashboard_loading">Loading your personalized dashboard...</p>
+    </section>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h2>Featured Content</h2>
+        <div id="featured-content">
+          <div class="loading">Loading...</div>
         </div>
-      </section>
+      </div>
+      
+      <div class="dashboard-card">
+        <h2>Recent Activity</h2>
+        <p>You haven't started any activities yet.</p>
+        <p><a href="/library.html">Browse available content</a></p>
+      </div>
+      
+      <div class="dashboard-card">
+        <h2>Community Updates</h2>
+        <p>Stay connected with the latest events and news.</p>
+        <p><a href="/community.html">View community page</a></p>
+      </div>
     </div>
+  </main>
+
+  <footer class="page-footer">
+    <p>
+      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | 
+      <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a>
+    </p>
+  </footer>
+
+  <script type="module">
+    import authService from './js/auth-service.js';
+    import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
     
-    </div> 
+    // Check authentication
+    async function checkAuth() {
+      try {
+        const result = await authService.checkAccess();
+        
+        if (!result.success) {
+          // Redirect to login page
+          window.location.href = '/index.html';
+          return;
+        }
+        
+        // User is authenticated
+        const user = result.user;
+        
+        // Update UI with user info
+        document.getElementById('user-name').textContent = user.email;
+        document.getElementById('user-welcome-message').textContent = 
+          `Welcome back, ${user.email.split('@')[0]}! Here's what's new today.`;
+          
+      } catch (error) {
+        console.error('Auth check error:', error);
+        // Redirect to login page
+        window.location.href = '/index.html';
+      }
+    }
     
-    <script type="module" src="/js/dashboard.js"></script>
- </body> </html>
+    // Fetch featured content
+    async function loadFeaturedContent() {
+      try {
+        const response = await fetch('/api/content/featured?limit=3');
+        const data = await response.json();
+        
+        const contentContainer = document.getElementById('featured-content');
+        
+        if (!data.success || !data.data || data.data.length === 0) {
+          contentContainer.innerHTML = '<p>No featured content available at this time.</p>';
+          return;
+        }
+        
+        let html = '';
+        data.data.forEach(item => {
+          html += `
+            <div class="content-card">
+              <div class="content-card-image" style="background-image: url('${item.thumbnail || '/images/default-thumbnail.jpg'}')"></div>
+              <div class="content-card-body">
+                <h3 class="content-card-title">${item.title}</h3>
+                <div class="content-card-meta">${item.type}</div>
+                <p>${item.description || ''}</p>
+                <a href="${item.url || `/content/${item.id}`}" class="content-card-link">View</a>
+              </div>
+            </div>
+          `;
+        });
+        
+        contentContainer.innerHTML = html;
+        
+      } catch (error) {
+        console.error('Error loading featured content:', error);
+        document.getElementById('featured-content').innerHTML = 
+          '<p>Error loading content. Please try again later.</p>';
+      }
+    }
+    
+    // Handle logout
+    function setupLogout() {
+      const logoutButton = document.getElementById('logout-button');
+      if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+          try {
+            await authService.logout();
+            window.location.href = '/index.html';
+          } catch (error) {
+            console.error('Logout error:', error);
+            alert('Failed to log out. Please try again.');
+          }
+        });
+      }
+    }
+    
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Apply translations
+        await applyTranslations();
+        initLanguageSwitcher();
+        
+        // Check if user is authenticated
+        await checkAuth();
+        
+        // Load dashboard content
+        loadFeaturedContent();
+        
+        // Set up logout handler
+        setupLogout();
+        
+      } catch (error) {
+        console.error('Dashboard initialization error:', error);
+      }
+    });
+  </script>
+</body>
+</html>

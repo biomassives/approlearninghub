@@ -1,0 +1,105 @@
+// /api/index.js
+require('dotenv').config();
+
+console.log('▶️ Loaded env:', {
+  SUPABASE_URL: !!process.env.SUPABASE_URL,
+  SERVICE_ROLE_KEY: !!process.env.SERVICE_ROLE_KEY
+});
+
+const express = require('express');
+const serverless = require('serverless-http');
+const cookieParser = require('cookie-parser');
+
+// Add debug middleware
+const { addDebugMiddleware } = require('./api-debug');
+
+// your existing routers
+const authRouter = require('./routes/auth');
+const adminRouter = require('./admin');
+const publicRouter = require('./public');
+const libraryRouter = require('./library');
+const expertRouter = require('./expert');
+const libraryMgmtRouter = require('./librarymgmt');
+const diagnosticsRouter = require('./diagnostics');
+const dashboardsRouter = require('./dashboards');
+const translationsRouter = require('./translations');
+
+// our content router
+const contentRouter = require('./content');
+
+const app = express();
+
+// Add debug middleware first
+addDebugMiddleware(app);
+
+// ——— Global Middleware ————————————————————————————
+app.use(express.json());
+app.use(cookieParser());
+app.use((req, res, next) => {
+  // CORS for local testing—lock this down in prod!
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
+// Special handling for direct API endpoint testing
+// This helps with Vercel routing to ensure /api/content works directly
+app.use('/api/content', contentRouter);
+
+// Mount domain routers for regular Express use
+app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
+app.use('/public', publicRouter);
+app.use('/library', libraryRouter);
+app.use('/expert', expertRouter);
+app.use('/librarymgmt', libraryMgmtRouter);
+app.use('/diagnostics', diagnosticsRouter);
+app.use('/dashboards', dashboardsRouter);
+app.use('/translations', translationsRouter);
+app.use('/content', contentRouter); // Also mount at /content for Express direct use
+
+// Alias `/api/videos` to the public/videos handler
+app.get('/videos', async (req, res) => {
+  const { handleVideos } = require('./lib/publicHandlers');
+  console.log('👉 Root /videos hit with query:', req.query);
+  return handleVideos(req, res);
+});
+
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// 404 for everything else under /api
+app.use('*', (req, res) => {
+  console.log(`⚠️ No route found for ${req.method} ${req.originalUrl}`);
+  res
+    .status(404)
+    .json({ error: `No route for ${req.method} ${req.originalUrl}` });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('🔥 GLOBAL ERROR:', err.stack || err);
+  res
+    .status(err.status || 500)
+    .json({ success: false, error: err.message || 'Internal server error' });
+});
+
+module.exports = app;
+module.exports.handler = serverless(app);
+
+if (require.main === module) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`🚀 Express listening on http://localhost:${port}`);
+    console.log(`Try accessing http://localhost:${port}/api/content/featured`);
+    console.log(`Or http://localhost:${port}/health for a quick health check`);
+  });
+}

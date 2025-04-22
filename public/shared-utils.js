@@ -130,11 +130,19 @@ export function saveStoredEvents(events, key = 'dashboardEvents') {
 }
 
 
-
-
 export function formatDateRange(start, end) {
   const s = new Date(start).toLocaleDateString();
   const e = new Date(end).toLocaleDateString();
   return s === e ? s : `${s} - ${e}`;
+}
+
+
+// Debounce utility (waits before calling the function again)
+export function debounce(func, delay = 300) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
 }
 

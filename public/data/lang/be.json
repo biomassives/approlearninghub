@@ -1,0 +1,115 @@
+{
+    "login_title": "অ্যাপ্রোভিডিও হাবে লগ ইন করুন",
+    "email_label": "ইমেইল ঠিকানা",
+    "password_label": "পাসওয়ার্ড",
+    "login_button": "লগ ইন",
+    "signup_link": "অ্যাকাউন্ট নেই? সাইন আপ করুন",
+    "forgot_password": "পাসওয়ার্ড ভুলে গেছেন?",
+    "remember_me": "আমাকে মনে রাখুন",
+    "login_success": "লগইন সফল! আপনার ড্যাশবোর্ডে পুনঃনির্দেশিত হচ্ছে...",
+    "login_failed": "লগইন ব্যর্থ হয়েছে। আপনার ইমেইল এবং পাসওয়ার্ড চেক করুন।",
+    "already_logged_in": "আপনি ইতিমধ্যে লগ ইন করেছেন। ড্যাশবোর্ডে পুনঃনির্দেশিত হচ্ছে...",
+    "unexpected_error": "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "email_required": "ইমেইল প্রয়োজন",
+    "email_invalid": "একটি বৈধ ইমেইল ঠিকানা লিখুন",
+    "password_required": "পাসওয়ার্ড প্রয়োজন",
+    "password_too_short": "পাসওয়ার্ড কমপক্ষে ৮ অক্ষর হতে হবে",
+    "secure_connection": "নিরাপদ সংযোগ",
+    "insecure_connection": "অনিরাপদ সংযোগ",
+    
+    "dashboard_title": "ড্যাশবোর্ড",
+    "welcome_message": "অ্যাপ্রোভিডিও হাবে স্বাগতম, {{name}}!",
+    "resources_available": "উপলব্ধ সম্পদ",
+    "upcoming_workshops": "আসন্ন ওয়ার্কশপ",
+    "global_impact": "বিশ্বব্যাপী প্রভাব",
+    "timeline_header": "সাম্প্রতিক কার্যকলাপ",
+    "featured_content": "বৈশিষ্ট্যযুক্ত কন্টেন্ট",
+    "view_all": "সব দেখুন",
+    
+    "profile_header": "ব্যবহারকারী প্রোফাইল",
+    "account_info": "অ্যাকাউন্ট তথ্য",
+    "name_label": "নাম",
+    "role_label": "ভূমিকা",
+    "preferences": "পছন্দসমূহ",
+    "language_preference": "ভাষা",
+    "notifications_preference": "ইমেইল বিজ্ঞপ্তি",
+    "areas_of_interest": "আগ্রহের ক্ষেত্র",
+    "save_changes": "পরিবর্তনগুলি সংরক্ষণ করুন",
+    "cancel": "বাতিল করুন",
+    
+    "admin_role": "প্রশাসক",
+    "expert_role": "বিশেষজ্ঞ",
+    "editor_role": "সম্পাদক",
+    "user_role": "ব্যবহারকারী",
+    
+    "lattice_protected": "ল্যাটিস সুরক্ষিত",
+    "verify_session": "সেশন যাচাই করুন",
+    "session_security": "সেশন নিরাপত্তা",
+    
+    "logout": "লগ আউট",
+    "settings": "সেটিংস",
+    "profile": "প্রোফাইল",
+    
+    /* Signup page translations */
+    "signup_title": "অ্যাকাউন্ট তৈরি করুন",
+    "signup_button": "অ্যাকাউন্ট তৈরি করুন",
+    "already_have_account": "ইতিমধ্যে একটি অ্যাকাউন্ট আছে? লগ ইন করুন",
+    "confirm_password_label": "পাসওয়ার্ড নিশ্চিত করুন",
+    "confirm_password_required": "অনুগ্রহ করে আপনার পাসওয়ার্ড নিশ্চিত করুন",
+    "passwords_dont_match": "পাসওয়ার্ডগুলি মেলে না",
+    "role_required": "অনুগ্রহ করে একটি ভূমিকা নির্বাচন করুন",
+    "terms_required": "আপনাকে অবশ্যই পরিষেবার শর্তাবলী এবং গোপনীয়তা নীতি গ্রহণ করতে হবে",
+    "registration_success": "অ্যাকাউন্ট সফলভাবে তৈরি করা হয়েছে! পুনঃনির্দেশিত হচ্ছে...",
+    "signup_failed": "নিবন্ধন ব্যর্থ হয়েছে",
+    "processing": "প্রক্রিয়াকরণ হচ্ছে...",
+    
+    /* Password strength indicator */
+    "password_weak": "দুর্বল",
+    "password_fair": "মোটামুটি",
+    "password_good": "ভালো",
+    "password_strong": "শক্তিশালী",
+    "password_requirements": "পাসওয়ার্ডে অবশ্যই কমপক্ষে একটি বড় হাতের অক্ষর, একটি ছোট হাতের অক্ষর এবং একটি সংখ্যা থাকতে হবে",
+    
+    /* Email verification page */
+    "check_email_title": "আপনার ইমেইল চেক করুন",
+    "verification_message": "আমরা আপনার ইমেইল ঠিকানায় একটি নিশ্চিতকরণ লিঙ্ক পাঠিয়েছি।<br>অনুগ্রহ করে আপনার ইনবক্স চেক করুন এবং আপনার অ্যাকাউন্ট যাচাই করতে লিঙ্কে ক্লিক করুন।",
+    "important_note": "<span class=\"font-medium\">গুরুত্বপূর্ণ:</span> যদি আপনি ইমেইলটি না দেখতে পান, তবে আপনার স্প্যাম ফোল্ডার চেক করুন। ইমেইলটি কয়েক মিনিটের মধ্যে আসা উচিত।",
+    "resend_countdown": "আপনি নতুন যাচাইকরণ ইমেইল অনুরোধ করতে পারবেন",
+    "resend_ready": "আপনি এখন একটি নতুন যাচাইকরণ ইমেইল অনুরোধ করতে পারেন",
+    "back_to_login": "লগইনে ফিরে যান",
+    "resend_email": "ইমেইল পুনরায় পাঠান",
+    "change_email": "ইমেইল পরিবর্তন করুন",
+    "need_help": "সাহায্য দরকার? <a href=\"mailto:support@approvideo.org\" class=\"text-indigo-600 hover:text-indigo-500\">সাপোর্টের সাথে যোগাযোগ করুন</a>",
+    "email_sent": "ইমেইল পাঠানো হয়েছে!",
+    "sending": "পাঠানো হচ্ছে...",
+    "resend_failed": "পুনরায় পাঠাতে ব্যর্থ হয়েছে",
+    
+    /* Verification success */
+    "verification_success_title": "ইমেইল যাচাই করা হয়েছে!",
+    "verification_success_message": "আপনার ইমেইল সফলভাবে যাচাই করা হয়েছে। আপনার অ্যাকাউন্ট এখন সক্রিয়।",
+    "continue_to_dashboard": "ড্যাশবোর্ডে চলুন",
+    
+    /* Role-specific translation */
+    "expert_description": "বিশেষজ্ঞ / ওয়ার্কশপ লিডার",
+    "learner_description": "শিক্ষার্থী / স্বেচ্ছাসেবক",
+    "researcher_description": "গবেষণা অবদানকারী",
+    "resources_description": "সম্পদ অনুসন্ধানকারী",
+    "organizer_description": "আয়োজক / সমন্বয়কারী",
+    
+    /* Password reset flow */
+    "forgot_password_title": "আপনার পাসওয়ার্ড রিসেট করুন",
+    "forgot_password_message": "আপনার ইমেইল ঠিকানা লিখুন এবং আমরা আপনাকে পাসওয়ার্ড রিসেট করার জন্য একটি লিঙ্ক পাঠাব।",
+    "send_reset_link": "রিসেট লিঙ্ক পাঠান",
+    "reset_link_sent": "রিসেট লিঙ্ক পাঠানো হয়েছে! আপনার ইমেইল চেক করুন।",
+    "reset_password_title": "নতুন পাসওয়ার্ড তৈরি করুন",
+    "new_password_label": "নতুন পাসওয়ার্ড",
+    "confirm_new_password": "নতুন পাসওয়ার্ড নিশ্চিত করুন",
+    "reset_password_button": "পাসওয়ার্ড রিসেট করুন",
+    "password_reset_success": "আপনার পাসওয়ার্ড সফলভাবে রিসেট করা হয়েছে!",
+    
+    /* Error messages */
+    "account_not_found": "অ্যাকাউন্ট পাওয়া যায়নি",
+    "invalid_reset_token": "অবৈধ বা মেয়াদ উত্তীর্ণ রিসেট লিঙ্ক",
+    "access_denied": "অ্যাক্সেস অস্বীকৃত",
+    "session_expired": "আপনার সেশন মেয়াদ শেষ হয়ে গেছে। অনুগ্রহ করে আবার লগ ইন করুন।"
+  }

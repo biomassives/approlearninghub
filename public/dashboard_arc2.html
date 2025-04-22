@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sustainable Solutions Hub</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard-styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="module" src="/js/dashboard-translations.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="header-main">
+      <h1><span id="title-dashboard">Sustainable Solutions Hub</span></h1>
+      <div class="header-actions">
+        <div class="server-status">
+          <div class="status-indicator status-online" id="server-indicator"></div>
+          <span id="server-status">Online</span> </div>
+        <div class="user-menu">
+          <button id="user-menu-btn" class="user-menu-button">
+            <span id="user-display-name">User</span>
+            <span class="dropdown-icon">▼</span>
+          </button>
+          <div class="user-dropdown hidden" id="user-dropdown">
+            <a href="#profile" id="profile-link">Profile</a>
+            <a href="#settings" id="settings-link">Settings</a>
+            <a href="#expert-dashboard" id="expert-dashboard-link" class="expert-only hidden">Expert Dashboard</a>
+            <a href="/admin-dashboard.html" id="admin-panel-link" class="admin-only hidden">Admin Panel</a>
+            <a href="#" id="logout-btn">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+          <li><a href="#learning" class="nav-link" data-section="learning">Learning Resources</a></li>
+          <li><a href="#workshops" class="nav-link" data-section="workshops">Workshops & Clinics</a></li>
+          <li><a href="#projects" class="nav-link" data-section="projects">Implementation Projects</a></li>
+          <li><a href="#community" class="nav-link" data-section="community">Community</a></li>
+          <li class="expert-only hidden"><a href="#expert-tools" class="nav-link" data-section="expert-tools">Expert Tools</a></li>
+          <li class="admin-only hidden"><a href="/admin-dashboard.html" class="nav-link">Admin Panel</a></li>
+        </ul>
+      </nav>
+
+      <div class="lattice-info">
+        <h3 id="session-security-label">Session Security</h3>
+        <div class="security-status">
+          <span id="session-status" class="secure-badge">Lattice Protected</span>
+          <button id="verify-session-btn" class="small-btn">Verify</button>
+        </div>
+        <div id="session-info" style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">
+            Session ID: <span id="lattice-preview"></span><br>
+            Created: <span id="session-created"></span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <div id="dashboard-errors" class="error-message hidden"></div>
+      <section id="dashboard" class="dashboard-section active">
+        <h2 id="dashboard-heading">Dashboard</h2>
+        <p id="dashboard-description">Welcome to the Sustainable Solutions Hub. Access resources, join workshops, and contribute to sustainable implementation projects.</p>
+
+        <div class="welcome-banner">
+          <div class="welcome-content">
+            <h3 id="welcome-header">Welcome, <span id="user-name">User</span>!</h3>
+            <p id="welcome-message">Explore sustainable DIY solutions and connect with experts around the world.</p>
+          </div>
+          <div class="welcome-actions">
+            <button id="explore-content-btn" class="primary-btn" data-target-section="learning">Explore Content</button>
+            <button id="find-workshops-btn" class="secondary-btn" data-target-section="workshops">Find Workshops</button>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-card">
+            <h4 id="resources-available-header">Resources Available</h4>
+            <div class="stat-number" id="available-resources-count">--</div>
+            <div class="stat-categories" id="resource-categories">Loading...</div>
+          </div>
+          <div class="stat-card">
+            <h4 id="upcoming-workshops-header">Upcoming Workshops</h4>
+            <div class="stat-number" id="upcoming-workshops-count">--</div>
+            <button id="view-workshops-btn" class="text-btn" data-target-section="workshops">View Schedule</button>
+          </div>
+          <div class="stat-card">
+            <h4 id="impact-header">Global Impact</h4>
+            <div class="stat-number" id="impact-projects-count">--</div>
+            <div class="stat-label" id="impact-projects-label">Projects Implemented</div>
+          </div>
+        </div>
+
+        <h3 id="timeline-header" style="margin-top: 2rem;">Recent Activity</h3>
+        <div id="timeline-container" class="timeline-container">
+          <p id="timeline-loading" class="loading">Loading activity...</p>
+        </div>
+
+
+        <div class="content-preview">
+          <div class="preview-header">
+            <h3 id="featured-content-header">Featured Content</h3>
+            <a href="#learning" class="view-all" id="view-all-content" data-target-section="learning">View All</a>
+          </div>
+          <div class="preview-grid" id="featured-content">
+            <div class="loading">Loading featured content...</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="learning" class="dashboard-section hidden">
+        <h2 id="learning-header">Learning Resources</h2>
+        <p id="learning-description">Explore our library of sustainable solution resources across different categories.</p>
+
+        <div class="search-filter-bar">
+          <div class="search-box">
+            <input type="text" id="content-search" placeholder="Search resources...">
+          </div>
+          <div class="filter-options">
+            <select id="content-category-filter">
+              <option value="all">All Categories</option>
+              </select>
+            <select id="content-type-filter">
+              <option value="all">All Types</option>
+              <option value="guide">Guides</option>
+              <option value="tutorial">Tutorials</option>
+              <option value="reference">Reference</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="category-tabs" id="category-tabs">
+          <button class="category-tab active" data-category="all">All</button>
+          </div>
+
+        <div class="resources-grid" id="resources-grid">
+          <div class="loading">Loading resources...</div>
+        </div>
+
+        <div class="pagination" id="resources-pagination">
+          <button id="prev-resources" disabled>&laquo; Previous</button>
+          <span id="resources-page-info">Page 1 of 1</span>
+          <button id="next-resources" disabled>Next &raquo;</button>
+        </div>
+      </section>
+
+      <section id="workshops" class="dashboard-section hidden">
+        <h2 id="workshops-header">Workshops & Clinics</h2>
+        <p id="workshops-description">Join interactive workshops led by experts in sustainable solutions.</p>
+
+        <div class="search-filter-bar">
+          <div class="search-box">
+            <input type="text" id="workshop-search" placeholder="Search workshops...">
+          </div>
+          <div class="filter-options">
+            <select id="workshop-category-filter">
+              <option value="all">All Categories</option>
+              </select>
+            <select id="workshop-time-filter">
+              <option value="upcoming">Upcoming</option>
+              <option value="past">Past Workshops</option>
+              <option value="registered">My Registrations</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="workshops-calendar-view">
+          <div class="calendar-header">
+            <h3 id="calendar-title">Workshop Calendar</h3> <div class="calendar-nav">
+              <button id="prev-month" class="icon-btn">&laquo;</button>
+              <span id="current-month-year">April 2025</span> <button id="next-month" class="icon-btn">&raquo;</button>
+            </div>
+          </div>
+          <div class="calendar-grid days-header"> <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+          <div class="calendar-grid" id="workshop-calendar">
+            <div class="loading">Loading calendar...</div>
+             </div>
+        </div>
+
+        <div class="workshops-list-view">
+          <h3 id="workshops-list-title">Workshops</h3> <div class="workshops-list" id="workshops-list">
+            <div class="loading">Loading workshops...</div>
+          </div>
+           <div class="pagination" id="workshops-pagination">
+                <button id="prev-workshops" disabled>&laquo; Previous</button>
+                <span id="workshops-page-info">Page 1 of 1</span>
+                <button id="next-workshops" disabled>Next &raquo;</button>
+            </div>
+        </div>
+
+         </section>
+
+      <section id="projects" class="dashboard-section hidden">
+        <h2 id="projects-header">Implementation Projects</h2>
+        <p id="projects-description">Discover real-world implementations of sustainable solutions and track their impact.</p>
+
+        <div class="search-filter-bar">
+          <div class="search-box">
+            <input type="text" id="project-search" placeholder="Search projects...">
+          </div>
+          <div class="filter-options">
+            <select id="project-category-filter">
+              <option value="all">All Categories</option>
+              </select>
+            <select id="project-region-filter">
+              <option value="all">All Regions</option>
+              <option value="africa">Africa</option>
+              <option value="asia">Asia</option>
+              <option value="europe">Europe</option>
+              <option value="namerica">North America</option>
+              <option value="samerica">South America</option>
+              <option value="oceania">Oceania</option>
+               </select>
+             <select id="project-status-filter">
+              <option value="all">All Statuses</option>
+              <option value="planning">Planning</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="projects-map-view">
+          <h3 id="map-header">Global Implementation Map</h3>
+          <div class="map-container" id="projects-map">
+            <div class="placeholder-map">
+                Map Placeholder - Requires JavaScript mapping library integration.
+                </div>
+          </div>
+        </div>
+
+        <div class="projects-grid">
+          <h3 id="projects-list-title">Projects</h3> <div class="project-cards" id="project-cards">
+            <div class="loading">Loading projects...</div>
+          </div>
+           <div class="pagination" id="projects-pagination">
+                <button id="prev-projects" disabled>&laquo; Previous</button>
+                <span id="projects-page-info">Page 1 of 1</span>
+                <button id="next-projects" disabled>Next &raquo;</button>
+            </div>
+        </div>
+
+        <div class="join-project">
+          <h3 id="join-project-header">Want to implement a solution?</h3>
+          <p id="join-project-description">Track your own sustainable implementation project and share your impact with the community.</p>
+          <button id="start-project-btn" class="primary-btn">Start A Project</button>
+        </div>
+      </section>
+
+      <section id="community" class="dashboard-section hidden">
+        <h2 id="community-header">Community</h2>
+        <p id="community-description">Connect with other users and experts in sustainable solutions.</p>
+
+        <div class="community-grid">
+          <div class="community-card">
+            <h3 id="experts-header">Connect with Experts</h3>
+            <p id="experts-description">Find and connect with experts in various sustainable solution areas.</p>
+            <div class="experts-list" id="experts-list">
+              <div class="loading">Loading experts...</div>
+            </div>
+            <button id="find-experts-btn" class="primary-btn">Find Experts</button> </div>
+
+          <div class="community-card">
+            <h3 id="discussions-header">Discussions</h3>
+            <p id="discussions-description">Join conversations about sustainable solutions.</p>
+            <div class="discussions-list" id="discussions-list">
+              <div class="loading">Loading discussions...</div>
+            </div>
+            <button id="view-discussions-btn" class="primary-btn">View All Discussions</button> </div>
+
+          <div class="community-card">
+            <h3 id="impact-stories-header">Impact Stories</h3>
+            <p id="impact-stories-description">Read stories of successful implementations from around the world.</p>
+            <div class="impact-stories-list" id="impact-stories-list">
+              <div class="loading">Loading impact stories...</div>
+            </div>
+            <button id="view-stories-btn" class="primary-btn">View All Stories</button> </div>
+        </div>
+      </section>
+
+      <section id="expert-tools" class="dashboard-section expert-only hidden">
+        <h2 id="expert-tools-header">Expert Tools</h2>
+        <p id="expert-tools-description">Access tools and resources for creating content, hosting workshops, and reviewing community contributions.</p>
+
+        <div class="expert-cards">
+          <div class="expert-card">
+            <h3 id="content-creation-header">Content Creation</h3>
+            <p id="content-creation-description">Create and manage educational content for the community.</p>
+            <div class="expert-actions">
+              <button id="create-content-btn" class="primary-btn">Create Content</button> <button id="manage-content-btn" class="secondary-btn">Manage Content</button> </div>
+          </div>
+
+          <div class="expert-card">
+            <h3 id="workshop-management-header">Workshop Management</h3>
+            <p id="workshop-management-description">Schedule and manage workshops and clinics.</p>
+            <div class="expert-actions">
+              <button id="schedule-workshop-btn" class="primary-btn">Schedule Workshop</button> <button id="manage-workshops-btn" class="secondary-btn">Manage Workshops</button> </div>
+          </div>
+
+          <div class="expert-card">
+            <h3 id="review-queue-header">Review Queue</h3>
+            <p id="review-queue-description">Review community submissions and contributions.</p>
+            <div class="reviews-summary">
+              <div class="review-stat">
+                <span class="review-count" id="content-reviews-count">0</span>
+                <span class="review-label" id="content-reviews-label">Content Submissions</span>
+              </div>
+              <div class="review-stat">
+                <span class="review-count" id="story-reviews-count">0</span>
+                <span class="review-label" id="story-reviews-label">Impact Stories</span>
+              </div>
+               </div>
+            <div class="expert-actions">
+              <button id="review-queue-btn" class="primary-btn">Go to Review Queue</button> </div>
+          </div>
+        </div>
+
+        <div class="expert-dashboard-link">
+          <p id="expert-dashboard-main-description">For more advanced expert features, visit the Expert Dashboard.</p> <a href="/expert-dashboard.html" class="primary-btn" id="go-to-expert-dashboard">Go to Expert Dashboard</a>
+        </div>
+      </section>
+
+      <section id="admin-content" class="dashboard-section hidden">
+        <h2 id="admin-content-header">Admin Area</h2>
+        <div class="content">
+           <p>Admin functions are available via the Admin Panel link.</p>
+        </div>
+        <div id="admin-permission-denied" class="hidden">
+           <p>You do not have permission to access admin functions.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal" data-modal-id="profile-modal">&times;</span>
+      <h2 id="profile-header">User Profile</h2>
+      <div id="profile-message-container" class="message"></div>
+      <form id="profile-form">
+          <div class="profile-info">
+            <div class="profile-section">
+              <h3 id="account-info-header">Account Information</h3>
+              <div class="profile-field">
+                <label id="profile-name-label">Name:</label>
+                <span id="profile-name-display"></span> <input type="text" id="profile-name-input" class="hidden" /> <button type="button" class="edit-btn" data-field="name">Edit</button>
+              </div>
+              <div class="profile-field">
+                <label id="profile-email-label">Email:</label>
+                <span id="profile-email"></span> </div>
+              <div class="profile-field">
+                <label id="profile-role-label">Role:</label>
+                <span id="profile-role"></span>
+              </div>
+            </div>
+
+            <div class="profile-section">
+              <h3 id="preferences-header">Preferences</h3>
+              <div class="preference-field">
+                <label for="language-preference" id="language-preference-label">Language:</label>
+                <select id="language-preference">
+                  <option value="en">English</option>
+                  <option value="es">Spanish</option>
+                  <option value="fr">French</option>
+                  <option value="de">German</option>
+                   <option value="zh">Chinese</option>
+                   <option value="ar">Arabic</option>
+                  </select>
+              </div>
+              <div class="preference-field">
+                <label for="notifications-preference" id="notifications-preference-label">Email Notifications:</label>
+                <input type="checkbox" id="notifications-preference" checked>
+              </div>
+            </div>
+
+            <div class="profile-section">
+              <h3 id="expertise-header">Areas of Interest</h3>
+              <div class="expertise-areas" id="expertise-areas">
+                <p class="loading">Loading areas...</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="profile-actions modal-actions"> <button type="submit" id="save-profile-btn" class="primary-btn">Save Changes</button>
+            <button type="button" id="cancel-profile-btn" class="secondary-btn close-modal" data-modal-id="profile-modal">Cancel</button>
+          </div>
+       </form>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal" data-modal-id="settings-modal">&times;</span>
+      <h2 id="settings-header">User Settings</h2>
+
+      <div class="settings-grid">
+        <div class="settings-section">
+          <h3 id="account-management-header">Account Management</h3>
+          <div class="settings-actions">
+            <button id="change-password-btn" class="settings-btn">Change Password</button> <button id="download-data-btn" class="settings-btn">Download My Data</button>
+            <button id="delete-account-btn" class="settings-btn btn-danger">Delete Account</button> </div>
+        </div>
+
+        <div class="settings-section">
+          <h3 id="security-controls-header">Security Controls</h3>
+          <div class="settings-actions">
+            <button id="invalidate-sessions-btn" class="settings-btn">Invalidate All Other Sessions</button> <button id="refresh-session-btn" class="settings-btn">Refresh Current Session</button>
+            <button id="security-audit-btn" class="settings-btn">View Security Log</button> </div>
+        </div>
+      </div>
+
+      <div id="settings-message-container" class="message" style="margin-top: 1rem;"></div>
+      <div class="modal-actions" style="margin-top: 1rem;">
+          <button class="secondary-btn close-modal" data-modal-id="settings-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="start-project-modal" class="modal hidden">
+    <div class="modal-content wide">
+      <span class="close-modal" data-modal-id="start-project-modal">&times;</span>
+      <h2 id="start-project-header">Start Implementation Project</h2>
+       <div id="project-form-message-container" class="message"></div>
+      <form id="project-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="project-title" id="project-title-label">Project Title:</label>
+            <input type="text" id="project-title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="project-location" id="project-location-label">Location:</label>
+            <input type="text" id="project-location" name="location" placeholder="City, Country" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="project-category" id="project-category-label">Primary Category:</label>
+            <select id="project-category" name="category_id" required>
+              <option value="">Select a category</option>
+              </select>
+          </div>
+           <div class="form-group">
+             <label for="project-status" id="project-status-label">Initial Status:</label>
+             <select id="project-status" name="status" required>
+                <option value="planning">Planning</option>
+                <option value="in_progress">In Progress</option>
+             </select>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="project-description" id="project-description-label">Project Description:</label>
+          <textarea id="project-description" name="description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="project-start-date" id="project-start-date-label">Start Date:</label>
+            <input type="date" id="project-start-date" name="start_date" required>
+          </div>
+          <div class="form-group">
+            <label for="project-end-date" id="project-end-date-label">Estimated Completion Date:</label>
+            <input type="date" id="project-end-date" name="estimated_end_date"> </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="project-goals" id="project-goals-label">Project Goals (Optional):</label>
+          <textarea id="project-goals" name="goals" rows="3"></textarea>
+        </div>
+
+         <div class="form-actions">
+          <button type="submit" id="submit-project-btn" class="primary-btn">Submit Project</button> <button type="button" id="cancel-project-btn" class="secondary-btn close-modal" data-modal-id="start-project-modal">Cancel</button> </div>
+      </form>
+
+    </div>
+  </div>
+  <script type="module" src="/js/dashboard.js"></script>
+  </body>
+</html>

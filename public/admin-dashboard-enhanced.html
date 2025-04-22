@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="title-admin">Admin Panel | Sustainable Solutions Hub</title>
+<link rel="stylesheet" href="styles.css" />
+<script type="module" src="/js/dashboard-translations.js"></script>
+</head>
+
+<body>
+<header>
+<div class="header-main">
+<h1 id="title-admin">Admin Panel</h1>
+<div class="header-actions">
+  <select id="admin-view-selector">
+    <option value="overview">Overview</option>
+    <option value="users">User Management</option>
+    <option value="content">Content Management</option>
+    <option value="workshops">Workshop Management</option>
+    <option value="projects">Project Management</option>
+    <option value="impact">Impact Tracking</option>
+    <option value="translations">Translations</option>
+    <option value="system">System Settings</option>
+  </select>
+  <button id="logout-btn">Logout</button>
+</div>
+</div>
+</header>
+
+<main class="container">
+<div id="admin-overview" class="admin-section active">
+<h2>System Overview</h2>
+<p id="admin-welcome">Welcome, Admin. Manage users, content, workshops, and system metrics below.</p>
+<div id="welcome-content"></div>
+
+<div class="stats-dashboard">
+  <div class="stats-card">
+    <h3>Users</h3>
+    <div class="stat-number" id="total-users">--</div>
+    <div class="stat-details">
+      <div><span id="experts-count">--</span> Experts</div>
+      <div><span id="learners-count">--</span> Learners</div>
+    </div>
+  </div>
+  
+  <div class="stats-card">
+    <h3>Content</h3>
+    <div class="stat-number" id="total-content">--</div>
+    <div class="stat-details">
+      <div><span id="published-content">--</span> Published</div>
+      <div><span id="review-content">--</span> In Review</div>
+    </div>
+  </div>
+  
+  <div class="stats-card">
+    <h3>Workshops</h3>
+    <div class="stat-number" id="total-workshops">--</div>
+    <div class="stat-details">
+      <div><span id="upcoming-workshops">--</span> Upcoming</div>
+      <div><span id="completed-workshops">--</span> Completed</div>
+    </div>
+  </div>
+  
+  <div class="stats-card">
+    <h3>Projects</h3>
+    <div class="stat-number" id="total-projects">--</div>
+    <div class="stat-details">
+      <div><span id="active-projects">--</span> Active</div>
+      <div><span id="completed-projects">--</span> Completed</div>
+    </div>
+  </div>
+</div>
+
+<div class="recent-activity">
+  <h3>Recent System Activity</h3>
+  <div id="activity-feed" class="activity-list">
+    <div class="loading">Loading activity...</div>
+  </div>
+</div>
+
+<div class="alerts-panel">
+  <h3>System Alerts</h3>
+  <div id="system-alerts" class="alerts-list">
+    <div class="loading">Loading alerts...</div>
+  </div>
+</div>
+</div>
+
+<div id="admin-users" class="admin-section">
+<h2>User Management</h2>
+<div class="search-filter-bar">
+  <input type="text" id="user-search" placeholder="Search users...">
+  <select id="user-role-filter">
+    <option value="all">All Roles</option>
+    <option value="admin">Admins</option>
+    <option value="expert">Experts</option>
+    <option value="editor">Editors</option>
+    <option value="reviewer">Reviewers</option>
+    <option value="learner">Learners</option>
+  </select>
+  <select id="user-status-filter">
+    <option value="all">All Status</option>
+    <option value="active">Active</option>
+    <option value="pending">Pending</option>
+    <option value="suspended">Suspended</option>
+  </select>
+  <button id="add-user-btn" class="primary-btn">Add User</button>
+</div>
+
+<div id="user-list" class="data-table">
+  <div class="loading">Loading users...</div>
+</div>
+
+<div id="user-pagination" class="pagination">
+  <button id="prev-users-page" disabled>&laquo; Previous</button>
+  <span id="users-page-info">Page 1 of 1</span>
+  <button id="next-users-page" disabled>Next &raquo;</button>
+</div>
+</div>
+
+<div id="admin-content" class="admin-section">
+<h2>Content Management</h2>
+<div class="search-filter-bar">
+  <input type="text" id="content-search" placeholder="Search content...">
+  <select id="content-category-filter">
+    <option value="all">All Categories</option>
+    <!-- Categories loaded dynamically -->
+  </select>
+  <select id="content-status-filter">
+    <option value="all">All Status</option>
+    <option value="published">Published</option>
+    <option value="review">In Review</option>
+    <option value="draft">Draft</option>
+    <option value="flagged">Flagged</option>
+  </select>
+</div>
+
+<div id="content-list" class="data-table">
+  <div class="loading">Loading content...</div>
+</div>
+
+<div class="approval-section">
+  <h3>Content Approval Queue</h3>
+  <div id="content-approval-list" class="approval-list">
+    <div class="loading">Loading approval queue...</div>
+  </div>
+</div>
+</div>
+
+<div id="admin-workshops" class="admin-section">
+<h2>Workshop Management</h2>
+<div class="search-filter-bar">
+  <input type="text" id="workshop-search" placeholder="Search workshops...">
+  <select id="workshop-category-filter">
+    <option value="all">All Categories</option>
+    <!-- Categories loaded dynamically -->
+  </select>
+  <select id="workshop-status-filter">
+    <option value="all">All Status</option>
+    <option value="upcoming">Upcoming</option>
+    <option value="ongoing">Ongoing</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+</div>
+
+<div id="workshop-list" class="data-table">
+  <div class="loading">Loading workshops...</div>
+</div>
+
+<div class="workshop-metrics">
+  <h3>Workshop Metrics</h3>
+  <div class="metrics-container">
+    <div class="metric-card">
+      <h4>Total Participants</h4>
+      <div class="metric-value" id="total-participants">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Average Satisfaction</h4>
+      <div class="metric-value" id="avg-satisfaction">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Most Popular Category</h4>
+      <div class="metric-value" id="popular-category">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Most Active Expert</h4>
+      <div class="metric-value" id="active-expert">--</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="admin-projects" class="admin-section">
+<h2>Project Management</h2>
+<div class="search-filter-bar">
+  <input type="text" id="project-search" placeholder="Search projects...">
+  <select id="project-category-filter">
+    <option value="all">All Categories</option>
+    <!-- Categories loaded dynamically -->
+  </select>
+  <select id="project-status-filter">
+    <option value="all">All Status</option>
+    <option value="planning">Planning</option>
+    <option value="active">Active</option>
+    <option value="completed">Completed</option>
+    <option value="archived">Archived</option>
+  </select>
+</div>
+
+<div id="project-list" class="data-table">
+  <div class="loading">Loading projects...</div>
+</div>
+
+<div class="project-metrics">
+  <h3>Project Metrics</h3>
+  <div class="metrics-container">
+    <div class="metric-card">
+      <h4>Total Teams</h4>
+      <div class="metric-value" id="total-teams">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Projects Completed</h4>
+      <div class="metric-value" id="completed-project-count">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Success Rate</h4>
+      <div class="metric-value" id="project-success-rate">--</div>
+    </div>
+    <div class="metric-card">
+      <h4>Resource Utilization</h4>
+      <div class="metric-value" id="resource-utilization">--</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="admin-impact" class="admin-section">
+<h2>Impact Tracking</h2>
+<div class="search-filter-bar">
+  <select id="impact-view-filter">
+    <option value="stories">Impact Stories</option>
+    <option value="metrics">Impact Metrics</option>
+    <option value="regions">Regional Impact</option>
+  </select>
+  <select id="impact-category-filter">
+    <option value="all">All Categories</option>
+    <!-- Categories loaded dynamically -->
+  </select>
+  <select id="impact-time-filter">
+    <option value="all">All Time</option>
+    <option value="year">Past Year</option>
+    <option value="quarter">Past Quarter</option>
+    <option value="month">Past Month</option>
+  </select>
+</div>
+
+<div id="impact-dashboard">
+  <div class="impact-metrics-summary">
+    <div class="metric-card large">
+      <h4>People Reached</h4>
+      <div class="metric-value" id="people-reached">--</div>
+      <div class="metric-trend" id="people-trend"></div>
+    </div>
+    <div class="metric-card large">
+      <h4>Communities Served</h4>
+      <div class="metric-value" id="communities-served">--</div>
+      <div class="metric-trend" id="communities-trend"></div>
+    </div>
+    <div class="metric-card large">
+      <h4>Projects Implemented</h4>
+      <div class="metric-value" id="projects-implemented">--</div>
+      <div class="metric-trend" id="projects-trend"></div>
+    </div>
+    <div class="metric-card large">
+      <h4>Knowledge Transfers</h4>
+      <div class="metric-value" id="knowledge-transfers">--</div>
+      <div class="metric-trend" id="knowledge-trend"></div>
+    </div>
+  </div>
+  
+  <div class="impact-visualization">
+    <h3>Impact Visualization</h3>
+    <div id="impact-chart" class="chart-container">
+      <div class="placeholder-chart">Loading visualization...</div>
+    </div>
+  </div>
+  
+  <div class="impact-stories-review">
+    <h3>Impact Stories Review</h3>
+    <div id="impact-stories-list" class="approval-list">
+      <div class="loading">Loading impact stories...</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="admin-translations" class="admin-section">
+<h2>Translation Management</h2>
+
+<section id="translation-queue">
+  <h3>Translation Suggestions Queue</h3>
+  <p>Below are translations needing review and approval.</p>
+  <div class="search-filter-bar">
+    <input type="text" id="translation-search" placeholder="Search by key or content...">
+    <select id="translation-lang-filter">
+      <option value="all">All Languages</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="zh">Chinese</option>
+      <option value="ar">Arabic</option>
+      <!-- More languages loaded dynamically -->
+    </select>
+    <select id="translation-status-filter">
+      <option value="pending">Pending</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+  </div>
+  <div id="suggestion-list" class="approval-list">
+    <div class="loading">Loading suggestions...</div>
+  </div>
+</section>
+
+<section id="translation-invitations">
+  <h3>Send Translation Request</h3>
+  <form id="invite-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="invite-email">Email of Invitee:</label>
+        <input type="email" id="invite-email" required />
+      </div>
+      <div class="form-group">
+        <label for="invite-lang">Language:</label>
+        <input type="text" id="invite-lang" required />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="invite-key">Translation Key:</label>
+        <input type="text" id="invite-key" required />
+      </div>
+      <div class="form-group">
+        <label for="invite-role">Suggested Role:</label>
+        <select id="invite-role">
+          <option value="reviewer">Reviewer</option>
+          <option value="editor">Editor</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full-width">
+        <label for="invite-message">Optional Message:</label>
+        <textarea id="invite-message" placeholder="Add a personal message to the invitation..."></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="primary-btn">Send Invitation</button>
+    </div>
+  </form>
+  <div id="invite-status" class="status-message"></div>
+</section>
+
+<section id="translation-coverage">
+  <h3>Translation Coverage</h3>
+  <div id="translation-coverage-chart" class="chart-container">
+    <div class="placeholder-chart">Loading coverage data...</div>
+  </div>
+  <div class="language-priority-list">
+    <h4>Priority Languages</h4>
+    <ul id="language-priorities">
+      <li>Spanish <span class="badge">83% complete</span></li>
+      <li>French <span class="badge">72% complete</span></li>
+      <li>Arabic <span class="badge">45% complete</span></li>
+      <li>Swahili <span class="badge">12% complete</span></li>
+    </ul>
+  </div>
+</section>
+</div>
+
+<div id="admin-system" class="admin-section">
+<h2>System Settings</h2>
+
+<section id="category-management">
+  <h3>Knowledge Area Management</h3>
+  <p>Manage the knowledge areas and subcategories displayed in the expert dashboard.</p>
+  
+  <div class="category-controls">
+    <button id="add-category-btn" class="primary-btn">Add New Category</button>
+    <button id="edit-categories-btn" class="secondary-btn">Edit Categories</button>
+    <button id="export-categories-btn" class="secondary-btn">Export JSON</button>
+  </div>
+  
+  <div id="category-editor" class="category-editor">
+    <div class="loading">Loading categories...</div>
+  </div>
+</section>
+
+<section id="integration-settings">
+  <h3>Integration Settings</h3>
+  
+  <div class="settings-card">
+    <h4>Zoom Integration</h4>
+    <p>Configure credentials for automatically creating workshop meetings.</p>
+    <div class="status-indicator active">Active</div>
+    <button class="secondary-btn">Configure</button>
+  </div>
+  
+  <div class="settings-card">
+    <h4>Notion Integration</h4>
+    <p>Configure credentials and templates for collaborative workspaces.</p>
+    <div class="status-indicator active">Active</div>
+    <button class="secondary-btn">Configure</button>
+  </div>
+  <!--
+  <div class="settings-card">
+    <h4>MetaLattice Identity</h4>
+    <p>Configure secure identity settings and permissions.</p>
+    <div class="status-indicator active">Active</div>
+    <button class="secondary-btn">Configure</button>
+  </div>
+  -->
+
+  <div class="settings-card">
+    <h4>Email Notifications</h4>
+    <p>Configure notification templates and delivery settings.</p>
+    <div class="status-indicator warning">Needs Attention</div>
+    <button class="secondary-btn">Configure</button>
+  </div>
+</section>
+
+<section id="system-backup">
+  <h3>System Backup</h3>
+  <p>Manage system backups and restoration.</p>
+  
+  <div class="backup-controls">
+    <button id="create-backup-btn" class="primary-btn">Create Backup</button>
+    <button id="restore-backup-btn" class="secondary-btn">Restore from Backup</button>
+  </div>
+  
+  <div class="backup-history">
+    <h4>Backup History</h4>
+    <div id="backup-list" class="data-table small">
+      <div class="loading">Loading backup history...</div>
+    </div>
+  </div>
+</section>
+
+<div id="settings-message-container" class="message"></div>
+</div>
+</main>
+
+<!-- Modals -->
+<div id="user-edit-modal" class="modal">
+<div class="modal-content">
+<span class="close-modal">&times;</span>
+<h2 id="user-modal-title">Edit User</h2>
+<form id="user-edit-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="user-name">Name:</label>
+      <input type="text" id="user-name" required />
+    </div>
+    <div class="form-group">
+      <label for="user-email">Email:</label>
+      <input type="email" id="user-email" required />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="user-role">Role:</label>
+      <select id="user-role">
+        <option value="learner">Learner</option>
+        <option value="expert">Expert</option>
+        <option value="editor">Editor</option>
+        <option value="reviewer">Reviewer</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="user-status">Status:</label>
+      <select id="user-status">
+        <option value="active">Active</option>
+        <option value="pending">Pending</option>
+        <option value="suspended">Suspended</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group full-width">
+      <label for="user-expertise">Areas of Expertise:</label>
+      <select id="user-expertise" multiple>
+        <!-- Categories loaded dynamically -->
+      </select>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="button" id="cancel-user-edit" class="secondary-btn">Cancel</button>
+    <button type="submit" class="primary-btn">Save Changes</button>
+  </div>
+</form>
+</div>
+</div>
+
+<div id="category-edit-modal" class="modal">
+<div class="modal-content wide">
+<span class="close-modal">&times;</span>
+<h2 id="category-modal-title">Edit Category</h2>
+<form id="category-edit-form">
+  <div class="form-group">
+    <label for="category-name">Category Name:</label>
+    <input type="text" id="category-name" required />
+  </div>
+  
+  <h3>Subcategories</h3>
+  <div id="subcategories-container">
+    <!-- Subcategory fields will be dynamically added here -->
+    <div class="subcategory-row">
+      <input type="text" class="subcategory-title" placeholder="Subcategory Title" required>
+      <textarea class="subcategory-description" placeholder="Description" required></textarea>
+      <input type="text" class="subcategory-tags" placeholder="Tags (comma separated)" required>
+      <button type="button" class="remove-subcategory-btn">Remove</button>
+    </div>
+  </div>
+  
+  <button type="button" id="add-subcategory-btn" class="secondary-btn">Add Subcategory</button>
+  
+  <div class="form-actions">
+    <button type="button" id="cancel-category-edit" class="secondary-btn">Cancel</button>
+    <button type="submit" class="primary-btn">Save Changes</button>
+  </div>
+</form>
+</div>
+</div>
+
+<script type="module" src="/js/admin-dashboard.js"></script>
+<script type="module">
+import { requireAuth, getCurrentUser, checkAccess, signOut, updateUserRole } from './supabase-auth.js';
+import { showMessage, showToast } from './shared-utils.js';
+import { loadCategories, saveCategories } from './category-manager.js';
+
+// DOM elements
+const userList = document.getElementById('user-list');
+const logoutBtn = document.getElementById('logout-btn');
+const suggestionList = document.getElementById('suggestion-list');
+const inviteForm = document.getElementById('invite-form');
+const inviteStatus = document.getElementById('invite-status');
+const adminViewSelector = document.getElementById('admin-view-selector');
+const categoryEditor = document.getElementById('category-editor');
+
+// Section navigation
+adminViewSelector.addEventListener('change', () => {
+const selectedView = adminViewSelector.value;
+document.querySelectorAll('.admin-section').forEach(section => {
+  section.classList.remove('active');
+});
+document.getElementById(`admin-${selectedView}`).classList.add('active');
+});
+
+// Logout handler
+logoutBtn.addEventListener('click', async () => {
+const result = await signOut();
+if (result.success) {
+  window.location.href = '/login.html';
+} else {
+  showToast('Logout failed', 'error');
+}
+});
+
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', async () => {
+const isAuthenticated = await requireAuth();
+if (!isAuthenticated) return;
+
+const user = await getCurrentUser();
+const access = await checkAccess('admin')();
+if (!access.allowed) {
+  showToast('Access denied: Admins only', 'error');
+  window.location.href = '/dashboard.html';
+  return;
+}
+
+loadSystemStats();
+loadUsers();
+loadCategories();
+loadContent();
+loadWorkshops();
+loadProjects();
+loadImpactData();
+loadTranslationSuggestions();
+initCategoryEditor();
+});
+
+async function loadSystemStats() {
+try {
+  const response = await fetch('/api/admin/system-stats');
+  const stats = await response.json();
+  
+  // Update dashboard stats
+  document.getElementById('total-users').textContent = stats.users.total;
+  document.getElementById('experts-count').textContent = stats.users.experts;
+  document.getElementById('learners-count').textContent = stats.users.learners;
+  
+  document.getElementById('total-content').textContent = stats.content.total;
+  document.getElementById('published-content').textContent = stats.content.published;
+  document.getElementById('review-content').textContent = stats.content.review;
+  
+  document.getElementById('total-workshops').textContent = stats.workshops.total;
+  document.getElementById('upcoming-workshops').textContent = stats.workshops.upcoming;
+  document.getElementById('completed-workshops').textContent = stats.workshops.completed;
+  
+  document.getElementById('total-projects').textContent = stats.projects.total;
+  document.getElementById('active-projects').textContent = stats.projects.active;
+  document.getElementById('completed-projects').textContent = stats.projects.completed;
+  
+  // Load activity feed
+  const activityFeed = document.getElementById('activity-feed');
+  activityFeed.innerHTML = '';
+  
+  stats.recentActivity.forEach(activity => {
+    const activityItem = document.createElement('div');
+    activityItem.className = `activity-item ${activity.type}`;
+    activityItem.innerHTML = `
+      <div class="activity-time">${formatTime(activity.timestamp)}</div>
+      <div class="activity-content">${activity.description}</div>
+    `;
+    activityFeed.appendChild(activityItem);
+  });
+  
+  // Load system alerts
+  const alertsList = document.getElementById('system-alerts');
+  alertsList.innerHTML = '';
+  
+  if (stats.alerts.length === 0) {
+    alertsList.innerHTML = '<div class="no-alerts">No system alerts at this time.</div>';
+  } else {
+    stats.alerts.forEach(alert => {
+      const alertItem = document.createElement('div');
+      alertItem.className = `alert-item ${alert.severity}`;
+      alertItem.innerHTML = `
+        <div class="alert-title">${alert.title}</div>
+        <div class="alert-message">${alert.message}</div>
+        <div class="alert-time">${formatTime(alert.timestamp)}</div>
+      `;
+      alertsList.appendChild(alertItem);
+    });
+  }
+} catch (error) {
+  console.error('Failed to load system stats:', error);
+  showToast('Error loading system statistics', 'error');
+}
+}
+
+async function loadUsers() {
+try {
+  const response = await fetch('/api/admin/users');
+  const users = await response.json();
+  
+  userList.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Last Login</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${users.map(user => `
+          <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>${user.role}</td>
+            <td><span class="status-badge ${user.status}">${user.status}</span></td>
+            <td>${formatDate(user.lastLogin)}</td>
+            <td>
+              <button class="icon-btn edit-user-btn" data-id="${user.id}">Edit</button>
+              <button class="icon-btn ${user.status === 'suspended' ? 'enable-user-btn' : 'suspend-user-btn'}" 
+                data-id="${user.id}">${user.status === 'suspended' ? 'Enable' : 'Suspend'}</button>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  
+  // Add event listeners to user action buttons
+  userList.querySelectorAll('.edit-user-btn').forEach(btn => {
+    btn.addEventListener('click', () => openUserEditModal(btn.dataset.id));
+  });
+  
+  userList.querySelectorAll('.suspend-user-btn').forEach(btn => {
+    btn.addEventListener('click', () => changeUserStatus(btn.dataset.id, 'suspended'));
+  });
+  
+  userList.querySelectorAll('.enable-user-btn').forEach(btn => {
+    btn.addEventListener('click', () => changeUserStatus(btn.dataset.id, 'active'));
+  });
+} catch (error) {
+  console.error('Failed to load users:', error);
+  userList.innerHTML = '<div class="error-message">Error loading users. Please try again.</div>';
+}
+}
+
+
+
+
+
+
+async function loadTranslationSuggestions() {
+  try {
+    // Use the API endpoint that connects to your translation handler
+    const res = await fetch('/api/translations/suggestions');
+    const suggestions = await res.json();
+    suggestionList.innerHTML = '';
+
+    if (!suggestions || !suggestions.length) {
+      suggestionList.textContent = 'No suggestions pending review.';
+      return;
+    }
+
+    suggestions.slice(-50).reverse().forEach((s, index) => {
+      const div = document.createElement('div');
+      div.className = 'suggestion-entry';
+      div.innerHTML = `
+        <div class="suggestion-header">
+          <div class="suggestion-key"><strong>${s.key}</strong></div>
+          <div class="suggestion-lang">${getLanguageName(s.lang)}</div>
+          <div class="suggestion-user">${s.userEmail || s.referrer || 'Unknown'}</div>
+          <div class="suggestion-date">${formatDate(s.submittedAt || s.createdAt)}</div>
+        </div>
+        <div class="suggestion-content">
+          <div class="suggestion-original"><span>Original:</span> ${s.original || '—'}</div>
+          <div class="suggestion-new"><span>Suggested:</span> ${s.suggestion || s.translation}</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="approve-btn" data-index="${index}">Approve</button>
+          <button class="reject-btn" data-index="${index}">Reject</button>
+          <button class="edit-btn" data-index="${index}">Edit & Approve</button>
+        </div>
+      `;
+      suggestionList.appendChild(div);
+    });
+
+    suggestionList.querySelectorAll('.approve-btn').forEach(btn => {
+      btn.addEventListener('click', () => handleSuggestionAction(btn.dataset.index, 'approve'));
+    });
+    
+    suggestionList.querySelectorAll('.reject-btn').forEach(btn => {
+      btn.addEventListener('click', () => handleSuggestionAction(btn.dataset.index, 'reject'));
+    });
+    
+    suggestionList.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => handleSuggestionEdit(btn.dataset.index));
+    });
+  } catch (error) {
+    console.error('Failed to load translation suggestions:', error);
+    suggestionList.textContent = 'Error loading suggestions.';
+  }
+}
+
+function handleSuggestionAction(index, action) {
+  const entry = document.querySelectorAll('.suggestion-entry')[index];
+  if (!entry) return;
+  
+  // Extract suggestion data
+  const key = entry.querySelector('.suggestion-key').textContent.trim();
+  const lang = entry.querySelector('.suggestion-lang').textContent.trim();
+  const suggestion = entry.querySelector('.suggestion-new').textContent.replace('Suggested:', '').trim();
+  
+  // Send to server using the translation API endpoint
+  fetch('/api/translations/action', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, lang, action, translation: suggestion })
+  }).then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        entry.classList.add(action === 'approve' ? 'approved' : 'rejected');
+        entry.querySelector('.suggestion-actions').innerHTML = 
+          `<div class="action-status ${action}">${action === 'approve' ? 'Approved' : 'Rejected'}</div>`;
+        showToast(`Translation ${action}d successfully`, 'success');
+      } else {
+        showToast(`Failed to ${action} translation: ${result.error}`, 'error');
+      }
+    })
+    .catch(error => {
+      console.error(`Error ${action}ing translation:`, error);
+      showToast(`Error ${action}ing translation`, 'error');
+    });
+}
+
+function handleSuggestionEdit(index) {
+  const entry = document.querySelectorAll('.suggestion-entry')[index];
+  if (!entry) return;
+  
+  // Extract suggestion data
+  const key = entry.querySelector('.suggestion-key').textContent.trim();
+  const lang = entry.querySelector('.suggestion-lang').textContent.trim();
+  const original = entry.querySelector('.suggestion-original').textContent.replace('Original:', '').trim();
+  const suggestion = entry.querySelector('.suggestion-new').textContent.replace('Suggested:', '').trim();
+  
+  // Replace content with edit form
+  const editForm = document.createElement('div');
+  editForm.className = 'suggestion-edit-form';
+  editForm.innerHTML = `
+    <div class="form-group">
+      <label>Edit Translation:</label>
+      <textarea class="edit-translation-field">${suggestion}</textarea>
+    </div>
+    <div class="edit-actions">
+      <button type="button" class="cancel-edit-btn">Cancel</button>
+      <button type="button" class="save-edit-btn">Save & Approve</button>
+    </div>
+  `;
+  
+  entry.querySelector('.suggestion-content').style.display = 'none';
+  entry.querySelector('.suggestion-actions').style.display = 'none';
+  entry.appendChild(editForm);
+  
+  // Add event listeners
+  entry.querySelector('.cancel-edit-btn').addEventListener('click', () => {
+    entry.querySelector('.suggestion-content').style.display = 'block';
+    entry.querySelector('.suggestion-actions').style.display = 'flex';
+    editForm.remove();
+  });
+  
+  entry.querySelector('.save-edit-btn').addEventListener('click', () => {
+    const editedTranslation = entry.querySelector('.edit-translation-field').value.trim();
+    
+    if (!editedTranslation) {
+      showToast('Translation cannot be empty', 'error');
+      return;
+    }
+    
+    // Send to server using the translation API endpoint
+    fetch('/api/translations/edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, lang, translation: editedTranslation })
+    }).then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          entry.classList.add('approved');
+          entry.querySelector('.suggestion-content').style.display = 'block';
+          entry.querySelector('.suggestion-new').innerHTML = `<span>Approved:</span> ${editedTranslation}`;
+          entry.querySelector('.suggestion-actions').innerHTML = 
+            `<div class="action-status approve">Edited & Approved</div>`;
+          entry.querySelector('.suggestion-actions').style.display = 'flex';
+          editForm.remove();
+          showToast('Translation edited and approved successfully', 'success');
+        } else {
+          showToast(`Failed to save translation: ${result.error}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error editing translation:', error);
+        showToast('Error editing translation', 'error');
+      });
+  });
+}
+
+// Update the invite form to use the translation API
+inviteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('invite-email').value;
+  const lang = document.getElementById('invite-lang').value;
+  const key = document.getElementById('invite-key').value;
+  const role = document.getElementById('invite-role').value;
+  const message = document.getElementById('invite-message').value;
+
+  try {
+    // Use the API endpoint that connects to your translation handler
+    const res = await fetch('/api/translations/invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        lang, 
+        key, 
+        role,
+        message,
+        referrer: getCurrentUser()?.email || 'admin'
+      })
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      inviteStatus.textContent = `Invitation sent to ${email}`;
+      inviteStatus.className = 'status-message success';
+      inviteForm.reset();
+    } else {
+      inviteStatus.textContent = `Failed to send: ${result.error}`;
+      inviteStatus.className = 'status-message error';
+    }
+  } catch (err) {
+    console.error('Error sending invitation:', err);
+    inviteStatus.textContent = 'Error sending invitation';
+    inviteStatus.className = 'status-message error';
+  }
+});
+
+// Add a function to load translation coverage data
+async function loadTranslationCoverage() {
+  try {
+    const response = await fetch('/api/translations/coverage');
+    const coverage = await response.json();
+    
+    // Update the language priority list
+    const languagePriorities = document.getElementById('language-priorities');
+    languagePriorities.innerHTML = '';
+    
+    if (coverage && coverage.languages) {
+      // Sort languages by completion percentage (descending)
+      const sortedLanguages = Object.entries(coverage.languages)
+        .sort(([, a], [, b]) => b.percentage - a.percentage);
+      
+      sortedLanguages.forEach(([langCode, data]) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${getLanguageName(langCode)} 
+          <span class="badge">${data.percentage}% complete</span>
+        `;
+        languagePriorities.appendChild(li);
+      });
+    } else {
+      languagePriorities.innerHTML = '<li>No language data available</li>';
+    }
+    
+    // Initialize the coverage chart if there's data
+    if (coverage && coverage.languages) {
+      initTranslationCoverageChart(coverage);
+    }
+  } catch (error) {
+    console.error('Failed to load translation coverage:', error);
+    document.getElementById('translation-coverage-chart').innerHTML = 
+      '<div class="error-message">Error loading translation coverage. Please try again.</div>';
+  }
+}
+
+function initTranslationCoverageChart(data) {
+  // This would initialize a chart using a library like Chart.js
+  // For this example, we'll just show a placeholder with the data
+  const chartContainer = document.getElementById('translation-coverage-chart');
+  chartContainer.innerHTML = `
+    <div class="placeholder-chart">
+      Translation coverage visualization would be rendered here.<br>
+      Total Keys: ${data.totalKeys || 'Unknown'}<br>
+      Languages: ${Object.keys(data.languages || {}).length}
+    </div>
+  `;
+}
+
+// Make sure to call loadTranslationCoverage when the translations tab is shown
+adminViewSelector.addEventListener('change', () => {
+  const selectedView = adminViewSelector.value;
+  document.querySelectorAll('.admin-section').forEach(section => {
+    section.classList.remove('active');
+  });
+  document.getElementById(`admin-${selectedView}`).classList.add('active');
+  
+  // Load translation coverage data when the translations tab is selected
+  if (selectedView === 'translations') {
+    loadTranslationCoverage();
+  }
+});
+
+// Also add translation search functionality
+document.getElementById('translation-search')?.addEventListener('input', (e) => {
+  const searchTerm = e.target.value.toLowerCase();
+  const entries = document.querySelectorAll('.suggestion-entry');
+  
+  entries.forEach(entry => {
+    const key = entry.querySelector('.suggestion-key')?.textContent.toLowerCase() || '';
+    const content = entry.querySelector('.suggestion-new')?.textContent.toLowerCase() || '';
+    
+    if (key.includes(searchTerm) || content.includes(searchTerm)) {
+      entry.style.display = 'block';
+    } else {
+      entry.style.display = 'none';
+    }
+  });
+});
+
+// Add event listener for language filter
+document.getElementById('translation-lang-filter')?.addEventListener('change', () => {
+  filterTranslations();
+});
+
+// Add event listener for status filter
+document.getElementById('translation-status-filter')?.addEventListener('change', () => {
+  filterTranslations();
+});
+
+function filterTranslations() {
+  const langFilter = document.getElementById('translation-lang-filter').value;
+  const statusFilter = document.getElementById('translation-status-filter').value;
+  const entries = document.querySelectorAll('.suggestion-entry');
+  
+  entries.forEach(entry => {
+    const lang = entry.querySelector('.suggestion-lang')?.textContent.trim() || '';
+    const isApproved = entry.classList.contains('approved');
+    const isRejected = entry.classList.contains('rejected');
+    let status = 'pending';
+    
+    if (isApproved) status = 'approved';
+    if (isRejected) status = 'rejected';
+    
+    const matchesLang = langFilter === 'all' || getLanguageCode(lang) === langFilter;
+    const matchesStatus = status === statusFilter;
+    
+    if (matchesLang && matchesStatus) {
+      entry.style.display = 'block';
+    } else {
+      entry.style.display = 'none';
+    }
+  });
+}
+
+function getLanguageCode(languageName) {
+  const languageCodes = {
+    'English': 'en',
+    'Spanish': 'es',
+    'French': 'fr',
+    'German': 'de',
+    'Chinese': 'zh',
+    'Arabic': 'ar',
+    'Hindi': 'hi',
+    'Portuguese': 'pt',
+    'Russian': 'ru',
+    'Japanese': 'ja',
+    'Swahili': 'sw'
+  };
+  
+  return languageCodes[languageName] || languageName.toLowerCase();
+}

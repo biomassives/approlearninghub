@@ -1,712 +1,261 @@
-// api/index.js - Main API Router
+// /api/index.js
+require('dotenv').config();
+console.log('▶️ Loaded env:', {
+  SUPABASE_URL: !!process.env.SUPABASE_URL,
+  SERVICE_ROLE_KEY: !!process.env.SERVICE_ROLE_KEY,
+  JWT_SECRET: !!process.env.JWT_SECRET
+});
+
 const express = require('express');
-const { createClient } = require('@supabase/supabase-js');
+const serverless = require('serverless-http');
+const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+// Add debug middleware
+const { addDebugMiddleware } = require('./api-debug');
+
+// Load auth middleware
+const { authenticate } = require('./middleware/auth');
+
+// Load routers
+const authRouter = require('./routes/auth');
+const adminRouter = require('./admin');
+const publicRouter = require('./public');
+const libraryRouter = require('./library');
+const expertRouter = require('./expert');
+const libraryMgmtRouter = require('./librarymgmt');
+const diagnosticsRouter = require('./diagnostics');
+const dashboardsRouter = require('./dashboards');
+const translationsRouter = require('./translations');
+const contentRouter = require('./content');
+
+// Add new routers based on schema
+const profilesRouter = require('./profiles');
+const videosRouter = require('./videos');
+const categoriesRouter = require('./categories');
+//const tagsRouter = require('./tags');
+//const panelsRouter = require('./panels');
+//const trainingRouter = require('./training');
+//const rewardsRouter = require('./rewards');
+//const ecoOpsRouter = require('./eco-ops');
+//const notesRouter = require('./notes');
+//const discussionRouter = require('./discussion');
+//const walletsRouter = require('./wallets');
+
 const app = express();
-const crypto = require('crypto');
+app.set('trust proxy', 1);
 
-// Create rate limiter line 737 uses subapase table
+// Add debug middleware first
+addDebugMiddleware(app);
 
+// Rate limiting
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests, please try again later' }
+});
 
-// Middleware for parsing JSON
-app.use(express.json());
-
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-// Utility functions
-
-async function hashMetaLattice(quat) {
-  const str = `${quat.x.toFixed(6)}:${quat.y.toFixed(6)}:${quat.z.toFixed(6)}:${quat.w.toFixed(6)}`;
-  const hash = crypto.createHash('sha256');
-  hash.update(str);
-  return hash.digest('hex');
-}
-
-function generateNormalizedQuaternion() {
-  const values = new Float32Array(4);
-  for (let i = 0; i < 4; i++) {
-    values[i] = Math.random(); // Use Math.random() as a simple alternative
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https://i.ytimg.com", "https://img.youtube.com"],
+      connectSrc: ["'self'", process.env.SUPABASE_URL],
+      frameSrc: ["'self'", "https://www.youtube.com"],
+      mediaSrc: ["'self'", "https://www.youtube.com"]
+    }
   }
-  const [x, y, z, w] = values;
-  const mag = Math.sqrt(x * x + y * y + z * z + w * w);
-  return {
-    x: x / mag,
-    y: y / mag,
-    z: z / mag,
-    w: w / mag
-  };
-}
+}));
 
+// ——— Global Middleware ————————————————————————————
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(cookieParser());
 
-// Supabase-based Rate Limiter for serverless environments
-class SupabaseRateLimiter {
-  constructor(supabaseClient, windowMs = 15 * 60 * 1000, maxRequests = 100) {
-    this.supabase = supabaseClient;
-    this.windowMs = windowMs;
-    this.maxRequests = maxRequests;
-    this.table = 'rate_limits'; // Make sure this table exists in your Supabase database
-  }
+// Apply rate limiting to API routes
+app.use('/api/', apiLimiter);
 
-  async check(ip) {
-    try {
-      const now = new Date().toISOString();
-      const windowStart = new Date(Date.now() - this.windowMs).toISOString();
-      
-      // Get current count for this IP in the time window
-      const { data, error } = await this.supabase
-        .from(this.table)
-        .select('count')
-        .eq('ip', ip)
-        .gte('reset_time', now)
-        .maybeSingle();
-      
-      if (error) {
-        console.error('Error checking rate limit:', error);
-        return true; // Allow the request if there's an error checking
-      }
-      
-      if (!data) {
-        // No existing record, create a new one
-        await this.supabase
-          .from(this.table)
-          .insert({
-            ip: ip,
-            count: 1,
-            reset_time: new Date(Date.now() + this.windowMs).toISOString(),
-            last_request: now
-          });
-        return true;
-      }
-      
-      if (data.count >= this.maxRequests) {
-        return false; // Rate limit exceeded
-      }
-      
-      // Update existing record
-      await this.supabase
-        .from(this.table)
-        .update({
-          count: data.count + 1,
-          last_request: now
-        })
-        .eq('ip', ip);
-      
-      return true;
-    } catch (error) {
-      console.error('Rate limiter error:', error);
-      return true; // Allow the request if there's an error
+// CORS middleware
+app.use((req, res, next) => {
+  // CORS headers
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',') 
+    : ['http://localhost:3000', 'https://hub.approvideo.org'];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    // For development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      res.setHeader('Access-Control-Allow-Origin', '*');
     }
   }
   
-  // Method to clean up old records - can be called periodically
-  async cleanup() {
-    const now = new Date().toISOString();
-    await this.supabase
-      .from(this.table)
-      .delete()
-      .lt('reset_time', now);
-  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
+// Request logging
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+  });
+  next();
+});
+
+// Mount routes for API paths (matches client-side expectations)
+app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/public', publicRouter);
+app.use('/api/library', libraryRouter);
+app.use('/api/expert', expertRouter);
+app.use('/api/librarymgmt', libraryMgmtRouter);
+app.use('/api/diagnostics', diagnosticsRouter);
+app.use('/api/dashboards', dashboardsRouter);
+app.use('/api/translations', translationsRouter);
+app.use('/api/content', contentRouter);
+
+// Mount new routers based on schema
+app.use('/api/profiles', authenticate, profilesRouter);
+app.use('/api/videos', videosRouter); // Public access for videos
+app.use('/api/categories', categoriesRouter); // Public access for categories
+//app.use('/api/tags', tagsRouter); // Public access for tags
+//app.use('/api/panels', panelsRouter);
+//app.use('/api/training', authenticate, trainingRouter);
+//app.use('/api/rewards', authenticate, rewardsRouter);
+//app.use('/api/eco-ops', authenticate, ecoOpsRouter);
+//app.use('/api/notes', authenticate, notesRouter);
+//app.use('/api/discussion', authenticate, discussionRouter);
+//app.use('/api/wallets', authenticate, walletsRouter);
+
+// Also mount on non-prefixed routes for direct Express use during development
+if (process.env.NODE_ENV === 'development') {
+  app.use('/auth', authRouter);
+  app.use('/admin', adminRouter);
+  app.use('/public', publicRouter);
+  app.use('/library', libraryRouter);
+  app.use('/expert', expertRouter);
+  app.use('/librarymgmt', libraryMgmtRouter);
+  app.use('/diagnostics', diagnosticsRouter);
+  app.use('/dashboards', dashboardsRouter);
+  app.use('/translations', translationsRouter);
+  app.use('/content', contentRouter);
+  // New routers also on non-prefixed paths
+  app.use('/profiles', authenticate, profilesRouter);
+  app.use('/videos', videosRouter);
+  app.use('/categories', categoriesRouter);
+  //app.use('/tags', tagsRouter);
+  //app.use('/panels', panelsRouter);
+  //app.use('/training', authenticate, trainingRouter);
+  //app.use('/rewards', authenticate, rewardsRouter);
+  //app.use('/eco-ops', authenticate, ecoOpsRouter);
+  //app.use('/notes', authenticate, notesRouter);
+  //app.use('/discussion', authenticate, discussionRouter);
+  //app.use('/wallets', authenticate, walletsRouter);
 }
 
-
-// Schedule cleanup
-setInterval(() => {
-  authLimiter.cleanup();
-  generalLimiter.cleanup();
-}, 5 * 60 * 1000);
-
-// Add middleware for rate limiting
-function rateLimitMiddleware(limiter) {
-  return (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    if (!limiter.check(ip)) {
-      return res.status(429).json({ error: 'Too many requests, please try again later' });
-    }
-    next();
-  };
-}
-
-// Apply to authentication routes
-app.use('/auth/', rateLimitMiddleware(authLimiter));
-// Apply to general API routes
-app.use('/', rateLimitMiddleware(generalLimiter));
-
-
-
-
-
-// Root API route
-app.get('/', (req, res) => {
-  res.json({ message: 'ApproVideo API is running' });
+// Special video endpoints
+app.get('/api/videos', async (req, res) => {
+  const { handleVideos } = require('./lib/publicHandlers');
+  console.log('👉 /api/videos hit with query:', req.query);
+  return handleVideos(req, res);
 });
 
-// ====== LOGIN ENDPOINT ======
-app.get('/auth/login', (req, res) => {
-  res.json({ message: 'Login API is running' });
-});
-
-app.post('/auth/login', async (req, res) => {
-  try {
-    const { token, userId } = req.body;
-    
-    if (!token || !userId) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-
-    // Verify the JWT token
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-    
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-
-    // Ensure the token belongs to the user in question
-    if (tokenData.user.id !== userId) {
-      return res.status(403).json({ error: 'Token user ID mismatch' });
-    }
-
-    // Generate a secure quaternion for this session
-    const quaternion = generateNormalizedQuaternion();
-    
-    // Calculate the hash
-    const latticeHash = await hashMetaLattice(quaternion);
-    
-    // Update the user's profile with the new lattice hash
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .upsert({
-        user_id: userId,
-        lattice_hash: latticeHash,
-        last_login: new Date().toISOString(),
-        login_count: supabase.sql`login_count + 1`
-      }, {
-        onConflict: 'user_id'
-      });
-      
-    if (updateError) {
-      console.error('Database update error:', updateError);
-      return res.status(500).json({ error: 'Failed to update lattice hash' });
-    }
-
-    // Log the login activity for security auditing
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: userId,
-        action: 'login',
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-        user_agent: req.headers['user-agent'],
-        lattice_hash_preview: latticeHash.substring(0, 8)
-      })
-      .catch(error => {
-        console.error('Failed to log auth activity:', error);
-      });
-
-    return res.status(200).json({
-      success: true,
-      metaLattice: quaternion,
-      hashPreview: latticeHash.substring(0, 8) + '...'
-    });
-    
-  } catch (error) {
-    console.error('Login enhancement error:', error);
-    return res.status(500).json({ error: 'Server error during login enhancement' });
-  }
-});
-
-// ====== VERIFY ENDPOINT ======
-app.get('/auth/verify', (req, res) => {
-  res.json({ message: 'Verification API is running' });
-});
-
-app.post('/auth/verify', async (req, res) => {
-  try {
-    // Get the user ID and lattice data from the request
-    const { userId, metaLattice, token } = req.body;
-    
-    if (!userId || !metaLattice || !token) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-    
-    // Verify the JWT token first for authentication
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-    
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-    
-    // Ensure the token belongs to the user in question
-    if (tokenData.user.id !== userId) {
-      return res.status(403).json({ error: 'Token user ID mismatch' });
-    }
-    
-    // Get the stored lattice hash from the database
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('lattice_hash')
-      .eq('user_id', userId)
-      .single();
-      
-    if (profileError) {
-      return res.status(404).json({ error: 'User profile not found' });
-    }
-    
-    if (!profile.lattice_hash) {
-      return res.status(400).json({ error: 'No lattice hash stored for this user' });
-    }
-    
-    // Calculate the hash of the provided lattice
-    const calculatedHash = await hashMetaLattice(metaLattice);
-    
-    // Compare the calculated hash with the stored hash
-    const isValid = calculatedHash === profile.lattice_hash;
-    
-    // Log this verification attempt
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: userId,
-        action: 'verify_lattice',
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-        result: isValid ? 'success' : 'failure'
-      })
-      .catch(error => {
-        console.error('Failed to log verification activity:', error);
-      });
-    
-    // Return the result
-    return res.status(200).json({
-      valid: isValid,
-      hashPreview: isValid ? profile.lattice_hash.substring(0, 8) + '...' : null
-    });
-    
-  } catch (error) {
-    console.error('Lattice verification error:', error);
-    return res.status(500).json({ error: 'Server error during verification' });
-  }
-});
-
-// ====== UPDATE LATTICE ENDPOINT ======
-app.get('/auth/update-lattice', (req, res) => {
-  res.json({ message: 'Lattice update API is running' });
-});
-
-app.post('/auth/update-lattice', async (req, res) => {
-  try {
-    const { userId, metaLattice, token } = req.body;
-    
-    if (!userId || !metaLattice || !token) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-    
-    // Verify the JWT token first for authentication
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-    
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-    
-    // Ensure the token belongs to the user in question
-    if (tokenData.user.id !== userId) {
-      return res.status(403).json({ error: 'Token user ID mismatch' });
-    }
-    
-    // Calculate the hash of the provided lattice
-    const latticeHash = await hashMetaLattice(metaLattice);
-    
-    // Update the user's profile with the new lattice hash
-    const { data, error } = await supabase
-      .from('profiles')
-      .upsert({
-        user_id: userId,
-        lattice_hash: latticeHash,
-        lattice_updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id'
-      });
-      
-    if (error) {
-      console.error('Database update error:', error);
-      return res.status(500).json({ error: 'Failed to update lattice hash' });
-    }
-    
-    // Log this lattice update
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: userId,
-        action: 'lattice_update',
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-        details: 'Lattice hash updated'
-      })
-      .catch(error => {
-        console.error('Failed to log lattice update activity:', error);
-      });
-    
-    // Return success with hash preview
-    return res.status(200).json({
-      success: true,
-      hashPreview: latticeHash.substring(0, 8) + '...'
-    });
-  } catch (error) {
-    console.error('Lattice update error:', error);
-    return res.status(500).json({ error: 'Server error during lattice update' });
-  }
-});
-
-// ====== LOGOUT ENDPOINT ======
-app.get('/auth/logout', (req, res) => {
-  res.json({ message: 'Logout API is running' });
-});
-
-app.post('/auth/logout', async (req, res) => {
-  try {
-    const { userId, token } = req.body;
-    
-    if (!userId || !token) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-    
-    // Verify the JWT token first for authentication
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-    
-    if (tokenError || !tokenData.user) {
-      // Even if token is invalid, we'll proceed with logout but log the attempt
-      console.warn('Invalid token during logout attempt for user ID:', userId);
-    } else if (tokenData.user.id !== userId) {
-      // Token belongs to a different user - potential security issue
-      console.warn('Token user ID mismatch during logout:', {
-        tokenUserId: tokenData.user.id,
-        requestUserId: userId
-      });
-      return res.status(403).json({ error: 'Token user ID mismatch' });
-    }
-    
-    // Invalidate the lattice hash by setting it to null
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({
-        lattice_hash: null,
-        last_logout: new Date().toISOString()
-      })
-      .eq('user_id', userId);
-      
-    if (updateError) {
-      console.error('Database update error during logout:', updateError);
-      // We'll still return success since the client-side session will be cleared
-    }
-    
-    // Log the logout activity
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: userId,
-        action: 'logout',
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-        user_agent: req.headers['user-agent']
-      })
-      .catch(error => {
-        console.error('Failed to log logout activity:', error);
-      });
-      
-    // Try to invalidate the session token on Supabase
-    if (token) {
-      await supabase.auth.admin.signOut(token).catch(error => {
-        console.error('Error invalidating token on Supabase:', error);
-      });
-    }
-    
-    // Return success
-    return res.status(200).json({
-      success: true,
-      message: 'Logout successful, session invalidated'
-    });
-    
-  } catch (error) {
-    console.error('Logout error:', error);
-    return res.status(500).json({
-      error: 'Server error during logout',
-      clientAction: 'proceed_with_local_logout'
-    });
-  }
-});
-
-// ====== USER DATA ENDPOINT ======
-app.get('/auth/user-data', async (req, res) => {
-  try {
-    const { userId, token } = req.query;
-
-    if (!userId || !token) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-
-    // Verify the JWT token
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-
-    // Ensure the token belongs to the user requesting their data
-    // (or an admin requesting another user's data)
-    if (tokenData.user.id !== userId) {
-      // Check if requester is an admin
-      const { data: adminCheck, error: adminCheckError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', tokenData.user.id)
-        .maybeSingle();
-
-      if (adminCheckError || !adminCheck || adminCheck.role !== 'admin') {
-        return res.status(403).json({ error: 'Unauthorized to access this user data' });
-      }
-    }
-
-    // Get user profile data
-    const { data: profileData, error: profileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    if (profileError && profileError.code !== 'PGRST116') {
-      console.error('Error fetching user profile:', profileError);
-    }
-
-    // Get user role
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    if (roleError && roleError.code !== 'PGRST116') {
-      console.error('Error fetching user role:', roleError);
-    }
-
-    // Get user auth details from Supabase Auth
-    const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
-
-    if (userError) {
-      console.error('Error fetching user auth data:', userError);
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Get user activity logs
-    const { data: activityLogs, error: logsError } = await supabase
-      .from('auth_activity_log')
-      .select('action, created_at, ip_address, details')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(10);
-
-    if (logsError && logsError.code !== 'PGRST116') {
-      console.error('Error fetching activity logs:', logsError);
-    }
-
-    // Compile and return user data
-    const userDataResponse = {
-      user: {
-        id: userData.user.id,
-        email: userData.user.email,
-        createdAt: userData.user.created_at,
-        lastSignIn: userData.user.last_sign_in_at,
-        role: roleData?.role || 'user'
-      },
-      profile: profileData || {},
-      activity: activityLogs || [],
-      security: {
-        emailConfirmed: userData.user.email_confirmed_at ? true : false,
-        factorCount: userData.user.factors?.length || 0,
-        lastPasswordChange: profileData?.password_last_changed || null
-      }
-    };
-
-    // Log data access
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: userId,
-        action: 'data_access',
-        performed_by: tokenData.user.id,
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress
-      })
-      .catch(error => {
-        console.error('Failed to log data access activity:', error);
-      });
-
-    return res.status(200).json({
-      success: true,
-      data: userDataResponse
-    });
-  } catch (error) {
-    console.error('Error retrieving user data:', error);
-    return res.status(500).json({ error: 'Server error during data retrieval' });
-  }
-});
-
-// ====== USER ROLE ENDPOINT ======
-app.get('/auth/user-role', async (req, res) => {
-  const { userId, token } = req.query;
-
-  if (!userId || !token) {
-    return res.status(400).json({ error: 'Missing required parameters' });
-  }
-
-  try {
-    // Verify the JWT token
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-
-    // Get user role from database
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .maybeSingle();
-
-    if (roleError && roleError.code !== 'PGRST116') {
-      console.error('Error fetching user role:', roleError);
-      return res.status(500).json({ error: 'Failed to fetch user role' });
-    }
-
-    // Return user role
-    return res.status(200).json({
-      success: true,
-      role: roleData?.role || 'user'
-    });
-  } catch (error) {
-    console.error('Error in user role retrieval:', error);
-    return res.status(500).json({ error: 'Server error' });
-  }
-});
-
-
+// Legacy endpoint support
 app.get('/videos', async (req, res) => {
-  try {
-    const { data, error } = await supabase.from('videos').select('*');
-
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
-    return res.status(200).json({ data });
-  } catch (err) {
-    console.error('Server error:', err);
-    return res.status(500).json({ error: 'Server error' });
-  }
+  const { handleVideos } = require('./lib/publicHandlers');
+  console.log('👉 Root /videos hit with query:', req.query);
+  return handleVideos(req, res);
 });
 
-
-
-
-
-app.post('/auth/user-role', async (req, res) => {
-  const { targetUserId, newRole, token } = req.body;
-
-  if (!targetUserId || !newRole || !token) {
-    return res.status(400).json({ error: 'Missing required parameters' });
-  }
-
-  if (!['user', 'editor', 'admin'].includes(newRole)) {
-    return res.status(400).json({ error: 'Invalid role specified' });
-  }
-
-  try {
-    // Verify the JWT token
-    const { data: tokenData, error: tokenError } = await supabase.auth.getUser(token);
-
-    if (tokenError || !tokenData.user) {
-      return res.status(401).json({ error: 'Invalid authentication token' });
-    }
-
-    // Check if the requesting user is an admin
-    const { data: adminCheck, error: adminCheckError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', tokenData.user.id)
-      .maybeSingle();
-
-    if (adminCheckError) {
-      console.error('Error checking admin status:', adminCheckError);
-      return res.status(500).json({ error: 'Failed to verify admin status' });
-    }
-
-    if (!adminCheck || adminCheck.role !== 'admin') {
-      return res.status(403).json({ error: 'Only admins can update user roles' });
-    }
-
-    // Check if the target user exists
-    const { data: targetUser, error: targetUserError } = await supabase.auth.admin.getUserById(targetUserId);
-
-    if (targetUserError || !targetUser) {
-      return res.status(404).json({ error: 'Target user not found' });
-    }
-
-    // Update the user's role
-    const { data: updateData, error: updateError } = await supabase
-      .from('user_roles')
-      .upsert({
-        user_id: targetUserId,
-        role: newRole,
-        updated_at: new Date().toISOString(),
-        updated_by: tokenData.user.id
-      }, {
-        onConflict: 'user_id'
-      });
-
-    if (updateError) {
-      console.error('Error updating user role:', updateError);
-      return res.status(500).json({ error: 'Failed to update user role' });
-    }
-
-    // Log the role change
-    await supabase
-      .from('auth_activity_log')
-      .insert({
-        user_id: targetUserId,
-        action: 'role_change',
-        details: `Role changed to ${newRole}`,
-        performed_by: tokenData.user.id,
-        ip_address: req.headers['x-forwarded-for'] || req.socket.remoteAddress
-      })
-      .catch(error => {
-        console.error('Failed to log role change activity:', error);
-      });
-
-    return res.status(200).json({
-      success: true,
-      message: `User role updated to ${newRole}`
-    });
-  } catch (error) {
-    console.error('Error in user role update:', error);
-    return res.status(500).json({ error: 'Server error' });
-  }
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: process.env.npm_package_version || '1.0.0'
+  });
 });
 
-// Handle 404s for API routes
+// API documentation
+app.get('/api/docs', (req, res) => {
+  res.status(200).json({
+    message: 'ApproVideo Hub API Documentation',
+    endpoints: {
+      auth: {
+        signup: 'POST /api/auth/signup',
+        login: 'POST /api/auth/login',
+        logout: 'POST /api/auth/logout',
+        accessCheck: 'GET /api/auth/access-check'
+      },
+      videos: {
+        list: 'GET /api/videos',
+        featured: 'GET /api/videos/featured',
+        byCategory: 'GET /api/videos/category/:slug',
+        search: 'GET /api/videos/search?q=:query'
+      },
+      profiles: {
+        me: 'GET /api/profiles/me',
+        update: 'PUT /api/profiles/me'
+      }
+      // Add more documentation as needed
+    }
+  });
+});
+
+// Simple welcome at root
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to ApproVideo Hub API',
+    documentation: '/api/docs',
+    health: '/health'
+  });
+});
+
+// 404 for everything else
 app.use('*', (req, res) => {
-  res.status(404).json({ error: 'API endpoint not found' });
+  console.log(`⚠️ No route found for ${req.method} ${req.originalUrl}`);
+  res
+    .status(404)
+    .json({ success: false, error: `No route for ${req.method} ${req.originalUrl}` });
 });
 
-// Export the serverless function handler
-module.exports = (req, res) => {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  // Handle OPTIONS requests for CORS preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  
-  // Pass the request to the Express app
-  return app(req, res);
-};
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('🔥 GLOBAL ERROR:', err.stack || err);
+  res
+    .status(err.status || 500)
+    .json({ 
+      success: false, 
+      error: process.env.NODE_ENV === 'production' 
+        ? 'Internal server error' 
+        : err.message || 'Internal server error'
+    });
+});
+
+module.exports = app;
+module.exports.handler = serverless(app);
+
+if (require.main === module) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`🚀 Express listening on http://localhost:${port}`);
+    console.log(`Try accessing http://localhost:${port}/api/videos`);
+    console.log(`Or http://localhost:${port}/health for a quick health check`);
+    console.log(`API documentation available at http://localhost:${port}/api/docs`);
+  });
+}

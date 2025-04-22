@@ -61,8 +61,8 @@
       const savedLang = localStorage.getItem('preferredLang');
       const lang = queryLang || savedLang || browserLang;
     
-      const langFile = await import(`./lang/${lang}.js`).catch(() =>
-        import('./lang/en.js')
+      const langFile = await import(`/data/lang/${lang}.json`).catch(() =>
+        import('/data/lang/en.json')
       );
       const { translations } = langFile;
       const t = key => translations[key] || key;

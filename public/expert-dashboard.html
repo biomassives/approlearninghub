@@ -5,27 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expert Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
-  <script type="module" src="/expert-dashboard.js" defer></script>
+  <script type="module" src="./js/expert-dashboard.js" defer></script>
 </head>
 <body>
   <div class="dashboard-container">
     <header class="dashboard-header">
-      <h1>Welcome, Expert</h1>
+      <h1 id="greeting">Welcome, Expert</h1>
       <button id="logout-btn">Log Out</button>
     </header>
 
     <section class="dashboard-section">
       <h2>Session Identity</h2>
-      <pre id="lattice-info">Loading...</pre>
+      <pre id="lattice-info">Loading session info...</pre>
     </section>
 
     <section class="dashboard-section">
       <h2>Expert Tools</h2>
-      <ul>
-        <li><a href="#">View Assigned Modules</a></li>
-        <li><a href="#">Submit Expert Reviews</a></li>
-        <li><a href="#">Access Research Library</a></li>
-        <li><a href="#">Mentorship Requests</a></li>
+      <ul id="expert-tools">
+        <!-- Tool links will be injected here -->
       </ul>
     </section>
 
