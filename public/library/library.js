@@ -1,3 +1,761 @@
+/**
+   * ApproVideo Learning Hub - Library Module
+   * 
+   * Core functionality for the learning library including:
+   * - Category and subcategory navigation
+   * - Module viewing and interaction
+   * - Progress tracking
+   * - Content submission
+   * - Expert feedback
+   * - Admin module creation
+   */
+  
+  import authService from '../js/auth-service.js';
+  
+  // DOM refs
+  const userNameEl = document.getElementById('user-name');
+  const logoutBtn  = document.getElementById('logout-button');
+  const adminCtrls = document.getElementById('admin-controls');
+  const addCatBtn  = document.getElementById('add-category-btn');
+  
+  const categoryIcons     = document.getElementById('category-icons');
+  const subcategorySec    = document.getElementById('subcategory-section');
+  const subcategoriesDiv  = document.getElementById('subcategories');
+  const contentSec        = document.getElementById('content-section');
+  const contentDetailsDiv = document.getElementById('content-details');
+  
+  let currentUser;
+  let currentCategory;
+  let currentSubcategory;
+  let localJsonData = {}; // For data caching
+  
+  // 1️⃣ Authenticate & init UI
+  async function initAuth() {
+    const res = await authService.checkAccess();
+    if (!res.success) {
+      window.location.href = '/index.html';
+      return false;
+    }
+    currentUser = res.user;
+    userNameEl.textContent = currentUser.email;
+    // If admin, show add-category button
+    if (currentUser.role === 'admin') {
+      adminCtrls.classList.remove('hidden');
+    }
+    return true;
+  }
+  
+  // Handle logout
+  logoutBtn.addEventListener('click', async () => {
+    await authService.logout();
+    window.location.href = '/index.html';
+  });
+  
+  // 2️⃣ Fetch & render categories
+  async function loadCategories() {
+    try {
+      const resp = await fetch('/api/library/categories');
+      const { success, data } = await resp.json();
+      if (!success) throw new Error('Failed to load');
+      
+      // Cache the data
+      localJsonData.categories = data;
+      
+      data.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `
+          category-btn p-6 bg-white shadow rounded-lg
+          hover:scale-105 transition
+        `;
+        btn.innerHTML = `
+          <i class="fa fa-folder-open fa-2x mb-2"></i><br>
+          <span class="font-semibold">${cat.name}</span>
+        `;
+        btn.onclick = () => showSubcategories(cat);
+        categoryIcons.appendChild(btn);
+      });
+    } catch (err) {
+      categoryIcons.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading categories.</p>';
+    }
+  }
+  
+  // 3️⃣ Show subcategories for a given category
+  async function showSubcategories(cat) {
+    currentCategory = cat;
+    subcategoriesDiv.innerHTML = '';
+    subcategorySec.classList.remove('hidden');
+    contentSec.classList.add('hidden');
+  
+    // If admin, show add-subcategory control
+    if (currentUser.role === 'admin') {
+      const addBtn = document.createElement('button');
+      addBtn.textContent = `+ Add Subcategory`;
+      addBtn.className = 'bg-blue-500 text-white p-4 rounded flex items-center justify-center hover:bg-blue-600 transition mb-4';
+      addBtn.onclick = () => showAddSubcategoryForm();
+      subcategoriesDiv.appendChild(addBtn);
+    }
+  
+    cat.subcategories.forEach(sub => {
+      const subBtn = document.createElement('div');
+      subBtn.className = 'bg-white p-4 rounded shadow-md hover:shadow-lg transition cursor-pointer';
+      subBtn.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div>
+            <strong class="text-lg">${sub.title}</strong>
+            <p class="mt-2 text-sm text-gray-600">${sub.description}</p>
+          </div>
+          <span class="bg-gray-200 text-xs px-2 py-1 rounded-full">${sub.moduleCount || 0} modules</span>
+        </div>
+      `;
+      subBtn.onclick = () => showContentDetail(sub);
+      subcategoriesDiv.appendChild(subBtn);
+    });
+  }
+  
+  // 4️⃣ Show detail for a subcategory
+  async function showContentDetail(sub) {
+    currentSubcategory = sub;
+    contentSec.classList.remove('hidden');
+    
+    // Show loading state
+    contentDetailsDiv.innerHTML = '<p class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading modules...</p>';
+    
+    try {
+      // Fetch modules for this subcategory
+      const resp = await fetch(`/api/library/modules?subcategoryId=${sub.id}`);
+      const { success, data: modules } = await resp.json();
+      
+      if (!success || !modules.length) {
+        contentDetailsDiv.innerHTML = `
+          <h3 class="text-xl font-semibold">${sub.title}</h3>
+          <p class="mt-2">${sub.description}</p>
+          <p class="mt-4"><strong>Tags:</strong> ${sub.tags.join(', ')}</p>
+          <p class="mt-4 text-gray-600">No learning modules available yet.</p>
+          ${currentUser.role === 'admin' || currentUser.role === 'expert' ? 
+            `<button id="create-module-btn" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+              Create Learning Module
+            </button>` : ''}
+        `;
+        
+        // Set up event listener for create module button if it exists
+        const createModuleBtn = document.getElementById('create-module-btn');
+        if (createModuleBtn) {
+          createModuleBtn.addEventListener('click', showCreateModuleForm);
+        }
+        
+        return;
+      }
+      
+      // Display modules
+      let modulesHTML = '';
+      modules.forEach(module => {
+        modulesHTML += `
+          <div class="module-card bg-white p-4 rounded shadow-md hover:shadow-lg transition mb-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between">
+              <div>
+                <h4 class="text-lg font-semibold">${module.title}</h4>
+                <p class="text-sm text-gray-600 mt-1">${module.description}</p>
+                <div class="flex flex-wrap mt-2">
+                  <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                    ${module.difficulty}
+                  </span>
+                  <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                    ${module.duration}
+                  </span>
+                  ${module.certification && module.certification.available ? 
+                    `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                      Certification
+                    </span>` : ''}
+                </div>
+              </div>
+              <button 
+                class="view-module-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-3 md:mt-0"
+                data-module-id="${module.id}"
+              >
+                View Module
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      contentDetailsDiv.innerHTML = `
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-xl font-semibold">${sub.title}</h3>
+            <p class="text-gray-600">${sub.description}</p>
+            <p class="mt-2"><strong>Tags:</strong> ${sub.tags.join(', ')}</p>
+          </div>
+          ${currentUser.role === 'admin' || currentUser.role === 'expert' ? 
+            `<button id="create-module-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+              Create Learning Module
+            </button>` : ''}
+        </div>
+        
+        <div class="modules-list">
+          <h4 class="text-lg font-semibold mb-3">Available Learning Modules</h4>
+          ${modulesHTML}
+        </div>
+      `;
+      
+      // Set up event listeners for view module buttons
+      document.querySelectorAll('.view-module-btn').forEach(btn => {
+        btn.addEventListener('click', () => viewModule(btn.dataset.moduleId));
+      });
+      
+      // Set up event listener for create module button if it exists
+      const createModuleBtn = document.getElementById('create-module-btn');
+      if (createModuleBtn) {
+        createModuleBtn.addEventListener('click', showCreateModuleForm);
+      }
+      
+    } catch (err) {
+      console.error('Error loading modules:', err);
+      contentDetailsDiv.innerHTML = `
+        <h3 class="text-xl font-semibold">${sub.title}</h3>
+        <p class="mt-2">${sub.description}</p>
+        <p class="mt-4 text-red-500">Error loading modules. Please try again later.</p>
+      `;
+    }
+  }
+  
+  // 5️⃣ Admin: Add category form
+  function showAddCategoryForm() {
+    const form = document.createElement('div');
+    form.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    form.id = 'add-category-modal';
+    
+    form.innerHTML = `
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h3 class="text-xl font-semibold mb-4">Add New Category</h3>
+        <form id="category-form">
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="category-name">Category Name</label>
+            <input 
+              type="text" 
+              id="category-name" 
+              class="w-full p-2 border rounded" 
+              required
+            >
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="category-icon">Icon (FontAwesome class)</label>
+            <input 
+              type="text" 
+              id="category-icon" 
+              class="w-full p-2 border rounded" 
+              placeholder="fa-folder-open"
+              value="fa-folder-open"
+            >
+          </div>
+          <div class="flex justify-end">
+            <button 
+              type="button" 
+              id="cancel-category" 
+              class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Add Category
+            </button>
+          </div>
+        </form>
+      </div>
+    `;
+    
+    document.body.appendChild(form);
+    
+    // Set up event listeners
+    document.getElementById('cancel-category').addEventListener('click', () => {
+      document.body.removeChild(form);
+    });
+    
+    document.getElementById('category-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('category-name').value;
+      const icon = document.getElementById('category-icon').value;
+      
+      try {
+        const response = await fetch('/api/library/categories', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, icon })
+        });
+        
+        const { success } = await response.json();
+        
+        if (success) {
+          // Remove form
+          document.body.removeChild(form);
+          
+          // Refresh categories
+          categoryIcons.innerHTML = '';
+          await loadCategories();
+        } else {
+          alert('Failed to create category. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error creating category:', err);
+        alert('An error occurred. Please try again.');
+      }
+    });
+  }
+  
+  // 6️⃣ Admin: Add subcategory form
+  function showAddSubcategoryForm() {
+    const form = document.createElement('div');
+    form.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    form.id = 'add-subcategory-modal';
+    
+    form.innerHTML = `
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h3 class="text-xl font-semibold mb-4">Add New Subcategory to ${currentCategory.name}</h3>
+        <form id="subcategory-form">
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="subcategory-title">Title</label>
+            <input 
+              type="text" 
+              id="subcategory-title" 
+              class="w-full p-2 border rounded" 
+              required
+            >
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="subcategory-description">Description</label>
+            <textarea 
+              id="subcategory-description" 
+              class="w-full p-2 border rounded" 
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2" for="subcategory-tags">Tags (comma separated)</label>
+            <input 
+              type="text" 
+              id="subcategory-tags" 
+              class="w-full p-2 border rounded" 
+              placeholder="editing, beginner, skills"
+            >
+          </div>
+          <div class="flex justify-end">
+            <button 
+              type="button" 
+              id="cancel-subcategory" 
+              class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Add Subcategory
+            </button>
+          </div>
+        </form>
+      </div>
+    `;
+    
+    document.body.appendChild(form);
+    
+    // Set up event listeners
+    document.getElementById('cancel-subcategory').addEventListener('click', () => {
+      document.body.removeChild(form);
+    });
+    
+    document.getElementById('subcategory-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const title = document.getElementById('subcategory-title').value;
+      const description = document.getElementById('subcategory-description').value;
+      const tags = document.getElementById('subcategory-tags').value.split(',').map(tag => tag.trim());
+      
+      try {
+        const response = await fetch('/api/library/subcategories', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            categoryId: currentCategory.id,
+            title,
+            description,
+            tags
+          })
+        });
+        
+        const { success } = await response.json();
+        
+        if (success) {
+          // Remove form
+          document.body.removeChild(form);
+          
+          // Refresh subcategories
+          await showSubcategories(currentCategory);
+        } else {
+          alert('Failed to create subcategory. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error creating subcategory:', err);
+        alert('An error occurred. Please try again.');
+      }
+    });
+  }
+  
+  // 7️⃣ View a learning module
+  async function viewModule(moduleId) {
+    // Create a modal to display module contents
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto';
+    modal.id = 'module-view-modal';
+    
+    // Show loading state
+    modal.innerHTML = `
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl my-8 mx-4 relative max-h-screen overflow-y-auto">
+        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+        <p class="text-center py-8"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Loading module...</p>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Set up close button event
+    document.getElementById('close-module-btn').addEventListener('click', () => {
+      document.body.removeChild(modal);
+    });
+    
+    try {
+      // Fetch module data
+      const resp = await fetch(`/api/library/modules/${moduleId}`);
+      const { success, data: module } = await resp.json();
+      
+      if (!success || !module) {
+        throw new Error('Failed to load module');
+      }
+      
+      // Generate module content HTML
+      let contentHTML = '';
+      
+      if (module.content && module.content.length) {
+        module.content.forEach((item, index) => {
+          switch (item.type) {
+            case 'video':
+              contentHTML += `
+                <div class="module-item p-4 border-b">
+                  <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3 mb-3 md:mb-0 md:mr-4">
+                      <div class="bg-gray-200 rounded h-40 relative" style="background-image: url('${item.thumbnail}'); background-size: cover; background-position: center;">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                          <button class="play-video-btn bg-white bg-opacity-80 rounded-full p-3 hover:bg-opacity-100" data-video-url="${item.url}">
+                            <i class="fas fa-play text-blue-600"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="md:w-2/3">
+                      <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
+                      <p class="text-sm text-gray-600">Video • ${item.duration}</p>
+                      <p class="mt-2">${item.description || ''}</p>
+                    </div>
+                  </div>
+                </div>
+              `;
+              break;
+              
+            case 'practice':
+              contentHTML += `
+                <div class="module-item p-4 border-b">
+                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
+                  <p class="text-sm text-gray-600">Practice Exercise</p>
+                  <p class="mt-2">${item.instructions}</p>
+                  <div class="mt-3">
+                    <p class="font-medium">Resources:</p>
+                    <ul class="list-disc pl-5">
+                      ${item.resources.map(resource => `
+                        <li><a href="${resource}" class="text-blue-600 hover:underline">Download resource</a></li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                  <div class="mt-4">
+                    <button class="submit-practice-btn bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                      Submit Your Work
+                    </button>
+                  </div>
+                </div>
+              `;
+              break;
+              
+            case 'quiz':
+              contentHTML += `
+                <div class="module-item p-4 border-b">
+                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
+                  <p class="text-sm text-gray-600">Knowledge Check</p>
+                  <div class="mt-3 bg-gray-50 p-3 rounded">
+                    <p>This quiz contains ${item.questions.length} question${item.questions.length !== 1 ? 's' : ''}.</p>
+                    <button class="start-quiz-btn mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-quiz-index="${index}">
+                      Start Quiz
+                    </button>
+                  </div>
+                </div>
+              `;
+              break;
+              
+            default:
+              contentHTML += `
+                <div class="module-item p-4 border-b">
+                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
+                  <p class="text-sm text-gray-600">${item.type}</p>
+                  <p class="mt-2">${item.description || ''}</p>
+                </div>
+              `;
+          }
+        });
+      } else {
+        contentHTML = '<p class="text-center text-gray-600 py-4">No content available for this module yet.</p>';
+      }
+      
+      // Module progress
+      const userProgress = await checkModuleProgress(moduleId);
+      const progressPercentage = userProgress ? userProgress.percentComplete : 0;
+      
+      // Update modal content
+      const moduleModalContent = document.querySelector('#module-view-modal > div');
+      moduleModalContent.innerHTML = `
+        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+        
+        <div class="module-header mb-6">
+          <h3 class="text-2xl font-semibold">${module.title}</h3>
+          <p class="text-gray-600">${module.description}</p>
+          
+          <div class="flex flex-wrap items-center mt-3">
+            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+              ${module.difficulty}
+            </span>
+            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+              ${module.duration}
+            </span>
+            ${module.certification && module.certification.available ? 
+              `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                Certification
+              </span>` : ''}
+          </div>
+          
+          <div class="mt-4">
+            <p class="text-sm font-medium mb-1">Your progress: ${progressPercentage}%</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="module-skills mb-6">
+          <h4 class="font-semibold mb-2">Skills You'll Learn:</h4>
+          <div class="flex flex-wrap">
+            ${module.skills.map(skill => `
+              <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
+                ${skill}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+        
+        ${module.prerequisites && module.prerequisites.length ? `
+          <div class="module-prerequisites mb-6">
+            <h4 class="font-semibold mb-2">Prerequisites:</h4>
+            <ul class="list-disc pl-5">
+              ${module.prerequisites.map(prereq => `<li>${prereq}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        
+        <div class="module-content border rounded mb-6">
+          <h4 class="font-semibold p-4 bg-gray-50 border-b">Module Content</h4>
+          ${contentHTML}
+        </div>
+        
+        ${module.assessmentCriteria && module.assessmentCriteria.length ? `
+          <div class="module-assessment mb-6">
+            <h4 class="font-semibold mb-2">Assessment Criteria:</h4>
+            <ul class="list-disc pl-5">
+              ${module.assessmentCriteria.map(criterion => `<li>${criterion}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        
+        ${module.expertFeedback && module.expertFeedback.available ? `
+          <div class="module-feedback mb-6">
+            <h4 class="font-semibold mb-2">Expert Feedback:</h4>
+            <p>Submit your work to receive personalized feedback from our experts.</p>
+            <button id="request-feedback-btn" class="mt-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+              Request Expert Feedback
+            </button>
+          </div>
+        ` : ''}
+        
+        ${module.certification && module.certification.available ? `
+          <div class="module-certification mb-6">
+            <h4 class="font-semibold mb-2">Certification:</h4>
+            <p>Complete this module to earn a certificate.</p>
+            <p class="text-sm text-gray-600 mt-1">Requirements:</p>
+            <ul class="list-disc pl-5 text-sm text-gray-600">
+              ${module.certification.requirements.map(req => `<li>${req}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+      `;
+      
+      // Re-attach close button event
+      document.getElementById('close-module-btn').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      
+      // Set up video play buttons
+      document.querySelectorAll('.play-video-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const videoUrl = btn.dataset.videoUrl;
+          playVideo(videoUrl, moduleId);
+        });
+      });
+      
+      // Set up practice submission buttons
+      document.querySelectorAll('.submit-practice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showPracticeSubmissionForm(moduleId);
+        });
+      });
+      
+      // Set up quiz buttons
+      document.querySelectorAll('.start-quiz-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const quizIndex = parseInt(btn.dataset.quizIndex);
+          startQuiz(module.content[quizIndex], moduleId);
+        });
+      });
+      
+      // Set up expert feedback button
+      const feedbackBtn = document.getElementById('request-feedback-btn');
+      if (feedbackBtn) {
+        feedbackBtn.addEventListener('click', () => {
+          requestExpertFeedback(moduleId);
+        });
+      }
+      
+    } catch (err) {
+      console.error('Error loading module:', err);
+      
+      // Update modal with error message
+      const moduleModalContent = document.querySelector('#module-view-modal > div');
+      moduleModalContent.innerHTML = `
+        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+        <div class="py-8 text-center">
+          <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+          <p class="text-lg">Error loading module. Please try again later.</p>
+        </div>
+      `;
+      
+      // Re-attach close button event
+      document.getElementById('close-module-btn').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+    }
+  }
+  
+  // 8️⃣ Check module progress for current user
+  async function checkModuleProgress(moduleId) {
+    try {
+      const response = await fetch(`/api/library/progress?moduleId=${moduleId}&userId=${currentUser.id}`);
+      const { success, data } = await response.json();
+      
+      if (success) {
+        return data;
+      }
+      
+      return null;
+    } catch (err) {
+      console.error('Error checking module progress:', err);
+      return null;
+    }
+  }
+  
+  // 9️⃣ Play video from a module
+  function playVideo(videoUrl, moduleId) {
+    // Create video player modal
+    const videoModal = document.createElement('div');
+    videoModal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+    videoModal.id = 'video-player-modal';
+    
+    videoModal.innerHTML = `
+      <div class="relative w-full max-w-4xl mx-4">
+        <button id="close-video-btn" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+        <div class="aspect-w-16 aspect-h-9 bg-black rounded overflow-hidden">
+          <video id="module-video" controls class="w-full h-full">
+            <source src="${videoUrl}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(videoModal);
+    
+    // Set up close button
+    document.getElementById('close-video-btn').addEventListener('click', () => {
+      document.body.removeChild(videoModal);
+    });
+    
+    // Get video element
+    const videoElement = document.getElementById('module-video');
+    
+    // Track video progress
+    videoElement.addEventListener('ended', () => {
+      updateModuleProgress(moduleId, 'video', videoUrl);
+    });
+    
+    // Auto-play video
+    videoElement.play();
+  }
+  
+  // 🔟 Update user's progress for a module
+  async function updateModuleProgress(moduleId, itemType, itemId) {
+    try {
+      await fetch('/api/library/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: currentUser.id,
+          moduleId,
+          itemType,
+          itemId,
+          completed: true
+        })
+      });
+      
+      console.log(`Updated progress for ${itemType} in module ${moduleId}`);
+    } catch (err) {
+      console.error('Error updating progress:', err);
+    }
+}
+
+
+
 // 1️⃣3️⃣ Request expert feedback
 function requestExpertFeedback(moduleId) {
     const feedbackModal = document.createElement('div');
@@ -771,757 +1529,4 @@ function requestExpertFeedback(moduleId) {
         }
       }
     });
-  }/**
-   * ApproVideo Learning Hub - Library Module
-   * 
-   * Core functionality for the learning library including:
-   * - Category and subcategory navigation
-   * - Module viewing and interaction
-   * - Progress tracking
-   * - Content submission
-   * - Expert feedback
-   * - Admin module creation
-   */
-  
-  import authService from './js/auth-service.js';
-  
-  // DOM refs
-  const userNameEl = document.getElementById('user-name');
-  const logoutBtn  = document.getElementById('logout-button');
-  const adminCtrls = document.getElementById('admin-controls');
-  const addCatBtn  = document.getElementById('add-category-btn');
-  
-  const categoryIcons     = document.getElementById('category-icons');
-  const subcategorySec    = document.getElementById('subcategory-section');
-  const subcategoriesDiv  = document.getElementById('subcategories');
-  const contentSec        = document.getElementById('content-section');
-  const contentDetailsDiv = document.getElementById('content-details');
-  
-  let currentUser;
-  let currentCategory;
-  let currentSubcategory;
-  let localJsonData = {}; // For data caching
-  
-  // 1️⃣ Authenticate & init UI
-  async function initAuth() {
-    const res = await authService.checkAccess();
-    if (!res.success) {
-      window.location.href = '/index.html';
-      return false;
-    }
-    currentUser = res.user;
-    userNameEl.textContent = currentUser.email;
-    // If admin, show add-category button
-    if (currentUser.role === 'admin') {
-      adminCtrls.classList.remove('hidden');
-    }
-    return true;
   }
-  
-  // Handle logout
-  logoutBtn.addEventListener('click', async () => {
-    await authService.logout();
-    window.location.href = '/index.html';
-  });
-  
-  // 2️⃣ Fetch & render categories
-  async function loadCategories() {
-    try {
-      const resp = await fetch('/api/library/categories');
-      const { success, data } = await resp.json();
-      if (!success) throw new Error('Failed to load');
-      
-      // Cache the data
-      localJsonData.categories = data;
-      
-      data.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = `
-          category-btn p-6 bg-white shadow rounded-lg
-          hover:scale-105 transition
-        `;
-        btn.innerHTML = `
-          <i class="fa fa-folder-open fa-2x mb-2"></i><br>
-          <span class="font-semibold">${cat.name}</span>
-        `;
-        btn.onclick = () => showSubcategories(cat);
-        categoryIcons.appendChild(btn);
-      });
-    } catch (err) {
-      categoryIcons.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading categories.</p>';
-    }
-  }
-  
-  // 3️⃣ Show subcategories for a given category
-  async function showSubcategories(cat) {
-    currentCategory = cat;
-    subcategoriesDiv.innerHTML = '';
-    subcategorySec.classList.remove('hidden');
-    contentSec.classList.add('hidden');
-  
-    // If admin, show add-subcategory control
-    if (currentUser.role === 'admin') {
-      const addBtn = document.createElement('button');
-      addBtn.textContent = `+ Add Subcategory`;
-      addBtn.className = 'bg-blue-500 text-white p-4 rounded flex items-center justify-center hover:bg-blue-600 transition mb-4';
-      addBtn.onclick = () => showAddSubcategoryForm();
-      subcategoriesDiv.appendChild(addBtn);
-    }
-  
-    cat.subcategories.forEach(sub => {
-      const subBtn = document.createElement('div');
-      subBtn.className = 'bg-white p-4 rounded shadow-md hover:shadow-lg transition cursor-pointer';
-      subBtn.innerHTML = `
-        <div class="flex justify-between items-start">
-          <div>
-            <strong class="text-lg">${sub.title}</strong>
-            <p class="mt-2 text-sm text-gray-600">${sub.description}</p>
-          </div>
-          <span class="bg-gray-200 text-xs px-2 py-1 rounded-full">${sub.moduleCount || 0} modules</span>
-        </div>
-      `;
-      subBtn.onclick = () => showContentDetail(sub);
-      subcategoriesDiv.appendChild(subBtn);
-    });
-  }
-  
-  // 4️⃣ Show detail for a subcategory
-  async function showContentDetail(sub) {
-    currentSubcategory = sub;
-    contentSec.classList.remove('hidden');
-    
-    // Show loading state
-    contentDetailsDiv.innerHTML = '<p class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading modules...</p>';
-    
-    try {
-      // Fetch modules for this subcategory
-      const resp = await fetch(`/api/library/modules?subcategoryId=${sub.id}`);
-      const { success, data: modules } = await resp.json();
-      
-      if (!success || !modules.length) {
-        contentDetailsDiv.innerHTML = `
-          <h3 class="text-xl font-semibold">${sub.title}</h3>
-          <p class="mt-2">${sub.description}</p>
-          <p class="mt-4"><strong>Tags:</strong> ${sub.tags.join(', ')}</p>
-          <p class="mt-4 text-gray-600">No learning modules available yet.</p>
-          ${currentUser.role === 'admin' || currentUser.role === 'expert' ? 
-            `<button id="create-module-btn" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-              Create Learning Module
-            </button>` : ''}
-        `;
-        
-        // Set up event listener for create module button if it exists
-        const createModuleBtn = document.getElementById('create-module-btn');
-        if (createModuleBtn) {
-          createModuleBtn.addEventListener('click', showCreateModuleForm);
-        }
-        
-        return;
-      }
-      
-      // Display modules
-      let modulesHTML = '';
-      modules.forEach(module => {
-        modulesHTML += `
-          <div class="module-card bg-white p-4 rounded shadow-md hover:shadow-lg transition mb-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between">
-              <div>
-                <h4 class="text-lg font-semibold">${module.title}</h4>
-                <p class="text-sm text-gray-600 mt-1">${module.description}</p>
-                <div class="flex flex-wrap mt-2">
-                  <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                    ${module.difficulty}
-                  </span>
-                  <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                    ${module.duration}
-                  </span>
-                  ${module.certification && module.certification.available ? 
-                    `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                      Certification
-                    </span>` : ''}
-                </div>
-              </div>
-              <button 
-                class="view-module-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-3 md:mt-0"
-                data-module-id="${module.id}"
-              >
-                View Module
-              </button>
-            </div>
-          </div>
-        `;
-      });
-      
-      contentDetailsDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h3 class="text-xl font-semibold">${sub.title}</h3>
-            <p class="text-gray-600">${sub.description}</p>
-            <p class="mt-2"><strong>Tags:</strong> ${sub.tags.join(', ')}</p>
-          </div>
-          ${currentUser.role === 'admin' || currentUser.role === 'expert' ? 
-            `<button id="create-module-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-              Create Learning Module
-            </button>` : ''}
-        </div>
-        
-        <div class="modules-list">
-          <h4 class="text-lg font-semibold mb-3">Available Learning Modules</h4>
-          ${modulesHTML}
-        </div>
-      `;
-      
-      // Set up event listeners for view module buttons
-      document.querySelectorAll('.view-module-btn').forEach(btn => {
-        btn.addEventListener('click', () => viewModule(btn.dataset.moduleId));
-      });
-      
-      // Set up event listener for create module button if it exists
-      const createModuleBtn = document.getElementById('create-module-btn');
-      if (createModuleBtn) {
-        createModuleBtn.addEventListener('click', showCreateModuleForm);
-      }
-      
-    } catch (err) {
-      console.error('Error loading modules:', err);
-      contentDetailsDiv.innerHTML = `
-        <h3 class="text-xl font-semibold">${sub.title}</h3>
-        <p class="mt-2">${sub.description}</p>
-        <p class="mt-4 text-red-500">Error loading modules. Please try again later.</p>
-      `;
-    }
-  }
-  
-  // 5️⃣ Admin: Add category form
-  function showAddCategoryForm() {
-    const form = document.createElement('div');
-    form.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    form.id = 'add-category-modal';
-    
-    form.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h3 class="text-xl font-semibold mb-4">Add New Category</h3>
-        <form id="category-form">
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="category-name">Category Name</label>
-            <input 
-              type="text" 
-              id="category-name" 
-              class="w-full p-2 border rounded" 
-              required
-            >
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="category-icon">Icon (FontAwesome class)</label>
-            <input 
-              type="text" 
-              id="category-icon" 
-              class="w-full p-2 border rounded" 
-              placeholder="fa-folder-open"
-              value="fa-folder-open"
-            >
-          </div>
-          <div class="flex justify-end">
-            <button 
-              type="button" 
-              id="cancel-category" 
-              class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-            >
-              Cancel
-            </button>
-            <button 
-              type="submit" 
-              class="bg-blue-600 text-white px-4 py-2 rounded"
-            >
-              Add Category
-            </button>
-          </div>
-        </form>
-      </div>
-    `;
-    
-    document.body.appendChild(form);
-    
-    // Set up event listeners
-    document.getElementById('cancel-category').addEventListener('click', () => {
-      document.body.removeChild(form);
-    });
-    
-    document.getElementById('category-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const name = document.getElementById('category-name').value;
-      const icon = document.getElementById('category-icon').value;
-      
-      try {
-        const response = await fetch('/api/library/categories', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ name, icon })
-        });
-        
-        const { success } = await response.json();
-        
-        if (success) {
-          // Remove form
-          document.body.removeChild(form);
-          
-          // Refresh categories
-          categoryIcons.innerHTML = '';
-          await loadCategories();
-        } else {
-          alert('Failed to create category. Please try again.');
-        }
-      } catch (err) {
-        console.error('Error creating category:', err);
-        alert('An error occurred. Please try again.');
-      }
-    });
-  }
-  
-  // 6️⃣ Admin: Add subcategory form
-  function showAddSubcategoryForm() {
-    const form = document.createElement('div');
-    form.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    form.id = 'add-subcategory-modal';
-    
-    form.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h3 class="text-xl font-semibold mb-4">Add New Subcategory to ${currentCategory.name}</h3>
-        <form id="subcategory-form">
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="subcategory-title">Title</label>
-            <input 
-              type="text" 
-              id="subcategory-title" 
-              class="w-full p-2 border rounded" 
-              required
-            >
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="subcategory-description">Description</label>
-            <textarea 
-              id="subcategory-description" 
-              class="w-full p-2 border rounded" 
-              rows="3"
-              required
-            ></textarea>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="subcategory-tags">Tags (comma separated)</label>
-            <input 
-              type="text" 
-              id="subcategory-tags" 
-              class="w-full p-2 border rounded" 
-              placeholder="editing, beginner, skills"
-            >
-          </div>
-          <div class="flex justify-end">
-            <button 
-              type="button" 
-              id="cancel-subcategory" 
-              class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-            >
-              Cancel
-            </button>
-            <button 
-              type="submit" 
-              class="bg-blue-600 text-white px-4 py-2 rounded"
-            >
-              Add Subcategory
-            </button>
-          </div>
-        </form>
-      </div>
-    `;
-    
-    document.body.appendChild(form);
-    
-    // Set up event listeners
-    document.getElementById('cancel-subcategory').addEventListener('click', () => {
-      document.body.removeChild(form);
-    });
-    
-    document.getElementById('subcategory-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const title = document.getElementById('subcategory-title').value;
-      const description = document.getElementById('subcategory-description').value;
-      const tags = document.getElementById('subcategory-tags').value.split(',').map(tag => tag.trim());
-      
-      try {
-        const response = await fetch('/api/library/subcategories', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ 
-            categoryId: currentCategory.id,
-            title,
-            description,
-            tags
-          })
-        });
-        
-        const { success } = await response.json();
-        
-        if (success) {
-          // Remove form
-          document.body.removeChild(form);
-          
-          // Refresh subcategories
-          await showSubcategories(currentCategory);
-        } else {
-          alert('Failed to create subcategory. Please try again.');
-        }
-      } catch (err) {
-        console.error('Error creating subcategory:', err);
-        alert('An error occurred. Please try again.');
-      }
-    });
-  }
-  
-  // 7️⃣ View a learning module
-  async function viewModule(moduleId) {
-    // Create a modal to display module contents
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto';
-    modal.id = 'module-view-modal';
-    
-    // Show loading state
-    modal.innerHTML = `
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl my-8 mx-4 relative max-h-screen overflow-y-auto">
-        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times fa-lg"></i>
-        </button>
-        <p class="text-center py-8"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Loading module...</p>
-      </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Set up close button event
-    document.getElementById('close-module-btn').addEventListener('click', () => {
-      document.body.removeChild(modal);
-    });
-    
-    try {
-      // Fetch module data
-      const resp = await fetch(`/api/library/modules/${moduleId}`);
-      const { success, data: module } = await resp.json();
-      
-      if (!success || !module) {
-        throw new Error('Failed to load module');
-      }
-      
-      // Generate module content HTML
-      let contentHTML = '';
-      
-      if (module.content && module.content.length) {
-        module.content.forEach((item, index) => {
-          switch (item.type) {
-            case 'video':
-              contentHTML += `
-                <div class="module-item p-4 border-b">
-                  <div class="flex flex-col md:flex-row">
-                    <div class="md:w-1/3 mb-3 md:mb-0 md:mr-4">
-                      <div class="bg-gray-200 rounded h-40 relative" style="background-image: url('${item.thumbnail}'); background-size: cover; background-position: center;">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                          <button class="play-video-btn bg-white bg-opacity-80 rounded-full p-3 hover:bg-opacity-100" data-video-url="${item.url}">
-                            <i class="fas fa-play text-blue-600"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="md:w-2/3">
-                      <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
-                      <p class="text-sm text-gray-600">Video • ${item.duration}</p>
-                      <p class="mt-2">${item.description || ''}</p>
-                    </div>
-                  </div>
-                </div>
-              `;
-              break;
-              
-            case 'practice':
-              contentHTML += `
-                <div class="module-item p-4 border-b">
-                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
-                  <p class="text-sm text-gray-600">Practice Exercise</p>
-                  <p class="mt-2">${item.instructions}</p>
-                  <div class="mt-3">
-                    <p class="font-medium">Resources:</p>
-                    <ul class="list-disc pl-5">
-                      ${item.resources.map(resource => `
-                        <li><a href="${resource}" class="text-blue-600 hover:underline">Download resource</a></li>
-                      `).join('')}
-                    </ul>
-                  </div>
-                  <div class="mt-4">
-                    <button class="submit-practice-btn bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                      Submit Your Work
-                    </button>
-                  </div>
-                </div>
-              `;
-              break;
-              
-            case 'quiz':
-              contentHTML += `
-                <div class="module-item p-4 border-b">
-                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
-                  <p class="text-sm text-gray-600">Knowledge Check</p>
-                  <div class="mt-3 bg-gray-50 p-3 rounded">
-                    <p>This quiz contains ${item.questions.length} question${item.questions.length !== 1 ? 's' : ''}.</p>
-                    <button class="start-quiz-btn mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-quiz-index="${index}">
-                      Start Quiz
-                    </button>
-                  </div>
-                </div>
-              `;
-              break;
-              
-            default:
-              contentHTML += `
-                <div class="module-item p-4 border-b">
-                  <h4 class="font-semibold">${index + 1}. ${item.title}</h4>
-                  <p class="text-sm text-gray-600">${item.type}</p>
-                  <p class="mt-2">${item.description || ''}</p>
-                </div>
-              `;
-          }
-        });
-      } else {
-        contentHTML = '<p class="text-center text-gray-600 py-4">No content available for this module yet.</p>';
-      }
-      
-      // Module progress
-      const userProgress = await checkModuleProgress(moduleId);
-      const progressPercentage = userProgress ? userProgress.percentComplete : 0;
-      
-      // Update modal content
-      const moduleModalContent = document.querySelector('#module-view-modal > div');
-      moduleModalContent.innerHTML = `
-        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times fa-lg"></i>
-        </button>
-        
-        <div class="module-header mb-6">
-          <h3 class="text-2xl font-semibold">${module.title}</h3>
-          <p class="text-gray-600">${module.description}</p>
-          
-          <div class="flex flex-wrap items-center mt-3">
-            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-              ${module.difficulty}
-            </span>
-            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-              ${module.duration}
-            </span>
-            ${module.certification && module.certification.available ? 
-              `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                Certification
-              </span>` : ''}
-          </div>
-          
-          <div class="mt-4">
-            <p class="text-sm font-medium mb-1">Your progress: ${progressPercentage}%</p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-              <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="module-skills mb-6">
-          <h4 class="font-semibold mb-2">Skills You'll Learn:</h4>
-          <div class="flex flex-wrap">
-            ${module.skills.map(skill => `
-              <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full mr-2 mb-1">
-                ${skill}
-              </span>
-            `).join('')}
-          </div>
-        </div>
-        
-        ${module.prerequisites && module.prerequisites.length ? `
-          <div class="module-prerequisites mb-6">
-            <h4 class="font-semibold mb-2">Prerequisites:</h4>
-            <ul class="list-disc pl-5">
-              ${module.prerequisites.map(prereq => `<li>${prereq}</li>`).join('')}
-            </ul>
-          </div>
-        ` : ''}
-        
-        <div class="module-content border rounded mb-6">
-          <h4 class="font-semibold p-4 bg-gray-50 border-b">Module Content</h4>
-          ${contentHTML}
-        </div>
-        
-        ${module.assessmentCriteria && module.assessmentCriteria.length ? `
-          <div class="module-assessment mb-6">
-            <h4 class="font-semibold mb-2">Assessment Criteria:</h4>
-            <ul class="list-disc pl-5">
-              ${module.assessmentCriteria.map(criterion => `<li>${criterion}</li>`).join('')}
-            </ul>
-          </div>
-        ` : ''}
-        
-        ${module.expertFeedback && module.expertFeedback.available ? `
-          <div class="module-feedback mb-6">
-            <h4 class="font-semibold mb-2">Expert Feedback:</h4>
-            <p>Submit your work to receive personalized feedback from our experts.</p>
-            <button id="request-feedback-btn" class="mt-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
-              Request Expert Feedback
-            </button>
-          </div>
-        ` : ''}
-        
-        ${module.certification && module.certification.available ? `
-          <div class="module-certification mb-6">
-            <h4 class="font-semibold mb-2">Certification:</h4>
-            <p>Complete this module to earn a certificate.</p>
-            <p class="text-sm text-gray-600 mt-1">Requirements:</p>
-            <ul class="list-disc pl-5 text-sm text-gray-600">
-              ${module.certification.requirements.map(req => `<li>${req}</li>`).join('')}
-            </ul>
-          </div>
-        ` : ''}
-      `;
-      
-      // Re-attach close button event
-      document.getElementById('close-module-btn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-      });
-      
-      // Set up video play buttons
-      document.querySelectorAll('.play-video-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const videoUrl = btn.dataset.videoUrl;
-          playVideo(videoUrl, moduleId);
-        });
-      });
-      
-      // Set up practice submission buttons
-      document.querySelectorAll('.submit-practice-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          showPracticeSubmissionForm(moduleId);
-        });
-      });
-      
-      // Set up quiz buttons
-      document.querySelectorAll('.start-quiz-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const quizIndex = parseInt(btn.dataset.quizIndex);
-          startQuiz(module.content[quizIndex], moduleId);
-        });
-      });
-      
-      // Set up expert feedback button
-      const feedbackBtn = document.getElementById('request-feedback-btn');
-      if (feedbackBtn) {
-        feedbackBtn.addEventListener('click', () => {
-          requestExpertFeedback(moduleId);
-        });
-      }
-      
-    } catch (err) {
-      console.error('Error loading module:', err);
-      
-      // Update modal with error message
-      const moduleModalContent = document.querySelector('#module-view-modal > div');
-      moduleModalContent.innerHTML = `
-        <button id="close-module-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times fa-lg"></i>
-        </button>
-        <div class="py-8 text-center">
-          <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
-          <p class="text-lg">Error loading module. Please try again later.</p>
-        </div>
-      `;
-      
-      // Re-attach close button event
-      document.getElementById('close-module-btn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-      });
-    }
-  }
-  
-  // 8️⃣ Check module progress for current user
-  async function checkModuleProgress(moduleId) {
-    try {
-      const response = await fetch(`/api/library/progress?moduleId=${moduleId}&userId=${currentUser.id}`);
-      const { success, data } = await response.json();
-      
-      if (success) {
-        return data;
-      }
-      
-      return null;
-    } catch (err) {
-      console.error('Error checking module progress:', err);
-      return null;
-    }
-  }
-  
-  // 9️⃣ Play video from a module
-  function playVideo(videoUrl, moduleId) {
-    // Create video player modal
-    const videoModal = document.createElement('div');
-    videoModal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
-    videoModal.id = 'video-player-modal';
-    
-    videoModal.innerHTML = `
-      <div class="relative w-full max-w-4xl mx-4">
-        <button id="close-video-btn" class="absolute -top-10 right-0 text-white hover:text-gray-300">
-          <i class="fas fa-times fa-lg"></i>
-        </button>
-        <div class="aspect-w-16 aspect-h-9 bg-black rounded overflow-hidden">
-          <video id="module-video" controls class="w-full h-full">
-            <source src="${videoUrl}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(videoModal);
-    
-    // Set up close button
-    document.getElementById('close-video-btn').addEventListener('click', () => {
-      document.body.removeChild(videoModal);
-    });
-    
-    // Get video element
-    const videoElement = document.getElementById('module-video');
-    
-    // Track video progress
-    videoElement.addEventListener('ended', () => {
-      updateModuleProgress(moduleId, 'video', videoUrl);
-    });
-    
-    // Auto-play video
-    videoElement.play();
-  }
-  
-  // 🔟 Update user's progress for a module
-  async function updateModuleProgress(moduleId, itemType, itemId) {
-    try {
-      await fetch('/api/library/progress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userId: currentUser.id,
-          moduleId,
-          itemType,
-          itemId,
-          completed: true
-        })
-      });
-      
-      console.log(`Updated progress for ${itemType} in module ${moduleId}`);
-    } catch (err) {
-      console.error('Error updating progress:', err);
-    }

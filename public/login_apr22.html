@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - ApproVideo Hub</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+ 
+  <div class="mb-4 text-right">
+
+    <header class="absolute top-4 left-4 flex items-center space-x-2 text-green-700 font-semibold text-lg">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+      <span>ApproVideo Hub</span>
+    </header>
+
+    <label for="lang-switch" class="text-sm text-gray-600 mr-2">Language:</label>
+    <select id="lang-switch" class="text-sm border rounded p-1">
+      <option value="en">🇬🇧 English</option>
+      <option value="fr">🇫🇷 Français</option>
+    </select>
+  </div>
+  
+ 
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Log in to ApproVideo Hub</h1>
+    
+    <form id="login-form" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" name="email" required 
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+      
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password" name="password" required 
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+      
+      <div>
+        <button type="submit" 
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Log in
+        </button>
+      </div>
+      
+      <div id="status-message" class="text-center text-sm"></div>
+    </form>
+    
+
+    <noscript class="text-center text-red-600 mt-4">
+      This site requires JavaScript to function properly.
+    </noscript>
+    <script type="module">
+      const queryLang = new URLSearchParams(window.location.search).get('lang');
+      const browserLang = navigator.language.slice(0, 2);
+      const savedLang = localStorage.getItem('preferredLang');
+      const lang = queryLang || savedLang || browserLang;
+    
+      const langFile = await import(`/data/lang/${lang}.json`).catch(() =>
+        import('/data/lang/en.json')
+      );
+      const { translations } = langFile;
+      const t = key => translations[key] || key;
+      window.T = t;
+    
+      // Apply text
+      document.querySelector('h1').textContent = t('login_title');
+      document.querySelector('label[for="email"]').textContent = t('email_label');
+      document.querySelector('label[for="password"]').textContent = t('password_label');
+      document.querySelector('button[type="submit"]').textContent = t('login_button');
+      document.querySelector('a[href="signup.html"]').textContent = t('signup_link');
+    
+      // Language switcher
+      const langSwitcher = document.getElementById('lang-switch');
+      if (langSwitcher) {
+        langSwitcher.value = lang;
+        langSwitcher.addEventListener('change', (e) => {
+          const selected = e.target.value;
+          localStorage.setItem('preferredLang', selected);
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('lang', selected);
+          window.location.href = newUrl.toString(); // reload with lang param
+        });
+      }
+    </script>
+    <script type="module">
+      import { saveSecureSession } from './js/serverless-enhanced-auth.js';
+    
+      const form = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const statusMessage = document.getElementById('status-message');
+    
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+    
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+    
+        statusMessage.textContent = '';
+        statusMessage.classList.remove('text-red-600', 'text-green-600');
+    
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+    
+          const result = await res.json();
+    
+          if (result.success) {
+            // Save user session (secure)
+            await saveSecureSession({
+              token: result.token,
+              refreshToken: result.refreshToken,
+              role: result.user.role,
+              email: result.user.email
+            });
+    
+            // Show translated success message
+            statusMessage.textContent = window.T?.('login_success') || 'Login successful! Redirecting...';
+            statusMessage.classList.add('text-green-600');
+    
+            // Redirect based on user role
+            const redirectTo = {
+              admin: '/admin-dashboard.html',
+              user: '/dashboard.html',
+              expert: '/expert-dashboard.html',
+              editor: '/dashboard.html'
+            }[result.user.role] || '/dashboard.html';
+    
+            setTimeout(() => {
+              window.location.href = redirectTo;
+            }, 1000);
+          } else {
+            showError(result.error || window.T?.('login_failed') || 'Login failed');
+          }
+        } catch (err) {
+          console.error('Login error:', err);
+          showError(window.T?.('unexpected_error') || 'An unexpected error occurred.');
+        }
+      });
+    
+      function showError(msg) {
+        statusMessage.textContent = msg;
+        statusMessage.classList.add('text-red-600');
+      }
+    </script>
+
+
+
+    
+    
+
+
+    
+    <div class="mt-4 text-center">
+      <a href="signup.html" class="text-sm text-indigo-600 hover:text-indigo-500">
+        Don't have an account? Sign up
+      </a>
+    </div>
+  </div>
+
+  <!-- Critical: Make sure the script path is correct -->
+
+
+</body>
+</html>
