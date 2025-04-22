@@ -1,47 +1,48 @@
 // /api/lib/supabaseClient.js
 const { createClient } = require('@supabase/supabase-js');
 
-// Validate required environment variables
-if (!process.env.SUPABASE_URL) {
-  console.error('🚨 Missing SUPABASE_URL environment variable');
+// Ensure env vars
+const url = process.env.SUPABASE_URL;
+if (!url) {
+  console.error('🚨 Missing SUPABASE_URL');
+  process.exit(1);
+}
+const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+if (!key) {
+  console.error('🚨 Missing SUPABASE_SERVICE_ROLE_KEY or SERVICE_ROLE_KEY');
+  process.exit(1);
 }
 
-// Check for service role key in either variable name
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
-if (!serviceRoleKey) {
-  console.error('🚨 Missing SUPABASE_SERVICE_ROLE_KEY or SERVICE_ROLE_KEY environment variable');
-}
-
-// Create and export Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  serviceRoleKey || '',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
+// Lazy singleton
+let _supabase = null;
+function getSupabase() {
+  if (!_supabase) {
+    _supabase = createClient(url, key, {
+      auth: { autoRefreshToken: false, persistSession: false }
+    });
+    console.log('📡 Supabase client initialized');
   }
-);
+  return _supabase;
+}
 
-// Log that the client was initialized
-console.log('📡 Supabase client initialized with URL:', process.env.SUPABASE_URL);
-
-// Test connection function
+// Smoke test
 async function testConnection() {
   try {
-    const { data, error } = await supabase.from('users').select('count').limit(1);
-    if (error) {
-      console.error('🚨 Supabase connection test failed:', error.message);
-      return false;
-    }
-    console.log('✅ Supabase connection test successful');
+    const { error } = await getSupabase().from('users').select('id').limit(1);
+    if (error) throw error;
+    console.log('✅ Supabase connection test OK');
     return true;
   } catch (err) {
-    console.error('🚨 Supabase connection test error:', err.message);
+    console.error('🚨 Supabase connection test failed:', err.message);
     return false;
   }
 }
 
-module.exports = supabase;
-module.exports.testConnection = testConnection;
+// Dev‑only check
+if (process.env.NODE_ENV === 'development') {
+  testConnection().then(ok => {
+    if (!ok) console.warn('⚠️ “users” table missing or unreachable');
+  });
+}
+
+module.exports = { getSupabase, testConnection };

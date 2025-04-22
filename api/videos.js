@@ -976,9 +976,5 @@ router.post('/', authenticate, authorize(['admin', 'expert']), async (req, res) 
       message: 'An unexpected error occurred',
       error: err.message
     });
-// --- You were missing a brace here to close the 'catch' block ---
-
-} // <--- Add this closing brace for the 'catch' block
-
-}); // <--- This brace closes the router.post(...) function definition. You already have this one.
-
+  }
+});
