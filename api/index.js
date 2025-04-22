@@ -2,7 +2,7 @@
 require('dotenv').config();
 console.log('▶️ Loaded env:', {
   SUPABASE_URL: !!process.env.SUPABASE_URL,
-  SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+  SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_KEY,
   JWT_SECRET: !!process.env.JWT_SECRET
 });
 

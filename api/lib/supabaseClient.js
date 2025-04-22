@@ -7,9 +7,9 @@ if (!url) {
   console.error('🚨 Missing SUPABASE_URL');
   process.exit(1);
 }
-const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+const key = process.env.SUPABASE_SERVICE_KEY || process.env.SERVICE_ROLE_KEY;
 if (!key) {
-  console.error('🚨 Missing SUPABASE_SERVICE_ROLE_KEY or SERVICE_ROLE_KEY');
+  console.error('🚨 Missing SUPABASE_SERVICE_KEY or SERVICE_ROLE_KEY');
   process.exit(1);
 }
 

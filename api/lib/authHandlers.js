@@ -6,8 +6,8 @@ console.log('📡 Auth handlers loaded');
 if (!process.env.SUPABASE_URL) {
   console.warn('⚠️ SUPABASE_URL environment variable not set');
 }
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.SERVICE_ROLE_KEY) {
-  console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY or SERVICE_ROLE_KEY environment variable not set');
+if (!process.env.SUPABASE_SERVICE_KEY && !process.env.SERVICE_ROLE_KEY) {
+  console.warn('⚠️ SUPABASE_SERVICE_KEY or SERVICE_ROLE_KEY environment variable not set');
 }
 
 /**
