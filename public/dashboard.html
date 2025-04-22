@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <meta name="description" content="ApproVideo Hub Dashboard - Access learning resources">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-  
+  <script src="js/auth-debug.js"></script>
   <style>
     /* Dashboard specific styles */
     .dashboard-container {
@@ -262,8 +262,18 @@
     
     // Check authentication
    // Modify your checkAuth function
-async function checkAuth() {
+
+   async function checkAuth() {
   try {
+    // Rate limit auth checks to prevent loops
+    const lastCheck = sessionStorage.getItem('last_auth_check');
+    const now = Date.now();
+    if (lastCheck && (now - parseInt(lastCheck)) < 5000) {
+      console.log('Auth check ran too recently, skipping to prevent potential loops');
+      return true; // Continue with page load to break potential loops
+    }
+    sessionStorage.setItem('last_auth_check', now.toString());
+    
     const result = await authService.checkAccess();
     
     if (!result.success) {
@@ -277,7 +287,13 @@ async function checkAuth() {
       const loginBtn = document.createElement('button');
       loginBtn.textContent = 'Go to Login';
       loginBtn.style.cssText = 'margin-top:10px;padding:5px 10px;background:white;color:#f44336;border:none;border-radius:4px;cursor:pointer;display:block;';
-      loginBtn.onclick = () => { window.location.href = '/login.html'; };
+      loginBtn.onclick = () => { 
+        // Clear any stale tokens before redirecting
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('token');
+        sessionStorage.setItem('auth_redirect', '1');
+        window.location.href = '/login.html'; 
+      };
       warningDiv.appendChild(loginBtn);
       
       document.body.appendChild(warningDiv);
@@ -302,8 +318,8 @@ async function checkAuth() {
     document.body.appendChild(errorDiv);
     return false;
   }
-}
     
+
     // Fetch featured content
     async function loadFeaturedContent() {
       try {
