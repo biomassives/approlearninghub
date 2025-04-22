@@ -1,44 +1,121 @@
-// /public/js/auth-service.js
+// auth-service.js - Rewritten with improved token handling and redirect prevention
+
+import tokenManager from './auth-token-manager.js';
 
 /**
  * Authentication service for handling user auth operations
  */
 class AuthService {
-    constructor() {
-      this.apiBase = '/api/auth';
-      this.currentUser = null;
-      this.token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-      this.redirectInProgress = false;
-      this.lastAuthCheck = 0;
-    }
+  constructor() {
+    this.apiBase = '/api/auth';
+    this.currentUser = null;
+    this.token = tokenManager.getToken();
+    this.lastAuthCheck = 0;
+    this.redirectInProgress = false;
+    this.MIN_AUTH_CHECK_INTERVAL = 3000; // 3 seconds between auth checks
+  }
   
-    debugAuthState() {
-        const authToken = localStorage.getItem('auth_token');
-        const legacyToken = localStorage.getItem('token');
-        const userInfo = localStorage.getItem('user_info');
-        const userRole = localStorage.getItem('userRole');
-        
-        console.log('=== Auth State Debug ===');
-        console.log('auth_token exists:', !!authToken);
-        console.log('token exists:', !!legacyToken);
-        console.log('user_info exists:', !!userInfo);
-        console.log('userRole:', userRole);
-        console.log('Current page:', window.location.pathname);
-        console.log('this.token:', !!this.token);
-        console.log('this.currentUser:', !!this.currentUser);
+  debugAuthState() {
+    const authToken = tokenManager.getToken();
+    const userInfo = tokenManager.getUserInfo();
+    const userRole = tokenManager.getUserRole();
+    
+    console.log('=== Auth State Debug ===');
+    console.log('auth_token exists:', !!authToken);
+    console.log('user_info exists:', !!userInfo);
+    console.log('userRole:', userRole);
+    console.log('Current page:', window.location.pathname);
+    console.log('this.token:', !!this.token);
+    console.log('this.currentUser:', !!this.currentUser);
+  }
+  
+  /**
+   * Safely redirect to prevent loops
+   * @param {string} url - URL to redirect to
+   * @returns {boolean} - Success status
+   */
+  safeRedirect(url) {
+    // Don't redirect if already on this page
+    if (window.location.pathname === url) {
+      console.log(`Already on ${url}, no redirect needed`);
+      return false;
+    }
+    
+    // Check if we're in a redirect loop
+    if (tokenManager.inRedirectLoop()) {
+      console.error('Redirect loop detected, blocking redirect to:', url);
+      
+      // Show warning to user
+      this.showRedirectBlockedWarning(url);
+      return false;
+    }
+    
+    // Track this redirect to detect loops
+    if (!tokenManager.trackRedirect(url)) {
+      console.error('Redirect tracking prevented redirect to:', url);
+      
+      // Show warning to user
+      this.showRedirectBlockedWarning(url);
+      return false;
+    }
+    
+    // Set redirect flag
+    this.redirectInProgress = true;
+    
+    // Perform redirect
+    console.log(`Redirecting to: ${url}`);
+    window.location.href = url;
+    return true;
+  }
+  
+  /**
+   * Show warning when redirect is blocked
+   * @param {string} url - Blocked URL
+   */
+  showRedirectBlockedWarning(url) {
+    const warning = document.createElement('div');
+    warning.style.cssText = `
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #f44336;
+      color: white;
+      padding: 15px;
+      border-radius: 4px;
+      z-index: 10000;
+      max-width: 300px;
+      font-family: sans-serif;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    `;
+    
+    warning.innerHTML = `
+      <div style="margin-bottom: 10px;"><strong>Redirect Loop Prevented</strong></div>
+      <div>Too many redirects detected. Navigation to ${url} was blocked.</div>
+      <div style="margin-top: 10px;">
+        <a href="${url}" style="color: white; text-decoration: underline;">Click here to go there manually</a>
+      </div>
+    `;
+    
+    document.body.appendChild(warning);
+    
+    // Remove after 10 seconds
+    setTimeout(() => {
+      try {
+        document.body.removeChild(warning);
+      } catch (e) {
+        // Element might already be removed
       }
-      
-   
-      
-
-/**
- * Register a new user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @param {string} role - User's role
- * @returns {Promise<Object>} - Response from signup API
- */
-async signup(email, password, role) {
+    }, 10000);
+  }
+  
+  /**
+   * Register a new user
+   * @param {string} email - User's email
+   * @param {string} password - User's password
+   * @param {string} role - User's role
+   * @returns {Promise<Object>} - Response from signup API
+   */
+  async signup(email, password, role) {
     try {
       console.log(`Signing up user with email: ${email}, role: ${role}`);
       
@@ -49,34 +126,28 @@ async signup(email, password, role) {
         },
         body: JSON.stringify({ email, password, role }),
       });
-  
+
       const data = await response.json();
-      console.log('Signup response:', data.success ? 'Success' : 'Failed');
+      console.log('Signup response success:', data.success);
       
       if (data.success && data.user) {
-        console.log('Signup successful, storing user data');
-        
-        // Store user data for immediate access
+        // Store user data
         this.currentUser = data.user;
-        localStorage.setItem('userRole', data.user.role || role);
-        localStorage.setItem('user_info', JSON.stringify(data.user));
+        tokenManager.setUserInfo(data.user);
         
-        // Store token if provided in BOTH locations for consistency
+        // Store token if provided
         if (data.token) {
           this.token = data.token;
-          localStorage.setItem('auth_token', data.token);
-          localStorage.setItem('token', data.token);
-          console.log('Token stored in both localStorage locations');
+          tokenManager.setToken(data.token);
+          console.log('Token stored after signup');
         } else {
           console.warn('No token received from signup API');
         }
         
-        // Store signup success info in sessionStorage with careful timing
-        const now = Date.now();
+        // Store signup info in sessionStorage
         sessionStorage.setItem('signup_success', 'true');
-        sessionStorage.setItem('signup_time', now.toString());
+        sessionStorage.setItem('last_auth_action', Date.now().toString());
         sessionStorage.setItem('user_role', data.user.role || role);
-        console.log('Signup success data stored in sessionStorage');
       }
       
       return data;
@@ -85,139 +156,14 @@ async signup(email, password, role) {
       throw error;
     }
   }
-
-
-
-        
-    // Add this to manage manual redirection after signup
-    manualRedirectAfterSignup() {
-        if (sessionStorage.getItem('signup_success') === 'true') {
-          const lastAction = parseInt(sessionStorage.getItem('last_auth_action') || '0');
-          const now = Date.now();
-          
-          // Only redirect if it's been at least 2 seconds since signup
-          if (now - lastAction > 2000) {
-            const role = sessionStorage.getItem('user_role') || 'resources';
-            
-            // Clear the signup flags
-            sessionStorage.removeItem('signup_success');
-            sessionStorage.removeItem('last_auth_action');
-            sessionStorage.removeItem('user_role');
-            
-            // Build the redirect URL
-            const dashboardRoutes = {
-              expert: '/expert-dashboard.html',
-              learner: '/learner-dashboard.html',
-              researcher: '/researcher-dashboard.html',
-              resources: '/resources-dashboard.html',
-              organizer: '/organizer-dashboard.html'
-            };
-            
-            const redirectUrl = dashboardRoutes[role] || '/dashboard.html';
-            console.log(`Manual redirect to ${redirectUrl} with role ${role}`);
-            
-            // Perform the redirect
-            this.safeRedirect(redirectUrl);
-            return true;
-          }
-        }
-        return false;
-      }
   
-    /**
-     * Safely redirect to prevent loops
-     * @param {string} url - URL to redirect to
-     */
-    safeRedirect(url) {
-      // Don't redirect if already on this page
-      if (window.location.pathname === url) {
-        console.log(`Already on ${url}, no redirect needed`);
-        return;
-      }
-      
-      // Set redirect flag
-      this.redirectInProgress = true;
-      sessionStorage.setItem('last_redirect', Date.now().toString());
-      
-      // Perform redirect
-      console.log(`Redirecting to: ${url}`);
-      window.location.href = url;
-    }
-    
-    /**
-     * Check authentication and redirect if needed
-     */
-    checkAuthAndRedirect() {
-      // Prevent running too frequently
-      const now = Date.now();
-      if (now - this.lastAuthCheck < 2000) {
-        console.log('Auth check ran too recently, skipping');
-        return;
-      }
-      this.lastAuthCheck = now;
-      
-      // Check for manual post-signup redirect first
-      if (this.manualRedirectAfterSignup()) {
-        return;
-      }
-      
-      // Prevent redirect loops
-      if (this.redirectInProgress) {
-        console.log('Redirect already in progress, skipping auth check');
-        return;
-      }
-      
-      // Check for recent redirect
-      const lastRedirect = sessionStorage.getItem('last_redirect');
-      if (lastRedirect && (now - parseInt(lastRedirect)) < 10000) {
-        console.log('Recent redirect detected, skipping auth check to prevent loop');
-        return;
-      }
-      
-      // Debug the current auth state
-      this.debugAuthState();
-      
-      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-      const currentPage = window.location.pathname;
-      
-      // If we have a token and we're on the login page, redirect to dashboard
-      if (token && (
-          currentPage.includes('login.html') || 
-          currentPage === '/' || 
-          currentPage.includes('signup')
-        )) {
-        // Get user role for proper dashboard redirection
-        const userRole = this.getUserRole() || 'resources';
-        const dashboardRoutes = {
-          expert: '/expert-dashboard.html',
-          learner: '/learner-dashboard.html',
-          researcher: '/researcher-dashboard.html',
-          resources: '/resources-dashboard.html',
-          organizer: '/organizer-dashboard.html'
-        };
-        
-        this.safeRedirect(dashboardRoutes[userRole] || '/dashboard.html');
-        return;
-      }
-      
-      // If we don't have a token and we're on a protected page, redirect to login
-      if (!token && (
-          currentPage.includes('dashboard') || 
-          currentPage.includes('resources-dashboard')
-        )) {
-        this.safeRedirect('/login.html');
-        return;
-      }
-    }
-    
-    
-/**
- * Log in an existing user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<Object>} - Response from login API
- */
-async login(email, password) {
+  /**
+   * Log in an existing user
+   * @param {string} email - User's email
+   * @param {string} password - User's password
+   * @returns {Promise<Object>} - Response from login API
+   */
+  async login(email, password) {
     try {
       console.log(`Attempting login for email: ${email}`);
       
@@ -230,29 +176,26 @@ async login(email, password) {
       });
   
       const data = await response.json();
-      console.log('Login response:', data.success ? 'Success' : 'Failed');
+      console.log('Login response success:', data.success);
       
       // If login successful
-      if (response.ok && data.success && data.token) {
-        console.log('Login successful, saving token and user data');
-        
-        // Store the token in BOTH storage locations to ensure consistency
-        this.token = data.token;
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('token', data.token);
+      if (response.ok && data.success) {
+        // Store token securely
+        if (data.token) {
+          this.token = data.token;
+          tokenManager.setToken(data.token);
+          console.log('Token stored after login');
+        } else {
+          console.warn('No token received from login API');
+        }
         
         // If user info is included in the response, store it as well
         if (data.user) {
           this.currentUser = data.user;
-          localStorage.setItem('user_info', JSON.stringify(data.user));
-          localStorage.setItem('userRole', data.user.role || 'resources');
+          tokenManager.setUserInfo(data.user);
         }
         
-        // Log that we've stored everything properly
-        console.log('Auth token stored in both locations');
-        console.log('User role set to:', data.user ? data.user.role : 'unknown');
-        
-        return data; // Return the full response for the login page to handle
+        return data;
       } else {
         // Handle login failure
         console.error('Login failed:', data.message || 'Unknown error');
@@ -263,226 +206,210 @@ async login(email, password) {
       throw error;
     }
   }
-
-    /**
-     * Encrypt and store session data
-     * @param {Object} user - User object
-     * @param {string} token - Auth token
-     * @returns {Promise<void>}
-     */
-    async encryptSession(user, token) {
-      if (!window.SessionCrypto) return;
-      
-      try {
-        const sessionData = {
-          user: user,
-          token: token,
-          timestamp: new Date().getTime()
-        };
-        
-        const encryptedSession = await window.SessionCrypto.encrypt(
-          JSON.stringify(sessionData)
-        );
-        
-        localStorage.setItem('encrypted_session', encryptedSession);
-      } catch (error) {
-        console.error('Session encryption error:', error);
-      }
-    }
-
-    /**
-     * Log out the current user
-     * @returns {Promise<Object>} - Response from logout API
-     */
-    async logout() {
-      try {
-        // Send logout request - but don't let failure stop us
-        try {
-          const response = await fetch(`${this.apiBase}/logout`, {
-            method: 'POST',
-            headers: this.getAuthHeaders(),
-          });
-          const data = await response.json();
-        } catch (err) {
-          console.warn('Error during logout request, continuing anyway', err);
-        }
-        
-        // Always clear stored auth data regardless of server response
-        this.currentUser = null;
-        this.token = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('user_info');
-        localStorage.removeItem('encrypted_session');
-        sessionStorage.removeItem('last_redirect');
-        
-        // Redirect to login page
-        this.safeRedirect('/login.html');
-        
-        return { success: true };
-      } catch (error) {
-        console.error('Logout error:', error);
-        throw error;
-      }
-    }
   
-    
-/**
- * Check if user has valid access token
- * @returns {Promise<Object>} - Current user if valid, null otherwise
- */
-async checkAccess() {
-    // Get token from localStorage - try both storage keys
-    const authToken = localStorage.getItem('auth_token');
-    const legacyToken = localStorage.getItem('token');
-    
-    // Use whichever token exists, preferring auth_token
-    const token = authToken || legacyToken;
-    
-    // Update the instance token to match what's in storage
+  /**
+   * Log out the current user
+   * @returns {Promise<Object>} - Response from logout API
+   */
+  async logout() {
+    try {
+      // Try to send logout request, but continue even if it fails
+      try {
+        const response = await fetch(`${this.apiBase}/logout`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+        });
+        const data = await response.json();
+      } catch (err) {
+        console.warn('Error during logout request, continuing anyway', err);
+      }
+      
+      // Clear stored auth data
+      this.currentUser = null;
+      this.token = null;
+      tokenManager.clearAuth();
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Check if user has valid access token
+   * @returns {Promise<Object>} - Current user if valid, null otherwise
+   */
+  async checkAccess() {
+    // Get fresh token from manager
+    const token = tokenManager.getToken();
     this.token = token;
     
-    // No token means no valid access
     if (!token) {
-      console.log('No token found in storage, access invalid');
+      console.log('No token found, access invalid');
       return { success: false };
     }
-  
-    try {
-      console.log('Checking access with token:', token.substring(0, 10) + '...');
+    
+    // Check if we can verify token (prevent rapid checks)
+    if (!tokenManager.canVerifyToken()) {
+      console.log('Token verification on cooldown, skipping check');
       
-      // Make API request to validate token
+      // Return cached user if available
+      const cachedUser = tokenManager.getUserInfo();
+      if (cachedUser) {
+        this.currentUser = cachedUser;
+        return { success: true, user: cachedUser };
+      }
+      
+      return { success: false, error: 'verification_cooldown' };
+    }
+
+    try {
+      console.log('Verifying token with server');
+      tokenManager.updateVerifyTimestamp();
+      
       const response = await fetch(`${this.apiBase}/access-check`, {
         method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
+        headers: this.getAuthHeaders(),
       });
-  
-      // Parse the response
+
       const data = await response.json();
       
       if (data.success && data.user) {
-        // Token is valid, update current user
-        console.log('Token valid, user:', data.user.email);
+        console.log('Token verified successfully');
         this.currentUser = data.user;
-        
-        // Ensure user info is stored
-        localStorage.setItem('user_info', JSON.stringify(data.user));
-        localStorage.setItem('userRole', data.user.role);
-        
-        // Ensure both token storage locations have the same token
-        if (authToken && !legacyToken) {
-          localStorage.setItem('token', authToken);
-        } else if (!authToken && legacyToken) {
-          localStorage.setItem('auth_token', legacyToken);
-        }
-        
+        tokenManager.setUserInfo(data.user);
         return data;
       } else {
-        // Invalid token response from server
-        console.warn('Server rejected token as invalid');
+        console.warn('Token verification failed');
         
-        // Only clear tokens if the server explicitly says it's invalid
-        // This prevents network errors from logging users out
+        // Only clear token if explicitly invalid
         if (data.error === 'invalid_token' || data.error === 'token_expired') {
           this.token = null;
-          localStorage.removeItem('token');
-          localStorage.removeItem('auth_token');
+          tokenManager.clearAuth();
         }
         
         return { success: false };
       }
     } catch (error) {
-      // Network or server error - don't clear tokens to prevent logout on temporary issues
       console.error('Access check error:', error);
+      
+      // Don't clear token on network errors
       return { 
         success: false, 
         error: error.message,
-        transient: true  // Flag to indicate this might be a temporary error
+        transient: true
       };
     }
   }
   
-    /**
-     * Get auth headers including token if available
-     * @returns {Object} - Headers object
-     */
-    getAuthHeaders() {
-      const headers = {
-        'Content-Type': 'application/json',
+  /**
+   * Check authentication and redirect if needed
+   */
+  checkAuthAndRedirect() {
+    // Prevent running too frequently
+    const now = Date.now();
+    if (now - this.lastAuthCheck < this.MIN_AUTH_CHECK_INTERVAL) {
+      console.log('Auth check ran too recently, skipping');
+      return;
+    }
+    this.lastAuthCheck = now;
+    
+    // Prevent concurrent auth checks
+    if (this.redirectInProgress) {
+      console.log('Redirect already in progress, skipping auth check');
+      return;
+    }
+    
+    // Debug the current auth state
+    this.debugAuthState();
+    
+    const token = tokenManager.getToken();
+    const currentPage = window.location.pathname;
+    
+    // If we have a token and we're on the login page, redirect to dashboard
+    if (token && (
+        currentPage.includes('login.html') || 
+        currentPage === '/' || 
+        currentPage.includes('signup')
+      )) {
+      
+      // Get user role for proper dashboard redirection
+      const userRole = tokenManager.getUserRole() || 'resources';
+      const dashboardRoutes = {
+        expert: '/expert-dashboard.html',
+        learner: '/learner-dashboard.html',
+        researcher: '/researcher-dashboard.html',
+        resources: '/resources-dashboard.html',
+        organizer: '/organizer-dashboard.html'
       };
       
-      if (this.token) {
-        headers['Authorization'] = `Bearer ${this.token}`;
-      }
-      
-      return headers;
+      this.safeRedirect(dashboardRoutes[userRole] || '/dashboard.html');
+      return;
     }
+    
+    // If we don't have a token and we're on a protected page, redirect to login
+    if (!token && (
+        currentPage.includes('dashboard') || 
+        currentPage.includes('resources-dashboard')
+      )) {
+      
+      this.safeRedirect('/login.html');
+      return;
+    }
+  }
   
-    /**
-     * Get current user
-     * @returns {Object|null} - Current user object or null
-     */
-    getUser() {
-      if (!this.currentUser && localStorage.getItem('user_info')) {
-        try {
-          this.currentUser = JSON.parse(localStorage.getItem('user_info'));
-        } catch (e) {
-          console.error('Error parsing stored user info:', e);
-        }
-      }
-      return this.currentUser;
+  /**
+   * Get auth headers including token if available
+   * @returns {Object} - Headers object
+   */
+  getAuthHeaders() {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    // Use fresh token from manager
+    const token = tokenManager.getToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
+    
+    return headers;
+  }
   
-    /**
-     * Get current user role
-     * @returns {string|null} - User role or null
-     */
-    getUserRole() {
-      if (this.currentUser?.role) {
-        return this.currentUser.role;
-      }
-      
-      // Try to get from localStorage directly
-      const role = localStorage.getItem('userRole');
-      if (role) return role;
-      
-      // Try to parse from user_info
-      const userInfo = localStorage.getItem('user_info');
-      if (userInfo) {
-        try {
-          const user = JSON.parse(userInfo);
-          return user.role;
-        } catch (e) {
-          console.error('Error parsing user info for role:', e);
-        }
-      }
-      
-      return null;
+  /**
+   * Get current user
+   * @returns {Object|null} - Current user object or null
+   */
+  getUser() {
+    if (!this.currentUser) {
+      this.currentUser = tokenManager.getUserInfo();
     }
+    return this.currentUser;
+  }
   
-    /**
-     * Check if user is logged in
-     * @returns {boolean} - True if logged in
-     */
-    isLoggedIn() {
-      return !!this.getUser() || !!this.token;
+  /**
+   * Get current user role
+   * @returns {string|null} - User role or null
+   */
+  getUserRole() {
+    if (this.currentUser?.role) {
+      return this.currentUser.role;
     }
+    return tokenManager.getUserRole();
+  }
+  
+  /**
+   * Check if user is logged in
+   * @returns {boolean} - True if logged in
+   */
+  isLoggedIn() {
+    return !!this.getUser() || !!tokenManager.getToken();
+  }
 }
 
 // Create singleton instance
 const authService = new AuthService();
-
-// Initialize auth check on page load - but with a delay to prevent immediate redirects
-document.addEventListener('DOMContentLoaded', () => {
-  // Add a small delay to allow other scripts to initialize first
-  setTimeout(() => {
-    authService.checkAuthAndRedirect();
-  }, 500);
-});
 
 // Export the singleton
 export default authService;

@@ -199,36 +199,36 @@
 
   <script type="module">
 
-(function() {
-  console.log('Dashboard initializing - checking auth state');
-  
-  // Check for token
-  const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-  const userInfo = localStorage.getItem('user_info');
-  
-  // Just log the state without redirecting
-  console.log('Auth token present:', !!token);
-  console.log('User info present:', !!userInfo);
-  
-  // If no token, show a warning but don't redirect
-  if (!token) {
-    console.warn('No auth token found - user may not be logged in');
+        (function() {
+        console.log('Dashboard initializing - checking auth state');
+        
+        // Check for token
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+        const userInfo = localStorage.getItem('user_info');
+        
+        // Just log the state without redirecting
+        console.log('Auth token present:', !!token);
+        console.log('User info present:', !!userInfo);
+        
+        // If no token, show a warning but don't redirect
+        if (!token) {
+         console.warn('No auth token found - user may not be logged in');
     
-    // Add a visual indicator
-    setTimeout(() => {
-      const warningDiv = document.createElement('div');
-      warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
-      warningDiv.textContent = 'Warning: You may not be properly logged in.';
-      document.body.appendChild(warningDiv);
-      
-      // Add a login button
-      const loginBtn = document.createElement('button');
-      loginBtn.textContent = 'Go to Login';
-      loginBtn.style.cssText = 'display:block;margin-top:10px;padding:5px 10px;background:#2196f3;border:none;color:white;border-radius:4px;cursor:pointer;';
-      loginBtn.onclick = () => { window.location.href = '/login.html'; };
-      warningDiv.appendChild(loginBtn);
-    }, 1000);
-  }
+         // Add a visual indicator
+            setTimeout(() => {
+            const warningDiv = document.createElement('div');
+            warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
+            warningDiv.textContent = 'Warning: You may not be properly logged in.';
+            document.body.appendChild(warningDiv);
+            
+            // Add a login button
+            const loginBtn = document.createElement('button');
+            loginBtn.textContent = 'Go to Login';
+            loginBtn.style.cssText = 'display:block;margin-top:10px;padding:5px 10px;background:#2196f3;border:none;color:white;border-radius:4px;cursor:pointer;';
+            loginBtn.onclick = () => { window.location.href = '/login.html'; };
+            warningDiv.appendChild(loginBtn);
+            }, 1000);
+        }
   
   // Optional: validate token in background without redirecting
   if (token) {
@@ -263,21 +263,55 @@
     // Check authentication
    // Modify your checkAuth function
 
-   async function checkAuth() {
+  // Replace the checkAuth function in dashboard.html with this improved version
+
+/**
+ * Checks authentication with proper error handling and redirect prevention
+ * @returns {Promise<boolean>} - True if authenticated
+ */
+async function checkAuth() {
+  // Track when we last ran this check (prevent rapid checks)
+  const lastCheck = sessionStorage.getItem('dashboard_auth_check');
+  const now = Date.now();
+  
+  if (lastCheck && (now - parseInt(lastCheck)) < 5000) {
+    console.log('Auth check ran recently, using cached result');
+    return sessionStorage.getItem('auth_check_result') === 'true';
+  }
+  
+  // Update check timestamp
+  sessionStorage.setItem('dashboard_auth_check', now.toString());
+  
   try {
-    // Rate limit auth checks to prevent loops
-    const lastCheck = sessionStorage.getItem('last_auth_check');
-    const now = Date.now();
-    if (lastCheck && (now - parseInt(lastCheck)) < 5000) {
-      console.log('Auth check ran too recently, skipping to prevent potential loops');
-      return true; // Continue with page load to break potential loops
-    }
-    sessionStorage.setItem('last_auth_check', now.toString());
-    
+    console.log('Performing auth check...');
     const result = await authService.checkAccess();
     
+    // Cache the result
+    sessionStorage.setItem('auth_check_result', result.success.toString());
+    
     if (!result.success) {
-      console.warn('Auth check failed, but not redirecting');
+      // Handle transient errors differently - don't show error for network issues
+      if (result.transient) {
+        console.warn('Temporary auth check error - likely network issue');
+        
+        // Show a connectivity warning instead of auth error
+        const warningDiv = document.createElement('div');
+        warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
+        warningDiv.textContent = 'Connection issue. Some features may be limited.';
+        document.body.appendChild(warningDiv);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+          try { document.body.removeChild(warningDiv); } catch(e) {}
+        }, 5000);
+        
+        // Continue with limited functionality
+        return true;
+      }
+      
+      // For real auth failures, show proper error
+      console.warn('Auth check failed');
+      
       // Show warning instead of redirecting
       const warningDiv = document.createElement('div');
       warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#f44336;color:white;padding:10px;border-radius:4px;z-index:9999;';
@@ -288,11 +322,9 @@
       loginBtn.textContent = 'Go to Login';
       loginBtn.style.cssText = 'margin-top:10px;padding:5px 10px;background:white;color:#f44336;border:none;border-radius:4px;cursor:pointer;display:block;';
       loginBtn.onclick = () => { 
-        // Clear any stale tokens before redirecting
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('token');
-        sessionStorage.setItem('auth_redirect', '1');
-        window.location.href = '/login.html'; 
+        // Add a safety parameter to prevent redirect loops
+        sessionStorage.setItem('auth_redirect_source', 'dashboard');
+        window.location.href = '/login.html?source=dashboard&time=' + Date.now(); 
       };
       warningDiv.appendChild(loginBtn);
       
@@ -300,7 +332,7 @@
       return false;
     }
     
-    // User is authenticated
+    // User is authenticated - update UI with user info
     const user = result.user;
     
     // Update UI with user info
@@ -311,13 +343,24 @@
     return true;
   } catch (error) {
     console.error('Auth check error:', error);
+    
+    // Cache the failure
+    sessionStorage.setItem('auth_check_result', 'false');
+    
     // Show error message instead of redirecting
     const errorDiv = document.createElement('div');
     errorDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
     errorDiv.textContent = 'Connection error. Unable to verify your session.';
     document.body.appendChild(errorDiv);
-    return false;
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+      try { document.body.removeChild(errorDiv); } catch(e) {}
+    }, 5000);
+    
+    return true; // Continue with limited functionality
   }
+}
     
 
     // Fetch featured content
@@ -376,25 +419,32 @@
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', async () => {
         try {
-            // Apply translations
+            // Apply translations first
             await applyTranslations();
             initLanguageSwitcher();
             
-            // Check if user is authenticated
-            const isAuthenticated = await checkAuth();
-            
-            // Only load dashboard content if authenticated
-            if (isAuthenticated) {
-            loadFeaturedContent();
-            }
-            
-            // Set up logout handler
-            setupLogout();
-            
+            // Add a small delay to ensure everything is loaded
+            setTimeout(async () => {
+                // Check if user is authenticated
+                const isAuthenticated = await checkAuth();
+                
+                // Only load dashboard content if authenticated
+                if (isAuthenticated) {
+                    loadFeaturedContent();
+                }
+                
+                // Set up logout handler
+                setupLogout();
+            }, 100);
         } catch (error) {
             console.error('Dashboard initialization error:', error);
+            // Show error message instead of failing silently
+            const errorMsg = document.createElement('div');
+            errorMsg.style.cssText = 'color:red;padding:20px;background:#ffeeee;border-radius:4px;margin:20px;';
+            errorMsg.textContent = 'There was an error loading the dashboard. Please try refreshing the page.';
+            document.querySelector('.dashboard-container').appendChild(errorMsg);
         }
-        });
+    });
   </script>
 </body>
 </html>
