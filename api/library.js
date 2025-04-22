@@ -1,7 +1,7 @@
 // api/library.js
 const express = require('express');
 const router = express.Router();
-const { requireAuth } = require('../lib/authMiddleware');
+const { requireAuth, authorize } = require('../lib/authMiddleware');
 const {
   handleListCategories,
   handleAddCategory,
@@ -32,20 +32,20 @@ router.route('/categories')
   // Public: list categories
   .get(handleListCategories)
   // Protected: add category
-  .post(requireAuth, handleAddCategory);
+  .post(requireAuth, authorize(['admin', 'expert']), handleAddCategory);
 
 router.route('/categories/:id')
   // Protected: update category
   .put(requireAuth, handleUpdateCategory)
   // Protected: delete category
-  .delete(requireAuth, handleDeleteCategory);
+  .delete(requireAuth, authorize(['admin', 'expert']), handleDeleteCategory);
 
 // ---- Tags ----
 router.route('/tags')
   // Public: list tags
   .get(handleListTags)
   // Protected: add tag
-  .post(requireAuth, handleAddTag);
+  .post(requireAuth, authorize(['admin', 'expert']), handleAddTag);
 
 router.route('/tags/:id')
   // Protected: update tag
@@ -69,11 +69,11 @@ router.route('/videos/:id')
 // ---- Modules ----
 router.route('/modules')
   // Protected: add module
-  .post(requireAuth, handleAddModule);
+  .post(requireAuth, authorize(['admin', 'expert']), handleAddModule);
 
 router.route('/modules/:id')
   // Protected: update module
-  .put(requireAuth, handleUpdateModule);
+  .put(requireAuth, authorize(['admin', 'expert']), handleUpdateModule);
 
 // Error handler (must be last)
 router.use((err, req, res, next) => {
