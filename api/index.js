@@ -12,6 +12,10 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+// Create Express app instance FIRST
+const app = express();
+app.set('trust proxy', 1);
+
 // Add debug middleware
 const { addDebugMiddleware } = require('./api-debug');
 
@@ -43,9 +47,6 @@ const integrationsRouter = require('./integrations');
 //const notesRouter = require('./notes');
 //const discussionRouter = require('./discussion');
 //const walletsRouter = require('./wallets');
-
-const app = express();
-app.set('trust proxy', 1);
 
 // Add debug middleware first
 addDebugMiddleware(app);
@@ -160,6 +161,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use('/profiles', authenticate, profilesRouter);
   app.use('/videos', videosRouter);
   app.use('/categories', categoriesRouter);
+  app.use('/integrations', integrationsRouter);
   //app.use('/tags', tagsRouter);
   //app.use('/panels', panelsRouter);
   //app.use('/training', authenticate, trainingRouter);
@@ -214,6 +216,11 @@ app.get('/api/docs', (req, res) => {
       profiles: {
         me: 'GET /api/profiles/me',
         update: 'PUT /api/profiles/me'
+      },
+      integrations: {
+        list: 'GET /api/integrations',
+        settings: 'GET /api/integrations/settings',
+        zoomTemplates: 'GET /api/integrations/zoom-templates'
       }
       // Add more documentation as needed
     }
