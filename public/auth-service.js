@@ -249,3 +249,4 @@ class AuthService {
     } catch (error) {
       console.error('Access check error:', error);
       return
+    }

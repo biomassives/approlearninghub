@@ -368,12 +368,15 @@ class AuthService {
     
     // If we don't have a token and we're on a protected page, redirect to login
     if (!token && (
-        currentPage.includes('dashboard') || 
+        currentPage.includes('dashboard') ||
+        currentPage.includes('researcher-dashboard') || // Added this line for clarity
         currentPage.includes('resources-dashboard')
+        // Add other protected pages if needed
       )) {
-      
-     // this.safeRedirect('/login.html');
-      return;
+      // --->>> COMMENT OUT OR DELETE THIS LINE: <<<---
+      // this.safeRedirect('/login.html');
+      console.warn('[PRES-FIX] Redirect from protected page on missing token is currently disabled in checkAuthAndRedirect.'); // Optional log
+      return; // Keep if needed
     }
   }
   
