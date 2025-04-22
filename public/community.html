@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="community_title">ApproVideo Hub - Community</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="ApproVideo Hub Community - Connect with peers and experts">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  
+  <style>
+    /* Community specific styles */
+    .community-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .welcome-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .community-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    
+    .community-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .community-card h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .post-card {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .post-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .post-card-header {
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    .post-author {
+      font-weight: bold;
+    }
+    
+    .post-date {
+      color: #777;
+      font-size: 0.9em;
+      margin-left: auto;
+    }
+    
+    .post-card-body {
+      padding: 15px;
+    }
+    
+    .post-card-title {
+      margin-top: 0;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .post-card-footer {
+      padding: 10px 15px;
+      background-color: #f9f9f9;
+      border-top: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #666;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+    
+    .post-action:hover {
+      color: #007bff;
+    }
+    
+    .discussion-group {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .discussion-group:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .discussion-group-header {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .discussion-group-title {
+      margin: 0;
+      color: #333;
+    }
+    
+    .discussion-group-body {
+      padding: 15px;
+    }
+    
+    .discussion-group-stats {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+    
+    .btn-primary {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0069d9;
+    }
+    
+    .btn-outline {
+      display: inline-block;
+      background-color: transparent;
+      color: #007bff;
+      border: 1px solid #007bff;
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    
+    .btn-outline:hover {
+      background-color: #f0f8ff;
+    }
+    
+    .event-card {
+      display: flex;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .event-date {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      min-width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .event-day {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    
+    .event-month {
+      text-transform: uppercase;
+      font-size: 0.9em;
+    }
+    
+    .event-details {
+      padding: 15px;
+      flex-grow: 1;
+    }
+    
+    .event-title {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    
+    .event-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+    
+    .search-form {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    
+    .search-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+      font-size: 1em;
+    }
+    
+    .search-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0 15px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+    
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .tag {
+      background-color: #f0f8ff;
+      color: #007bff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9em;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .tab.active {
+      border-bottom-color: #007bff;
+      color: #007bff;
+      font-weight: bold;
+    }
+    
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .main-nav li {
+      margin-right: 20px;
+    }
+    
+    .main-nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      padding: 5px 0;
+    }
+    
+    .main-nav a.active {
+      border-bottom: 2px solid white;
+    }
+    
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    #logout-button {
+      background-color: transparent;
+      border: 1px solid #dc3545;
+      color: #dc3545;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    #logout-button:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+    
+    .pagination a {
+      display: inline-block;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #333;
+    }
+    
+    .pagination a.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    @media (max-width: 768px) {
+      .community-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .main-nav li {
+        margin-right: 0;
+      }
+      
+      .actions-bar {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand-name" data-i18n="brand_name">ApproVideo Hub</div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/dashboard.html" data-i18n="nav_dashboard">Dashboard</a></li>
+        <li><a href="/library.html" data-i18n="nav_library">Library</a></li>
+        <li><a href="/community.html" class="active" data-i18n="nav_community">Community</a></li>
+        <li><a href="/expert.html" id="expert-nav-link" style="display: none;" data-i18n="nav_expert">Expert Zone</a></li>
+      </ul>
+    </nav>
+    <div class="user-controls">
+      <span id="user-name">...</span>
+      <button id="logout-button" data-i18n="logout_button">Logout</button>
+    </div>
+  </header>
+
+  <main class="community-container" role="main">
+    <section class="welcome-section">
+      <h1 data-i18n="community_welcome">Community Hub</h1>
+      <p data-i18n="community_description">Connect with other learners, share insights, and join discussions about video production and editing techniques.</p>
+      
+      <form class="search-form">
+        <input type="text" class="search-input" placeholder="Search discussions, posts, and events..." data-i18n="search_placeholder">
+        <button type="submit" class="search-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+    <div class="actions-bar">
+      <div class="tabs">
+        <div class="tab active" data-tab="discussions" data-i18n="tab_discussions">Discussions</div>
+        <div class="tab" data-tab="events" data-i18n="tab_events">Events</div>
+        <div class="tab" data-tab="members" data-i18n="tab_members">Members</div>
+      </div>
+      
+      <div>
+        <button class="btn-primary" id="new-post-button" data-i18n="new_post_button">New Post</button>
+      </div>
+    </div>
+
+    <div class="community-grid">
+      <div class="main-content">
+        <div class="community-card">
+          <h2 data-i18n="recent_discussions">Recent Discussions</h2>
+          
+          <div id="discussions-container">
+            <!-- Discussion posts will be loaded here -->
+            <div class="post-card">
+              <div class="post-card-header">
+                <div class="user-avatar">JD</div>
+                <span class="post-author">John Doe</span>
+                <span class="post-date">2 hours ago</span>
+              </div>
+              <div class="post-card-body">
+                <h3 class="post-card-title">Best approaches for color grading in low light</h3>
+                <p>I've been struggling with color grading footage shot in low light conditions. What tools and techniques do you recommend for preserving details while enhancing colors?</p>
+                <div class="tag-list">
+                  <span class="tag">Color Grading</span>
+                  <span class="tag">Low Light</span>
+                  <span class="tag">Post-Production</span>
+                </div>
+              </div>
+              <div class="post-card-footer">
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                  </svg>
+                  <span>12 Likes</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  </svg>
+                  <span>8 Comments</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                  </svg>
+                  <span>Share</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="post-card">
+              <div class="post-card-header">
+                <div class="user-avatar">AS</div>
+                <span class="post-author">Alex Smith</span>
+                <span class="post-date">Yesterday</span>
+              </div>
+              <div class="post-card-body">
+                <h3 class="post-card-title">Recommended camera setup for documentary filmmaking</h3>
+                <p>I'm starting a documentary project and looking for recommendations on camera setup, lenses, and audio equipment that offers good quality while being relatively portable.</p>
+                <div class="tag-list">
+                  <span class="tag">Equipment</span>
+                  <span class="tag">Documentary</span>
+                  <span class="tag">Camera Setup</span>
+                </div>
+              </div>
+              <div class="post-card-footer">
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                  </svg>
+                  <span>24 Likes</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  </svg>
+                  <span>16 Comments</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                  </svg>
+                  <span>Share</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="post-card">
+              <div class="post-card-header">
+                <div class="user-avatar">EM</div>
+                <span class="post-author">Emily Martinez</span>
+                <span class="post-date">3 days ago</span>
+              </div>
+              <div class="post-card-body">
+                <h3 class="post-card-title">Tips for shooting interviews with non-professional subjects</h3>
+                <p>I'm working on a project involving interviews with people who aren't used to being on camera. Any advice on making them comfortable and getting natural responses?</p>
+                <div class="tag-list">
+                  <span class="tag">Interviews</span>
+                  <span class="tag">Directing</span>
+                  <span class="tag">Production</span>
+                </div>
+              </div>
+              <div class="post-card-footer">
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                  </svg>
+                  <span>31 Likes</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  </svg>
+                  <span>22 Comments</span>
+                </div>
+                <div class="post-action">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                  </svg>
+                  <span>Share</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pagination">
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar">
+        <div class="community-card">
+          <h2 data-i18n="upcoming_events">Upcoming Events</h2>
+          <div id="events-container">
+            <!-- Events will be loaded here -->
+            <div class="event-card">
+              <div class="event-date">
+                <span class="event-day">15</span>
+                <span class="event-month">May</span>
+              </div>
+              <div class="event-details">
+                <h3 class="event-title">Lighting Workshop</h3>
+                <div class="event-meta">Online • 2:00 PM EST</div>
+                <p>Learn essential lighting techniques for different shooting environments.</p>
+                <button class="btn-outline">RSVP</button>
+              </div>
+            </div>
+            
+            <div class="event-card">
+              <div class="event-date">
+                <span class="event-day">22</span>
+                <span class="event-month">May</span>
+              </div>
+              <div class="event-details">
+                <h3 class="event-title">Editing Masterclass</h3>
+                <div class="event-meta">Online • 3:30 PM EST</div>
+                <p>Advanced techniques for narrative editing with industry professionals.</p>
+                <button class="btn-outline">RSVP</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="community-card">
+          <h2 data-i18n="discussion_groups">Discussion Groups</h2>
+          <div id="groups-container">
+            <!-- Groups will be loaded here -->
+            <div class="discussion-group">
+              <div class="discussion-group-header">
+                <h3 class="discussion-group-title">Video Editing Techniques</h3>
+              </div>
+              <div class="discussion-group-body">
+                <p>Share and learn about advanced editing workflows and software tips.</p>
+                <div class="discussion-group-stats">
+                  <span>1,245 Members</span>
+                  <span>Active</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="discussion-group">
+              <div class="discussion-group-header">
+                <h3 class="discussion-group-title">Cinematography</h3>
+              </div>
+              <div class="discussion-group-body">
+                <p>Explore camera techniques, movement, framing, and visual storytelling.</p>
+                <div class="discussion-group-stats">
+                  <span>982 Members</span>
+                  <span>Active</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="discussion-group">
+              <div class="discussion-group-header">
+                <h3 class="discussion-group-title">Audio for Video</h3>
+              </div>
+              <div class="discussion-group-body">
+                <p>Discussion about recording, mixing, and enhancing audio for video productions.</p>
+                <div class="discussion-group-stats">
+                  <span>764 Members</span>
+                  <span>Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 15px;">
+            <a href="#" class="btn-outline">View All Groups</a>
+          </div>
+        </div>
+        
+        <div class="community-card">
+          <h2 data-i18n="popular_tags">Popular Tags</h2>
+          <div class="tag-list" style="margin-bottom: 10px;">
+            <span class="tag">Editing</span>
+            <span class="tag">Production</span>
+            <span class="tag">Cinematography</span>
+            <span class="tag">Audio</span>
+            <span class="tag">Lighting</span>
+            <span class="tag">Color Grading</span>
+            <span class="tag">Equipment</span>
+            <span class="tag">Software</span>
+            <span class="tag">Post-Production</span>
+            <span class="tag">Tutorials</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <p>
+      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | 
+      <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a>
+    </p>
+  </footer>
+
+  <script type="module">
+    import authService from './js/auth-service.js';
+    import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
+    import { secureDataFetch } from './js/lattice-method.js'; // Lattice method for data security
+    
+    // Local data cache
+    const localDataCache = {
+      discussions: null,
+      events: null,
+      expertData: null,
+      integrations: null
+    };
+    
+    let currentUser = null;
+    let isExpert = false;
+    
+    // Check authentication
+    async function checkAuth() {
+      try {
+        const result = await authService.checkAccess();
+        
+        if (!result.success) {
+          // Redirect to login page
+          window.location.href = '/index.html';
+          return;
+        }
+        
+        // User is authenticated
+        currentUser = result.user;
+        
+        // Check if user is an expert
+        isExpert = currentUser.roles && currentUser.roles.includes('expert');
+        
+        // Update UI with user info
+        document.getElementById('user-name').textContent = currentUser.email;
+        
+        // If user is an expert, load expert-specific data and show expert UI elements
+        if (isExpert) {
+          loadExpertData();
+          
+          // Show expert navigation link
+          const expertNavLink = document.getElementById('expert-nav-link');
+          if (expertNavLink) {
+            expertNavLink.style.display = 'block';
+          }
+          
+          // Add expert tab if not already present
+          const tabsContainer = document.querySelector('.tabs');
+          if (tabsContainer && !document.querySelector('[data-tab="expert"]')) {
+            const expertTab = document.createElement('div');
+            expertTab.className = 'tab';
+            expertTab.dataset.tab = 'expert';
+            expertTab.setAttribute('data-i18n', 'tab_expert');
+            expertTab.textContent = 'Expert Zone';
+            tabsContainer.appendChild(expertTab);
+            
+            // Reinitialize tabs
+            setupTabs();
+          }
+        }
+          
+      } catch (error) {
+        console.error('Auth check error:', error);
+        // Redirect to login page
+        window.location.href = '/index.html';
+      }
+    }
+    
+    // Load expert-specific data
+    async function loadExpertData() {
+      try {
+        // Fetch expert modules and pending reviews
+        const [expertHomeData, expertModulesData, pendingReviewsData] = await Promise.all([
+          secureDataFetch('/api/expert/home'),
+          secureDataFetch('/api/expert/modules'),
+          secureDataFetch('/api/expert/pending-reviews')
+        ]);
+        
+        // Store in local cache
+        localDataCache.expertData = {
+          home: expertHomeData,
+          modules: expertModulesData,
+          pendingReviews: pendingReviewsData
+        };
+        
+        console.log('Expert data loaded', localDataCache.expertData);
+        
+        // Update UI if needed
+        // This would be implemented based on specific requirements
+        
+      } catch (error) {
+        console.error('Error loading expert data:', error);
+      }
+    }
+    
+    // Load integration settings
+    async function loadIntegrationSettings() {
+      if (!currentUser) return;
+      
+      try {
+        const [integrationSettings, zoomTemplates] = await Promise.all([
+          secureDataFetch('/api/integrations/settings'),
+          secureDataFetch('/api/integrations/zoom-templates')
+        ]);
+        
+        // Store in local cache
+        localDataCache.integrations = {
+          settings: integrationSettings,
+          zoomTemplates: zoomTemplates
+        };
+        
+        console.log('Integration data loaded', localDataCache.integrations);
+        
+        // Update UI if needed
+        updateIntegrationsUI();
+        
+      } catch (error) {
+        console.error('Error loading integration settings:', error);
+      }
+    }
+    
+    // Update integrations UI
+    function updateIntegrationsUI() {
+      const integrationsData = localDataCache.integrations;
+      if (!integrationsData) return;
+      
+      // Example: Update Zoom templates in the sidebar if the container exists
+      const eventsContainer = document.getElementById('events-container');
+      if (eventsContainer && integrationsData.zoomTemplates?.templates?.length > 0) {
+        const zoomSection = document.createElement('div');
+        zoomSection.innerHTML = `
+          <h4 style="margin-top: 20px; margin-bottom: 10px;">Schedule with Zoom</h4>
+          <p>Create a meeting using one of your templates:</p>
+          <div class="tag-list">
+            ${integrationsData.zoomTemplates.templates.slice(0, 3).map(template => 
+              `<span class="tag" data-template-id="${template.id}" style="cursor: pointer;">${template.name}</span>`
+            ).join('')}
+          </div>
+        `;
+        
+        // Add click events to template tags
+        eventsContainer.appendChild(zoomSection);
+        eventsContainer.querySelectorAll('.tag[data-template-id]').forEach(tag => {
+          tag.addEventListener('click', () => {
+            const templateId = tag.dataset.templateId;
+            console.log(`Creating meeting with template ID: ${templateId}`);
+            // In production, this would open a modal or navigate to a creation page
+            alert(`Meeting creation with template ${tag.textContent} will be implemented in the next update.`);
+          });
+        });
+      }
+    }
+    
+    // Tab switching functionality
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.tab');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          tab.classList.add('active');
+          
+          const tabName = tab.dataset.tab;
+          console.log(`Switched to ${tabName} tab`);
+          
+          // Handle special tabs
+          if (tabName === 'expert' && isExpert) {
+            showExpertTab();
+          } else {
+            // Hide expert content if visible
+            const expertContent = document.getElementById('expert-content');
+            if (expertContent) {
+              expertContent.style.display = 'none';
+            }
+            
+            // Show main content
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+              mainContent.style.display = 'block';
+            }
+          }
+        });
+      });
+    }
+    
+    // Show expert tab content
+    function showExpertTab() {
+      // Hide main content
+      const mainContent = document.querySelector('.main-content');
+      if (mainContent) {
+        mainContent.style.display = 'none';
+      }
+      
+      // Create or show expert content
+      let expertContent = document.getElementById('expert-content');
+      
+      if (!expertContent) {
+        expertContent = document.createElement('div');
+        expertContent.id = 'expert-content';
+        expertContent.className = 'community-card';
+        expertContent.style.marginBottom = '20px';
+        
+        // Insert before sidebar
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.parentNode.insertBefore(expertContent, sidebar);
+      }
+      
+      expertContent.style.display = 'block';
+      
+      // Populate expert content
+      const expertData = localDataCache.expertData;
+      if (!expertData) {
+        expertContent.innerHTML = '<p>Loading expert data...</p>';
+        loadExpertData();
+        return;
+      }
+      
+      expertContent.innerHTML = `
+        <h2>Expert Dashboard</h2>
+        
+        <div class="tabs" style="margin: 20px 0;">
+          <div class="tab active" data-expert-tab="reviews">Pending Reviews</div>
+          <div class="tab" data-expert-tab="sessions">My Sessions</div>
+          <div class="tab" data-expert-tab="modules">Modules</div>
+        </div>
+        
+        <div id="expert-tab-content">
+          <div id="pending-reviews">
+            ${expertData.pendingReviews && expertData.pendingReviews.length > 0 ? 
+              expertData.pendingReviews.map(review => `
+                <div class="post-card">
+                  <div class="post-card-header">
+                    <div class="user-avatar">
+                      ${review.submitter ? review.submitter.substring(0, 2).toUpperCase() : 'AN'}
+                    </div>
+                    <span class="post-author">${review.title || 'Submission for Review'}</span>
+                    <span class="post-date">${review.submittedDate || 'Pending'}</span>
+                  </div>
+                  <div class="post-card-body">
+                    <p>${review.description || 'No description provided'}</p>
+                    <div class="tag-list">
+                      <span class="tag">${review.type || 'General'}</span>
+                      <span class="tag">${review.status || 'Pending'}</span>
+                    </div>
+                  </div>
+                  <div class="post-card-footer">
+                    <a href="/expert/review/${review.id}" class="btn-primary">Review</a>
+                    <button class="btn-outline" data-review-id="${review.id}" data-action="annotate">Annotate</button>
+                  </div>
+                </div>
+              `).join('') : 
+              '<p>No pending reviews at this time.</p>'
+            }
+          </div>
+        </div>
+      `;
+      
+      // Set up expert tab navigation
+      expertContent.querySelectorAll('[data-expert-tab]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all expert tabs
+          expertContent.querySelectorAll('[data-expert-tab]').forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          tab.classList.add('active');
+          
+          const expertTabName = tab.dataset.expertTab;
+          console.log(`Switched to expert tab: ${expertTabName}`);
+          
+          // Update content based on selected tab
+          const tabContentContainer = document.getElementById('expert-tab-content');
+          
+          switch (expertTabName) {
+            case 'reviews':
+              tabContentContainer.innerHTML = document.getElementById('pending-reviews').innerHTML;
+              break;
+            case 'sessions':
+              loadExpertSessions(tabContentContainer);
+              break;
+            case 'modules':
+              loadExpertModules(tabContentContainer);
+              break;
+          }
+        });
+      });
+      
+      // Set up action buttons
+      expertContent.querySelectorAll('[data-action="annotate"]').forEach(button => {
+        button.addEventListener('click', () => {
+          const reviewId = button.dataset.reviewId;
+          console.log(`Annotate review: ${reviewId}`);
+          alert(`Annotation feature will be implemented in the next update.`);
+        });
+      });
+    }
+    
+    // Load expert sessions
+    async function loadExpertSessions(container) {
+      container.innerHTML = '<p>Loading sessions...</p>';
+      
+      try {
+        const sessionData = await secureDataFetch('/api/expert/sessions');
+        
+        if (!sessionData || sessionData.length === 0) {
+          container.innerHTML = '<p>No sessions scheduled at this time.</p>';
+          return;
+        }
+        
+        container.innerHTML = `
+          <div style="margin-bottom: 15px;">
+            <button class="btn-primary" id="create-session-button">Schedule New Session</button>
+          </div>
+          
+          ${sessionData.map(session => `
+            <div class="event-card">
+              <div class="event-date">
+                <span class="event-day">${new Date(session.date).getDate()}</span>
+                <span class="event-month">${new Date(session.date).toLocaleString('default', { month: 'short' })}</span>
+              </div>
+              <div class="event-details">
+                <h3 class="event-title">${session.title}</h3>
+                <div class="event-meta">${session.type} • ${new Date(session.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                <p>${session.description || 'No description provided'}</p>
+                <div style="display: flex; gap: 10px;">
+                  <a href="${session.zoomLink || '#'}" class="btn-primary" target="_blank">Join</a>
+                  <button class="btn-outline" data-session-id="${session.id}">Cancel</button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        `;
+        
+        // Set up create session button
+        const createButton = container.querySelector('#create-session-button');
+        if (createButton) {
+          createButton.addEventListener('click', () => {
+            console.log('Create new session');
+            // In production, this would open a modal or redirect to a creation page
+            if (localDataCache.integrations?.zoomTemplates) {
+              alert(`You can create a session using your Zoom templates. This feature will be implemented in the next update.`);
+            } else {
+              alert(`Session creation will be implemented in the next update.`);
+            }
+          });
+        }
+        
+        // Set up cancel buttons
+        container.querySelectorAll('[data-session-id]').forEach(button => {
+          button.addEventListener('click', () => {
+            const sessionId = button.dataset.sessionId;
+            console.log(`Cancel session: ${sessionId}`);
+            alert(`Session cancellation will be implemented in the next update.`);
+          });
+        });
+        
+      } catch (error) {
+        console.error('Error loading expert sessions:', error);
+        container.innerHTML = '<p>Error loading sessions. Please try again later.</p>';
+      }
+    }
+    
+    // Load expert modules
+    async function loadExpertModules(container) {
+      container.innerHTML = '<p>Loading modules...</p>';
+      
+      try {
+        // Use cached module data if available
+        let modulesData = localDataCache.expertData?.modules;
+        
+        if (!modulesData) {
+          modulesData = await secureDataFetch('/api/expert/modules');
+          if (localDataCache.expertData) {
+            localDataCache.expertData.modules = modulesData;
+          }
+        }
+        
+        if (!modulesData || modulesData.length === 0) {
+          container.innerHTML = '<p>No modules assigned at this time.</p>';
+          return;
+        }
+        
+        container.innerHTML = `
+          <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+            ${modulesData.map(module => `
+              <div class="content-card" style="height: 100%; margin-bottom: 0;">
+                <div class="content-card-image" style="background-image: url('${module.thumbnail || '/images/default-module.jpg'}')"></div>
+                <div class="content-card-body">
+                  <h3 class="content-card-title">${module.title}</h3>
+                  <div class="content-card-meta">${module.type || 'Module'}</div>
+                  <p>${module.description || ''}</p>
+                  <a href="/expert/module/${module.id}" class="content-card-link">Manage</a>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading expert modules:', error);
+        container.innerHTML = '<p>Error loading modules. Please try again later.</p>';
+      }
+    }
+    
+    // Load discussion posts from API
+    async function loadDiscussions() {
+      try {
+        // Check if we have cached data
+        if (localDataCache.discussions) {
+          return;
+        }
+        
+        // In a real implementation, this would fetch from an API
+        console.log('Loading discussions from API/local data');
+        
+        // For demonstration, we're using static HTML
+        // In production, you would use secureDataFetch to get data:
+        /*
+        const discussionsData = await secureDataFetch('/api/community/discussions?page=1&limit=5');
+        localDataCache.discussions = discussionsData;
+        
+        const container = document.getElementById('discussions-container');
+        
+        if (!discussionsData || discussionsData.length === 0) {
+          container.innerHTML = '<p>No discussions available at this time.</p>';
+          return;
+        }
+        
+        let html = '';
+        discussionsData.forEach(post => {
+          // Build HTML for each post
+        });
+        
+        container.innerHTML = html;
+        */
+        
+      } catch (error) {
+        console.error('Error loading discussions:', error);
+        document.getElementById('discussions-container').innerHTML = 
+          '<p>Error loading discussions. Please try again later.</p>';
+      }
+    }
+    
+    // Load upcoming events
+    async function loadEvents() {
+      try {
+        // Check if we have cached data
+        if (localDataCache.events) {
+          return;
+        }
+        
+        console.log('Loading events from API/local data');
+        
+        // In production, you would use secureDataFetch:
+        /*
+        const eventsData = await secureDataFetch('/api/community/events');
+        localDataCache.events = eventsData;
+        
+        // Update UI with events data
+        */
+        
+      } catch (error) {
+        console.error('Error loading events:', error);
+        document.getElementById('events-container').innerHTML = 
+          '<p>Error loading events. Please try again later.</p>';
+      }
+    }
+    
+    // Handle new post button
+    function setupNewPostButton() {
+      const newPostButton = document.getElementById('new-post-button');
+      if (newPostButton) {
+        newPostButton.addEventListener('click', () => {
+          console.log('New post button clicked');
+          
+          // In production, this would show a modal or redirect to a new post page
+          // If integration with Zoom is available, offer it as an option
+          if (localDataCache.integrations?.zoomTemplates) {
+            const createPostConfirm = confirm('Would you like to create a discussion post or schedule a video session?');
+            if (createPostConfirm) {
+              alert('Post creation feature will be implemented in the next update.');
+            } else {
+              alert('Session scheduling feature will be implemented in the next update.');
+            }
+          } else {
+            alert('Post creation feature will be implemented in the next update.');
+          }
+        });
+      }
+    }
+    
+    // Handle logout
+    function setupLogout() {
+      const logoutButton = document.getElementById('logout-button');
+      if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+          try {
+            await authService.logout();
+            window.location.href = '/index.html';
+          } catch (error) {
+            console.error('Logout error:', error);
+            alert('Failed to log out. Please try again.');
+          }
+        });
+      }
+    }
+    
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Apply translations
+        await applyTranslations();
+        initLanguageSwitcher();
+        
+        // Check if user is authenticated
+        await checkAuth();
+        
+        // Set up UI interactivity
+        setupTabs();
+        setupNewPostButton();
+        setupLogout();
+        
+        // Load community content
+        loadDiscussions();
+        loadEvents();
+        
+        // Load integration settings
+        loadIntegrationSettings();
+        
+      } catch (error) {
+        console.error('Community page initialization error:', error);
+      }
+    });
+    
+    // Handle search form submission
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) {
+      searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const searchTerm = searchForm.querySelector('.search-input').value.trim();
+        if (searchTerm) {
+          console.log(`Searching for: ${searchTerm}`);
+          // In production, this would trigger a search API call and update the UI with results
+          alert(`Search functionality will be implemented in the next update.\nYou searched for: ${searchTerm}`);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

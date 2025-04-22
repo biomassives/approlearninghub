@@ -1,115 +1,54 @@
-// /api/middleware/auth.js - Using Supabase Auth
-const { createClient } = require('@supabase/supabase-js');
+// /api/middleware/auth.js
+const { getSupabase } = require('../lib/supabaseClient')
+const supabase = getSupabase()
 
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+async function authenticate(req, res, next) {
+  const authHeader = req.headers.authorization
+  const token = authHeader?.startsWith('Bearer ')
+    ? authHeader.slice(7)
+    : req.cookies['sb-access-token']
 
-const { testConnection } = require('../lib/supabaseClient');
-
-(async () => {
-  const ok = await testConnection();
-  if (!ok) {
-    console.error('💥 Supabase “users” table is missing or unreachable — see above error');
-    process.exit(1); 
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Auth required' })
   }
-})();
 
-
-
-/**
- * Authentication middleware
- * Verifies Supabase Auth token and attaches user to request
- */
-const authenticate = async (req, res, next) => {
-  try {
-    // Get token from Authorization header
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Authentication required' 
-      });
-    }
-    
-    const token = authHeader.split(' ')[1];
-    
-    // Verify token with Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.getUser(token);
-    
-    if (authError || !authData.user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Invalid authentication'
-      });
-    }
-    
-    // Get user data from your users table
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('id, email, role, is_admin')
-      .eq('id', authData.user.id)
-      .single();
-    
-    if (userError) {
-      console.error('User data fetch error:', userError);
-      return res.status(401).json({ 
-        success: false, 
-        message: 'User data not found'
-      });
-    }
-    
-    // Attach user info to request
-    req.user = {
-      id: userData.id,
-      email: userData.email,
-      role: userData.role || 'learner',
-      isAdmin: userData.is_admin
-    };
-    
-    // Continue to route handler
-    next();
-  } catch (err) {
-    console.error('Auth middleware error:', err);
-    return res.status(401).json({ 
-      success: false, 
-      message: 'Invalid authentication'
-    });
+  const { data: { user }, error } = await supabase.auth.getUser(token)
+  if (error || !user) {
+    console.error('[Auth] getUser:', error)
+    return res.status(401).json({ success: false, message: 'Invalid or expired token' })
   }
-};
 
-/**
- * Role-based authorization middleware
- * @param {string|string[]} allowedRoles - Role(s) that can access the route
- */
-const authorize = (allowedRoles) => {
+  const { data: profile, error: profErr } = await supabase
+    .from('users')
+    .select('id, email, role, is_admin')
+    .eq('id', user.id)
+    .single()
+
+  if (profErr) {
+    console.error('[Auth] fetch profile:', profErr)
+    return res.status(401).json({ success: false, message: 'Profile lookup failed' })
+  }
+
+  req.user = {
+    id:      profile.id,
+    email:   profile.email,
+    role:    profile.role || 'learner',
+    isAdmin: profile.is_admin
+  }
+  next()
+}
+
+function authorize(allowedRoles) {
+  const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles]
   return (req, res, next) => {
-    // Must be used after authenticate middleware
     if (!req.user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'User not authenticated'
-      });
+      return res.status(401).json({ success: false, message: 'Not authenticated' })
     }
-    
-    const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
-    
-    // Admin override
-    if (req.user.isAdmin) {
-      return next();
+    if (req.user.isAdmin || roles.includes(req.user.role)) {
+      return next()
     }
-    
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ 
-        success: false, 
-        message: 'Access denied'
-      });
-    }
-    
-    next();
-  };
-};
+    return res.status(403).json({ success: false, message: 'Forbidden' })
+  }
+}
 
-module.exports = { authenticate, authorize };
+module.exports = { authenticate, authorize }
