@@ -4,146 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="dashboard_title">ApproVideo Hub - Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="description" content="ApproVideo Hub Dashboard - Access learning resources">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-  <script src="js/auth-debug.js"></script>
+  <link rel="stylesheet" href="./css/main.css"> <meta name="description" content="ApproVideo Hub Dashboard - Access learning resources">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
   <style>
-    /* Dashboard specific styles */
-    .dashboard-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    .welcome-section {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    
-    .dashboard-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
-    
-    .dashboard-card h2 {
-      margin-top: 0;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-    
-    .content-card {
-      border: 1px solid #eee;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      overflow: hidden;
-    }
-    
-    .content-card-image {
-      height: 150px;
-      background-color: #f5f5f5;
-      background-size: cover;
-      background-position: center;
-    }
-    
-    .content-card-body {
-      padding: 15px;
-    }
-    
-    .content-card-title {
-      margin-top: 0;
-      margin-bottom: 5px;
-    }
-    
-    .content-card-meta {
-      color: #666;
-      font-size: 0.9em;
-      margin-bottom: 10px;
-    }
-    
-    .content-card-link {
-      display: inline-block;
-      background-color: #007bff;
-      color: white;
-      padding: 5px 15px;
-      border-radius: 4px;
-      text-decoration: none;
-    }
-    
-    .user-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    #logout-button {
-      background-color: transparent;
-      border: 1px solid #dc3545;
-      color: #dc3545;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    #logout-button:hover {
-      background-color: #dc3545;
-      color: white;
-    }
-    
-    .main-nav ul {
-      display: flex;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .main-nav li {
-      margin-right: 20px;
-    }
-    
-    .main-nav a {
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      padding: 5px 0;
-    }
-    
-    .main-nav a.active {
-      border-bottom: 2px solid white;
-    }
-    
-    @media (max-width: 768px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .user-controls {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-      
-      .main-nav ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .main-nav li {
-        margin-right: 0;
-      }
-    }
+    /* Basic styles (keep or adapt your existing ones) */
+    body { font-family: sans-serif; margin: 0; background-color: #f4f7f6; }
+    .page-header { background-color: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .brand-name { font-size: 1.5em; font-weight: bold; }
+    .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 15px; }
+    .main-nav a { color: white; text-decoration: none; }
+    .main-nav a.active { border-bottom: 2px solid white; }
+    .user-controls { display: flex; align-items: center; gap: 15px; }
+    #logout-button { background: #d9534f; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+    #logout-button:hover { background: #c9302c; }
+    .dashboard-container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+    .welcome-section { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .dashboard-card { background-color: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; }
+    .dashboard-card h2 { margin-top: 0; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+    .loading { color: #777; }
+    .error-message { position: fixed; top: 10px; right: 10px; background: #ff9800; color: white; padding: 10px 15px; border-radius: 4px; z-index: 9999; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 0.9em; }
+    .error-message button { margin-top: 8px; padding: 5px 10px; background: white; color: #333; border: none; border-radius: 4px; cursor: pointer; display: block; font-size: 0.9em; }
+    /* Add styles for content cards if needed */
+    .content-card { border: 1px solid #eee; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
+    .content-card-image { height: 150px; background-color: #f5f5f5; background-size: cover; background-position: center; }
+    .content-card-body { padding: 15px; }
+    .content-card-title { margin: 0 0 5px 0; font-size: 1.1em; }
+    .content-card-meta { color: #666; font-size: 0.9em; margin-bottom: 10px; }
+    .content-card-link { display: inline-block; background-color: #007bff; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none; font-size: 0.9em; }
+    .content-card-link:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
@@ -170,281 +59,283 @@
 
     <div class="dashboard-grid">
       <div class="dashboard-card">
-        <h2>Featured Content</h2>
+        <h2 data-i18n="featured_content_title">Featured Content</h2>
         <div id="featured-content">
-          <div class="loading">Loading...</div>
+          <div class="loading" data-i18n="loading">Loading...</div>
         </div>
       </div>
-      
+
       <div class="dashboard-card">
-        <h2>Recent Activity</h2>
-        <p>You haven't started any activities yet.</p>
-        <p><a href="/library.html">Browse available content</a></p>
+        <h2 data-i18n="recent_activity_title">Recent Activity</h2>
+        <p data-i18n="no_activity_yet">You haven't started any activities yet.</p>
+        <p><a href="/library.html" data-i18n="browse_library_link">Browse available content</a></p>
       </div>
-      
+
       <div class="dashboard-card">
-        <h2>Community Updates</h2>
-        <p>Stay connected with the latest events and news.</p>
-        <p><a href="/community.html">View community page</a></p>
+        <h2 data-i18n="community_updates_title">Community Updates</h2>
+         <p data-i18n="community_updates_info">Stay connected with the latest events and news.</p>
+        <p><a href="/community.html" data-i18n="view_community_link">View community page</a></p>
       </div>
     </div>
   </main>
 
-  <footer class="page-footer">
+  <footer class="page-footer" style="text-align: center; padding: 15px; margin-top: 30px; font-size: 0.9em; color: #555;">
     <p>
-      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | 
+      <a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> |
       <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a>
     </p>
   </footer>
 
   <script type="module">
-
-        (function() {
-        console.log('Dashboard initializing - checking auth state');
-        
-        // Check for token
-        const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-        const userInfo = localStorage.getItem('user_info');
-        
-        // Just log the state without redirecting
-        console.log('Auth token present:', !!token);
-        console.log('User info present:', !!userInfo);
-        
-        // If no token, show a warning but don't redirect
-        if (!token) {
-         console.warn('No auth token found - user may not be logged in');
-    
-         // Add a visual indicator
-            setTimeout(() => {
-            const warningDiv = document.createElement('div');
-            warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
-            warningDiv.textContent = 'Warning: You may not be properly logged in.';
-            document.body.appendChild(warningDiv);
-            
-            // Add a login button
-            const loginBtn = document.createElement('button');
-            loginBtn.textContent = 'Go to Login';
-            loginBtn.style.cssText = 'display:block;margin-top:10px;padding:5px 10px;background:#2196f3;border:none;color:white;border-radius:4px;cursor:pointer;';
-            loginBtn.onclick = () => { window.location.href = '/login.html'; };
-            warningDiv.appendChild(loginBtn);
-            }, 1000);
-        }
-  
-  // Optional: validate token in background without redirecting
-  if (token) {
-    fetch('/api/auth/access-check', {
-      method: 'GET',
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Token validation result:', data.success ? 'Valid' : 'Invalid');
-      
-      // Just log the result, don't redirect
-      if (!data.success) {
-        console.warn('Token validation failed, but not redirecting');
-        // Show a warning
-        const warningDiv = document.createElement('div');
-        warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#f44336;color:white;padding:10px;border-radius:4px;z-index:9999;';
-        warningDiv.textContent = 'Session expired. Some features may not work.';
-        document.body.appendChild(warningDiv);
-      }
-    })
-    .catch(err => {
-      console.error('Token validation error:', err);
-    });
-  }
-})();
-
-
+    // Ensure auth-service.js exports necessary functions (checkAccess, logout)
     import authService from './js/auth-service.js';
-    import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
-    
-    // Check authentication
-   // Modify your checkAuth function
+    // Ensure i18n.js exports these functions
+    import { applyTranslations, initLanguageSwitcher, T } from './js/i18n.js';
 
-  // Replace the checkAuth function in dashboard.html with this improved version
+    // --- DOM Elements ---
+    const userNameSpan = document.getElementById('user-name');
+    const userWelcomeMessage = document.getElementById('user-welcome-message');
+    const featuredContentContainer = document.getElementById('featured-content');
+    const logoutButton = document.getElementById('logout-button');
+    let errorDiv = null; // To hold reference to any displayed error message
 
-/**
- * Checks authentication with proper error handling and redirect prevention
- * @returns {Promise<boolean>} - True if authenticated
- */
-async function checkAuth() {
-  // Track when we last ran this check (prevent rapid checks)
-  const lastCheck = sessionStorage.getItem('dashboard_auth_check');
-  const now = Date.now();
-  
-  if (lastCheck && (now - parseInt(lastCheck)) < 5000) {
-    console.log('Auth check ran recently, using cached result');
-    return sessionStorage.getItem('auth_check_result') === 'true';
-  }
-  
-  // Update check timestamp
-  sessionStorage.setItem('dashboard_auth_check', now.toString());
-  
-  try {
-    console.log('Performing auth check...');
-    const result = await authService.checkAccess();
-    
-    // Cache the result
-    sessionStorage.setItem('auth_check_result', result.success.toString());
-    
-    if (!result.success) {
-      // Handle transient errors differently - don't show error for network issues
-      if (result.transient) {
-        console.warn('Temporary auth check error - likely network issue');
-        
-        // Show a connectivity warning instead of auth error
-        const warningDiv = document.createElement('div');
-        warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
-        warningDiv.textContent = 'Connection issue. Some features may be limited.';
-        document.body.appendChild(warningDiv);
-        
-        // Remove after 5 seconds
-        setTimeout(() => {
-          try { document.body.removeChild(warningDiv); } catch(e) {}
-        }, 5000);
-        
-        // Continue with limited functionality
-        return true;
-      }
-      
-      // For real auth failures, show proper error
-      console.warn('Auth check failed');
-      
-      // Show warning instead of redirecting
-      const warningDiv = document.createElement('div');
-      warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#f44336;color:white;padding:10px;border-radius:4px;z-index:9999;';
-      warningDiv.textContent = 'Session expired. Please log in again.';
-      
-      // Add login button
-      const loginBtn = document.createElement('button');
-      loginBtn.textContent = 'Go to Login';
-      loginBtn.style.cssText = 'margin-top:10px;padding:5px 10px;background:white;color:#f44336;border:none;border-radius:4px;cursor:pointer;display:block;';
-      loginBtn.onclick = () => { 
-        // Add a safety parameter to prevent redirect loops
-        sessionStorage.setItem('auth_redirect_source', 'dashboard');
-        window.location.href = '/login.html?source=dashboard&time=' + Date.now(); 
-      };
-      warningDiv.appendChild(loginBtn);
-      
-      document.body.appendChild(warningDiv);
-      return false;
+    // --- Helper Functions ---
+
+    /** Removes any existing error/warning message div */
+    function clearErrorWarning() {
+        if (errorDiv && errorDiv.parentNode) {
+            errorDiv.parentNode.removeChild(errorDiv);
+        }
+        errorDiv = null;
     }
-    
-    // User is authenticated - update UI with user info
-    const user = result.user;
-    
-    // Update UI with user info
-    document.getElementById('user-name').textContent = user.email;
-    document.getElementById('user-welcome-message').textContent = 
-      `Welcome back, ${user.email.split('@')[0]}! Here's what's new today.`;
-    
-    return true;
-  } catch (error) {
-    console.error('Auth check error:', error);
-    
-    // Cache the failure
-    sessionStorage.setItem('auth_check_result', 'false');
-    
-    // Show error message instead of redirecting
-    const errorDiv = document.createElement('div');
-    errorDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
-    errorDiv.textContent = 'Connection error. Unable to verify your session.';
-    document.body.appendChild(errorDiv);
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-      try { document.body.removeChild(errorDiv); } catch(e) {}
-    }, 5000);
-    
-    return true; // Continue with limited functionality
-  }
-}
-    
 
-    // Fetch featured content
-    async function loadFeaturedContent() {
+    /** Displays a persistent error/warning message with an optional button */
+    function showErrorWarning(message, type = 'warning', showLoginButton = false) {
+        clearErrorWarning(); // Remove previous messages
+
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message'; // Use CSS class for styling
+        errorDiv.textContent = message;
+
+        if (type === 'error') {
+            errorDiv.style.backgroundColor = '#f44336'; // Red for errors
+        } else {
+            errorDiv.style.backgroundColor = '#ff9800'; // Orange for warnings
+        }
+
+        if (showLoginButton) {
+            const loginBtn = document.createElement('button');
+            loginBtn.textContent = T('go_to_login', 'Go to Login'); // Translate
+            loginBtn.onclick = () => {
+                // Add safety parameter to help login page potentially detect loops
+                sessionStorage.setItem('auth_redirect_source', 'dashboard_auth_fail');
+                window.location.href = `/login.html?reason=auth_fail&t=${Date.now()}`;
+            };
+            errorDiv.appendChild(loginBtn);
+        }
+
+        document.body.appendChild(errorDiv);
+
+        // Optional: Auto-remove transient warnings after some time
+        if (type === 'warning' && !showLoginButton) {
+             setTimeout(clearErrorWarning, 7000);
+        }
+    }
+
+
+    /**
+     * Checks authentication status.
+     * @returns {Promise<object|null>} - User object if authenticated, null otherwise.
+     */
+    async function checkAuthentication() {
+      // Debounce check to prevent rapid calls if something triggers re-renders
+      const lastCheck = sessionStorage.getItem('dashboard_auth_check_ts');
+      const now = Date.now();
+      if (lastCheck && (now - parseInt(lastCheck)) < 3000) { // 3 second debounce
+        console.log('Auth check debounced');
+        // Return previous status if available, otherwise force check
+        const cachedStatus = sessionStorage.getItem('dashboard_auth_status');
+        if (cachedStatus === 'ok') {
+            // Re-parse user data if needed, assume it's stored or refetch minimally
+             const userInfo = await authService.getUserInfo(); // Assumes authService can provide this
+             return userInfo;
+        } else if (cachedStatus === 'fail') {
+            showErrorWarning(T('session_expired_prompt', 'Session expired. Please log in again.'), 'error', true);
+            return null;
+        }
+        // If no cached status, proceed with check
+      }
+      sessionStorage.setItem('dashboard_auth_check_ts', now.toString());
+
       try {
-        const response = await fetch('/api/content/featured?limit=3');
+        console.log('Performing authentication check...');
+        const result = await authService.checkAccess(); // Expects { success: boolean, user?: object, transient?: boolean }
+
+        if (result.success && result.user) {
+          console.log('Authentication successful.');
+          clearErrorWarning(); // Clear any previous errors
+          sessionStorage.setItem('dashboard_auth_status', 'ok');
+          // Optionally store minimal user info if needed by other parts immediately
+          // localStorage.setItem('user_minimal_info', JSON.stringify({ email: result.user.email, role: result.user.role }));
+          return result.user; // Return user info
+        } else {
+          // Handle specific failure types
+          if (result.transient) {
+            console.warn('Transient authentication check issue (e.g., network).');
+            showErrorWarning(T('auth_check_transient_error', 'Connection issue checking session. Some features might be limited.'), 'warning');
+            sessionStorage.setItem('dashboard_auth_status', 'transient_fail');
+            // Decide if you want to proceed with limited functionality or block
+            return null; // Treat as not authenticated for now to be safe
+          } else {
+            console.error('Authentication check failed (invalid/expired token).');
+            // Clear potentially invalid session data
+            await authService.logout(); // Perform a clean logout to remove tokens etc.
+            sessionStorage.setItem('dashboard_auth_status', 'fail');
+            showErrorWarning(T('session_expired_prompt', 'Session expired. Please log in again.'), 'error', true);
+            return null; // Definitely not authenticated
+          }
+        }
+      } catch (error) {
+        console.error('Critical error during authentication check:', error);
+        // Treat unexpected errors as potential auth failures or network issues
+        sessionStorage.setItem('dashboard_auth_status', 'error');
+        showErrorWarning(T('auth_check_critical_error', 'Error verifying your session. Please try refreshing.'), 'warning');
+        return null; // Treat as not authenticated
+      }
+    }
+
+    /** Updates the UI with user information */
+    function updateUserInfoUI(user) {
+      if (user && user.email) {
+        userNameSpan.textContent = user.email;
+        // Use translation for the welcome message
+        const username = user.email.split('@')[0];
+        userWelcomeMessage.textContent = T('dashboard_welcome_user', `Welcome back, ${username}! Here's what's new.`, { username });
+      } else {
+         // Fallback if user data is somehow missing after successful auth
+         userNameSpan.textContent = T('guest', 'Guest');
+         userWelcomeMessage.textContent = T('dashboard_welcome_guest', 'Welcome to the dashboard.');
+      }
+    }
+
+    /** Fetches and displays featured content */
+    async function loadFeaturedContent() {
+      featuredContentContainer.innerHTML = `<div class="loading">${T('loading', 'Loading...')}</div>`;
+      try {
+        // Use authService or direct fetch, ensure token is included if needed
+        const response = await authService.fetchWithAuth('/api/content/featured?limit=3'); // Assumes fetchWithAuth exists in authService
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-        
-        const contentContainer = document.getElementById('featured-content');
-        
+
         if (!data.success || !data.data || data.data.length === 0) {
-          contentContainer.innerHTML = '<p>No featured content available at this time.</p>';
+          featuredContentContainer.innerHTML = `<p>${T('no_featured_content', 'No featured content available right now.')}</p>`;
           return;
         }
-        
+
         let html = '';
         data.data.forEach(item => {
+          // Basic templating (consider a template literal function for cleaner code)
+          const title = item.title || T('untitled', 'Untitled');
+          const type = item.type || T('unknown_type', 'Content');
+          const description = item.description || '';
+          const thumbnailUrl = item.thumbnail || '/images/default-thumbnail.jpg'; // Provide a default
+          const viewUrl = item.url || `/content/${item.id}`; // Link to content detail page or external URL
+
           html += `
             <div class="content-card">
-              <div class="content-card-image" style="background-image: url('${item.thumbnail || '/images/default-thumbnail.jpg'}')"></div>
+              <div class="content-card-image" style="background-image: url('${thumbnailUrl}')"></div>
               <div class="content-card-body">
-                <h3 class="content-card-title">${item.title}</h3>
-                <div class="content-card-meta">${item.type}</div>
-                <p>${item.description || ''}</p>
-                <a href="${item.url || `/content/${item.id}`}" class="content-card-link">View</a>
+                <h3 class="content-card-title">${title}</h3>
+                <div class="content-card-meta">${type}</div>
+                ${description ? `<p>${description}</p>` : ''}
+                <a href="${viewUrl}" class="content-card-link">${T('view_content', 'View')}</a>
               </div>
             </div>
           `;
         });
-        
-        contentContainer.innerHTML = html;
-        
+
+        featuredContentContainer.innerHTML = html;
+
       } catch (error) {
         console.error('Error loading featured content:', error);
-        document.getElementById('featured-content').innerHTML = 
-          '<p>Error loading content. Please try again later.</p>';
+        featuredContentContainer.innerHTML = `<p>${T('error_loading_content', 'Error loading content. Please try again later.')}</p>`;
       }
     }
-    
-    // Handle logout
-    function setupLogout() {
-      const logoutButton = document.getElementById('logout-button');
+
+    /** Sets up the logout button functionality */
+    function setupLogoutHandler() {
       if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
+            logoutButton.disabled = true; // Prevent double clicks
+            logoutButton.textContent = T('logging_out', 'Logging out...');
           try {
             await authService.logout();
-            window.location.href = '/index.html';
+            // Redirect to login or home page after logout
+            window.location.href = '/login.html?reason=logout';
           } catch (error) {
             console.error('Logout error:', error);
-            alert('Failed to log out. Please try again.');
+            alert(T('logout_failed', 'Failed to log out. Please try again.'));
+            logoutButton.disabled = false; // Re-enable button on error
+            logoutButton.textContent = T('logout_button', 'Logout');
           }
         });
+      } else {
+           console.warn('Logout button not found in the DOM.');
       }
     }
-    
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', async () => {
-        try {
-            // Apply translations first
-            await applyTranslations();
-            initLanguageSwitcher();
-            
-            // Add a small delay to ensure everything is loaded
-            setTimeout(async () => {
-                // Check if user is authenticated
-                const isAuthenticated = await checkAuth();
-                
-                // Only load dashboard content if authenticated
-                if (isAuthenticated) {
-                    loadFeaturedContent();
-                }
-                
-                // Set up logout handler
-                setupLogout();
-            }, 100);
-        } catch (error) {
-            console.error('Dashboard initialization error:', error);
-            // Show error message instead of failing silently
-            const errorMsg = document.createElement('div');
-            errorMsg.style.cssText = 'color:red;padding:20px;background:#ffeeee;border-radius:4px;margin:20px;';
-            errorMsg.textContent = 'There was an error loading the dashboard. Please try refreshing the page.';
-            document.querySelector('.dashboard-container').appendChild(errorMsg);
-        }
-    });
+
+    /** Main initialization function */
+    async function initializeDashboard() {
+       try {
+         // 1. Initialize internationalization first
+         await applyTranslations(); // Apply initial translations based on saved lang
+         initLanguageSwitcher(); // Setup the language switcher
+
+         // 2. Check authentication
+         const user = await checkAuthentication();
+
+         // 3. If authenticated, proceed to load user-specific data and UI
+         if (user) {
+           updateUserInfoUI(user);
+           loadFeaturedContent(); // Load dynamic content
+           // Load other dashboard sections if needed
+         } else {
+           // If checkAuthentication returned null, an error/warning was already shown.
+           // Optionally disable parts of the UI that require authentication.
+           userWelcomeMessage.textContent = T('auth_required_prompt', 'Please log in to access the full dashboard.');
+           featuredContentContainer.innerHTML = `<p>${T('login_to_view_content', 'Log in to view content.')}</p>`;
+           // Disable or hide other interactive elements if necessary
+         }
+
+         // 4. Setup universal controls like logout
+         setupLogoutHandler();
+
+       } catch (error) {
+         // Catch unexpected errors during initialization
+         console.error('Dashboard initialization failed:', error);
+         // Display a generic error message on the page
+         const mainContainer = document.querySelector('.dashboard-container');
+         if (mainContainer) {
+            const initErrorDiv = document.createElement('div');
+            initErrorDiv.style.cssText = 'color:red; padding:20px; background:#ffeeee; border:1px solid red; border-radius:4px; margin:20px 0;';
+            initErrorDiv.textContent = T('dashboard_init_error', 'A critical error occurred while loading the dashboard. Please refresh the page or contact support if the problem persists.');
+            // Prepend error to the main container
+            mainContainer.prepend(initErrorDiv);
+         }
+          // Hide potentially broken sections
+          if (userWelcomeMessage) userWelcomeMessage.textContent = '';
+          if (featuredContentContainer) featuredContentContainer.innerHTML = '';
+       }
+    }
+
+    // --- Run Initialization ---
+    // Use DOMContentLoaded to ensure the DOM is ready before manipulating it
+    document.addEventListener('DOMContentLoaded', initializeDashboard);
+
   </script>
 </body>
 </html>

@@ -15,55 +15,77 @@ const statusMessageElement = document.getElementById('researcher-dashboard-statu
  * Displays errors directly on the page instead of redirecting.
  * @returns {Promise<boolean>} - True if authentication is successful, false otherwise.
  */
+/**
+ * Performs authentication and role check for the researcher dashboard.
+ * Displays errors directly on the page instead of redirecting.
+ * @returns {Promise<boolean>} - True if authentication is successful and role matches, false otherwise.
+ */
 async function checkAuthenticationAndRole() {
     try {
         console.log("Researcher Dashboard: Checking authentication...");
 
-        // 1. Primary Authentication Check (using authService)
-        // Replace verifyToken with getSession or checkAccess if more appropriate
-        const primaryAuth = await authService.verifyToken(); // Checks token validity and gets role
+        // 1. Primary Authentication Check (using authService's checkAccess)
+        const authResult = await authService.checkAccess(); // Use checkAccess() here
 
-        if (!primaryAuth || !primaryAuth.success) {
-            throw new Error("Authentication failed or session expired.");
+        // Check if the primary authentication failed (e.g., invalid token, network error)
+        if (!authResult || !authResult.success) {
+            // Use the error message from authResult if available, otherwise provide a default
+            const errorMessage = authResult?.error || "Authentication failed or session expired.";
+            // The 'transient' flag indicates a network-like issue, maybe word it differently?
+            const messagePrefix = authResult?.transient ? "Temporary Issue: " : "Error: ";
+            throw new Error(messagePrefix + errorMessage);
         }
 
-        if (primaryAuth.role !== 'researcher') {
-            throw new Error(`Access Denied: Required role 'researcher', but found role '${primaryAuth.role}'.`);
+        // Check if user data (including role) is present after successful auth
+        if (!authResult.user || !authResult.user.role) {
+             console.error("Auth success but user data or role missing:", authResult);
+             throw new Error("Authentication succeeded but user role information is missing.");
         }
 
-        // 2. Secondary Secure Session Check (Optional - re-evaluate if needed)
-        // If you keep this, consider if failure should block access or just be a warning
+        // Check if the role matches 'researcher'
+        if (authResult.user.role !== 'researcher') {
+            throw new Error(`Access Denied: Required role 'researcher', but found role '${authResult.user.role}'.`);
+        }
+
+        // 2. Secondary Secure Session Check (Optional - consider removing if checkAccess is sufficient)
         // console.log("Researcher Dashboard: Checking secure session...");
         // const secureSess = await loadSecureSession();
         // if (!secureSess || secureSess.role !== 'researcher') {
         //    console.warn("Secure session check failed or mismatch. Proceeding with primary auth.");
-        //    // Decide how critical this is. Maybe just log it?
-        //    // throw new Error("Secure session validation failed."); // Uncomment to make it a hard failure
         // }
 
-        console.log("Researcher Dashboard: Authentication successful.");
-        return true; // Authenticated
+        console.log("Researcher Dashboard: Authentication successful for role 'researcher'.");
+        // You might want to store the user info if needed later in the dashboard
+        // authService.currentUser = authResult.user; // Or similar if authService doesn't handle this automatically
+        return true; // Authenticated and role matches
 
     } catch (error) {
         console.error("Researcher Dashboard Auth Check Failed:", error);
         if (statusMessageElement) {
-            statusMessageElement.textContent = `Error: ${error.message || 'Authentication failed.'} `;
+            // Display the error message caught
+            statusMessageElement.textContent = `${error.message} `; // Display the full error message
             statusMessageElement.style.color = 'red';
             statusMessageElement.style.display = 'block'; // Make sure it's visible
 
-            // Add a manual login button
-            const loginButton = document.createElement('button');
-            loginButton.textContent = 'Go to Login';
-            loginButton.style.marginLeft = '10px';
-            loginButton.onclick = () => { window.location.href = '/login.html'; };
-            statusMessageElement.appendChild(loginButton);
+            // Add a manual login button only if it's not already there
+            if (!statusMessageElement.querySelector('button')) {
+                const loginButton = document.createElement('button');
+                loginButton.textContent = 'Go to Login';
+                loginButton.style.marginLeft = '10px';
+                loginButton.onclick = () => {
+                    // Use safeRedirect if appropriate, or direct navigation if loop risk is low here
+                    // authService.safeRedirect('/login.html'); // If safeRedirect is robust
+                    window.location.href = '/login.html'; // Direct navigation
+                };
+                statusMessageElement.appendChild(loginButton);
+            }
         }
         // Hide the main content container if auth fails
         if (container) {
             container.innerHTML = ''; // Clear any default content
             container.style.display = 'none';
         }
-        return false; // Authentication failed
+        return false; // Authentication failed or role mismatch
     }
 }
 
