@@ -308,6 +308,22 @@ class AuthService {
    */
   checkAuthAndRedirect() {
     // Prevent running too frequently
+
+    const token = tokenManager.getToken();
+    const currentPage = window.location.pathname;
+    const isPublicAuthPage = currentPage.includes('login.html') || currentPage === '/' || currentPage.includes('signup');
+    const isProtectedPage = currentPage.includes('dashboard'); // Add other protected routes
+
+    // Redirect TO dashboard if logged in and on a public auth page
+    if (token && isPublicAuthPage) {
+        const userRole = tokenManager.getUserRole() || 'resources';
+        // ... (get dashboard URL based on role) ...
+        this.safeRedirect(dashboardUrl);
+        return;
+    }
+
+
+
     const now = Date.now();
     if (now - this.lastAuthCheck < this.MIN_AUTH_CHECK_INTERVAL) {
       console.log('Auth check ran too recently, skipping');
@@ -324,8 +340,7 @@ class AuthService {
     // Debug the current auth state
     this.debugAuthState();
     
-    const token = tokenManager.getToken();
-    const currentPage = window.location.pathname;
+ 
     
     // If we have a token and we're on the login page, redirect to dashboard
     if (token && (
