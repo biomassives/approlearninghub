@@ -292,8 +292,11 @@ class AuthService {
         return { success: false };
       }
     } catch (error) {
-      console.error('Access check error:', error);
-      
+      console.error('>>> Detailed Error Caught in checkAccess:', error); // Ensure this is active
+      console.error('Access check error:', error.message); // Original log is fine too
+  
+
+
       // Don't clear token on network errors
       return { 
         success: false, 
@@ -369,7 +372,7 @@ class AuthService {
         currentPage.includes('resources-dashboard')
       )) {
       
-      this.safeRedirect('/login.html');
+     // this.safeRedirect('/login.html');
       return;
     }
   }
@@ -378,19 +381,26 @@ class AuthService {
    * Get auth headers including token if available
    * @returns {Object} - Headers object
    */
-  getAuthHeaders() {
+// In auth-service.js
+getAuthHeaders() {
+    console.log('>>> Entering getAuthHeaders...'); // Log Entry
     const headers = {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     };
-    
-    // Use fresh token from manager
+
     const token = tokenManager.getToken();
+    console.log('>>> Token retrieved by getAuthHeaders:', token); // Log Token Value
+
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+        console.log('>>> Adding Authorization header...'); // Log Action
+        headers['Authorization'] = `Bearer ${token}`;
+    } else {
+        console.log('>>> No token found, Authorization header NOT added.'); // Log Alternative
     }
-    
+
+    console.log('>>> Final headers object:', headers); // Log Result
     return headers;
-  }
+}
   
   /**
    * Get current user
