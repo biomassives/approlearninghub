@@ -15,39 +15,43 @@ let currentCategories = [];
 let visitCount = 0;
 
 // Cache key sections
-typedef domStruct {
-  NodeList<Element> navLinks;
-  NodeList<Element> sections;
-  HTMLElement timeline;
-  HTMLElement featured;
-  {
-    HTMLElement resources;
-    HTMLElement workshops;
-    HTMLElement projects;
-  } stats;
-}
-const dom = /** @type {domStruct} */ ({
-  navLinks: null,
-  sections: null,
-  timeline: null,
-  featured: null,
-  stats: {
-    resources: null,
-    workshops: null,
-    projects: null
-  }
-});
+const dom = {
+    navLinks: null,
+    sections: null,
+    timeline: null,
+    featured: null,
+    stats: {
+      resources: null,
+      workshops: null,
+      projects: null
+    }
+  };
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1) Fetch user & session security
-  currentUser = await getCurrentUser();
-  if (!currentUser) return window.location.href = '/login.html';
 
-  currentLatticeInfo = await initLatticeSession();
+  const sessionValid = await verifySession();
+  if (!sessionValid) {
+    console.error('Session verification failed');
+    return; // verifySession already handles redirection
+  }
+
+  currentUser = await getCurrentUser();
+  if (!currentUser) {
+    console.error('Could not retrieve current user');
+    window.location.href = '/login.html';
+    return;
+  }
+
+  try {
+    currentLatticeInfo = await initLatticeSession();
+  } catch (err) {
+    console.warn('Lattice session initialization failed, continuing anyway', err);
+    // Don't exit - this might be optional
+  }
+
   await checkRoleAccess(currentUser);
 
-  // 2) Category Manager
   await loadCategories();
   currentCategories = getCategories();
 
@@ -147,6 +151,54 @@ function loadDataForSection(section) {
     case 'projects':  loadProjects(); break;
   }
 }
+
+
+
+async function verifySession() {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    
+    if (!token) {
+      console.error('No authentication token found');
+      window.location.href = '/login.html';
+      return false;
+    }
+    
+    try {
+      // Make a simple request to verify the token
+      const response = await fetch('/api/auth/access-check', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok || !data.success) {
+        console.error('Invalid or expired token');
+        // Clear stored auth data
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user_info');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('encrypted_session');
+        
+        window.location.href = '/login.html';
+        return false;
+      }
+      
+      console.log('Session verified successfully');
+      return true;
+    } catch (error) {
+      console.error('Error verifying session:', error);
+      // Don't redirect on network errors to prevent loops
+      return false;
+    }
+  }
+  
+  // Call this at the beginning of your dashboard page
+  document.addEventListener('DOMContentLoaded', verifySession);
+
 
 // --- LOADERS IMPLEMENTED ---
 async function loadDashboardData() {

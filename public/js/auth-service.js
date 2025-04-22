@@ -7,9 +7,28 @@ class AuthService {
     constructor() {
       this.apiBase = '/api/auth';
       this.currentUser = null;
-      this.token = localStorage.getItem('token');
+      this.token = localStorage.getItem('auth_token') || localStorage.getItem('token');
     }
   
+
+    debugAuthState() {
+        const authToken = localStorage.getItem('auth_token');
+        const legacyToken = localStorage.getItem('token');
+        const userInfo = localStorage.getItem('user_info');
+        const userRole = localStorage.getItem('userRole');
+        
+        console.log('=== Auth State Debug ===');
+        console.log('auth_token exists:', !!authToken);
+        console.log('token exists:', !!legacyToken);
+        console.log('user_info exists:', !!userInfo);
+        console.log('userRole:', userRole);
+        console.log('Current page:', window.location.pathname);
+        console.log('this.token:', !!this.token);
+        console.log('this.currentUser:', !!this.currentUser);
+      }
+      
+
+
     /**
      * Register a new user
      * @param {string} email - User's email
@@ -35,11 +54,18 @@ class AuthService {
           // Store user data for immediate access
           this.currentUser = data.user;
           localStorage.setItem('userRole', data.user.role);
+          localStorage.setItem('user_info', JSON.stringify(data.user));
           
           // Store token if provided
           if (data.token) {
             this.token = data.token;
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('auth_token', data.token);
+            localStorage.setItem('token', data.token); // For backward compatibility
+            
+            // Optional: Store encrypted session if SessionCrypto is available
+            if (window.SessionCrypto) {
+              this.encryptSession(data.user, data.token);
+            }
           }
         }
         
@@ -58,37 +84,132 @@ class AuthService {
      */
     async login(email, password) {
       try {
-        console.log(`Logging in user with email: ${email}`);
         const response = await fetch(`${this.apiBase}/login`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password })
         });
-  
+    
         const data = await response.json();
-        console.log('Login response:', data);
         
-        if (data.success && data.user) {
-          // Store user data in memory
-          this.currentUser = data.user;
-          localStorage.setItem('userRole', data.user.role);
+        // If login successful
+        if (response.ok && data.success) {
+          // Store the token securely
+          this.token = data.token;
+          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem('token', data.token); // For backward compatibility
           
-          // If token is provided, store it
-          if (data.token) {
-            this.token = data.token;
-            localStorage.setItem('token', data.token);
+          // If user info is included in the response, store it as well
+          if (data.user) {
+            this.currentUser = data.user;
+            localStorage.setItem('user_info', JSON.stringify(data.user));
+            localStorage.setItem('userRole', data.user.role);
           }
+          
+          // Encrypt session data if SessionCrypto is available
+          if (window.SessionCrypto && data.user) {
+            this.encryptSession(data.user, data.token);
+          }
+          
+          return data; // Return the full response for the login page to handle
+        } else {
+          // Handle login failure
+          console.error('Login failed:', data.message || 'Unknown error');
+          return data;
         }
-        
-        return data;
       } catch (error) {
         console.error('Login error:', error);
         throw error;
       }
     }
-  
+
+    /**
+     * Encrypt and store session data
+     * @param {Object} user - User object
+     * @param {string} token - Auth token
+     * @returns {Promise<void>}
+     */
+    async encryptSession(user, token) {
+      if (!window.SessionCrypto) return;
+      
+      try {
+        const sessionData = {
+          user: user,
+          token: token,
+          timestamp: new Date().getTime()
+        };
+        
+        const encryptedSession = await window.SessionCrypto.encrypt(
+          JSON.stringify(sessionData)
+        );
+        
+        localStorage.setItem('encrypted_session', encryptedSession);
+      } catch (error) {
+        console.error('Session encryption error:', error);
+      }
+    }
+
+    /**
+     * Check authentication and redirect if needed
+     */
+    
+checkAuthAndRedirect() {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    const currentPage = window.location.pathname;
+    
+    // Anti-loop mechanism
+    const lastRedirect = sessionStorage.getItem('last_redirect');
+    const currentTime = new Date().getTime();
+    
+    // Don't redirect if we've already redirected in the last 3 seconds
+    if (lastRedirect && (currentTime - parseInt(lastRedirect)) < 3000) {
+      console.log('Preventing redirect loop - too soon since last redirect');
+      return;
+    }
+    
+    // If we're on a login/signup page but have a token, redirect to dashboard
+    if (token && (
+        currentPage.includes('login.html') || 
+        currentPage === '/' || 
+        currentPage.includes('signup')
+      )) {
+      // Get user role for proper dashboard redirection
+      const userRole = this.getUserRole() || 'resources';
+      const dashboardRoutes = {
+        expert: '/expert-dashboard.html',
+        learner: '/learner-dashboard.html',
+        researcher: '/researcher-dashboard.html',
+        resources: '/resources-dashboard.html',
+        organizer: '/organizer-dashboard.html'
+      };
+      
+      // Track this redirect to prevent loops
+      sessionStorage.setItem('last_redirect', currentTime.toString());
+      
+      // Log the redirection happening
+      console.log(`Redirecting to ${dashboardRoutes[userRole] || '/dashboard.html'} with role ${userRole}`);
+      
+      // Perform the redirect
+      window.location.href = dashboardRoutes[userRole] || '/dashboard.html';
+      return;
+    }
+    
+    // If we don't have a token and we're on a protected page, redirect to login
+    if (!token && (
+        currentPage.includes('dashboard') || 
+        currentPage.includes('resources-dashboard')
+      )) {
+      // Track this redirect to prevent loops
+      sessionStorage.setItem('last_redirect', currentTime.toString());
+      
+      console.log('No authentication token, redirecting to login page');
+      window.location.href = '/login.html';
+      return;
+    }
+  }
+
     /**
      * Log out the current user
      * @returns {Promise<Object>} - Response from logout API
@@ -106,7 +227,13 @@ class AuthService {
         this.currentUser = null;
         this.token = null;
         localStorage.removeItem('token');
+        localStorage.removeItem('auth_token');
         localStorage.removeItem('userRole');
+        localStorage.removeItem('user_info');
+        localStorage.removeItem('encrypted_session');
+        
+        // Redirect to login page
+        window.location.href = '/login.html';
         
         return data;
       } catch (error) {
@@ -139,6 +266,7 @@ class AuthService {
           // Clear invalid token
           this.token = null;
           localStorage.removeItem('token');
+          localStorage.removeItem('auth_token');
           return { success: false };
         }
       } catch (error) {
@@ -186,8 +314,15 @@ class AuthService {
     isLoggedIn() {
       return !!this.currentUser || !!this.token;
     }
-  }
-  
-  // Create and export singleton instance
-  const authService = new AuthService();
-  export default authService;
+}
+
+// Create singleton instance
+const authService = new AuthService();
+
+// Initialize auth check on page load
+document.addEventListener('DOMContentLoaded', () => {
+  authService.checkAuthAndRedirect();
+});
+
+// Export the singleton
+export default authService;
