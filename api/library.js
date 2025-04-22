@@ -16,7 +16,13 @@ const {
   handleUpdateVideo,
   handleDeleteVideo,
   handleAddModule,
-  handleUpdateModule
+  handleUpdateModule,
+  handleListSubcategoriesByCategory, 
+  // handleGetSubcategory, 
+  handleAddSubcategory,   
+  handleUpdateSubcategory,    
+  handleDeleteSubcategory     
+
 } = require('../lib/libraryHandlers');
 
 // Apply security headers to all library routes
@@ -39,6 +45,40 @@ router.route('/categories/:id')
   .put(requireAuth, handleUpdateCategory)
   // Protected: delete category
   .delete(requireAuth, authorize(['admin', 'expert']), handleDeleteCategory);
+
+
+
+// Nested route to get subcategories for a specific category
+// Public: List subcategories by category
+router.get('/categories/:categoryId/subcategories', handleListSubcategoriesByCategory);
+
+// Route to create a new subcategory
+// Protected: Add subcategory
+router.post(
+    '/subcategories',               // Matches frontend expectation
+    requireAuth,                    // User must be logged in
+    authorize(['admin', 'expert']), // User must have admin or expert role
+    handleAddSubcategory            // The handler function in libraryHandlers.js
+);
+
+// Routes for operating on a specific subcategory by its ID
+router.route('/subcategories/:id')
+  // Optional: Get details for a single subcategory (Make public or protected as needed)
+  // .get(handleGetSubcategory) // Uncomment and add handler if needed
+
+  // Protected: Update subcategory
+  .put(
+      requireAuth,
+      authorize(['admin', 'expert']),
+      handleUpdateSubcategory
+  )
+  // Protected: Delete subcategory
+  .delete(
+      requireAuth,
+      authorize(['admin', 'expert']),
+      handleDeleteSubcategory
+  );
+
 
 // ---- Tags ----
 router.route('/tags')
