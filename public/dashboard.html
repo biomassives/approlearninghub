@@ -198,34 +198,111 @@
   </footer>
 
   <script type="module">
+
+(function() {
+  console.log('Dashboard initializing - checking auth state');
+  
+  // Check for token
+  const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+  const userInfo = localStorage.getItem('user_info');
+  
+  // Just log the state without redirecting
+  console.log('Auth token present:', !!token);
+  console.log('User info present:', !!userInfo);
+  
+  // If no token, show a warning but don't redirect
+  if (!token) {
+    console.warn('No auth token found - user may not be logged in');
+    
+    // Add a visual indicator
+    setTimeout(() => {
+      const warningDiv = document.createElement('div');
+      warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
+      warningDiv.textContent = 'Warning: You may not be properly logged in.';
+      document.body.appendChild(warningDiv);
+      
+      // Add a login button
+      const loginBtn = document.createElement('button');
+      loginBtn.textContent = 'Go to Login';
+      loginBtn.style.cssText = 'display:block;margin-top:10px;padding:5px 10px;background:#2196f3;border:none;color:white;border-radius:4px;cursor:pointer;';
+      loginBtn.onclick = () => { window.location.href = '/login.html'; };
+      warningDiv.appendChild(loginBtn);
+    }, 1000);
+  }
+  
+  // Optional: validate token in background without redirecting
+  if (token) {
+    fetch('/api/auth/access-check', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Token validation result:', data.success ? 'Valid' : 'Invalid');
+      
+      // Just log the result, don't redirect
+      if (!data.success) {
+        console.warn('Token validation failed, but not redirecting');
+        // Show a warning
+        const warningDiv = document.createElement('div');
+        warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#f44336;color:white;padding:10px;border-radius:4px;z-index:9999;';
+        warningDiv.textContent = 'Session expired. Some features may not work.';
+        document.body.appendChild(warningDiv);
+      }
+    })
+    .catch(err => {
+      console.error('Token validation error:', err);
+    });
+  }
+})();
+
+
     import authService from './js/auth-service.js';
     import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
     
     // Check authentication
-    async function checkAuth() {
-      try {
-        const result = await authService.checkAccess();
-        
-        if (!result.success) {
-          // Redirect to login page
-          window.location.href = '/index.html';
-          return;
-        }
-        
-        // User is authenticated
-        const user = result.user;
-        
-        // Update UI with user info
-        document.getElementById('user-name').textContent = user.email;
-        document.getElementById('user-welcome-message').textContent = 
-          `Welcome back, ${user.email.split('@')[0]}! Here's what's new today.`;
-          
-      } catch (error) {
-        console.error('Auth check error:', error);
-        // Redirect to login page
-        window.location.href = '/index.html';
-      }
+   // Modify your checkAuth function
+async function checkAuth() {
+  try {
+    const result = await authService.checkAccess();
+    
+    if (!result.success) {
+      console.warn('Auth check failed, but not redirecting');
+      // Show warning instead of redirecting
+      const warningDiv = document.createElement('div');
+      warningDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#f44336;color:white;padding:10px;border-radius:4px;z-index:9999;';
+      warningDiv.textContent = 'Session expired. Please log in again.';
+      
+      // Add login button
+      const loginBtn = document.createElement('button');
+      loginBtn.textContent = 'Go to Login';
+      loginBtn.style.cssText = 'margin-top:10px;padding:5px 10px;background:white;color:#f44336;border:none;border-radius:4px;cursor:pointer;display:block;';
+      loginBtn.onclick = () => { window.location.href = '/login.html'; };
+      warningDiv.appendChild(loginBtn);
+      
+      document.body.appendChild(warningDiv);
+      return false;
     }
+    
+    // User is authenticated
+    const user = result.user;
+    
+    // Update UI with user info
+    document.getElementById('user-name').textContent = user.email;
+    document.getElementById('user-welcome-message').textContent = 
+      `Welcome back, ${user.email.split('@')[0]}! Here's what's new today.`;
+    
+    return true;
+  } catch (error) {
+    console.error('Auth check error:', error);
+    // Show error message instead of redirecting
+    const errorDiv = document.createElement('div');
+    errorDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:#ff9800;color:white;padding:10px;border-radius:4px;z-index:9999;';
+    errorDiv.textContent = 'Connection error. Unable to verify your session.';
+    document.body.appendChild(errorDiv);
+    return false;
+  }
+}
     
     // Fetch featured content
     async function loadFeaturedContent() {
@@ -282,24 +359,26 @@
     
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        // Apply translations
-        await applyTranslations();
-        initLanguageSwitcher();
-        
-        // Check if user is authenticated
-        await checkAuth();
-        
-        // Load dashboard content
-        loadFeaturedContent();
-        
-        // Set up logout handler
-        setupLogout();
-        
-      } catch (error) {
-        console.error('Dashboard initialization error:', error);
-      }
-    });
+        try {
+            // Apply translations
+            await applyTranslations();
+            initLanguageSwitcher();
+            
+            // Check if user is authenticated
+            const isAuthenticated = await checkAuth();
+            
+            // Only load dashboard content if authenticated
+            if (isAuthenticated) {
+            loadFeaturedContent();
+            }
+            
+            // Set up logout handler
+            setupLogout();
+            
+        } catch (error) {
+            console.error('Dashboard initialization error:', error);
+        }
+        });
   </script>
 </body>
 </html>
