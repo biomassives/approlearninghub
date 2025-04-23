@@ -79,6 +79,19 @@ router.route('/subcategories/:id')
       handleDeleteSubcategory
   );
 
+// Example: allow only authenticated users
+router.get('/items', requireAuth, async (req, res) => {
+  // fetch library items for req.user
+  res.json({ success: true, data: [] });
+});
+
+// Example: allow only experts
+router.post('/items', requireAuth, authorize('expert'), async (req, res) => {
+  // create new library item
+  res.json({ success: true });
+});
+
+
 
 // ---- Tags ----
 router.route('/tags')
@@ -125,3 +138,4 @@ router.use((err, req, res, next) => {
 });
 
 module.exports = router;
+
