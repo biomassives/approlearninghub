@@ -1,6 +1,7 @@
 [
     {
       "area": "Shelter",
+      "icon": "fa-home",
       "subcategories": [
         {
           "title": "Low-cost, Durable Construction Methods",
@@ -16,6 +17,7 @@
     },
     {
       "area": "Water",
+      "icon": "fa-tint",
       "subcategories": [
         {
           "title": "Purification",
@@ -35,7 +37,8 @@
       ]
     },
     {
-      "area": "Waste Management",
+      "area": "Waste",
+      "icon": "fa-recycle",
       "subcategories": [
         {
           "title": "Composting",
@@ -61,6 +64,7 @@
     },
     {
       "area": "Energy",
+      "icon": "fa-solar-panel",
       "subcategories": [
         {
           "title": "DIY Solar Energy",
@@ -86,6 +90,7 @@
     },
     {
       "area": "Health",
+      "icon": "fa-heartbeat",
       "subcategories": [
         {
           "title": "EMT Skills",
@@ -110,7 +115,8 @@
       ]
     },
     {
-      "area": "Sustainable Food",
+      "area": "Food",
+      "icon": "fa-home",
       "subcategories": [
         {
           "title": "Urban Gardening",
@@ -118,7 +124,7 @@
           "tags": ["urban farming", "gardening", "food security"]
         },
         {
-          "title": "Hydro/Aero/Fish -ponics",
+          "title": "Hydro/Aero/Pesci-ponics",
           "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.",
           "tags": ["hydroponics", "water-efficient", "urban food"]
         },
@@ -128,7 +134,7 @@
           "tags": ["agriculture", "sustainable", "soil health"]
         },
         {
-          "title": "Fungli, Algae, Insects, & Tech",
+          "title": "Fungi, Algae, Insects, & Tech",
           "description": "Inventory and evaluation of modern and antiquity based food production",
           "tags": ["hydroponics", "water-efficient", "urban food"]
         }

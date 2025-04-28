@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mega Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Basic Reset and Body Styles */
+        body, h1, h2, h3, h4, p, ul, li, button {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        /* Header (Narrow Top Section) */
+        .header-top {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-top .logo {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .header-top button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .header-top button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        /* Mega Menu Container */
+        .mega-menu-container {
+            position: relative; /* For absolute positioning of the mega menu */
+        }
+        /* Mega Menu Styles */
+        .mega-menu {
+            position: absolute;
+            left: 0;
+            top: 100%; /* Positioned directly below the header-top */
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            display: none; /* Hidden by default */
+            width: 100vw; /* Full viewport width */
+            left: calc(-50vw + 50%); /* Center the full width menu */
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Narrower columns for just category titles */
+            gap: 15px;
+            border-top: 3px solid #3498db; /* Accent border */
+        }
+        .mega-menu.open {
+            display: grid; /* Show the mega menu when the 'open' class is added */
+        }
+        .mega-menu-category-title {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+        .mega-menu-category-title:hover,
+        .mega-menu-category-title.active {
+            background-color: #f0f0f0;
+        }
+        .mega-menu-category-title i {
+            margin-right: 8px;
+            font-size: 1.1em;
+            color: #3498db;
+        }
+        .mega-menu-category-details {
+            position: absolute;
+            top: 100%; /* Position below the category titles */
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 11;
+            width: 100%;
+            padding: 20px;
+            display: none; /* Hidden by default */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            border-top: 1px solid #eee;
+        }
+        .mega-menu-category-details.active {
+            display: grid;
+        }
+        .mega-menu-subcategory {
+            margin-bottom: 15px;
+        }
+        .mega-menu-subcategory h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+        .mega-menu-subcategory p {
+            margin-bottom: 10px;
+            color: #777;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .mega-menu-subcategory .tags {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .mega-menu-subcategory .tags span {
+            background-color: #e7f2fa;
+            color: #3498db;
+            padding: 4px 7px;
+            border-radius: 5px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 5px;
+            cursor: pointer; /* Make tags clickable */
+        }
+        .mega-menu-subcategory .tags span:hover {
+            background-color: #d0e8f5;
+        }
+        /* Informational Section Styling */
+        .info-section {
+            padding: 40px 20px;
+            background-color: #f4f4f4;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .info-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        .info-section p {
+            color: #666;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        .bebas {
+            font-family: "Bebas Neue", cursive;
+        }
+        .hover\:glow:hover {
+            filter: drop-shadow(0px 0px 7px rgba(59, 130, 246, 0.5));
+        }
+        .group:hover .group-hover\:\-translate-y-1 {
+            transform: translateY(-0.25rem);
+        }
+        .group:focus .group-focus\:pt-20 {
+            padding-top: 5rem;
+        }
+        .animate-down {
+            transform: translateY(250%) !important
+        }
+        .animate-up {
+            transform: translateY(-250%) !important
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        .modal {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative; /* Needed for absolute positioning of close button */
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-content {
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .modal-close-button {
+            background-color: #ddd;
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            position: absolute; /* Positioned relative to the modal */
+            top: 10px;
+            right: 10px;
+        }
+
+        .modal-close-button:hover {
+            background-color: #ccc;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header-top">
+        <h1 class="text-3xl font-bold">🌿 ApproVideo DIY Solutions 🌱</h1>
+        <button id="toggleMegaMenu" href="/login.html">Login</button>
+    </div>
+    <div class="mega-menu-container">
+        <div class="mega-menu" id="topicsMegaMenu">
+        </div>
+        <div class="mega-menu-category-details" id="categoryDetails">
+        </div>
+    </div>
+    <div id="tag-detail-area" style="padding: 20px; background-color: #f8f8f8; border-top: 1px solid #eee; display: none;">
+        <h3>Tag Details</h3>
+        <div id="tag-detail-content"></div>
+    </div>
+    <div class="info-section">
+        <p><h2> </h2></p>
+        <h2>Empowering communities through practical knowledge</h2>
+        <p>Join us in facilitating practical community learning clinics in the following areas.</p>
+    </div>
+    <div id="modal-container" class="modal-container">
+        <div class="modal">
+            <h2 id="modal-title" class="modal-title">Modal Title</h2>
+            <div id="modal-content" class="modal-content">Modal Content</div>
+            <button id="modal-close" class="modal-close-button">Close</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggleMegaMenu');
+            const megaMenu = document.getElementById('topicsMegaMenu');
+            const categoryDetails = document.getElementById('categoryDetails');
+            const megaMenuContainer = document.querySelector('.mega-menu-container');
+            const loginBtn = document.getElementById('toggleMegaMenu');
+            const tagDetailArea = document.getElementById('tag-detail-area');
+            const tagDetailContent = document.getElementById('tag-detail-content');
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitleElement = document.getElementById('modal-title');
+            const modalContentElement = document.getElementById('modal-content');
+            const modalCloseButton = document.getElementById('modal-close');
+            let categoryTitles; // Will be populated after data load
+            let activeCategoryIndex = null;
+            let categoryDataCache = {}; // To store fetched category data
+
+            loginBtn.addEventListener('click', e => {
+                // prevent any other click-logic
+                e.stopPropagation();
+                // navigate
+                window.location.href = loginBtn.getAttribute('href');
+            });
+
+            toggleButton.addEventListener('click', function() {
+                megaMenu.classList.toggle('open');
+                categoryDetails.classList.remove('active');
+                tagDetailArea.style.display = 'none';
+                activeCategoryIndex = null;
+                if (categoryTitles) {
+                    categoryTitles.forEach(title => title.classList.remove('active'));
+                }
+            });
+
+            function displayTagDetails(tag) {
+                // For now, let's just display the tag name.
+                // In a real scenario, you would fetch detailed info based on the tag.
+                tagDetailContent.innerHTML = `<p>Details for tag: <strong>${tag}</strong></p>`;
+                tagDetailArea.style.display = 'block';
+                // Ensure the category details are hidden when tag details are shown
+                categoryDetails.classList.remove('active');
+                if (categoryTitles) {
+                    categoryTitles.forEach(title => title.classList.remove('active'));
+                }
+                activeCategoryIndex = null;
+            }
+
+            function showCategoryDetails(categoryData, titleElement, index) {
+                if (activeCategoryIndex === index) {
+                    // If already active, hide
+                    categoryDetails.classList.remove('active');
+                    titleElement.classList.remove('active');
+                    activeCategoryIndex = null;
+                    tagDetailArea.style.display = 'none';
+                } else {
+                    let detailsHTML = '';
+                    categoryData.subcategories.forEach((subcategory, subIndex) => {
+                        const modalId = `modal-${index}-${subIndex}`;
+                        const buttonId = `button-${index}-${subIndex}`;
+                        const modalTitleText = `Contents of ${subcategory.title}.zip`;
+                        const modalContentText = `Detailed breakdown of the files included in the ${subcategory.title}.zip archive. You might find files such as: [List specific files or categories of files here based on your data for ${subcategory.title}].`; // Customize this
+
+                        detailsHTML += `
+                            <div class="mega-menu-subcategory">
+                                <h4>${subcategory.title}</h4>
+                                <p class="px-5">
+                                    <i class="fas fa-download"></i>
+                                    ${subcategory.title}.zip
+                                </p>
+                                <button
+                                    id="${buttonId}"
+                                    class="rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow download-button"
+                                    data-modal-id="${modalId}"
+                                    data-modal-title="${modalTitleText}"
+                                    data-modal-content="${modalContentText.replace(/\n/g, '<br>')}"
+                                >
+                                    <div class="relative w-12 h-12 bg-white bg-opacity-20 text-blue flex justify-center items-center transition-all">
+                                        <svg id="arrow" class="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                        </svg>
+                                        <div id="progress" class="absolute w-full h-0 bg-white bg-opacity-20 top-0 duration-200"></div>
+                                    </div>
+                                </button>
+                                <p>${subcategory.description}</p>
+                                <div class="tags">
+                        `;
+                        subcategory.tags.forEach(tag => {
+                            detailsHTML += `<span data-tag="${tag}" class="tag-link"><a href="topics.html?cat=${encodeURIComponent(tag)}">${tag}</a></span>`;
+                        });
+                        detailsHTML += `
+                                </div>
+                            </div>
+                        `;
+                    });
+                    categoryDetails.innerHTML = detailsHTML;
+                    categoryDetails.classList.add('active');
+                    tagDetailArea.style.display = 'none';
+                    // Position the details panel
+                    const rect = titleElement.getBoundingClientRect();
+                    categoryDetails.style.top = (rect.bottom + window.scrollY) + 'px';
+                    // Update active state
+                    if (categoryTitles) {
+                        categoryTitles.forEach(title => title.classList.remove('active'));
+                    }
+                    titleElement.classList.add('active');
+                    activeCategoryIndex = index;
+                    // Add event listeners to the new tag links
+                    const tagLinks = categoryDetails.querySelectorAll('.tags .tag-link');
+                    tagLinks.forEach(link => {
+                        link.addEventListener('click', function(event) {
+                            event.preventDefault(); // Prevent any default link behavior
+                            const tagValue = this.dataset.tag;
+                            displayTagDetails(tagValue);
+                        });
+                    });
+
+                    // --- Modal Logic ---
+                    const downloadButtons = categoryDetails.querySelectorAll('.download-button');  // Correct selector
+                    downloadButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            modalTitleElement.textContent = button.dataset.modalTitle;
+                            modalContentElement.innerHTML = button.dataset.modalContent;
+                            modalContainer.style.display = 'flex'; // Show the modal
+                        });
+                    });
+                }
+            }
+
+            fetch('/data/categories.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    categoryDataCache = data;
+                    let megaMenuHTML = '';
+                    data.forEach((category, index) => {
+                        megaMenuHTML += `
+                            <div class="mega-menu-category-title" data-category-index="${index}">
+                                <i class="fas ${category.icon}"></i> ${category.area}
+                            </div>
+                        `;
+                    });
+                    megaMenu.innerHTML = megaMenuHTML;
+                    categoryTitles = document.querySelectorAll('.mega-menu-category-title');
+                    categoryTitles.forEach(title => {
+                        title.addEventListener('click', function() {
+                            const index = parseInt(this.dataset.categoryIndex);
+                            if (data[index]) {
+                                showCategoryDetails(data[index], this, index);
+                            }
+                        });
+                    });
+                    // Keep the mega menu open as long as the mouse is within the container
+                    megaMenuContainer.addEventListener('mouseleave', function(event) {
+                    });
+                })
+                .catch(error => {
+                    console.error('Could not load categories:', error);
+                    megaMenu.innerHTML = '<p>Error loading categories.</p>';
+                });
+
+            // --- Global click listener to close the modal ---
+            modalCloseButton.addEventListener('click', () => {
+                modalContainer.style.display = 'none';
+            });
+
+            // Close modal when clicking outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                }
+            });
+
+            // prevent clicks *inside* the menu from bubbling up:
+            megaMenuContainer.addEventListener('click', e => e.stopPropagation());
+            // now listen on the document for clicks outside:
+            document.addEventListener('click', e => {
+                // if the click wasn’t inside our menu container, close everything
+                if (!megaMenuContainer.contains(e.target)) {
+                    megaMenu.classList.remove('open');
+                    categoryDetails.classList.remove('active');
+                    if (activeCategoryTitle) {
+                        activeCategoryTitle.classList.remove('active');
+                        activeCategoryTitle = null;
+                    }
+                }
+            });
+        });
+    </script>
+    <div class="relative aspect-square w-72 flex-none">
+        <svg viewBox="0 0 288 288" fill="none" class="absolute inset-0 h-full w-full overflow-visible">
+            <g>
+                <mask id="c" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-333" y="-242" width="956" height="927">
+                    <path fill="url(#b)" d="M-333-242h956v927h-956z"></path>
+                </mask>
+                <g mask="url(#c)">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M108-488.25c-155.33 0-281.25 125.92-281.25 281.25C-173.25-51.67-47.33 74.25 108 74.25c155.33 0 281.25-125.92 281.25-281.25 0-155.33-125.92-281.25-281.25-281.25ZM-186.75-207c0-162.786 131.964-294.75 294.75-294.75S402.75-369.786 402.75-207 270.786 87.75 108 87.75-186.75-44.214-186.75-207Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M-36-146.25c-155.33 0-281.25 125.92-281.25 281.25 0 155.33 125.92 281.25 281.25 281.25 155.33 0 281.25-125.92 281.25-281.25 0-155.33-125.92-281.25-281.25-281.25ZM-330.75 135c0-162.786 131.964-294.75 294.75-294.75S258.75-27.786 258.75 135 126.786 429.75-36 429.75-330.75 297.786-330.75 135Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M342-74.25c-115.566 0-209.25 93.684-209.25 209.25S226.434 344.25 342 344.25 551.25 250.566 551.25 135 457.566-74.25 342-74.25ZM119.25 135c0-123.021 99.729-222.75 222.75-222.75S564.75 11.979 564.75 135 465.021 357.75 342 357.75 119.25 258.021 119.25 135Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M234 114.75c-11.184 0-20.25 9.066-20.25 20.25s9.066 20.25 20.25 20.25 20.25-9.066 20.25-20.25-9.066-20.25-20.25-20.25ZM200.25 135c0-18.64 15.11-33.75 33.75-33.75s33.75 15.11 33.75 33.75-15.11 33.75-33.75 33.75-33.75-15.11-33.75-33.75ZM99 87.75c-26.096 0-47.25 21.155-47.25 47.25S72.904 182.25 99 182.25c26.095 0 47.25-21.155 47.25-47.25S125.095 87.75 99 87.75ZM38.25 135c0-33.551 27.199-60.75 60.75-60.75s60.75 27.199 60.75 60.75-27.199 60.75-60.75 60.75S38.25 168.551 38.25 135Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".1" stroke-width="2" stroke-dasharray="4 4"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M342-110.25C206.552-110.25 96.75-.448 96.75 135c0 135.448 109.802 245.25 245.25 245.25 135.448 0 245.25-109.802 245.25-245.25C587.25-.448 477.448-110.25 342-110.25ZM83.25 135C83.25-7.904 199.096-123.75 342-123.75S600.75-7.904 600.75 135 484.904 393.75 342 393.75 83.25 277.904 83.25 135Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M108 195.75c-155.33 0-281.25 125.92-281.25 281.25 0 155.33 125.92 281.25 281.25 281.25 155.33 0 281.25-125.92 281.25-281.25 0-155.33-125.92-281.25-281.25-281.25ZM-186.75 477c0-162.786 131.964-294.75 294.75-294.75S402.75 314.214 402.75 477 270.786 771.75 108 771.75-186.75 639.786-186.75 477Z" fill="#94A3B8" fill-opacity=".1" stroke="#0F172A" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"></path>
+                </g>
+            </g>
+            <defs>
+                <radialGradient id="b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-492.00038 6.00263 -6.1904 -507.39124 188 139)">
+                    <stop stop-color="#D9D9D9"></stop>
+                    <stop offset=".81" stop-color="#D9D9D9" stop-opacity="0"></stop>
+                </radialGradient>
+            </defs>
+        </svg>
+        <div class="absolute inset-0 bg-white/[0.01] backdrop-blur-[2px]"></div>
+        <svg viewBox="0 0 288 288" fill="none" aria-hidden="true" class="absolute inset-0 h-full w-full overflow-visible">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M232.213 29.661a6.75 6.75 0 0 1 8.659 4.019 293.104 293.104 0 0 1 4.671 13.82 293.554 293.554 0 0 1 12.249 63.562c6.142 6.107 9.958 14.579 9.958 23.938 0 9.359-3.816 17.831-9.958 23.938a293.551 293.551 0 0 1-12.249 63.562 293.143 293.143 0 0 1-4.671 13.82 6.75 6.75 0 0 1-12.678-4.64c.937-2.56 1.838-5.137 2.702-7.731a279.258 279.258 0 0 0-88.553-26.124 207.662 207.662 0 0 0 8.709 22.888c4.285 9.53 1.151 21.268-8.338 26.747l-7.875 4.547c-9.831 5.675-22.847 2.225-27.825-8.542a256.906 256.906 0 0 1-16.74-48.337C60.857 190.897 38.25 165.588 38.25 135c0-33.551 27.199-60.75 60.75-60.75h9c8.258 0 16.431-.356 24.505-1.052 35.031-3.023 68.22-12.466 98.391-27.147a278.666 278.666 0 0 0-2.702-7.73 6.75 6.75 0 0 1 4.019-8.66Zm2.681 29.45a292.862 292.862 0 0 1-96.423 27.083c-3.74 15.652-5.721 31.994-5.721 48.806 0 16.812 1.981 33.154 5.721 48.806a292.884 292.884 0 0 1 96.423 27.083 280.39 280.39 0 0 0 9.636-55.608c.477-6.697.72-13.46.72-20.281 0-6.821-.243-13.584-.72-20.281a280.396 280.396 0 0 0-9.636-55.608ZM124.37 182.697A223.556 223.556 0 0 1 119.25 135c0-16.365 1.766-32.325 5.12-47.697a299.37 299.37 0 0 1-16.37.447h-9c-26.096 0-47.25 21.155-47.25 47.25S72.904 182.25 99 182.25h9c5.492 0 10.95.15 16.37.447Zm-20.039 13.053a243.387 243.387 0 0 0 14.937 42.049c1.434 3.103 5.418 4.481 8.821 2.516l7.875-4.547c3.054-1.763 4.429-5.84 2.775-9.519a221.156 221.156 0 0 1-10.907-29.811A285.523 285.523 0 0 0 108 195.75h-3.669Z" fill="#A78BFA" fill-opacity=".1" stroke="#8B5CF6" stroke-width="2"></path>
+            <g mask="url(#cc)">
+                <path opacity=".1" d="M-69 287.5h445" stroke="url(#e)" stroke-width="1.5"></path>
+                <path opacity=".1" d="M-69 0h445" stroke="url(#f)" stroke-width="1.5"></path>
+                <path opacity=".1" d="M.25 355V-90" stroke="url(#g)" stroke-width="1.5"></path>
+                <path opacity=".1" d="M287.75 355V-90" stroke="url(#h)" stroke-width="1.5"></path>
+            </g>
+            <defs>
+                <linearGradient id="e" x1="375.75" y1="296.754" x2="-69.25" y2="296.754" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0F172A" stop-opacity="0"></stop>
+                    <stop offset=".258" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset=".521" stop-color="#0F172A"></stop>
+                    <stop offset=".784" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset="1" stop-color="#0F172A" stop-opacity="0"></stop>
+                </linearGradient>
+                <linearGradient id="f" x1="375.75" y1="9.254" x2="-69.25" y2="9.254" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0F172A" stop-opacity="0"></stop>
+                    <stop offset=".258" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset=".521" stop-color="#0F172A"></stop>
+                    <stop offset=".784" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset="1" stop-color="#0F172A" stop-opacity="0"></stop>
+                </linearGradient>
+                <linearGradient id="g" x1="9.504" y1="-89.75" x2="9.504" y2="355.25" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0F172A" stop-opacity="0"></stop>
+                    <stop offset=".258" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset=".521" stop-color="#0F172A"></stop>
+                    <stop offset=".784" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset="1" stop-color="#0F172A" stop-opacity="0"></stop>
+                </linearGradient>
+                <linearGradient id="h" x1="297.004" y1="-89.75" x2="297.004" y2="355.25" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0F172A" stop-opacity="0"></stop>
+                    <stop offset=".258" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset=".521" stop-color="#0F172A"></stop>
+                    <stop offset=".784" stop-color="#0F172A" stop-opacity=".6"></stop>
+                    <stop offset="1" stop-color="#0F172A" stop-opacity="0"></stop>
+                </linearGradient>
+                <mask id="cc" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-333" y="-242" width="956" height="927">
+                    <path fill="url(#b)" d="M-333-242h956v927h-956z"></path>
+                </mask>
+            </defs>
+        </svg>
+    </div>
+</body>
+</html>

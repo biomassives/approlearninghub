@@ -1,0 +1,103 @@
+// api/feeds.js
+const { createError } = require('./utils/errors');
+let Parser;
+
+try {
+  // Try to load the rss-parser module
+  Parser = require('rss-parser');
+} catch (error) {
+  console.error('RSS Parser module not found:', error.message);
+}
+
+// Feed sources
+const FEED_SOURCES = [
+  {
+    id: 'appro-blog',
+    title: 'ApproVideo Blog',
+    url: 'https://hub.approvideo.org/blog/rss.xml',
+    type: 'rss'
+  },
+  {
+    id: 'video-news',
+    title: 'Video Production News',
+    url: 'https://hub.approvideo.org/news/rss.xml',
+    type: 'rss'
+  }
+];
+
+/**
+ * Get feeds from multiple sources
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const getFeeds = async (req, res, next) => {
+  try {
+    // Check if RSS parser is available
+    if (!Parser) {
+      return res.json({
+        error: true,
+        message: 'RSS parser module not installed',
+        feeds: FEED_SOURCES.map(source => ({
+          ...source,
+          items: [],
+          status: 'error',
+          error: 'RSS parser not available'
+        }))
+      });
+    }
+    
+    // Create parser instance
+    const parser = new Parser();
+    
+    // Fetch feeds
+    const feedPromises = FEED_SOURCES.map(async (source) => {
+      try {
+        // Fetch and parse feed
+        const feed = await parser.parseURL(source.url);
+        
+        // Format items
+        const items = feed.items.map(item => ({
+          id: item.guid || item.id || item.link,
+          title: item.title,
+          content: item.content || item.contentSnippet,
+          link: item.link,
+          author: item.creator || item.author,
+          date: item.pubDate || item.isoDate,
+          categories: item.categories || []
+        }));
+        
+        return {
+          ...source,
+          title: feed.title || source.title,
+          description: feed.description,
+          link: feed.link,
+          items,
+          status: 'success'
+        };
+      } catch (error) {
+        console.error(`Error fetching feed ${source.id}:`, error);
+        
+        // Return source with error
+        return {
+          ...source,
+          items: [],
+          status: 'error',
+          error: error.message
+        };
+      }
+    });
+    
+    // Wait for all feeds to be fetched
+    const feeds = await Promise.all(feedPromises);
+    
+    res.json({ feeds });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Export handlers
+module.exports = {
+  getFeeds
+};

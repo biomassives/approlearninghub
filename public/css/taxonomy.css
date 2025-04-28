@@ -1,0 +1,848 @@
+        /* Base styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #dbe5df;
+            color: #efefef;
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    
+        /* Theme Colors */
+        :root {
+            --nile-blue: #8fb8cc;
+            --desert-red: #c49178;
+            --savanna-green: #96b089;
+            
+            --nile-blue-hover: #68c1e6;
+            --desert-red-hover: #e6927a;
+            --savanna-green-hover: #7fc261;
+            
+            --item-bg: #f9fafb;
+            --body-text: #1a1a1e;
+            --delete-btn: #c49178;
+            --delete-btn-hover: #e6927a;
+        }
+
+        
+       /* Base styles */
+          #lang-dropdown {
+            position: relative;
+            display: inline-block;
+          }
+          
+          #lang-buttons {
+            display: grid;
+            gap: 0.5rem;
+          }
+          
+          /* Mobile layout - 2 columns */
+          @media (max-width: 767px) {
+            #lang-buttons {
+              grid-template-columns: repeat(2, 1fr);
+              min-width: 220px;
+            }
+          }
+          
+          /* Tablet layout - 3 columns */
+          @media (min-width: 768px) and (max-width: 1023px) {
+            #lang-buttons {
+              grid-template-columns: repeat(3, 1fr);
+              min-width: 300px;
+            }
+          }
+          
+          /* Desktop layout - 4 columns */
+          @media (min-width: 1024px) {
+            #lang-buttons {
+              grid-template-columns: repeat(4, 1fr);
+              min-width: 360px;
+            }
+          }
+          
+          /* Active state for language buttons */
+          .lang-button[data-active="true"] {
+            background-color: #4A5568;
+            border-color: #4299E1;
+          }
+          
+          /* Animation for dropdown */
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          
+          #lang-panel.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out forwards;
+          }
+          
+          #lang-toggle.active svg {
+            transform: rotate(180deg);
+          }
+                
+
+        /* Reset the existing pencil behavior */
+        .category-name::before, 
+        .subcategory-name::before {
+            content: none;
+        }
+        
+        /* Remove the existing hover text decoration */
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            opacity: 0;
+        }
+        
+        /* Create a more elegant hover effect */
+        .category-name, .subcategory-name {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 2px 6px;
+            margin: -2px -6px;
+            border-radius: 4px;
+        }
+        
+        .category-name:hover, .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+        
+        .dark-mode .category-name:hover, 
+        .dark-mode .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.2);
+        }
+        
+        /* Subtle indicator on hover showing it's editable */
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 6px;
+            right: 6px;
+            height: 1px;
+            background-color: rgba(150, 176, 137, 0.6);
+            opacity: 1;
+        }
+        
+        /* Update the edit hint text to be more subtle */
+        .category-header .text-xs {
+            opacity: 0.65;
+            transition: opacity 0.2s ease;
+        }
+        
+        .category-item:hover .category-header .text-xs {
+            opacity: 1;
+        }
+        
+        /* Make slug labels clearly non-editable */
+        .slug-label {
+            cursor: default !important;
+            user-select: text !important; /* Allow text selection but not editing */
+            opacity: 0.7;
+            pointer-events: none; /* Prevent clicks from propagating */
+        }
+        
+        /* Ensure no hover effects on slug labels */
+        .slug-label:hover {
+            background-color: transparent !important;
+            cursor: text !important;
+        }
+        
+        /* Clear any pseudo-elements for slug labels */
+        .slug-label::before, 
+        .slug-label::after {
+            content: none !important;
+        }
+        
+
+        /* Styling the edited state */
+        .inline-edit-field {
+                font-size: inherit;
+                font-weight: inherit;
+                padding: 2px 6px;
+                margin: 0;
+        
+            /* Inherit font styles from parent for consistency */
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            /* Specific Styling */
+            border: 2px solid var(--savanna-green); /* Use theme color */
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem; /* Adjust padding as needed */
+            width: 95%; /* Take up most available space within parent */
+            box-sizing: border-box; /* Include padding/border in width calculation */
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.2); /* Subtle glow */
+            position: relative; /* Ensure it appears above static content if needed */
+            z-index: 10; /* Higher stack order */
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .dark-mode .inline-edit-field {
+            background-color: #3a3a54; /* Darker background */
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+            box-shadow: 0 0 0 2px rgba(150, 176, 137, 0.3);
+        }
+        
+        .inline-edit-field:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.5); /* Stronger glow on focus */
+        }
+        
+        /* Style for the parent item (category or subcategory) when its name is being edited */
+        .is-editing {
+             /* Subtle indication that this item is active */
+             background-color: rgba(150, 176, 137, 0.05);
+             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.3);
+        }
+        .dark-mode .is-editing {
+             background-color: rgba(150, 176, 137, 0.1);
+             box-shadow: inset 0 0 0 1px rgba(150, 176, 137, 0.5);
+        }
+        
+        /* --- Status Feedback Styles (Applied to the .category-name or .subcategory-name) --- */
+        
+        /* Base adjustments for status pseudo-elements */
+        .category-name, .subcategory-name {
+            position: relative; /* Needed for ::after positioning */
+            /* Add padding to make space for status icons/background flash */
+            padding: 0.25rem 0.5rem;
+            margin: -0.25rem -0.5rem; /* Counteract padding to maintain layout flow */
+            border-radius: 4px; /* Match input field */
+            transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.2s ease; /* Smooth transitions */
+        }
+        
+        /* Saving State */
+        .status-saving {
+            /* Optional: slightly dim text while saving */
+            /* color: #a0aec0; */ /* Example: Tailwind gray-500 */
+            cursor: wait; /* Indicate processing */
+        }
+        .dark-mode .status-saving {
+            /* color: #718096; */ /* Example: Tailwind gray-600 */
+        }
+        .status-saving::after {
+           content: '⏳'; /* Saving indicator icon */
+           font-size: 0.8em;
+           margin-left: 6px;
+           display: inline-block;
+           vertical-align: middle;
+           animation: spin 1s linear infinite; /* Reuse spin animation */
+           /* Ensure this doesn't get duplicated by hover styles */
+           opacity: 1 !important;
+           transform: translateX(0) !important;
+        }
+        
+        /* Success State */
+        .status-success {
+            /* Flash background */
+            background-color: rgba(74, 222, 128, 0.2); /* Tailwind green-400 @ 20% */
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.4);
+        }
+        .dark-mode .status-success {
+             background-color: rgba(74, 222, 128, 0.3);
+             box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.5);
+        }
+        .status-success::after {
+            content: '✅'; /* Success indicator icon */
+            font-size: 0.8em;
+            margin-left: 6px;
+            vertical-align: middle;
+            /* Ensure this doesn't get duplicated by hover styles */
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        
+        /* Error State */
+        .status-error {
+             /* Flash background */
+            background-color: rgba(248, 113, 113, 0.2); /* Tailwind red-400 @ 20% */
+            box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.4);
+            /* Optionally change text color for error */
+            /* color: #b91c1c; */ /* Tailwind red-700 */
+        }
+        .dark-mode .status-error {
+             background-color: rgba(248, 113, 113, 0.3);
+             box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5);
+             /* color: #f87171; */ /* Tailwind red-400 */
+        }
+        .status-error::after {
+            content: '❌'; /* Error indicator icon */
+            font-size: 0.8em;
+            margin-left: 6px;
+            vertical-align: middle;
+            /* Ensure this doesn't get duplicated by hover styles */
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        /* Ensure status icons override the hover pencil icon */
+        .category-name.status-saving::before,
+        .subcategory-name.status-saving::before,
+        .category-name.status-success::before,
+        .subcategory-name.status-success::before,
+        .category-name.status-error::before,
+        .subcategory-name.status-error::before,
+        .category-name.status-saving::after, /* If you were using ::after for pencil */
+        .subcategory-name.status-saving::after {
+            content: none !important; /* Hide pencil during status display */
+        }
+        
+        
+        /* --- Keyframes (ensure present) --- */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Existing animation for pencil wiggle (optional) */
+        @keyframes wiggle {
+             0% { transform: rotate(0deg); }
+             25% { transform: rotate(10deg); }
+             75% { transform: rotate(-10deg); }
+             100% { transform: rotate(0deg); }
+        }
+        /* Apply wiggle only if NOT showing status */
+        .category-name:not(.status-saving):not(.status-success):not(.status-error):hover::before,
+        .subcategory-name:not(.status-saving):not(.status-success):not(.status-error):hover::before {
+             animation: wiggle 0.5s ease;
+        }
+
+
+        /* Profile Button and Dropdown Styles */
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 12rem;
+            z-index: 50;
+            transform-origin: top right;
+            transition: all 0.2s ease;
+        }
+    
+        /* Active State */
+        .profile-dropdown.dropdown-active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+    
+        /* Inactive State */
+        .profile-dropdown.dropdown-inactive {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            visibility: hidden;
+        }
+    
+        /* Dropdown Items */
+        .profile-dropdown .py-1 a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+    
+        .profile-dropdown .py-1 a:hover {
+            background-color: #f3f4f6;
+        }
+    
+        /* Dark Mode Styles */
+        .dark-mode .profile-dropdown {
+            background-color: #2d2d44;
+            border: 1px solid #3f3f5f;
+        }
+    
+        .dark-mode .profile-dropdown .py-1 a {
+            color: #e5e7eb;
+        }
+    
+        .dark-mode .profile-dropdown .py-1 a:hover {
+            background-color: #3f3f5f;
+        }
+    
+        .dark-mode #mainNav {
+            background-color: #1a1a2e;
+            color: #e5e7eb;
+        }
+    
+        .dark-mode .nav-link {
+            color: #e5e7eb;
+        }
+
+        .nav-link {
+            color: #000;
+        }
+
+        .dark-mode #profileButton svg,
+        .dark-mode #darkModeToggle svg {
+            color: #e5e7eb;
+        }
+    
+        /* Profile Button */
+        #profileButton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    
+        #profileButton svg {
+            width: 24px;
+            height: 24px;
+        }
+    
+        /* Navigation Container Dark Mode */
+        .dark-mode nav.bg-white {
+            background-color: #1a1a2e;
+        }
+    
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #1a1a2e;
+            color: #e1e1e1;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            
+            --item-bg: #2a2a3e;
+            --body-text: #e1e1e1;
+            --delete-btn: #b37a64;
+            --delete-btn-hover: #e6927a;
+        }
+    
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+    
+        .btn-blue {
+            background-color: var(--nile-blue);
+            color: white;
+        }
+    
+        .btn-red {
+            background-color: var(--desert-red);
+            color: white;
+        }
+    
+        .btn-green {
+            background-color: var(--savanna-green);
+            color: white;
+        }
+    
+        .btn-blue:hover, .btn-red:hover, .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    
+        .btn-blue:hover { background-color: var(--nile-blue-hover); }
+        .btn-red:hover { background-color: var(--desert-red-hover); }
+        .btn-green:hover { background-color: var(--savanna-green-hover); }
+    
+        /* Navigation Styles */
+        .nav-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .nav-container {
+            background-color: rgba(45, 45, 68, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    
+        /* Category and Subcategory Styles */
+        .category-item {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .category-item {
+            background-color: #2d2d44;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            color: #e1e1e1;
+        }
+    
+        .category-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    
+        .subcategory-item {
+            background: #f3f4f6;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .dark-mode .subcategory-item {
+            background-color: #3a3a54;
+        }
+    
+        /* Tag Styles */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+    
+        .tag-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+    
+        .dark-mode .tag-item {
+            background-color: #2d2d44;
+        }
+    
+        .tag-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #666;
+        }
+    
+        .loading::after {
+            content: '';
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+    
+        /* Error State */
+        .error {
+            background: #fee;
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+    
+        /* Custom Scrollbar */
+        .subcategories {
+            max-height: 250px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #9CA3AF transparent;
+        }
+    
+        .subcategories::-webkit-scrollbar {
+            width: 6px;
+        }
+    
+        .subcategories::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    
+        .subcategories::-webkit-scrollbar-thumb {
+            background-color: #9CA3AF;
+            border-radius: 3px;
+        }
+    
+        /* Inline Editing Styles */
+        .inline-edit-field {
+            border: 2px solid var(--savanna-green);
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: inherit;
+            font-weight: inherit;
+            width: 100%;
+            max-width: 300px;
+            background-color: white;
+            transition: all 0.2s ease;
+        }
+    
+        .dark-mode .inline-edit-field {
+            background-color: #1f1f35;
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+        }
+    
+        .new-item-input {
+            border: 2px solid var(--savanna-green);
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: inherit;
+            background-color: white;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.2s ease;
+        }
+    
+        .dark-mode .new-item-input {
+            background-color: #1f1f35;
+            border-color: var(--savanna-green);
+            color: #e1e1e1;
+        }
+    
+        .category-name, .subcategory-name {
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+    
+        .category-name:hover, .subcategory-name:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+    
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    
+        .subcategory-item {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+    
+        .subcategory-item:hover {
+            background-color: rgba(150, 176, 137, 0.1);
+        }
+    
+        .subcategory-controls {
+            opacity: 0.3;
+            transition: opacity 0.2s ease;
+        }
+    
+        .subcategory-item:hover .subcategory-controls {
+            opacity: 1;
+        }
+    
+        .error-toast {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #e74c3c;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    
+        /* New Category and Subcategory Animation */
+        .new-category, .new-subcategory {
+            animation: slideDown 0.3s ease;
+        }
+    
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        /* Dark Mode Adjustments */
+        .dark-mode .category-name:hover, 
+        .dark-mode .subcategory-name:hover,
+        .dark-mode .subcategory-item:hover {
+            background-color: rgba(150, 176, 137, 0.2);
+        }
+    
+        /* Make the subcategory and category items look more clickable */
+        .category-name::after, 
+        .subcategory-name::after {
+            content: '✏️';
+            font-size: 0.75em;
+            opacity: 0;
+            margin-left: 6px;
+            transition: opacity 0.2s ease;
+        }
+    
+        .category-name:hover::after, 
+        .subcategory-name:hover::after {
+            opacity: 1;
+        }
+    
+    /* Firefox-specific enhancements for inline editing */
+    .category-name, .subcategory-name {
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+        position: relative;
+        user-select: none; /* Prevents text selection issues in Firefox */
+    }
+    
+    .category-name:hover, .subcategory-name:hover {
+        background-color: rgba(150, 176, 137, 0.2);
+        outline: 2px solid rgba(150, 176, 137, 0.3);
+    }
+    
+    /* Make editable elements more obvious */
+    .category-name::before, 
+    .subcategory-name::before {
+        content: '✏️';
+        position: absolute;
+        right: -25px;
+        opacity: 0;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        transform: translateX(-10px);
+    }
+    
+    .category-name:hover::before, 
+    .subcategory-name:hover::before {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    /* Improved styling for the inline edit field */
+    .inline-edit-field {
+        border: 2px solid var(--savanna-green);
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: inherit;
+        font-weight: inherit;
+        width: 100%;
+        min-width: 200px; /* Ensure minimum width for usability */
+        max-width: 100%;
+        background-color: white;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
+        z-index: 5;
+        position: relative;
+    }
+    
+    .dark-mode .inline-edit-field {
+        background-color: #1f1f35;
+        border-color: var(--savanna-green);
+        color: #e1e1e1;
+    }
+    
+    /* Ensure inputs are properly sized and clickable */
+    .new-item-input {
+        border: 2px solid var(--savanna-green);
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: inherit;
+        background-color: white;
+        width: 100%;
+        min-width: 200px;
+        max-width: 100%;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 0 3px rgba(150, 176, 137, 0.3);
+    }
+    
+    .dark-mode .new-item-input {
+        background-color: #1f1f35;
+        border-color: var(--savanna-green);
+        color: #e1e1e1;
+    }
+    
+    /* Visual feedback for keyboard focus */
+    .category-name:focus,
+    .subcategory-name:focus {
+        outline: 2px solid var(--savanna-green);
+        background-color: rgba(150, 176, 137, 0.2);
+    }
+    
+    /* Add a subtle pointer cursor for all interactive elements */
+    .category-name, 
+    .subcategory-name,
+    .btn,
+    .delete-subcategory-btn {
+        cursor: pointer;
+    }
+    
+    /* Fix for Firefox event bubbling */
+    .subcategory-item {
+        position: relative;
+        pointer-events: auto;
+    }
+    
+    .subcategory-name {
+        pointer-events: auto;
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Animation for the edit pencil icon */
+    @keyframes wiggle {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(10deg); }
+        75% { transform: rotate(-10deg); }
+        100% { transform: rotate(0deg); }
+    }
+    .category-name:hover::before,
+    .subcategory-name:hover::before {
+        animation: wiggle 0.5s ease;
+    }   
+    /* Empty state styling */
+    .empty-state {
+        padding: 2rem;
+        text-align: center;
+        color: #6b7280;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .dark-mode .empty-state {
+        background-color: rgba(45, 45, 68, 0.5);
+        color: #9ca3af;
+    }
+      #toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 50; display: flex; flex-direction: column; gap: 0.5rem; }
+      

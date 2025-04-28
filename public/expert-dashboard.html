@@ -1,34 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expert Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script type="module" src="./js/expert-dashboard.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Dashboard | ApproVideo</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/expert-dashboard.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        header {
+            background-color: #0073b1;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+        
+        #greeting {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        #lattice-info {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+        
+        .dashboard-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #0073b1;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Tools List */
+        #expert-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .tool-link {
+            display: block;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #0073b1;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .tool-link:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+        }
+        
+        .activity-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        /* Buttons */
+        .btn {
+            background-color: #f8f9fa;
+            color: #0073b1;
+            border: 1px solid #0073b1;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn-primary {
+            background-color: #0073b1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #005b8e;
+        }
+        
+        /* Status Messages */
+        #expert-dashboard-status {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            border: 1px solid;
+            display: none;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 1.5rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .settings-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+        
+        .notification {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #3c763d;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+
+
+.wizard-step {
+    display: none; /* Hide steps by default */
+    animation: fadeIn 0.5s; /* Optional fade effect */
+}
+.wizard-step.active {
+    display: block; /* Show active step */
+}
+.wizard-step h4 {
+    margin-top: 0;
+    color: #0056b3; /* Or your theme color */
+}
+.wizard-step label {
+    display: block; /* Make labels block for better spacing */
+    margin-bottom: 8px;
+}
+.interest-options label {
+    display: inline-block; /* Keep interests more compact */
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+.interest-options input[type="text"] {
+    margin-left: 5px;
+}
+.wizard-nav {
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1em;
+}
+.wizard-nav.prev {
+    background-color: #6c757d;
+}
+.wizard-nav.finish {
+     background-color: #28a745;
+}
+.wizard-nav:hover {
+    opacity: 0.9;
+}
+#close-wizard-final-btn {
+     padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #6c757d;
+    color: white;
+    font-size: 1em;
+}
+#close-wizard-final-btn:hover{
+     opacity: 0.9;
+}
+#wizard-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    display: none; /* Hide by default */
+}
+#wizard-message.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+#wizard-message.error-message {
+     background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+     display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.button-container a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #e0f7fa;
+  color: #00796b;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.button-container a:hover {
+  background-color: #b2ebf2;
+}
+
+
+
+
+    </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <header class="dashboard-header">
-      <h1 id="greeting">Welcome, Expert</h1>
-      <button id="logout-btn">Log Out</button>
+    <header>
+        <div class="app-title">ApproVideo | Expert Hub</div>
+        <div class="user-controls">
+            <span id="user-name"></span>
+            <button id="settings-btn" class="btn">Settings</button>
+            <button id="logout-btn" class="btn">Logout</button>
+        </div>
     </header>
+    
+    <main>
+        <!-- Status Messages Area -->
+        <div id="expert-dashboard-status"></div>
+        
+        <!-- Dashboard Content -->
+        <div id="expert-dashboard-content">
+            <div class="dashboard-header">
+                <h1 id="greeting">Welcome!</h1>
+                <p id="lattice-info"></p>
+            </div>
+            
+            <div class="dashboard-sections">
+                <div class="main-content">
+                    <!-- Tools Section -->
+                    <section class="dashboard-section">
+                        <h2 class="section-title">Expert Tools</h2>
+                        <div id="expert-tools">
+                            <!-- Tools will be populated by JavaScript -->
+                        </div>
+                    </section>
+                    
+                    <!-- Stats Section -->
+                        <section class="dashboard-section">
+                            <h2 class="section-title">Your Dashboard</h2>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <h3>Active Modules</h3>
+                                    <div class="stat-value" id="active-modules-count">3</div>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>Pending Reviews</h3>
+                                    <div class="stat-value" id="pending-reviews-count">2</div>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>Upcoming Mentorships</h3>
+                                    <div class="stat-value" id="upcoming-mentorships-count">1</div>
+                                </div>
+                            </div>
+                    </section>
 
-    <section class="dashboard-section">
-      <h2>Session Identity</h2>
-      <pre id="lattice-info">Loading session info...</pre>
-    </section>
+                    <section class="dashboard-section">
+                        <div class="mb-4">
 
-    <section class="dashboard-section">
-      <h2>Expert Tools</h2>
-      <ul id="expert-tools">
-        <!-- Tool links will be injected here -->
-      </ul>
-    </section>
 
-    <footer class="dashboard-footer">
-      <p>Powered by Approvideo • MetaLattice Identity Enabled</p>
-    </footer>
-  </div>
+                        <h2 class="section-title">Recent Activity</h2>
+                        <div id="activity-feed">
+                            </div>
+
+                        </div>      
+                    </section>
+
+                    <section class="dashboard-section">
+                        <h2 class="section-title">Browse Topics</h2>
+                        <div id="category-buttons" class="button-container"></div>
+                      </section>
+
+
+                </div>
+                
+                <div class="sidebar">
+                    <!-- Activity Feed Section -->
+                    <section class="dashboard-section">
+                        <h2 class="section-title">Recent Activity</h2>
+                        <div id="activity-feed">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </div>
+                    </section>
+                    
+                    <!-- User Role Info -->
+                    <section class="dashboard-section">
+                        <h2 class="section-title">Your Role</h2>
+                        <p>Current role: <span id="user-role">Expert</span></p>
+                        <p>Specialization: Educational Technology</p>
+                    </section>
+
+
+
+
+                      
+
+                    <section class="comment-section">
+
+                    <form>
+                        <label>Comment:</label>
+                        <input type="text" id="comment">
+                        
+                        <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+                        <select id="newCategory" class="liquid-input w-full" required>
+                          <option value="">Select a category</option>
+                          <option value="waterpurification">Water Purification</option>
+                          <option value="desalination">Desalination</option>
+                          <option value="waterdistribution">Efficient Water Distribution</option>
+                          <option value="diysolar">DIY Solar</option>
+                          <option value="biogas">Biogas</option>
+                          <option value="microgrids">Microgrids</option>
+                          <option value="urbanfood">Urban Food Prouction</option>
+                          <option value="hydroponics">Hydroponics</option>
+                          <option value="sustainableag">Sustainable Agriculture Techniques</option>  
+                          <option value="lowcostconstruction">Low Cost Contruction</option>
+                          <option value="localsheltermaterials">Useful Local Materials for Shelter</option> 
+                          <option value="emtskills">EMT Skills</option>
+                          <option value="telemedicine">Telemedicine</option>
+                          <option value="firstaid">First Aid</option>
+                          <option value="selfsuficienthealthcare">Self Sufficient Health Care</option>   
+                
+                          
+                        </select>
+
+
+                        <input type="submit" id="submitresource">
+
+
+                    </section>
+
+                        <section class="educ-resource-section">
+
+                            <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+                            <select id="newCategory" class="liquid-input w-full" required>
+                              <option value="">Select a category</option>
+                              <option value="basic-education-k-12">Basic Education K-12</option>
+                              <option value="basic-education-literacy"> Literacy</option>
+                              <option value="basic-education-numeracy"> Numeracy</option>
+                              <option value="basic-education-language-skills"> Language</option>
+                              <option value="tech-training-appropriate-tech">Appropriate tech training</option>
+                              <option value="tech-traning-computer-literacy">Computer literacy training</option>
+                              <option value="tech-traning-coding">Coding training</option>
+                              <option value="vocational-plumbing">vocational plumbing</option>
+                              <option value="vocational-electrical">vocational electrical</option>
+                              <option value="vocational-machining">vocational machining</option>
+                              <option value="vocational-carpentry">vocational carpentry</option>
+                              <option value="vocational-forestry">vocational forestry</option>
+                              <option value="vocational-landscaping">vocational landscaping</option>
+                              <option value="vocational-repairing">vocational repairing</option>
+                              <option value="entrepreneurship-business-planning">entrepreneurship: business planning</option>
+                              <option value="entrepreneurship-financial-literacy">entrepreneurship: financial literacy</option>
+                              <option value="entrepreneurship-marketing">entrepreneurship: marketing</option>  
+                    
+                            </select>
+                         
+                        <input type="submit" id="submitcomment">
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script type="module" src="js/expert-dashboard.js"></script>
+
+    <script type="module">
+
+    async function renderCategoryButtons() {
+        // 1. grab categories (with their subcategories)
+        const res = await fetch('/api/categories');
+        const { success, categories } = await res.json();
+        if (!success) {
+          console.error('Couldn’t load categories');
+          return;
+        }
+      
+        const container = document.getElementById('category-buttons');
+        container.innerHTML = '';
+      
+        categories.forEach(cat => {
+          // Category button
+          const catBtn = document.createElement('a');
+          catBtn.textContent = cat.name;
+          // Point to YouTube search for this topic:
+          catBtn.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(cat.slug)}`;
+          catBtn.target = '_blank';
+          catBtn.rel = 'noopener';
+          container.appendChild(catBtn);
+      
+          // Subcategory buttons (indented visually via a little extra margin)
+          cat.subcategories.forEach(sub => {
+            const subBtn = document.createElement('a');
+            subBtn.textContent = sub.name;
+            subBtn.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(sub.slug)}`;
+            subBtn.target = '_blank';
+            subBtn.rel = 'noopener';
+            // give it a bit of indent (optional—you can also create a specific class)
+            subBtn.style.marginLeft = '0.75rem';
+            container.appendChild(subBtn);
+          });
+        });
+      }
+      
+      // kick it off on load
+      document.addEventListener('DOMContentLoaded', renderCategoryButtons);
+    </script>
+ 
+
 </body>
 </html>

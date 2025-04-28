@@ -1,0 +1,70 @@
+// api/index.js
+const express = require('express');
+const { errorHandler, notFoundHandler } = require('./utils/errors');
+const { authenticate } = require('./middleware/auth');
+
+// Create API router
+const router = express.Router();
+
+// Check if environment is set up properly
+console.log(`→ SERVICE_ROLE_KEY present? ${!!process.env.SERVICE_ROLE_KEY}`);
+
+// Middleware for all routes
+router.use(express.json());
+
+// Health check endpoint
+router.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Load API routes
+try {
+  // Authentication routes (no auth required)
+  router.post('/auth', require('./auth'));
+  router.post('/auth/login', require('./auth'));
+  
+  // Clinics routes (public read, auth for write)
+  const clinicsRoutes = require('./clinics');
+  router.get('/clinics', clinicsRoutes.listClinics);
+  router.get('/clinics/:id', clinicsRoutes.getClinic);
+  router.post('/clinics', authenticate(), clinicsRoutes.createClinic);
+  router.put('/clinics/:id', authenticate(), clinicsRoutes.updateClinic);
+  router.delete('/clinics/:id', authenticate({ roles: ['admin'] }), clinicsRoutes.deleteClinic);
+  
+  // Courses routes (public read, auth for write)
+  const coursesRoutes = require('./courses');
+  router.get('/courses', coursesRoutes.listCourses);
+  router.get('/courses/:id', coursesRoutes.getCourse);
+  router.post('/courses', authenticate(), coursesRoutes.createCourse);
+  router.put('/courses/:id', authenticate(), coursesRoutes.updateCourse);
+  router.delete('/courses/:id', authenticate({ roles: ['admin'] }), coursesRoutes.deleteCourse);
+  
+  // Feeds routes (require auth)
+  try {
+    const feedsRoutes = require('./feeds');
+    router.get('/feeds', authenticate(), feedsRoutes.getFeeds);
+  } catch (error) {
+    console.error('Error loading feeds routes:', error);
+    // Provide a fallback route for feeds
+    router.get('/feeds', authenticate(), (req, res) => {
+      res.status(503).json({
+        error: true,
+        message: 'Feeds service is currently unavailable',
+        details: error.message
+      });
+    });
+  }
+  
+  console.log('📡 Integrations handler loaded');
+} catch (error) {
+  console.error('Error setting up API routes:', error);
+}
+
+// 404 handler
+router.use(notFoundHandler);
+
+// Error handler
+router.use(errorHandler);
+
+// Export router
+module.exports = router;

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApproVideo Interactive - API Driven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles from previous example - body, hidden, category-btn, subcategory-btn, etc. */
+        body { font-family: 'Poppins', sans-serif; background-color: #f9fafb; }
+        .hidden { display: none; }
+        .category-btn, .subcategory-btn { /* ... existing styles ... */ }
+        .category-btn:hover, .subcategory-btn:hover { /* ... existing styles ... */ }
+        .category-btn i { /* ... existing styles ... */ }
+        .subcategory-btn strong { display: block; }
+        .subcategory-btn p { font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; }
+        .container { max-width: 1200px; margin: auto; padding: 1rem; }
+        .grid { display: grid; gap: 1rem; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } /* Adjusted for Tailwind */
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } /* Added for video grid */
+        .gap-6 { gap: 1.5rem; }
+        .gap-4 { gap: 1rem; }
+        header h1, header p { color: white; }
+        #content-details h3 { margin-bottom: 0.5rem; }
+        #content-details p { margin-bottom: 0.5rem; }
+        #content-details strong { font-weight: 600; }
+        /* Video Card Styles */
+        .video-card {
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            background-color: white;
+            padding: 1rem; /* p-4 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow */
+            transition: box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .video-card:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); } /* shadow-md */
+        .video-card img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 0.375rem; /* rounded-md */
+            margin-bottom: 0.75rem; /* mb-3 */
+            background-color: #e5e7eb; /* gray-200 placeholder */
+        }
+        .video-card h4 { font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.4; } /* font-semibold mb-2 text-base */
+        .video-card .description { font-size: 0.875rem; color: #4b5563; margin-bottom: 0.75rem; } /* text-sm text-gray-600 mb-3 */
+        .video-card .tags { font-size: 0.75rem; color: #6b7280; } /* text-xs text-gray-500 */
+        /* Loader Style */
+        .loader {
+            border: 4px solid #f3f4f6; /* gray-100 */
+            border-top: 4px solid #3b82f6; /* blue-500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto; /* Center loader */
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Modal styles */
+        #video-detail { backdrop-filter: blur(4px); }
+        #video-detail iframe { width: 100%; aspect-ratio: 16 / 9; }
+        /* Tailwind styles */
+        .category-btn {
+            background-image: linear-gradient(to right, var(--tw-gradient-stops));
+            --tw-gradient-from: #4ade80;
+            --tw-gradient-to: #60a5fa;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .subcategory-btn {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: white;
+            padding: 1rem;
+            transition: all 0.2s ease-in-out;
+            text-align: left;
+        }
+        .subcategory-btn:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* Mega Menu Styles */
+        #learning-clinic-mega-menu {
+            position: absolute;
+            top: 100%; /* Position below the button */
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            z-index: 50; /* Ensure it's above other content */
+        }
+        .mega-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .mega-menu-column h3 {
+            font-semibold text-gray-700 mb-2;
+        }
+        .mega-menu-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .mega-menu-column ul li a {
+            display: block;
+            padding: 0.5rem 0;
+            color: #4b5563;
+            transition: color 0.2s ease-in-out;
+        }
+        .mega-menu-column ul li a:hover {
+            color: #3b82f6;
+        }
+        /* Add Video Modal Styles */
+        #add-video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 60; /* Higher than mega menu */
+        }
+        #add-video-modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+        #add-video-modal-content h2 {
+            font-semibold text-xl text-gray-700 mb-4;
+        }
+        #add-video-modal-content label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        #add-video-modal-content input[type="text"],
+        #add-video-modal-content textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        #add-video-modal-content button[type="submit"],
+        #add-video-modal-content .modal-close-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-semibold;
+            color: white;
+            background-color: #3b82f6;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        #add-video-modal-content button[type="submit"]:hover,
+        #add-video-modal-content .modal-close-btn:hover {
+            background-color: #2563eb;
+        }
+        #add-video-modal-content .modal-close-btn {
+            background-color: #6b7280;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.2rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="text-center py-6 bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-md">
+        <h1 class="text-3xl font-bold">🌿 ApproVideo DIY Solutions 🌱</h1>
+        <p class="text-lg">Empowering communities through practical knowledge</p>
+        <div class="mt-4 flex justify-center space-x-4 relative">
+            <a href="/login.html" class="bg-orange-300 text-blue-600 px-4 py-2 rounded-lg shadow-sm hover:bg-blue-50 transition-colors">
+                Login
+            </a>
+            <button id="add-video-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-green-700 transition-colors">
+                <i class="fas fa-plus-circle mr-2"></i> Add Video
+            </button>
+            <div class="relative">
+                <button id="learning-clinic-btn" class="bg-emerald-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-green-700 transition-colors">
+                    <i class="fas fa-shapes mr-2"></i> Learning Clinics
+                </button>
+                <div id="learning-clinic-mega-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-lg rounded-md py-4">
+                    <div class="container mx-auto">
+                        <div class="mega-menu-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <div class="mega-menu-column">
+                                <h3>Shelter</h3>
+                                <ul>
+                                    <li><a href="#">Low-cost Construction</a></li>
+                                    <li><a href="#">Durable Methods</a></li>
+                                    <li><a href="#">Local Materials</a></li>
+                                    <li><a href="#">DIY Building</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Water</h3>
+                                <ul>
+                                    <li><a href="#">Purification Techniques</a></li>
+                                    <li><a href="#">Desalination Basics</a></li>
+                                    <li><a href="#">Efficient Distribution</a></li>
+                                    <li><a href="#">Water Storage</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Waste Management</h3>
+                                <ul>
+                                    <li><a href="#">Composting Guides</a></li>
+                                    <li><a href="#">Recycling Systems</a></li>
+                                    <li><a href="#">Upcycling Projects</a></li>
+                                    <li><a href="#">Wastewater Treatment</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Energy</h3>
+                                <ul>
+                                    <li><a href="#">DIY Solar Panels</a></li>
+                                    <li><a href="#">Biogas Generation</a></li>
+                                    <li><a href="#">Microgrid Concepts</a></li>
+                                    <li><a href="#">Fuel Briquettes</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Health</h3>
+                                <ul>
+                                    <li><a href="#">Basic EMT Skills</a></li>
+                                    <li><a href="#">Telemedicine Setup</a></li>
+                                    <li><a href="#">First Aid Tutorials</a></li>
+                                    <li><a href="#">Self-sufficient Healthcare</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Sustainable Food</h3>
+                                <ul>
+                                    <li><a href="#">Urban Gardening Tips</a></li>
+                                    <li><a href="#">Hydroponics Systems</a></li>
+                                    <li><a href="#">Sustainable Agriculture</a></li>
+                                    <li><a href="#">Alternative Food Sources</a></li>
+                                </ul>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="container mx-auto py-8">
+        <section id="category-icons" class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center mb-8">
+            </section>
+        <section id="subcategory-section" class="mt-8 hidden mb-8">
+            <h2 id="subcategory-title" class="text-2xl font-semibold mb-4 text-center text-gray-700">Subcategories</h2>
+            <div id="subcategories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                </div>
+        </section>
+        <section id="search-section" class="mb-8">
+            <input type="search" id="search-input" placeholder="Search videos by title, description, or tag..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </section>
+        <section id="content-section" class="mt-8">
+            <h2 id="content-title" class="text-2xl font-semibold mb-6 text-center text-gray-700">Featured Videos</h2>
+            <div id="content-details" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                </div>
+            <div id="loading-indicator" class="hidden text-center py-6">
+                <div class="loader"></div>
+            </div>
+            <div id="load-more-container" class="text-center mt-8 hidden">
+                <button id="load-more-btn" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-
+
+continue
+HTML
+
+600 transition">
+                    Load More Videos
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-100 text-center py-4 text-gray-600 text-sm">
+        approvideo diy solutions {c} gplv3 2025
+    </footer>
+    <div id="video-detail" class="fixed inset-0 bg-black bg-opacity-60 overflow-y-auto h-full w-full flex items-center justify-center p-4 hidden z-40">
+        <div class="relative p-5 md:p-8 border w-full max-w-xl md:max-w-2xl lg:max-w-4xl shadow-lg rounded-lg bg-white dark:bg-gray-800">
+            <button id="close-detail-btn" title="Close" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white text-2xl p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 z-10">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="video-content" class="mt-4">
+                <h3 id="video-detail-title" class="text-xl md:text-2xl font-bold mb-3 text-gray-900 dark:text-white">Video Title</h3>
+                <div id="video-detail-embed" class="mb-4 bg-black rounded">
+                    </div>
+                <p id="video-detail-description" class="text-gray-700 dark:text-gray-300 mb-4">Video description...</p>
+                <p id="video-detail-tags" class="text-sm text-gray-500 dark:text-gray-400 mb-2"><strong>Tags:</strong> </p>
+                <div id="video-detail-panels">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-video-modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex justify-center items-center">
+        <div id="add-video-modal-content" class="bg-white rounded-lg p-8 relative">
+            <button class="modal-close-btn absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-xl font-semibold mb-4">Contribute Content</h2>
+            <form id="add-video-form">
+                <label for="video-title">Title:</label>
+                <input type="text" id="video-title" class="w-full border border-gray-300 rounded-md py-2 px-3 mb-3" required>
+
+                <label for="video-description">Description:</label>
+                <textarea id="video-description" class="w-full border border-gray-300 rounded-md py-2 px-3 mb-3" rows="3"></textarea>
+
+                <label for="video-url">YouTube Video URL:</label>
+                <input type="text" id="video-url" class="w-full border border-gray-300 rounded-md py-2 px-3 mb-3">
+
+                <label for="video-category">Category:</label>
+                <select id="video-category" class="w-full border border-gray-300 rounded-md py-2 px-3 mb-3">
+                    <option value="">Select Category</option>
+                    <option value="Shelter">Shelter</option>
+                    <option value="Water">Water</option>
+                    <option value="Waste Management">Waste Management</option>
+                    <option value="Energy">Energy</option>
+                    <option value="Health">Health</option>
+                    <option value="Sustainable Food">Sustainable Food</option>
+                </select>
+
+                <label for="video-tags">Tags (comma-separated):</label>
+                <input type="text" id="video-tags" class="w-full border border-gray-300 rounded-md py-2 px-3 mb-3">
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Submit Video
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="error-container" class="fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-md hidden">
+        <span class="block sm:inline" id="error-message">An error occurred.</span>
+        <button class="absolute top-0 bottom-0 right-0 px-4 py-3" id="error-close-btn">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const learningClinicBtn = document.getElementById('learning-clinic-btn');
+            const learningClinicMegaMenu = document.getElementById('learning-clinic-mega-menu');
+            const addVideoButton = document.getElementById('add-video-btn');
+            const addVideoModal = document.getElementById('add-video-modal');
+            const addVideoModalCloseBtn = addVideoModal.querySelector('.modal-close-btn');
+            const addVideoForm = document.getElementById('add-video-form');
+
+            // Toggle Learning Clinics Mega Menu
+            learningClinicBtn.addEventListener('click', () => {
+                learningClinicMegaMenu.classList.toggle('hidden');
+            });
+
+            // Close Mega Menu when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!learningClinicBtn.contains(event.target) && !learningClinicMegaMenu.contains(event.target)) {
+                    learningClinicMegaMenu.classList.add('hidden');
+                }
+            });
+
+            // Show Add Video Modal
+            addVideoButton.addEventListener('click', () => {
+                addVideoModal.classList.remove('hidden');
+            });
+
+            // Close Add Video Modal
+            addVideoModalCloseBtn.addEventListener('click', () => {
+                addVideoModal.classList.add('hidden');
+            });
+
+            // Close Add Video Modal when clicking outside
+            addVideoModal.addEventListener('click', (event) => {
+                if (event.target === addVideoModal) {
+                    addVideoModal.classList.add('hidden');
+                }
+            });
+
+            // Handle Add Video Form Submission (Example - You'll need to implement the actual API call)
+            addVideoForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const title = document.getElementById('video-title').value;
+                const description = document.getElementById('video-description').value;
+                const url = document.getElementById('video-url').value;
+                const category = document.getElementById('video-category').value;
+                const tags = document.getElementById('video-tags').value;
+
+                console.log('Submitting video:', { title, description, url, category, tags });
+                // In a real application, you would send this data to your API endpoint
+                // fetch('/api/videos', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({ title, description, url, category, tags }),
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log('Success:', data);
+                //     addVideoModal.classList.add('hidden');
+                //     // Optionally, refresh the video list
+                //     // fetchVideos({}, false);
+                // })
+                // .catch((error) => {
+                //     console.error('Error:', error);
+                //     // Display an error message to the user
+                // });
+
+                // For this example, just log and close the modal
+                alert('Video submission functionality needs to be implemented.');
+                addVideoModal.classList.add('hidden');
+                addVideoForm.reset();
+            });
+        });
+    </script>
+    <script src="/js/interactive.js"></script>
+</body>
+</html>

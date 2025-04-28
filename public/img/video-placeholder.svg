@@ -1,0 +1,13 @@
+<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="320" height="180" fill="#e5e7eb"/>
+  
+  <!-- Video play icon circle -->
+  <circle cx="160" cy="90" r="40" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Play triangle -->
+  <path d="M145,70 L185,90 L145,110 Z" fill="#3b82f6"/>
+  
+  <!-- Text -->
+  <text x="160" y="150" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#4b5563">Video Preview Unavailable</text>
+</svg>

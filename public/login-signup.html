@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - CodePort Revitalization Hub</title>
+    <meta name="description" content="Access your CodePort account or sign up to join the community revitalization efforts.">
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm; /* If using Supabase client directly */
+        style-src 'self'; /* Remove 'unsafe-inline' if possible */
+        img-src 'self' data:;
+        font-src 'self';
+        connect-src 'self' https://<your-project-ref>.supabase.co wss://<your-project-ref>.supabase.co; /* Allow Supabase & self API */
+        form-action 'self';
+        frame-ancestors 'none';
+        object-src 'none';
+        base-uri 'self';
+    ">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/forms.css">
+    </head>
+<body>
+    <header class="page-header" role="banner">
+        <div class="brand-logo">CodePort Hub</div>
+        </header>
+
+    <main class="auth-container" role="main">
+
+        <div id="signup-section" class="auth-card">
+            <h1>Create CodePort Account</h1>
+            <form id="signup-form" novalidate>
+                <div aria-live="polite" class="status-box status-box-error" id="signup-status-area"></div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" name="email" required autocomplete="email" placeholder="your.email@example.com" aria-describedby="signup-email-error">
+                    <p role="alert" class="error-message hidden" id="signup-email-error"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" required minlength="8" autocomplete="new-password" aria-describedby="signup-password-error signup-password-strength-feedback">
+                    <p role="alert" class="error-message hidden" id="signup-password-error"></p>
+                    <div class="password-strength-meter">
+                        <div class="password-strength-meter-bar" id="signup-password-strength-bar"></div>
+                    </div>
+                    <div class="password-strength-label" id="signup-password-strength-label"></div>
+                    <ul class="password-strength-feedback hidden" id="signup-password-strength-feedback"></ul>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" name="confirmPassword" required autocomplete="new-password" aria-describedby="signup-confirm-password-error">
+                    <p role="alert" class="error-message hidden" id="signup-confirm-password-error"></p>
+                </div>
+                <div class="form-group">
+                    <label for="signup-role">Primary Role in Community</label>
+                    <select id="signup-role" name="role" required aria-describedby="signup-role-error">
+                        <option value="" disabled selected>-- Select a Role --</option>
+                        <option value="expert">Expert / Mentor</option>
+                        <option value="learner">Learner / Participant</option>
+                        <option value="organizer">Organizer / Coordinator</option>
+                        <option value="volunteer">Community Volunteer</option>
+                        </select>
+                    <p role="alert" class="error-message hidden" id="signup-role-error"></p>
+                </div>
+                <div class="form-group form-group-checkbox">
+                    <input type="checkbox" id="signup-terms" name="terms" required aria-describedby="signup-terms-error">
+                    <label for="signup-terms">I agree to the Terms of Service and Privacy Policy</label>
+                    <p role="alert" class="error-message hidden" id="signup-terms-error"></p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="button-primary" id="signup-button">Create Account</button>
+                </div>
+            </form>
+            <div class="alternate-action">
+                <span>Already have an account?</span>
+                <a id="show-login-link" href="#">Log in</a>
+            </div>
+        </div>
+
+        <div id="login-section" class="auth-card hidden">
+            <h1>Log In to CodePort Hub</h1>
+            <form id="login-form" novalidate>
+                <div aria-live="polite" class="status-box status-box-error" id="login-status-area"></div>
+
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" required autocomplete="email" aria-describedby="login-email-error">
+                    <p role="alert" class="error-message hidden" id="login-email-error"></p>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required autocomplete="current-password" aria-describedby="login-password-error">
+                    <p role="alert" class="error-message hidden" id="login-password-error"></p>
+                    </div>
+                <div class="form-group">
+                    <button type="submit" class="button-primary" id="login-button">Log In</button>
+                </div>
+            </form>
+            <div class="alternate-action">
+                <span>Need an account?</span>
+                <a id="show-signup-link" href="#">Sign up</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer" role="contentinfo">
+        <p>&copy; <span id="current-year"></span> CodePort Community Revitalization. All rights reserved.</p>
+        <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+        </footer>
+
+    <script type="module" src="/js/pages/login-signup.js"></script>
+
+</body>
+</html>

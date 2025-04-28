@@ -1,51 +1,91 @@
-// /api/middleware/auth.js
-const { getSupabase } = require('../lib/supabaseClient');
-const supabase = getSupabase();
+// api/middleware/auth.js
+const { verify } = require('jsonwebtoken');
+const { createError } = require('../utils/errors');
 
-async function authenticate(req, res, next) {
+// Secret keys (should be loaded from environment variables in production)
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-jwt-key';
+const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY || 'your-service-role-key';
+
+/**
+ * Verify JWT token from Authorization header
+ * @param {string} token - JWT token
+ * @returns {Object} - Decoded token payload
+ */
+const verifyToken = (token) => {
+  try {
+    return verify(token, JWT_SECRET);
+  } catch (error) {
+    throw createError(401, 'Invalid or expired token');
+  }
+};
+
+/**
+ * Extract token from Authorization header
+ * @param {Object} req - Request object
+ * @returns {string|null} - Token string or null
+ */
+const extractToken = (req) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: 'Authentication required' });
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
   }
+  
+  return authHeader.split(' ')[1];
+};
 
-  const token = authHeader.slice(7);
-  const { data: authData, error: authErr } = await supabase.auth.getUser(token);
-  if (authErr || !authData.user) {
-    console.error('[Auth] getUser error:', authErr);
-    return res.status(401).json({ success: false, message: 'Invalid or expired token' });
-  }
-
-  const { data: userData, error: userErr } = await supabase
-    .from('users')
-    .select('id, email, role, is_admin')
-    .eq('id', authData.user.id)
-    .single();
-
-  if (userErr) {
-    console.error('[Auth] fetch profile error:', userErr);
-    return res.status(401).json({ success: false, message: 'User not found' });
-  }
-
-  req.user = {
-    id:      userData.id,
-    email:   userData.email,
-    role:    userData.role || 'learner',
-    isAdmin: userData.is_admin
-  };
-  next();
-}
-
-function authorize(allowedRoles) {
-  const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
-  return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({ success: false, message: 'Not authenticated' });
+/**
+ * Authentication middleware
+ * @param {Object} options - Options object
+ * @param {boolean} options.required - Whether authentication is required
+ * @param {Array} options.roles - Allowed roles
+ */
+const authenticate = (options = { required: true, roles: [] }) => {
+  return async (req, res, next) => {
+    try {
+      // Check for service role key first
+      const serviceKey = req.headers['x-service-key'];
+      if (serviceKey === SERVICE_ROLE_KEY) {
+        req.user = { role: 'service' };
+        return next();
+      }
+      
+      // Extract token
+      const token = extractToken(req);
+      
+      // If no token and auth is required, reject
+      if (!token && options.required) {
+        throw createError(401, 'Authentication required');
+      }
+      
+      // If no token but auth is optional, continue
+      if (!token && !options.required) {
+        return next();
+      }
+      
+      // Verify token
+      const decoded = verifyToken(token);
+      
+      // Check role if specified
+      if (options.roles && options.roles.length > 0) {
+        if (!decoded.role || !options.roles.includes(decoded.role)) {
+          throw createError(403, 'Insufficient permissions');
+        }
+      }
+      
+      // Add user to request
+      req.user = decoded;
+      
+      next();
+    } catch (error) {
+      next(error);
     }
-    if (req.user.isAdmin || roles.includes(req.user.role)) {
-      return next();
-    }
-    return res.status(403).json({ success: false, message: 'Access denied' });
   };
-}
+};
 
-module.exports = { authenticate, authorize };
+// Export middleware and utility functions
+module.exports = {
+  authenticate,
+  verifyToken,
+  extractToken
+};

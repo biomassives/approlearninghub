@@ -1,7 +1,7 @@
 // js/expert-dashboard.js
 // Unified Expert Dashboard Entry Point (Refactored for Robust Auth)
 import authService from './auth-service.js';
-import { loadSecureSession, hashMetaLattice, clearSecureSession } from './session-crypto.js';
+import { loadSecureSession, hashMetaLattice, clearSecureSession, createSecureSession } from './session-crypto.js';
 import SettingsUI from './settings-ui.js';
 
 // --- Global Error Handlers for Diagnostics ---
@@ -32,10 +32,10 @@ const contentElement = document.getElementById('expert-dashboard-content');
 
 // --- Whitelisted Tool Links for Expert ---
 const EXPERT_TOOLS = [
-  { label: 'Assigned Modules',     href: '/expert/modules.html' },
-  { label: 'Expert Reviews',       href: '/expert/reviews.html' },
-  { label: 'Research Library',      href: '/library/categories' },
-  { label: 'Mentorship Requests',   href: '/expert/mentorship.html' }
+  { label: 'Learning Modules',     href: '/expert/modules.html' },
+  { label: 'Clinics Timeline',       href: '/expert/reviews.html' },
+  { label: 'Solutions Library',      href: '/library/categories' },
+  { label: 'Your Teams',   href: '/expert/mentorship.html' }
 ];
 
 // --- Helper Function to Display Errors ---
@@ -68,6 +68,26 @@ function displayAuthError(message) {
     }
 }
 
+// --- Helper Function to Display Status Messages ---
+function displayStatusMessage(message, type = 'info') {
+    if (!statusElement) return;
+    
+    const colorMap = {
+        'info': { text: '#31708F', bg: '#D9EDF7', border: '#31708F' },
+        'success': { text: '#3C763D', bg: '#DFF0D8', border: '#3C763D' },
+        'warning': { text: '#8A6D3B', bg: '#FCF8E3', border: '#8A6D3B' },
+        'error': { text: '#D8000C', bg: '#FFD2D2', border: '#D8000C' }
+    };
+    
+    const colors = colorMap[type] || colorMap.info;
+    
+    statusElement.textContent = message;
+    statusElement.style.color = colors.text;
+    statusElement.style.backgroundColor = colors.bg;
+    statusElement.style.borderColor = colors.border;
+    statusElement.style.display = 'block';
+}
+
 /**
  * Performs all necessary authentication and session checks for the expert dashboard.
  * @returns {Promise<{success: boolean, user?: object, secureSess?: object, error?: string}>}
@@ -85,16 +105,32 @@ async function checkExpertAuthentication() {
         console.log('Expert Dashboard: Primary session OK.');
 
         console.log('Expert Dashboard: Checking secure session...');
-        const secureSess = await loadSecureSession();
+        let secureSess = await loadSecureSession();
         if (!secureSess) {
-            return { success: false, error: 'Secure session missing or expired.' };
-        }
-        // Validate integrity of lattice data
-        const computedHash = hashMetaLattice(secureSess.metaLatticeData);
-        if (computedHash !== secureSess.hash) {
-            console.warn('Expert Dashboard: Secure session integrity failed.');
-            await clearSecureSession();
-            return { success: false, error: 'Secure session integrity check failed.' };
+            console.log('Expert Dashboard: No secure session found, creating one...');
+            // No secure session found, create one
+            try {
+                secureSess = await createSecureSession(session.user);
+                console.log('Expert Dashboard: Secure session created.');
+            } catch (err) {
+                console.error('Failed to create secure session:', err);
+                return { success: false, error: 'Failed to initialize secure session.' };
+            }
+        } else {
+            // Validate integrity of lattice data
+            const computedHash = hashMetaLattice(secureSess.metaLatticeData);
+            if (computedHash !== secureSess.hash) {
+                console.warn('Expert Dashboard: Secure session integrity failed.');
+                await clearSecureSession();
+                
+                // Try to recreate the secure session
+                try {
+                    secureSess = await createSecureSession(session.user);
+                    console.log('Expert Dashboard: Secure session recreated after integrity failure.');
+                } catch (err) {
+                    return { success: false, error: 'Secure session integrity check failed and recreation failed.' };
+                }
+            }
         }
         console.log('Expert Dashboard: Secure session OK.');
 
@@ -107,51 +143,133 @@ async function checkExpertAuthentication() {
 }
 
 /**
+ * Loads mock data for the expert dashboard
+ * @returns {Promise<object>} Dashboard data
+ */
+async function loadDashboardData() {
+    // In production, this would fetch from the API
+    // For now, return mock data
+    return {
+        activeModules: 3,
+        pendingReviews: 2,
+        upcomingMentorships: 1,
+        recentActivity: [
+            { type: 'review', title: 'Reviewed "Introduction to Cognitive Psychology"', timestamp: '2025-04-22T15:30:00Z' },
+            { type: 'module', title: 'Updated module "Advanced Research Methods"', timestamp: '2025-04-20T09:15:00Z' },
+            { type: 'mentorship', title: 'Completed mentorship session with John Doe', timestamp: '2025-04-18T14:00:00Z' }
+        ]
+    };
+}
+
+/**
+ * Renders activity feed from data
+ * @param {Array} activities - Activity data
+ */
+function renderActivityFeed(activities) {
+    if (!activityFeedEl || !activities || !activities.length) return;
+    
+    // Clear existing content
+    activityFeedEl.innerHTML = '';
+    
+    // Add activity items
+    activities.forEach(activity => {
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        
+        // Format date
+        const date = new Date(activity.timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        // Set icon based on activity type
+        let icon = '📝'; // Default
+        if (activity.type === 'review') icon = '🔍';
+        if (activity.type === 'module') icon = '📚';
+        if (activity.type === 'mentorship') icon = '👨‍🏫';
+        
+        // Set content
+        activityItem.innerHTML = `
+            <span class="activity-icon">${icon}</span>
+            <div class="activity-content">
+                <div class="activity-title">${activity.title}</div>
+                <div class="activity-date">${formattedDate}</div>
+            </div>
+        `;
+        
+        activityFeedEl.appendChild(activityItem);
+    });
+}
+
+/**
  * Initializes the dashboard UI after successful authentication.
  */
 async function initDashboard() {
+    // Display loading status
+    displayStatusMessage('Loading dashboard...', 'info');
+    
     const { success, user, secureSess, error } = await checkExpertAuthentication();
     if (!success) {
         displayAuthError(error);
         return;
     }
 
-    // Populate user info
-    if (greetingEl) greetingEl.textContent = `Welcome, ${user.name || 'Expert'}!`;
-    if (userNameEl) userNameEl.textContent = user.name || '';
-    if (userRoleEl) userRoleEl.textContent = user.role;
+    try {
+        // Load dashboard data
+        const dashboardData = await loadDashboardData();
 
-    // Display lattice/session info
-    if (latticeInfoEl) latticeInfoEl.textContent = `Session ID: ${secureSess.sessionId}`;
+        // Populate user info
+        if (greetingEl) greetingEl.textContent = `Welcome, ${user.name || 'Expert'}!`;
+        if (userNameEl) userNameEl.textContent = user.name || '';
+        if (userRoleEl) userRoleEl.textContent = user.role;
 
-    // Render tools list
-    if (toolsListEl) {
-        EXPERT_TOOLS.forEach(tool => {
-            const link = document.createElement('a');
-            link.href = tool.href;
-            link.textContent = tool.label;
-            link.classList.add('tool-link');
-            toolsListEl.appendChild(link);
-        });
+        // Display lattice/session info
+        if (latticeInfoEl) latticeInfoEl.textContent = `Session ID: ${secureSess.sessionId}`;
+
+        // Render tools list
+        if (toolsListEl) {
+            toolsListEl.innerHTML = ''; // Clear existing content
+            EXPERT_TOOLS.forEach(tool => {
+                const link = document.createElement('a');
+                link.href = tool.href;
+                link.textContent = tool.label;
+                link.classList.add('tool-link');
+                toolsListEl.appendChild(link);
+            });
+        }
+
+        // Render activity feed
+        if (dashboardData.recentActivity) {
+            renderActivityFeed(dashboardData.recentActivity);
+        }
+
+        // Settings modal
+        const settingsUI = new SettingsUI();
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => settingsUI.open());
+        }
+
+        // Logout behavior
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await clearSecureSession();
+                await authService.logout();
+                window.location.href = '/index.html';
+            });
+        }
+
+        // Show main content, hide status
+        if (statusElement) statusElement.style.display = 'none';
+        if (contentElement) contentElement.style.display = 'block';
+        
+        console.log('Expert Dashboard: Initialization complete');
+    } catch (err) {
+        console.error('Error initializing dashboard:', err);
+        displayAuthError('Failed to initialize dashboard: ' + (err.message || 'Unknown error'));
     }
-
-    // Optional activity feed
-    if (activityFeedEl && secureSess.activityFeed) activityFeedEl.textContent = secureSess.activityFeed;
-
-    // Settings modal
-    const settingsUI = new SettingsUI();
-    settingsBtn && settingsBtn.addEventListener('click', () => settingsUI.open());
-
-    // Logout behavior
-    logoutBtn && logoutBtn.addEventListener('click', async () => {
-        await clearSecureSession();
-        await authService.logout();
-        window.location.href = '/login.html';
-    });
-
-    // Show main content, hide status
-    statusElement && (statusElement.style.display = 'none');
-    contentElement && (contentElement.style.display = 'block');
 }
 
+// Initialize the dashboard when the DOM is loaded
 document.addEventListener('DOMContentLoaded', initDashboard);

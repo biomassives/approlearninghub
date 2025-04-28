@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApproVideo Hub - Static Home</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: #0073b1;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .home-page {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0073b1;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+        
+        .dashboard-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #0073b1;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 200px;
+        }
+        
+        .dashboard-link:hover {
+            background-color: #005b8e;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .note {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        footer {
+            background-color: #f1f1f1;
+            padding: 1rem;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .dashboard-link {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="app-title">ApproVideo | Hub</div>
+    </header>
+    
+    <main>
+        <div class="home-page">
+            <h1>Welcome to ApproVideo</h1>
+            <p>Educational video platform for experts and students</p>
+            
+            <div class="dashboard-links">
+                <a href="/expert-dashboard.html" class="dashboard-link">Expert Dashboard</a>
+                <a href="/login.html" class="dashboard-link">Login</a>
+                <a href="/login2.html" class="dashboard-link">Login 2</a>
+                <a href="/index.html" class="dashboard-link">Interactive Home</a>
+            </div>
+            
+            <div class="note">
+                <p>This is a static fallback homepage. For the full interactive experience, please try the Interactive Home option.</p>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 ApproVideo. All rights reserved.</p>
+    </footer>
+</body>
+</html>

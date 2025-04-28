@@ -1,0 +1,228 @@
+// clinics-browse.js - Refactored Clinics Browser
+import apiService from '../js/apiService.js';
+
+// DOM Elements
+const clinicsList = document.getElementById('clinics-list');
+const filterForm = document.getElementById('filter-form');
+const searchInput = document.getElementById('search-input');
+const statusMessage = document.getElementById('status-message');
+const loadingIndicator = document.getElementById('loading-indicator');
+
+// State
+let currentClinics = [];
+let isLoading = false;
+
+/**
+ * Show loading indicator
+ */
+function showLoading() {
+  isLoading = true;
+  if (loadingIndicator) {
+    loadingIndicator.style.display = 'block';
+  }
+}
+
+/**
+ * Hide loading indicator
+ */
+function hideLoading() {
+  isLoading = false;
+  if (loadingIndicator) {
+    loadingIndicator.style.display = 'none';
+  }
+}
+
+/**
+ * Show status message
+ * @param {string} message - Message to display
+ * @param {string} type - Message type (error, success, info)
+ */
+function showStatus(message, type = 'info') {
+  if (!statusMessage) return;
+  
+  statusMessage.textContent = message;
+  statusMessage.className = `status-message ${type}`;
+  statusMessage.style.display = 'block';
+  
+  // Auto hide success messages after 3 seconds
+  if (type === 'success') {
+    setTimeout(() => {
+      statusMessage.style.display = 'none';
+    }, 3000);
+  }
+}
+
+/**
+ * Create clinic card element
+ * @param {Object} clinic - Clinic data
+ * @returns {HTMLElement} - Clinic card element
+ */
+function createClinicCard(clinic) {
+  const card = document.createElement('div');
+  card.className = 'clinic-card';
+  card.dataset.id = clinic.id;
+  
+  // Create safe image URL with fallback
+  const imageUrl = clinic.imageUrl ? clinic.imageUrl : '/images/default-clinic.png';
+  
+  // Sanitize content
+  const name = document.createTextNode(clinic.name || 'Unknown Clinic').textContent;
+  const location = document.createTextNode(clinic.location || 'Location not specified').textContent;
+  const description = document.createTextNode(clinic.description || 'No description available').textContent;
+  
+  // Avoid using innerHTML for security - build elements manually
+  const imageDiv = document.createElement('div');
+  imageDiv.className = 'clinic-image';
+  
+  const img = document.createElement('img');
+  img.src = imageUrl;
+  img.alt = name;
+  img.onerror = function() { this.src = '/images/default-clinic.png'; };
+  imageDiv.appendChild(img);
+  
+  const infoDiv = document.createElement('div');
+  infoDiv.className = 'clinic-info';
+  
+  const nameHeading = document.createElement('h3');
+  nameHeading.className = 'clinic-name';
+  nameHeading.textContent = name;
+  infoDiv.appendChild(nameHeading);
+  
+  const locationPara = document.createElement('p');
+  locationPara.className = 'clinic-location';
+  locationPara.textContent = location;
+  infoDiv.appendChild(locationPara);
+  
+  const descPara = document.createElement('p');
+  descPara.className = 'clinic-description';
+  descPara.textContent = description.length > 120 
+    ? description.substring(0, 120) + '...' 
+    : description;
+  infoDiv.appendChild(descPara);
+  
+  const actionsDiv = document.createElement('div');
+  actionsDiv.className = 'clinic-actions';
+  
+  const viewButton = document.createElement('button');
+  viewButton.className = 'view-details-btn';
+  viewButton.dataset.id = clinic.id;
+  viewButton.textContent = 'View Details';
+  actionsDiv.appendChild(viewButton);
+  
+  infoDiv.appendChild(actionsDiv);
+  
+  card.appendChild(imageDiv);
+  card.appendChild(infoDiv);
+  
+  // Add event listener to view button
+  viewButton.addEventListener('click', () => {
+    window.location.href = `/clinics/detail.html?id=${clinic.id}`;
+  });
+  
+  return card;
+}
+
+/**
+ * Render clinics list
+ * @param {Array} clinics - List of clinics to render
+ */
+function renderClinicsList(clinics) {
+  if (!clinicsList) return;
+  
+  // Clear existing content
+  clinicsList.innerHTML = '';
+  
+  if (!clinics || clinics.length === 0) {
+    showStatus('No clinics found matching your criteria.', 'info');
+    return;
+  }
+  
+  // Create and append clinic cards
+  clinics.forEach(clinic => {
+    const card = createClinicCard(clinic);
+    clinicsList.appendChild(card);
+  });
+}
+
+/**
+ * Filter clinics based on search input
+ * @param {string} searchTerm - Search term
+ * @returns {Array} - Filtered clinics
+ */
+function filterClinics(searchTerm) {
+  if (!searchTerm) {
+    return currentClinics;
+  }
+  
+  searchTerm = searchTerm.toLowerCase();
+  
+  return currentClinics.filter(clinic => {
+    const name = (clinic.name || '').toLowerCase();
+    const location = (clinic.location || '').toLowerCase();
+    const description = (clinic.description || '').toLowerCase();
+    
+    return name.includes(searchTerm) || 
+           location.includes(searchTerm) || 
+           description.includes(searchTerm);
+  });
+}
+
+/**
+ * Load clinics from API
+ * @param {Object} filters - Optional filters
+ */
+async function loadClinics(filters = {}) {
+  showLoading();
+  showStatus('Loading clinics...', 'info');
+  
+  try {
+    const clinics = await apiService.listPublicClinics(filters);
+    currentClinics = clinics;
+    renderClinicsList(clinics);
+    showStatus(`Showing ${clinics.length} clinics`, 'success');
+  } catch (error) {
+    console.error('Error loading clinics:', error);
+    showStatus(`Error loading clinics: ${error.message}`, 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
+// Event Listeners
+
+// Filter form submission
+if (filterForm) {
+  filterForm.addEventListener('submit', event => {
+    event.preventDefault();
+    
+    const searchTerm = searchInput.value.trim();
+    const filtered = filterClinics(searchTerm);
+    renderClinicsList(filtered);
+  });
+}
+
+// Search input live filter
+if (searchInput) {
+  searchInput.addEventListener('input', event => {
+    const searchTerm = event.target.value.trim();
+    const filtered = filterClinics(searchTerm);
+    renderClinicsList(filtered);
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if service worker is registered
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('ServiceWorker registration failed:', error);
+      });
+  }
+  
+  // Load clinics
+  loadClinics();
+});

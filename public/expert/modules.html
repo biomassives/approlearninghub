@@ -1,0 +1,55 @@
+<!-- /expert/modules.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="modules_page_title">My Assigned Modules – Expert Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* Simple toast styles */
+    #toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+    }
+    #toast-container .toast {
+      margin-bottom: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    #toast-container .toast.hide {
+      opacity: 0;
+    }
+    .toast-success { background: #28a745; }
+    .toast-error   { background: #dc3545; }
+    .toast-info    { background: #17a2b8; }
+  </style>
+</head>
+<body>
+  <!-- Shared header -->
+  <header id="main-header"></header>
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <main class="dashboard-container">
+    <h1 data-i18n="modules_heading">Your Assigned Modules</h1>
+    <section id="modules-status" class="status-box hidden"></section>
+    <section id="modules-list" class="module-list">
+      <div class="loading" data-i18n="loading_modules">Loading modules…</div>
+    </section>
+  </main>
+
+  <footer class="dashboard-footer">
+    <p>&copy; ApproVideo Hub</p>
+  </footer>
+
+  <script type="module" src="/js/expert-modules.js" defer></script>
+</body>
+</html>

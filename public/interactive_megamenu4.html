@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mega Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Basic Reset and Body Styles */
+        body, h1, h2, h3, h4, p, ul, li, button {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header (Narrow Top Section) */
+        .header-top {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top .logo {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .header-top button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-top button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mega Menu Container */
+        .mega-menu-container {
+            position: relative; /* For absolute positioning of the mega menu */
+        }
+
+        /* Mega Menu Styles */
+        .mega-menu {
+            position: absolute;
+            left: 0;
+            top: 100%; /* Positioned directly below the header-top */
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            display: none; /* Hidden by default */
+            width: 100vw; /* Full viewport width */
+            left: calc(-50vw + 50%); /* Center the full width menu */
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Narrower columns for just category titles */
+            gap: 15px;
+            border-top: 3px solid #3498db; /* Accent border */
+        }
+
+        .mega-menu.open {
+            display: grid; /* Show the mega menu when the 'open' class is added */
+        }
+
+        .mega-menu-category-title {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .mega-menu-category-title:hover,
+        .mega-menu-category-title.active {
+            background-color: #f0f0f0;
+        }
+
+        .mega-menu-category-title i {
+            margin-right: 8px;
+            font-size: 1.1em;
+            color: #3498db;
+        }
+
+        .mega-menu-category-details {
+            position: absolute;
+            top: 100%; /* Position below the category titles */
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 11;
+            width: 100%;
+            padding: 20px;
+            display: none; /* Hidden by default */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .mega-menu-category-details.active {
+            display: grid;
+        }
+
+        .mega-menu-subcategory {
+            margin-bottom: 15px;
+        }
+
+        .mega-menu-subcategory h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .mega-menu-subcategory p {
+            margin-bottom: 10px;
+            color: #777;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .mega-menu-subcategory .tags {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .mega-menu-subcategory .tags span {
+            background-color: #e7f2fa;
+            color: #3498db;
+            padding: 4px 7px;
+            border-radius: 5px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 5px;
+            cursor: pointer; /* Make tags clickable */
+        }
+
+        .mega-menu-subcategory .tags span:hover {
+            background-color: #d0e8f5;
+        }
+
+        /* Informational Section Styling */
+        .info-section {
+            padding: 40px 20px;
+            background-color: #f4f4f4;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+
+        .info-section p {
+            color: #666;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-top">
+        <a href="/" class="logo">My Library</a>
+        <button id="toggleMegaMenu">Topics</button>
+    </div>
+
+    <div class="mega-menu-container">
+        <div class="mega-menu" id="topicsMegaMenu">
+            </div>
+        <div class="mega-menu-category-details" id="categoryDetails">
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Explore Our Interactive Resources</h2>
+        <p>Click the "Topics" button to see the main categories. Click on a category to reveal its subcategories.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggleMegaMenu');
+            const megaMenu = document.getElementById('topicsMegaMenu');
+            const categoryDetails = document.getElementById('categoryDetails');
+            const megaMenuContainer = document.querySelector('.mega-menu-container');
+            let categoryTitles; // Will be populated after data load
+            let activeCategoryIndex = null;
+
+            toggleButton.addEventListener('click', function() {
+                megaMenu.classList.toggle('open');
+                categoryDetails.classList.remove('active');
+                activeCategoryIndex = null;
+                if (categoryTitles) {
+                    categoryTitles.forEach(title => title.classList.remove('active'));
+                }
+            });
+
+            function showCategoryDetails(categoryData, titleElement, index) {
+                if (activeCategoryIndex === index) {
+                    // If already active, hide
+                    categoryDetails.classList.remove('active');
+                    titleElement.classList.remove('active');
+                    activeCategoryIndex = null;
+                } else {
+                    let detailsHTML = '';
+                    categoryData.subcategories.forEach(subcategory => {
+                        detailsHTML += `
+                            <div class="mega-menu-subcategory">
+                                <h4>${subcategory.title}</h4>
+                                <p>${subcategory.description}</p>
+                                <div class="tags">
+                        `;
+                        subcategory.tags.forEach(tag => {
+                            detailsHTML += `<span data-tag="${tag}">${tag}</span>`;
+                        });
+                        detailsHTML += `
+                                </div>
+                            </div>
+                        `;
+                    });
+                    categoryDetails.innerHTML = detailsHTML;
+                    categoryDetails.classList.add('active');
+
+                    // Position the details panel
+                    const rect = titleElement.getBoundingClientRect();
+                    categoryDetails.style.top = (rect.bottom + window.scrollY) + 'px';
+
+                    // Update active state
+                    if (categoryTitles) {
+                        categoryTitles.forEach(title => title.classList.remove('active'));
+                    }
+                    titleElement.classList.add('active');
+                    activeCategoryIndex = index;
+
+                    // Add event listeners to the tags (example)
+                    const tags = categoryDetails.querySelectorAll('.tags span');
+                    tags.forEach(tag => {
+                        tag.addEventListener('click', function() {
+                            const tagValue = this.dataset.tag;
+                            console.log(`Tag "${tagValue}" clicked! Implement your tag filtering/navigation.`);
+                            // Optionally, keep the mega menu open.
+                        });
+                    });
+                }
+            }
+
+            fetch('/data/categories.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let megaMenuHTML = '';
+                    data.forEach((category, index) => {
+                        megaMenuHTML += `
+                            <div class="mega-menu-category-title" data-category-index="${index}">
+                                <i class="fas ${category.icon}"></i> ${category.area}
+                            </div>
+                        `;
+                    });
+                    megaMenu.innerHTML = megaMenuHTML;
+                    categoryTitles = document.querySelectorAll('.mega-menu-category-title');
+
+                    categoryTitles.forEach(title => {
+                        title.addEventListener('click', function() {
+                            const index = parseInt(this.dataset.categoryIndex);
+                            if (data[index]) {
+                                showCategoryDetails(data[index], this, index);
+                            }
+                        });
+                    });
+
+                    // Optional: Hide details when mouse leaves the main mega menu area
+                    megaMenuContainer.addEventListener('mouseleave', function(event) {
+                        // Check if the mouse is still within the mega menu or category details
+                        if (!megaMenu.contains(event.relatedTarget) && !categoryDetails.contains(event.relatedTarget)) {
+                            categoryDetails.classList.remove('active');
+                            if (categoryTitles) {
+                                categoryTitles.forEach(title => title.classList.remove('active'));
+                            }
+                            activeCategoryIndex = null;
+                        }
+                    });
+
+                })
+                .catch(error => {
+                    console.error('Could not load categories:', error);
+                    megaMenu.innerHTML = '<p>Error loading categories.</p>';
+                });
+        });
+    </script>
+
+</body>
+</html>

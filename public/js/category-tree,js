@@ -1,0 +1,63 @@
+// js/category-tree.js
+
+async function buildCategoryTree() {
+  // 1. fetch categories (with subcategories embedded)
+  const catRes = await fetch('/api/categories');
+  const { categories, success: catOK } = await catRes.json();
+  if (!catOK) throw new Error('Failed to load categories');
+
+  // 2. fetch tags (you’ll need a tags endpoint that returns { tags: [ { id, name, subcategory_id }… ] })
+  const tagRes = await fetch('/api/tags');
+  const { tags, success: tagOK } = await tagRes.json();
+  if (!tagOK) throw new Error('Failed to load tags');
+
+  // 3. group tags by subcategory_id
+  const tagsBySub = tags.reduce((acc, t) => {
+    (acc[t.subcategory_id] ||= []).push(t);
+    return acc;
+  }, {});
+
+  const container = document.getElementById('category-tree');
+  container.innerHTML = '';
+
+  categories.forEach(cat => {
+    // Category level
+    const catDetails = document.createElement('details');
+    const catSummary = document.createElement('summary');
+    catSummary.textContent = cat.name;
+    catDetails.append(catSummary);
+
+    // Subcategory level
+    cat.subcategories.forEach(sub => {
+      const subDetails = document.createElement('details');
+      const subSummary = document.createElement('summary');
+      subSummary.textContent = sub.name;
+      subDetails.append(subSummary);
+
+      // Tag level
+      const tagList = tagsBySub[sub.id] || [];
+      if (tagList.length) {
+        const ul = document.createElement('ul');
+        tagList.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t.name;
+          ul.append(li);
+        });
+        subDetails.append(ul);
+      } else {
+        const none = document.createElement('div');
+        none.textContent = 'No tags yet';
+        none.style.fontStyle = 'italic';
+        none.style.marginLeft = '1rem';
+        subDetails.append(none);
+      }
+
+      catDetails.append(subDetails);
+    });
+
+    container.append(catDetails);
+  });
+}
+
+// kick it off on page load
+document.addEventListener('DOMContentLoaded', buildCategoryTree);
