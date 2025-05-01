@@ -40,51 +40,40 @@ const extractToken = (req) => {
  * @param {boolean} options.required - Whether authentication is required
  * @param {Array} options.roles - Allowed roles
  */
-const authenticate = (options = { required: false, roles: [] }) => {
+const authenticate = ({ required = false, roles = [] } = {}) => {
   return async (req, res, next) => {
     try {
-      // Check for service role key first
       const serviceKey = req.headers['x-service-key'];
       if (serviceKey === SERVICE_ROLE_KEY) {
         req.user = { role: 'service' };
         return next();
       }
-      
-      // Extract token
+
       const token = extractToken(req);
-      
-      // If no token and auth is required, reject
-      if (!token && options.required) {
-        throw createError(401, 'Authentication required');
+      if (!token && required) {
+        return next(createError(401, 'Authentication required'));
       }
-      
-      // If token exists, verify it
+
       if (token) {
         try {
           const decoded = verifyAccessToken(token);
           req.user = decoded;
-        } catch (tokenError) {
-          // Only throw an error if authentication is required
-          if (options.required) {
-            throw createError(401, 'Invalid or expired token');
-          }
-          // Otherwise, just continue without setting req.user
+        } catch (err) {
+          if (required) return next(createError(401, 'Invalid or expired token'));
         }
       }
-      
-      // Check role if specified and the request has been authenticated
-      if (options.roles && options.roles.length > 0 && req.user) {
-        if (!req.user.role || !options.roles.includes(req.user.role)) {
-          throw createError(403, 'Insufficient permissions');
-        }
+
+      if (roles.length && (!req.user || !roles.includes(req.user.role))) {
+        return next(createError(403, 'Insufficient permissions'));
       }
-      
+
       next();
-    } catch (error) {
-      next(error); // Pass the error to the next middleware
+    } catch (err) {
+      next(err);
     }
   };
 };
+
 
 /**
  * Authorization middleware

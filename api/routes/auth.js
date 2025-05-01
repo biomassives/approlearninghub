@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bcrypt = require('bcrypt');
+const { body, validationResult } = require('express-validator');
 
 const { db, supabase } = require('../utils/db');
 
@@ -11,8 +12,32 @@ const { hashPassword, comparePassword } = require('../utils/hash');
 const { generateTokenPair, verifyAccessToken, verifyRefreshToken } = require('../utils/jwt'); // ✅
 const { authenticate } = require('../middleware/auth');
 
+
+// Check validation result
+const validateRequest = (req, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(createError(400, {
+      message: 'Validation failed',
+      errors: errors.array()
+    }));
+  }
+};
+
+
+
 // *** Add console log for debugging ***
 console.log("DEBUG: Type of authenticate after import:", typeof authenticate);
+
+
+const safeError = (err, defaultMessage) => {
+  console.error(err);
+  return err.status ? err : createError(500, defaultMessage || 'Internal server error');
+};
+
+
+
+
 
 // --- Router Definition ---
 const router = express.Router();
@@ -210,6 +235,20 @@ const authHandler = async (req, res, next) => {
 };
 
 
+router.post('/',
+  body('grant_type').notEmpty().withMessage('grant_type is required'),
+  async (req, res, next) => {
+    try {
+      validateRequest(req, next);
+      await authHandler(req, res, next);
+    } catch (err) {
+      next(safeError(err, 'Token grant handler failed'));
+    }
+  }
+);
+
+
+
 // --- Route Definitions ---
 
 // Simple test route
@@ -221,174 +260,110 @@ router.get('/test-vercel', (req, res) => {
 // Using POST as it typically involves sending credentials or tokens in the body
 router.post('/', authHandler); // You might rename this route, e.g., '/token'
 
+router.post('/login',
+  body('email').isEmail().withMessage('Valid email required'),
+  body('password').notEmpty().withMessage('Password is required'),
+  async (req, res, next) => {
+    try {
+      validateRequest(req, next);
 
-// --- LOGIN Route ---
-router.post('/login', async (req, res, next) => {
-  try {
-    const { email, password } = req.body; // Or use 'username' if you prefer
+      const { email, password } = req.body;
 
-    // Basic validation
-    if (!email || !password) {
-      // Use createError for consistent error handling
-      throw createError(400, 'Email and password are required');
-    }
+      const userQuery = 'SELECT id, email, password_hash, role FROM users WHERE email = $1';
+      const result = await pool.query(userQuery, [email]);
 
-    // Find user by email (adjust query based on your login identifier)
-    const userQuery = 'SELECT id, email, password_hash, role FROM users WHERE email = $1';
-    const result = await pool.query(userQuery, [email]);
+      if (result.rows.length === 0) {
+        throw createError(401, 'Invalid credentials');
+      }
 
-    if (result.rows.length === 0) {
-      // User not found - use a generic message for security
-      throw createError(401, 'Invalid credentials');
-    }
+      const user = result.rows[0];
+      const isValidPassword = await bcrypt.compare(password, user.password_hash);
 
-    const user = result.rows[0];
+      if (!isValidPassword) {
+        throw createError(401, 'Invalid credentials');
+      }
 
-    // Compare provided password with the stored hash
-    const isValidPassword = await bcrypt.compare(password, user.password_hash);
-
-    if (!isValidPassword) {
-      // Incorrect password - use a generic message
-      throw createError(401, 'Invalid credentials');
-    }
-
-    // --- Password is valid - Generate Tokens ---
-    const payload = {
-      userId: user.id,
-      email: user.email, // Include non-sensitive identifiers needed by frontend/middleware
-      role: user.role
-      // Add other relevant, non-sensitive data to the payload if needed
-    };
-
-    const { accessToken, refreshToken } = generateTokenPair(payload);
-
-    // --- Success Response ---
-    res.status(200).json({
-      message: 'Login successful',
-      accessToken,
-      refreshToken, // Consider how you'll handle refresh token securely on the client
-      user: { // Send back some basic user info (optional)
-        id: user.id,
+      const payload = {
+        userId: user.id,
         email: user.email,
         role: user.role
-        // DO NOT send password hash or sensitive data
-      }
-    });
+      };
 
-  } catch (error) {
-    // Log the detailed error for debugging if necessary (but don't expose details)
-    console.error("Login Error:", error.message); // Log only the message for less noise, or full error if needed
+      const { accessToken, refreshToken } = generateTokenPair(payload);
 
-    // Pass the error to the centralized error handler
-    // Ensure createError was used previously to set status codes
-    if (!error.status) {
-        // Handle unexpected db errors or bcrypt errors etc.
-         next(createError(500, 'An unexpected error occurred during login.'));
-    } else {
-        next(error); // Pass errors like 400, 401
+      res.status(200).json({
+        message: 'Login successful',
+        accessToken,
+        refreshToken,
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role
+        }
+      });
+    } catch (error) {
+      next(safeError(error, 'Login failed'));
     }
   }
-});
+);
 
 
 
 
 
-// --- Signup Route ---
-router.post('/signup', async (req, res, next) => {
-  try {
-    const { email, password, name } = req.body;
-
-    // 1. Validate input (Basic Example)
-    if (!email || !password || !name) {
-      return next(createError(400, 'Email, password, and name are required for signup.'));
-    }
-    // Add more robust validation (e.g., email format, password complexity using a library like validator) here if needed
-    // Example:
-    // const validator = require('validator');
-    // if (!validator.isEmail(email)) {
-    //   return next(createError(400, 'Invalid email format.'));
-    // }
-    // if (password.length < 8) { // Example complexity check
-    //   return next(createError(400, 'Password must be at least 8 characters long.'));
-    // }
-
-
-    // 2. Check if user already exists
-    // Adjust the query based on your db utility
-
-    const existingUser = await db.users.findOne({ email });
-
-
-    if (existingUser) {
-      return next(createError(409, 'User with this email already exists.')); // 409 Conflict
-    }
-
-
-
-    // 3. Hash password (using bcrypt helper function)
-    const hashedPassword = await hashPassword(password);
-
-    // 4. Create user in DB
-    // Adjust query and role assignment as needed
-    const defaultRole = 'student'; // Or determine role based on signup context
-
-    let newUser;
+router.post('/signup',
+  body('email').isEmail().withMessage('Valid email required'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 chars'),
+  body('name').notEmpty().withMessage('Name is required'),
+  async (req, res, next) => {
     try {
-      newUser = await db.users.insert({
+      validateRequest(req, next); // validate inputs
+
+      const { email, password, name } = req.body;
+
+      const existingUser = await db.users.findOne({ email });
+      if (existingUser) {
+        return next(createError(409, 'User with this email already exists.'));
+      }
+
+      const hashedPassword = await hashPassword(password);
+      const defaultRole = 'student';
+
+      const newUser = await db.users.insert({
         email,
         password: hashedPassword,
         name,
         role: defaultRole
       });
-    } catch (insertError) {
-      console.error("Insert error:", insertError);
-      return next(createError(500, 'Failed to create user account.'));
-    }
 
-
-
-
-    if (!newUser) {
-        // This shouldn't happen if the insert was successful and RETURNING was used, but good to check
-        console.error("Failed to retrieve user details after insert for email:", email);
+      if (!newUser) {
         return next(createError(500, 'Failed to create user account.'));
+      }
+
+      const tokenPayload = {
+        userId: newUser.id,
+        role: newUser.role,
+        email: newUser.email,
+      };
+      const tokenPair = generateTokenPair(tokenPayload);
+
+      res.status(201).json({
+        success: true,
+        message: 'Signup successful!',
+        ...tokenPair,
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+          name: newUser.name,
+          role: newUser.role
+        }
+      });
+    } catch (error) {
+      next(safeError(error, 'Signup failed'));
     }
-
-    // 5. Respond (Option A: Just success message)
-    // res.status(201).json({
-    //   success: true,
-    //   message: 'Signup successful!',
-    //   user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role }
-    // });
-
-    // 5. Respond (Option B: Log user in directly by generating tokens)
-     const tokenPayload = {
-         userId: newUser.id,
-         role: newUser.role,
-         email: newUser.email,
-     };
-     const tokenPair = generateTokenPair(tokenPayload);
-     res.status(201).json({
-         success: true,
-         message: 'Signup successful!',
-         ...tokenPair, // Include tokens
-         user: { // Include user info
-             id: newUser.id,
-             email: newUser.email,
-             name: newUser.name,
-             role: newUser.role
-         }
-     });
-
-
-  } catch (error) {
-    // Catch validation, hashing, or database errors
-    console.error("Signup Error:", error);
-    // Avoid sending detailed internal errors to the client
-    next(createError(500, "An error occurred during signup. Please try again."));
   }
-});
+);
+
 
 // *** Temporarily commenting out the logout route for debugging ***
 /*

@@ -1,3 +1,5 @@
+// /api/utils/jwt.js
+
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-jwt-key';
@@ -40,25 +42,22 @@ const generateTokenPair = (payload) => {
  * @returns {Object|null}
  */
 const verifyAccessToken = (token) => {
-  try {
+    if (!token) throw new Error("Missing token");
     return jwt.verify(token, JWT_SECRET);
-  } catch (err) {
-    return null;
-  }
-};
+  };
+  
 
 /**
  * Verify refresh token
  * @param {string} token
  * @returns {Object|null}
  */
+
 const verifyRefreshToken = (token) => {
-  try {
+    if (!token) throw new Error("Missing refresh token");
     return jwt.verify(token, REFRESH_SECRET);
-  } catch (err) {
-    return null;
-  }
-};
+  };
+
 
 module.exports = {
   generateTokenPair,
