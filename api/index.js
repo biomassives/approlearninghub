@@ -47,6 +47,7 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
 
 // ─── Rate Limiting ─────────────────────────────────────────────────────
+/*
 app.use(
   '/api/',
   rateLimit({
@@ -57,6 +58,7 @@ app.use(
     legacyHeaders: false,
   })
 );
+*/
 
 // ─── CORS ──────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
@@ -85,6 +87,30 @@ app.use((req, res, next) => {
   });
   next();
 });
+
+
+// ─── API Root ──────────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to the ApproVideo Hub API',
+    routes: {
+      auth: '/api/auth',
+      clinics: '/api/clinics',
+      feeds: '/api/feeds',
+      tags: '/api/tags',
+      videos: '/api/videos',
+      categories: '/api/categories',
+      training: '/api/training',
+      profiles: '/api/profiles',
+      integrations: '/api/integrations',
+      zip: '/api/zip',
+      docs: '/api/docs',
+      health: '/api/health',
+    },
+  });
+});
+
+
 
 // ─── Routes ────────────────────────────────────────────────────────────
 app.use('/auth', authRouter);
