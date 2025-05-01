@@ -1,3 +1,5 @@
+// /api/utils/hash.js
+
 const bcrypt = require('bcryptjs');
 
 const BCRYPT_SALT_ROUNDS = 10;

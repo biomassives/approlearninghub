@@ -3,11 +3,10 @@ const express = require('express');
 const serverless = require('serverless-http');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const rateLimit = require('express-rate-limit');
 
-const { createError, errorHandler, notFoundHandler } = require('./utils/error');
+const { errorHandler, notFoundHandler } = require('./utils/error');
 
-// Routes
+// Import routes
 const authRouter = require('./routes/auth');
 const clinicsRouter = require('./routes/clinics');
 const feedsRouter = require('./routes/feeds');
@@ -20,45 +19,16 @@ const integrationsRouter = require('./integrations');
 const docAndZipRouter = require('./routes/docandziprouter');
 const { authenticate } = require('./middleware/auth');
 
-// Initialize Express app
+// Main Express app
 const app = express();
+const router = express.Router();
 app.set('trust proxy', 1);
 
-// ─── Security Middleware ───────────────────────────────────────────────
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'https://i.ytimg.com', 'https://img.youtube.com'],
-        connectSrc: ["'self'", process.env.SUPABASE_URL],
-        frameSrc: ["'self'", 'https://www.youtube.com'],
-        mediaSrc: ["'self'", 'https://www.youtube.com'],
-      },
-    },
-  })
-);
-
 // ─── Global Middleware ─────────────────────────────────────────────────
+app.use(helmet());
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
-
-// ─── Rate Limiting ─────────────────────────────────────────────────────
-/*
-app.use(
-  '/api/',
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 150,
-    message: { success: false, message: 'Too many requests, please try again later' },
-    standardHeaders: true,
-    legacyHeaders: false,
-  })
-);
-*/
 
 // ─── CORS ──────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
@@ -81,16 +51,15 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
-    if (req.originalUrl !== '/health') {
+    if (req.originalUrl !== '/api/health') {
       console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${Date.now() - start}ms`);
     }
   });
   next();
 });
 
-
-// ─── API Root ──────────────────────────────────────────────────────────
-app.get('/', (req, res) => {
+// ─── Root API Info ─────────────────────────────────────────────────────
+router.get('/', (req, res) => {
   res.status(200).json({
     message: 'Welcome to the ApproVideo Hub API',
     routes: {
@@ -110,22 +79,20 @@ app.get('/', (req, res) => {
   });
 });
 
+// ─── Routes under /api ─────────────────────────────────────────────────
+router.use('/auth', authRouter);
+router.use('/clinics', clinicsRouter);
+router.use('/feeds', feedsRouter);
+router.use('/tags', tagsRouter);
+router.use('/videos', videosRouter);
+router.use('/categories', categoriesRouter);
+router.use('/training', trainingModulesRouter);
+router.use('/profiles', authenticate(), profilesRouter);
+router.use('/integrations', authenticate(), integrationsRouter);
+router.use('/zip', docAndZipRouter);
 
-
-// ─── Routes ────────────────────────────────────────────────────────────
-app.use('/auth', authRouter);
-app.use('/clinics', clinicsRouter);
-app.use('/feeds', feedsRouter);
-app.use('/tags', tagsRouter);
-app.use('/videos', videosRouter);
-app.use('/categories', categoriesRouter);
-app.use('/training', trainingModulesRouter);
-app.use('/profiles', authenticate(), profilesRouter);
-app.use('/integrations', authenticate(), integrationsRouter);
-app.use('/zip', docAndZipRouter);
-
-// ─── Health Check ──────────────────────────────────────────────────────
-app.get('/health', (req, res) => {
+// ─── Health and Docs ───────────────────────────────────────────────────
+router.get('/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -133,8 +100,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ─── API Documentation Route (Optional) ────────────────────────────────
-app.get('/docs', (req, res) => {
+router.get('/docs', (req, res) => {
   res.status(200).json({
     message: 'ApproVideo Hub API Documentation',
     endpoints: {
@@ -149,14 +115,17 @@ app.get('/docs', (req, res) => {
   });
 });
 
-// ─── Not Found & Error Handling ────────────────────────────────────────
-app.use('*', notFoundHandler);
-app.use(errorHandler);
+// ─── Error Handling ────────────────────────────────────────────────────
+router.use('*', notFoundHandler);
+router.use(errorHandler);
 
-// ─── Local Dev Mode ────────────────────────────────────────────────────
+// ─── Mount all under /api ──────────────────────────────────────────────
+app.use('/api', router);
+
+// ─── Local Dev Support ─────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production' && require.main === module) {
   const PORT = process.env.PORT || 3001;
-  app.listen(PORT, () => console.log(`Local server running at http://localhost:${PORT}`));
+  app.listen(PORT, () => console.log(`Local server running at http://localhost:${PORT}/api`));
 }
 
 // ─── Export for Vercel ─────────────────────────────────────────────────

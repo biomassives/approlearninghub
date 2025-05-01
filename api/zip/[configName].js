@@ -40,4 +40,6 @@ module.exports = async (req, res) => {
     }
     
     if (!data) {
-      return res.status(404).sen
+      return res.status(404).send('Failed to retrieve configuration');
+    }
+
