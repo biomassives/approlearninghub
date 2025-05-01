@@ -7,6 +7,7 @@ console.log('▶️ Loaded env:', {
   JWT_SECRET: !!process.env.JWT_SECRET
 });
 
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
@@ -99,7 +100,7 @@ const videosRouter = require('./videos');
 const categoriesRouter = require('./categories');
 const integrationsRouter = require('./integrations');
 
-const docAndZipRouter = require('./docandziprouter');
+const docAndZipRouter = require('./routes/docandziprouter');
 
 // Public API routes (no authentication required)
 app.use('/auth', authRouter);
@@ -135,6 +136,7 @@ app.get('/health', (req, res) => {
   });
 });
 
+
 // API documentation
 app.get('/docs', (req, res) => {
   res.status(200).json({
@@ -166,7 +168,9 @@ app.get('/docs', (req, res) => {
   });
 });
 
-app.use('/api', docAndZipRouter);   // output managed docs and zip file archives
+
+console.log('Registering /api/zip route...');
+app.use('/zip', docAndZipRouter);  // output managed docs and zip file archives
 
 
 app.use('*', notFoundHandler);
@@ -184,7 +188,12 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 */
 
-
+if (process.env.NODE_ENV !== 'production' || require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Server running locally on port ${PORT}`);
+  });
+}
 
 
 
