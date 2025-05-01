@@ -166,7 +166,7 @@ app.get('/docs', (req, res) => {
   });
 });
 
-app.use('/api', docAndZipRouter);
+app.use('/api', docAndZipRouter);   // output managed docs and zip file archives
 
 
 app.use('*', notFoundHandler);
@@ -183,5 +183,9 @@ console.log('DEBUG: Checking errorHandler:', typeof errorHandler);
 app.use(notFoundHandler);
 app.use(errorHandler);
 */
+
+
+
+
 
 module.exports = app;

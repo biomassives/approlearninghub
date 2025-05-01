@@ -221,6 +221,79 @@ router.get('/test-vercel', (req, res) => {
 // Using POST as it typically involves sending credentials or tokens in the body
 router.post('/', authHandler); // You might rename this route, e.g., '/token'
 
+
+// --- LOGIN Route ---
+router.post('/login', async (req, res, next) => {
+  try {
+    const { email, password } = req.body; // Or use 'username' if you prefer
+
+    // Basic validation
+    if (!email || !password) {
+      // Use createError for consistent error handling
+      throw createError(400, 'Email and password are required');
+    }
+
+    // Find user by email (adjust query based on your login identifier)
+    const userQuery = 'SELECT id, email, password_hash, role FROM users WHERE email = $1';
+    const result = await pool.query(userQuery, [email]);
+
+    if (result.rows.length === 0) {
+      // User not found - use a generic message for security
+      throw createError(401, 'Invalid credentials');
+    }
+
+    const user = result.rows[0];
+
+    // Compare provided password with the stored hash
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!isValidPassword) {
+      // Incorrect password - use a generic message
+      throw createError(401, 'Invalid credentials');
+    }
+
+    // --- Password is valid - Generate Tokens ---
+    const payload = {
+      userId: user.id,
+      email: user.email, // Include non-sensitive identifiers needed by frontend/middleware
+      role: user.role
+      // Add other relevant, non-sensitive data to the payload if needed
+    };
+
+    const { accessToken, refreshToken } = generateTokenPair(payload);
+
+    // --- Success Response ---
+    res.status(200).json({
+      message: 'Login successful',
+      accessToken,
+      refreshToken, // Consider how you'll handle refresh token securely on the client
+      user: { // Send back some basic user info (optional)
+        id: user.id,
+        email: user.email,
+        role: user.role
+        // DO NOT send password hash or sensitive data
+      }
+    });
+
+  } catch (error) {
+    // Log the detailed error for debugging if necessary (but don't expose details)
+    console.error("Login Error:", error.message); // Log only the message for less noise, or full error if needed
+
+    // Pass the error to the centralized error handler
+    // Ensure createError was used previously to set status codes
+    if (!error.status) {
+        // Handle unexpected db errors or bcrypt errors etc.
+         next(createError(500, 'An unexpected error occurred during login.'));
+    } else {
+        next(error); // Pass errors like 400, 401
+    }
+  }
+});
+
+
+
+
+
 // --- Signup Route ---
 router.post('/signup', async (req, res, next) => {
   try {
