@@ -308,27 +308,40 @@ router.post('/login',
 );
 
 
-
-
-
-router.post('/signup',
+router.post(
+  '/signup',
   body('email').isEmail().withMessage('Valid email required'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 chars'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   body('name').notEmpty().withMessage('Name is required'),
+
   async (req, res, next) => {
+    console.time('SIGNUP_HANDLER');
+    const timeoutLog = setTimeout(() => {
+      console.warn('⚠️ Signup handler taking too long...');
+    }, 9000);
+
     try {
-      validateRequest(req, next); // validate inputs
+      console.timeLog('SIGNUP_HANDLER', 'Started');
+
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(createError(400, { message: 'Validation failed', errors: errors.array() }));
+      }
 
       const { email, password, name } = req.body;
 
+      console.timeLog('SIGNUP_HANDLER', 'Checking for existing user');
       const existingUser = await db.users.findOne({ email });
       if (existingUser) {
         return next(createError(409, 'User with this email already exists.'));
       }
 
+      console.timeLog('SIGNUP_HANDLER', 'Hashing password');
       const hashedPassword = await hashPassword(password);
+
       const defaultRole = 'student';
 
+      console.timeLog('SIGNUP_HANDLER', 'Inserting new user into DB');
       const newUser = await db.users.insert({
         email,
         password: hashedPassword,
@@ -340,13 +353,16 @@ router.post('/signup',
         return next(createError(500, 'Failed to create user account.'));
       }
 
+      console.timeLog('SIGNUP_HANDLER', 'Generating token pair');
       const tokenPayload = {
         userId: newUser.id,
         role: newUser.role,
         email: newUser.email,
       };
+
       const tokenPair = generateTokenPair(tokenPayload);
 
+      console.timeLog('SIGNUP_HANDLER', 'Responding to client');
       res.status(201).json({
         success: true,
         message: 'Signup successful!',
@@ -358,8 +374,13 @@ router.post('/signup',
           role: newUser.role
         }
       });
+
     } catch (error) {
+      console.error('Signup error:', error);
       next(safeError(error, 'Signup failed'));
+    } finally {
+      clearTimeout(timeoutLog);
+      console.timeEnd('SIGNUP_HANDLER');
     }
   }
 );
