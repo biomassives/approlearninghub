@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Login - ApproVideo Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Login or Create an account on ApproVideo Hub - Sustainable Solutions Platform">
+    <style>
+        /* Existing inline styles (move to CSS later) */
+        body { font-family: sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .hidden { display: none; }
+        .auth-card { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 450px; margin-top: 20px; }
+        .auth-card h1 { text-align: center; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .button-primary { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        .button-primary:hover { background-color: #0056b3; }
+        .alternate-action { text-align: center; margin-top: 20px; }
+        .alternate-action a { color: #007bff; text-decoration: none; cursor: pointer; }
+        .alternate-action a:hover { text-decoration: underline; }
+        .error-message { color: #d9534f; margin-top: 5px; font-size: 0.9em; }
+        .status-box { margin-top: 15px; font-size: 0.95em; }
+        .page-header { display: flex; justify-content: space-between; width: 100%; max-width: 1000px; margin-bottom: 20px; align-items: center; }
+        .brand-name { font-size: 1.5em; font-weight: bold; }
+        .header-controls { font-size: 0.9em; }
+        .page-footer { margin-top: auto; padding-top: 30px; font-size: 0.8em; color: #666; text-align: center; }
+        .page-footer a { color: #666; }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="brand-name">ApproVideo Hub</div>
+        <div class="header-controls">Secure Connection</div>
+    </header>
+
+    <main class="auth-container">
+       
+            <div id="signup-section" class="auth-card">
+                <h1 data-i18n="signup_title">Create Account</h1>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-email" data-i18n="email_label">Email Address</label>
+                        <input type="email" id="signup-email" name="email" required placeholder="your.email@example.com">
+                        <p class="error-message" id="signup-email-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password" data-i18n="password_label">Password</label>
+                        <input type="password" id="signup-password" name="password" required>
+                        <p class="error-message" id="signup-password-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password" data-i18n="confirm_password_label">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" name="confirm-password" required>
+                        <p class="error-message" id="signup-confirm-password-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-role" data-i18n="role_label">Select Your Role</label>
+                        <select id="signup-role" name="role" required>
+                            <option value="" disabled selected data-i18n="role_placeholder">-- Select a Role --</option>
+                            <option value="expert" data-i18n="role_expert">Expert / Workshop Leader</option>
+                            <option value="learner" data-i18n="role_learner">Learner / Volunteer</option>
+                            <option value="researcher" data-i18n="role_researcher">Research Contributor</option>
+                            <option value="resources" data-i18n="role_resources">Resource Finder</option>
+                            <option value="organizer" data-i18n="role_organizer">Organizer / Coordinator</option>
+                        </select>
+                        <p class="error-message" id="signup-role-error"></p>
+                    </div>
+                    <div class="form-group form-group-checkbox">
+                        <input type="checkbox" id="signup-terms" name="terms" required>
+                        <label for="signup-terms" data-i18n="terms_label">I agree to the Terms of Service and Privacy Policy</label>
+                        <p class="error-message" id="signup-terms-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="button-primary" data-i18n="signup_button">Create Account</button>
+                    </div>
+                    <div class="status-box" id="signup-status-area"></div>
+                </form>
+                <div class="alternate-action">
+                    <p data-i18n="already_account">Already have an account? <a id="show-login-link" data-i18n="login_link">Log in</a></p>
+                </div>
+            </div>
+    
+            <div id="login-section" class="auth-card hidden">
+                <h1 data-i18n="login_title">Login</h1>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email" data-i18n="email_label">Email Address</label>
+                        <input type="email" id="login-email" name="email" required placeholder="your.email@example.com">
+                        <p class="error-message" id="login-email-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" data-i18n="password_label">Password</label>
+                        <input type="password" id="login-password" name="password" required>
+                        <p class="error-message" id="login-password-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="button-primary" data-i18n="login_button">Log In</button>
+                    </div>
+                    <div class="status-box" id="login-status-area"></div>
+                </form>
+                <div class="alternate-action">
+                    <p data-i18n="need_account">Need an account? <a id="show-signup-link" data-i18n="signup_link">Sign up</a></p>
+                </div>
+            </div>
+        
+    </main>
+
+    <footer class="page-footer">
+        <p><a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a></p>
+    </footer>
+
+    <script type="module">
+        import authService from './js/auth-service.js';
+import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
+
+// Determine API base path for local vs prod
+const API_BASE = window.location.hostname.includes('localhost') ? '/auth' : '/api/auth';
+
+// Override authService base path
+authService.apiBase = API_BASE;
+
+// Role-to-dashboard mapping
+const DASHBOARD_ROUTES = {
+    expert:     '/expert-dashboard.html',
+    learner:    '/learner-dashboard.html',
+    researcher: '/researcher-dashboard.html',
+    resources:  '/resources-dashboard.html',
+    organizer:  '/organizer-dashboard.html'
+};
+
+function redirectToDashboard(role) {
+    const target = DASHBOARD_ROUTES[role];
+    window.location.href = target || '/dashboard.html';
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    initLanguageSwitcher();
+    await applyTranslations({
+        '[data-i18n]': el => el.getAttribute('data-i18n')
+    });
+
+    const signupSection    = document.getElementById('signup-section');
+    const loginSection     = document.getElementById('login-section');
+    const showLoginLink    = document.getElementById('show-login-link');
+    const showSignupLink   = document.getElementById('show-signup-link');
+
+    if (showLoginLink && signupSection && loginSection) {
+        showLoginLink.addEventListener('click', e => {
+            e.preventDefault();
+            signupSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+        });
+    } else {
+        console.warn('Toggle link(s) missing:', { showLoginLink, showSignupLink });
+    }
+    if (showSignupLink && signupSection && loginSection) {
+        showSignupLink.addEventListener('click', e => {
+            e.preventDefault();
+            loginSection.classList.add('hidden');
+            signupSection.classList.remove('hidden');
+        });
+    }
+
+    // Signup form submission
+    document.getElementById('signup-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        ['email','password','confirm-password','role','terms'].forEach(f => { document.getElementById(`signup-${f}-error`).textContent = ''; });
+        const statusArea = document.getElementById('signup-status-area'); statusArea.textContent = '';
+
+        const email    = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value;
+        const confirm  = document.getElementById('signup-confirm-password').value;
+        const role     = document.getElementById('signup-role').value;
+        const terms    = document.getElementById('signup-terms').checked;
+
+        let hasError = false;
+        if (password !== confirm) {
+            document.getElementById('signup-confirm-password-error').textContent = window.T('confirm_password_mismatch');
+            hasError = true;
+        }
+        if (!terms) {
+            document.getElementById('signup-terms-error').textContent = window.T('terms_required');
+            hasError = true;
+        }
+        if (hasError) return;
+
+        const response = await authService.signup(email, password, role);
+        if (response.success) {
+            statusArea.textContent = window.T('signup_success');
+            setTimeout(() => redirectToDashboard(response.user.role), 1000);
+        } else {
+            statusArea.textContent = response.error || response.message || window.T('signup_failed');
+        }
+    });
+
+    // Login form submission
+    document.getElementById('login-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        ['email','password'].forEach(f => { document.getElementById(`login-${f}-error`).textContent = ''; });
+        const statusArea = document.getElementById('login-status-area'); statusArea.textContent = '';
+
+        const email    = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        const response = await authService.login(email, password);
+        if (response.success) {
+            statusArea.textContent = window.T('login_success');
+            setTimeout(() => redirectToDashboard(response.user.role), 500);
+        } else {
+            statusArea.textContent = response.error || response.message || window.T('login_failed');
+        }
+    });
+});
+

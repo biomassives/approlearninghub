@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyrolysis Systems for Plastic & Wood - Waste | ApproVideo DIY Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="/css/approvideo.css" rel="stylesheet">
+    <style>
+        /* Custom styles for technical clinics */
+        .bebas {
+          font-family: "Bebas Neue", cursive;
+        }
+        
+        .technical-specs {
+            background-color: #f8fafc;
+            border-left: 4px solid #ca8a04;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .technical-specs h4 {
+            color: #a16207;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .spec-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .spec-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .spec-header {
+            font-weight: 600;
+            color: #a16207;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .spec-header i {
+            margin-right: 0.5rem;
+        }
+        
+        .spec-value {
+            color: #374151;
+        }
+        
+        .process-stage {
+            display: flex;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .stage-number {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #ca8a04;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .stage-content {
+            flex: 1;
+        }
+        
+        .stage-title {
+            font-weight: 600;
+            color: #a16207;
+            margin-bottom: 0.25rem;
+        }
+        
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .pros-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .pros-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .pros-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .cons-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .cons-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .cons-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .tag-pill {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .tag-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .application-card {
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .application-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        .application-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #fef9c3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .application-icon i {
+            font-size: 24px;
+            color: #a16207;
+        }
+        
+        .video-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+        
+        .play-button i {
+            color: #ca8a04;
+            font-size: 24px;
+            margin-left: 5px;
+        }
+        
+        .resource-card {
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-pattern {
+            background-color: #ca8a04;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544V0h.284zM0 5.373l25.456 25.455-1.414 1.415L0 8.2V5.374zm0 5.656l22.627 22.627-1.414 1.414L0 13.86v-2.83zm0 5.656l19.8 19.8-1.415 1.413L0 19.514v-2.83zm0 5.657l16.97 16.97-1.414 1.415L0 25.172v-2.83zM0 28l14.142 14.142-1.414 1.414L0 30.828V28zm0 5.657L11.314 44.97 9.9 46.386l-9.9-9.9v-2.828zm0 5.657L8.485 47.8 7.07 49.212 0 42.143v-2.83zm0 5.657l5.657 5.657-1.414 1.415L0 47.8v-2.83zm0 5.657l2.828 2.83-1.414 1.413L0 53.456v-2.83zM54.627 60L30 35.373 5.373 60H8.2L30 38.2 51.8 60h2.827zm-5.656 0L30 41.03 11.03 60h2.828L30 43.858 46.142 60h2.83zm-5.656 0L30 46.686 16.686 60h2.83L30 49.515 40.485 60h2.83zm-5.657 0L30 52.343 22.344 60h2.83L30 55.172 34.828 60h2.83zM32 60l-2-2-2 2h4zM59.716 0l-28 28 1.414 1.414L60 2.544V0h-.284zM60 5.373L34.544 30.828l1.414 1.415L60 8.2V5.374zm0 5.656L37.373 33.656l1.414 1.414L60 13.86v-2.83zm0 5.656l-19.8 19.8 1.415 1.413L60 19.514v-2.83zm0 5.657l-16.97 16.97 1.414 1.415L60 25.172v-2.83zM60 28L45.858 42.142l1.414 1.414L60 30.828V28zm0 5.657L48.686 44.97l1.415 1.415 9.9-9.9v-2.828zm0 5.657L51.515 47.8l1.414 1.413 7.07-7.07v-2.83zm0 5.657l-5.657 5.657 1.414 1.415L60 47.8v-2.83zm0 5.657l-2.828 2.83 1.414 1.413L60 53.456v-2.83zM39.9 16.385l1.414-1.414L30 3.658 18.686 14.97l1.415 1.415 9.9-9.9 9.9 9.9zm-2.83 2.828l1.415-1.414L30 9.313 21.515 17.8l1.414 1.413L");
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+        
+        .play-button i {
+            color: #ca8a04;
+            font-size: 24px;
+            margin-left: 5px;
+        }
+        
+        .resource-card {
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-pattern {
+            background-color: #ca8a04;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544V0h.284zM0 5.373l25.456 25.455-1.414 1.415L0 8.2V5.374zm0 5.656l22.627 22.627-1.414 1.414L0 13.86v-2.83zm0 5.656l19.8 19.8-1.415 1.413L0 19.514v-2.83zm0 5.657l16.97 16.97-1.414 1.415L0 25.172v-2.83zM0 28l14.142 14.142-1.414 1.414L0 30.828V28zm0 5.657L11.314 44.97 9.9 46.386l-9.9-9.9v-2.828zm0 5.657L8.485 47.8 7.07 49.212 0 42.143v-2.83zm0 5.657l5.657 5.657-1.414 1.415L0 47.8v-2.83zm0 5.657l2.828 2.83-1.414 1.413L0 53.456v-2.83zM54.627 60L30 35.373 5.373 60H8.2L30 38.2 51.8 60h2.827zm-5.656 0L30 41.03 11.03 60h2.828L30 43.858 46.142 60h2.83zm-5.656 0L30 46.686 16.686 60h2.83L30 49.515 40.485 60h2.83zm-5.657 0L30 52.343 22.344 60h2.83L30 55.172 34.828 60h2.83zM32 60l-2-2-2 2h4zM59.716 0l-28 28 1.414 1.414L60 2.544V0h-.284zM60 5.373L34.544 30.828l1.414 1.415L60 8.2V5.374zm0 5.656L37.373 33.656l1.414 1.414L60 13.86v-2.83zm0 5.656l-19.8 19.8 1.415 1.413L60 19.514v-2.83zm0 5.657l-16.97 16.97 1.414 1.415L60 25.172v-2.83zM60 28L45.858 42.142l1.414 1.414L60 30.828V28zm0 5.657L48.686 44.97l1.415 1.415 9.9-9.9v-2.828zm0 5.657L51.515 47.8l1.414 1.413 7.07-7.07v-2.83zm0 5.657l-5.657 5.657 1.414 1.415L60 47.8v-2.83zm0 5.657l-2.828 2.83 1.414 1.413L60 53.456v-2.83zM39.9 16.385l1.414-1.414L30 3.658 18.686 14.97l1.415 1.415 9.9-9.9 9.9 9.9zm-2.83 2.828l1.415-1.414L30 9.313 21.515 17.8l1.414 1.413L30 11.626l7.07 7.07zm-2.827 2.83l1.414-1.416L30 14.97l-5.657 5.657 1.414 1.415L30 17.9l4.243 4.242zm-2.83 2.827l1.415-1.414L30 20.626l-2.828 2.83 1.414 1.414L30 23.456l1.414 1.414zM56.87 59.414L58.284 58 30 29.716 1.716 58l1.414 1.414L30 32.544l26.87 26.87z' fill='%23a16207' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        /* Plastic type table */
+        .plastic-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .plastic-table th {
+            background-color: #fef9c3;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #a16207;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .plastic-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #4b5563;
+        }
+        
+        .plastic-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .plastic-table tr:hover td {
+            background-color: #fef9c3;
+        }
+        
+        .suitability-excellent {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        
+        .suitability-good {
+            color: #65a30d;
+            font-weight: 600;
+        }
+        
+        .suitability-poor {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .suitability-variable {
+            color: #ca8a04;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-6 px-4">
+        <!-- Hero section with pattern background -->
+        <div class="hero-pattern text-center py-10 rounded-lg shadow-md overflow-hidden mb-8">
+            <div class="bg-gradient-to-r from-yellow-600 to-yellow-700 bg-opacity-90 py-6">
+                <h1 class="text-4xl font-bold bebas text-white">🌿 <a href="/" title="ApproVideo DIY Solutions Hub" class="text-white hover:underline">ApproVideo DIY Solutions</a> 🌱</h1>
+                <p class="text-xl text-white">Empowering communities through practical knowledge</p>
+                <div class="mt-4">
+                    <a href="/areas/waste" class="inline-block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg px-4 py-2 text-white">
+                        <i class="fas fa-arrow-left mr-2"></i>Waste
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Main content header -->
+            <div class="relative">
+                <!-- Background image with overlay -->
+                <div class="h-48 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1200x400/?pyrolysis,plastic');">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-yellow-900 opacity-80"></div>
+                </div>
+                
+                <!-- Title section positioned over the background -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="bg-white p-4 rounded-full mr-4 shadow-md">
+                            <i class="fas fa-fire-alt text-4xl text-yellow-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-bold bebas mb-1">Pyrolysis Systems for Plastic & Wood</h2>
+                            <div class="flex items-center">
+                                <i class="fas fa-video mr-2"></i>
+                                <span>6 videos</span>
+                                <i class="fas fa-file-alt mx-2"></i>
+                                <span>5 resources</span>
+                                <i class="fas fa-cog mx-2"></i>
+                                <span>3 system designs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <!-- Description -->
+                <p class="text-gray-700 leading-relaxed mb-6 text-lg">
+                    Convert plastic waste and wood into valuable fuels and materials through controlled thermal decomposition. Learn to build, operate, and safely manage small-scale pyrolysis systems that can transform problematic waste into useful products while reducing landfill volume.
+                </p>
+                
+                <!-- Tags with enhanced styling -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-tags mr-2 text-yellow-600"></i>
+                        Topics Covered:
+                    </h3>
+                    <div class="flex flex-wrap">
+                        <span class="tag-pill bg-yellow-100 text-yellow-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-fire mr-2"></i>
+                            pyrolysis
+                        </span>
+                        <span class="tag-pill bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-recycle mr-2"></i>
+                            plastic recycling
+                        </span>
+                        <span class="tag-pill bg-blue-100 text-blue-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            waste-to-energy
+                        </span>
+                        <span class="tag-pill bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-seedling mr-2"></i>
+                            biochar
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Technical Details Section -->
+                <div class="mb-12 bg-gray-50 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-atom mr-3 text-yellow-600"></i>
+                        Technical Overview
+                    </h3>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-700 mb-4">
+                            Pyrolysis is the thermal decomposition of materials at elevated temperatures in an inert atmosphere. It involves a change of chemical composition and is irreversible. The word is derived from the Greek words 'pyro' meaning fire and 'lysis' meaning breakdown. For plastic waste and wood, pyrolysis typically occurs at temperatures between 400-600°C without the presence of oxygen.
+                        </p>
+                    </div>
+                    
+                    <!-- Performance Metrics -->
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Performance Metrics</h4>
+                        <div class="specs-grid">
+                            <div class="spec-card">
+                                <div class="spec-header">
+                                    <i class="fas fa-thermometer-three-quarters text-red-500"></i>
+                                    Temperature Range
+                                </div>
+                                <div class="spec-value">
+                                    400-600°C (plastic), 300-800°C (wood)
+                                </div>
+                            </div>
+                            
+                            <div class="spec-card">
+                                <div class="spec-header">
+                                    <i class="fas fa-oil-can text-yellow-500"></i>
+                                    Yield Ratios (Plastic)
+                                </div>
+                                <div class="spec-value">
+                                    Oil: 45-75%, Gas: 15-30%, Char: 5-25% (varies by plastic type)
+                                </div>
+                            </div>
+                            
+                            <div class="spec-card">
+                                <div class="spec-header">
+                                    <i class="fas fa-tree text-green-500"></i>
+                                    Yield Ratios (Wood)
+                                </div>
+                                <div class="spec-value">
+                                    Biochar: 20-35%, Bio-oil: 30-50%, Gas: 20-30%
+                                </div>
+                            </div>
+                            
+                            <div class="spec-card">
+                                <div class="spec-header">
+                                    <i class="fas fa-bolt text-purple-500"></i>
+                                    Energy Requirements
+                                </div>
+                                <div class="spec-value">
+                                    Approximately 1-2 MJ/kg of material processed (after initial heating)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Plastic Types Table -->
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Plastic Types for Pyrolysis</h4>
+                        
+                        <table class="plastic-table">
+                            <thead>
+                                <tr>
+                                    <th>Plastic Code</th>
+                                    <th>Suitability</th>
+                                    <th>Products</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PET (#1)</td>
+                                    <td class="suitability-good">Good</td>
+                                    <td>Clear oil, high gas yield</td>
+                                </tr>
+                                <tr>
+                                    <td>HDPE (#2)</td>
+                                    <td class="suitability-excellent">Excellent</td>
+                                    <td>High-quality oil, low residue</td>
+                                </tr>
+                                <tr>
+                                    <td>PVC (#3)</td>
+                                    <td class="suitability-poor">Poor</td>
+                                    <td>Generates chlorine compounds, not recommended</td>
+                                </tr>
+                                <tr>
+                                    <td>LDPE (#4)</td>
+                                    <td class="suitability-excellent">Excellent</td>
+                                    <td>Clean oil, good yield</td>
+                                </tr>
+                                <tr>
+                                    <td>PP (#5)</td>
+                                    <td class="suitability-good">Good</td>
+                                    <td>Quality oil, moderate gas</td>
+                                </tr>
+                                <tr>
+                                    <td>PS (#6)</td>
+                                    <td class="suitability-good">Good</td>
+                                    <td>Styrene-rich oil, some hazardous compounds</td>
+                                </tr>
+                                <tr>
+                                    <td>Other (#7)</td>
+                                    <td class="suitability-variable">Variable</td>
+                                    <td>Depends on composition, requires testing</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pyrolysis Process Stages -->
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Pyrolysis Process Stages</h4>
+                        
+                        <div class="process-stage">
+                            <div class="stage-number">1</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Pre-Processing (Preparation)</div>
+                                <p class="text-gray-700">
+                                    Material is cleaned, sorted, and sized appropriately. For plastics, this involves washing, drying, and shredding. For wood, this involves chipping or splitting to appropriate sizes and drying to reduce moisture content.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-stage">
+                            <div class="stage-number">2</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Heating (200-300°C)</div>
+                                <p class="text-gray-700">
+                                    The material is heated in an oxygen-free environment, causing the release of moisture and some volatile compounds. This stage prepares the material for the main pyrolysis process.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-stage">
+                            <div class="stage-number">3</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Primary Pyrolysis (300-600°C)</div>
+                                <p class="text-gray-700">
+                                    Chemical bonds begin to break down due to the heat, releasing a mixture of gases and vapors. The material undergoes significant decomposition, producing volatile compounds that leave behind solid char.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-stage">
+                            <div class="stage-number">4</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Secondary Reactions (400-800°C)</div>
+                                <p class="text-gray-700">
+                                    Vapors released during primary pyrolysis undergo further reactions, breaking down into lighter molecules. These reactions affect the final composition of the liquid and gaseous products.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="process-stage">
+                            <div class="stage-number">5</div>
+                            <div class="stage-content">
+                                <div class="stage-title">Condensation & Collection</div>
+                                <p class="text-gray-700">
+                                    The hot vapors are cooled in condensers, causing heavier molecules to liquefy into pyrolysis oil. Non-condensable gases are collected separately, and solid char remains in the reaction chamber.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advantages and Disadvantages -->
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Advantages & Disadvantages</h4>
+                        
+                        <div class="pros-cons-grid">
+                            <div>
+                                <h5 class="font-semibold text-green-600 mb-3 flex items-center">
+                                    <i class="fas fa-plus-circle mr-2"></i> Advantages
+                                </h5>
+                                <ul class="pros-list">
+                                    <li>Reduces waste volume by 90% or more</li>
+                                    <li>Converts problematic waste into usable products</li>
+                                    <li>Creates multiple valuable outputs (oils, gas, char)</li>
+                                    <li>Can process mixed plastic waste with some limitations</li>
+                                    <li>Produces less emissions than open burning of waste</li>
+                                    <li>Biochar from wood pyrolysis is valuable for soil improvement</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold text-red-600 mb-3 flex items-center">
+                                    <i class="fas fa-minus-circle mr-2"></i> Disadvantages
+                                </h5>
+                                <ul class="cons-list">
+                                    <li>Requires significant heat input to start and maintain the process</li>
+                                    <li>Oils produced need further refining for many applications</li>
+                                    <li>Some plastics produce hazardous byproducts (especially PVC)</li>
+                                    <li>Requires careful temperature control and monitoring</li>
+                                    <li>Small-scale systems have lower efficiency than industrial ones</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Applications Section -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-plug mr-3 text-yellow-600"></i>
+                        Practical Applications
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Application 1 -->
+                        <div class="application-card p-6">
+                            <div class="application-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-center mb-2">Cooking Fuel</h4>
+                            <p class="text-gray-700 text-center">
+                                Using condensed oils or gases as alternative cooking fuels. The oil can be burned in modified stoves to provide clean, efficient cooking heat.
+                            </p>
+                        </div>
+                        
+                        <!-- Application 2 -->
+                        <div class="application-card p-6">
+                            <div class="application-icon">
+                                <i class="fas fa-temperature-high"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-center mb-2">Heating</h4>
+                            <p class="text-gray-700 text-center">
+                                Burning pyrolysis products for space or water heating. The consistent energy content makes it suitable for various heating applications.
+                            </p>
+                        </div>
+                        
+                        <!-- Application 3 -->
+                        <div class="application-card p-6">
+                            <div class="application-icon">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-center mb-2">Engine Fuel</h4>
+                            <p class="text-gray-700 text-center">
+                                With refining, oils can be used in some engines and generators. Further processing can create fuel similar to diesel or kerosene.
+                            </p>
+                        </div>
+                        
+                        <!-- Application 4 -->
+                        <div class="application-card p-6">
+                            <div class="application-icon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-center mb-2">Biochar</h4>
+                            <p class="text-gray-700 text-center">
+                                Wood-derived charcoal for soil improvement and carbon sequestration. Biochar improves soil fertility, water retention, and can store carbon for hundreds of years.
+                            </p>
+                        </div>
+                        
+                        <!-- Application 5 -->
+                        <div class="application-card p-6">
+                            <div class="application-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <h4 class="text-xl font-semibold text-center mb-2">Wood Vinegar</h4>
+                            <p class="text-gray-700 text-center">
+                                Liquid byproduct from wood pyrolysis used in agriculture as a natural pesticide, growth stimulant, and soil conditioner.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick access technique cards -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-star mr-3 text-yellow-500"></i>
+                        Key System Designs
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Technique 1 -->
+                        <div class="bg-yellow-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Batch Retort System</h4>
+                            <p class="text-gray-700">Sealed container designs for controlled thermal decomposition. Simplest design that processes one batch of material at a time.</p>
+                        </div>
+                        
+                        <!-- Technique 2 -->
+                        <div class="bg-yellow-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Continuous Feed Design</h4>
+                            <p class="text-gray-700">Systems that allow ongoing feeding and extraction. More complex but offers higher throughput for larger waste volumes.</p>
+                        </div>
+                        
+                        <!-- Technique 3 -->
+                        <div class="bg-yellow-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Condensation Methods</h4>
+                            <p class="text-gray-700">Techniques to capture and separate liquid byproducts. Critical for maximizing oil yield and quality from the pyrolysis process.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Panel Slideshow -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-chalkboard-teacher mr-3 text-blue-600"></i>
+                        Learning Modules
+                    </h3>
+                    
+                    <div class="panel-slideshow relative">
+                        <!-- Panel 1 -->
+                        <div class="panel-slide color-band-1 rounded-lg p-6 mb-4 shadow-md active">
+                            <div class="flex items-start">
+                                <div class="mr-6 bg-white rounded-full p-4 shadow-md">
+                                    <i class="fas fa-atom text-blue-800 text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-3">Pyrolysis Science</h3>
+                                    <p class="text-gray-800 text-lg mb-4">
+                                        Understanding the thermal decomposition process that occurs in the absence of oxygen. Pyrolysis breaks down complex molecules into simpler compounds through heat alone, without combustion.
+                                    </p>
+                                    <div class="flex items-center">
+                                        <span class="inline-block mr-2 text-sm font-medium px-3 py-1 bg-white bg-opacity-70 rounded-full">
+                                            <i class="fas fa-graduation-cap mr-1"></i> Education
+                                        </span>
+                                

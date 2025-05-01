@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Download Local Images as ZIP</title>
+  <!-- JSZip from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+</head>
+<body>
+
+  <!-- Your download link: list your local file paths here -->
+  <a href="#" id="downloadZipLink"
+     data-files="/img/approvide_shelter_art1beau2_sm.webp,
+                  /img/approvide_shelter_art1beau.webp,
+                  /img/approvide_shelter_art1beau3_sm0.webp,
+                  /img/video-placeholder.svg,
+                  /img/approvide_shelter_art1beau3_sm.webp">
+    Download All /img/ Resources as ZIP
+  </a>
+
+  <script>
+    (function() {
+      const link = document.getElementById('downloadZipLink');
+
+      link.addEventListener('click', async e => {
+        e.preventDefault();
+
+        // Parse the file URLs
+        const urls = link.dataset.files
+          .split(',')
+          .map(u => u.trim())
+          .filter(u => u);
+        if (!urls.length) return alert('No files specified!');
+
+        const zip = new JSZip();
+
+        try {
+          // Fetch each file and add to zip
+          await Promise.all(urls.map(async url => {
+            const filename = url.split('/').pop();
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+            const blob = await res.blob();
+            zip.file(filename, blob);
+          }));
+
+          // Generate the zip as a Blob
+          const content = await zip.generateAsync({ type: 'blob' });
+
+          // Trigger download
+          const blobUrl = URL.createObjectURL(content);
+          const tempLink = document.createElement('a');
+          tempLink.href = blobUrl;
+          tempLink.download = 'img-resources.zip';
+          document.body.appendChild(tempLink);
+          tempLink.click();
+
+          // Clean up
+          URL.revokeObjectURL(blobUrl);
+          document.body.removeChild(tempLink);
+
+        } catch (err) {
+          console.error(err);
+          alert('Error creating ZIP: ' + err.message);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

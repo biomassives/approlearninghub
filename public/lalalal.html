@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Awesome Info!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background-color: #f7fafc; /* bg-gray-100 */
+            color: #1e293b; /* text-gray-800 */
+        }
+        .container {
+            background-color: #ffffff; /* bg-white */
+            padding: 2rem;
+            border-radius: 0.5rem; /* rounded-md */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.05); /* shadow-md */
+            margin-bottom: 1rem;
+        }
+        .text-xl {
+            font-size: 1.25rem; /* text-xl */
+            line-height: 1.75rem;
+            font-weight: bold; /* font-bold */
+            margin-bottom: 1rem;
+        }
+        .text-lg {
+            font-size: 1.125rem; /* text-lg */
+            line-height: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .mt-4 {
+            margin-top: 1rem;
+        }
+        .text-blue-500 {
+            color: #3b82f6; /* text-blue-500 */
+        }
+        .subcategory {
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem; /* rounded-sm */
+        }
+        .subcategory-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .tags {
+            margin-top: 0.5rem;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #eff6ff; /* bg-blue-100 */
+            color: #3b82f6; /* text-blue-500 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px; /* rounded-full */
+            margin-right: 0.25rem;
+            font-size: 0.75rem; /* text-xs */
+        }
+        .button-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #4f46e5; /* bg-indigo-600 */
+            color: #ffffff; /* text-white */
+            text-decoration: none;
+            border-radius: 0.375rem; /* rounded-md */
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+        .button-link:hover {
+            background-color: #4338ca; /* bg-indigo-700 */
+        }
+    </style>
+</head>
+<body>
+    <div id="content-container">
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentContainer = document.getElementById('content-container');
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const dataId = urlParams.get('data-id'); // Assuming you'll use 'data-id' in your links
+
+            // Embedded JSON data (for this static example)
+            const allData = {
+                "shelter1": {
+                    "area": "Shelter",
+                    "subcategories": [
+                        {
+                            "title": "Low-cost, Durable Construction Methods",
+                            "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                            "tags": ["construction", "low-cost", "durable", "building"],
+                            "ld_yotube": ["", "", "", ""],
+                            "details": "full page design display html with inviting button action links to share info or participate in a community clinic"
+                        }
+                    ]
+                },
+                "water2": { // Example of a second data set
+                    "area": "Water",
+                    "subcategories": [
+                        {
+                            "title": "Safe Water Collection Techniques",
+                            "description": "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+                            "tags": ["water", "collection", "safe", "hygiene"],
+                            "ld_yotube": ["", "", "", ""],
+                            "details": "Another full page design with different actions"
+                        }
+                    ]
+                }
+                // Add more data sets here as needed
+            };
+
+            const selectedData = allData[dataId];
+
+            if (selectedData) {
+                const areaTitle = document.createElement('h2');
+                areaTitle.className = 'text-xl';
+                areaTitle.textContent = selectedData.area;
+                contentContainer.appendChild(areaTitle);
+
+                selectedData.subcategories.forEach(subcategory => {
+                    const subcategoryDiv = document.createElement('div');
+                    subcategoryDiv.className = 'subcategory';
+
+                    const title = document.createElement('h3');
+                    title.className = 'subcategory-title';
+                    title.textContent = subcategory.title;
+                    subcategoryDiv.appendChild(title);
+
+                    const description = document.createElement('p');
+                    description.className = 'text-lg';
+                    description.textContent = subcategory.description;
+                    subcategoryDiv.appendChild(description);
+
+                    if (subcategory.tags && subcategory.tags.length > 0) {
+                        const tagsDiv = document.createElement('div');
+                        tagsDiv.className = 'tags';
+                        subcategory.tags.forEach(tag => {
+                            const tagSpan = document.createElement('span');
+                            tagSpan.className = 'tag';
+                            tagSpan.textContent = tag;
+                            tagsDiv.appendChild(tagSpan);
+                        });
+                        subcategoryDiv.appendChild(tagsDiv);
+                    }
+
+                    const detailsParagraph = document.createElement('p');
+                    detailsParagraph.className = 'mt-4';
+                    detailsParagraph.textContent = subcategory.details;
+                    subcategoryDiv.appendChild(detailsParagraph);
+
+                    // Create action buttons
+                    const shareButton = document.createElement('a');
+                    shareButton.href = '#share'; // Replace with actual sharing link
+                    shareButton.className = 'button-link';
+                    shareButton.textContent = 'Share Info';
+                    subcategoryDiv.appendChild(shareButton);
+
+                    const clinicButton = document.createElement('a');
+                    clinicButton.href = '#clinic'; // Replace with actual clinic participation link
+                    clinicButton.className = 'button-link';
+                    clinicButton.textContent = 'Participate in Clinic';
+                    subcategoryDiv.appendChild(clinicButton);
+
+                    contentContainer.appendChild(subcategoryDiv);
+                });
+            } else {
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'text-lg text-red-500'; // You might want to add red color in your CSS
+                errorMessage.textContent = 'Data not found.';
+                contentContainer.appendChild(errorMessage);
+            }
+        });
+    </script>
+</body>
+</html>

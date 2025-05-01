@@ -43,7 +43,7 @@ const initDatabase = () => {
 const loadLocalData = () => {
   try {
     // Define paths to local data files
-    const dataDir = path.join(__dirname, '../../data');
+    const dataDir = path.join(__dirname, '../../public/data');
     
     // Load clinics data
     const clinicsPath = path.join(dataDir, 'clinics.json');
@@ -213,88 +213,105 @@ const db = {
       }
     },
     
-    /**
-     * Find course by ID
-     * @param {string} id - Course ID
-     * @returns {Promise<Object|null>} - Course data or null
-     */
-    async findById(id) {
+ /**
+ * Find course by ID
+ * @param {string} id - Course ID
+ * @returns {Promise<Object|null>} - Course data or null
+ */
+async findById(id) {
+  try {
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('courses')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
+    
+    // Fallback to local data
+    if (localData.courses) {
+      return localData.courses.find(course => course.id === id) || null;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Error finding course with ID ${id}:`, error);
+    
+    // Last resort fallback
+    if (localData.courses) {
+      return localData.courses.find(course => course.id === id) || null;
+    }
+    
+    return null;
+  }
+}
+},
+
+/**
+ * Users table operations
+ */
+users: {
+  /**
+   * Find user by email
+   */
+  async findOne(query) {
+    if (!query.email) throw new Error('Email is required');
+    if (supabase) {
       try {
-        if (supabase) {
-          const { data, error } = await supabase
-            .from('courses')
-            .select('*')
-            .eq('id', id)
-            .single();
-          
-          if (error) throw error;
-          return data;
-        }
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('email', query.email)
+          .maybeSingle(); // Use maybeSingle() instead of single()
         
-        // Fallback to local data
-        if (localData.courses) {
-          return localData.courses.find(course => course.id === id) || null;
-        }
-        
-        return null;
+        if (error) throw error;
+        return data; // This will be null if no user is found
       } catch (error) {
-        console.error(`Error finding course with ID ${id}:`, error);
-        
-        // Last resort fallback
-        if (localData.courses) {
-          return localData.courses.find(course => course.id === id) || null;
-        }
-        
-        return null;
+        console.error('Database query error:', error);
+        return null; // Return null instead of throwing an error
       }
     }
+    
+    // Local fallback
+    return localData.users?.find(u => u.email === query.email) || null;
   },
-  
+
   /**
-   * Users table operations
+   * Insert new user
    */
-  users: {
-    /**
-     * Find user by email
-     * @param {Object} query - Query object with email
-     * @returns {Promise<Object|null>} - User data or null
-     */
-    async findOne(query) {
-      try {
-        if (!query.email) {
-          throw new Error('Email is required for user lookup');
-        }
+  async insert({ email, password, name, role = 'student' }) {
+    if (!supabase) throw new Error('Supabase not initialized');
+    
+    try {
+      // Remove the .maybesingle() method which is causing issues
+      const { data, error } = await supabase
+        .from('users')
+        .insert([{ email, password, name, role }])
+        .select('id, email, name, role');
         
-        if (supabase) {
-          const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('email', query.email)
-            .single();
-          
-          if (error) throw error;
-          return data;
-        }
-        
-        // Fallback to local data
-        if (localData.users) {
-          return localData.users.find(user => user.email === query.email) || null;
-        }
-        
-        return null;
-      } catch (error) {
-        console.error(`Error finding user with email ${query.email}:`, error);
-        
-        // Last resort fallback
-        if (localData.users) {
-          return localData.users.find(user => user.email === query.email) || null;
-        }
-        
-        return null;
+      if (error) {
+        console.error('Supabase insert error:', error);
+        throw error;
       }
+      
+      // Check that data exists and has at least one row
+      if (!data || data.length === 0) {
+        throw new Error('User insert returned no data');
+      }
+      
+      // Return the first inserted user
+      return data[0];
+    } catch (error) {
+      console.error('Error in users.insert:', error);
+      throw error;
     }
   }
-};
+}
+}
+
 
 // Initialize database on module load
 initDatabase();

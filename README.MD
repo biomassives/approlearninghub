@@ -357,3 +357,9 @@ Documentation and Configuration
 /api/config/eventStages.js - Configuration for event timeline stages
 /api/config/eventPermissions.js - Role-based permissions for event actions
 /api/config/notificationTemplates.js - Templates for event notifications
+
+
+construction low-cost 
+durable building
+materialslocalsustainability
+infrastructure

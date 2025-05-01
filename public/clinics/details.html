@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Approvideo Learning Clinics – Details</title>
+
+  <!-- FontAwesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --dark-bg: #121218;
+      --panel-bg: #1e1e2a;
+      --text-primary: #e0e0e6;
+      --text-secondary: #a0a0b0;
+      --accent-blue: #4a80f0;
+      --accent-green: #50c878;
+      --border-color: #2a2a36;
+      --hover-bg: #2a2a38;
+      --button-primary: #4a80f0;
+      --button-secondary: #2a2a36;
+    }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--dark-bg);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--accent-blue);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: var(--accent-green);
+    }
+    .item-details {
+      position: relative;
+      background: var(--panel-bg);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .item-icon {
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      font-size: 8rem;
+      opacity: 0.05;
+      color: var(--accent-blue);
+      transform: rotate(-15deg);
+    }
+    .area-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(74, 128, 240, 0.1);
+      color: var(--accent-blue);
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .item-title {
+      font-size: 1.5rem;
+      margin: 0.5rem 0 1rem;
+      color: var(--accent-blue);
+    }
+    .item-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .item-tag {
+      background: var(--hover-bg);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+    }
+    .item-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--button-secondary);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+    .download-link:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="item-details-container"></div>
+    <a href="./index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Back to Clinics
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('item-details-container');
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const idx = parseInt(params.get('subcategory'), 10);
+
+      // Fallback data
+      const allData = {
+        shelter1: {
+          area: "Shelter",
+          subcategories: [
+            {
+              title: "Low-cost, Durable Construction Methods",
+              description:
+                "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+              tags: ["construction", "low-cost", "durable", "building"],
+              ld_youtube: [
+                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                "https://www.youtube.com/embed/dQw4w9WgXcQ"
+              ],
+              details:
+                "Full page design display html with inviting button action links to share info or participate in a community clinic"
+            }
+          ]
+        },
+        water2: {
+          area: "Water",
+          subcategories: [
+            {
+              title: "Safe Water Collection Techniques",
+              description:
+                "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+              tags: ["water", "collection", "safe", "hygiene"],
+              ld_youtube: ["", "", "", ""],
+              details: "Another full page design with different actions"
+            }
+          ]
+        }
+      };
+
+      const areaIcons = {
+        Shelter: "fa-house",
+        Water: "fa-droplet",
+        "Food Production": "fa-seedling",
+        "Waste Management": "fa-recycle",
+        Energy: "fa-bolt",
+        Community: "fa-people-group"
+      };
+
+      function render(details) {
+        const iconClass = areaIcons[details.area] || "fa-book";
+        container.innerHTML = `
+          <div class="item-details">
+            <div class="item-icon">
+              <i class="fa-solid ${iconClass}"></i>
+            </div>
+            <div>
+              <div class="area-badge">${details.area}</div>
+              <h1 class="item-title">${details.title}</h1>
+              <div class="item-description">${details.description}</div>
+              <div class="item-tags">
+                ${details.tags
+                  .map((t) => `<span class="item-tag">${t}</span>`)
+                  .join("")}
+              </div>
+              <div class="item-actions">
+                <a
+                  href="downloads/${id}_${details.title
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}.zip"
+                  class="download-link"
+                >
+                  <i class="fa-solid fa-download"></i> Download
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Fetch or fallback
+      fetch("/data/categories.json")
+        .then((r) => r.json())
+        .then((data) => {
+          const item = data[id];
+          if (!item || !item.subcategories[idx]) {
+            throw new Error("Not found");
+          }
+          render({
+            area: item.area,
+            ...item.subcategories[idx]
+          });
+        })
+        .catch(() => {
+          // fallback to embedded
+          const item = allData[id];
+          if (!item || !item.subcategories[idx]) {
+            return (container.innerHTML = "<p>Clinic not found.</p>");
+          }
+          render({
+            area: item.area,
+            ...item.subcategories[idx]
+          });
+        });
+    });
+  </script>
+</body>
+</html>

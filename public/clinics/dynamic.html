@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApproVideo DIY Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        .bebas {
+          font-family: "Bebas Neue", cursive;
+        }
+        .font-semibold, .list-group-item {
+            color: #000;
+        }
+        .panel {
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+            transition: box-shadow 0.3s ease;
+        }
+        .panel:hover {
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .panel-body {
+            padding: 20px;
+        }
+        .panel-heading {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            background-color: #f8f8f8;
+            border-color: #ddd;
+        }
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 24px;
+            color: #2c3e50;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 1px;
+        }
+        .list-group {
+            margin-bottom: 0;
+            padding-left: 0;
+            margin-left: 0;
+        }
+        .list-group-item {
+            position: relative;
+            display: block;
+            padding: 15px;
+            margin-bottom: 5px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .list-group-item:hover {
+            background-color: #f0f0f0;
+            transform: translateX(5px);
+        }
+        .list-group-item i {
+            color: #3498db;
+            width: 30px;
+            display: inline-block;
+            font-weight: 900;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Color bands for panels */
+        .color-band-1 {
+            background-image: linear-gradient(to right, #f0fdf4, #bbf7d0);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .color-band-2 {
+            background-image: linear-gradient(to right, #fefce8, #fde68a);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .color-band-3 {
+            background-image: linear-gradient(to right, #eff6ff, #d9f99d);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        
+        /* Enhanced styles */
+        .tag-pill {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .tag-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .video-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .panel-slide {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .panel-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+        .play-button i {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-left: 5px;
+        }
+        
+        /* Progress indicators for slideshow */
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .indicator.active {
+            background-color: #4CAF50;
+        }
+        
+        /* Technique icons */
+        .technique-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f0fdf4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            border: 2px solid #4CAF50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .technique-icon i {
+            font-size: 36px;
+            color: #4CAF50;
+        }
+        
+        /* Hero section pattern */
+        .hero-pattern {
+            background-color: #4CAF50;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544V0h.284zM0 5.373l25.456 25.455-1.414 1.415L0 8.2V5.374zm0 5.656l22.627 22.627-1.414 1.414L0 13.86v-2.83zm0 5.656l19.8 19.8-1.415 1.413L0 19.514v-2.83zm0 5.657l16.97 16.97-1.414 1.415L0 25.172v-2.83zM0 28l14.142 14.142-1.414 1.414L0 30.828V28zm0 5.657L11.314 44.97 9.9 46.386l-9.9-9.9v-2.828zm0 5.657L8.485 47.8 7.07 49.212 0 42.143v-2.83zm0 5.657l5.657 5.657-1.414 1.415L0 47.8v-2.83zm0 5.657l2.828 2.83-1.414 1.413L0 53.456v-2.83zM54.627 60L30 35.373 5.373 60H8.2L30 38.2 51.8 60h2.827zm-5.656 0L30 41.03 11.03 60h2.828L30 43.858 46.142 60h2.83zm-5.656 0L30 46.686 16.686 60h2.83L30 49.515 40.485 60h2.83zm-5.657 0L30 52.343 22.344 60h2.83L30 55.172 34.828 60h2.83zM32 60l-2-2-2 2h4zM59.716 0l-28 28 1.414 1.414L60 2.544V0h-.284zM60 5.373L34.544 30.828l1.414 1.415L60 8.2V5.374zm0 5.656L37.373 33.656l1.414 1.414L60 13.86v-2.83zm0 5.656l-19.8 19.8 1.415 1.413L60 19.514v-2.83zm0 5.657l-16.97 16.97 1.414 1.415L60 25.172v-2.83zM60 28L45.858 42.142l1.414 1.414L60 30.828V28zm0 5.657L48.686 44.97l1.415 1.415 9.9-9.9v-2.828zm0 5.657L51.515 47.8l1.414 1.413 7.07-7.07v-2.83zm0 5.657l-5.657 5.657 1.414 1.415L60 47.8v-2.83zm0 5.657l-2.828 2.83 1.414 1.413L60 53.456v-2.83zM39.9 16.385l1.414-1.414L30 3.658 18.686 14.97l1.415 1.415 9.9-9.9 9.9 9.9zm-2.83 2.828l1.415-1.414L30 9.313 21.515 17.8l1.414 1.413L30 11.626l7.07 7.07zm-2.827 2.83l1.414-1.416L30 14.97l-5.657 5.657 1.414 1.415L30 17.9l4.243 4.242zm-2.83 2.827l1.415-1.414L30 20.626l-2.828 2.83 1.414 1.414L30 23.456l1.414 1.414zM56.87 59.414L58.284 58 30 29.716 1.716 58l1.414 1.414L30 32.544l26.87 26.87z' fill='%2345a049' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        /* Resource card */
+        .resource-card {
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #4CAF50;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        /* Error message */
+        .error-message {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        /* Custom area colors */
+        .area-water {
+            --area-color: #3b82f6;
+            --area-light: #dbeafe;
+            --area-gradient-start: #eff6ff;
+            --area-gradient-end: #bfdbfe;
+        }
+        
+        .area-shelter {
+            --area-color: #16a34a;
+            --area-light: #dcfce7;
+            --area-gradient-start: #f0fdf4;
+            --area-gradient-end: #bbf7d0;
+        }
+        
+        .area-waste {
+            --area-color: #ca8a04;
+            --area-light: #fef9c3;
+            --area-gradient-start: #fefce8;
+            --area-gradient-end: #fde68a;
+        }
+        
+        .area-energy {
+            --area-color: #ea580c;
+            --area-light: #ffedd5;
+            --area-gradient-start: #fff7ed;
+            --area-gradient-end: #fed7aa;
+        }
+        
+        .area-health {
+            --area-color: #e11d48;
+            --area-light: #ffe4e6;
+            --area-gradient-start: #fff1f2;
+            --area-gradient-end: #fecdd3;
+        }
+        
+        .area-food {
+            --area-color: #65a30d;
+            --area-light: #ecfccb;
+            --area-gradient-start: #f7fee7;
+            --area-gradient-end: #d9f99d;
+        }
+        
+        /* Dynamic area styling */
+        .area-header {
+            background-color: var(--area-color, #4CAF50);
+        }
+        
+        .area-text {
+            color: var(--area-color, #4CAF50);
+        }
+        
+        .area-bg-light {
+            background-color: var(--area-light, #f0fdf4);
+        }
+        
+        .area-gradient {
+            background-image: linear-gradient(to right, var(--area-gradient-start, #f0fdf4), var(--area-gradient-end, #bbf7d0));
+        }
+        
+        .area-border {
+            border-color: var(--area-color, #4CAF50);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="app" class="container mx-auto py-6 px-4">
+        <!-- Loading spinner, shown initially -->
+        <div id="loading-container" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="mt-4 text-gray-700">Loading clinic information...</p>
+        </div>
+        
+        <!-- Error message, hidden initially -->
+        <div id="error-container" class="error-message" style="display: none;">
+            <h3 class="font-bold">Error Loading Clinic</h3>
+            <p id="error-message">We couldn't find the requested clinic. Please check the URL and try again.</p>
+        </div>
+        
+        <!-- Main content container, hidden initially -->
+        <div id="content-container" style="display: none;">
+            <!-- Hero section with pattern background -->
+            <div id="area-hero" class="hero-pattern text-center py-10 rounded-lg shadow-md overflow-hidden mb-8">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 bg-opacity-90 py-6">
+                    <h1 class="text-4xl font-bold bebas text-white">🌿 <a href="/" title="ApproVideo DIY Solutions Hub" class="text-white hover:underline">ApproVideo DIY Solutions</a> 🌱</h1>
+                    <p class="text-xl text-white">Empowering communities through practical knowledge</p>
+                    <div class="mt-4">
+                        <a id="area-link" href="/areas/food" class="inline-block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg px-4 py-2 text-white">
+                            <i class="fas fa-arrow-left mr-2"></i><span id="area-name">Area</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <!-- Content header with background image -->
+                <div class="relative">
+                    <!-- Background image with overlay -->
+                    <div id="clinic-image" class="h-48 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1200x400/?sustainable');">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-green-900 opacity-80"></div>
+                    </div>
+                    
+                    <!-- Title section positioned over the background -->
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <div class="flex items-center">
+                            <div id="clinic-icon-container" class="bg-white p-4 rounded-full mr-4 shadow-md">
+                                <i id="clinic-icon" class="fas fa-seedling text-4xl text-green-600"></i>
+                            </div>
+                            <div>
+                                <h2 id="clinic-title" class="text-4xl font-bold bebas mb-1">Clinic Title</h2>
+                                <div class="flex items-center">
+                                    <i class="fas fa-video mr-2"></i>
+                                    <span id="video-count">0 videos</span>
+                                    <i class="fas fa-file-alt mx-2"></i>
+                                    <span id="resource-count">0 resources</span>
+                                    <i class="fas fa-leaf mx-2"></i>
+                                    <span id="technique-count">0 key techniques</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <!-- Description -->
+                    <p id="clinic-description" class="text-gray-700 leading-relaxed mb-6 text-lg">
+                        Loading clinic description...
+                    </p>
+                    
+                    <!-- Tags with enhanced styling -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fas fa-tags mr-2 text-green-600"></i>
+                            Topics Covered:
+                        </h3>
+                        <div id="tag-container" class="flex flex-wrap">
+                            <!-- Tags will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Quick access technique cards -->
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                            <i class="fas fa-star mr-3 text-yellow-500"></i>
+                            Key Techniques
+                        </h3>
+                        
+                        <div id="techniques-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Techniques will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Panel Slideshow -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                            <i class="fas fa-chalkboard-teacher mr-3 text-blue-600"></i>
+                            Learning Modules
+                        </h3>
+                        
+                        <div class="panel-slideshow relative">
+                            <div id="panels-container">
+                                <!-- Panels will be added here dynamically -->
+                            </div>
+                            
+                            <!-- Slideshow Controls -->
+                            <div class="flex justify-between mt-4">
+                                <button id="prev-panel" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow flex items-center">
+                                    <i class="fas fa-chevron-left mr-2"></i> Previous
+                                </button>
+                                
+                                <div id="slide-indicators" class="slide-indicators">
+                                    <!-- Indicators will be added here dynamically -->
+                                </div>
+                                
+                                <button id="next-panel" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow flex items-center">
+                                    Next <i class="fas fa-chevron-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Video Resources -->
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                            <i class="fas fa-film mr-3 text-red-600"></i>
+                            Video Resources
+                            <span id="video-badge" class="ml-3 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-full">0 videos</span>
+                        </h3>
+                        
+                        <div id="videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Videos will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Download Resources Section -->
+                    <div class="mt-12 bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-lg shadow-sm">
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/3 text-center mb-6 md:mb-0">
+                                <div class="bg-white p-6 rounded-full inline-block shadow-md">
+                                    <i class="fas fa-download text-6xl text-green-600"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4 bebas">Resource Downloads</h3>
+                                <p class="mb-6 text-lg">Download our comprehensive resource package for <span id="download-title">this clinic</span>, including detailed guides, worksheets, and reference materials:</p>
+                                
+                                <div id="resources-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <!-- Resources will be added here dynamically -->
+                                </div>
+                                
+                                <div class="text-center md:text-left">
+                                    <button 
+                                        id="download-button"
+                                        class="download-button bg-green-600 hover:bg-green-700 transition-colors"
+                                    >
+                                        <i class="fas fa-download mr-2"></i> Download Complete Package
+                                    </button>
+                                    <p class="text-sm text-gray-600 mt-2">
+                                        <i class="fas fa-info-circle mr-1"></i> All materials are licensed under Creative Commons (CC BY-NC-SA 4.0)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Related content section -->
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                            <i class="fas fa-link mr-3 text-purple-600"></i>
+                            Related Resources
+                        </h3>
+                        
+                        <div id="related-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Related resources will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Community section -->
+                    <div class="mt-12 bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 bebas flex items-center">
+                            <i class="fas fa-users mr-3 text-green-600"></i>
+                            Join Our Community
+                        </h3>
+                        <p class="mb-6">Connect with other practitioners, share your experiences, and learn from others:</p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                                <i class="fas fa-comments text-green-600 mr-2"></i> Discussion Forum
+                            </a>
+                            <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                                <i class="fas fa-calendar-alt text-blue-600 mr-2"></i> Upcoming Workshops
+                            </a>
+                            <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                                <i class="fas fa-share-alt text-purple-600 mr-2"></i> Share Your Success
+                            </a>
+                            <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                                <i class="fas fa-question-circle text-yellow-600 mr-2"></i> Ask an Expert
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">ApproVideo DIY Solutions</h3>
+                    <p class="text-gray-400">Empowering communities through practical knowledge.</p>
+                </div>
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">Quick Links</h3>
+                    <ul class="text-gray-400">
+                        <li class="mb-1"><a href="/" class="hover:text-white">Home</a></li>
+                        <li class="mb-1"><a href="/areas" class="hover:text-white">Resource Areas</a></li>
+                        <li class="mb-1"><a href="/about" class="hover:text-white">About</a></li>
+                        <li class="mb-1"><a href="/contact" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-xl font-bold mb-2">Connect</h3>
+                    <div class="flex">
+                        <a href="#" class="text-gray-400 hover:text-white mr-4"><i class="fab fa-youtube text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white mr-4"><i class="fab fa-twitter text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500">
+                
+
+                <p>&copy; 2025 ApproVideo DIY Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <p>&copy; 2025 ApproVideo DIY Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Data for all 21 clinics
+        const clinicData = {
+            // WATER AREA
+            "purification": {
+                title: "Purification",
+                area: "water",
+                areaName: "Water",
+                description: "Use household items or low-cost filters to make water safe for drinking. Includes simple boiling, sand filtering, and solar disinfection techniques.",
+                tags: [
+                    { name: "clean water", icon: "fas fa-tint" },
+                    { name: "filtration", icon: "fas fa-filter" },
+                    { name: "health", icon: "fas fa-heart" }
+                ],
+                icon: "fas fa-tint-slash",
+                image: "purification",
+                techniques: [
+                    { name: "Sand Filtration", icon: "fas fa-filter", description: "Using layers of sand, gravel, and charcoal to remove contaminants" },
+                    { name: "Solar Disinfection", icon: "fas fa-sun", description: "Utilizing sunlight to kill harmful bacteria in clear water" },
+                    { name: "Boiling", icon: "fas fa-fire", description: "Heat treatment to eliminate pathogens and ensure water safety" }
+                ],
+                panels: [
+                    { title: "Water Contamination", content: "Understanding common water contaminants and health risks. Learn to visually identify potentially unsafe water sources.", type: "Education", icon: "fas fa-exclamation-triangle text-red-800 fa-lg" },
+                    { title: "Filtration Methods", content: "Compare different filtration techniques including biosand filters, ceramic filters, and cloth filtration for various contaminant types.", type: "Technical", icon: "fas fa-filter text-blue-800 fa-lg" },
+                    { title: "Chemical Treatment", content: "Safe application of chlorination and other chemical treatments, including proper measurement and contact time.", type: "Safety", icon: "fas fa-flask text-purple-800 fa-lg" }
+                ],
+                videos: [
+                    { id: "uQtFZM4ksX4", title: "DIY Biosand Water Filter Construction", description: "Step-by-step guide to building an effective biosand filter", duration: "15:24" },
+                    { id: "pSLd9WhvBjI", title: "How to Build a Ceramic Water Filter", description: "Creating ceramic filters using local clay and combustible materials", duration: "12:08" },
+                    { id: "idpizRBP4oo", title: "Solar Water Disinfection (SODIS) Method", description: "Using sunlight to kill harmful bacteria in clear water", duration: "18:35" },
+                    { id: "B7QsWrVyJJo", title: "Simple Charcoal and Sand Water Filter", description: "Creating a multi-layer filter using common materials", duration: "14:47" },
+                    { id: "k92ZHf8Kz4U", title: "Boiling Water Safely Without Electricity", description: "Methods for effective water boiling using minimal fuel", duration: "22:11" },
+                    { id: "oTGP5BbgZ3k", title: "Testing Water Quality With Simple Tools", description: "How to check if your water is safe to drink without lab equipment", duration: "16:53" }
+                ],
+                resources: [
+                    { name: "Water Purification Guide", type: "pdf", size: "4.2MB", icon: "fas fa-file-pdf text-red-500" },
+                    { name: "Filtration System Diagrams", type: "jpg", size: "1.8MB", icon: "fas fa-file-image text-blue-500" },
+                    { name: "Water Testing Procedures", type: "pdf", size: "0.5MB", icon: "fas fa-file-alt text-green-500" },
+                    { name: "Disinfection Methods Chart", type: "pdf", size: "0.8MB", icon: "fas fa-file-alt text-yellow-500" }
+                ],
+                related: [
+                    { title: "Desalination", area: "water", image: "desalination", description: "Converting saltwater to freshwater using simple methods" },
+                    { title: "Efficient Distribution", area: "water", image: "distribution", description: "Systems for storing and distributing clean water" },
+                    { title: "Wastewater Management", area: "waste", image: "wastewater", description: "Treating and safely disposing of used water" }
+                ]
+            },
+            "desalination": {
+                title: "Desalination",
+                area: "water",
+                areaName: "Water",
+                description: "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.",
+                tags: [
+                    { name: "salt removal", icon: "fas fa-water" },
+                    { name: "ocean", icon: "fas fa-umbrella-beach" },
+                    { name: "irrigation", icon: "fas fa-seedling" }
+                ],
+                icon: "fas fa-water",
+                image: "desalination",
+                techniques: [
+                    { name: "Solar Still", icon: "fas fa-sun", description: "Using solar energy to evaporate and collect pure water" },
+                    { name: "Multi-Effect Distillation", icon: "fas fa-layer-group", description: "Multiple stages of evaporation for improved efficiency" },
+                    { name: "Biochar Filtration", icon: "fas fa-fire-alt", description: "Using charcoal to adsorb salt from brackish water" }
+                ],
+                panels: [
+                    { title: "Solar Still Design", content: "Learn how to maximize efficiency in solar still design through proper material selection, angle optimization, and condensation surface area.", type: "Technical", icon: "fas fa-sun text-yellow-600 fa-lg" },
+                    { title: "Yield Improvement", content: "Techniques to increase freshwater production including black surface absorbers, insulation methods, and condensation enhancement.", type: "Optimization", icon: "fas fa-tint-slash text-blue-800 fa-lg" },
+                    { title: "Post-Treatment", content: "Why remineralization matters and how to add essential minerals to distilled water using limestone, clean eggshells, or mineral drops.", type: "Health", icon: "fas fa-plus-circle text-green-800 fa-lg" }
+                ],
+                videos: [
+                    { id: "bJ9r8RFp4gE", title: "Simple Solar Desalination Still", description: "Building a basic sun-powered water desalinator", duration: "12:36" },
+                    { id: "5zWfXtKu8As", title: "DIY Multi-Effect Distillation System", description: "Creating a more efficient desalination system using multiple condensation stages", duration: "18:42" },
+                    { id: "oFYBDCG1H8M", title: "Building a Wood-Heated Desalination Unit", description: "Using wood fire to power water desalination when solar isn't available", duration: "16:54" },
+                    { id: "d5bjI9jgCxk", title: "Testing and Improving Distilled Water Quality", description: "Methods to ensure distilled water is safe and properly mineralized", duration: "10:23" },
+                    { id: "HvV8DcfXrYk", title: "Large-Scale Communal Desalination System", description: "Scaling up desalination technology for small community needs", duration: "24:15" }
+                ],
+                resources: [
+                    { name: "Desalination Methods Guide", type: "pdf", size: "3.8MB", icon: "fas fa-file-pdf text-red-500" },
+                    { name: "Solar Still Construction Plans", type: "pdf", size: "2.1MB", icon: "fas fa-file-pdf text-blue-500" },
+                    { name: "Efficiency Calculator", type: "xlsx", size: "0.6MB", icon: "fas fa-file-excel text-green-500" },
+                    { name: "Remineralization Guide", type: "pdf", size: "1.2MB", icon: "fas fa-file-alt text-yellow-500" }
+                ],
+                related: [
+                    { title: "Purification", area: "water", image: "purification", description: "Make water safe for drinking with simple filtering methods" },
+                    { title: "Efficient Distribution", area: "water", image: "distribution", description: "Systems for storing and distributing clean water" },
+                    { title: "DIY Solar Energy", area: "energy", image: "solar", description: "Powering desalination systems with solar energy" }
+                ]
+            },
+            "efficient-distribution": {
+                title: "Efficient Distribution",
+                area: "water",
+                areaName: "Water",
+                description: "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.",
+                tags: [
+                    { name: "pipes", icon: "fas fa-grip-lines" },
+                    { name: "delivery", icon: "fas fa-truck" },
+                    { name: "infrastructure", icon: "fas fa-network-wired" }
+                ],
+                icon: "fas fa-faucet",
+                image: "water-distribution",
+                techniques: [
+                    { name: "Gravity-Fed Systems", icon: "fas fa-mountain", description: "Using elevation differences to create water pressure" },
+                    { name: "Ram Pumps", icon: "fas fa-cogs", description: "Mechanical pumps that use water momentum to pump water uphill" },
+                    { name: "Water Storage", icon: "fas fa-database", description: "Building efficient tanks and cisterns for water storage" }
+                ],
+                panels: [
+                    { title: "Gravity Systems", content: "Harnessing natural elevation for water distribution without pumps. Learn proper pipe sizing, pressure regulation, and air lock prevention.", type: "Technical", icon: "fas fa-mountain text-blue-800 fa-lg" },
+                    { title: "Storage Solutions", content: "Designing and building water storage systems including tanks, cisterns, and elevated containers to maintain consistent supply.", type: "Infrastructure", icon: "fas fa-water text-blue-600 fa-lg" },
+                    { title: "Leak Prevention", content: "Techniques to identify, prevent, and repair leaks in water distribution systems, saving water and maintaining pressure.", type: "Maintenance", icon: "fas fa-wrench text-red-600 fa-lg" }
+                ],
+                videos: [
+                    { id: "9ICi3rFj28M", title: "DIY Gravity-Fed Water System Installation", description: "Setting up water distribution using natural elevation differences", duration: "19:26" },
+                    { id: "Jl5TodxqQpc", title: "Building a Ram Pump From Plumbing Parts", description: "Creating a pump that uses water momentum to move water uphill without electricity", duration: "22:42" },
+                    { id: "2P4TRkWGKqc", title: "Water Storage Tank Construction", description: "Building a ferrocement water tank for reliable storage", duration: "25:34" },
+                    { id: "qSZWVd8YSLE", title: "Low-Pressure Drip Irrigation Setup", description: "Water-saving irrigation system that works with minimal pressure", duration: "14:25" },
+                    { id: "wj8ZLGdSvfU", title: "Bicycle-Powered Water Pump Construction", description: "Human-powered water pumping for small-scale needs", duration: "17:43" },
+                    { id: "UXcJp0G_JWM", title: "PVC Pipe Network Design for Water Distribution", description: "Planning and building a simple pipe network for water delivery", duration: "20:08" }
+                ],
+                resources: [
+                    { name: "Water Distribution Guide", type: "pdf", size: "5.2MB", icon: "fas fa-file-pdf text-red-500" },
+                    { name: "Ram Pump Blueprints", type: "pdf", size: "3.4MB", icon: "fas fa-file-pdf text-blue-500" },
+                    { name: "Tank Sizing Calculator", type: "xlsx", size: "0.8MB", icon: "fas fa-file-excel text-green-500" },
+                    { name: "Pipe Network Diagrams", type: "jpg", size: "2.3MB", icon: "fas fa-file-image text-yellow-500" }
+                ],
+                related: [
+                    { title: "Purification", area: "water", image: "purification", description: "Make water safe for drinking with simple filtering methods" },
+                    { title: "Sustainable Agriculture", area: "food", image: "sustainable-agriculture", description: "Water-efficient farming techniques" },
+                    { title: "Microgrids", area: "energy", image: "microgrids", description: "Powering water pumps with sustainable energy" }
+                ]
+            },
+            // SHELTER AREA
+            "low-cost-construction": {
+                title: "Low-cost, Durable Construction Methods",
+                area: "shelter",
+                areaName: "Shelter",
+                description: "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                tags: [
+                    { name: "construction", icon: "fas fa-hammer" },
+                    { name: "low-cost", icon: "fas fa-dollar-sign" },
+                    { name: "durable", icon: "fas fa-shield-alt" },
+                    { name: "building", icon: "fas fa-home" }
+                ],
+                icon: "fas fa-home",
+                image: "low-cost-construction",
+                techniques: [
+                    { name: "Earth Bag Building", icon: "fas fa-cubes", description: "Using filled sacks to create strong, earthquake-resistant walls" },
+                    { name: "Bamboo Construction", icon: "fas fa-tree", description: "Utilizing bamboo for structural elements and walls" },
+                    { name: "Concrete Block Foundation", icon: "fas fa-th-large", description: "Creating solid foundations with locally made blocks" }
+                ],
+                panels: [
+                    { title: "Selecting Materials", content: "Learn how to identify suitable local materials for construction. This panel covers basic testing methods for soil, wood, bamboo, and recycled materials.", type: "Guide", icon: "fas fa-search text-blue-800 fa-lg" },
+                    { title: "Foundation Techniques", content: "A solid foundation is essential for any structure. This panel covers simple foundation methods using stone, rubble, concrete, and earthbags.", type: "Technical", icon: "fas fa-layer-group text-green-800 fa-lg" },
+                    { title: "Wall Building Safety", content: "Safety considerations for different wall building techniques, including load-bearing capacity, bracing, and weather protection.", type: "Safety", icon: "fas fa-hard-hat text-yellow-800 fa-lg" }
+                ],
+                videos: [
+                    { id: "KDvH1hoEMPQ", title: "DIY Concrete Block Foundation for Small Structures", description: "How to build a simple but strong foundation with concrete blocks", duration: "18:24" },
+                    { id: "0olcwSwRELw", title: "Building With Earth - Complete Cob Workshop", description: "Learn the basics of building with cob, a natural building material", duration: "32:05" },
+                    { id: "X58DmXH2-W0", title: "How To Build A Bamboo House Step By Step", description: "Complete guide to constructing a durable bamboo structure", duration: "28:37" },
+                    { id: "h8Kx-LmYAqQ", title: "DIY Pallet Construction: Building Walls and Floors", description: "Using recycled wooden pallets for low-cost building materials", duration: "16:42" },
+                    { id: "ap7CYjF9CJw", title: "Earthbag Building Basics: Foundation and Wall Construction", description: "Step-by-step guide to building with earthbags", duration: "24:18" }
+                ],
+                resources: [
+                    { name: "Construction Methods Guide", type: "pdf", size: "6.3MB", icon: "fas fa-file-pdf text-red-500" },
+                    { name: "Building Plans", type: "pdf", size: "4.1MB", icon: "fas fa-file-pdf text-blue-500" },
+                    { name: "Material Selection Checklist", type: "pdf", size: "0.9MB", icon: "fas fa-file-alt text-green-500" },
+                    { name: "Safety Guidelines", type: "pdf", size: "1.5MB", icon: "fas fa-file-alt text-yellow-500" }
+                ],
+                related: [
+                    { title: "Locally Available Materials", area: "shelter", image: "local-materials", description: "Finding and using materials from your surroundings" },
+                    { title: "Upcycling", area: "waste", image: "upcycling", description: "Reusing waste materials for construction" },
+                    { title: "Wastewater Management", area: "waste", image: "wastewater", description: "Planning proper drainage for your shelter" }
+                ]
+            },
+            "locally-available-materials": {
+                title: "Locally Available Materials",
+                area: "shelter",
+                areaName: "Shelter",
+                description: "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+                tags: [
+                    { name: "materials", icon: "fas fa-cubes" },
+                    { name: "local", icon: "fas fa-map-marker-alt" },
+                    { name: "sustainability", icon: "fas fa-leaf" }
+                ],
+                icon: "fas fa-tree",
+                image: "local-materials",
+                techniques: [
+                    { name: "Clay Processing", icon: "fas fa-hands", description: "Testing and preparing natural clay for construction" },
+                    { name: "Bamboo Treatment", icon: "fas fa-spray-can", description: "Methods to preserve bamboo for long-term durability" },
+                    { name: "Stone Selection", icon: "fas fa-mountain", description: "Identifying and using local stone for building" }
+                ],
+                panels: [
+                    { title: "Material Testing", content: "Simple field tests to determine if local materials are suitable for construction, including soil composition tests and wood hardness evaluations.", type: "Guide", icon: "fas fa-vial text-purple-800 fa-lg" },
+                    { title: "Sustainable Harvesting", content: "Ethical guidelines for harvesting natural materials without depleting resources, including replanting strategies and seasonal considerations.", type: "Sustainability", icon: "fas fa-leaf text-green-800 fa-lg" },
+                    { title: "Material Processing", content: "Techniques to prepare raw materials for construction, including drying, seasoning, and natural preservation methods.", type: "Technical", icon: "fas fa-tools text-blue-800 fa-lg" }
+                ],
+                videos: [
+                    { id: "eOOYrY4zxpw", title: "How to Identify and Process Local Clay for Construction", description: "Testing and preparing natural clay for building projects", duration: "16:24" },
+                    { id: "9-Ka4YcyOFo", title: "Bamboo Harvesting and Treatment for Construction", description: "How to select, harvest, and treat bamboo for long-lasting building materials", duration: "21:38" },
+                    { id: "t4l_1YQ9P0c", title: "Building With Stone: Finding and Using Local Rock", description: "Techniques for gathering and constructing with locally sourced stone", duration: "19:42" },
+                    { id: "M7P8YAIhBkY", title: "Creative Reuse: Building With Glass Bottles", description: "How to incorporate waste glass bottles into walls for beauty and function", duration: "14:07" },
+                    { id: "7RZPJdhN4f0", title: "Using Recycled Tires in Earthship Construction", description: "Repurposing used tires for building foundations and walls", duration: "25:32" },
+                    { id: "YkG0H4xhLjg", title: "Natural Fiber Reinforcement for Earth Construction", description: "Using straw, grass, and other natural fibers to strengthen earth-based building materials", duration: "17:49" }
+                ],
+                resources: [
+                    { name: "Local Materials Guide", type: "pdf", size: "4.8MB", icon: "fas fa-file-pdf text-red-500" },
+                    { name: "Material Property Charts", type: "pdf", size: "2.6MB", icon: "fas fa-file-pdf text-blue-500" },
+                    { name: "Preservation Techniques", type: "pdf", size: "1.8MB", icon: "fas fa-file-alt text-green-500" },
+                    { name: "Harvesting Calendar", type: "xlsx", size: "0.7MB", icon: "fas fa-file-excel text-yellow-500" }
+                ],
+                related: [
+                    { title: "Low-cost Construction", area: "shelter", image: "low-cost-construction", description: "Building techniques using affordable materials" },
+                    { title: "Upcycling", area: "waste", image: "upcycling", description: "Creative reuse of waste materials" },
+                    { title: "Sustainable Agriculture", area: "food", image: "sustainable-agriculture", description: "Growing building materials like bamboo" }
+                ]
+            },
+            // Other clinics would be defined here, following the same pattern
+            // Adding stubs for the remaining clinics to demonstrate the structure
+            "composting": {
+                title: "Composting",
+                area: "waste",
+                areaName: "Waste",
+                description: "Learn how to convert organic waste into nutrient-rich soil. Includes techniques for both urban and rural settings, managing compost temperature, and using the final product.",
+                // Additional data would be populated here
+                icon: "fas fa-recycle",
+                image: "composting",
+                tags: [
+                    { name: "composting", icon: "fas fa-seedling" },
+                    { name: "organic waste", icon: "fas fa-apple-alt" },
+                    { name: "soil improvement", icon: "fas fa-leaf" }
+                ],
+                techniques: [
+                    { name: "Hot Composting", icon: "fas fa-temperature-high", description: "Fast decomposition through heat generation" },
+                    { name: "Vermicomposting", icon: "fas fa-bug", description: "Using worms to break down organic material" },
+                    { name: "Bokashi Fermentation", icon: "fas fa-wine-bottle", description: "Anaerobic fermentation of kitchen waste" }
+                ],
+                videos: [
+                    { id: "JehP4xlF4gI", title: "Building a Three-Bin Compost System", description: "Creating an efficient composting setup for larger volumes", duration: "18:26" },
+                    { id: "5CnSYWX-N6I", title: "Urban Balcony Composting With Worms", description: "Small-scale vermicomposting for apartment dwellers", duration: "12:18" }
+                ],
+                panels: [
+                    { title: "Compost Basics", content: "Understanding the fundamentals of composting including the carbon-to-nitrogen ratio, moisture management, and aeration principles.", type: "Education", icon: "fas fa-seedling text-green-800 fa-lg" }
+                ],
+                resources: [
+                    { name: "Composting Guide", type: "pdf", size: "3.5MB", icon: "fas fa-file-pdf text-red-500" }
+                ],
+                related: [
+                    { title: "Sustainable Agriculture", area: "food", image: "sustainable-agriculture", description: "Using compost to improve crop yields" }
+                ]
+            },
+            "sustainable-agriculture": {
+                title: "Sustainable Agriculture Techniques",
+                area: "food",
+                areaName: "Food",
+                description: "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.",
+                icon: "fas fa-seedling",
+                image: "sustainable-agriculture",
+                tags: [
+                    { name: "agriculture", icon: "fas fa-tractor" },
+                    { name: "sustainable", icon: "fas fa-recycle" },
+                    { name: "soil health", icon: "fas fa-mountain" }
+                ],
+                // Additional data would be filled in for a complete implementation
+                techniques: [
+                    { name: "Crop Rotation", icon: "fas fa-sync-alt", description: "Systematic cycling of different crops to improve soil health" },
+                    { name: "Natural Pest Control", icon: "fas fa-bug", description: "Using beneficial insects and companion planting" },
+                    { name: "Cover Cropping", icon: "fas fa-leaf", description: "Planting specific crops to protect and enrich soil" }
+                ],
+                videos: [
+                    { id: "QhH-YsDr8D4", title: "Crop Rotation Planning", description: "Designing effective rotation systems", duration: "15:24" }
+                ],
+                panels: [
+                    { title: "Soil Ecology", content: "Understanding the living ecosystem beneath our feet and how sustainable practices enhance beneficial soil organisms and nutrient cycling.", type: "Education", icon: "fas fa-microscope text-brown-600 fa-lg" }
+                ],
+                resources: [
+                    { name: "Sustainable Agriculture Guide", type: "pdf", size: "4.2MB", icon: "fas fa-file-pdf text-red-500" }
+                ],
+                related: [
+                    { title: "Composting", area: "waste", image: "composting", description: "Creating nutrient-rich soil amendments" }
+                ]
+            }
+            // Additional clinics would be defined here
+        };
+
+        // Initialize the page based on URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            initClinicPage();
+        });
+
+        // Main initialization function
+        function initClinicPage() {
+            // Get clinic ID from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const clinicId = urlParams.get('id');
+            
+            // If no clinic ID is provided, show an error
+            if (!clinicId) {
+                showError("No clinic ID was provided. Please specify a clinic in the URL.");
+                return;
+            }
+            
+            // Get clinic data
+            const clinic = clinicData[clinicId];
+            
+            // If clinic not found, show an error
+            if (!clinic) {
+                showError(`Clinic '${clinicId}' was not found. Please check the ID and try again.`);
+                return;
+            }
+            
+            // Populate the page with clinic data
+            populateClinicData(clinic);
+            
+            // Hide loading spinner and show content
+            document.getElementById('loading-container').style.display = 'none';
+            document.getElementById('content-container').style.display = 'block';
+            
+            // Initialize dynamic elements
+            initializePanelSlideshow();
+        }
+
+        // Function to show an error message
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-container').style.display = 'block';
+            document.getElementById('loading-container').style.display = 'none';
+        }
+
+        // Function to populate clinic data
+        function populateClinicData(clinic) {
+            // Set document title
+            document.title = `${clinic.title} - ${clinic.areaName} | ApproVideo DIY Solutions`;
+            
+            // Apply area-specific styling
+            document.body.className = document.body.className.replace(/area-\w+/g, '');
+            document.body.classList.add(`area-${clinic.area}`);
+            
+            // Update hero section
+            document.getElementById('area-name').textContent = clinic.areaName;
+            document.getElementById('area-link').href = `/areas/${clinic.area}`;
+            
+            // Set area-specific colors for buttons
+            const buttons = document.querySelectorAll('.bg-green-600, .text-green-600');
+            buttons.forEach(button => {
+                button.className = button.className.replace(/bg-green-\d+|text-green-\d+/g, '');
+                button.classList.add(button.className.includes('bg-') ? `bg-${clinic.area}-600` : `text-${clinic.area}-600`);
+            });
+            
+            // Update main content
+            document.getElementById('clinic-title').textContent = clinic.title;
+            document.getElementById('clinic-description').textContent = clinic.description;
+            
+            // Set clinic image
+            const defaultImage = `https://source.unsplash.com/random/1200x400/?${clinic.image || clinic.title.toLowerCase()}`;
+            document.getElementById('clinic-image').style.backgroundImage = `url('${defaultImage}')`;
+            
+            // Set clinic icon
+            document.getElementById('clinic-icon').className = `${clinic.icon || 'fas fa-leaf'} text-4xl text-${clinic.area}-600`;
+            
+            // Update counts
+            document.getElementById('video-count').textContent = `${clinic.videos ? clinic.videos.length : 0} videos`;
+            document.getElementById('resource-count').textContent = `${clinic.resources ? clinic.resources.length : 0} resources`;
+            document.getElementById('technique-count').textContent = `${clinic.techniques ? clinic.techniques.length : 0} key techniques`;
+            document.getElementById('video-badge').textContent = `${clinic.videos ? clinic.videos.length : 0} videos`;
+            
+            // Update download title
+            document.getElementById('download-title').textContent = clinic.title;
+            
+            // Populate tags
+            populateTags(clinic.tags);
+            
+            // Populate techniques
+            populateTechniques(clinic.techniques);
+            
+            // Populate panels
+            populatePanels(clinic.panels);
+            
+            // Populate videos
+            populateVideos(clinic.videos);
+            
+            // Populate resources
+            populateResources(clinic.resources);
+            
+            // Populate related content
+            populateRelated(clinic.related);
+            
+            // Set download button handler
+            document.getElementById('download-button').onclick = function() {
+                downloadResourceZip(clinic.area, clinicSlug(clinic.title));
+            };
+        }
+
+        // Helper function to convert a title to a slug
+        function clinicSlug(title) {
+            return title.toLowerCase().replace(/[^\w]+/g, '-');
+        }
+
+        // Function to populate tags
+        function populateTags(tags) {
+            const container = document.getElementById('tag-container');
+            container.innerHTML = ''; // Clear existing tags
+            
+            if (!tags || tags.length === 0) {
+                container.innerHTML = '<span class="text-gray-500">No tags available</span>';
+                return;
+            }
+            
+            tags.forEach(tag => {
+                const pill = document.createElement('span');
+                pill.className = 'tag-pill bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center';
+                
+                const icon = document.createElement('i');
+                icon.className = `${tag.icon || 'fas fa-tag'} mr-2`;
+                
+                const text = document.createTextNode(tag.name);
+                
+                pill.appendChild(icon);
+                pill.appendChild(text);
+                container.appendChild(pill);
+            });
+        }
+
+        // Function to populate techniques
+        function populateTechniques(techniques) {
+            const container = document.getElementById('techniques-container');
+            container.innerHTML = ''; // Clear
+
+        };
+
+        </script>
+
+</body>
+</html>
+       
+       
+
+
+
+
+<style>
+    /* Basic Reset and Body Styles */
+    body, h1, h2, h3, h4, p, ul, li, button {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    /* Header (Narrow Top Section) */
+    .header-top {
+        background-color: #2c3e50;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-top .logo {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .header-top button {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1em;
+        padding: 8px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .header-top button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mega Menu Container */
+    .mega-menu-container {
+        position: relative; /* For absolute positioning of the mega menu */
+    }
+
+    /* Mega Menu Styles */
+    .mega-menu {
+        position: absolute;
+        left: 0;
+        top: 100%; /* Positioned directly below the header-top */
+        background-color: #fff;
+        color: #333;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+        display: none; /* Hidden by default */
+        width: 100vw; /* Full viewport width */
+        left: calc(-50vw + 50%); /* Center the full width menu */
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Narrower columns for just category titles */
+        gap: 15px;
+        border-top: 3px solid #3498db; /* Accent border */
+    }
+
+    .mega-menu.open {
+        display: grid; /* Show the mega menu when the 'open' class is added */
+    }
+
+    .mega-menu-category-title {
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+    }
+
+    .mega-menu-category-title:hover,
+    .mega-menu-category-title.active {
+        background-color: #f0f0f0;
+    }
+
+    .mega-menu-category-title i {
+        margin-right: 8px;
+        font-size: 1.1em;
+        color: #3498db;
+    }
+
+    .mega-menu-category-details {
+        position: absolute;
+        top: 100%; /* Position below the category titles */
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 11;
+        width: 100%;
+        padding: 20px;
+        display: none; /* Hidden by default */
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .mega-menu-category-details.active {
+        display: grid;
+    }
+
+    .mega-menu-subcategory {
+        margin-bottom: 15px;
+    }
+
+    .mega-menu-subcategory h4 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 0.95em;
+        font-weight: 600;
+    }
+
+    .mega-menu-subcategory p {
+        margin-bottom: 10px;
+        color: #777;
+        font-size: 0.9em;
+        line-height: 1.5;
+    }
+
+    .mega-menu-subcategory .tags {
+        font-size: 0.8em;
+        color: #999;
+    }
+
+    .mega-menu-subcategory .tags span {
+        background-color: #e7f2fa;
+        color: #3498db;
+        padding: 4px 7px;
+        border-radius: 5px;
+        margin-right: 5px;
+        display: inline-block;
+        margin-bottom: 5px;
+        cursor: pointer; /* Make tags clickable */
+    }
+
+    .mega-menu-subcategory .tags span:hover {
+        background-color: #d0e8f5;
+    }
+
+    /* Informational Section Styling */
+    .info-section {
+        padding: 40px 20px;
+        background-color: #f4f4f4;
+        margin-top: 50px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .info-section h2 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.6em;
+    }
+
+    .info-section p {
+        color: #666;
+        line-height: 3.7;
+        max-width: 800px;
+        margin: 20 auto;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.bebas {
+font-family: "Bebas Neue", cursive;
+}
+
+.hover\:glow:hover {
+filter: drop-shadow(0px 0px 7px rgba(59, 130, 246, 0.5));
+}
+
+.group:hover .group-hover\:\-translate-y-1 {
+transform: translateY(-0.25rem);
+}
+
+.group:focus .group-focus\:pt-20 {
+padding-top: 5rem;
+}
+
+.animate-down {
+transform: translateY(250%) !important
+}
+
+.animate-up {
+transform: translateY(-250%) !important
+}
+
+.hidden {
+display: none;
+}
+
+
+</style>

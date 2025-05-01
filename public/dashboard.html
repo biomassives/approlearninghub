@@ -35,6 +35,50 @@
             <h2>Upcoming Events</h2>
             <div id="events-list">Loading events...</div>
         </section>
+
+        <section id="profile-form" class="hidden">
+
+          <form id="edit-profile-form" style="display: none; max-width: 600px; margin: 1rem auto;">
+            <h2>Edit Your Profile</h2>
+          
+            <label>
+              Name:
+              <input type="text" id="profile-name" required />
+            </label>
+          
+            <label>
+              Email:
+              <input type="email" id="profile-email" required />
+            </label>
+          
+            <label>
+              Bio:
+              <textarea id="profile-bio" rows="3"></textarea>
+            </label>
+          
+            <label>
+              Avatar URL:
+              <input type="url" id="profile-avatar" placeholder="https://…" />
+            </label>
+          
+            <fieldset>
+              <legend>Clinics you’re part of</legend>
+              <div id="clinics-list"></div>
+            </fieldset>
+          
+            <fieldset>
+              <legend>Your Learning Modules</legend>
+              <div id="modules-list"></div>
+            </fieldset>
+          
+            <button type="submit">Save Profile</button>
+            <span id="profile-status" style="margin-left:.5rem;color:green;"></span>
+          </form>
+          
+        </section>
+
+
+
     </main>
 
     <footer class="page-footer" role="contentinfo">

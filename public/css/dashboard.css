@@ -1,0 +1,22 @@
+#edit-profile-form label,
+#edit-profile-form fieldset {
+  display: block;
+  margin-bottom: 1rem;
+}
+#edit-profile-form input,
+#edit-profile-form textarea {
+  width: 100%;
+  padding: .5rem;
+  margin-top: .25rem;
+  box-sizing: border-box;
+}
+#edit-profile-form fieldset > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+#edit-profile-form fieldset div label {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}

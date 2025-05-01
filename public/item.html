@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Biodiversity Resource Details</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <script src="https://cdn.tailwindcss.com"></script>
+     <style>
+         /* Optional: You can add or override Tailwind styles here */
+         body {
+             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+             background-color: #121218; /* Dark background */
+             color: #e0e0e6; /* Primary text color */
+             margin: 0;
+             padding: 2rem;
+         }
+
+         .container {
+             max-width: 800px;
+             margin: 0 auto;
+         }
+
+         .detailed-item {
+             background-color: #1e1e2a; /* Panel background */
+             padding: 2rem;
+             border-radius: 0.5rem;
+             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+             border: 1px solid #2a2a36; /* Border color */
+         }
+
+         .detailed-item h1 {
+             color: #4a80f0; /* Accent blue */
+             margin-bottom: 1rem;
+             border-bottom: 1px solid #2a2a36;
+             padding-bottom: 0.5rem;
+         }
+
+         .area-badge {
+             display: inline-block;
+             padding: 0.5rem 1rem; /* Increased padding for pill shape */
+             background-color: rgba(74, 128, 240, 0.1); /* Light blue background */
+             color: #4a80f0; /* Accent blue */
+             border-radius: 2rem; /* Rounded pill shape */
+             font-size: 0.875rem; /* Slightly larger font */
+             margin-bottom: 1rem;
+         }
+
+         .item-description {
+             color: #a0a0b0; /* Secondary text color */
+             line-height: 1.6;
+             margin-bottom: 1.5rem;
+         }
+
+         .detailed-item h3 {
+             color: #e0e0e6; /* Primary text color */
+             margin-top: 1.5rem;
+             margin-bottom: 0.75rem;
+             border-bottom: 1px solid #2a2a36;
+             padding-bottom: 0.25rem;
+         }
+
+         .detailed-item iframe {
+             margin-bottom: 1rem;
+             width: 100%;
+             aspect-ratio: 16 / 9;
+         }
+
+         /* Tailwind-inspired button */
+         .back-button {
+             @apply inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full shadow-md transition duration-200 ease-in-out;
+         }
+
+         .back-button i {
+             margin-right: 0.5rem;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <div id="item-previews">
+             </div>
+     </div>
+     <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const itemPreviewsContainer = document.getElementById('item-previews');
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemId = urlParams.get('id');
+    const subcategoryIndex = urlParams.get('subcategory');
+
+    // Sample data (Modified to be an object for easier access)
+    const allData = {
+        "shelter1": {
+            "area": "Shelter",
+            "subcategories": [
+                {
+                    "title": "Low-cost, Durable Construction Methods",
+                    "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                    "tags": ["construction", "low-cost", "durable", "building"],
+                    "ld_youtube": [
+                        "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl",
+                        "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl",
+                        "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl"
+                    ],
+                    "details": "Wubba lubba dub dub! This is some serious low-cost construction, Morty. You gotta get schwifty with the materials!"
+                }
+            ]
+        },
+        "water2": {
+            "area": "Water",
+            "subcategories": [
+                {
+                    "title": "Safe Water Collection Techniques",
+                    "description": "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+                    "tags": ["water", "collection", "safe", "hygiene"],
+                    "ld_youtube": ["https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl", "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl", "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl", "https://www.youtube.com/embed/dQw4w9WgXcQ?si=ykBVIx85ueuw1QRl"],
+                    "details": "Oh geez, Morty, collecting water? That's, like, the most basic thing. But hey, at least it's not interdimensional cable."
+                }
+            ]
+        }
+    };
+
+    // Define icons for each area
+    const areaIcons = {
+        "Shelter": "fa-house",
+        "Water": "fa-droplet",
+        "Food Production": "fa-seedling",
+        "Waste Management": "fa-recycle",
+        "Energy": "fa-bolt",
+        "Community": "fa-people-group"
+    };
+
+    function displayDetailedItem(data, itemId, subcategoryIndex) {
+        itemPreviewsContainer.innerHTML = ''; // Clear the preview list
+        const item = data[itemId];
+
+        if (item && item.subcategories && item.subcategories[subcategoryIndex]) {
+            const subcategory = item.subcategories[subcategoryIndex];
+            const detailsContainer = document.createElement('div');
+            detailsContainer.className = 'detailed-item';
+
+            const titleElement = document.createElement('h1');
+            titleElement.textContent = subcategory.title;
+            detailsContainer.appendChild(titleElement);
+
+            const areaBadge = document.createElement('div');
+            areaBadge.className = 'area-badge';
+            areaBadge.textContent = item.area;
+            detailsContainer.appendChild(areaBadge);
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.className = 'item-description';
+            descriptionElement.textContent = subcategory.description;
+            detailsContainer.appendChild(descriptionElement);
+
+            if (subcategory.ld_youtube && subcategory.ld_youtube.length > 0) {
+                const slidePanelTitle = document.createElement('h3');
+                slidePanelTitle.textContent = 'Related Videos';
+                detailsContainer.appendChild(slidePanelTitle);
+                subcategory.ld_youtube.forEach(url => {
+                    if (url) {
+                        const iframe = document.createElement('iframe');
+                        iframe.width = '560';
+                        iframe.height = '315';
+                        iframe.src = url;
+                        iframe.title = 'YouTube video player';
+                        iframe.frameBorder = '0';
+                        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                        iframe.allowFullscreen = true;
+                        detailsContainer.appendChild(iframe);
+                        detailsContainer.appendChild(document.createElement('br'));
+                    }
+                });
+            }
+
+            const detailsInfo = document.createElement('div');
+            detailsInfo.innerHTML = `<strong>Details:</strong> ${subcategory.details}`;
+            detailsContainer.appendChild(detailsInfo);
+
+            const backLink = document.createElement('a');
+            backLink.href = '/'; // Link back to the main page
+            backLink.className = 'item-link';
+            backLink.textContent = 'Back to Resources';
+            detailsContainer.appendChild(backLink);
+
+            itemPreviewsContainer.appendChild(detailsContainer);
+
+        } else {
+            const notFoundMessage = document.createElement('p');
+            notFoundMessage.textContent = 'Resource not found, Morty!';
+            itemPreviewsContainer.appendChild(notFoundMessage);
+        }
+    }
+
+    function displayItemPreviews(data) {
+        itemPreviewsContainer.innerHTML = ''; // Clear any existing content
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const item = data[key];
+
+                // Display each subcategory as a separate preview
+                item.subcategories.forEach((subcategory, index) => {
+                    const itemPreviewDiv = document.createElement('div');
+                    itemPreviewDiv.className = 'item-preview';
+
+                    // Create icon based on area
+                    const iconClass = areaIcons[item.area] || "fa-book";
+                    const iconDiv = document.createElement('div');
+                    iconDiv.className = 'item-icon';
+                    iconDiv.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+
+                    // Create content container
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'item-content';
+
+                    // Create area badge
+                    const areaBadge = document.createElement('div');
+                    areaBadge.className = 'area-badge';
+                    areaBadge.textContent = item.area;
+
+                    // Create title (using subcategory title)
+                    const title = document.createElement('h2');
+                    title.className = 'item-title';
+                    title.textContent = subcategory.title;
+
+                    // Create description
+                    const description = document.createElement('div');
+                    description.className = 'item-description';
+                    description.textContent = subcategory.description;
+
+                    // Create tags
+                    const tagsDiv = document.createElement('div');
+                    tagsDiv.className = 'item-tags';
+
+                    subcategory.tags.forEach(tag => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'item-tag';
+                        tagSpan.textContent = tag;
+                        tagsDiv.appendChild(tagSpan);
+                    });
+
+                    // Add elements to content div
+                    contentDiv.appendChild(areaBadge);
+                    contentDiv.appendChild(title);
+                    contentDiv.appendChild(description);
+                    contentDiv.appendChild(tagsDiv);
+
+                    // Create actions container
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'item-actions';
+
+                    // Create view details link
+                    const detailsLink = document.createElement('a');
+                    detailsLink.href = `item.html?id=${key}&subcategory=${index}`;
+                    detailsLink.className = 'item-link';
+                    detailsLink.textContent = 'View Details';
+
+                    // Create download link
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = `downloads/${key}_${subcategory.title.toLowerCase().replace(/\s+/g, '-')}.zip`;
+                    downloadLink.className = 'download-link';
+                    downloadLink.innerHTML = `<i class="fa-solid fa-download"></i> Download`;
+
+                    // Add links to actions div
+                    actionsDiv.appendChild(detailsLink);
+                    actionsDiv.appendChild(downloadLink);
+
+                    // Add all elements to preview div
+                    itemPreviewDiv.appendChild(iconDiv);
+                    itemPreviewDiv.appendChild(contentDiv);
+                    itemPreviewDiv.appendChild(actionsDiv);
+
+                    // Add preview to container
+                    itemPreviewsContainer.appendChild(itemPreviewDiv);
+                });
+            }
+        }
+    }
+
+    // Try to fetch the data, but fall back to the embedded data if it fails
+    fetch('/data/categories.json')
+        .then(response => response.json())
+        .then(fetchedData => {
+            if (itemId && subcategoryIndex) {
+                displayDetailedItem(fetchedData, itemId, subcategoryIndex);
+            } else {
+                displayItemPreviews(fetchedData);
+            }
+        })
+        .catch(error => {
+            console.error('Failed to fetch data, using embedded data:', error);
+            if (itemId && subcategoryIndex) {
+                displayDetailedItem(allData, itemId, subcategoryIndex);
+            } else {
+                displayItemPreviews(allData);
+            }
+        });
+});
+
+
+     </script>
+ </body>
+ </html>

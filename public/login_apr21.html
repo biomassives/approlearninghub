@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - ApproVideo Hub</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <header class="absolute top-4 left-4 flex items-center space-x-2 text-green-700 font-semibold text-lg">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <span>ApproVideo Hub</span>
+  </header>
+
+  <div class="absolute top-4 right-4 flex items-center space-x-2">
+    <label for="lang-switch" class="text-sm text-gray-600">Language:</label>
+    <select id="lang-switch" class="text-sm border rounded p-1">
+      <option value="en">🇬🇧 English</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="es">🇪🇸 Español</option>
+      <!-- add more languages -->
+    </select>
+  </div>
+
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Log in to ApproVideo Hub</h1>
+
+    <form id="login-form" class="space-y-4">
+      <div>
+        <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="login-email" name="email" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        <p class="error-message" id="login-email-error"></p>
+      </div>
+
+      <div>
+        <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="login-password" name="password" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        <p class="error-message" id="login-password-error"></p>
+      </div>
+
+      <div>
+        <button type="submit" class="button-primary">
+          Log In
+        </button>
+      </div>
+
+      <div id="status-message" class="text-center text-sm"></div>
+    </form>
+
+    <div class="mt-4 text-center">
+      <a href="signup.html" class="text-sm text-indigo-600 hover:text-indigo-500">
+        Don't have an account? Sign up
+      </a>
+    </div>
+  </div>
+
+  <footer class="mt-8 text-center text-xs text-gray-500">
+    <p>Protected by ApproVideo Hub's Lattice Security System</p>
+  </footer>
+
+  <script type="module">
+    import authService from './js/auth-service.js';
+
+    // Role-to-dashboard mapping
+    const DASHBOARD_ROUTES = {
+      admin:    '/admin-dashboard.html',
+      expert:   '/expert-dashboard.html',
+      learner:  '/learner-dashboard.html',
+      researcher: '/researcher-dashboard.html',
+      resources: '/resources-dashboard.html',
+      organizer: '/organizer-dashboard.html'
+    };
+
+    function redirectToDashboard(role) {
+      const target = DASHBOARD_ROUTES[role] || '/dashboard.html';
+      window.location.href = target;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('login-form');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const statusMessage = document.getElementById('status-message');
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        // clear previous errors
+        ['email','password'].forEach(f => {
+          document.getElementById(`login-${f}-error`).textContent = '';
+        });
+        statusMessage.textContent = '';
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        // basic client-side validation
+        let hasError = false;
+        if (!email) {
+          document.getElementById('login-email-error').textContent = 'Email is required';
+          hasError = true;
+        }
+        if (!password) {
+          document.getElementById('login-password-error').textContent = 'Password is required';
+          hasError = true;
+        }
+        if (hasError) return;
+
+        // Call auth service
+        const response = await authService.login(email, password);
+        if (response.success) {
+          statusMessage.textContent = 'Login successful! Redirecting...';
+          statusMessage.classList.add('text-green-600');
+          setTimeout(() => redirectToDashboard(response.user.role), 500);
+        } else {
+          statusMessage.textContent = response.message || 'Login failed';
+          statusMessage.classList.add('text-red-600');
+        }
+      });
+
+      // language switcher logic omitted for brevity
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+    /* Inline styles; move to external CSS in production */
+    body { font-family: sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    .hidden { display: none !important; }
+    .auth-card { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 450px; margin-top: 20px; }
+    .auth-card h1 { text-align: center; margin-bottom: 25px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .button-primary { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+    .button-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .alternate-action { text-align: center; margin-top: 20px; }
+    .alternate-action a { color: #007bff; text-decoration: none; cursor: pointer; }
+    .alternate-action a:hover { text-decoration: underline; }
+    .error-message { color: #d9534f; margin-top: 5px; font-size: 0.9em; min-height: 1em; }
+    .status-box { margin-top: 15px; font-size: 0.95em; min-height: 1.2em; }
+    .page-header { display: flex; justify-content: space-between; width: 100%; max-width: 1000px; margin-bottom: 20px; align-items: center; }
+    .brand-name { font-size: 1.5em; font-weight: bold; }
+    .header-controls { font-size: 0.9em; }
+    .page-footer { margin-top: auto; padding-top: 30px; font-size: 0.8em; color: #666; text-align: center; }
+    .page-footer a { color: #666; }
+    .form-group-checkbox { display: flex; align-items: center; }
+    .form-group-checkbox input { width: auto; margin-right: 10px; }
+    .form-group-checkbox label { margin-bottom: 0; }
+    .text-red-600 { color: #dc2626; /* Example red */ }
+    .text-green-600 { color: #16a34a; /* Example green */ }
+    /* --- Tag Organizer Styles --- */
+.tag-input-area {
+    display: flex;
+    gap: 8px; /* Space between input and button */
+    margin-bottom: 8px;
+  }
+  
+  .tag-input-area input[type="text"] {
+    flex-grow: 1; /* Input takes available space */
+  }
+  
+  .tag-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow tags to wrap to the next line */
+    gap: 6px; /* Space between tags */
+    padding: 8px;
+    border: 1px solid #ccc; /* Optional: visual boundary */
+    border-radius: 4px;
+    min-height: 40px; /* Ensure area is visible even when empty */
+    margin-bottom: 5px;
+  }
+  
+  .tag-item {
+    display: inline-block; /* Or inline-flex */
+    padding: 4px 10px;
+    border-radius: 15px; /* Rounded tags */
+    color: white;
+    font-size: 0.9em;
+    cursor: pointer; /* Indicate it's removable */
+    transition: background-color 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  .tag-item:hover {
+    opacity: 0.85;
+  }
+  
+  /* Define some background colors for tags */
+  .tag-color-0 { background-color: #007bff; } /* Blue */
+  .tag-color-1 { background-color: #28a745; } /* Green */
+  .tag-color-2 { background-color: #dc3545; } /* Red */
+  .tag-color-3 { background-color: #ffc107; color: #333; } /* Yellow */
+  .tag-color-4 { background-color: #17a2b8; } /* Teal */
+  .tag-color-5 { background-color: #6f42c1; } /* Purple */
+  .tag-color-6 { background-color: #fd7e14; } /* Orange */
+  .tag-color-7 { background-color: #6c757d; } /* Gray */
+  
+  .info-message {
+      font-size: 0.85em;
+      color: #555;
+      margin-top: 0;
+  }
+  
+  
+  /* --- Statement of Interest Styles --- */
+  #interest-statement {
+    width: 100%; /* Make textarea fill container */
+    resize: vertical; /* Allow vertical resizing, disable horizontal */
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit; /* Use same font as other inputs */
+    font-size: 1em;
+  }
+  
+  /* Optional: Adjust checkbox alignment if needed */
+  /* .form-group-checkbox label { ... } */
+  
+  /* Ensure secondary button style exists if not already defined */
+  .button-secondary {
+    padding: 8px 15px;
+    background-color: #6c757d; /* Example secondary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .button-secondary:hover {
+    background-color: #5a6268;
+  }

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="dashboard_title">Biodiversity Hub - Dashboard</title>
+  <link rel="stylesheet" href="./css/main.css">
+  <meta name="description" content="Biodiversity Hub Dashboard - Access data, learning resources, and projects.">
+  <script type="importmap">
+    {
+      "imports": {
+        "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm" 
+        /* Or point to a local path if you have a browser-compatible build */
+        /* Example using unpkg: "@supabase/supabase-js": "https://unpkg.com/@supabase/supabase-js@2" */
+      }
+    }
+    </script>
+  
+  
+  
+  
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self'; 
+  script-src 'self' 'nonce-ABC123'; 
+  style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+  img-src 'self' data:; 
+  connect-src 'self';
+">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* Basic Header Layout (you'll refine this in main.css) */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Distributes space */
+      padding: 0.5rem 1rem; /* Adjust padding */
+      background-color: #eee; /* Example background */
+      border-bottom: 1px solid #ccc;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .brand-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem; /* Example size */
+        font-weight: bold;
+        margin-right: 2rem; /* Space before nav */
+        color: #333; /* Example color */
+        text-decoration: none;
+    }
+
+    .brand-logo i { /* Style for the leaf icon */
+        margin-right: 0.5rem;
+        color: green; /* Example color */
+    }
+
+    .main-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 1rem; /* Space between nav items */
+    }
+
+    .main-nav a {
+        text-decoration: none;
+        color: #333; /* Example color */
+    }
+    .main-nav a.active {
+        font-weight: bold;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem; /* Space between icons/controls */
+    }
+
+    .header-controls button,
+    .header-controls select,
+    .profile-menu-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem; /* Adjust icon size */
+        padding: 0.3rem;
+        position: relative; /* Needed for dropdown positioning */
+        color: #555; /* Example icon color */
+    }
+    .header-controls button:hover,
+    .profile-menu-button:hover {
+        color: #000;
+    }
+
+
+    /* Basic Dropdown Styles (Hidden by default) */
+    .dropdown-menu {
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 100%; /* Position below the button */
+        right: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        min-width: 150px; /* Example width */
+        z-index: 100;
+        list-style: none;
+        padding: 0.5rem 0;
+        margin: 0;
+        margin-top: 5px; /* Small gap */
+        border-radius: 4px;
+    }
+
+    .dropdown-menu.show { /* Class added by JS to show */
+        display: block;
+    }
+
+    .dropdown-menu li a,
+    .dropdown-menu li button, /* For notification actions */
+    .dropdown-menu li span { /* For notification text */
+        display: block;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        color: #333;
+        white-space: nowrap;
+    }
+    .dropdown-menu li a:hover,
+    .dropdown-menu li button:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Notification Specifics */
+    .notification-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem; /* Padding within the item */
+        border-bottom: 1px solid #eee;
+    }
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+    .notification-item span {
+        flex-grow: 1;
+        margin-right: 0.5rem;
+        padding: 0; /* Reset padding */
+        font-size: 0.9rem; /* Smaller text */
+    }
+    .notification-item .close-btn,
+    .notification-item .reply-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: #888;
+        padding: 0.2rem;
+        margin-left: 0.3rem;
+    }
+    .notification-item .close-btn:hover,
+    .notification-item .reply-btn:hover {
+        color: #333;
+    }
+
+
+    /* Existing styles */
+    #toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 1000; }
+    .toast { margin-bottom: .5rem; padding: .75rem 1rem; border-radius: 4px; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); opacity: .9; transition: opacity .3s; }
+    .toast.hide { opacity: 0; }
+    .toast-info { background: #17a2b8; }
+    .toast-success { background: #28a745; }
+    .toast-error { background: #dc3545; }
+    .loading-message, .error-message { padding: 1rem; text-align: center; color: #555; font-style: italic; border: 1px dashed #ccc; border-radius: 4px; margin: 1rem 0; }
+    .error-message { color: #dc3545; border-color: #dc3545; font-style: normal; font-weight: bold; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+    .hidden { display: none; } /* Simple hidden class */
+
+  </style>
+</head>
+<body>
+  <header class="page-header" role="banner">
+
+    <div class="header-left">
+        <a href="#dashboard" class="brand-logo" aria-label="Approvideo Biodiversity Hub Home">
+            <i class="fas fa-leaf" aria-hidden="true"></i> <span data-i18n="brand_name_approvideo">Approvideo</span> </a>
+    </div>
+
+    <nav class="main-nav" aria-label="Main Navigation">
+      <ul>
+        <li><a href="#dashboard" class="nav-link active" data-section="dashboard" data-i18n="nav_dashboard">Dashboard</a></li>
+        <li><a href="#timeline" class="nav-link" data-section="timeline" data-i18n="nav_timeline">Timeline</a></li>
+        <li><a href="#learning" class="nav-link" data-section="learning" data-i18n="nav_learning">Learning</a></li>
+        <li><a href="#workshops" class="nav-link" data-section="workshops" data-i18n="nav_workshops">Workshops</a></li>
+        <li><a href="#projects" class="nav-link" data-section="projects" data-i18n="nav_projects">Projects</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-right">
+      <div class="header-controls">
+
+        <div style="position: relative;"> <button id="language-button" aria-label="Select Language" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+          </button>
+          <ul id="language-menu" class="dropdown-menu" role="menu" aria-labelledby="language-button">
+            <li role="presentation"><a role="menuitem" href="#" data-lang="en">English</a></li>
+            <li role="presentation"><a role="menuitem" href="#" data-lang="es">Español</a></li>
+            <li role="presentation"><a role="menuitem" href="#" data-lang="fr">Français</a></li>
+            </ul>
+        </div>
+
+        <button id="theme-toggle-button" aria-label="Toggle Day/Night Theme">
+          <i class="fas fa-sun" id="theme-icon-sun" aria-hidden="true"></i> <i class="fas fa-moon hidden" id="theme-icon-moon" aria-hidden="true"></i> </button>
+
+        <div style="position: relative;"> <button id="notifications-button" aria-label="View Notifications" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-bell" aria-hidden="true"></i>
+              </button>
+           <div id="notifications-menu" class="dropdown-menu" role="menu" aria-labelledby="notifications-button">
+              <div class="notification-item" role="menuitem" data-notification-id="1">
+                  <span>User A replied to your comment.</span>
+                  <button class="reply-btn" aria-label="Reply to notification 1"><i class="fas fa-reply"></i></button>
+                  <button class="close-btn" aria-label="Dismiss notification 1"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="notification-item" role="menuitem" data-notification-id="2">
+                  <span>Project 'Forest Regen' was updated.</span>
+                  <button class="close-btn" aria-label="Dismiss notification 2"><i class="fas fa-times"></i></button>
+              </div>
+               <div class="notification-item" role="menuitem" data-notification-id="3">
+                  <span>Bot: Weekly summary is ready.</span>
+                  <button class="close-btn" aria-label="Dismiss notification 3"><i class="fas fa-times"></i></button>
+              </div>
+              <div id="no-notifications" class="hidden" style="padding: 0.5rem 1rem; color: #888;">No new notifications</div>
+           </div>
+        </div>
+      </div>
+
+      <div class="profile-menu" style="position: relative;"> <button id="profile-menu-button" class="profile-menu-button" aria-label="User Menu" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user-circle" aria-hidden="true"></i> </button>
+          <ul id="profile-menu-dropdown" class="dropdown-menu" role="menu" aria-labelledby="profile-menu-button">
+              <li role="presentation"><span id="user-name-full" style="padding: 0.5rem 1rem; font-weight: bold; border-bottom: 1px solid #eee; display: block;">Loading user...</span></li>
+              <li role="presentation"><a role="menuitem" href="#settings" data-i18n="profile_settings"><i class="fas fa-cog" aria-hidden="true"></i> Settings</a></li>
+              <li role="presentation"><a role="menuitem" href="#profile" data-i18n="profile_view"><i class="fas fa-user" aria-hidden="true"></i> Profile</a></li>
+              <li role="presentation"><hr style="margin: 0.2rem 0;"></li>
+              <li role="presentation"><button id="logout-button" role="menuitem" data-i18n="logout_button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</button></li>
+          </ul>
+      </div>
+
+    </div>
+  </header>
+
+  <div id="toast-container" role="alert" aria-live="assertive">
+    </div>
+
+  <main class="dashboard-container" role="main">
+    </main>
+
+  <footer class="page-footer" role="contentinfo">
+  </footer>
+
+  <script type="module" nonce="ABC123" src="./js/auth-guard.js"></script>
+  <script type="module" nonce="ABC123" src="./js/nav-ui.js"></script>
+  <script type="module" nonce="ABC123" src="./js/header-controls.js"></script> <script type="module" nonce="ABC123" src="./js/dashboard-loaders.js"></script>
+  <script type="module" nonce="ABC123" src="./js/dashboard-actions.js"></script>
+  <script type="module" nonce="ABC123" src="./js/dashboard.js"></script>
+
+  <script nonce="ABC123">
+    // Basic Dropdown Toggle Logic (Example)
+    function setupDropdown(buttonId, menuId) {
+      const button = document.getElementById(buttonId);
+      const menu = document.getElementById(menuId);
+
+      if (!button || !menu) return;
+
+      button.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent closing immediately
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        closeAllDropdowns(); // Close others before opening
+        if (!isExpanded) {
+            menu.classList.add('show');
+            button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+            menu.classList.remove('show');
+            const buttonId = menu.getAttribute('aria-labelledby');
+            if (buttonId) {
+                document.getElementById(buttonId)?.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Close dropdowns if clicking outside
+    document.addEventListener('click', () => {
+        closeAllDropdowns();
+    });
+
+    // Stop propagation inside the menu to prevent closing when clicking items
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    });
+
+
+    setupDropdown('language-button', 'language-menu');
+    setupDropdown('notifications-button', 'notifications-menu');
+    setupDropdown('profile-menu-button', 'profile-menu-dropdown');
+
+    // --- Notification Item Logic (Example) ---
+    document.getElementById('notifications-menu')?.addEventListener('click', (event) => {
+        const closeButton = event.target.closest('.close-btn');
+        const replyButton = event.target.closest('.reply-btn');
+        const notificationItem = event.target.closest('.notification-item');
+
+        if (closeButton && notificationItem) {
+            const notificationId = notificationItem.dataset.notificationId;
+            console.log(`Dismiss notification ${notificationId}`);
+            notificationItem.remove(); // Remove from view
+            // Add logic to mark as read/dismissed on the backend
+            // Check if menu is now empty
+            if (document.getElementById('notifications-menu').querySelectorAll('.notification-item').length === 0) {
+                 document.getElementById('no-notifications')?.classList.remove('hidden');
+            }
+        } else if (replyButton && notificationItem) {
+             const notificationId = notificationItem.dataset.notificationId;
+             console.log(`Reply to notification ${notificationId}`);
+             // Add logic to open reply interface or navigate
+             closeAllDropdowns(); // Close menu after action
+        }
+
+    });
+
+    // Initial check for notifications
+    if (document.getElementById('notifications-menu')?.querySelectorAll('.notification-item').length === 0) {
+         document.getElementById('no-notifications')?.classList.remove('hidden');
+    } else {
+         document.getElementById('no-notifications')?.classList.add('hidden');
+    }
+
+
+     // --- Theme Toggle Logic (Example) ---
+     const themeToggleButton = document.getElementById('theme-toggle-button');
+     const sunIcon = document.getElementById('theme-icon-sun');
+     const moonIcon = document.getElementById('theme-icon-moon');
+     const body = document.body; // Or your main container if preferred
+
+     themeToggleButton?.addEventListener('click', () => {
+        body.classList.toggle('dark-mode'); // Assuming you use a 'dark-mode' class on body
+        sunIcon?.classList.toggle('hidden');
+        moonIcon?.classList.toggle('hidden');
+
+        // Optional: Save preference to localStorage
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggleButton.setAttribute('aria-label', 'Switch to Light Theme');
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggleButton.setAttribute('aria-label', 'Switch to Dark Theme');
+        }
+     });
+
+     // Apply saved theme on load
+     const savedTheme = localStorage.getItem('theme');
+     if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        sunIcon?.classList.add('hidden');
+        moonIcon?.classList.remove('hidden');
+        themeToggleButton?.setAttribute('aria-label', 'Switch to Light Theme');
+     } else {
+        // Default to light mode
+        themeToggleButton?.setAttribute('aria-label', 'Switch to Dark Theme');
+     }
+
+     
+
+  </script>
+
+</body>
+</html>

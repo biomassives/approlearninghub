@@ -1,6 +1,6 @@
-// api/middleware/auth.js
-const { verify } = require('jsonwebtoken');
-const { createError } = require('../utils/errors');
+// /api/middleware/auth.js
+const { generateTokenPair, verifyAccessToken, verifyRefreshToken } = require('../utils/jwt');
+const { createError } = require('../utils/error');
 
 // Secret keys (should be loaded from environment variables in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-jwt-key';
@@ -13,8 +13,10 @@ const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY || 'your-service-role-key'
  */
 const verifyToken = (token) => {
   try {
-    return verify(token, JWT_SECRET);
+    // Use the imported verifyAccessToken function instead of the undefined 'verify' function
+    return verifyAccessToken(token);
   } catch (error) {
+    // Wrap the error to add a status. This is important for consistent error handling.
     throw createError(401, 'Invalid or expired token');
   }
 };
@@ -26,11 +28,9 @@ const verifyToken = (token) => {
  */
 const extractToken = (req) => {
   const authHeader = req.headers.authorization;
-  
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }
-  
   return authHeader.split(' ')[1];
 };
 
@@ -40,7 +40,7 @@ const extractToken = (req) => {
  * @param {boolean} options.required - Whether authentication is required
  * @param {Array} options.roles - Allowed roles
  */
-const authenticate = (options = { required: true, roles: [] }) => {
+const authenticate = (options = { required: false, roles: [] }) => {
   return async (req, res, next) => {
     try {
       // Check for service role key first
@@ -58,34 +58,51 @@ const authenticate = (options = { required: true, roles: [] }) => {
         throw createError(401, 'Authentication required');
       }
       
-      // If no token but auth is optional, continue
-      if (!token && !options.required) {
-        return next();
+      // If token exists, verify it
+      if (token) {
+        try {
+          const decoded = verifyAccessToken(token);
+          req.user = decoded;
+        } catch (tokenError) {
+          // Only throw an error if authentication is required
+          if (options.required) {
+            throw createError(401, 'Invalid or expired token');
+          }
+          // Otherwise, just continue without setting req.user
+        }
       }
       
-      // Verify token
-      const decoded = verifyToken(token);
-      
-      // Check role if specified
-      if (options.roles && options.roles.length > 0) {
-        if (!decoded.role || !options.roles.includes(decoded.role)) {
+      // Check role if specified and the request has been authenticated
+      if (options.roles && options.roles.length > 0 && req.user) {
+        if (!req.user.role || !options.roles.includes(req.user.role)) {
           throw createError(403, 'Insufficient permissions');
         }
       }
       
-      // Add user to request
-      req.user = decoded;
-      
       next();
     } catch (error) {
-      next(error);
+      next(error); // Pass the error to the next middleware
     }
+  };
+};
+
+/**
+ * Authorization middleware
+ * @param {Array<string>} allowedRoles - Array of roles allowed to access the route
+ */
+const authorize = (allowedRoles = []) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.role || !allowedRoles.includes(req.user.role)) {
+      return next(createError(403, 'Insufficient permissions'));
+    }
+    next();
   };
 };
 
 // Export middleware and utility functions
 module.exports = {
   authenticate,
+  authorize,
   verifyToken,
   extractToken
 };

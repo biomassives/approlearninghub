@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Agriculture Techniques - Food | ApproVideo DIY Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="/css/approvideo.css" rel="stylesheet">
+    <style>
+        /* Enhanced styles for this template */
+        .tag-pill {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .tag-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .video-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .panel-slide {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+        .play-button i {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-left: 5px; /* Adjust for play icon alignment */
+        }
+        /* Progress indicators for slideshow */
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .indicator.active {
+            background-color: #4CAF50;
+        }
+        /* New icon elements */
+        .technique-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f0fdf4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            border: 2px solid #4CAF50;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .technique-icon i {
+            font-size: 36px;
+            color: #4CAF50;
+        }
+        /* Hero section with pattern */
+        .hero-pattern {
+            background-color: #4CAF50;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544V0h.284zM0 5.373l25.456 25.455-1.414 1.415L0 8.2V5.374zm0 5.656l22.627 22.627-1.414 1.414L0 13.86v-2.83zm0 5.656l19.8 19.8-1.415 1.413L0 19.514v-2.83zm0 5.657l16.97 16.97-1.414 1.415L0 25.172v-2.83zM0 28l14.142 14.142-1.414 1.414L0 30.828V28zm0 5.657L11.314 44.97 9.9 46.386l-9.9-9.9v-2.828zm0 5.657L8.485 47.8 7.07 49.212 0 42.143v-2.83zm0 5.657l5.657 5.657-1.414 1.415L0 47.8v-2.83zm0 5.657l2.828 2.83-1.414 1.413L0 53.456v-2.83zM54.627 60L30 35.373 5.373 60H8.2L30 38.2 51.8 60h2.827zm-5.656 0L30 41.03 11.03 60h2.828L30 43.858 46.142 60h2.83zm-5.656 0L30 46.686 16.686 60h2.83L30 49.515 40.485 60h2.83zm-5.657 0L30 52.343 22.344 60h2.83L30 55.172 34.828 60h2.83zM32 60l-2-2-2 2h4zM59.716 0l-28 28 1.414 1.414L60 2.544V0h-.284zM60 5.373L34.544 30.828l1.414 1.415L60 8.2V5.374zm0 5.656L37.373 33.656l1.414 1.414L60 13.86v-2.83zm0 5.656l-19.8 19.8 1.415 1.413L60 19.514v-2.83zm0 5.657l-16.97 16.97 1.414 1.415L60 25.172v-2.83zM60 28L45.858 42.142l1.414 1.414L60 30.828V28zm0 5.657L48.686 44.97l1.415 1.415 9.9-9.9v-2.828zm0 5.657L51.515 47.8l1.414 1.413 7.07-7.07v-2.83zm0 5.657l-5.657 5.657 1.414 1.415L60 47.8v-2.83zm0 5.657l-2.828 2.83 1.414 1.413L60 53.456v-2.83zM39.9 16.385l1.414-1.414L30 3.658 18.686 14.97l1.415 1.415 9.9-9.9 9.9 9.9zm-2.83 2.828l1.415-1.414L30 9.313 21.515 17.8l1.414 1.413L30 11.626l7.07 7.07zm-2.827 2.83l1.414-1.416L30 14.97l-5.657 5.657 1.414 1.415L30 17.9l4.243 4.242zm-2.83 2.827l1.415-1.414L30 20.626l-2.828 2.83 1.414 1.414L30 23.456l1.414 1.414zM56.87 59.414L58.284 58 30 29.716 1.716 58l1.414 1.414L30 32.544l26.87 26.87z' fill='%2345a049' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        /* Video count badge */
+        .video-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        /* Enhanced resource card */
+        .resource-card {
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-6 px-4">
+        <!-- Hero section with pattern background -->
+        <div class="hero-pattern text-center py-10 rounded-lg shadow-md overflow-hidden mb-8">
+            <div class="bg-gradient-to-r from-green-600 to-green-700 bg-opacity-90 py-6">
+                <h1 class="text-4xl font-bold bebas text-white">🌿 <a href="/" title="ApproVideo DIY Solutions Hub" class="text-white hover:underline">ApproVideo DIY Solutions</a> 🌱</h1>
+                <p class="text-xl text-white">Empowering communities through practical knowledge</p>
+                <div class="mt-4">
+                    <a href="/areas/food" class="inline-block bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg px-4 py-2 text-white">
+                        <i class="fas fa-arrow-left mr-2"></i>Food
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <!-- Main content header -->
+            <div class="relative">
+                <!-- Background image with overlay -->
+                <div class="h-48 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1200x400/?sustainable,farming');">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-green-900 opacity-80"></div>
+                </div>
+                
+                <!-- Title section positioned over the background -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="bg-white p-4 rounded-full mr-4 shadow-md">
+                            <i class="fas fa-seedling text-4xl text-green-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-bold bebas mb-1">Sustainable Agriculture Techniques</h2>
+                            <div class="flex items-center">
+                                <i class="fas fa-video mr-2"></i>
+                                <span>6 videos</span>
+                                <i class="fas fa-file-alt mx-2"></i>
+                                <span>5 resources</span>
+                                <i class="fas fa-leaf mx-2"></i>
+                                <span>3 key techniques</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <!-- Description -->
+                <p class="text-gray-700 leading-relaxed mb-6 text-lg">
+                    Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals. These methods focus on building a sustainable ecosystem that works with nature rather than against it.
+                </p>
+                
+                <!-- Tags with enhanced styling -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-tags mr-2 text-green-600"></i>
+                        Topics Covered:
+                    </h3>
+                    <div class="flex flex-wrap">
+                        <span class="tag-pill bg-green-100 text-green-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-tractor mr-2"></i>
+                            agriculture
+                        </span>
+                        <span class="tag-pill bg-blue-100 text-blue-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-recycle mr-2"></i>
+                            sustainable
+                        </span>
+                        <span class="tag-pill bg-yellow-100 text-yellow-800 rounded-full px-4 py-2 text-sm font-semibold mr-3 mb-3 flex items-center">
+                            <i class="fas fa-mountain mr-2"></i>
+                            soil health
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Quick access technique cards -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-star mr-3 text-yellow-500"></i>
+                        Key Techniques
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Technique 1 -->
+                        <div class="bg-green-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Crop Rotation</h4>
+                            <p class="text-gray-700">Systematic cycling of different crops to improve soil health and reduce pests naturally.</p>
+                        </div>
+                        
+                        <!-- Technique 2 -->
+                        <div class="bg-green-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Natural Pest Control</h4>
+                            <p class="text-gray-700">Using beneficial insects, companion planting, and organic methods to manage pests.</p>
+                        </div>
+                        
+                        <!-- Technique 3 -->
+                        <div class="bg-green-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-all">
+                            <div class="technique-icon mx-auto">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Cover Cropping</h4>
+                            <p class="text-gray-700">Planting specific crops to protect and enrich soil during off-seasons.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Panel Slideshow -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-chalkboard-teacher mr-3 text-blue-600"></i>
+                        Learning Modules
+                    </h3>
+                    
+                    <div class="panel-slideshow relative">
+                        <!-- Panel 1 -->
+                        <div class="panel-slide color-band-1 rounded-lg p-6 mb-4 shadow-md active">
+                            <div class="flex items-start">
+                                <div class="mr-6 bg-white rounded-full p-4 shadow-md">
+                                    <i class="fas fa-microscope text-brown-600 text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-3">Soil Ecology</h3>
+                                    <p class="text-gray-800 text-lg mb-4">Understanding the living ecosystem beneath our feet and how sustainable practices enhance beneficial soil organisms and nutrient cycling.</p>
+                                    <div class="flex items-center">
+                                        <span class="inline-block mr-2 text-sm font-medium px-3 py-1 bg-white bg-opacity-70 rounded-full">
+                                            <i class="fas fa-graduation-cap mr-1"></i> Education
+                                        </span>
+                                        <a href="#video-soil-ecology" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="fas fa-play-circle mr-1"></i> <a href=https://www.youtube.com/watch?v=NVhY4ssMtbI>Related video
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Panel 2 -->
+                        <div class="panel-slide color-band-2 rounded-lg p-6 mb-4 shadow-md">
+                            <div class="flex items-start">
+                                <div class="mr-6 bg-white rounded-full p-4 shadow-md">
+                                    <i class="fas fa-sync text-green-600 text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-3">Integrated Systems</h3>
+                                    <p class="text-gray-800 text-lg mb-4">Creating farm systems where elements work together synergistically, reducing external inputs through thoughtful design and observation.</p>
+                                    <div class="flex items-center">
+                                        <span class="inline-block mr-2 text-sm font-medium px-3 py-1 bg-white bg-opacity-70 rounded-full">
+                                            <i class="fas fa-drafting-compass mr-1"></i> Design
+                                        </span>
+                                        <a href="#video-integrated-systems" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="fas fa-play-circle mr-1"></i> Watch related video
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Panel 3 -->
+                        <div class="panel-slide color-band-3 rounded-lg p-6 mb-4 shadow-md">
+                            <div class="flex items-start">
+                                <div class="mr-6 bg-white rounded-full p-4 shadow-md">
+                                    <i class="fas fa-seedling text-green-800 text-3xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-3">Seed Saving</h3>
+                                    <p class="text-gray-800 text-lg mb-4">Preserving genetic diversity and adapting crops to local conditions through proper seed selection, storage, and exchange practices.</p>
+                                    <div class="flex items-center">
+                                        <span class="inline-block mr-2 text-sm font-medium px-3 py-1 bg-white bg-opacity-70 rounded-full">
+                                            <i class="fas fa-archive mr-1"></i> Conservation
+                                        </span>
+                                        <a href="#video-seed-saving" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                            <i class="fas fa-play-circle mr-1"></i> Watch related video
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slideshow Controls -->
+                        <div class="flex justify-between mt-4">
+                            <button id="prev-panel" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow flex items-center">
+                                <i class="fas fa-chevron-left mr-2"></i> Previous
+                            </button>
+                            
+                            <div class="slide-indicators">
+                                <div class="indicator active" data-slide="0"></div>
+                                <div class="indicator" data-slide="1"></div>
+                                <div class="indicator" data-slide="2"></div>
+                            </div>
+                            
+                            <button id="next-panel" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full shadow flex items-center">
+                                Next <i class="fas fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Video Resources -->
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-film mr-3 text-red-600"></i>
+                        Video Resources
+                        <span class="ml-3 bg-red-100 text-red-800 text-sm px-3 py-1 rounded-full">6 videos</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Video 1 -->
+                        <div id="video-soil-ecology" class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/QhH-YsDr8D4/maxresdefault.jpg" alt="Crop Rotation Planning and Implementation" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=QhH-YsDr8D4" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">Crop Rotation Planning and Implementation</h4>
+                                <p class="text-gray-600 mb-3">Designing effective rotation systems for soil health</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 15:24</span>
+                                    <a href="https://www.youtube.com/watch?v=QhH-YsDr8D4" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 2 -->
+                        <div class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/tgQ1L7TcDjQ/maxresdefault.jpg" alt="Natural Pest Control Methods" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=tgQ1L7TcDjQ" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">Natural Pest Control Methods</h4>
+                                <p class="text-gray-600 mb-3">Managing insect pests without synthetic chemicals</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 12:08</span>
+                                    <a href="https://www.youtube.com/watch?v=tgQ1L7TcDjQ" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 3 -->
+                        <div class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/xvjEF6qKPRE/maxresdefault.jpg" alt="Cover Cropping for Soil Improvement" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=xvjEF6qKPRE" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">Cover Cropping for Soil Improvement</h4>
+                                <p class="text-gray-600 mb-3">Using specific plants to build soil fertility and structure</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 18:35</span>
+                                    <a href="https://www.youtube.com/watch?v=xvjEF6qKPRE" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 4 -->
+                        <div id="video-integrated-systems" class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/9IQX9hKn-AY/maxresdefault.jpg" alt="Companion Planting Strategies" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=9IQX9hKn-AY" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">Companion Planting Strategies</h4>
+                                <p class="text-gray-600 mb-3">Beneficial plant combinations that reduce pests and improve growth</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 14:47</span>
+                                    <a href="https://www.youtube.com/watch?v=9IQX9hKn-AY" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 5 -->
+                        <div class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/Q8EZXeQyGEU/maxresdefault.jpg" alt="No-Till Farming for Small Plots" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=Q8EZXeQyGEU" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">No-Till Farming for Small Plots</h4>
+                                <p class="text-gray-600 mb-3">Minimal soil disturbance techniques for healthier soil ecosystems</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 22:11</span>
+                                    <a href="https://www.youtube.com/watch?v=Q8EZXeQyGEU" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 6 -->
+                        <div id="video-seed-saving" class="video-card bg-white overflow-hidden">
+                            <div class="video-thumbnail">
+                                <img src="https://img.youtube.com/vi/3Mqq2tJ3nC4/maxresdefault.jpg" alt="Natural Soil Building Methods" class="w-full">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <a href="https://www.youtube.com/watch?v=3Mqq2tJ3nC4" target="_blank" class="absolute inset-0" aria-label="Play video"></a>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold mb-2">Natural Soil Building Methods</h4>
+                                <p class="text-gray-600 mb-3">Creating fertile soil through mulching, composting, and biochar</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500"><i class="far fa-clock mr-1"></i> 16:53</span>
+                                    <a href="https://www.youtube.com/watch?v=3Mqq2tJ3nC4" target="_blank" class="text-green-600 hover:text-green-800">
+                                        <i class="fab fa-youtube"></i> Watch
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Download Resources Section -->
+                <div class="mt-12 bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-lg shadow-sm">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/3 text-center mb-6 md:mb-0">
+                            <div class="bg-white p-6 rounded-full inline-block shadow-md">
+                                <i class="fas fa-download text-6xl text-green-600"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4 bebas">Resource Downloads</h3>
+                            <p class="mb-6 text-lg">Download our comprehensive resource package for Sustainable Agriculture Techniques, including detailed guides, worksheets, and reference materials:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <!-- Resource file 1 -->
+                                <div class="resource-card bg-white p-4 rounded shadow flex items-center">
+                                    <i class="fas fa-file-pdf text-red-500 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold">Sustainable Agriculture Guide</h4>
+                                        <p class="text-sm text-gray-600">Comprehensive manual (PDF, 4.2MB)</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resource file 2 -->
+                                <div class="resource-card bg-white p-4 rounded shadow flex items-center">
+                                    <i class="fas fa-file-image text-blue-500 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold">Crop Rotation Diagrams</h4>
+                                        <p class="text-sm text-gray-600">Visual reference (JPG, 1.8MB)</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resource file 3 -->
+                                <div class="resource-card bg-white p-4 rounded shadow flex items-center">
+                                    <i class="fas fa-file-excel text-green-500 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold">Planting Calendar</h4>
+                                        <p class="text-sm text-gray-600">Seasonal guide (XLSX, 0.5MB)</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resource file 4 -->
+                                <div class="resource-card bg-white p-4 rounded shadow flex items-center">
+                                    <i class="fas fa-file-alt text-yellow-500 text-2xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold">Companion Planting Chart</h4>
+                                        <p class="text-sm text-gray-600">Quick reference (PDF, 0.8MB)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center md:text-left">
+                                <button 
+                                    onclick="downloadResourceZip('food', 'sustainable-agriculture-techniques')" 
+                                    class="download-button bg-green-600 hover:bg-green-700 transition-colors"
+                                >
+                                    <i class="fas fa-download mr-2"></i> Download Complete Package (12.5MB)
+                                </button>
+                                <p class="text-sm text-gray-600 mt-2">
+                                    <i class="fas fa-info-circle mr-1"></i> All materials are licensed under Creative Commons (CC BY-NC-SA 4.0)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related content section -->
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 bebas flex items-center">
+                        <i class="fas fa-link mr-3 text-purple-600"></i>
+                        Related Resources
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Related Resource 1 -->
+                        <a href="/areas/food/urban-gardening" class="block group">
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden group-hover:shadow-lg transition-all">
+                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/400x200/?urban,garden');">
+                                    <div class="h-full w-full bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
+                                        <h4 class="text-white text-xl font-bold bebas">Urban Gardening</h4>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-gray-700">Apply sustainable techniques in limited urban spaces.</p>
+                                    <div class="mt-2 text-green-600 group-hover:text-green-700 transition-colors flex items-center">
+                                        <span>Explore</span>
+                                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Related Resource 2 -->
+                        <a href="/areas/waste/composting" class="block group">
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden group-hover:shadow-lg transition-all">
+                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/400x200/?compost');">
+                                    <div class="h-full w-full bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
+                                        <h4 class="text-white text-xl font-bold bebas">Composting</h4>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-gray-700">Create nutrient-rich soil amendments for your garden.</p>
+                                    <div class="mt-2 text-green-600 group-hover:text-green-700 transition-colors flex items-center">
+                                        <span>Explore</span>
+                                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Related Resource 3 -->
+                        <a href="/areas/water/efficient-distribution" class="block group">
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden group-hover:shadow-lg transition-all">
+                                <div class="h-40 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/400x200/?irrigation');">
+                                    <div class="h-full w-full bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
+                                        <h4 class="text-white text-xl font-bold bebas">Efficient Irrigation</h4>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-gray-700">Conserve water while maximizing crop yields.</p>
+                                    <div class="mt-2 text-green-600 group-hover:text-green-700 transition-colors flex items-center">
+                                        <span>Explore</span>
+                                        <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Community section -->
+                <div class="mt-12 bg-green-50 p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 bebas flex items-center">
+                        <i class="fas fa-users mr-3 text-green-600"></i>
+                        Join Our Community
+                    </h3>
+                    <p class="mb-6">Connect with other sustainable agriculture practitioners, share your experiences, and learn from others:</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                            <i class="fas fa-comments text-green-600 mr-2"></i> Discussion Forum
+                        </a>
+                        <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                            <i class="fas fa-calendar-alt text-blue-600 mr-2"></i> Upcoming Workshops
+                        </a>
+                        <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                            <i class="fas fa-share-alt text-purple-600 mr-2"></i> Share Your Success
+                        </a>
+                        <a href="#" class="bg-white py-2 px-4 rounded-full shadow-sm hover:shadow-md transition-all flex items-center">
+                            <i class="fas fa-question-circle text-yellow-600 mr-2"></i> Ask an Expert
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common footer content -->
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">ApproVideo DIY Solutions</h3>
+                    <p class="text-gray-400">Empowering communities through practical knowledge.</p>
+                </div>
+                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">Quick Links</h3>
+                    <ul class="text-gray-400">
+                        <li class="mb-1"><a href="/" class="hover:text-white">Home</a></li>
+                        <li class="mb-1"><a href="/areas" class="hover:text-white">Resource Areas</a></li>
+                        <li class="mb-1"><a href="/about" class="hover:text-white">About</a></li>
+                        <li class="mb-1"><a href="/contact" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-xl font-bold mb-2">Connect</h3>
+                    <div class="flex">
+                        <a href="#" class="text-gray-400 hover:text-white mr-4"><i class="fab fa-youtube text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white mr-4"><i class="fab fa-twitter text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 ApproVideo DIY Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/resource-client.js"></script>
+    <script>
+        // Panel Slideshow Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.panel-slide');
+            const prevBtn = document.getElementById('prev-panel');
+            const nextBtn = document.getElementById('next-panel');
+            const indicators = document.querySelectorAll('.indicator');
+            let currentSlide = 0;
+
+            // Initialize - show first slide
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // Update indicators
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Show the current slide and indicator
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            // Add event listeners
+            if (prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', prevSlide);
+                nextBtn.addEventListener('click', nextSlide);
+            }
+            
+            // Add event listeners to indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                });
+            });
+            
+            // Auto-advance slides every 10 seconds
+            const slideInterval = setInterval(nextSlide, 10000);
+            
+            // Pause auto-advance when user interacts with controls
+            const controls = document.querySelector('.panel-controls');
+            if (controls) {
+                controls.addEventListener('mouseenter', () => {
+                    clearInterval(slideInterval);
+                });
+            }
+        });
+
+        // YouTube thumbnail enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+            
+            videoThumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function(e) {
+                    const link = thumbnail.querySelector('a').getAttribute('href');
+                    if (link) {
+                        window.open(link, '_blank');
+                    }
+                });
+            });
+        });
+
+        // Download function
+        function downloadResourceZip(area, subcategory) {
+            const downloadUrl = `/api/resources/download/${area}/${subcategory}`;
+            window.location.href = downloadUrl;
+            
+            // Track download
+            if (typeof trackDownload === 'function') {
+                trackDownload(area, subcategory);
+            }
+        }
+    </script>
+</body>
+</html>

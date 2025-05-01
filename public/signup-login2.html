@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="page_title">Sign Up / Login - ApproVideo Hub</title>
+  <link rel="stylesheet" href="style_sl.css" />
+  <meta name="description" content="Login or Create an account on ApproVideo Hub - Sustainable Solutions Platform">
+  <!-- CSP allows only self-hosted scripts -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand-name" data-i18n="brand_name">ApproVideo Hub</div>
+    <div class="header-controls">
+      <span data-i18n="secure_connection">Secure Connection</span>
+      <select id="language-switcher" aria-label="Select language">
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="auth-container" role="main">
+    <!-- Signup Card -->
+    <div id="signup-section" class="auth-card">
+      <h1 data-i18n="signup_title">Create Account</h1>
+      <form id="signup-form" novalidate>
+        <div class="form-group">
+          <label for="signup-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="signup-email" name="email" required autocomplete="email" placeholder="your.email@example.com">
+          <p aria-live="polite" class="error-message" id="signup-email-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-password" data-i18n="password_label">Password</label>
+          <input type="password" id="signup-password" name="password" required minlength="6" autocomplete="new-password">
+          <p aria-live="polite" class="error-message" id="signup-password-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-confirm-password" data-i18n="confirm_password_label">Confirm Password</label>
+          <input type="password" id="signup-confirm-password" name="confirm-password" required minlength="6" autocomplete="new-password">
+          <p aria-live="polite" class="error-message" id="signup-confirm-password-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-role" data-i18n="role_label">Select Your Role</label>
+          <select id="signup-role" name="role" required>
+            <option value="" disabled selected data-i18n="role_placeholder">-- Select a Role --</option>
+            <option value="expert" data-i18n="role_expert">Expert / Workshop Leader</option>
+            <option value="learner" data-i18n="role_learner">Learner / Volunteer</option>
+            <option value="researcher" data-i18n="role_researcher">Research Contributor</option>
+            <option value="resources" data-i18n="role_resources">Resource Finder</option>
+            <option value="organizer" data-i18n="role_organizer">Organizer / Coordinator</option>
+          </select>
+          <p aria-live="polite" class="error-message" id="signup-role-error"></p>
+        </div>
+        <div class="form-group form-group-checkbox">
+          <input type="checkbox" id="signup-terms" name="terms" required>
+          <label for="signup-terms" data-i18n="terms_label">I agree to the Terms of Service and Privacy Policy</label>
+          <p aria-live="polite" class="error-message" id="signup-terms-error"></p>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="button-primary" id="signup-button" data-i18n="signup_button">Create Account</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="signup-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="already_account_prefix">Already have an account?</span>
+        <a id="show-login-link" data-i18n="login_link" href="#">Log in</a>
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div id="login-section" class="auth-card hidden">
+      <h1 data-i18n="login_title">Login</h1>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="login-email" name="email" required autocomplete="email">
+          <p aria-live="polite" class="error-message" id="login-email-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="login-password" data-i18n="password_label">Password</label>
+          <input type="password" id="login-password" name="password" required autocomplete="current-password">
+          <p aria-live="polite" class="error-message" id="login-password-error"></p>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="button-primary" id="login-button" data-i18n="login_button">Log In</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="login-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="need_account_prefix">Need an account?</span>
+        <a id="show-signup-link" data-i18n="signup_link" href="#">Sign up</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <p><a href="/privacy.html" target="_blank" data-i18n="privacy_policy">Privacy Policy</a> | <a href="/terms.html" target="_blank" data-i18n="terms_of_service">Terms of Service</a></p>
+  </footer>
+
+  <!-- Import modules -->
+  <script type="module" src="/js/signup-login.js"></script>
+</body>
+</html>

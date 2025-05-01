@@ -1,5 +1,6 @@
 // api/feeds.js
-const { createError } = require('./utils/errors');
+const { createError } = require('./utils/error');
+
 let Parser;
 
 try {

@@ -1,316 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | ApproVideo</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        header {
-            background-color: #0073b1;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        .app-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-        
-        .login-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-title {
-            font-size: 1.8rem;
-            color: #0073b1;
-        }
-        
-        .login-subtitle {
-            color: #6c757d;
-            margin-top: 0.5rem;
-        }
-        
-        .login-form {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: #0073b1;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 115, 177, 0.25);
-        }
-        
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .remember-me input {
-            margin-right: 0.5rem;
-        }
-        
-        .forgot-password {
-            color: #0073b1;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-        
-        .btn {
-            background-color: #0073b1;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: background-color 0.2s ease;
-        }
-        
-        .btn:hover {
-            background-color: #005b8e;
-        }
-        
-        .demo-accounts {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .demo-accounts h3 {
-            font-size: 1rem;
-            color: #6c757d;
-            margin-bottom: 0.8rem;
-        }
-        
-        .demo-account {
-            background-color: #f8f9fa;
-            padding: 0.8rem;
-            border-radius: 4px;
-            margin-bottom: 0.8rem;
-        }
-        
-        .demo-account:last-child {
-            margin-bottom: 0;
-        }
-        
-        .demo-account p {
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-        
-        .login-message {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 4px;
-            display: none;
-        }
-        
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        footer {
-            background-color: #f1f1f1;
-            padding: 1rem;
-            text-align: center;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">Sign Up / Login - ApproVideo Hub</title>
+  <link rel="stylesheet" href="css/login.css"> <meta name="description" content="Login or Create an account on ApproVideo Hub - Sustainable Solutions Platform">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm; /* Allow Supabase CDN if used directly, or just 'self' if bundled */
+  style-src 'self'; /* Remove 'unsafe-inline' */
+  img-src 'self' data:;
+  font-src 'self'; /* Add if using custom fonts */
+  connect-src 'self' https://<your-project-ref>.supabase.co wss://<your-project-ref>.supabase.co; /* Allow Supabase HTTP & WebSocket */
+  form-action 'self'; /* Restrict form submissions */
+  frame-ancestors 'none'; /* Prevent clickjacking */
+  object-src 'none'; /* Disallow plugins */
+  base-uri 'self';
+  /* If using nonces for inline scripts (requires server integration): */
+  /* script-src 'self' 'nonce-RANDOM_NONCE_VALUE'; */
+">
+
 </head>
 <body>
-    <header>
-        <div class="app-title">ApproVideo | Expert Hub</div>
+  <header class="page-header">
     </header>
+
+  <main class="auth-container" role="main">
     
-    <main>
-        <div class="login-container">
-            <div class="login-header">
-                <h1 class="login-title">Expert Login</h1>
-                <p class="login-subtitle">Access your expert dashboard</p>
-            </div>
-            
-            <div id="login-message" class="login-message"></div>
-            
-            <form id="login-form" class="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required autocomplete="email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
-                </div>
-                
-                <div class="form-footer">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    
-                    <a href="#" class="forgot-password">Forgot password?</a>
-                </div>
-                
-                <button type="submit" class="btn">Login</button>
-            </form>
-            
-            <div class="demo-accounts">
-                <h3>Demo Accounts</h3>
-                <div class="demo-account">
-                    <p><strong>Email:</strong> jane.smith@example.com</p>
-                    <p><strong>Password:</strong> any password will work</p>
-                    <p><strong>Role:</strong> Expert</p>
-                </div>
-                <div class="demo-account">
-                    <p><strong>Email:</strong> robert.chen@example.com</p>
-                    <p><strong>Password:</strong> any password will work</p>
-                    <p><strong>Role:</strong> Expert</p>
-                </div>
-            </div>
+  
+    <div id="signup-section" class="auth-card">
+      <h1 data-i18n="signup_title">Create Account</h1>
+      <form id="signup-form" novalidate>
+        <div class="form-group">
+          <label for="signup-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="signup-email" name="email" required autocomplete="email" placeholder="your.email@example.com">
+          <p aria-live="polite" class="error-message" id="signup-email-error"></p>
         </div>
-    </main>
-    
-    <footer>
-        <p>&copy; 2025 ApproVideo. All rights reserved.</p>
-    </footer>
-    
-    <script type="module">
-        import authService from './js/auth-service.js';
-        import { createSecureSession } from './js/session-crypto.js';
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('login-form');
-            const loginMessage = document.getElementById('login-message');
-            
-            loginForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                
-                // Get form values
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Show loading message
-                showMessage('Logging in...', 'info');
-                
-                try {
-                    // Attempt login
-                    const loginResult = await authService.login(email, password);
-                    
-                    if (loginResult.success) {
-                        // Create secure session
-                        await createSecureSession(loginResult.user);
+        <div class="form-group">
+          <label for="signup-password" data-i18n="password_label">Password</label>
+          <input type="password" id="signup-password" name="password" required minlength="6" autocomplete="new-password">
+          <p aria-live="polite" class="error-message" id="signup-password-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-confirm-password" data-i18n="confirm_password_label">Confirm Password</label>
+          <input type="password" id="signup-confirm-password" name="confirm-password" required minlength="6" autocomplete="new-password">
+          <p aria-live="polite" class="error-message" id="signup-confirm-password-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-role" data-i18n="role_label">Select Your Role</label>
+          <select id="signup-role" name="role" required>
+            <option value="" disabled selected data-i18n="role_placeholder">-- Select a Role --</option>
+            <option value="expert" data-i18n="role_expert">Expert / Workshop Leader</option>
+            <option value="learner" data-i18n="role_learner">Learner / Volunteer</option>
+            <option value="researcher" data-i18n="role_researcher">Research Contributor</option>
+            <option value="resources" data-i18n="role_resources">Resource Finder</option>
+            <option value="organizer" data-i18n="role_organizer">Organizer / Coordinator</option>
+          </select>
+          <p aria-live="polite" class="error-message" id="signup-role-error"></p>
+        </div>
+
+        <div class="form-group" id="tag-organizer-group">
+           <label for="tag-input" data-i18n="tags_label">Areas of Expertise/Interest (up to 8 tags)</label>
+           <div class="tag-input-area">
+               <input type="text" id="tag-input" placeholder="e.g., Water Filtration, Solar Power..." aria-describedby="tag-info">
+               <button type="button" id="add-tag-button" class="button-secondary" data-i18n="add_tag_button">Add Tag</button>
+           </div>
+           <div id="tag-display-area" class="tag-container" aria-live="polite">
+               </div>
+           <p id="tag-info" class="info-message">Enter a tag and click "Add Tag" or press Enter. Click a tag to remove it.</p>
+           <p aria-live="polite" class="error-message" id="tag-error-message"></p>
+           <input type="hidden" id="signup-tags" name="tags">
+        </div>
+        <div class="form-group">
+            <label for="interest-statement" data-i18n="interest_statement_label">Statement of Interest / Bio</label>
+            <textarea id="interest-statement" name="interest_statement" rows="4" placeholder="Tell us a bit about yourself and your interest in appropriate technology..." maxlength="500"></textarea>
+            <p aria-live="polite" class="error-message" id="interest-statement-error"></p>
+        </div>
+        <div class="form-group form-group-checkbox">
+           <input type="checkbox" id="tech-clinic-interest" name="tech_clinic_interest" value="true">
+           <label for="tech-clinic-interest" data-i18n="tech_clinic_label">My community could benefit from an Appropriate Technology Clinic.</label>
+           <p aria-live="polite" class="error-message" id="tech-clinic-error"></p>
+        </div>
+        <div class="form-group form-group-checkbox">
+          <input type="checkbox" id="signup-terms" name="terms" required>
+          <label for="signup-terms" data-i18n="terms_label">I agree to the Terms of Service and Privacy Policy</label>
+          <p aria-live="polite" class="error-message" id="signup-terms-error"></p>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="button-primary" id="signup-button" data-i18n="signup_button">Create Account</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="signup-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="already_account_prefix">Already have an account?</span>
+        <a id="show-login-link" data-i18n="login_link" href="#">Log in</a>
+      </div>
+    </div>
+
+    <div id="login-section" class="auth-card hidden">
+      <h1 data-i18n="login_title">Login</h1>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="email" data-i18n="email_label">Email Address</label> <input type="email" id="email" name="email" required autocomplete="email">
+          <p aria-live="polite" class="error-message" id="login-email-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="password" data-i18n="password_label">Password</label> <input type="password" id="password" name="password" required autocomplete="current-password">
+          <p aria-live="polite" class="error-message" id="login-password-error"></p>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="button-primary" id="login-button" data-i18n="login_button">Log In</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="status-message"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="need_account_prefix">Need an account?</span>
+        <a id="show-signup-link" data-i18n="signup_link" href="#">Sign up</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+      </footer>
+
+  <script type="module">
+      // Assuming i18n functions are available in this file
+      // Replace with actual import if needed:
+      // import { applyTranslations, initLanguageSwitcher } from './js/i18n.js';
+      const applyTranslations = async () => { console.log("i18n apply called"); };
+      const initLanguageSwitcher = () => { console.log("i18n init called"); };
+
+      // --- All code now correctly INSIDE DOMContentLoaded ---
+      document.addEventListener('DOMContentLoaded', async () => {
+        console.log("DOM Loaded. Setting up UI listeners...");
+
+        // Initialize translations if necessary
+        try {
+          // initLanguageSwitcher(); // Uncomment if using
+          // await applyTranslations({ '[data-i18n]': el => el.getAttribute('data-i18n') }); // Uncomment if using
+           console.log("Skipping i18n initialization for now.");
+        } catch (err) {
+          console.error('i18n init error:', err);
+        }
+
+        // --- Toggle forms Logic (Now runs AFTER DOM is ready) ---
+        const signupSection = document.getElementById('signup-section');
+        const loginSection  = document.getElementById('login-section');
+        const showLoginLink = document.getElementById('show-login-link');
+        const showSignupLink= document.getElementById('show-signup-link');
+
+        if (showLoginLink && signupSection && loginSection) {
+          showLoginLink.addEventListener('click', e => {
+            e.preventDefault();
+            console.log('Toggle: Show Login'); // Debug log
+            signupSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+          });
+        } else {
+           console.error("Toggle Setup Error: Can't find Login toggle elements.");
+        }
+
+        if (showSignupLink && signupSection && loginSection) {
+          showSignupLink.addEventListener('click', e => {
+            e.preventDefault();
+            console.log('Toggle: Show Signup'); // Debug log
+            loginSection.classList.add('hidden');
+            signupSection.classList.remove('hidden');
+          });
+        } else {
+           console.error("Toggle Setup Error: Can't find Signup toggle elements.");
+        }
+        console.log("Toggle listeners attached (if elements found).");
+
+        // --- Add Signup Form Handler Here ---
+        const signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log("Signup form submitted - handler not implemented yet.");
+                // TODO: Implement signup logic here
+                // - Get form values
+                // - Validate fields
+                // - Make API call (e.g., using fetch to /api/auth/signup)
+                // - Handle response (success/error messages)
+
+                // --- Gather ALL form data ---
+                const formData = new FormData(signupForm);
+                const data = Object.fromEntries(formData.entries()); // Easier to work with
+
+                // Log collected data (including the new fields)
+                console.log("Form Data:", data);
+
+                // Access specific new fields if needed:
+                console.log("Tags:", data.tags); // This comes from the hidden input
+                console.log("Interest Statement:", data.interest_statement);
+                console.log("Tech Clinic Interest:", data.tech_clinic_interest === 'true'); // Checkbox value is 'true' or undefined
+
+                // TODO: Implement actual signup logic here
+                // - Validate ALL fields (including new ones if necessary)
+                // - Make API call (e.g., using fetch to /api/auth/signup with 'data')
+                // - Handle response (success/error messages)
+                document.getElementById('signup-status-area').textContent = 'Signup function not implemented yet.';
                         
-                        // Show success message
-                        showMessage('Login successful! Redirecting to dashboard...', 'success');
-                        
-                        // Redirect to dashboard
-                        setTimeout(() => {
-                            window.location.href = '/expert-dashboard.html';
-                        }, 1500);
-                    } else {
-                        // Show error message
-                        showMessage(loginResult.error || 'Login failed. Please check your credentials.', 'error');
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    showMessage('An unexpected error occurred. Please try again.', 'error');
-                }
-            });
-            
-            function showMessage(message, type) {
-                loginMessage.textContent = message;
-                loginMessage.style.display = 'block';
-                
-                // Reset classes
-                loginMessage.classList.remove('error-message', 'success-message');
-                
-                // Add appropriate class
-                if (type === 'error') {
-                    loginMessage.classList.add('error-message');
-                } else if (type === 'success') {
-                    loginMessage.classList.add('success-message');
-                }
+
+
+              });
+             console.log("Signup listener attached.");
+        } else {
+             console.error("Signup form not found.");
+        }
+
+
+        const tagInput = document.getElementById('tag-input');
+            const addTagButton = document.getElementById('add-tag-button');
+            const tagDisplayArea = document.getElementById('tag-display-area');
+            const hiddenTagsInput = document.getElementById('signup-tags');
+            const tagErrorMessage = document.getElementById('tag-error-message');
+            const MAX_TAGS = 8;
+            const tagColors = [
+                'tag-color-0', 'tag-color-1', 'tag-color-2', 'tag-color-3',
+                'tag-color-4', 'tag-color-5', 'tag-color-6', 'tag-color-7'
+            ];
+            let selectedTags = []; // Array to store tag strings
+            let nextColorIndex = 0;
+
+            function updateHiddenInput() {
+                hiddenTagsInput.value = selectedTags.join(','); // Comma-separated list
             }
-        });
-    </script>
+
+            function displayTags() {
+                tagDisplayArea.innerHTML = ''; // Clear current tags
+                selectedTags.forEach((tag, index) => {
+                    const tagElement = document.createElement('span');
+                    tagElement.classList.add('tag-item');
+                    // Cycle through colors based on the tag's *current position* for consistency
+                    const colorClass = tagColors[index % tagColors.length];
+                    tagElement.classList.add(colorClass);
+                    tagElement.textContent = tag;
+                    tagElement.dataset.tagValue = tag; // Store value for removal
+                    tagElement.title = 'Click to remove'; // Tooltip
+
+                    // Add click listener to remove the tag
+                    tagElement.addEventListener('click', () => {
+                        removeTag(tag);
+                    });
+
+                    tagDisplayArea.appendChild(tagElement);
+                });
+                updateHiddenInput(); // Update hidden input whenever tags are redisplayed
+            }
+
+            function addTag() {
+                const tagName = tagInput.value.trim().toLowerCase(); // Normalize: lowercase, no extra spaces
+                tagErrorMessage.textContent = ''; // Clear previous error
+
+                if (!tagName) {
+                    tagErrorMessage.textContent = 'Please enter a tag name.';
+                    return; // Don't add empty tags
+                }
+
+                if (selectedTags.length >= MAX_TAGS) {
+                    tagErrorMessage.textContent = `You can add a maximum of ${MAX_TAGS} tags.`;
+                    return;
+                }
+
+                if (selectedTags.includes(tagName)) {
+                    tagErrorMessage.textContent = `Tag "${tagName}" already added.`;
+                    tagInput.value = ''; // Clear input even if duplicate
+                    return;
+                }
+
+                selectedTags.push(tagName);
+                tagInput.value = ''; // Clear the input field
+                displayTags(); // Refresh the display
+                tagInput.focus(); // Keep focus on input for easier adding
+            }
+
+            function removeTag(tagToRemove) {
+                selectedTags = selectedTags.filter(tag => tag !== tagToRemove);
+                displayTags(); // Refresh the display
+            }
+
+            // Event Listeners for Tag Input
+            if (addTagButton && tagInput && tagDisplayArea && hiddenTagsInput && tagErrorMessage) {
+                addTagButton.addEventListener('click', addTag);
+
+                tagInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault(); // Prevent potential form submission if inside form
+                        addTag();
+                    }
+                    if (e.key === ',') { // Prevent adding commas within tags directly
+                        e.preventDefault();
+                        addTag(); // Add tag when comma is pressed
+                    }
+                });
+                console.log("Tag organizer listeners attached.");
+            } else {
+                console.error("Tag organizer elements not found.");
+            }
+
+
+      }); // --- End of DOMContentLoaded ---
+  </script>
+
+  <script type="module" src="./login.js"></script>
+  <script src="./js/simple-toggle.js"></script>
 </body>
 </html>

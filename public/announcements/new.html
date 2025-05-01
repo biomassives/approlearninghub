@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="announce_new_title">New Announcement - Biodiversity Hub</title>
+    <meta name="description" content="Announce a confirmed date or event to the network.">
+    <script type="importmap">
+    {
+      "imports": {
+        "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm",
+        "./apiService.js": "/js/apiService.js"
+      }
+    }
+    </script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-YOUR_NONCE_HERE' https://cdn.jsdelivr.net/npm/; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co;">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        /* Basic styles for forms (copied from previous example - ideally in main.css) */
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) {
+            .form-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-grid .span-2 { grid-column: span 2; }
+        }
+        .form-grid label { display: block; margin-bottom: 0.25rem; font-weight: 500; color: var(--color-text-secondary); }
+        .form-grid input[type="text"], .form-grid input[type="url"], .form-grid input[type="datetime-local"], .form-grid select, .form-grid textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--border-radius); background-color: var(--color-bg); color: var(--color-text); font-size: 0.9rem; }
+        .form-grid textarea { min-height: 120px; }
+        .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus { outline: 2px solid transparent; outline-offset: 2px; border-color: var(--color-primary); box-shadow: 0 0 0 2px var(--color-primary-focus); }
+        .form-button { padding: 0.6rem 1.2rem; background-color: var(--color-primary); color: var(--color-text-on-primary); border: none; border-radius: var(--border-radius); cursor: pointer; font-weight: 500; transition: background-color 0.2s; }
+        .form-button:hover { background-color: var(--color-primary-hover); }
+        .form-message { margin-top: 1rem; font-size: 0.9rem; min-height: 1.2em; } /* Reserve space */
+        .form-message.success { color: var(--color-green-600); }
+        body.dark-mode .form-message.success { color: var(--color-green-300); }
+        .form-message.error { color: var(--color-accent-500); } /* Using accent color for error */
+        body.dark-mode .form-message.error { color: var(--color-accent-300); }
+    </style>
+</head>
+<body class="theme-transition"> <header class="page-header" role="banner">
+        <div class="header-left">...</div>
+         <nav class="main-nav">...</nav>
+         <div class="header-right">...</div>
+    </header>
+
+    <main class="page-container" role="main" style="padding: 1.5rem;"> <section id="section-announcements-new" class="content-section active"> <h1 data-i18n="announce_new_heading">Announce Confirmed Date / Event</h1>
+             <p data-i18n="announce_new_desc">Share important dates, deadlines, or event details with the network.</p>
+             <hr style="border: none; height: 1px; background-color: var(--color-border); margin: 1.5rem 0;">
+
+             <form id="announcement-form" class="form-grid">
+                 <div class="span-2">
+                      <label for="announce-title" data-i18n="announce_title_label">Announcement / Event Title *</label>
+                      <input type="text" id="announce-title" name="title" required>
+                  </div>
+                   <div>
+                      <label for="announce-type" data-i18n="announce_type_label">Event Type *</label>
+                      <select id="announce-type" name="event_type" required>
+                            <option value="" data-i18n="select_type_option">-- Select Type --</option>
+                            <option value="workshop" data-i18n="event_type_workshop">Workshop</option>
+                            <option value="clinic" data-i18n="event_type_clinic">Clinic</option>
+                            <option value="meeting" data-i18n="event_type_meeting">Meeting</option>
+                            <option value="deadline" data-i18n="event_type_deadline">Deadline</option>
+                             <option value="release" data-i18n="event_type_release">Release</option>
+                             <option value="other" data-i18n="event_type_other">Other</option>
+                      </select>
+                  </div>
+                   <div>
+                      <label for="announce-datetime" data-i18n="announce_datetime_label">Date & Time *</label>
+                      <input type="datetime-local" id="announce-datetime" name="datetime" required>
+                  </div>
+                   <div>
+                      <label for="announce-location" data-i18n="announce_location_label">Location / Platform *</label>
+                      <input type="text" id="announce-location" name="location" required placeholder="e.g., Zoom Link, Room 101, Online">
+                  </div>
+                   <div>
+                      <label for="announce-link" data-i18n="announce_link_label">Relevant Link (Optional)</label>
+                      <input type="url" id="announce-link" name="link" placeholder="e.g., https://...">
+                  </div>
+                  <div class="span-2">
+                      <label for="announce-details" data-i18n="announce_details_label">Details / Description *</label>
+                      <textarea id="announce-details" name="details" required></textarea>
+                  </div>
+                  <div class="span-2">
+                      <button type="submit" class="form-button" data-i18n="announce_submit_button">Post Announcement</button>
+                       <p id="announcement-message" class="form-message"></p>
+                  </div>
+             </form>
+        </section>
+    </main>
+
+    <footer class="page-footer" role="contentinfo">
+        </footer>
+
+    <script type="module" nonce="YOUR_NONCE_HERE" src="/js/apiService.js"></script>
+    <script type="module" nonce="YOUR_NONCE_HERE" src="/js/auth-guard.js"></script> <script type="module" nonce="YOUR_NONCE_HERE" src="/js/header-controls.js"></script> <script type="module" nonce="YOUR_NONCE_HERE" src="/js/announcements-new.js"></script> </body>
+</html>

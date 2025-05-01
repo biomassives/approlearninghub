@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocket Stove Build Carousel</title>
+  <style>
+    /* Mondrian-inspired rule-of-thirds grid and bold lines */
+    body {
+      margin: 0;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+    .carousel {
+      position: relative;
+      width: 80vw;
+      max-width: 800px;
+      height: 60vh;
+      max-height: 600px;
+      overflow: hidden;
+      border: 8px solid #000;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      background: #fff;
+    }
+    .slide {
+      grid-column: 1 / 4;
+      grid-row: 1 / 4;
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 1rem;
+      box-sizing: border-box;
+      color: #000;
+    }
+    .slide.active {
+      display: block;
+    }
+    .slide__image {
+      width: 100%;
+      height: 50%;
+      background-size: cover;
+      background-position: center;
+      border: 4px solid #000;
+      margin-bottom: 1rem;
+    }
+    .slide__text {
+      height: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      border: 4px solid #000;
+      padding: 0.5rem;
+    }
+    .slide:nth-child(odd) .slide__image { background-color: #fddc00; /* yellow */ }
+    .slide:nth-child(even) .slide__image { background-color: #e03a3e; /* red */ }
+    .slide:nth-child(3n) .slide__image { background-color: #0052cc; /* blue */ }
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.7);
+      border: 4px solid #000;
+      padding: 0.5rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .nav--prev { left: 1rem; }
+    .nav--next { right: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <!-- Slides -->
+    <div class="slide active" data-index="0">
+      <div class="slide__image" style="background-image:url('images/panel1_select_cans.jpg')"></div>
+      <div class="slide__text">
+        <h2>Select Cans</h2>
+        <p>Choose three graduated cans: 55 oz, 28 oz, and 15.5 oz so they nest smoothly.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="1">
+      <div class="slide__image" style="background-image:url('images/panel2_prepare_cans.jpg')"></div>
+      <div class="slide__text">
+        <h2>Prepare Cans</h2>
+        <p>Remove lids from the large & medium cans; cut both ends off the small can.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="2">
+      <div class="slide__image" style="background-image:url('images/panel3_trace_hole.jpg')"></div>
+      <div class="slide__text">
+        <h2>Trace Intake Hole</h2>
+        <p>Use the small can lid as a template to mark a perfect circle on the medium can.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="3">
+      <div class="slide__image" style="background-image:url('images/panel4_cut_hole.jpg')"></div>
+      <div class="slide__text">
+        <h2>Cut Intake Hole</h2>
+        <p>Puncture with a nail & hammer, then snip carefully along the outline.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="4">
+      <div class="slide__image" style="background-image:url('images/panel5_dry_fit.jpg')"></div>
+      <div class="slide__text">
+        <h2>Dry-Fit Chamber</h2>
+        <p>Slide the small can through the hole, ensuring space for airflow.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="5">
+      <div class="slide__image" style="background-image:url('images/panel6_slots.jpg')"></div>
+      <div class="slide__text">
+        <h2>Fuel-Feed & Air Slots</h2>
+        <p>Cut two slots 25% down: one for air intake, one for feeding twigs.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="6">
+      <div class="slide__image" style="background-image:url('images/panel7_vents.jpg')"></div>
+      <div class="slide__text">
+        <h2>Punch Exhaust Vents</h2>
+        <p>Use a nail to punch vents around the top rim; crimp edges smooth.</p>
+      </div>
+    </div>
+    <div class="slide" data-index="7">
+      <div class="slide__image" style="background-image:url('images/panel8_test_fire.jpg')"></div>
+      <div class="slide__text">
+        <h2>Assemble & Test</h2>
+        <p>Stack all cans, load fuel, and light to verify the rocket stove draft.</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav nav--prev">&#9664;</div>
+    <div class="nav nav--next">&#9654;</div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    document.querySelector('.nav--next').addEventListener('click', () => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    });
+    document.querySelector('.nav--prev').addEventListener('click', () => {
+      slides[current].classList.remove('active');
+      current = (current - 1 + slides.length) % slides.length;
+      slides[current].classList.add('active');
+    });
+  </script>
+</body>
+</html>

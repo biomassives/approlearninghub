@@ -1,0 +1,1211 @@
+{
+    "areas": [
+      {
+        "area": "Shelter",
+        "subcategories": [
+          {
+            "title": "Low-cost, Durable Construction Methods",
+            "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+            "tags": ["construction", "low-cost", "durable", "building"],
+            "videos": [
+              {
+                "title": "DIY Concrete Block Foundation for Small Structures",
+                "youtubeId": "KDvH1hoEMPQ",
+                "description": "How to build a simple but strong foundation with concrete blocks"
+              },
+              {
+                "title": "Building With Earth - Complete Cob Workshop",
+                "youtubeId": "0olcwSwRELw",
+                "description": "Learn the basics of building with cob, a natural building material made from clay, sand, and straw"
+              },
+              {
+                "title": "How To Build A Bamboo House Step By Step",
+                "youtubeId": "X58DmXH2-W0",
+                "description": "Complete guide to constructing a durable bamboo structure"
+              },
+              {
+                "title": "DIY Pallet Construction: Building Walls and Floors",
+                "youtubeId": "h8Kx-LmYAqQ",
+                "description": "Using recycled wooden pallets for low-cost building materials"
+              },
+              {
+                "title": "Earthbag Building Basics: Foundation and Wall Construction",
+                "youtubeId": "ap7CYjF9CJw",
+                "description": "Step-by-step guide to building with earthbags for durable, earthquake-resistant structures"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Selecting Materials",
+                "content": "Learn how to identify suitable local materials for construction. This panel covers basic testing methods for soil, wood, bamboo, and recycled materials.",
+                "panel_type": "Guide",
+                "icon_class": "fas fa-search text-blue-800 fa-lg"
+              },
+              {
+                "title": "Foundation Techniques",
+                "content": "A solid foundation is essential for any structure. This panel covers simple foundation methods using stone, rubble, concrete, and earthbags.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-layer-group text-green-800 fa-lg"
+              },
+              {
+                "title": "Wall Building Safety",
+                "content": "Safety considerations for different wall building techniques, including load-bearing capacity, bracing, and weather protection.",
+                "panel_type": "Safety",
+                "icon_class": "fas fa-hard-hat text-yellow-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Locally Available Materials",
+            "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+            "tags": ["materials", "local", "sustainability"],
+            "videos": [
+              {
+                "title": "How to Identify and Process Local Clay for Construction",
+                "youtubeId": "eOOYrY4zxpw",
+                "description": "Testing and preparing natural clay for building projects"
+              },
+              {
+                "title": "Bamboo Harvesting and Treatment for Construction",
+                "youtubeId": "9-Ka4YcyOFo",
+                "description": "How to select, harvest, and treat bamboo for long-lasting building materials"
+              },
+              {
+                "title": "Building With Stone: Finding and Using Local Rock",
+                "youtubeId": "t4l_1YQ9P0c",
+                "description": "Techniques for gathering and constructing with locally sourced stone"
+              },
+              {
+                "title": "Creative Reuse: Building With Glass Bottles",
+                "youtubeId": "M7P8YAIhBkY",
+                "description": "How to incorporate waste glass bottles into walls for beauty and function"
+              },
+              {
+                "title": "Using Recycled Tires in Earthship Construction",
+                "youtubeId": "7RZPJdhN4f0",
+                "description": "Repurposing used tires for building foundations and walls"
+              },
+              {
+                "title": "Natural Fiber Reinforcement for Earth Construction",
+                "youtubeId": "YkG0H4xhLjg",
+                "description": "Using straw, grass, and other natural fibers to strengthen earth-based building materials"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Material Testing",
+                "content": "Simple field tests to determine if local materials are suitable for construction, including soil composition tests and wood hardness evaluations.",
+                "panel_type": "Guide",
+                "icon_class": "fas fa-vial text-purple-800 fa-lg"
+              },
+              {
+                "title": "Sustainable Harvesting",
+                "content": "Ethical guidelines for harvesting natural materials without depleting resources, including replanting strategies and seasonal considerations.",
+                "panel_type": "Sustainability",
+                "icon_class": "fas fa-leaf text-green-800 fa-lg"
+              },
+              {
+                "title": "Material Processing",
+                "content": "Techniques to prepare raw materials for construction, including drying, seasoning, and natural preservation methods.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-tools text-blue-800 fa-lg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "area": "Water",
+        "subcategories": [
+          {
+            "title": "Purification",
+            "description": "Use household items or low-cost filters to make water safe for drinking. Includes simple boiling, sand filtering, and solar disinfection techniques.",
+            "tags": ["clean water", "filtration", "health"],
+            "videos": [
+              {
+                "title": "DIY Biosand Water Filter Construction",
+                "youtubeId": "uQtFZM4ksX4",
+                "description": "Step-by-step guide to building an effective biosand filter"
+              },
+              {
+                "title": "How to Build a Ceramic Water Filter",
+                "youtubeId": "pSLd9WhvBjI",
+                "description": "Creating ceramic filters using local clay and combustible materials"
+              },
+              {
+                "title": "Solar Water Disinfection (SODIS) Method",
+                "youtubeId": "idpizRBP4oo",
+                "description": "Using sunlight to kill harmful bacteria in clear water"
+              },
+              {
+                "title": "Simple Charcoal and Sand Water Filter",
+                "youtubeId": "B7QsWrVyJJo",
+                "description": "Creating a multi-layer filter using common materials"
+              },
+              {
+                "title": "Boiling Water Safely Without Electricity",
+                "youtubeId": "k92ZHf8Kz4U",
+                "description": "Methods for effective water boiling using minimal fuel"
+              },
+              {
+                "title": "Testing Water Quality With Simple Tools",
+                "youtubeId": "oTGP5BbgZ3k",
+                "description": "How to check if your water is safe to drink without lab equipment"
+              },
+              {
+                "title": "DIY Water Chlorination Methods",
+                "youtubeId": "E5YRWVqgB3A",
+                "description": "Proper techniques for disinfecting water with chlorine"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Water Contamination",
+                "content": "Understanding common water contaminants and health risks. Learn to visually identify potentially unsafe water sources.",
+                "panel_type": "Education",
+                "icon_class": "fas fa-exclamation-triangle text-red-800 fa-lg"
+              },
+              {
+                "title": "Filtration Methods",
+                "content": "Compare different filtration techniques including biosand filters, ceramic filters, and cloth filtration for various contaminant types.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-filter text-blue-800 fa-lg"
+              },
+              {
+                "title": "Chemical Treatment",
+                "content": "Safe application of chlorination and other chemical treatments, including proper measurement and contact time.",
+                "panel_type": "Safety",
+                "icon_class": "fas fa-flask text-purple-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Desalination",
+            "description": "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.",
+            "tags": ["salt removal", "ocean", "irrigation"],
+            "videos": [
+              {
+                "title": "Simple Solar Desalination Still",
+                "youtubeId": "bJ9r8RFp4gE",
+                "description": "Building a basic sun-powered water desalinator"
+              },
+              {
+                "title": "DIY Multi-Effect Distillation System",
+                "youtubeId": "5zWfXtKu8As",
+                "description": "Creating a more efficient desalination system using multiple condensation stages"
+              },
+              {
+                "title": "Building a Wood-Heated Desalination Unit",
+                "youtubeId": "oFYBDCG1H8M",
+                "description": "Using wood fire to power water desalination when solar isn't available"
+              },
+              {
+                "title": "Testing and Improving Distilled Water Quality",
+                "youtubeId": "d5bjI9jgCxk",
+                "description": "Methods to ensure distilled water is safe and properly mineralized"
+              },
+              {
+                "title": "Large-Scale Communal Desalination System",
+                "youtubeId": "HvV8DcfXrYk",
+                "description": "Scaling up desalination technology for small community needs"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Solar Still Design",
+                "content": "Learn how to maximize efficiency in solar still design through proper material selection, angle optimization, and condensation surface area.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-sun text-yellow-600 fa-lg"
+              },
+              {
+                "title": "Yield Improvement",
+                "content": "Techniques to increase freshwater production including black surface absorbers, insulation methods, and condensation enhancement.",
+                "panel_type": "Optimization",
+                "icon_class": "fas fa-tint-slash text-blue-800 fa-lg"
+              },
+              {
+                "title": "Post-Treatment",
+                "content": "Why remineralization matters and how to add essential minerals to distilled water using limestone, clean eggshells, or mineral drops.",
+                "panel_type": "Health",
+                "icon_class": "fas fa-plus-circle text-green-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Efficient Distribution",
+            "description": "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.",
+            "tags": ["pipes", "delivery", "infrastructure"],
+            "videos": [
+              {
+                "title": "DIY Gravity-Fed Water System Installation",
+                "youtubeId": "9ICi3rFj28M",
+                "description": "Setting up water distribution using natural elevation differences"
+              },
+              {
+                "title": "Building a Ram Pump From Plumbing Parts",
+                "youtubeId": "Jl5TodxqQpc",
+                "description": "Creating a pump that uses water momentum to move water uphill without electricity"
+              },
+              {
+                "title": "Water Storage Tank Construction",
+                "youtubeId": "2P4TRkWGKqc",
+                "description": "Building a ferrocement water tank for reliable storage"
+              },
+              {
+                "title": "Low-Pressure Drip Irrigation Setup",
+                "youtubeId": "qSZWVd8YSLE",
+                "description": "Water-saving irrigation system that works with minimal pressure"
+              },
+              {
+                "title": "Bicycle-Powered Water Pump Construction",
+                "youtubeId": "wj8ZLGdSvfU",
+                "description": "Human-powered water pumping for small-scale needs"
+              },
+              {
+                "title": "PVC Pipe Network Design for Water Distribution",
+                "youtubeId": "UXcJp0G_JWM",
+                "description": "Planning and building a simple pipe network for water delivery"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Gravity Systems",
+                "content": "Harnessing natural elevation for water distribution without pumps. Learn proper pipe sizing, pressure regulation, and air lock prevention.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-mountain text-blue-800 fa-lg"
+              },
+              {
+                "title": "Storage Solutions",
+                "content": "Designing and building water storage systems including tanks, cisterns, and elevated containers to maintain consistent supply.",
+                "panel_type": "Infrastructure",
+                "icon_class": "fas fa-water text-blue-600 fa-lg"
+              },
+              {
+                "title": "Leak Prevention",
+                "content": "Techniques to identify, prevent, and repair leaks in water distribution systems, saving water and maintaining pressure.",
+                "panel_type": "Maintenance",
+                "icon_class": "fas fa-wrench text-red-600 fa-lg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "area": "Waste",
+        "subcategories": [
+          {
+            "title": "Composting",
+            "description": "Learn how to convert organic waste into nutrient-rich soil. Includes techniques for both urban and rural settings, managing compost temperature, and using the final product.",
+            "tags": ["composting", "organic waste", "soil improvement", "sustainability"],
+            "videos": [
+              {
+                "title": "Building a Three-Bin Compost System",
+                "youtubeId": "JehP4xlF4gI",
+                "description": "Creating an efficient composting setup for larger volumes"
+              },
+              {
+                "title": "Urban Balcony Composting With Worms",
+                "youtubeId": "5CnSYWX-N6I",
+                "description": "Small-scale vermicomposting for apartment dwellers"
+              },
+              {
+                "title": "Hot Composting Technique for Fast Results",
+                "youtubeId": "HWypVv1dzJQ",
+                "description": "Accelerated composting method that breaks down materials in weeks rather than months"
+              },
+              {
+                "title": "Composting Toilet Construction and Maintenance",
+                "youtubeId": "J6rjrbJ9RcI",
+                "description": "Safe human waste composting systems for off-grid locations"
+              },
+              {
+                "title": "Compost Tea Brewing for Garden Health",
+                "youtubeId": "0cJmVnRJIwI",
+                "description": "Creating liquid fertilizer from finished compost"
+              },
+              {
+                "title": "Troubleshooting Common Composting Problems",
+                "youtubeId": "LjaBMxX1xXs",
+                "description": "Solving issues like odor, pests, and slow decomposition"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Compost Basics",
+                "content": "Understanding the fundamentals of composting including the carbon-to-nitrogen ratio, moisture management, and aeration principles.",
+                "panel_type": "Education",
+                "icon_class": "fas fa-seedling text-green-800 fa-lg"
+              },
+              {
+                "title": "Urban Solutions",
+                "content": "Space-efficient composting methods for city dwellers, including bokashi fermentation, worm bins, and balcony systems.",
+                "panel_type": "Urban",
+                "icon_class": "fas fa-city text-blue-800 fa-lg"
+              },
+              {
+                "title": "Using Compost",
+                "content": "How to apply finished compost for maximum benefit in gardens, potted plants, and agricultural settings.",
+                "panel_type": "Application",
+                "icon_class": "fas fa-hand-holding-heart text-green-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Recycling Systems",
+            "description": "Set up community or household recycling systems to properly sort and process recyclable materials. Covers plastic, paper, glass, and metal recycling basics.",
+            "tags": ["recycling", "waste sorting", "materials recovery"],
+            "videos": [
+              {
+                "title": "Setting Up a Community Recycling Station",
+                "youtubeId": "IsTnQ9U5wN8",
+                "description": "Organizing an effective collection point for recyclables"
+              },
+              {
+                "title": "DIY Plastic Processing for Reuse",
+                "youtubeId": "kUR6_bQLU-E",
+                "description": "Small-scale methods to clean and process plastic waste"
+              },
+              {
+                "title": "Paper Recycling and Homemade Paper Making",
+                "youtubeId": "Gq7L9-0XdVw",
+                "description": "Creating new paper products from waste paper"
+              },
+              {
+                "title": "Metal Sorting and Processing Basics",
+                "youtubeId": "nJ5Qe9j2oAc",
+                "description": "How to identify different metals and prepare them for recycling"
+              },
+              {
+                "title": "Glass Crushing and Reuse Applications",
+                "youtubeId": "xF4YIbGU-cA",
+                "description": "Safely processing glass for construction materials and crafts"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Sorting Systems",
+                "content": "Creating effective waste separation systems for different materials, including identification guides and contamination prevention.",
+                "panel_type": "Organization",
+                "icon_class": "fas fa-sort text-blue-800 fa-lg"
+              },
+              {
+                "title": "Collection Methods",
+                "content": "Strategies for community-based collection including drop-off points, pickup schedules, and incentive programs.",
+                "panel_type": "Community",
+                "icon_class": "fas fa-people-carry text-purple-800 fa-lg"
+              },
+              {
+                "title": "Processing Equipment",
+                "content": "Simple tools and machines for processing recyclables, including crushers, balers, and washing systems.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-cogs text-gray-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Upcycling",
+            "description": "Transform discarded items into useful products. Learn creative approaches to reuse materials that would otherwise become waste.",
+            "tags": ["upcycling", "creative reuse", "waste reduction"],
+            "videos": [
+              {
+                "title": "Making Furniture From Wooden Pallets",
+                "youtubeId": "zIcDVPkHVmI",
+                "description": "Constructing chairs, tables and beds from shipping pallets"
+              },
+              {
+                "title": "Plastic Bottle Building Blocks and Construction",
+                "youtubeId": "lnT1qY0a4KA",
+                "description": "Using plastic bottles filled with sand as building materials"
+              },
+              {
+                "title": "Tire Upcycling for Garden Projects",
+                "youtubeId": "AxiI17y0fNk",
+                "description": "Transforming old tires into planters, retaining walls, and play areas"
+              },
+              {
+                "title": "Creating Rope From Plastic Bags",
+                "youtubeId": "IRGnkGHmJdg",
+                "description": "Converting plastic waste into strong, useful cordage"
+              },
+              {
+                "title": "Glass Bottle Cutting for Household Items",
+                "youtubeId": "lfDk5aiLbKw",
+                "description": "Techniques for cutting glass bottles to make cups, lamps, and art"
+              },
+              {
+                "title": "Metal Can Upcycling Projects",
+                "youtubeId": "CcBJ3S-J8Is",
+                "description": "Transforming food cans into practical items and decorations"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Material Selection",
+                "content": "Guidelines for identifying materials with the best upcycling potential, including durability assessment and safety considerations.",
+                "panel_type": "Materials",
+                "icon_class": "fas fa-recycle text-green-600 fa-lg"
+              },
+              {
+                "title": "Basic Tools",
+                "content": "Essential tools and techniques for working with different waste materials, including cutting, joining, and finishing methods.",
+                "panel_type": "Tools",
+                "icon_class": "fas fa-tools text-gray-800 fa-lg"
+              },
+              {
+                "title": "Design Thinking",
+                "content": "Approaches to reimagining waste items for new purposes, including functional assessment and creative problem-solving.",
+                "panel_type": "Design",
+                "icon_class": "fas fa-lightbulb text-yellow-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Wastewater Management",
+            "description": "Build simple systems to treat and safely dispose of greywater and blackwater. Includes constructed wetlands, filtration beds, and safe handling practices.",
+            "tags": ["wastewater", "greywater", "sanitation", "treatment"],
+            "videos": [
+              {
+                "title": "DIY Greywater System for Garden Irrigation",
+                "youtubeId": "v3KGpnRrQ_I",
+                "description": "Reusing household water from sinks and showers for plants"
+              },
+              {
+                "title": "Constructing a Basic Wetland Filtration System",
+                "youtubeId": "6gGKKnD-Z4Q",
+                "description": "Building a natural water treatment system using plants and gravel"
+              },
+              {
+                "title": "Simple Septic System Installation",
+                "youtubeId": "QYyZdJc2RhY",
+                "description": "Creating a basic blackwater management system for rural settings"
+              },
+              {
+                "title": "Mulch Basin Construction for Greywater",
+                "youtubeId": "8XuoRbZTLIs",
+                "description": "Building a simple yet effective greywater dispersion system"
+              },
+              {
+                "title": "DIY Biodigester for Wastewater Treatment",
+                "youtubeId": "NzQMPcpKgd8",
+                "description": "Creating an anaerobic system that also produces biogas"
+              },
+              {
+                "title": "Bamboo Drip Irrigation from Greywater",
+                "youtubeId": "K4B8CpVlR4U",
+                "description": "Using bamboo pipes to distribute filtered greywater to plants"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Greywater Basics",
+                "content": "Understanding different types of wastewater and appropriate reuse applications, including which household waters are safe for direct garden use.",
+                "panel_type": "Education",
+                "icon_class": "fas fa-shower text-blue-400 fa-lg"
+              },
+              {
+                "title": "Natural Treatment",
+                "content": "Using plant-based systems to filter and purify wastewater through constructed wetlands and reed beds.",
+                "panel_type": "Biological",
+                "icon_class": "fas fa-leaf text-green-600 fa-lg"
+              },
+              {
+                "title": "Safety Protocols",
+                "content": "Essential guidelines for handling different types of wastewater to prevent disease transmission and contamination.",
+                "panel_type": "Safety",
+                "icon_class": "fas fa-shield-alt text-red-600 fa-lg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "area": "Energy",
+        "subcategories": [
+          {
+            "title": "DIY Solar Energy",
+            "description": "Set up your own solar panel systems for basic lighting and device charging. Covers solar panel positioning, batteries, and wiring safety.",
+            "tags": ["solar", "DIY", "power", "off-grid"],
+            "videos": [
+              {
+                "title": "Building a Basic Solar Power System",
+                "youtubeId": "fFHn_xoMsI8",
+                "description": "Complete guide to assembling solar panels, charge controller, battery and inverter"
+              },
+              {
+                "title": "DIY Solar Lanterns from Recycled Materials",
+                "youtubeId": "JC4bwXEBWNc",
+                "description": "Creating simple solar lights using jar lids and small solar cells"
+              },
+              {
+                "title": "Solar Panel Mounting and Positioning",
+                "youtubeId": "9GvN7O5pUw8",
+                "description": "Optimizing solar collection through proper angle and orientation"
+              },
+              {
+                "title": "Battery Selection and Maintenance for Solar Systems",
+                "youtubeId": "zHWjYyJnTZ4",
+                "description": "Choosing appropriate batteries and extending their lifespan"
+              },
+              {
+                "title": "DIY Solar Water Heater Construction",
+                "youtubeId": "MUtI2jFvJLM",
+                "description": "Building a simple but effective solar water heating system"
+              },
+              {
+                "title": "Solar System Wiring Safety and Best Practices",
+                "youtubeId": "GMgZZ0jVyVQ",
+                "description": "Essential safety guidelines for solar electrical systems"
+              }
+            ],
+            "panels": [
+              {
+                "title": "System Sizing",
+                "content": "How to calculate your energy needs and properly size solar systems, including panel wattage, battery capacity, and inverter requirements.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-calculator text-blue-800 fa-lg"
+              },
+              {
+                "title": "Component Selection",
+                "content": "Guidelines for choosing quality solar components, including panel types, battery chemistry, charge controllers, and inverters.",
+                "panel_type": "Equipment",
+                "icon_class": "fas fa-microchip text-gray-800 fa-lg"
+              },
+              {
+                "title": "Installation Safety",
+                "content": "Critical safety practices for solar system installation, including proper grounding, wire sizing, and circuit protection.",
+                "panel_type": "Safety",
+                "icon_class": "fas fa-bolt text-yellow-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Biogas Generation",
+            "description": "Turn kitchen and animal waste into clean-burning gas for cooking. Learn how to build a small digester, maintain it, and safely use the gas.",
+            "tags": ["biogas", "waste", "energy", "renewable"],
+            "videos": [
+              {
+                "title": "Simple Barrel Biogas Digester Construction",
+                "youtubeId": "3C0KFcCG9ts",
+                "description": "Building a basic biogas system using plastic barrels"
+              },
+              {
+                "title": "Biogas Stove Modification and Installation",
+                "youtubeId": "pTXJzxZpR4s",
+                "description": "Adapting conventional stoves for biogas and ensuring safe connections"
+              },
+              {
+                "title": "Optimal Feeding and Maintenance of Biodigesters",
+                "youtubeId": "d3WYQmPAM6c",
+                "description": "How to maintain consistent gas production through proper feeding"
+              },
+              {
+                "title": "Underground Biogas System for Colder Climates",
+                "youtubeId": "E2KhFx_jQrU",
+                "description": "Temperature-stable biodigester designs for year-round production"
+              },
+              {
+                "title": "Biogas Storage and Safety Systems",
+                "youtubeId": "Lr2NV3zhvLc",
+                "description": "Creating safe gas storage and implementing basic safety measures"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Digester Design",
+                "content": "Different biodigester designs for various settings and waste types, including floating dome, fixed dome, and bag digesters.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-drafting-compass text-blue-800 fa-lg"
+              },
+              {
+                "title": "Feedstock Selection",
+                "content": "Guidelines for selecting and preparing organic materials for optimal biogas production, including carbon-to-nitrogen ratios.",
+                "panel_type": "Materials",
+                "icon_class": "fas fa-apple-alt text-green-600 fa-lg"
+              },
+              {
+                "title": "Gas Safety",
+                "content": "Essential safety practices for handling biogas, including leak detection, proper ventilation, and flame arrestors.",
+                "panel_type": "Safety",
+                "icon_class": "fas fa-fire-alt text-red-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Microgrids for Sustainable Power",
+            "description": "Build small, local power systems that connect solar, wind, or battery energy to homes and clinics. Learn how to balance loads and increase energy access.",
+            "tags": ["microgrid", "sustainability", "infrastructure"],
+            "videos": [
+              {
+                "title": "Basic Microgrid Design Principles",
+                "youtubeId": "wJ8YRU4jZpM",
+                "description": "Understanding the fundamentals of small power distribution systems"
+              },
+              {
+                "title": "Community-Scale Battery Storage Systems",
+                "youtubeId": "8G7f2GbzVL4",
+                "description": "Building and managing shared battery banks for microgrids"
+              },
+              {
+                "title": "Load Management for Small Power Systems",
+                "youtubeId": "pJN5akpMvKo",
+                "description": "Techniques to balance electrical demands in limited-capacity systems"
+              },
+              {
+                "title": "Hybrid Wind-Solar Microgrid Installation",
+                "youtubeId": "6t5aD8cUqA0",
+                "description": "Combining multiple renewable sources for reliable power"
+              },
+              {
+                "title": "Low-Cost Energy Monitoring and Management",
+                "youtubeId": "iFVq7IUTn0Y",
+                "description": "Setting up simple systems to track and optimize energy use"
+              },
+              {
+                "title": "Microgrid Distribution Wiring Safety",
+                "youtubeId": "k7mUvYMWDYA",
+                "description": "Safe practices for running power lines to multiple buildings"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Grid Design",
+                "content": "Principles of microgrid layout including generation sources, distribution networks, and load centers with necessary protection devices.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-network-wired text-blue-800 fa-lg"
+              },
+              {
+                "title": "Power Management",
+                "content": "Strategies for balancing power generation and consumption, including load shedding, prioritization, and smart controllers.",
+                "panel_type": "Management",
+                "icon_class": "fas fa-sliders-h text-purple-800 fa-lg"
+              },
+              {
+                "title": "Community Organization",
+                "content": "Frameworks for community ownership, maintenance responsibilities, and equitable access to shared power resources.",
+                "panel_type": "Social",
+                "icon_class": "fas fa-users text-green-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Hand Pressed Heat & Cooking Fuel Briquettes",
+            "description": "DIY cook stove Fuel produced from waste combustible biomass slurry",
+            "tags": ["cooking fuel", "upcycling", "home heating"],
+            "videos": [
+              {
+                "title": "Simple Biomass Briquette Press Construction",
+                "youtubeId": "1LD7BhR3jTI",
+                "description": "Building a manual press for creating fuel briquettes"
+              },
+              {
+                "title": "Paper and Cardboard Briquette Making",
+                "youtubeId": "cRj8rvXvVA8",
+                "description": "Converting waste paper into dense fuel briquettes"
+              },
+              {
+                "title": "Agricultural Waste Briquettes",
+                "youtubeId": "rV8OSzLk-GM",
+                "description": "Using crop residues and husks for efficient cooking fuel"
+              },
+              {
+                "title": "Sawdust and Wood Waste Briquette Production",
+                "youtubeId": "Sh6vXXDCiN8",
+                "description": "Creating high-energy briquettes from workshop waste"
+              },
+              {
+                "title": "Improving Briquette Combustion Efficiency",
+                "youtubeId": "a-E4rBY3PpI",
+                "description": "Techniques to make briquettes burn hotter and longer"
+              },
+              {
+                "title": "Stove Modifications for Briquette Burning",
+                "youtubeId": "XUfEAmfm8Lg",
+                "description": "Adapting cooking stoves for optimal briquette performance"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Material Selection",
+                "content": "Guidelines for identifying and preparing suitable biomass materials for briquette production, including optimal moisture content.",
+                "panel_type": "Materials",
+                "icon_class": "fas fa-leaf text-green-800 fa-lg"
+              },
+              {
+                "title": "Press Technology",
+                "content": "Different briquette press designs from simple hand presses to lever-action and screw presses for higher production volumes.",
+                "panel_type": "Equipment",
+                "icon_class": "fas fa-compress-alt text-blue-800 fa-lg"
+              },
+              {
+                "title": "Drying and Storage",
+                "content": "Proper techniques for drying and storing briquettes to ensure good combustion and prevent moisture absorption.",
+                "panel_type": "Process",
+                "icon_class": "fas fa-warehouse text-yellow-800 fa-lg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "area": "Health",
+        "subcategories": [
+          {
+            "title": "EMT Skills",
+            "description": "Learn lifesaving basics such as CPR, wound dressing, splinting, and how to assess an emergency before help arrives.",
+            "tags": ["EMT", "emergency", "first response"],
+            "videos": [
+              {
+                "title": "Basic CPR and Rescue Breathing Techniques",
+                "youtubeId": "XpEvQuOWME0",
+                "description": "Step-by-step guide to performing cardiopulmonary resuscitation"
+              },
+              {
+                "title": "Wound Cleaning and Dressing in Field Conditions",
+                "youtubeId": "H2OxCi4yVGc",
+                "description": "Proper techniques for treating wounds with limited supplies"
+              },
+              {
+                "title": "Improvised Splinting for Fractures",
+                "youtubeId": "B5sqYX04PGk",
+                "description": "Using available materials to immobilize broken bones"
+              },
+              {
+                "title": "Emergency Patient Assessment Protocol",
+                "youtubeId": "ZVlQOGOK9SU",
+                "description": "Systematic approach to evaluating an injured person"
+              },
+              {
+                "title": "Controlling Severe Bleeding",
+                "youtubeId": "NxO5LvgqZe0",
+                "description": "Techniques for stopping life-threatening hemorrhage"
+              },
+              {
+                "title": "Improvised Patient Transport Methods",
+                "youtubeId": "KHSb3EOqCtU",
+                "description": "Ways to move injured people when standard equipment isn't available"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Assessment Skills",
+                "content": "How to quickly evaluate emergency situations using the ABC approach (Airway, Breathing, Circulation) and recognizing life-threatening conditions.",
+                "panel_type": "Triage",
+                "icon_class": "fas fa-search text-blue-800 fa-lg"
+              },
+              {
+                "title": "Critical Interventions",
+                "content": "Immediate life-saving techniques including CPR, bleeding control, and airway management using minimal equipment.",
+                "panel_type": "Emergency",
+                "icon_class": "fas fa-heartbeat text-red-600 fa-lg"
+              },
+              {
+                "title": "Improvised Equipment",
+                "content": "Creating emergency medical tools from common items, including splints, stretchers, and wound dressings.",
+                "panel_type": "Resourcefulness",
+                "icon_class": "fas fa-toolbox text-yellow-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Telemedicine",
+            "description": "Use phones and simple apps to connect with doctors remotely. Learn how to explain symptoms, send photos, and follow up with online care.",
+            "tags": ["health", "telemedicine", "remote care"],
+            "videos": [
+              {
+                "title": "Setting Up Telemedicine on Basic Mobile Phones",
+                "youtubeId": "K6JshvJDlmw",
+                "description": "Using SMS and voice calls for remote healthcare"
+              },
+              {
+                "title": "Effective Symptom Communication for Remote Diagnosis",
+                "youtubeId": "PzhY8q9XeXE",
+                "description": "How to clearly describe medical issues to doctors remotely"
+              },
+              {
+                "title": "Taking Clinical-Quality Photos for Telemedicine",
+                "youtubeId": "WPn2uAXw9UA",
+                "description": "Guidelines for capturing useful medical images with a smartphone"
+              },
+              {
+                "title": "Setting Up Community Telemedicine Centers",
+                "youtubeId": "6w0NjlY5To4",
+                "description": "Creating shared access points for remote medical consultations"
+              },
+              {
+                "title": "Remote Patient Monitoring with Basic Technology",
+                "youtubeId": "lqGrUi_mZgw",
+                "description": "Tracking vital signs and symptoms without specialized equipment"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Technical Setup",
+                "content": "How to establish reliable telemedicine connections using smartphones, basic feature phones, or shared community devices with limited connectivity.",
+                "panel_type": "Technology",
+                "icon_class": "fas fa-mobile-alt text-blue-800 fa-lg"
+              },
+              {
+                "title": "Effective Communication",
+                "content": "Strategies for clearly describing symptoms, demonstrating issues, and asking appropriate follow-up questions during remote consultations.",
+                "panel_type": "Skills",
+                "icon_class": "fas fa-comments text-green-600 fa-lg"
+              },
+              {
+                "title": "Documentation",
+                "content": "Methods for tracking symptoms, medications, and treatment plans to ensure continuity of care between telemedicine appointments.",
+                "panel_type": "Organization",
+                "icon_class": "fas fa-clipboard-list text-purple-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "First Aid",
+            "description": "Master everyday skills for cuts, burns, insect bites, and fevers. Helps reduce complications when access to a clinic is delayed.",
+            "tags": ["first aid", "injury", "emergency"],
+            "videos": [
+              {
+                "title": "Comprehensive First Aid Kit Assembly",
+                "youtubeId": "wB8Z4LnHJ8I",
+                "description": "Creating a complete kit with locally available items"
+              },
+              {
+                "title": "Burn Treatment and Wound Care",
+                "youtubeId": "8NseGYWqcfs",
+                "description": "Proper first aid for different types of burns and wounds"
+              },
+              {
+                "title": "Managing High Fevers and Heat Illness",
+                "youtubeId": "UVnShCrKi6c",
+                "description": "Techniques to safely reduce body temperature"
+              },
+              {
+                "title": "Snake and Insect Bite First Aid",
+                "youtubeId": "6JqxFZGxNcE",
+                "description": "Emergency response to venomous bites and stings"
+              },
+              {
+                "title": "Choking Response and Airway Clearance",
+                "youtubeId": "PA9hpOnvtCk",
+                "description": "Heimlich maneuver and other techniques for choking emergencies"
+              },
+              {
+                "title": "Recognizing and Responding to Shock",
+                "youtubeId": "6p7znLg2NTE",
+                "description": "Identifying and treating various types of shock"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Kit Essentials",
+                "content": "Core components of a well-stocked first aid kit with alternatives when standard supplies aren't available, including natural and household substitutes.",
+                "panel_type": "Supplies",
+                "icon_class": "fas fa-first-aid text-red-600 fa-lg"
+              },
+              {
+                "title": "Wound Management",
+                "content": "Proper cleaning, closing, and dressing of different wound types to prevent infection and promote healing.",
+                "panel_type": "Treatment",
+                "icon_class": "fas fa-band-aid text-blue-800 fa-lg"
+              },
+              {
+                "title": "Environmental Emergencies",
+                "content": "Responding to heat exhaustion, hypothermia, and altitude sickness with limited resources.",
+                "panel_type": "Environment",
+                "icon_class": "fas fa-temperature-high text-yellow-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Self-sufficient Healthcare",
+            "description": "Set up a basic first aid station at home or in your village. Includes herbal remedies, rehydration recipes, and supply checklists.",
+            "tags": ["health", "DIY", "self-reliance"],
+            "videos": [
+              {
+                "title": "Home Health Station Setup",
+                "youtubeId": "1EwNzyrrxZY",
+                "description": "Creating an organized healthcare area in your home"
+              },
+              {
+                "title": "Growing a Medicinal Herb Garden",
+                "youtubeId": "tRjcCn3YGAI",
+                "description": "Cultivating plants with therapeutic properties"
+              },
+              {
+                "title": "Making Oral Rehydration Solution",
+                "youtubeId": "fIHgMU1rlPQ",
+                "description": "Preparing effective electrolyte replacements from basic ingredients"
+              },
+              {
+                "title": "Natural Remedies for Common Ailments",
+                "youtubeId": "QVoMJu8rGjE",
+                "description": "Using locally available plants for minor health issues"
+              },
+              {
+                "title": "Long-term Medical Supply Storage",
+                "youtubeId": "wc-aCn7Z4Mw",
+                "description": "Properly preserving medications and supplies in challenging conditions"
+              },
+              {
+                "title": "Community Health Worker Training Basics",
+                "youtubeId": "d5lQ7SEHxps",
+                "description": "Essential skills for providing basic healthcare in remote communities"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Home Pharmacy",
+                "content": "Setting up and maintaining a comprehensive medicine cabinet with both conventional and natural remedies, properly labeled and organized.",
+                "panel_type": "Organization",
+                "icon_class": "fas fa-pills text-purple-800 fa-lg"
+              },
+              {
+                "title": "Herbal Medicine",
+                "content": "Safe preparation and use of locally available medicinal plants, including identification, harvesting, and processing techniques.",
+                "panel_type": "Natural",
+                "icon_class": "fas fa-leaf text-green-600 fa-lg"
+              },
+              {
+                "title": "Preventive Care",
+                "content": "Establishing routines and practices that reduce illness, including nutrition strategies, sanitation, and early intervention approaches.",
+                "panel_type": "Prevention",
+                "icon_class": "fas fa-shield-virus text-blue-800 fa-lg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "area": "Food",
+        "subcategories": [
+          {
+            "title": "Urban Gardening",
+            "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.",
+            "tags": ["urban farming", "gardening", "food security"],
+            "videos": [
+              {
+                "title": "5-Gallon Bucket Container Gardens",
+                "youtubeId": "JVoFvfdvVVY",
+                "description": "Creating productive vegetable gardens in recycled buckets"
+              },
+              {
+                "title": "Vertical Gardening for Small Spaces",
+                "youtubeId": "CR1jxUB2JGs",
+                "description": "Maximizing production by growing upward with simple structures"
+              },
+              {
+                "title": "Balcony Vegetable Garden Setup",
+                "youtubeId": "L_Z7uXOliiw",
+                "description": "Transforming a small balcony into a productive food source"
+              },
+              {
+                "title": "Small-Space Composting Methods",
+                "youtubeId": "SXHRmB1Cmoc",
+                "description": "Creating soil fertility in urban environments"
+              },
+              {
+                "title": "Succession Planting for Continuous Harvests",
+                "youtubeId": "c4J6KXmzXWA",
+                "description": "Maintaining year-round production through strategic planting timing"
+              },
+              {
+                "title": "Rooftop Garden Construction Basics",
+                "youtubeId": "lJ8NW1Hxv6c",
+                "description": "Building safe, productive gardens on urban rooftops"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Container Selection",
+                "content": "Choosing and preparing appropriate containers for urban gardening, including upcycled options, drainage considerations, and space optimization.",
+                "panel_type": "Materials",
+                "icon_class": "fas fa-box text-brown-600 fa-lg"
+              },
+              {
+                "title": "Space Optimization",
+                "content": "Techniques for maximizing growing area in limited spaces through vertical systems, interplanting, and strategic plant selection.",
+                "panel_type": "Design",
+                "icon_class": "fas fa-arrows-alt text-blue-800 fa-lg"
+              },
+              {
+                "title": "Urban Challenges",
+                "content": "Addressing common urban growing issues including limited sunlight, pollution, security, and weight restrictions for rooftop installations.",
+                "panel_type": "Solutions",
+                "icon_class": "fas fa-city text-gray-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Hydro/Aero/Fish -ponics",
+            "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.",
+            "tags": ["hydroponics", "water-efficient", "urban food"],
+            "videos": [
+              {
+                "title": "DIY PVC Pipe Hydroponics System",
+                "youtubeId": "QEdHq7N9bg4",
+                "description": "Building a simple but effective NFT hydroponics setup"
+              },
+              {
+                "title": "Bottle Tower Hydroponics",
+                "youtubeId": "VhJY8uZ1kpU",
+                "description": "Creating vertical hydroponic systems from plastic bottles"
+              },
+              {
+                "title": "Simple Aquaponics Setup for Home Use",
+                "youtubeId": "8D5oD6RZgbM",
+                "description": "Combining fish farming with hydroponic vegetable production"
+              },
+              {
+                "title": "Homemade Hydroponic Nutrient Solution",
+                "youtubeId": "fPBBg0GR4UQ",
+                "description": "Mixing cost-effective nutrient solutions from available materials"
+              },
+              {
+                "title": "DIY Deep Water Culture System",
+                "youtubeId": "h8K4h8Ny7sc",
+                "description": "Building floating raft hydroponic systems for leafy greens"
+              },
+              {
+                "title": "Low-Tech Aeroponics Using Mist Systems",
+                "youtubeId": "NpHK7g5Z-JA",
+                "description": "Creating simplified aeroponic systems without expensive components"
+              }
+            ],
+            "panels": [
+              {
+                "title": "System Selection",
+                "content": "Comparing different soilless growing systems (DWC, NFT, media-based, aquaponics) based on resource availability, maintenance requirements, and crop types.",
+                "panel_type": "Technical",
+                "icon_class": "fas fa-project-diagram text-blue-800 fa-lg"
+              },
+              {
+                "title": "Water Quality",
+                "content": "Essential water parameters for successful hydroponics, including pH management, dissolved oxygen, and testing methods using limited resources.",
+                "panel_type": "Science",
+                "icon_class": "fas fa-tint text-blue-400 fa-lg"
+              },
+              {
+                "title": "Fish Integration",
+                "content": "Basics of incorporating fish production into growing systems, including species selection, stocking density, and balancing fish waste with plant uptake.",
+                "panel_type": "Aquaponics",
+                "icon_class": "fas fa-fish text-green-600 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Sustainable Agriculture Techniques",
+            "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.",
+            "tags": ["agriculture", "sustainable", "soil health"],
+            "videos": [
+              {
+                "title": "Crop Rotation Planning and Implementation",
+                "youtubeId": "QhH-YsDr8D4",
+                "description": "Designing effective rotation systems for soil health"
+              },
+              {
+                "title": "Natural Pest Control Methods",
+                "youtubeId": "tgQ1L7TcDjQ",
+                "description": "Managing insect pests without synthetic chemicals"
+              },
+              {
+                "title": "Cover Cropping for Soil Improvement",
+                "youtubeId": "xvjEF6qKPRE",
+                "description": "Using specific plants to build soil fertility and structure"
+              },
+              {
+                "title": "Companion Planting Strategies",
+                "youtubeId": "9IQX9hKn-AY",
+                "description": "Beneficial plant combinations that reduce pests and improve growth"
+              },
+              {
+                "title": "No-Till Farming for Small Plots",
+                "youtubeId": "Q8EZXeQyGEU",
+                "description": "Minimal soil disturbance techniques for healthier soil ecosystems"
+              },
+              {
+                "title": "Natural Soil Building Methods",
+                "youtubeId": "3Mqq2tJ3nC4",
+                "description": "Creating fertile soil through mulching, composting, and biochar"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Soil Ecology",
+                "content": "Understanding the living ecosystem beneath our feet and how sustainable practices enhance beneficial soil organisms and nutrient cycling.",
+                "panel_type": "Education",
+                "icon_class": "fas fa-microscope text-brown-600 fa-lg"
+              },
+              {
+                "title": "Integrated Systems",
+                "content": "Creating farm systems where elements work together synergistically, reducing external inputs through thoughtful design and observation.",
+                "panel_type": "Design",
+                "icon_class": "fas fa-sync text-green-600 fa-lg"
+              },
+              {
+                "title": "Seed Saving",
+                "content": "Preserving genetic diversity and adapting crops to local conditions through proper seed selection, storage, and exchange practices.",
+                "panel_type": "Conservation",
+                "icon_class": "fas fa-seedling text-green-800 fa-lg"
+              }
+            ]
+          },
+          {
+            "title": "Fungli, Algae, Insects, & Tech",
+            "description": "Inventory and evaluation of modern and antiquity based food production",
+            "tags": ["hydroponics", "water-efficient", "urban food"],
+            "videos": [
+              {
+                "title": "DIY Mushroom Cultivation on Agricultural Waste",
+                "youtubeId": "9IFTMnftLgU",
+                "description": "Growing edible mushrooms on straw and other byproducts"
+              },
+              {
+                "title": "Spirulina Micro-Farming at Home",
+                "youtubeId": "SMUf_pbxkcU",
+                "description": "Small-scale production of this nutrient-dense blue-green algae"
+              },
+              {
+                "title": "Insect Farming: Cricket Rearing Systems",
+                "youtubeId": "jp6OgNyTxA0",
+                "description": "Setting up efficient cricket production for protein"
+              },
+              {
+                "title": "Black Soldier Fly Larvae Composting",
+                "youtubeId": "5j0YCyg0vpE",
+                "description": "Converting organic waste to animal feed using insect larvae"
+              },
+              {
+                "title": "Ancient Grain Recovery and Cultivation",
+                "youtubeId": "Xqn490UuVQU",
+                "description": "Growing forgotten but nutritious grain varieties"
+              },
+              {
+                "title": "Simple Automation for Small-Scale Agriculture",
+                "youtubeId": "eHMpkXiGEag",
+                "description": "Low-tech solutions to reduce manual labor in food production"
+              }
+            ],
+            "panels": [
+              {
+                "title": "Fungal Cultivation",
+                "content": "Techniques for growing nutritious mushrooms on various substrates, including log cultivation, bag culture, and environmentally controlled systems.",
+                "panel_type": "Mycology",
+                "icon_class": "fas fa-cloud text-gray-600 fa-lg"
+              },
+              {
+                "title": "Micro-Organisms",
+                "content": "Harnessing beneficial bacteria and algae for food production, including spirulina and chlorella cultivation in small-scale systems.",
+                "panel_type": "Microbial",
+                "icon_class": "fas fa-bacteria text-green-600 fa-lg"
+              },
+              {
+                "title": "Insect Protein",
+                "content": "Efficient systems for raising edible insects as sustainable protein sources, with focus on space efficiency, nutrition, and processing methods.",
+                "panel_type": "Alternative",
+                "icon_class": "fas fa-bug text-brown-800 fa-lg"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

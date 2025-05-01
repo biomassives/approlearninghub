@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Optional: Tailwind configuration (can be customized)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Use Inter font
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Simple base styles - Tailwind handles most */
+        body {
+            @apply font-sans bg-gray-100 flex flex-col min-h-screen;
+        }
+        main {
+            @apply flex-grow flex items-center justify-center p-4;
+        }
+        .auth-card {
+            @apply bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-md transition-opacity duration-300 ease-in-out;
+        }
+        .auth-card.hidden {
+            @apply opacity-0 pointer-events-none absolute; /* Hide visually and functionally */
+        }
+        .form-group {
+            @apply mb-4;
+        }
+        label {
+            @apply block text-sm font-medium text-gray-700 mb-1;
+        }
+        input[type="email"],
+        input[type="password"],
+        input[type="text"], /* Added for name */
+        select {
+            @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+        }
+        input[type="checkbox"] {
+             @apply h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2;
+        }
+        .form-group-checkbox {
+            @apply flex items-center;
+        }
+        .form-group-checkbox label {
+            @apply ml-2 block text-sm text-gray-900 cursor-pointer; /* Adjusted margin */
+        }
+
+        .button-primary {
+            @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50;
+        }
+        .alternate-action {
+            @apply text-sm text-center mt-4 text-gray-600;
+        }
+        .alternate-action a {
+            @apply font-medium text-indigo-600 hover:text-indigo-500;
+        }
+        .error-message {
+            @apply text-red-600 text-xs mt-1; /* Style for error messages */
+            min-height: 1em; /* Prevent layout shifts */
+        }
+         .status-box {
+            @apply text-sm p-3 rounded-md mt-4 text-center;
+            min-height: 3em; /* Prevent layout shifts */
+        }
+        .status-box.success {
+             @apply bg-green-100 text-green-700;
+        }
+         .status-box.error {
+             @apply bg-red-100 text-red-700;
+        }
+        .page-footer {
+            @apply text-center text-xs text-gray-500 py-4;
+        }
+    </style>
+</head>
+<body>
+
+  <main>
+    <div id="signup-section" class="auth-card"> <h1 class="text-2xl font-bold text-center mb-6" data-i18n="signup_title">Create Account</h1>
+      <form id="signup-form" novalidate>
+        <div class="form-group">
+          <label for="signup-name" data-i18n="name_label">Full Name</label>
+          <input type="text" id="signup-name" name="name" required autocomplete="name" placeholder="Your Name">
+          <p aria-live="polite" class="error-message" id="signup-name-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="signup-email" name="email" required autocomplete="email" placeholder="your.email@example.com">
+          <p aria-live="polite" class="error-message" id="signup-email-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="signup-password" data-i18n="password_label">Password</label>
+          <input type="password" id="signup-password" name="password" required minlength="8" autocomplete="new-password" placeholder="Min. 8 characters">
+          <p aria-live="polite" class="error-message" id="signup-password-error"></p>
+        </div>
+        <div class="form-group mt-6">
+          <button type="submit" class="button-primary" id="signup-button" data-i18n="signup_button">Create Account</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="signup-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="already_account_prefix">Already have an account?</span>
+        <a id="show-login-from-signup" data-i18n="login_link" href="#">Log in</a>
+      </div>
+    </div>
+
+    <div id="login-section" class="auth-card hidden"> <h1 class="text-2xl font-bold text-center mb-6" data-i18n="login_title">Login</h1>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="login-email" name="email" required autocomplete="email">
+          <p aria-live="polite" class="error-message" id="login-email-error"></p>
+        </div>
+        <div class="form-group">
+          <label for="login-password" data-i18n="password_label">Password</label>
+          <input type="password" id="login-password" name="password" required autocomplete="current-password">
+          <p aria-live="polite" class="error-message" id="login-password-error"></p>
+        </div>
+         <div class="text-sm text-right mb-4">
+             <a id="show-recover-from-login" href="#" class="font-medium text-indigo-600 hover:text-indigo-500" data-i18n="forgot_password_link">Forgot password?</a>
+         </div>
+        <div class="form-group mt-6">
+          <button type="submit" class="button-primary" id="login-button" data-i18n="login_button">Log In</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="login-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="need_account_prefix">Need an account?</span>
+        <a id="show-signup-from-login" data-i18n="signup_link" href="#">Sign up</a>
+      </div>
+    </div>
+
+    <div id="recover-section" class="auth-card hidden"> <h1 class="text-2xl font-bold text-center mb-6" data-i18n="recover_title">Recover Password</h1>
+      <p class="text-center text-sm text-gray-600 mb-4" data-i18n="recover_instructions">Enter your email address and we'll send you instructions to reset your password.</p>
+      <form id="recover-form" novalidate>
+        <div class="form-group">
+          <label for="recover-email" data-i18n="email_label">Email Address</label>
+          <input type="email" id="recover-email" name="email" required autocomplete="email">
+          <p aria-live="polite" class="error-message" id="recover-email-error"></p>
+        </div>
+        <div class="form-group mt-6">
+          <button type="submit" class="button-primary" id="recover-button" data-i18n="recover_button">Send Recovery Instructions</button>
+        </div>
+        <div aria-live="polite" class="status-box" id="recover-status-area"></div>
+      </form>
+      <div class="alternate-action">
+        <span data-i18n="remembered_password_prefix">Remembered your password?</span>
+        <a id="show-login-from-recover" data-i18n="login_link" href="#">Log in</a>
+        <span class="mx-1">|</span>
+        <a id="show-signup-from-recover" data-i18n="signup_link" href="#">Sign up</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+      <p>&copy; 2025 Your Project Name</p>
+  </footer>
+
+  <script type="module">
+      // Assuming i18n functions are available globally or imported if needed
+      // const applyTranslations = async () => { console.log("i18n apply called"); };
+      // const initLanguageSwitcher = () => { console.log("i18n init called"); };
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        console.log("DOM Loaded. Setting up UI listeners...");
+
+        // --- Get references to sections ---
+        const signupSection = document.getElementById('signup-section');
+        const loginSection  = document.getElementById('login-section');
+        const recoverSection = document.getElementById('recover-section'); // New section
+
+        // --- Get references to toggle links ---
+        const showLoginFromSignup = document.getElementById('show-login-from-signup');
+        const showSignupFromLogin = document.getElementById('show-signup-from-login');
+        const showRecoverFromLogin = document.getElementById('show-recover-from-login'); // New link
+        const showLoginFromRecover = document.getElementById('show-login-from-recover'); // New link
+        const showSignupFromRecover = document.getElementById('show-signup-from-recover'); // New link
+
+        // --- Helper function to show one section and hide others ---
+        const showSection = (sectionToShow) => {
+            console.log(`Toggle: Showing ${sectionToShow.id}`);
+            [signupSection, loginSection, recoverSection].forEach(section => {
+                if (section === sectionToShow) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        };
+
+        // --- Attach Toggle Event Listeners ---
+        if (showLoginFromSignup && signupSection && loginSection) {
+          showLoginFromSignup.addEventListener('click', e => {
+            e.preventDefault();
+            showSection(loginSection);
+          });
+        } else { console.error("Toggle Setup Error: Can't find Login-from-Signup elements."); }
+
+        if (showSignupFromLogin && signupSection && loginSection) {
+          showSignupFromLogin.addEventListener('click', e => {
+            e.preventDefault();
+            showSection(signupSection);
+          });
+        } else { console.error("Toggle Setup Error: Can't find Signup-from-Login elements."); }
+
+        // New Toggles for Recover Section
+        if (showRecoverFromLogin && loginSection && recoverSection) {
+          showRecoverFromLogin.addEventListener('click', e => {
+            e.preventDefault();
+            showSection(recoverSection);
+          });
+        } else { console.error("Toggle Setup Error: Can't find Recover-from-Login elements."); }
+
+        if (showLoginFromRecover && loginSection && recoverSection) {
+          showLoginFromRecover.addEventListener('click', e => {
+            e.preventDefault();
+            showSection(loginSection);
+          });
+        } else { console.error("Toggle Setup Error: Can't find Login-from-Recover elements."); }
+
+        if (showSignupFromRecover && signupSection && recoverSection) {
+          showSignupFromRecover.addEventListener('click', e => {
+            e.preventDefault();
+            showSection(signupSection);
+          });
+        } else { console.error("Toggle Setup Error: Can't find Signup-from-Recover elements."); }
+
+        console.log("Toggle listeners attached (if elements found).");
+
+        // --- Signup Form Handler ---
+        const signupForm = document.getElementById('signup-form');
+        const signupStatus = document.getElementById('signup-status-area');
+        if (signupForm && signupStatus) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log("Signup form submitted");
+                signupStatus.textContent = 'Processing signup...';
+                signupStatus.className = 'status-box'; // Reset classes
+
+                const formData = new FormData(signupForm);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const password = formData.get('password');
+
+                // Basic validation (add more as needed)
+                if (!name || !email || !password) {
+                    signupStatus.textContent = 'Please fill in all fields.';
+                    signupStatus.classList.add('error');
+                    return;
+                }
+                 if (password.length < 8) {
+                     signupStatus.textContent = 'Password must be at least 8 characters.';
+                     signupStatus.classList.add('error');
+                     return;
+                 }
+
+                try {
+                    const response = await fetch('/api/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        signupStatus.textContent = 'Signup successful! You can now log in.';
+                        signupStatus.classList.add('success');
+                        // Optionally clear form or redirect/show login
+                        // signupForm.reset();
+                        // setTimeout(() => showSection(loginSection), 2000);
+                    } else {
+                        signupStatus.textContent = result.message || `Error: ${response.statusText}`;
+                        signupStatus.classList.add('error');
+                    }
+                } catch (err) {
+                    console.error('Signup Fetch Error:', err);
+                    signupStatus.textContent = 'An network error occurred during signup.';
+                    signupStatus.classList.add('error');
+                }
+            });
+             console.log("Signup listener attached.");
+        } else {
+             console.error("Signup form or status area not found.");
+        }
+
+        // --- Recover Form Handler (Placeholder) ---
+         const recoverForm = document.getElementById('recover-form');
+         const recoverStatus = document.getElementById('recover-status-area');
+         if (recoverForm && recoverStatus) {
+             recoverForm.addEventListener('submit', (e) => {
+                 e.preventDefault();
+                 console.log("Recover form submitted - handler not implemented yet.");
+                 recoverStatus.textContent = 'Password recovery function not implemented yet.';
+                 recoverStatus.className = 'status-box error'; // Use error class for placeholder
+             });
+              console.log("Recover listener attached.");
+         } else {
+              console.error("Recover form or status area not found.");
+         }
+
+      }); // --- End of DOMContentLoaded ---
+  </script>
+
+  <script type="module" src="./login.js"></script>
+  </body>
+</html>

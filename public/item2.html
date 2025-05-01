@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biodiversity Resource Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Optional: You can add or override Tailwind styles here */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #121218; /* Dark background */
+            color: #e0e0e6; /* Primary text color */
+            margin: 0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .category-title {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background-color: #1e1e2a;
+            border-radius: 0.25rem;
+            border: 1px solid #2a2a36;
+            color: #e0e0e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-title.active {
+            background-color: #2a2a36;
+        }
+        .category-details {
+            margin-left: 1rem;
+            padding: 1rem;
+            background-color: #2a2a36;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+            display: none; /* Initially hidden */
+        }
+        .category-details.active {
+            display: block;
+        }
+        .mega-menu-subcategory {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+        .mega-menu-subcategory:last-child {
+            border-bottom: none;
+        }
+        .mega-menu-subcategory h4 {
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+        }
+        .mega-menu-subcategory h4 a {
+            color: #4a80f0;
+            text-decoration: none;
+        }
+        .mega-menu-subcategory p {
+            color: #a0a0b0;
+            margin-bottom: 0.5rem;
+        }
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .tag {
+            background-color: rgba(74, 128, 240, 0.1);
+            color: #4a80f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+        }
+        .tag-detail-area {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #333;
+            border-radius: 0.25rem;
+            display: none; /* Initially hidden */
+            color: #e0e0e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="item-previews">
+            </div>
+        <div id="category-details" class="tag-detail-area">
+            </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const itemPreviewsContainer = document.getElementById('item-previews');
+    const categoryDetails = document.getElementById('category-details');
+    let activeCategoryIndex = null;
+
+    // Sample data (Modified to include category titles for slugging)
+    const allData = {
+        "shelter1": {
+            "area": "Shelter",
+            "title": "Locally Available Materials",
+            "subcategories": [
+                {
+                    "title": "Low-cost, Durable Construction Methods",
+                    "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                    "tags": ["construction", "low-cost", "durable", "building"],
+                    "ld_youtube": [],
+                    "details": "Wubba lubba dub dub!..."
+                }
+            ]
+        },
+        "water2": {
+            "area": "Water",
+            "title": "Water Solutions",
+            "subcategories": [
+                {
+                    "title": "Safe Water Collection Techniques",
+                    "description": "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+                    "tags": ["water", "collection", "safe", "hygiene"],
+                    "ld_youtube": [],
+                    "details": "Oh geez, Morty, collecting water?..."
+                }
+            ]
+        }
+        // ... more data ...
+    };
+
+    function slugify(text) {
+        return text.toString().toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')     // Replace spaces with -
+            .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+            .replace(/\-\-+/g, '-')   // Replace multiple - with single -
+            .replace(/^-+/, '')       // Trim - from start of text
+            .replace(/-+$/, '');      // Trim - from end of text
+    }
+
+    function showCategoryDetails(categoryData, titleElement, index) {
+        if (activeCategoryIndex === index) {
+            // If already active, hide
+            const activeDetails = itemPreviewsContainer.querySelector(`.category-details[data-index="${index}"]`);
+            if (activeDetails) {
+                activeDetails.classList.remove('active');
+            }
+            titleElement.classList.remove('active');
+            activeCategoryIndex = null;
+            categoryDetails.style.display = 'none'; // Assuming you still have this
+        } else {
+            itemPreviewsContainer.querySelectorAll('.category-details.active').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.category-title.active').forEach(el => el.classList.remove('active'));
+
+            let detailsHTML = `<div class="category-details active" data-index="${index}">`;
+            categoryData.subcategories.forEach(subcategory => {
+                const categorySlug = slugify(categoryData.title);
+                const subcategorySlug = slugify(subcategory.title);
+                const detailPageUrl = `item.html?cat__title=${categorySlug}&sub__title=${subcategorySlug}`;
+
+                detailsHTML += `
+                    <div class="mega-menu-subcategory">
+                        <h4><a href="${detailPageUrl}">${subcategory.title}</a></h4>
+                        <p class="px-5">${subcategory.description}</p>
+                        <div class="tags">
+                `;
+                subcategory.tags.forEach(tag => {
+                    detailsHTML += `<span class="tag">${tag}</span>`;
+                });
+                detailsHTML += `
+                        </div>
+                    </div>
+                `;
+            });
+            detailsHTML += `</div>`;
+
+            itemPreviewsContainer.insertAdjacentHTML('beforeend', detailsHTML);
+            titleElement.classList.add('active');
+            activeCategoryIndex = index;
+            categoryDetails.style.display = 'block'; // Assuming you still want this behavior
+        }
+    }
+
+    function displayCategories(data) {
+        itemPreviewsContainer.innerHTML = ''; // Clear any existing content
+        let index = 0;
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const category = data[key];
+                const categoryTitle = document.createElement('div');
+                categoryTitle.className = 'category-title';
+                categoryTitle.dataset.index = index;
+                categoryTitle.innerHTML = `<h3>${category.title}</h3> <i class="fa-solid fa-chevron-down"></i>`;
+                categoryTitle.addEventListener('click', function() {
+                    showCategoryDetails(category, this, parseInt(this.dataset.index));
+                });
+                itemPreviewsContainer.appendChild(categoryTitle);
+                index++;
+            }
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryTitleSlug = urlParams.get('cat__title');
+    const subcategoryTitleSlug = urlParams.get('sub__title');
+
+    function findAndDisplayItem(data, categorySlug, subcategorySlug) {
+        itemPreviewsContainer.innerHTML = ''; // Clear previous content
+        categoryDetails.style.display = 'none'; // Hide category details if showing item
+
+        for (const categoryKey in data) {
+            if (data.hasOwnProperty(categoryKey) && slugify(data[categoryKey].title) === categorySlug) {
+                const category = data[categoryKey];
+                for (let i = 0; i < category.subcategories.length; i++) {
+                    if (slugify(category.subcategories[i].title) === subcategorySlug) {
+                        displayDetailedSubcategory(category, category.subcategories[i]);
+                        return; // Found and displayed, so exit
+                    }
+                }
+            }
+        }
+
+        const notFoundMessage = document.createElement('p');
+        notFoundMessage.textContent = 'Resource not found, Morty!';
+        itemPreviewsContainer.appendChild(notFoundMessage);
+    }
+
+    function displayDetailedSubcategory(categoryData, subcategoryData) {
+        const detailsContainer = document.createElement('div');
+        detailsContainer.className = 'detailed-item';
+
+        const titleElement = document.createElement('h1');
+        titleElement.textContent = subcategoryData.title;
+        detailsContainer.appendChild(titleElement);
+
+        const areaBadge = document.createElement('div');
+        areaBadge.className = 'area-badge';
+        areaBadge.textContent = categoryData.area;
+        detailsContainer.appendChild(areaBadge);
+
+        const descriptionElement = document.createElement('p');
+        descriptionElement.className = 'item-description';
+        descriptionElement.textContent = subcategoryData.description;
+        detailsContainer.appendChild(descriptionElement);
+
+        if (subcategoryData.ld_youtube && subcategoryData.ld_youtube.length > 0) {
+            const slidePanelTitle = document.createElement('h3');
+            slidePanelTitle.textContent = 'Related Videos';
+            detailsContainer.appendChild(slidePanelTitle);
+            subcategoryData.ld_youtube.forEach(url => {
+                if (url) {
+                    const iframe = document.createElement('iframe');
+                    iframe.width = '560';
+                    iframe.height = '315';
+                    iframe.src = url;
+                    iframe.title = 'YouTube video player';
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                    iframe.allowFullscreen = true;
+                    detailsContainer.appendChild(iframe);
+                    detailsContainer.appendChild(document.createElement('br'));
+                }
+            });
+        }
+
+        const detailsInfo = document.createElement('div');
+        detailsInfo.innerHTML = `<strong>Details:</strong> ${subcategoryData.details}`;
+        detailsContainer.appendChild(detailsInfo);
+
+        const backLink = document.createElement('a');
+        backLink.href = '/'; // Link back to the main page
+        backLink.className = 'back-button';
+        backLink.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to Resources';
+        detailsContainer.appendChild(backLink);
+
+        itemPreviewsContainer.appendChild(detailsContainer);
+    }
+
+    // Try to fetch the data, but fall back to the embedded data if it fails
+    fetch('/data/categories.json')
+        .then(response => response.json())
+        .then(fetchedData => {
+            if (categoryTitleSlug && subcategoryTitleSlug) {
+                findAndDisplayItem(fetchedData, categoryTitleSlug, subcategoryTitleSlug);
+            } else {
+                displayCategories(fetchedData); // Display categories if no specific item is requested
+            }
+        })
+        .catch(error => {
+            console.error('Failed to fetch data, using embedded data:', error);
+            if (categoryTitleSlug && subcategoryTitleSlug) {
+                findAndDisplayItem(allData, categoryTitleSlug, subcategoryTitleSlug);
+            } else {
+                displayCategories(allData); // Display categories as fallback
+            }
+        });
+});
+    </script>
+</body>
+</html>

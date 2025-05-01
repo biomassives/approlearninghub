@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approvideo Learning Clinics - Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Dark theme based on reference image */
+        :root {
+            --dark-bg: #121218;
+            --panel-bg: #1e1e2a;
+            --text-primary: #e0e0e6;
+            --text-secondary: #a0a0b0;
+            --accent-blue: #4a80f0;
+            --accent-green: #50c878;
+            --border-color: #2a2a36;
+            --hover-bg: #2a2a38;
+            --button-primary: #4a80f0;
+            --button-secondary: #2a2a36;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .item-details {
+            background-color: var(--panel-bg);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-icon {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.05;
+            color: var(--accent-blue);
+            transform: rotate(-15deg);
+            z-index: 0;
+        }
+
+        .item-content {
+            z-index: 1;
+        }
+
+        .area-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(74, 128, 240, 0.1);
+            color: var(--accent-blue);
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .item-tag {
+            background-color: var(--hover-bg);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .item-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--button-primary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .item-link:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--button-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .download-link:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="item-details-container">
+            </div>
+        <a href="/clinics/index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Clinics</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemDetailsContainer = document.getElementById('item-details-container');
+            const urlParams = new URLSearchParams(window.location.search);
+            const combinedId = urlParams.get('id');
+            const subcategoryIndex = urlParams.get('subcategory');
+
+            // Sample data (Modified to be an object for easier access)
+            const allData = {
+                "shelter1": {
+                    "area": "Shelter",
+                    "subcategories": [
+                        {
+                            "title": "Low-cost, Durable Construction Methods",
+                            "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                            "tags": ["construction", "low-cost", "durable", "building"],
+                            "ld_youtube": [
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            ],
+                            "details": "Full page design display html with inviting button action links to share info or participate in a community clinic"
+                        }
+                    ]
+                },
+                "water2": {
+                    "area": "Water",
+                    "subcategories": [
+                        {
+                            "title": "Safe Water Collection Techniques",
+                            "description": "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+                            "tags": ["water", "collection", "safe", "hygiene"],
+                            "ld_youtube": ["", "", "", ""],
+                            "details": "Another full page design with different actions"
+                        }
+                    ]
+                }
+            };
+
+            // Define icons for each area
+            const areaIcons = {
+                "Shelter": "fa-house",
+                "Water": "fa-droplet",
+                "Food Production": "fa-seedling",
+                "Waste Management": "fa-recycle",
+                "Energy": "fa-bolt",
+                "Community": "fa-people-group"
+            };
+
+            function displayItemDetails(data, combinedId, subcategoryIndex) {
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const item = data[key];
+                        for (let i = 0; i < item.subcategories.length; i++) {
+                            const subcategory = item.subcategories[i];
+                            const generatedId = ${subcategory.title.toLowerCase().replace(/\s+/g, '-')}${key};
+
+                            if (generatedId === combinedId && parseInt(subcategoryIndex) === i) {
+                                const detailsDiv = document.createElement('div');
+                                detailsDiv.className = 'item-details';
+
+                                // Create icon based on area
+                                const iconClass = areaIcons[item.area] || "fa-book";
+                                const iconDiv = document.createElement('div');
+                                iconDiv.className = 'item-icon';
+                                iconDiv.innerHTML = <i class="fa-solid ${iconClass}"></i>;
+
+                                const contentDiv = document.createElement('div');
+                                contentDiv.className = 'item-content';
+
+                                const areaBadge = document.createElement('div');
+                                areaBadge.className = 'area-badge';
+                                areaBadge.textContent = item.area;
+
+                                const title = document.createElement('h1');
+                                title.className = 'item-title';
+                                title.textContent = subcategory.title;
+
+                                const description = document.createElement('div');
+                                description.className = 'item-description';
+                                description.textContent = subcategory.description;
+
+                                const tagsDiv = document.createElement('div');
+                                tagsDiv.className = 'item-tags';
+                                subcategory.tags.forEach(tag => {
+                                    const tagSpan = document.createElement('span');
+                                    tagSpan.className = 'item-tag';
+                                    tagSpan.textContent = tag;
+                                    tagsDiv.appendChild(tagSpan);
+                                });
+
+                                const actionsDiv = document.createElement('div');
+                                actionsDiv.className = 'item-actions';
+
+                                const downloadLink = document.createElement('a');
+                                downloadLink.href = downloads/${key}_${subcategory.title.toLowerCase().replace(/\s+/g, '-')}.zip;
+                                downloadLink.className = 'download-link';
+                                downloadLink.innerHTML = <i class="fa-solid fa-download"></i> Download;
+
+                                actionsDiv.appendChild(downloadLink);
+
+                                contentDiv.appendChild(areaBadge);
+                                contentDiv.appendChild(title);
+                                contentDiv.appendChild(description);
+                                contentDiv.appendChild(tagsDiv);
+                                contentDiv.appendChild(actionsDiv);
+
+                                detailsDiv.appendChild(iconDiv);
+                                detailsDiv.appendChild(contentDiv);
+
+                                itemDetailsContainer.appendChild(detailsDiv);
+                                return; // Stop searching once found
+                            }
+                        }
+                    }
+                }
+                itemDetailsContainer.innerHTML = '<p>Clinic not found.</p>';
+            }
+
+            // Try to fetch the data, but fall back to the embedded data if it fails
+            fetch('/data/categories0.json')
+                .then(response => response.json())
+                .then(fetchedData => {
+                    // If fetch is successful, use the fetched data
+                    displayItemDetails(fetchedData, combinedId, subcategoryIndex);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch data, using embedded data:', error);
+                    // If fetch fails, use the embedded data
+                    displayItemDetails(allData, combinedId, subcategoryIndex);
+                });
+        });
+    </script>
+</body>
+</html>

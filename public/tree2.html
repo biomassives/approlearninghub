@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awesome Info with Accordion!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background-color: #f7fafc;
+            color: #1e293b;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+        .accordion-header {
+            background-color: #edf2f7; /* bg-gray-200 */
+            color: #2d3748; /* text-gray-700 */
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.5rem;
+        }
+        .accordion-header.active::after {
+            content: '-';
+        }
+        .accordion-panel {
+            padding: 1rem;
+            background-color: #f7fafc; /* bg-gray-100 */
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        .accordion-panel.active {
+            display: block;
+        }
+        .subheader {
+            background-color: #d1fae5; /* bg-green-100 */
+            color: #10b981; /* text-green-500 */
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .subheader::after {
+            content: '+';
+            font-size: 1.25rem;
+        }
+        .subheader.active::after {
+            content: '-';
+        }
+        .subpanel {
+            padding: 1rem;
+            background-color: #ecfdf5; /* bg-green-50 */
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        .subpanel.active {
+            display: block;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #3b82f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            margin-right: 0.25rem;
+            font-size: 0.75rem;
+        }
+        .video-scroller {
+            display: flex;
+            overflow-x: auto;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .video-thumbnail {
+            width: 200px;
+            height: 112.5px; /* 16:9 aspect ratio */
+            margin-right: 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.25rem;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #4f46e5;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+        .button-link:hover {
+            background-color: #4338ca;
+        }
+    </style>
+</head>
+<body>
+    <div id="content-container">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentContainer = document.getElementById('content-container');
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const dataId = urlParams.get('data-id');
+
+            // Embedded JSON data (for this static example)
+            const allData = {
+                "shelter1": {
+                    "area": "Shelter",
+                    "subcategories": [
+                        {
+                            "title": "Low-cost, Durable Construction Methods",
+                            "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                            "tags": ["construction", "low-cost", "durable", "building"],
+                            "ld_youtube": [
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                                "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            ],
+                            "details": "Full page design display html with inviting button action links to share info or participate in a community clinic"
+                        }
+                    ]
+                },
+                "water2": { // Example of a second data set
+                    "area": "Water",
+                    "subcategories": [
+                        {
+                            "title": "Safe Water Collection Techniques",
+                            "description": "Discover methods for gathering and storing clean water, crucial for health and hygiene in various environments.",
+                            "tags": ["water", "collection", "safe", "hygiene"],
+                            "ld_youtube": ["", "", "", ""],
+                            "details": "Another full page design with different actions"
+                        }
+                    ]
+                }
+                // Add more data sets here as needed
+            };
+
+            const selectedData = allData[dataId];
+
+            if (selectedData) {
+                const areaTitle = document.createElement('h2');
+                areaTitle.className = 'text-xl';
+                areaTitle.textContent = selectedData.area;
+                contentContainer.appendChild(areaTitle);
+
+                // Accordion Header for Tags
+                const tagsHeader = document.createElement('div');
+                tagsHeader.className = 'accordion-header';
+                tagsHeader.textContent = 'Read Tags';
+                const tagsPanel = document.createElement('div');
+                tagsPanel.className = 'accordion-panel';
+                if (selectedData.subcategories.length > 0 && selectedData.subcategories[0].tags) {
+                    selectedData.subcategories[0].tags.forEach(tag => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'tag';
+                        tagSpan.textContent = tag;
+                        tagsPanel.appendChild(tagSpan);
+                    });
+                } else {
+                    tagsPanel.textContent = 'No tags available.';
+                }
+                contentContainer.appendChild(tagsHeader);
+                contentContainer.appendChild(tagsPanel);
+                addAccordionToggle(tagsHeader, tagsPanel);
+
+                selectedData.subcategories.forEach((subcategory, index) => {
+                    // Colored Subheader for Subcategory
+                    const subheader = document.createElement('div');
+                    subheader.className = 'subheader';
+                    subheader.textContent = `Clinic ${index + 1}: ${subcategory.title}`;
+                    const subPanel = document.createElement('div');
+                    subPanel.className = 'subpanel';
+                    subPanel.innerHTML = `
+                        <p class="text-lg">${subcategory.description}</p>
+                        ${subcategory.ld_youtube && subcategory.ld_youtube.length > 0 ? `
+                            <div class="video-scroller">
+                                 <iframe class="video-thumbnail" src="${subcategory.ld_youtube[0]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                 <iframe class="video-thumbnail" src="${subcategory.ld_youtube[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                 <iframe class="video-thumbnail" src="${subcategory.ld_youtube[2]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        `: ''}
+                        <p class="mt-4">${subcategory.details}</p>
+                        <a href="#share${index + 1}" class="button-link">Share Info</a>
+                        <a href="#clinic${index + 1}" class="button-link">Participate in Clinic</a>
+                    `;
+                    contentContainer.appendChild(subheader);
+                    contentContainer.appendChild(subPanel);
+                    addSubheaderToggle(subheader, subPanel);
+                });
+            } else {
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'text-lg text-red-500';
+                errorMessage.textContent = 'Data not found.';
+                contentContainer.appendChild(errorMessage);
+            }
+
+
+            function addAccordionToggle(header, panel) {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('active');
+                    panel.classList.toggle('active');
+                });
+            }
+
+            function addSubheaderToggle(header, panel) {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('active');
+                    panel.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

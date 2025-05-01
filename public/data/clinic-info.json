@@ -1,0 +1,331 @@
+// Additional clinic data objects for the remaining clinics
+
+// WASTE AREA CLINICS
+const wasteClinicData = {
+    "recycling-systems": {
+        title: "Recycling Systems",
+        area: "waste",
+        areaName: "Waste",
+        description: "Set up community or household recycling systems to properly sort and process recyclable materials. Covers plastic, paper, glass, and metal recycling basics.",
+        tags: [
+            { name: "recycling", icon: "fas fa-recycle" },
+            { name: "waste sorting", icon: "fas fa-trash-alt" },
+            { name: "materials recovery", icon: "fas fa-boxes" }
+        ],
+        icon: "fas fa-recycle",
+        image: "recycling-center",
+        techniques: [
+            { name: "Waste Sorting", icon: "fas fa-sort", description: "Establishing efficient systems for separating different materials" },
+            { name: "Collection Points", icon: "fas fa-map-marker-alt", description: "Creating accessible community collection stations" },
+            { name: "Processing Methods", icon: "fas fa-cogs", description: "Basic techniques for processing different recyclable materials" }
+        ],
+        panels: [
+            { title: "Sorting Systems", content: "Creating effective waste separation systems for different materials, including identification guides and contamination prevention.", type: "Organization", icon: "fas fa-sort text-blue-800 fa-lg" },
+            { title: "Collection Methods", content: "Strategies for community-based collection including drop-off points, pickup schedules, and incentive programs.", type: "Community", icon: "fas fa-people-carry text-purple-800 fa-lg" },
+            { title: "Processing Equipment", content: "Simple tools and machines for processing recyclables, including crushers, balers, and washing systems.", type: "Technical", icon: "fas fa-cogs text-gray-800 fa-lg" }
+        ],
+        videos: [
+            { id: "IsTnQ9U5wN8", title: "Setting Up a Community Recycling Station", description: "Organizing an effective collection point for recyclables", duration: "18:36" },
+            { id: "kUR6_bQLU-E", title: "DIY Plastic Processing for Reuse", description: "Small-scale methods to clean and process plastic waste", duration: "22:15" },
+            { id: "Gq7L9-0XdVw", title: "Paper Recycling and Homemade Paper Making", description: "Creating new paper products from waste paper", duration: "16:48" },
+            { id: "nJ5Qe9j2oAc", title: "Metal Sorting and Processing Basics", description: "How to identify different metals and prepare them for recycling", duration: "14:22" },
+            { id: "xF4YIbGU-cA", title: "Glass Crushing and Reuse Applications", description: "Safely processing glass for construction materials and crafts", duration: "19:05" }
+        ],
+        resources: [
+            { name: "Community Recycling Guide", type: "pdf", size: "5.2MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "Material Identification Chart", type: "pdf", size: "2.4MB", icon: "fas fa-file-pdf text-blue-500" },
+            { name: "Collection System Designs", type: "pdf", size: "3.7MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Processing Tools Handbook", type: "pdf", size: "4.1MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Composting", area: "waste", image: "composting", description: "Converting organic waste into nutrient-rich soil" },
+            { title: "Upcycling", area: "waste", image: "upcycling", description: "Creative reuse of waste materials" },
+            { title: "Low-cost Construction", area: "shelter", image: "low-cost-construction", description: "Using recycled materials in construction" }
+        ]
+    },
+    "upcycling": {
+        title: "Upcycling",
+        area: "waste",
+        areaName: "Waste",
+        description: "Transform discarded items into useful products. Learn creative approaches to reuse materials that would otherwise become waste.",
+        tags: [
+            { name: "upcycling", icon: "fas fa-recycle" },
+            { name: "creative reuse", icon: "fas fa-lightbulb" },
+            { name: "waste reduction", icon: "fas fa-trash-alt" }
+        ],
+        icon: "fas fa-lightbulb",
+        image: "upcycling",
+        techniques: [
+            { name: "Material Selection", icon: "fas fa-search", description: "Identifying the best waste materials for reuse projects" },
+            { name: "Furniture Making", icon: "fas fa-couch", description: "Creating functional furniture from discarded items" },
+            { name: "Fabric Reuse", icon: "fas fa-tshirt", description: "Repurposing textiles into new garments and household items" }
+        ],
+        panels: [
+            { title: "Material Selection", content: "Guidelines for identifying materials with the best upcycling potential, including durability assessment and safety considerations.", type: "Materials", icon: "fas fa-recycle text-green-600 fa-lg" },
+            { title: "Basic Tools", content: "Essential tools and techniques for working with different waste materials, including cutting, joining, and finishing methods.", type: "Tools", icon: "fas fa-tools text-gray-800 fa-lg" },
+            { title: "Design Thinking", content: "Approaches to reimagining waste items for new purposes, including functional assessment and creative problem-solving.", type: "Design", icon: "fas fa-lightbulb text-yellow-600 fa-lg" }
+        ],
+        videos: [
+            { id: "zIcDVPkHVmI", title: "Making Furniture From Wooden Pallets", description: "Constructing chairs, tables and beds from shipping pallets", duration: "25:14" },
+            { id: "lnT1qY0a4KA", title: "Plastic Bottle Building Blocks and Construction", description: "Using plastic bottles filled with sand as building materials", duration: "18:46" },
+            { id: "AxiI17y0fNk", title: "Tire Upcycling for Garden Projects", description: "Transforming old tires into planters, retaining walls, and play areas", duration: "15:22" },
+            { id: "IRGnkGHmJdg", title: "Creating Rope From Plastic Bags", description: "Converting plastic waste into strong, useful cordage", duration: "12:08" },
+            { id: "lfDk5aiLbKw", title: "Glass Bottle Cutting for Household Items", description: "Techniques for cutting glass bottles to make cups, lamps, and art", duration: "16:35" },
+            { id: "CcBJ3S-J8Is", title: "Metal Can Upcycling Projects", description: "Transforming food cans into practical items and decorations", duration: "14:19" }
+        ],
+        resources: [
+            { name: "Upcycling Project Ideas", type: "pdf", size: "6.8MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "Material Transformation Guide", type: "pdf", size: "4.2MB", icon: "fas fa-file-pdf text-blue-500" },
+            { name: "Upcycling Techniques", type: "pdf", size: "3.6MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Safety Guidelines", type: "pdf", size: "1.2MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Recycling Systems", area: "waste", image: "recycling-systems", description: "Sorting and processing recyclable materials" },
+            { title: "Low-cost Construction", area: "shelter", image: "low-cost-construction", description: "Using recycled materials in building" },
+            { title: "Locally Available Materials", area: "shelter", image: "local-materials", description: "Finding and using materials from your surroundings" }
+        ]
+    },
+    "wastewater-management": {
+        title: "Wastewater Management",
+        area: "waste",
+        areaName: "Waste",
+        description: "Build simple systems to treat and safely dispose of greywater and blackwater. Includes constructed wetlands, filtration beds, and safe handling practices.",
+        tags: [
+            { name: "wastewater", icon: "fas fa-water" },
+            { name: "greywater", icon: "fas fa-shower" },
+            { name: "sanitation", icon: "fas fa-pump-soap" },
+            { name: "treatment", icon: "fas fa-filter" }
+        ],
+        icon: "fas fa-water",
+        image: "wastewater",
+        techniques: [
+            { name: "Greywater Systems", icon: "fas fa-shower", description: "Reusing wastewater from sinks, showers, and laundry" },
+            { name: "Constructed Wetlands", icon: "fas fa-leaf", description: "Natural filtration systems using plants and gravel" },
+            { name: "Mulch Basins", icon: "fas fa-seedling", description: "Simple soil absorption systems for household water" }
+        ],
+        panels: [
+            { title: "Greywater Basics", content: "Understanding different types of wastewater and appropriate reuse applications, including which household waters are safe for direct garden use.", type: "Education", icon: "fas fa-shower text-blue-400 fa-lg" },
+            { title: "Natural Treatment", content: "Using plant-based systems to filter and purify wastewater through constructed wetlands and reed beds.", type: "Biological", icon: "fas fa-leaf text-green-600 fa-lg" },
+            { title: "Safety Protocols", content: "Essential guidelines for handling different types of wastewater to prevent disease transmission and contamination.", type: "Safety", icon: "fas fa-shield-alt text-red-600 fa-lg" }
+        ],
+        videos: [
+            { id: "v3KGpnRrQ_I", title: "DIY Greywater System for Garden Irrigation", description: "Reusing household water from sinks and showers for plants", duration: "22:46" },
+            { id: "6gGKKnD-Z4Q", title: "Constructing a Basic Wetland Filtration System", description: "Building a natural water treatment system using plants and gravel", duration: "28:12" },
+            { id: "QYyZdJc2RhY", title: "Simple Septic System Installation", description: "Creating a basic blackwater management system for rural settings", duration: "35:24" },
+            { id: "8XuoRbZTLIs", title: "Mulch Basin Construction for Greywater", description: "Building a simple yet effective greywater dispersion system", duration: "16:48" },
+            { id: "NzQMPcpKgd8", title: "DIY Biodigester for Wastewater Treatment", description: "Creating an anaerobic system that also produces biogas", duration: "24:32" },
+            { id: "K4B8CpVlR4U", title: "Bamboo Drip Irrigation from Greywater", description: "Using bamboo pipes to distribute filtered greywater to plants", duration: "18:15" }
+        ],
+        resources: [
+            { name: "Wastewater Treatment Guide", type: "pdf", size: "5.8MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "Constructed Wetland Designs", type: "pdf", size: "4.2MB", icon: "fas fa-file-pdf text-blue-500" },
+            { name: "Greywater Reuse Manual", type: "pdf", size: "3.6MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Safety Standards", type: "pdf", size: "1.5MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Purification", area: "water", image: "purification", description: "Make water safe for drinking with simple filtering methods" },
+            { title: "Sustainable Agriculture", area: "food", image: "sustainable-agriculture", description: "Using treated greywater for farming" },
+            { title: "Efficient Distribution", area: "water", image: "distribution", description: "Systems for distributing treated water" }
+        ]
+    },
+
+    // ENERGY AREA CLINICS
+    "diy-solar-energy": {
+        title: "DIY Solar Energy",
+        area: "energy",
+        areaName: "Energy",
+        description: "Set up your own solar panel systems for basic lighting and device charging. Covers solar panel positioning, batteries, and wiring safety.",
+        tags: [
+            { name: "solar", icon: "fas fa-sun" },
+            { name: "DIY", icon: "fas fa-tools" },
+            { name: "power", icon: "fas fa-bolt" },
+            { name: "off-grid", icon: "fas fa-battery-full" }
+        ],
+        icon: "fas fa-sun",
+        image: "solar-panels",
+        techniques: [
+            { name: "Panel Installation", icon: "fas fa-solar-panel", description: "Properly mounting and positioning solar panels" },
+            { name: "Battery Systems", icon: "fas fa-car-battery", description: "Setting up battery storage for collected solar energy" },
+            { name: "Basic Wiring", icon: "fas fa-plug", description: "Safe wiring techniques for small solar setups" }
+        ],
+        panels: [
+            { title: "System Sizing", content: "How to calculate your energy needs and properly size solar systems, including panel wattage, battery capacity, and inverter requirements.", type: "Technical", icon: "fas fa-calculator text-blue-800 fa-lg" },
+            { title: "Component Selection", content: "Guidelines for choosing quality solar components, including panel types, battery chemistry, charge controllers, and inverters.", type: "Equipment", icon: "fas fa-microchip text-gray-800 fa-lg" },
+            { title: "Installation Safety", content: "Critical safety practices for solar system installation, including proper grounding, wire sizing, and circuit protection.", type: "Safety", icon: "fas fa-bolt text-yellow-600 fa-lg" }
+        ],
+        videos: [
+            { id: "fFHn_xoMsI8", title: "Building a Basic Solar Power System", description: "Complete guide to assembling solar panels, charge controller, battery and inverter", duration: "28:46" },
+            { id: "JC4bwXEBWNc", title: "DIY Solar Lanterns from Recycled Materials", description: "Creating simple solar lights using jar lids and small solar cells", duration: "15:22" },
+            { id: "9GvN7O5pUw8", title: "Solar Panel Mounting and Positioning", description: "Optimizing solar collection through proper angle and orientation", duration: "19:35" },
+            { id: "zHWjYyJnTZ4", title: "Battery Selection and Maintenance for Solar Systems", description: "Choosing appropriate batteries and extending their lifespan", duration: "24:18" },
+            { id: "MUtI2jFvJLM", title: "DIY Solar Water Heater Construction", description: "Building a simple but effective solar water heating system", duration: "26:42" },
+            { id: "GMgZZ0jVyVQ", title: "Solar System Wiring Safety and Best Practices", description: "Essential safety guidelines for solar electrical systems", duration: "22:07" }
+        ],
+        resources: [
+            { name: "Solar Power Basics Guide", type: "pdf", size: "6.8MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "System Design Worksheets", type: "xlsx", size: "1.2MB", icon: "fas fa-file-excel text-blue-500" },
+            { name: "Wiring Diagrams", type: "pdf", size: "3.5MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Component Datasheets", type: "pdf", size: "2.8MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Microgrids", area: "energy", image: "microgrids", description: "Connecting multiple energy sources for community use" },
+            { title: "Efficient Distribution", area: "water", image: "distribution", description: "Powering water systems with solar energy" },
+            { title: "Briquettes", area: "energy", image: "briquettes", description: "Alternative energy when sun isn't available" }
+        ]
+    },
+    "biogas-generation": {
+        title: "Biogas Generation",
+        area: "energy",
+        areaName: "Energy",
+        description: "Turn kitchen and animal waste into clean-burning gas for cooking. Learn how to build a small digester, maintain it, and safely use the gas.",
+        tags: [
+            { name: "biogas", icon: "fas fa-fire" },
+            { name: "waste", icon: "fas fa-trash" },
+            { name: "energy", icon: "fas fa-bolt" },
+            { name: "renewable", icon: "fas fa-leaf" }
+        ],
+        icon: "fas fa-fire",
+        image: "biogas",
+        techniques: [
+            { name: "Digester Construction", icon: "fas fa-drum", description: "Building reliable containers for anaerobic digestion" },
+            { name: "Feedstock Preparation", icon: "fas fa-blender", description: "Preparing organic materials for optimal gas production" },
+            { name: "Gas Storage", icon: "fas fa-database", description: "Safe techniques for storing produced biogas" }
+        ],
+        panels: [
+            { title: "Digester Design", content: "Different biodigester designs for various settings and waste types, including floating dome, fixed dome, and bag digesters.", type: "Technical", icon: "fas fa-drafting-compass text-blue-800 fa-lg" },
+            { title: "Feedstock Selection", content: "Guidelines for selecting and preparing organic materials for optimal biogas production, including carbon-to-nitrogen ratios.", type: "Materials", icon: "fas fa-apple-alt text-green-600 fa-lg" },
+            { title: "Gas Safety", content: "Essential safety practices for handling biogas, including leak detection, proper ventilation, and flame arrestors.", type: "Safety", icon: "fas fa-fire-alt text-red-600 fa-lg" }
+        ],
+        videos: [
+            { id: "3C0KFcCG9ts", title: "Simple Barrel Biogas Digester Construction", description: "Building a basic biogas system using plastic barrels", duration: "24:36" },
+            { id: "pTXJzxZpR4s", title: "Biogas Stove Modification and Installation", description: "Adapting conventional stoves for biogas and ensuring safe connections", duration: "18:22" },
+            { id: "d3WYQmPAM6c", title: "Optimal Feeding and Maintenance of Biodigesters", description: "How to maintain consistent gas production through proper feeding", duration: "22:15" },
+            { id: "E2KhFx_jQrU", title: "Underground Biogas System for Colder Climates", description: "Temperature-stable biodigester designs for year-round production", duration: "28:45" },
+            { id: "Lr2NV3zhvLc", title: "Biogas Storage and Safety Systems", description: "Creating safe gas storage and implementing basic safety measures", duration: "20:12" }
+        ],
+        resources: [
+            { name: "Biogas System Manual", type: "pdf", size: "7.2MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "Digester Design Plans", type: "pdf", size: "5.4MB", icon: "fas fa-file-pdf text-blue-500" },
+            { name: "Feedstock Guide", type: "pdf", size: "2.8MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Safety Protocols", type: "pdf", size: "1.8MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Composting", area: "waste", image: "composting", description: "Alternative use for organic waste materials" },
+            { title: "Briquettes", area: "energy", image: "briquettes", description: "Solid fuel production from biomass" },
+            { title: "Wastewater Management", area: "waste", image: "wastewater", description: "Combining wastewater treatment with biogas production" }
+        ]
+    },
+    "microgrids": {
+        title: "Microgrids for Sustainable Power",
+        area: "energy",
+        areaName: "Energy",
+        description: "Build small, local power systems that connect solar, wind, or battery energy to homes and clinics. Learn how to balance loads and increase energy access.",
+        tags: [
+            { name: "microgrid", icon: "fas fa-network-wired" },
+            { name: "sustainability", icon: "fas fa-leaf" },
+            { name: "infrastructure", icon: "fas fa-city" }
+        ],
+        icon: "fas fa-network-wired",
+        image: "microgrid",
+        techniques: [
+            { name: "Grid Design", icon: "fas fa-project-diagram", description: "Planning effective microgrid layouts and connections" },
+            { name: "Load Management", icon: "fas fa-balance-scale", description: "Balancing power supply and demand across the system" },
+            { name: "Hybrid Integration", icon: "fas fa-random", description: "Combining multiple renewable energy sources" }
+        ],
+        panels: [
+            { title: "Grid Design", content: "Principles of microgrid layout including generation sources, distribution networks, and load centers with necessary protection devices.", type: "Technical", icon: "fas fa-network-wired text-blue-800 fa-lg" },
+            { title: "Power Management", content: "Strategies for balancing power generation and consumption, including load shedding, prioritization, and smart controllers.", type: "Management", icon: "fas fa-sliders-h text-purple-800 fa-lg" },
+            { title: "Community Organization", content: "Frameworks for community ownership, maintenance responsibilities, and equitable access to shared power resources.", type: "Social", icon: "fas fa-users text-green-600 fa-lg" }
+        ],
+        videos: [
+            { id: "wJ8YRU4jZpM", title: "Basic Microgrid Design Principles", description: "Understanding the fundamentals of small power distribution systems", duration: "26:18" },
+            { id: "8G7f2GbzVL4", title: "Community-Scale Battery Storage Systems", description: "Building and managing shared battery banks for microgrids", duration: "24:42" },
+            { id: "pJN5akpMvKo", title: "Load Management for Small Power Systems", description: "Techniques to balance electrical demands in limited-capacity systems", duration: "19:35" },
+            { id: "6t5aD8cUqA0", title: "Hybrid Wind-Solar Microgrid Installation", description: "Combining multiple renewable sources for reliable power", duration: "32:24" },
+            { id: "iFVq7IUTn0Y", title: "Low-Cost Energy Monitoring and Management", description: "Setting up simple systems to track and optimize energy use", duration: "22:08" },
+            { id: "k7mUvYMWDYA", title: "Microgrid Distribution Wiring Safety", description: "Safe practices for running power lines to multiple buildings", duration: "18:46" }
+        ],
+        resources: [
+            { name: "Microgrid Planning Guide", type: "pdf", size: "8.4MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "System Design Calculator", type: "xlsx", size: "2.2MB", icon: "fas fa-file-excel text-blue-500" },
+            { name: "Component Selection Guide", type: "pdf", size: "4.6MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Community Management Manual", type: "pdf", size: "3.8MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "DIY Solar Energy", area: "energy", image: "solar-panels", description: "Individual solar power systems for homes" },
+            { title: "Biogas Generation", area: "energy", image: "biogas", description: "Alternative energy source for microgrids" },
+            { title: "Efficient Distribution", area: "water", image: "distribution", description: "Powering water systems with microgrids" }
+        ]
+    },
+    "briquettes": {
+        title: "Hand Pressed Heat & Cooking Fuel Briquettes",
+        area: "energy",
+        areaName: "Energy",
+        description: "DIY cook stove Fuel produced from waste combustible biomass slurry. Learn to convert agricultural and paper waste into efficient cooking and heating fuel.",
+        tags: [
+            { name: "cooking fuel", icon: "fas fa-fire" },
+            { name: "upcycling", icon: "fas fa-recycle" },
+            { name: "home heating", icon: "fas fa-temperature-high" }
+        ],
+        icon: "fas fa-fire-alt",
+        image: "briquettes",
+        techniques: [
+            { name: "Material Selection", icon: "fas fa-search", description: "Identifying suitable biomass for briquette production" },
+            { name: "Press Construction", icon: "fas fa-compress", description: "Building simple manual presses for forming briquettes" },
+            { name: "Drying Techniques", icon: "fas fa-sun", description: "Methods for efficiently drying briquettes for use" }
+        ],
+        panels: [
+            { title: "Material Selection", content: "Guidelines for identifying and preparing suitable biomass materials for briquette production, including optimal moisture content.", type: "Materials", icon: "fas fa-leaf text-green-800 fa-lg" },
+            { title: "Press Technology", content: "Different briquette press designs from simple hand presses to lever-action and screw presses for higher production volumes.", type: "Equipment", icon: "fas fa-compress-alt text-blue-800 fa-lg" },
+            { title: "Drying and Storage", content: "Proper techniques for drying and storing briquettes to ensure good combustion and prevent moisture absorption.", type: "Process", icon: "fas fa-warehouse text-yellow-800 fa-lg" }
+        ],
+        videos: [
+            { id: "1LD7BhR3jTI", title: "Simple Biomass Briquette Press Construction", description: "Building a manual press for creating fuel briquettes", duration: "22:24" },
+            { id: "cRj8rvXvVA8", title: "Paper and Cardboard Briquette Making", description: "Converting waste paper into dense fuel briquettes", duration: "16:42" },
+            { id: "rV8OSzLk-GM", title: "Agricultural Waste Briquettes", description: "Using crop residues and husks for efficient cooking fuel", duration: "18:15" },
+            { id: "Sh6vXXDCiN8", title: "Sawdust and Wood Waste Briquette Production", description: "Creating high-energy briquettes from workshop waste", duration: "15:38" },
+            { id: "a-E4rBY3PpI", title: "Improving Briquette Combustion Efficiency", description: "Techniques to make briquettes burn hotter and longer", duration: "20:12" },
+            { id: "XUfEAmfm8Lg", title: "Stove Modifications for Briquette Burning", description: "Adapting cooking stoves for optimal briquette performance", duration: "24:05" }
+        ],
+        resources: [
+            { name: "Briquette Production Manual", type: "pdf", size: "5.8MB", icon: "fas fa-file-pdf text-red-500" },
+            { name: "Press Design Blueprints", type: "pdf", size: "3.6MB", icon: "fas fa-file-pdf text-blue-500" },
+            { name: "Biomass Selection Guide", type: "pdf", size: "2.2MB", icon: "fas fa-file-pdf text-green-500" },
+            { name: "Efficiency Testing Methods", type: "pdf", size: "1.8MB", icon: "fas fa-file-pdf text-yellow-500" }
+        ],
+        related: [
+            { title: "Biogas Generation", area: "energy", image: "biogas", description: "Alternative fuel from organic waste" },
+            { title: "Sustainable Agriculture", area: "food", image: "sustainable-agriculture", description: "Sources of agricultural waste for briquettes" },
+            { title: "Upcycling", area: "waste", image: "upcycling", description: "Creative reuse of waste materials" }
+        ]
+    }
+};
+
+// HEALTH AREA CLINICS
+const healthClinicData = {
+    "emt-skills": {
+        title: "EMT Skills",
+        area: "health",
+        areaName: "Health",
+        description: "Learn lifesaving basics such as CPR, wound dressing, splinting, and how to assess an emergency before help arrives.",
+        tags: [
+            { name: "EMT", icon: "fas fa-ambulance" },
+            { name: "emergency", icon: "fas fa-heartbeat" },
+            { name: "first response", icon: "fas fa-first-aid" }
+        ],
+        icon: "fas fa-ambulance",
+        image: "emergency-care",
+        techniques: [
+            { name: "CPR", icon: "fas fa-heartbeat", description: "Cardiopulmonary resuscitation for breathing and circulation emergencies" },
+            { name: "Wound Management", icon: "fas fa-band-aid", description: "Controlling bleeding and preventing infection" },
+            { name: "Patient Assessment", icon: "fas fa-clipboard-check", description: "Systematic approach to evaluating injuries and conditions" }
+        ],
+        panels: [
+            { title: "Assessment Skills", content: "How to quickly evaluate emergency situations using the ABC approach (Airway, Breathing, Circulation) and recognizing life-threatening conditions.", type: "Triage", icon: "fas fa-search text-blue-800 fa-lg" },
+            { title: "Critical Interventions", content: "Immediate life-saving techniques including CPR, bleeding control, and airway management using minimal equipment.", type: "Emergency", icon: "fas fa-heartbeat text-red-600 fa-lg" },
+            { title: "Improvised Equipment", content: "Creating emergency medical tools from common items, including splints, stretchers, and wound dressings.", type: "Resourcefulness", icon: "fas fa-toolbox text-yellow-600 fa-lg" }
+        ],
+        videos: [
+            { id: "XpEvQuOWME0", title: "Basic CPR and Rescue Breathing Techniques", description: "Step-by-step guide to performing cardiopulmonary resuscitation", duration: "18:46" },
+            { id: "H2OxCi4yVGc", title: "Wound Cleaning and Dressing in Field Conditions", description: "Proper techniques for treating wounds with limited supplies", duration: "22:15" },
+            { id: "B5sqYX04PGk", title: "Improvised Spl

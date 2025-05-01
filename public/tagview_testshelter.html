@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tag Detail System Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <style>
+    /* Tag Detail Area Styling */
+    #tag-detail-area {
+      transition: opacity 0.5s ease-in-out;
+        // Generate a slug from a title (for IDs)
+    function generateSlug(text) {
+      return text.toLowerCase()
+        .replace(/[^\w ]+/g, '')
+        .replace(/ +/g, '-');
+    }
+    /* Base Dark Theme Colors */
+    :root {
+    --dark-bg: #121218;
+    --panel-bg: #1e1e2a;
+    --text-primary: #e0e0e6;
+    --text-secondary: #a0a0b0;
+    --accent-blue: #4a80f0;
+    --accent-green: #50c878;
+    --border-color: #2a2a36;
+    --hover-bg: #2a2a38;
+    --tag-bg: #282836;
+    --button-primary: #4a80f0;
+    --button-secondary: #2a2a36;
+    --danger: #e05050;
+    --success: #50c878;
+    }
+
+    /* Global Styles */
+    body {
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    }
+
+    /* Main Container */
+    .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    }
+
+    /* Header */
+    .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: rgba(30, 30, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+    text-decoration: none;
+    }
+
+    .logo img {
+    width: 32px;
+    height: 32px;
+    }
+
+    /* Navigation Icons */
+    .nav-icons {
+    display: flex;
+    gap: 15px;
+    }
+
+    .nav-icons button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    }
+
+    .nav-icons button:hover {
+    color: var(--text-primary);
+    background-color: var(--hover-bg);
+    }
+
+    /* Main Content */
+    .content {
+    padding: 20px;
+    }
+
+    h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    }
+
+    .description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+    }
+
+    /* Categories Section */
+    .categories-section {
+    margin: 30px 0;
+    }
+
+    .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    }
+
+    .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    }
+
+    /* Category Panels */
+    .category-panel {
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    }
+
+    .category-header {
+    background-color: var(--panel-bg);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    }
+
+    .category-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    }
+
+    .category-actions {
+    display: flex;
+    gap: 10px;
+    }
+
+    .btn {
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+    background-color: var(--button-primary);
+    color: white;
+    border: none;
+    }
+
+    .btn-secondary {
+    background-color: var(--button-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    }
+
+    .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    }
+
+    /* Subcategory List */
+    .subcategory-list {
+    background-color: rgba(20, 20, 28, 0.5);
+    padding: 10px 0;
+    }
+
+    .subcategory-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    }
+
+    .subcategory-item:last-child {
+    border-bottom: none;
+    }
+
+    .subcategory-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    }
+
+    .expand-icon {
+    color: var(--text-secondary);
+    font-size: 18px;
+    transition: transform 0.2s ease;
+    }
+
+    .expanded .expand-icon {
+    transform: rotate(90deg);
+    }
+
+    .subcategory-tags {
+    display: flex;
+    gap: 8px;
+    }
+
+    .tag {
+    background-color: var(--tag-bg);
+    color: var(--text-secondary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    }
+
+    /* Modal */
+    .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    }
+
+    .modal-content {
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    }
+
+    .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    }
+
+    .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    }
+
+    .close-modal {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    }
+
+    .close-modal:hover {
+    color: var(--text-primary);
+    }
+
+    .form-group {
+    margin-bottom: 15px;
+    }
+
+    .form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    }
+
+    .required::after {
+    content: " *";
+    color: var(--danger);
+    }
+
+    .form-input {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    }
+
+    .form-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    }
+
+    .form-textarea {
+    min-height: 80px;
+    resize: vertical;
+    }
+
+    .form-select {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(160, 160, 176)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px;
+    }
+
+    .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    }
+
+    /* Tags Management */
+    .tag-management {
+    margin-top: 40px;
+    }
+
+    .no-tags {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-secondary);
+    }
+
+    .footer-hint {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+    .category-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .subcategory-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .subcategory-tags {
+        margin-left: 26px;
+    }
+    }
+ 
+ 
+
+    #tag-detail-area.hidden {
+      display: none;
+    }
+
+    /* Video Container Styling */
+    #video-container {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    #video-container > div {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+
+    /* Aspect ratio container for videos */
+    .aspect-w-16.aspect-h-9 {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    }
+
+    .aspect-w-16.aspect-h-9 iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Max height for detail content */
+    .max-h-90vh {
+      max-height: 90vh;
+    }
+
+    /* Tag Link Styling */
+    .tag-link {
+      display: inline-block;
+      margin: 0.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .tag-link a {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      background-color: rgba(99, 179, 237, 0.1);
+      color: #3182ce;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .tag-link a:hover {
+      background-color: #3182ce;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Navigation buttons */
+    #prev-video, #next-video {
+      z-index: 10;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(49, 130, 206, 0.8);
+      transition: all 0.3s ease;
+    }
+
+    #prev-video:hover, #next-video:hover {
+      background-color: rgba(49, 130, 206, 1);
+      transform: scale(1.1);
+    }
+
+    #prev-video svg, #next-video svg {
+      width: 20px;
+      height: 20px;
+      stroke: white;
+    }
+
+    /* Video indicators */
+    #video-indicators button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin: 0 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #video-indicators button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Download Section Styling */
+    .download-item {
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .download-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-color: rgba(49, 130, 206, 0.2);
+    }
+
+    .download-button {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: width 2s cubic-bezier(0.1, 0.8, 0.2, 1);
+    }
+
+    .download-button.active-download::after {
+      width: 100%;
+    }
+
+    /* Download Trigger Styling */
+    .download-trigger {
+      display: flex;
+      align-items: center;
+      color: #3182ce;
+      transition: all 0.3s ease;
+    }
+
+    .download-trigger:hover {
+      color: #2c5282;
+      transform: translateY(-1px);
+    }
+
+    .download-trigger .fas {
+      margin-right: 0.5rem;
+    }
+
+    /* Button with Progress Styling */
+    #button {
+      position: relative;
+      padding-right: 3rem;
+      background-color: #3b82f6;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    #button:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+    }
+
+    #button:hover #arrow {
+      transform: translateY(-4px);
+    }
+
+    #button .relative {
+      position: relative;
+      width: 3rem;
+      height: 3rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    #arrow {
+      width: 1rem;
+      height: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    #progress {
+      position: absolute;
+      width: 100%;
+      height: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      top: 0;
+      transition: height 0.2s ease;
+    }
+
+    #button:hover #progress {
+      height: 100%;
+    }
+
+    /* Tailwind-like utility classes */
+    .hidden {
+      display: none;
+    }
+
+    .opacity-0 {
+      opacity: 0;
+    }
+
+    .fixed {
+      position: fixed;
+    }
+
+    .absolute {
+      position: absolute;
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .top-0 {
+      top: 0;
+    }
+
+    .left-0 {
+      left: 0;
+    }
+
+    .top-4 {
+      top: 1rem;
+    }
+
+    .right-4 {
+      right: 1rem;
+    }
+
+    .top-1\/2 {
+      top: 50%;
+    }
+
+    .right-0 {
+      right: 0;
+    }
+
+    .transform {
+      transform: translateZ(0);
+    }
+
+    .-translate-y-1\/2 {
+      transform: translateY(-50%);
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .h-full {
+      height: 100%;
+    }
+
+    .max-w-4xl {
+      max-width: 56rem;
+    }
+
+    .min-w-full {
+      min-width: 100%;
+    }
+
+    .z-50 {
+      z-index: 50;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .overflow-y-auto {
+      overflow-y: auto;
+    }
+
+    .overflow-hidden {
+      overflow: hidden;
+    }
+
+    .rounded-lg {
+      border-radius: 0.5rem;
+    }
+
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+
+    .rounded-full {
+      border-radius: 9999px;
+    }
+
+    .bg-black {
+      background-color: #000;
+    }
+
+    .bg-white {
+      background-color: #fff;
+    }
+
+    .bg-blue-500 {
+      background-color: #3b82f6;
+    }
+
+    .bg-gray-300 {
+      background-color: #d1d5db;
+    }
+
+    .bg-gray-50 {
+      background-color: #f9fafb;
+    }
+
+    .bg-opacity-70 {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .text-white {
+      color: #fff;
+    }
+
+    .text-gray-600 {
+      color: #4b5563;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .shadow-lg {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .p-6 {
+      padding: 1.5rem;
+    }
+
+    .p-2 {
+      padding: 0.5rem;
+    }
+
+    .px-5 {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-3 {
+      margin-bottom: 0.75rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .mt-6 {
+      margin-top: 1.5rem;
+    }
+
+    .mt-8 {
+      margin-top: 2rem;
+    }
+
+    .list-disc {
+      list-style-type: disc;
+    }
+
+    .pl-5 {
+      padding-left: 1.25rem;
+    }
+
+    /* Additional styling for example page */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .mega-menu-section {
+      margin-bottom: 3rem;
+    }
+
+    .mega-menu-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #2d3748;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+
+    .mega-menu-subcategories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .mega-menu-subcategory {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .mega-menu-subcategory:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .mega-menu-subcategory h4 {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #3182ce;
+      cursor: pointer;
+    }
+
+    .mega-menu-subcategory p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #4a5568;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+  </style>
+
+
+   
+</head>
+<body>
+  <div class="container">
+    <h1>Sustainable Living Resources - Shelter Category Test</h1>
+    
+    <!-- Example of Shelter category section -->
+    <div class="mega-menu-section">
+      <h2>Shelter</h2>
+      <div class="mega-menu-subcategories">
+        <!-- Low-cost Construction subcategory -->
+        <div class="mega-menu-subcategory">
+          <h4>Low-cost, Durable Construction Methods</h4>
+          <p>Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.</p>
+          <div class="tags">
+            <span data-tag="construction" class="tag-link"><a href="topics.html?cat=construction">construction</a></span>
+            <span data-tag="low-cost" class="tag-link"><a href="topics.html?cat=low-cost">low-cost</a></span>
+            <span data-tag="durable" class="tag-link"><a href="topics.html?cat=durable">durable</a></span>
+            <span data-tag="building" class="tag-link"><a href="topics.html?cat=building">building</a></span>
+          </div>
+          <p class="px-5">
+            <i class="fas fa-download"></i>
+            Low-cost-Durable-Construction.zip
+          </p>
+          <button id="button" class="rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
+            <div class="relative w-12 h-12 bg-white bg-opacity-20 text-blue flex justify-center items-center transition-all">
+              <svg id="arrow" class="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+              <div id="progress" class="absolute w-full h-0 bg-white bg-opacity-20 top-0 duration-200"></div>
+            </div>
+          </button>
+        </div>
+        
+        <!-- Locally Available Materials subcategory -->
+        <div class="mega-menu-subcategory">
+          <h4>Locally Available Materials</h4>
+          <p>Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.</p>
+          <div class="tags">
+            <span data-tag="materials" class="tag-link"><a href="topics.html?cat=materials">materials</a></span>
+            <span data-tag="local" class="tag-link"><a href="topics.html?cat=local">local</a></span>
+            <span data-tag="sustainability" class="tag-link"><a href="topics.html?cat=sustainability">sustainability</a></span>
+          </div>
+          <p class="px-5">
+            <i class="fas fa-download"></i>
+            Local-Materials-Guide.zip
+          </p>
+          <button id="button" class="rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
+            <div class="relative w-12 h-12 bg-white bg-opacity-20 text-blue flex justify-center items-center transition-all">
+              <svg id="arrow" class="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+              <div id="progress" class="absolute w-full h-0 bg-white bg-opacity-20 top-0 duration-200"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load the category data -->
+  <script>
+    // Enhanced Shelter category with videos and additional info
+    window.categoriesJSON = [
+      {
+        "area": "Shelter",
+        "subcategories": [
+          {
+            "title": "Low-cost, Durable Construction Methods",
+            "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+            "tags": ["construction", "low-cost", "durable", "building"],
+            "videos": ["cBwYlWUQQXg", "hKvQUEcQ3Vk", "QoMdb8kR7-g"],
+            "additionalInfo": `
+              <h3 class="text-xl font-semibold mt-4 mb-2">Key Benefits</h3>
+              <ul class="list-disc pl-5 mb-4">
+                <li>Reduces construction costs up to 70% compared to conventional methods</li>
+                <li>Uses simple tools and techniques accessible to most people</li>
+                <li>Structures can withstand severe weather conditions and natural disasters</li>
+                <li>Most methods can be learned through hands-on training in just days</li>
+                <li>Adaptable designs for various climate zones and cultural contexts</li>
+              </ul>
+              <h3 class="text-xl font-semibold mt-4 mb-2">Common Techniques</h3>
+              <p>Compressed Earth Block (CEB), Earthbag Construction, Wattle and Daub, Cob Building, Super Adobe, Bamboo Construction, Rammed Earth</p>
+            `
+          },
+          {
+            "title": "Locally Available Materials",
+            "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+            "tags": ["materials", "local", "sustainability"],
+            "videos": ["4oyoDKRkunQ", "efHkyrO0OgM", "V5BuHR0iWmE"],
+            "additionalInfo": `
+              <h3 class="text-xl font-semibold mt-4 mb-2">Key Benefits</h3>
+              <ul class="list-disc pl-5 mb-4">
+                <li>Significantly reduces material transportation costs and carbon footprint</li>
+                <li>Supports local economies and traditional knowledge</li>
+                <li>Creates buildings that blend naturally with the surrounding environment</li>
+                <li>Often results in structures with excellent thermal properties</li>
+                <li>Reduces or eliminates dependency on industrial building materials</li>
+              </ul>
+              <h3 class="text-xl font-semibold mt-4 mb-2">Common Local Materials</h3>
+              <p>Earth (clay, sand, soil), Stone, Bamboo, Straw/Rice Husks, Recycled Materials, Salvaged Wood, Natural Fibers</p>
+            `
+          }
+        ]
+      }
+    ];
+  </script>
+
+  <!-- Load the tag system -->
+  <script>
+    // Generalized Tag Detail System for Multiple Categories
+    let categoriesData = {};
+    let tagMappings = {};
+
+    // Function to initialize the entire system with JSON data
+    function initializeTagSystem(jsonData) {
+      // Store the categories data
+      categoriesData = jsonData;
+      
+      // Create tag detail area if it doesn't exist
+      createTagDetailArea();
+      
+      // Process all categories and subcategories to create tag data
+      processCategories(jsonData);
+      
+      // Initialize all interactive elements
+      initializeAllTriggers();
+    }
+
+    // Create the tag detail area in the DOM
+    function createTagDetailArea() {
+      if (!document.getElementById('tag-detail-area')) {
+        const tagDetailArea = document.createElement('div');
+        tagDetailArea.id = 'tag-detail-area';
+        tagDetailArea.className = 'hidden opacity-0 transition-all duration-500 ease-in-out fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50 flex items-center justify-center';
+        
+        const detailContent = document.createElement('div');
+        detailContent.className = 'bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-90vh overflow-y-auto p-6 relative';
+        detailContent.innerHTML = `
+          <button id="close-tag-detail" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div id="tag-detail-content">
+            <div id="tag-area-badge" class="text-sm font-medium bg-gray-100 text-gray-600 inline-block px-3 py-1 rounded-full mb-3"></div>
+            <h2 id="tag-title" class="text-2xl font-bold mb-2"></h2>
+            <div id="tag-description" class="mb-6"></div>
+            <div id="tag-video-slider" class="mb-6 hidden">
+              <div class="relative">
+                <div id="video-container" class="flex transition-transform duration-300 ease-in-out"></div>
+                <button id="prev-video" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <button id="next-video" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div id="video-indicators" class="flex justify-center mt-4"></div>
+            </div>
+            <div id="tag-additional-info"></div>
+            
+            <!-- Related tags section -->
+            <div id="related-tags-section" class="mt-6">
+              <h3 class="text-lg font-semibold mb-3">Related Tags</h3>
+              <div id="related-tags" class="flex flex-wrap"></div>
+            </div>
+            
+            <!-- Download section -->
+            <div id="download-section" class="mt-8 hidden">
+              <h3 class="text-xl font-semibold mb-4">Downloads</h3>
+              <div id="download-items" class="grid gap-4"></div>
+            </div>
+          </div>
+        `;
+        
+        tagDetailArea.appendChild(detailContent);
+        document.body.appendChild(tagDetailArea);
+        
+        // Close button functionality
+        document.getElementById('close-tag-detail').addEventListener('click', function() {
+          hideTagDetail();
+        });
+        
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            hideTagDetail();
+          }
+        });
+        
+        // Close when clicking outside the content
+        tagDetailArea.addEventListener('click', function(e) {
+          if (e.target === tagDetailArea) {
+            hideTagDetail();
+          }
+        });
+        
+        // Navigation buttons for video slider
+        document.getElementById('prev-video').addEventListener('click', function() {
+          navigateVideos(-1);
+        });
+        
+        document.getElementById('next-video').addEventListener('click', function() {
+          navigateVideos(1);
+        });
+      }
+    }
+
+    // Process all categories and subcategories to create tag data
+    function processCategories(categoriesData) {
+      // Create the global tag data object if it doesn't exist
+      window.tagData = window.tagData || {};
+      
+      // Process each category area
+      categoriesData.forEach(category => {
+        const areaName = category.area;
+        
+        // Process each subcategory
+        category.subcategories.forEach(subcategory => {
+          // Create a tag data entry for the subcategory
+          const subcategoryId = generateSlug(subcategory.title);
+          
+          // Generate download information - normally from your database
+          const downloads = [
+            {
+              name: `${subcategory.title.replace(/[^\w\s-]/g, '')}.zip`,
+              description: `Resources and guides for ${subcategory.title}`,
+              size: `${Math.floor(20 + Math.random() * 50)}.${Math.floor(Math.random() * 9)}MB`,
+              url: `downloads/${subcategoryId}.zip`
+            }
+          ];
+          
+          // Create tag data for subcategory
+          window.tagData[subcategoryId] = {
+            title: subcategory.title,
+            description: subcategory.description,
+            area: areaName,
+            videos: subcategory.videos || [],
+            additionalInfo: subcategory.additionalInfo || generateAdditionalInfo(subcategory, areaName),
+            downloads: downloads,
+            tags: subcategory.tags || []
+          };
+          
+          // Create tag mappings for each tag in the subcategory
+          if (subcategory.tags && subcategory.tags.length > 0) {
+            subcategory.tags.forEach(tag => {
+              const tagSlug = generateSlug(tag);
+              
+              // Create tag data if it doesn't exist
+              if (!window.tagData[tagSlug]) {
+                window.tagData[tagSlug] = {
+                  title: tag.charAt(0).toUpperCase() + tag.slice(1),
+                  description: `Resources and information related to ${tag}`,
+                  area: areaName,
+                  videos: subcategory.videos || [],
+                  additionalInfo: generateTagAdditionalInfo(tag, areaName),
+                  downloads: downloads,
+                  relatedSubcategories: [subcategoryId]
+                };
+              } else {
+                // Add related subcategory if not already included
+                if (!window.tagData[tagSlug].relatedSubcategories) {
+                  window.tagData[tagSlug].relatedSubcategories = [];
+                }
+                if (!window.tagData[tagSlug].relatedSubcategories.includes(subcategoryId)) {
+                  window.tagData[tagSlug].relatedSubcategories.push(subcategoryId);
+                }
+              }
+              
+              // Store tag mapping for quick lookup
+              tagMappings[tagSlug] = tagSlug;
+            });
+          }
+        });
+      });
+    }
+
+
+
+
+    // Generate additional info for subcategories
+    function generateAdditionalInfo(subcategory, areaName) {
+      return `
+        <h3 class="text-xl font-semibold mt-4 mb-2">About ${subcategory.title}</h3>
+        <p class="mb-4">${subcategory.description}</p>
+        <h3 class="text-xl font-semibold mt-4 mb-2">Related to ${areaName}</h3>
+        <p>This subcategory is part of our ${areaName} resources, focused on providing practical solutions for sustainable living.</p>
+        ${subcategory.tags && subcategory.tags.length > 0 ? 
+          `<h3 class="text-xl font-semibold mt-4 mb-2">Key Topics</h3>
+          <ul class="list-disc pl-5 mb-4">
+            ${subcategory.tags.map(tag => `<li>${tag.charAt(0).toUpperCase() + tag.slice(1)}</li>`).join('')}
+          </ul>` : ''
+        }
+      `;
+    }
+
+    // Generate additional info for tags
+    function generateTagAdditionalInfo(tag, areaName) {
+      return `
+        <h3 class="text-xl font-semibold mt-4 mb-2">About ${tag.charAt(0).toUpperCase() + tag.slice(1)}</h3>
+        <p class="mb-4">Resources and information related to ${tag} within the ${areaName} category.</p>
+        <h3 class="text-xl font-semibold mt-4 mb-2">Applications</h3>
+        <p>Learn how ${tag} can be applied in various contexts and projects to enhance sustainability and efficiency.</p>
+      `;
+    }
+
+    // Initialize all interactive triggers in the page
+    function initializeAllTriggers() {
+      // Initialize tag links
+      initializeTagLinks();
+      
+      // Initialize subcategory titles as triggers
+      initializeSubcategoryTitles();
+      
+      // Initialize download buttons and links
+      initializeDownloadTriggers();
+    }
+
+    // Initialize tag links
+    function initializeTagLinks() {
+      document.querySelectorAll('.tag-link a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get tag from URL parameter or data attribute
+          const url = new URL(this.href);
+          const tag = url.searchParams.get('cat') || this.parentElement.getAttribute('data-tag');
+          
+          if (tag && window.tagData[generateSlug(tag)]) {
+            showTagDetail(generateSlug(tag));
+          }
+        });
+      });
+    }
+
+    // Initialize subcategory titles as triggers
+    function initializeSubcategoryTitles() {
+      document.querySelectorAll('.mega-menu-subcategory h4').forEach(heading => {
+        const title = heading.textContent.trim();
+        const slug = generateSlug(title);
+        
+        if (window.tagData[slug]) {
+          heading.style.cursor = 'pointer';
+          heading.addEventListener('click', function() {
+            showTagDetail(slug);
+          });
+        }
+      });
+    }
+
+    // Initialize download triggers
+    function initializeDownloadTriggers() {
+      // Make download text links clickable
+      document.querySelectorAll('.fa-download').forEach(icon => {
+        const downloadText = icon.parentElement;
+        const text = downloadText.textContent.trim();
+        const subcategory = icon.closest('.mega-menu-subcategory');
+        
+        if (subcategory) {
+          const title = subcategory.querySelector('h4').textContent.trim();
+          const slug = generateSlug(title);
+          
+          if (window.tagData[slug]) {
+            downloadText.style.cursor = 'pointer';
+            downloadText.classList.add('download-trigger');
+            
+            downloadText.addEventListener('click', function() {
+              showTagDetail(slug);
+            });
+          }
+        }
+      });
+      
+      // Make buttons clickable
+      document.querySelectorAll('#button').forEach(button => {
+        // Find closest subcategory title
+        const subcategory = button.closest('.mega-menu-subcategory');
+        if (subcategory) {
+          const title = subcategory.querySelector('h4').textContent.trim();
+          const slug = generateSlug(title);
+          
+          if (window.tagData[slug]) {
+            button.addEventListener('click', function() {
+              showTagDetail(slug);
+            });
+          }
+        }
+      });
+    }
+
+    // Show tag detail with fade in effect
+    function showTagDetail(tagId) {
+      const data = window.tagData[tagId];
+      if (!data) return;
+      
+      const tagDetailArea = document.getElementById('tag-detail-area');
+      const tagAreaBadge = document.getElementById('tag-area-badge');
+      const tagTitle = document.getElementById('tag-title');
+      const tagDescription = document.getElementById('tag-description');
+      const tagVideoSlider = document.getElementById('tag-video-slider');
+      const videoContainer = document.getElementById('video-container');
+      const videoIndicators = document.getElementById('video-indicators');
+      const tagAdditionalInfo = document.getElementById('tag-additional-info');
+      const relatedTagsSection = document.getElementById('related-tags-section');
+      const relatedTags = document.getElementById('related-tags');
+      const downloadSection = document.getElementById('download-section');
+      const downloadItems = document.getElementById('download-items');
+      
+      // Populate content
+      tagAreaBadge.textContent = data.area || '';
+      tagTitle.textContent = data.title;
+      tagDescription.innerHTML = data.description;
+      tagAdditionalInfo.innerHTML = data.additionalInfo || '';
+      
+      // Reset video slider
+      videoContainer.innerHTML = '';
+      videoIndicators.innerHTML = '';
+      currentVideoIndex = 0;
+      
+      // Setup videos if available
+      if (data.videos && data.videos.length > 0) {
+        tagVideoSlider.classList.remove('hidden');
+        
+        // Create videos
+        data.videos.forEach((videoId, index) => {
+          const videoFrame = document.createElement('div');
+          videoFrame.className = 'min-w-full';
+          videoFrame.innerHTML = `
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/${videoId}" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                class="w-full h-full"
+              ></iframe>
+            </div>
+          `;
+          videoContainer.appendChild(videoFrame);
+          
+          // Create indicator
+          const indicator = document.createElement('button');
+          indicator.className = 'w-3 h-3 rounded-full mx-1 bg-gray-300';
+          if (index === 0) indicator.classList.add('bg-blue-500');
+          indicator.dataset.index = index;
+          indicator.addEventListener('click', function() {
+            goToVideo(parseInt(this.dataset.index));
+          });
+          videoIndicators.appendChild(indicator);
+        });
+        
+        // Show/hide navigation buttons
+        document.getElementById('prev-video').classList.toggle('hidden', data.videos.length <= 1);
+        document.getElementById('next-video').classList.toggle('hidden', data.videos.length <= 1);
+      } else {
+        tagVideoSlider.classList.add('hidden');
+      }
+      
+      // Setup related tags if available
+      if ((data.tags && data.tags.length > 0) || (data.relatedSubcategories && data.relatedSubcategories.length > 0)) {
+        relatedTagsSection.classList.remove('hidden');
+        relatedTags.innerHTML = '';
+        
+        // Add tags from the data
+        if (data.tags) {
+          data.tags.forEach(tag => {
+            const tagSlug = generateSlug(tag);
+            if (tagSlug !== tagId) { // Don't show the current tag
+              const tagSpan = document.createElement('span');
+              tagSpan.className = 'tag-link inline-block m-1';
+              tagSpan.setAttribute('data-tag', tagSlug);
+              tagSpan.innerHTML = `<a href="topics.html?cat=${encodeURIComponent(tag)}" 
+                                    class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm hover:bg-blue-200 transition-all">
+                                    ${tag}
+                                  </a>`;
+              
+              tagSpan.querySelector('a').addEventListener('click', function(e) {
+                e.preventDefault();
+                showTagDetail(tagSlug);
+              });
+              
+              relatedTags.appendChild(tagSpan);
+            }
+          });
+        }
+        
+        // Add related subcategories
+        if (data.relatedSubcategories) {
+          data.relatedSubcategories.forEach(subcat => {
+            if (subcat !== tagId && window.tagData[subcat]) { // Don't show the current subcategory
+              const subcatData = window.tagData[subcat];
+              const subcatSpan = document.createElement('span');
+              subcatSpan.className = 'tag-link inline-block m-1';
+              subcatSpan.setAttribute('data-tag', subcat);
+              subcatSpan.innerHTML = `<a href="topics.html?cat=${encodeURIComponent(subcatData.title)}" 
+                                      class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-md text-sm hover:bg-green-200 transition-all">
+                                      ${subcatData.title}
+                                    </a>`;
+              
+              subcatSpan.querySelector('a').addEventListener('click', function(e) {
+                e.preventDefault();
+                showTagDetail(subcat);
+              });
+              
+              relatedTags.appendChild(subcatSpan);
+            }
+          });
+        }
+        
+        // Hide section if no related tags were added
+        if (relatedTags.children.length === 0) {
+          relatedTagsSection.classList.add('hidden');
+        }
+      } else {
+        relatedTagsSection.classList.add('hidden');
+      }
+      
+      // Setup downloads if available
+      if (data.downloads && data.downloads.length > 0) {
+        downloadSection.classList.remove('hidden');
+        downloadItems.innerHTML = '';
+        
+        // Create download items
+        data.downloads.forEach(download => {
+          const downloadItem = document.createElement('div');
+          downloadItem.className = 'download-item bg-gray-50 rounded-lg p-4 flex items-center';
+          downloadItem.innerHTML = `
+            <div class="download-icon mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3182CE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+            <div class="download-info flex-grow">
+              <h4 class="font-semibold">${download.name}</h4>
+              <p class="text-sm text-gray-600">${download.description}</p>
+              <p class="text-xs text-gray-500 mt-1">Size: ${download.size}</p>
+            </div>
+            <a href="${download.url}" class="download-button ml-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center transition-all">
+              <span>Download</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+          `;
+          downloadItems.appendChild(downloadItem);
+        });
+      } else {
+        downloadSection.classList.add('hidden');
+      }
+      
+      // Show with fade in
+      tagDetailArea.classList.remove('hidden');
+      setTimeout(() => {
+        tagDetailArea.classList.remove('opacity-0');
+      }, 10);
+      
+      // Prevent body scrolling
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Hide tag detail with fade out effect
+    function hideTagDetail() {
+      const tagDetailArea = document.getElementById('tag-detail-area');
+      
+      tagDetailArea.classList.add('opacity-0');
+      setTimeout(() => {
+        tagDetailArea.classList.add('hidden');
+        
+        // Stop all videos
+        const iframes = tagDetailArea.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+          const src = iframe.src;
+          iframe.src = src; // Reload iframe to stop video
+        });
+        
+        // Re-enable body scrolling
+        document.body.style.overflow = '';
+      }, 500);
+    }
+
+    // Video slider navigation
+    let currentVideoIndex = 0;
+
+    function navigateVideos(direction) {
+      const videoContainer = document.getElementById('video-container');
+      const indicators = document.getElementById('video-indicators').children;
+      const videoCount = indicators.length;
+      
+      if (videoCount <= 1) return;
+      
+      // Calculate new index
+      currentVideoIndex = (currentVideoIndex + direction + videoCount) % videoCount;
+      
+      // Scroll to the video
+      videoContainer.style.transform = `translateX(-${currentVideoIndex * 100}%)`;
+      
+      // Update indicators
+      for (let i = 0; i < indicators.length; i++) {
+        indicators[i].classList.toggle('bg-blue-500', i === currentVideoIndex);
+        indicators[i].classList.toggle('bg-gray-300', i !== currentVideoIndex);
+      }
+    }
+
+    function goToVideo(index) {
+      const videoContainer = document.getElementById('video-container');
+      const indicators = document.getElementById('video-indicators').children;
+      const videoCount = indicators.length;
+      
+      if (index < 0 || index >= videoCount) return;
+      
+      currentVideoIndex = index;
+      
+      // Scroll to the video
+      videoContainer.style.transform = `translateX(-${currentVideoIndex * 100}%)`;
+      
+      // Update indicators
+      for (let i = 0; i < indicators.length; i++) {
+        indicators[i].classList.toggle('bg-blue-500', i === currentVideoIndex);
+        indicators[i].classList.toggle('bg-gray-300', i !== currentVideoIndex);
+      }
+    }
+
+    // Add progress animation to download buttons
+    function initializeProgressAnimation() {
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.download-button')) {
+          const button = e.target.closest('.download-button');
+          
+          // Add active class for animation
+          button.classList.add('active-download');
+          
+          // Reset after animation completes
+          setTimeout(() => {
+            button.classList.remove('active-download');
+          }, 3000);
+        }
+      });
+    }
+
+
+
+    
+    // Initialize the system when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize the tag system with the categories data
+      initializeTagSystem(window.categoriesJSON);
+      
+      // Initialize progress animation for download buttons
+      initializeProgressAnimation();
+    });
+
+

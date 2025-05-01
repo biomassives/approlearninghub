@@ -1,0 +1,278 @@
+/* public/css/approvideo.css */
+/* Main style sheet for ApproVideo DIY Solutions */
+
+/* Typography */
+.bebas {
+    font-family: "Bebas Neue", cursive;
+  }
+  
+  .font-semibold, .list-group-item {
+    color: #000;
+  }
+  
+  /* Panel Styles */
+  .panel {
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: left;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .panel:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .panel-body {
+    padding: 20px;
+  }
+  
+  .panel-heading {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: #f8f8f8;
+    border-color: #ddd;
+  }
+  
+  .panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 24px;
+    color: #2c3e50;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+  }
+  
+  /* List Group */
+  .list-group {
+    margin-bottom: 0;
+    padding-left: 0;
+    margin-left: 0;
+  }
+  
+  .list-group-item {
+    position: relative;
+    display: block;
+    padding: 15px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px);
+  }
+  
+  .list-group-item:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  
+  .list-group-item i {
+    color: #3498db;
+    width: 30px;
+    display: inline-block;
+    font-weight: 900;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  /* Grid layout */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+    align-items: center;
+  }
+  
+  .col-md-4 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+  
+  .col-md-6 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+  
+  @media (min-width: 768px) {
+    .col-md-4 {
+      flex: 0 0 33.3333%;
+      max-width: 33.3333%;
+    }
+    
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+  
+  /* Background colors */
+  .bg-light-green {
+    background-color: #f0fdf4;
+  }
+  
+  .bg-light-yellow {
+    background-color: #fefce8;
+  }
+  
+  .bg-light-blue {
+    background-color: #eff6ff;
+  }
+  
+  /* Text colors */
+  .text-blue-800 {
+    color: #1e40af;
+  }
+  
+  .text-green-800 {
+    color: #15803d;
+  }
+  
+  .text-purple-800 {
+    color: #5b21b6;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  /* Color bands for panels */
+  .color-band-1 {
+    background-image: linear-gradient(to right, #f0fdf4, #bbf7d0);
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  .color-band-2 {
+    background-image: linear-gradient(to right, #fefce8, #fde68a);
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  .color-band-3 {
+    background-image: linear-gradient(to right, #eff6ff, #d9f99d);
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  /* Learning panel */
+  .learning-panel {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .learning-panel .panel-heading {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 20px;
+  }
+  
+  .learning-panel .panel-title {
+    font-size: 28px;
+    color: #2c3e50;
+  }
+  
+  .learning-panel .panel-body {
+    padding: 20px;
+  }
+  
+  /* Download section */
+  .download-section {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .download-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .download-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Tag list */
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .tag-list li {
+    display: inline-block;
+    background-color: #e0f7fa;
+    color: #00acc1;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+  }
+  
+  .tag-list li:hover {
+    background-color: #b2ebf2;
+  }
+  
+  .tag-list li a {
+    text-decoration: none;
+    color: #00acc1;
+  }
+  
+  /* Loading spinner */
+  .loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #4CAF50;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

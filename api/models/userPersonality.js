@@ -1,10 +1,12 @@
 // /api/models/userPersonality.js
-const dbService = require('../services/dbService');
-
 /**
  * UserPersonality model
  * Handles personality profiling, team compatibility, and learning style preferences
  */
+
+const dbService = require('../services/dbService');
+
+
 class UserPersonality {
   /**
    * Create or update a user's personality profile
