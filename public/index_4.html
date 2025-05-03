@@ -230,13 +230,13 @@
               "area": "Shelter", "icon": "fa-home",
               "subcategories": [
                 { "uniqueId": "shelter-0", "title": "Low-cost, Durable Construction Methods", "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.", "tags": ["construction", "low-cost", "durable", "building"], "context": "Context for durable construction: Focuses on resilience against elements and longevity with minimal upkeep.", "materials": ["Earthbags", "Bamboo", "Recycled Tires", "Superadobe"], "processSteps": ["Site Preparation & Foundation", "Wall Construction Techniques", "Roofing Options", "Finishing & Sealing"],
-                  "videos": [ // Example videos added
+                  "videos": [
                       { "title": "DIY Concrete Block Foundation for Small Structures", "youtubeId": "KDvH1hoEMPQ", "description": "How to build a simple but strong foundation with concrete blocks", "icon_tag_fa": "fas fa-layer-group", "color_tag": "#78716c"},
                       { "title": "Building With Earth - Complete Cob Workshop", "youtubeId": "0olcwSwRELw", "description": "Learn the basics of building with cob...", "icon_tag_fa": "fas fa-house-user", "color_tag": "#a16207"}
                   ]
                 },
                 { "uniqueId": "shelter-1", "title": "Locally Available Materials", "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.", "tags": ["materials", "local", "sustainability", "earthship"], "context": "Why use local materials: Reduces transportation costs and carbon footprint, supports local economy, often culturally appropriate.", "materials": ["Adobe/Cob", "Rammed Earth", "Salvaged Wood", "Stone"], "processSteps": ["Material Identification & Sourcing", "Testing Suitability", "Processing & Preparation", "Integration into Building"],
-                  "videos": [ // Example videos added
+                  "videos": [ 
                       {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
                       {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
                       {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
@@ -323,7 +323,6 @@
                 },
                 { "uniqueId": "food-2", "title": "Sustainable Agriculture Techniques", "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.", "tags": ["agriculture", "sustainable", "soil health", "permaculture"], "context": "Eco-friendly farming...", "materials": ["Compost", "Cover crop seeds", "Natural pest deterrents"], "processSteps": ["Plan rotation", "Plant cover crops", "Integrated pest management"] },
                 { "uniqueId": "food-3", "title": "Fungi, Algae, Insects, & Tech", "description": "Inventory and evaluation of modern and antiquity based food production", "tags": ["alternative protein", "future food", "mycology", "entomophagy"], "context": "Exploring new food sources...", "materials": ["Mushroom spawn", "Insect larvae", "Algae cultures"], "processSteps": ["Cultivation setup", "Harvesting", "Processing"],
-                    // --- VIDEOS ADDED HERE ---
                     "videos": [
                         { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
                         { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried and grown on various subtrates used as a healthy sustainable food, useful in food resiliency, good converter & detoxifier of materials...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
@@ -344,7 +343,102 @@
             }
         ];
         // Ensure you have the full tagGlossary data here
-        const tagGlossary = { /* ... include all your tags ... */ };
+        const tagGlossary = {
+            
+            // Shelter Tags
+                "construction": "The process or art of building structures.",
+                "low-cost": "Achievable with minimal financial resources.",
+                "durable": "Able to withstand wear, pressure, or damage; long-lasting.",
+                "building": "A structure with walls and a roof, such as a house or factory.",
+                "materials": "The matter from which a thing is or can be made.",
+                "local": "Relating or restricted to a particular area or neighbourhood.",
+                "sustainability": "Meeting the needs of the present without compromising the ability of future generations to meet their own needs, often focusing on environmental balance.",
+                "earthship": "A type of passive solar house made of natural and recycled materials, pioneered by architect Michael Reynolds.",
+
+            // Water Tags
+                "clean water": "Water that is safe for drinking (potable) and other domestic uses, free from harmful contaminants.",
+                "filtration": "The process of removing solid particles from a liquid or gas using a filter medium.",
+                "health": "The state of being free from illness or injury; relates to practices promoting well-being.",
+                "sodis": "Solar Water Disinfection: A simple method using sunlight and plastic bottles to kill harmful microbes in water.",
+                "salt removal": "See 'Desalination'.",
+                "ocean": "A very large expanse of sea, specifically each of the main areas into which the sea is divided geographically.",
+                "irrigation": "The supply of water to land or crops to help growth, typically by means of channels.",
+                "solar still": "A device that uses solar energy to evaporate water and condense the vapor to produce purified (often desalinated) water.",
+                "pipes": "Tubes used to convey water, gas, oil, or other fluid substances.",
+                "delivery": "The action of transporting something to a destination.",
+                "infrastructure": "The basic physical and organizational structures and facilities (e.g., buildings, roads, power supplies) needed for the operation of a society or enterprise.",
+                "gravity feed": "A system where a liquid flows from one point to another solely due to the force of gravity, typically from a higher point to a lower one without pumping."
+
+             // Waste Tags
+               "composting": "The process of decomposing organic matter (like food scraps and yard waste) into a nutrient-rich soil amendment called compost.",
+                "organic waste": "Biodegradable waste derived from plant or animal sources.",
+                "soil improvement": "Enhancing the physical properties, fertility, and health of soil.",
+                "recycling": "The process of converting waste materials into new materials and objects.",
+                "waste sorting": "Separating different types of waste materials for proper disposal, recycling, or composting.",
+                "materials recovery": "Extracting usable materials from waste streams.",
+                "upcycling": "Reusing discarded objects or materials in such a way as to create a product of higher quality or value than the original.",
+                "creative reuse": "Using discarded items or materials in new, often artistic or functional, ways.",
+                "waste reduction": "Minimizing the amount of waste produced.",
+                "wastewater": "Water that has been used and contains dissolved or suspended waste matter (includes greywater and blackwater).",
+                "greywater": "Relatively clean wastewater from baths, sinks, washing machines, and other kitchen appliances (excluding toilets).",
+                "sanitation": "Conditions relating to public health, especially the provision of clean drinking water and adequate sewage disposal.",
+                "treatment": "Applying a process to waste or wastewater to make it less harmful or suitable for reuse.",
+
+
+  // Energy Tags
+    "solar cooker": "A device which uses the energy of direct sunlight to heat, cook or pasteurize food or drink.",
+    "diy": "Do It Yourself: Building, modifying, or repairing things without the direct aid of experts or professionals.",
+    "power": "Electrical energy supplied to operate devices.",
+    "off-grid": "Not connected to or served by publicly or privately managed utilities like the electrical grid.",
+    "biogas": "Gaseous fuel, especially methane, produced by the fermentation of organic matter.",
+    "waste": "Material that is discarded as no longer useful or required; can sometimes be used as a resource (e.g., for biogas).",
+    "energy": "Power derived from the utilization of physical or chemical resources, especially to provide light and heat or to work machines.",
+    "renewable": "Energy from a source that is not depleted when used, such as wind or solar power.",
+    "microgrid": "A small, localized energy grid with its own power generation resources, which can operate independently or connect to a larger grid.",
+    // "sustainability" already defined
+    // "infrastructure" already defined
+    "cooking fuel": "Material burned to produce heat for cooking.",
+    // "upcycling" already defined
+    "home heating": "Systems or fuels used to warm the interior of a home.",
+    "biomass": "Organic matter used as a fuel, especially in a power station for the generation of electricity or heat.",
+
+    // Health Tags
+    "emt": "Emergency Medical Technician: A trained healthcare provider who responds to emergency calls, performs medical services, and transports patients.",
+    "emergency": "A serious, unexpected, and often dangerous situation requiring immediate action.",
+    "first response": "The initial assistance or care given to someone who is injured or suddenly becomes ill.",
+    "cpr": "Cardiopulmonary Resuscitation: An emergency lifesaving procedure performed when the heart stops beating.",
+    // "health" already defined
+    "telemedicine": "The remote diagnosis and treatment of patients by means of telecommunications technology.",
+    "remote care": "Healthcare services provided to patients who are not physically present with the provider.",
+    "digital health": "The use of digital technologies for health and wellness objectives.",
+    "first aid": "Help given to a sick or injured person until full medical treatment is available.",
+    "injury": "Physical harm or damage to someone's body.",
+    // "emergency" already defined
+    "home care": "Care provided in a person's own home, often for minor illnesses or chronic conditions.",
+    // "diy" already defined
+    "self-reliance": "Reliance on one's own powers and resources rather than those of others.",
+    "herbal medicine": "The use of plants or plant extracts for medicinal purposes.",
+
+    // Food Tags
+    "urban farming": "The practice of cultivating, processing, and distributing food in or around urban areas.",
+    "gardening": "The activity of tending and cultivating a garden.",
+    "food security": "The state of having reliable access to a sufficient quantity of affordable, nutritious food.",
+    "container gardening": "Growing plants exclusively in containers instead of planting them in the ground.",
+    "hydroponics": "The process of growing plants in sand, gravel, or liquid, with added nutrients but without soil.",
+    "water-efficient": "Using water sparingly or effectively to minimize waste.",
+    "urban food": "Food produced or consumed within urban areas.",
+    "aquaponics": "A system that combines conventional aquaculture (raising aquatic animals) with hydroponics (cultivating plants in water) in a symbiotic environment.",
+    "agriculture": "The science or practice of farming, including cultivation of the soil for the growing of crops and the rearing of animals to provide food, wool, and other products.",
+    // "sustainable" already defined
+    "soil health": "The continued capacity of soil to function as a vital living ecosystem that sustains plants, animals, and humans.",
+    "permaculture": "The development of agricultural ecosystems intended to be sustainable and self-sufficient, often drawing inspiration from natural ecosystems.",
+    "alternative protein": "Sources of protein outside of traditional animal agriculture, such as plant-based meats, insects, or lab-grown meat.",
+    "future food": "Novel or alternative food sources and technologies being explored to meet future global food demands sustainably.",
+    "mycology": "The scientific study of fungi.",
+    "entomophagy": "The practice of eating insects."
+            
+                
+        };
 
         // --- Global Variables & DOM Elements ---
         const buttonBar = document.getElementById('button-bar');
