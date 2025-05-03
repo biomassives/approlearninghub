@@ -237,9 +237,9 @@
                 },
                 { "uniqueId": "shelter-1", "title": "Locally Available Materials", "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.", "tags": ["materials", "local", "sustainability", "earthship"], "context": "Why use local materials: Reduces transportation costs and carbon footprint, supports local economy, often culturally appropriate.", "materials": ["Adobe/Cob", "Rammed Earth", "Salvaged Wood", "Stone"], "processSteps": ["Material Identification & Sourcing", "Testing Suitability", "Processing & Preparation", "Integration into Building"],
                   "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
-                      {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
-                      {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
+                      {"title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects", "icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207" },
+                      {"title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials", "icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a" },
+                      {"title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function", "icon_tag_fa": "fas fa-recycle", "color_tag": "#059669" },
                     ]
                  }
               ]
@@ -257,7 +257,7 @@
                  },
                 { "uniqueId": "water-1", "title": "Desalination", "description": "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.", "tags": ["salt removal", "ocean", "irrigation", "solar still"], "context": "Addressing water scarcity: Provides freshwater source where others are unavailable, vital for coastal/arid regions.", "materials": ["Black plastic sheeting", "Clear plastic/glass cover", "Collection container", "Tubing/Gutter"], "processSteps": ["Constructing a Basic Solar Still", "Optimizing Condensation", "Collection & Storage", "Maintenance"],
                     "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "WAter purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
                       {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "water acquasition ", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
                       {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "water evaporative capture and dew dew and fog", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
                     ]
@@ -265,7 +265,7 @@
                  },
                 { "uniqueId": "water-2", "title": "Efficient Distribution", "description": "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.", "tags": ["pipes", "delivery", "infrastructure", "gravity feed"], "context": "Reducing water loss: Ensures equitable access, conserves precious resource, minimizes energy for pumping.", "materials": ["PVC/HDPE pipes", "Storage tanks (ferrocement, plastic)", "Valves & Taps", "Pump (if needed)"], "processSteps": ["Topographical Survey & Planning", "Pipe Laying & Joining", "Tank Installation & Connection", "Leak Detection & Repair"] ,
                     "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "WAter purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
                       {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "water acquasition ", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
                       {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "water evaporative capture and dew dew and fog", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
                     ]    
@@ -303,10 +303,18 @@
             {
               "area": "Food", "icon": "fa-utensils",
               "subcategories": [
-               { "uniqueId": "food-0", "title": "Urban Gardening", "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.", "tags": ["urban farming", "gardening", "food security", "container gardening"], "context": "Growing food in cities...", "materials": ["Containers", "Soil/Compost", "Seeds/Seedlings"], "processSteps": ["Prepare containers", "Planting", "Watering & care"] },
-                { "uniqueId": "food-1", "title": "Hydro/Aero/Pesci-ponics", "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.", "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics"], "context": "Soilless agriculture...", "materials": ["System components (pipes, pump)", "Nutrient solution", "Growing medium (optional)"], "processSteps": ["Assemble system", "Mix nutrients", "Monitor pH/EC"], 
+               { "uniqueId": "food-0", "title": "Urban Gardening", "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.", "tags": ["urban farming", "gardening", "food security", "container gardening"], "context": "Growing food in cities...", "materials": ["Containers", "Soil/Compost", "Seeds/Seedlings"], "processSteps": ["Prepare containers", "Planting", "Watering & care"],
+                  "videos": [
+                        { "title": "Organic/Biodynamic Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
+                        { "title": "Community Gardens as health and vitality nodes", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together: How community gardens are important for your mental health", "icon_tag_fa": "fas fa-sprout", "color_tag": "#6B7280" },
+                        { "title": "Community Gardens address food deserts", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together: How community gardens are important for your mental health", "icon_tag_fa": "fas fa-sprout", "color_tag": "#6B7280" }
+
+                            ]
+                     },
+                    
+               },
+                { "uniqueId": "food-1", "title": "Soil-less farming", "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.", "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics"], "context": "Soilless agriculture...", "materials": ["System components (pipes, pump)", "Nutrient solution", "Growing medium (optional)"], "processSteps": ["Assemble system", "Mix nutrients", "Monitor pH/EC"], 
                 "videos": [
-                        { "title": "Urban Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
                         { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics as a sustainable food...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
                         { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
                         { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" },
@@ -322,6 +330,15 @@
                     ]
                 },
                 { "uniqueId": "food-2", "title": "Sustainable Agriculture Techniques", "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.", "tags": ["agriculture", "sustainable", "soil health", "permaculture"], "context": "Eco-friendly farming...", "materials": ["Compost", "Cover crop seeds", "Natural pest deterrents"], "processSteps": ["Plan rotation", "Plant cover crops", "Integrated pest management"] },
+                    "videos": [
+                        {"title": "Pulse Crop Rotation benefits other crops.", "youtubeId": "QJcACw_--Nk", "description": "Pulse crop rotation is highly beneficial, particularly for soil health, nutrient cycling, and overall crop productivity. Pulses, like peas and beans, help improve soil fertility by fixing atmospheric nitrogen and reducing the need for synthetic fertilizers.", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
+                        {"title": "Natural Pest Control Methods for Gardens", "youtubeId": "VIDEO_ID_PLACEHOLDER", "description": "Using companion planting, beneficial insects, and natural sprays.", "icon_tag_fa": "fas fa-shield-alt", "color_tag": "#dc2626" },
+                        {"icon_tag_fa": "fas fa-leaf", "color_tag": "#16a34a", "title": "Cover Cropping for Beginners: Building Soil", "youtubeId": "NbvDEAomVlk?t=175", "description": "putting weeds into action section of her talk."},
+                        {"title": " How to Start a No-Till Garden from Scratch ", "youtubeId": "sdmqbhQo-yw", "description": "how to start a garden from scratch, how to start a raised bed garden, how to start a no-till garden, gardening without raised beds, farming for beginners, gardening for beginners, ", "icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f"},
+                        {"icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f", "title": "Introduction to No-Till Farming Techniques", "youtubeId": "0xvp8sWY6Fk", "description": "Minimizing soil disturbance for better structure and water retention."},
+                        {"icon_tag_fa": "fas fa-seedling", "color_tag": "#fbbf24", "title": "Seed Saving Basics for Common Vegetables", "youtubeId": "VIDEO_ID_PLACEHOLDER", "description": "How to collect, process, and store seeds from your garden."}
+                                 ]
+                },  
                 { "uniqueId": "food-3", "title": "Fungi, Algae, Insects, & Tech", "description": "Inventory and evaluation of modern and antiquity based food production", "tags": ["alternative protein", "future food", "mycology", "entomophagy"], "context": "Exploring new food sources...", "materials": ["Mushroom spawn", "Insect larvae", "Algae cultures"], "processSteps": ["Cultivation setup", "Harvesting", "Processing"],
                     "videos": [
                         { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
