@@ -140,6 +140,45 @@
              font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto;
         }
         #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+        
+        /* --- Sibling Subcategory Link Styles --- */
+        .sibling-links-container {
+            margin-bottom: 1.5rem; /* Add space below the pills */
+            padding-bottom: 0.75rem; /* Add space above the line */
+            border-bottom: 1px solid #e5e7eb; /* Separator line */
+            line-height: 1.5; /* Adjust line height for better spacing if pills wrap */
+        }
+        .sibling-links-container > span { /* Style the 'See also:' text */
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b7280; /* gray-500 */
+            margin-right: 8px;
+        }
+        .sibling-link-pill {
+            display: inline-block;
+            padding: 4px 12px; /* Adjust padding for size */
+            border-radius: 9999px; /* Fully rounded */
+            margin: 3px 4px; /* Spacing between pills */
+            font-weight: 600; /* Bold */
+            color: white;
+            background-color: #4f46e5; /* Indigo color - choose your theme color */
+            text-decoration: none;
+            font-size: 0.8rem; /* Small text */
+            transition: background-color 0.2s, transform 0.1s;
+            cursor: pointer;
+            border: none; /* Ensure it looks like a pill, not a button */
+        }
+        .sibling-link-pill:hover {
+            background-color: #4338ca; /* Darker indigo on hover */
+            transform: translateY(-1px);
+        }
+        /* Style for the currently viewed subcategory's "pill" (optional, can look disabled) */
+        .sibling-link-pill.current {
+             background-color: #a5b4fc; /* Lighter indigo */
+             color: #3730a3; /* Darker text */
+             cursor: default;
+             pointer-events: none; /* Not clickable */
+        }
 
     </style>
 </head>
@@ -186,126 +225,492 @@
 
     <script>
         // --- Data ---
-        const categoryData = [
+const categoryData = [
+    {
+        "area": "Shelter", "icon": "fa-home",
+        "subcategories": [
             {
-              "area": "Shelter", "icon": "fa-home",
-              "subcategories": [
-                { "uniqueId": "shelter-0", "title": "Low-cost, Durable Construction Methods", "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.", "tags": ["construction", "low-cost", "durable", "building"], "context": "Context for durable construction: Focuses on resilience against elements and longevity with minimal upkeep.", "materials": ["Earthbags", "Bamboo", "Recycled Tires", "Superadobe"], "processSteps": ["Site Preparation & Foundation", "Wall Construction Techniques", "Roofing Options", "Finishing & Sealing"],
-                  "videos": [ // Example videos added
-                      { "title": "DIY Concrete Block Foundation for Small Structures", "youtubeId": "KDvH1hoEMPQ", "description": "How to build a simple but strong foundation with concrete blocks", "icon_tag_fa": "fas fa-layer-group", "color_tag": "#78716c"},
-                      { "title": "Building With Earth - Complete Cob Workshop", "youtubeId": "0olcwSwRELw", "description": "Learn the basics of building with cob...", "icon_tag_fa": "fas fa-house-user", "color_tag": "#a16207"}
-                  ]
-                },
-                { "uniqueId": "shelter-1", "title": "Locally Available Materials", "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.", "tags": ["materials", "local", "sustainability", "earthship"], "context": "Why use local materials: Reduces transportation costs and carbon footprint, supports local economy, often culturally appropriate.", "materials": ["Adobe/Cob", "Rammed Earth", "Salvaged Wood", "Stone"], "processSteps": ["Material Identification & Sourcing", "Testing Suitability", "Processing & Preparation", "Integration into Building"],
-                  "videos": [ // Example videos added
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
-                      {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
-                      {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
-                    ]
-                 }
-              ]
-            },
-            {
-              "area": "Water", "icon": "fa-tint",
-              "subcategories": [ /* ... water subcategories ... */
-
-                { "uniqueId": "water-0", "title": "Purification", "description": "Use household items or low-cost filters to make water safe for drinking. Includes simple boiling, sand filtering, and solar disinfection techniques.", "tags": ["clean water", "filtration", "health", "SODIS"], "context": "Importance of clean water: Prevents waterborne diseases like cholera and typhoid, crucial for overall health.", "materials": ["Sand", "Gravel", "Activated Charcoal", "Clear PET Bottle", "Cloth"], "processSteps": ["Boiling Procedure", "Building a BioSand Filter", "Solar Water Disinfection (SODIS)", "Chlorination (if applicable)"],
-                    "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "WAter purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
-                      {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "water acquasition ", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
-                      {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "water evaporative capture and dew dew and fog", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
-                    ]
-                 },
-                { "uniqueId": "water-1", "title": "Desalination", "description": "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.", "tags": ["salt removal", "ocean", "irrigation", "solar still"], "context": "Addressing water scarcity: Provides freshwater source where others are unavailable, vital for coastal/arid regions.", "materials": ["Black plastic sheeting", "Clear plastic/glass cover", "Collection container", "Tubing/Gutter"], "processSteps": ["Constructing a Basic Solar Still", "Optimizing Condensation", "Collection & Storage", "Maintenance"],
-                    "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "WAter purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
-                      {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "water acquasition ", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
-                      {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "water evaporative capture and dew dew and fog", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
-                    ]
-
-                 },
-                { "uniqueId": "water-2", "title": "Efficient Distribution", "description": "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.", "tags": ["pipes", "delivery", "infrastructure", "gravity feed"], "context": "Reducing water loss: Ensures equitable access, conserves precious resource, minimizes energy for pumping.", "materials": ["PVC/HDPE pipes", "Storage tanks (ferrocement, plastic)", "Valves & Taps", "Pump (if needed)"], "processSteps": ["Topographical Survey & Planning", "Pipe Laying & Joining", "Tank Installation & Connection", "Leak Detection & Repair"] ,
-                    "videos": [ 
-                      {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "WAter purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
-                      {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "water acquasition ", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
-                      {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "water evaporative capture and dew dew and fog", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
-                    ]    
-                }
-
-               ]
-            },
-            {
-              "area": "Waste", "icon": "fa-recycle",
-              "subcategories": [
-                { "uniqueId": "waste-0", "title": "Composting", "description": "Learn how to convert organic waste into nutrient-rich soil. Includes techniques for both urban and rural settings, managing compost temperature, and using the final product.", "tags": ["composting", "organic waste", "soil improvement", "sustainability"], "context": "Recycling nutrients...", "materials": ["Organic waste", "Browns (carbon)", "Greens (nitrogen)"], "processSteps": ["Build bin", "Layer materials", "Turn pile"] },
-                { "uniqueId": "waste-1", "title": "Recycling Systems", "description": "Set up community or household recycling systems to properly sort and process recyclable materials. Covers plastic, paper, glass, and metal recycling basics.", "tags": ["recycling", "waste sorting", "materials recovery"], "context": "Managing solid waste...", "materials": ["Sorting bins", "Collection bags"], "processSteps": ["Sort materials", "Clean recyclables", "Arrange collection"] },
-                { "uniqueId": "waste-2", "title": "Upcycling", "description": "Transform discarded items into useful products. Learn creative approaches to reuse materials that would otherwise become waste.", "tags": ["upcycling", "creative reuse", "waste reduction"], "context": "Adding value to waste...", "materials": ["Plastic bottles", "Old tires", "Textiles"], "processSteps": ["Collect materials", "Design product", "Create"] },
-                { "uniqueId": "waste-3", "title": "Wastewater Management", "description": "Build simple systems to treat and safely dispose of greywater and blackwater. Includes constructed wetlands, filtration beds, and safe handling practices.", "tags": ["wastewater", "greywater", "sanitation", "treatment"], "context": "Safe sanitation...", "materials": ["Gravel", "Sand", "Plants", "Pipes"], "processSteps": ["Site selection", "Excavation", "Layering filter media"] }
-              ]
-            },
-            {
-              "area": "Energy", "icon": "fa-solar-panel",
-              "subcategories": [
-                { "uniqueId": "energy-0", "title": "Solar Box Cookers", "description": "effective basic box cooker design of three types parabola,  box reflective enclosure with dark pot, and inculated glass cover reflector oven cookers", "tags": ["solar cooker", "DIY", "power", "off-grid"], "context": "Harnessing solar power...", "materials": ["Solar panel", "Charge controller", "Battery", "Wiring"], "processSteps": ["Mount panel", "Connect components", "Test system"] },
-                { "uniqueId": "energy-1", "title": "Biogas Generation", "description": "Turn kitchen and animal waste into clean-burning gas for cooking. Learn how to build a small digester, maintain it, and safely use the gas.", "tags": ["biogas", "waste", "energy", "renewable"], "context": "Waste to energy...", "materials": ["Drum/Tank", "Pipes", "Manure/Waste"], "processSteps": ["Build digester", "Feed slurry", "Collect gas"] },
-                { "uniqueId": "energy-2", "title": "Microgrids for Sustainable Power", "description": "Build small, local power systems that connect solar, wind, or battery energy to homes and clinics. Learn how to balance loads and increase energy access.", "tags": ["microgrid", "sustainability", "infrastructure"], "context": "Community power...", "materials": ["Generation sources", "Batteries", "Inverters", "Grid controller"], "processSteps": ["Assess needs", "Design system", "Install & commission"] },
-                { "uniqueId": "energy-3", "title": "Hand Pressed Heat & Cooking Fuel Briquettes", "description": "DIY cook stove Fuel produced from waste combustible biomass slurry", "tags": ["cooking fuel", "upcycling", "home heating", "biomass"], "context": "Alternative cooking fuel...", "materials": ["Biomass waste", "Binder", "Press"], "processSteps": ["Prepare slurry", "Press briquettes", "Dry briquettes"] }
-              ]
-            },
-            {
-              "area": "Health", "icon": "fa-heartbeat",
-              "subcategories": [
-                { "uniqueId": "health-0", "title": "EMT Skills", "description": "Learn lifesaving basics such as CPR, wound dressing, splinting, and how to assess an emergency before help arrives.", "tags": ["EMT", "emergency", "first response", "CPR"], "context": "Basic life support...", "materials": ["First aid kit", "Training mannequin (optional)"], "processSteps": ["Scene safety", "Patient assessment", "Interventions (CPR, bleeding control)"] },
-                { "uniqueId": "health-1", "title": "Telemedicine", "description": "Use phones and simple apps to connect with doctors remotely. Learn how to explain symptoms, send photos, and follow up with online care.", "tags": ["health", "telemedicine", "remote care", "digital health"], "context": "Accessing remote healthcare...", "materials": ["Smartphone/Computer", "Internet access"], "processSteps": ["Find provider", "Schedule appointment", "Consultation"] },
-                { "uniqueId": "health-2", "title": "First Aid", "description": "Master everyday skills for cuts, burns, insect bites, and fevers. Helps reduce complications when access to a clinic is delayed.", "tags": ["first aid", "injury", "emergency", "home care"], "context": "Treating common injuries...", "materials": ["Bandages", "Antiseptic wipes", "Gauze", "Tape"], "processSteps": ["Assess injury", "Clean wound", "Dress wound"] },
-                { "uniqueId": "health-3", "title": "Self-sufficient Healthcare", "description": "Set up a basic first aid station at home or in your village. Includes herbal remedies, rehydration recipes, and supply checklists.", "tags": ["health", "DIY", "self-reliance", "herbal medicine"], "context": "Community health resilience...", "materials": ["Basic medical supplies", "Local herbs", "Clean containers"], "processSteps": ["Identify needs", "Stock supplies", "Learn basic remedies"] }
-              ]
-            },
-            {
-              "area": "Food", "icon": "fa-utensils",
-              "subcategories": [
-               { "uniqueId": "food-0", "title": "Urban Gardening", "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.", "tags": ["urban farming", "gardening", "food security", "container gardening"], "context": "Growing food in cities...", "materials": ["Containers", "Soil/Compost", "Seeds/Seedlings"], "processSteps": ["Prepare containers", "Planting", "Watering & care"] },
-                { "uniqueId": "food-1", "title": "Hydro/Aero/Pesci-ponics", "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.", "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics"], "context": "Soilless agriculture...", "materials": ["System components (pipes, pump)", "Nutrient solution", "Growing medium (optional)"], "processSteps": ["Assemble system", "Mix nutrients", "Monitor pH/EC"], 
+                "uniqueId": "shelter-0",
+                "title": "Low-cost, Durable Construction Methods",
+                "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                "tags": ["construction", "low-cost", "durable", "building", "DIY", "resilience", "earthbag", "bamboo", "superadobe"],
+                "context": "Focuses on creating robust shelters that withstand local environmental conditions (weather, pests, minor seismic activity) using affordable, accessible techniques and minimal specialized tools, ensuring longevity with reasonable maintenance.",
+                "materials": ["Earthbags / Superadobe tubes", "Barbed Wire", "Soil (appropriate mix)", "Bamboo (treated)", "Recycled Tires", "Pallet Wood", "Basic Fasteners", "Natural Plasters/Sealers"],
+                "processSteps": ["1. Site Assessment & Clearing", "2. Foundation Laying (rubble trench, earthbag, tire)", "3. Wall Construction (stacking, tamping, curing)", "4. Lintels & Openings (doors, windows)", "5. Roofing Structure & Covering", "6. Plastering & Finishing (protection & aesthetics)"],
                 "videos": [
-                        { "title": "Urban Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
-                        { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics as a sustainable food...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
-                        { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
-                        { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" },
-                        { "title": "Why Organic, Sustainable Farming Matters...", "youtubeId": "mD5jnxhne7o", "description": "Presents farmer Jesse Straight's perspective...", "icon_tag_fa": "fas fa-tractor", "color_tag": "#ca8a04" },
-                        { "title": "Germany's Bug Burgers", "youtubeId": "5eibeYxRt5w", "description": "Explores insect consumption via 'Bug Burgers'...", "icon_tag_fa": "fas fa-bug", "color_tag": "#7c2d12" },
-                        { "title": "Is Microalgae the Sustainable Food of the Future?", "youtubeId": "VFNS7Is6Td0", "description": "Investigates microalgae as a potential future food source...", "icon_tag_fa": "fas fa-bacteria", "color_tag": "#0d9488" },
-                        { "title": "Mushroom Farming Basics", "youtubeId": "9IFTMnftLgU", "description": "Growing edible mushrooms on straw and other byproducts", "icon_tag_fa": "fas fa-cloud", "color_tag": "#a1a1aa" },
-                        { "title": "Spirulina Micro-Farming at Home", "youtubeId": "SMUf_pbxkcU", "description": "Small-scale production of this nutrient-dense blue-green algae", "icon_tag_fa": "fas fa-vial", "color_tag": "#2dd4bf" },
-                        { "title": "Insect Farming: Cricket Rearing Systems", "youtubeId": "jp6OgNyTxA0", "description": "Setting up efficient cricket production for protein", "icon_tag_fa": "fas fa-crow", "color_tag": "#3f3f46" },
-                        { "title": "Black Soldier Fly Larvae Composting", "youtubeId": "5j0YCyg0vpE", "description": "Converting organic waste to animal feed using insect larvae", "icon_tag_fa": "fas fa-recycle", "color_tag": "#166534" },
-                        { "title": "Ancient Grain Recovery and Cultivation", "youtubeId": "Xqn490UuVQU", "description": "Growing forgotten but nutritious grain varieties", "icon_tag_fa": "fas fa-wheat-awn", "color_tag": "#f59e0b" },
-                        { "title": "Simple Automation for Small-Scale Agriculture", "youtubeId": "eHMpkXiGEag", "description": "Low-tech solutions to reduce manual labor in food production", "icon_tag_fa": "fas fa-robot", "color_tag": "#78716c" }
-                    ]
-                },
-                { "uniqueId": "food-2", "title": "Sustainable Agriculture Techniques", "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.", "tags": ["agriculture", "sustainable", "soil health", "permaculture"], "context": "Eco-friendly farming...", "materials": ["Compost", "Cover crop seeds", "Natural pest deterrents"], "processSteps": ["Plan rotation", "Plant cover crops", "Integrated pest management"] },
-                { "uniqueId": "food-3", "title": "Fungi, Algae, Insects, & Tech", "description": "Inventory and evaluation of modern and antiquity based food production", "tags": ["alternative protein", "future food", "mycology", "entomophagy"], "context": "Exploring new food sources...", "materials": ["Mushroom spawn", "Insect larvae", "Algae cultures"], "processSteps": ["Cultivation setup", "Harvesting", "Processing"],
-                    // --- VIDEOS ADDED HERE ---
-                    "videos": [
-                        { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
-                        { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried and grown on various subtrates used as a healthy sustainable food, useful in food resiliency, good converter & detoxifier of materials...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
-                        { "title": "Fungi in soil and ecosystem health", "": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
-                        { "title": "Fungi for creating structural compoments", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" },
-                        { "title": "Fungi Algae", "youtubeId": "mD5jnxhne7o", "description": "Presents farmer Jesse Straight's perspective...", "icon_tag_fa": "fas fa-tractor", "color_tag": "#ca8a04" },
-                        { "title": "Fungi eating insects so people can eat it", "youtubeId": "5eibeYxRt5w", "description": "Explores insect consumption via 'Bug Burgers'...", "icon_tag_fa": "fas fa-bug", "color_tag": "#7c2d12" },
-                        { "title": "Is Microalgae the Sustainable Food of the Future?", "youtubeId": "VFNS7Is6Td0", "description": "Investigates microalgae as a potential future food source...", "icon_tag_fa": "fas fa-bacteria", "color_tag": "#0d9488" },
-                        { "title": "Mushroom Farming Basics", "youtubeId": "9IFTMnftLgU", "description": "Growing edible mushrooms on straw and other byproducts", "icon_tag_fa": "fas fa-cloud", "color_tag": "#a1a1aa" },
-                        { "title": "Spirulina Micro-Farming at Home", "youtubeId": "SMUf_pbxkcU", "description": "Small-scale production of this nutrient-dense blue-green algae", "icon_tag_fa": "fas fa-vial", "color_tag": "#2dd4bf" },
-                        { "title": "Insect Farming: Cricket Rearing Systems", "youtubeId": "jp6OgNyTxA0", "description": "Setting up efficient cricket production for protein", "icon_tag_fa": "fas fa-crow", "color_tag": "#3f3f46" },
-                        { "title": "Black Soldier Fly Larvae Composting", "youtubeId": "5j0YCyg0vpE", "description": "Converting organic waste to animal feed using insect larvae", "icon_tag_fa": "fas fa-recycle", "color_tag": "#166534" },
-                        { "title": "Ancient Grain Recovery and Cultivation", "youtubeId": "Xqn490UuVQU", "description": "Growing forgotten but nutritious grain varieties", "icon_tag_fa": "fas fa-wheat-awn", "color_tag": "#f59e0b" },
-                        { "title": "Simple Automation for Small-Scale Agriculture", "youtubeId": "eHMpkXiGEag", "description": "Low-tech solutions to reduce manual labor in food production", "icon_tag_fa": "fas fa-robot", "color_tag": "#78716c" }
-                    ]
-                }
-              ]
+                    { "title": "DIY Concrete Block Foundation for Small Structures", "youtubeId": "KDvH1hoEMPQ", "description": "How to build a simple but strong foundation with concrete blocks", "icon_tag_fa": "fas fa-layer-group", "color_tag": "#78716c"},
+                    { "title": "Building With Earth - Complete Cob Workshop", "youtubeId": "0olcwSwRELw", "description": "Learn the basics of building with cob...", "icon_tag_fa": "fas fa-house-user", "color_tag": "#a16207"}
+                ]
+            },
+            {
+                "uniqueId": "shelter-1",
+                "title": "Locally Available Materials",
+                "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+                "tags": ["materials", "local", "sustainability", "earthship", "vernacular architecture", "resourcefulness", "clay", "stone", "salvaged"],
+                "context": "Emphasizes using resources found nearby (soil, stone, timber, bamboo, waste streams) to minimize transport costs, reduce environmental impact, often resulting in structures well-suited to the local climate and culture.",
+                "materials": ["Local Soil (clay, sand, silt testing)", "Stones/Rocks", "Timber/Bamboo (sustainably harvested)", "Grasses/Straw (for binder/insulation)", "Recycled Materials (bottles, cans, tires)", "Natural Binders (lime, clay slip)"],
+                "processSteps": ["1. Site & Resource Mapping", "2. Material Identification & Field Testing (soil jar test, etc.)", "3. Sustainable Harvesting Practices", "4. Material Processing (drying, treating, shaping)", "5. Construction Integration Techniques", "6. Assessing Long-term Availability"],
+                "videos": [
+                    {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                    {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                    {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"},
+                ]
             }
-        ];
-        // Ensure you have the full tagGlossary data here
-        const tagGlossary = { /* ... include all your tags ... */ };
+        ]
+    },
+    {
+        "area": "Water", "icon": "fa-tint",
+        "subcategories": [
+             {
+                 "uniqueId": "water-0",
+                 "title": "Purification",
+                 "description": "Use household items or low-cost filters to make water safe for drinking. Includes simple boiling, sand filtering, and solar disinfection techniques.",
+                 "tags": ["clean water", "filtration", "health", "SODIS", "potable water", "waterborne disease", "DIY filter", "boiling", "disinfection", "resourcefulness"],
+                 "context": "Access to safe drinking water is fundamental for health, preventing debilitating waterborne diseases. This section explores methods using readily available materials to make potentially contaminated water safe for consumption.",
+                 "materials": ["Clean Containers (buckets, bottles)", "Heat Source (fire, sun)", "Clear PET Bottles (for SODIS)", "Cloth (pre-filter)", "Sand (fine, coarse)", "Gravel (small, medium)", "Activated Charcoal (optional, from clean hardwood)", "Simple Chlorine/Iodine Solution (if available & dosage known)"],
+                 "processSteps": ["1. Pre-filtration (cloth for sediment)", "2. Boiling (rolling boil for 1-3 min)", "3. Solar Disinfection (SODIS - clear bottle, 6+ hrs sunlight)", "4. Building Layered Filter (gravel, sand, charcoal)", "5. Chemical Disinfection (follow instructions precisely)", "6. Safe Storage (clean, covered container)"],
+                 "videos": [
+                    {"icon_tag_fa": "fas fa-filter", "color_tag": "#4b5563", "title": "DIY Water Filter Build (Microbial Safety Focus)", "youtubeId": "31", "description": "Detailed guide (City Prepping) on constructing a DIY water filter using available items, with emphasis on enhancing microbial removal for safer drinking water."},
+                    {"icon_tag_fa": "fas fa-flask-vial", "color_tag": "#ef4444", "title": "Understanding Water Safety & Contamination", "youtubeId": "32", "description": "Explains (TED-Ed) different types of water contaminants and the principles behind making water safe to drink, crucial for understanding purification needs and risks."},
+                    {"icon_tag_fa": "fas fa-flask", "color_tag": "#22c55e", "title": "Simple DIY Water Filter Experiment (Layer Demo)", "youtubeId": "25", "description": "Demonstrates (Hungry SciANNtist) building a basic multi-layer water filter (sand, charcoal, etc.) as a science experiment, illustrating the filtration concept and material function."}
+                 ]
+             },
+             {
+                 "uniqueId": "water-1",
+                 "title": "Desalination",
+                 "description": "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.",
+                 "tags": ["desalination", "salt removal", "ocean", "irrigation", "solar still", "distillation", "potable water", "coastal living", "arid regions"],
+                 "context": "Provides a vital source of freshwater in coastal or arid regions where groundwater is saline or freshwater is scarce, by separating salt and minerals through evaporation and condensation.",
+                 "materials": ["Dark Basin/Container", "Clear Cover (glass, plastic sheeting)", "Collection Trough/Channel", "Freshwater Container", "Sealant (optional)", "Insulation (optional, improves efficiency)"],
+                 "processSteps": ["1. Constructing Basin & Cover (ensure airtight seal)", "2. Positioning for Maximum Sun Exposure (angle)", "3. Setting up Collection Channel & Vessel", "4. Filling Basin with Saline Water (don't overfill)", "5. Monitoring Condensation & Collection", "6. Periodic Cleaning & Maintenance"],
+                 "videos": [ // Placeholder video IDs - replace with actual researched videos
+                     {"icon_tag_fa": "fas fa-sun", "color_tag": "#f97316", "title": "Build a Simple Solar Still", "youtubeId": "VIDEO_ID_HERE_1", "description": "Step-by-step construction of a basic solar water distiller."},
+                     {"icon_tag_fa": "fas fa-tint-slash", "color_tag": "#3b82f6", "title": "Improving Solar Still Efficiency", "youtubeId": "VIDEO_ID_HERE_2", "description": "Tips and tricks to get more freshwater from your solar still."},
+                 ]
+             },
+             {
+                 "uniqueId": "water-2",
+                 "title": "Efficient Distribution",
+                 "description": "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.",
+                 "tags": ["pipes", "delivery", "infrastructure", "gravity feed", "water storage", "pump", "conservation", "ram pump", "water pressure"],
+                 "context": "Ensuring collected or purified water reaches points of use reliably and with minimal loss conserves the resource, saves energy (if pumping), and supports equitable access within a community or household.",
+                 "materials": ["Piping (PVC, HDPE, bamboo)", "Fittings (connectors, elbows, taps)", "Storage Tanks (ferrocement, plastic, IBC)", "Pump (manual, ram, solar, bicycle)", "Basic Surveying Tools (level, line)", "Sealants/Tape"],
+                 "processSteps": ["1. Mapping Source, Storage & Use Points (elevation)", "2. System Design (gravity vs. pump, pipe sizing)", "3. Trenching & Pipe Laying (proper slope/burial)", "4. Tank Installation & Connection", "5. Pump Setup (if applicable, e.g., Ram Pump tuning)", "6. Testing, Leak Detection & Repair"],
+                 "videos": [ // Placeholder video IDs - replace with actual researched videos
+                      {"icon_tag_fa": "fas fa-chart-line", "color_tag": "#06b6d4", "title": "Setting Up a Gravity Feed Water System", "youtubeId": "VIDEO_ID_HERE_3", "description": "How to use elevation to your advantage for water distribution."},
+                      {"icon_tag_fa": "fas fa-cogs", "color_tag": "#475569", "title": "Building and Installing a Ram Pump", "youtubeId": "VIDEO_ID_HERE_4", "description": "Construct a pump that works without external power."},
+                 ]
+             }
+        ]
+    },
+    {
+        "area": "Waste", "icon": "fa-recycle",
+        "subcategories": [
+            {
+                "uniqueId": "waste-0",
+                "title": "Composting",
+                "description": "Learn how to convert organic waste into nutrient-rich soil. Includes techniques for both urban and rural settings, managing compost temperature, and using the final product.",
+                "tags": ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting", "hot composting", "cold composting", "bokashi"],
+                "context": "Transforms kitchen scraps and yard waste into valuable soil amendment, reducing landfill burden, improving soil structure and fertility, and sequestering carbon.",
+                "materials": ["Organic 'Greens' (fruit/veg scraps, coffee grounds)", "Organic 'Browns' (dried leaves, straw, paper)", "Compost Bin/Container (optional)", "Water Source", "Turning Tool (fork, shovel)", "(Optional: worms for vermicomposting)"],
+                "processSteps": ["1. Choose Method (pile, bin, worms, bokashi)", "2. Collect & Chop Materials", "3. Layer Greens & Browns (ratio approx 1:2 to 1:3)", "4. Maintain Moisture (like damp sponge)", "5. Aerate/Turn Regularly (for hot composting)", "6. Harvest & Use Finished Compost"]
+            },
+            {
+                "uniqueId": "waste-1",
+                "title": "Recycling Systems",
+                "description": "Set up community or household recycling systems to properly sort and process recyclable materials. Covers plastic, paper, glass, and metal recycling basics.",
+                "tags": ["recycling", "waste sorting", "materials recovery", "circular economy", "community action", "plastic recycling", "paper recycling", "metal recycling", "glass recycling"],
+                "context": "Organizes the collection and separation of recyclable materials, diverting them from landfills/incineration and allowing them to be reprocessed into new products, saving resources and energy.",
+                "materials": ["Designated Bins/Containers", "Signage/Labels", "Collection Bags/Carts", "Basic Cleaning Supplies", "(Community: Central collection point/shed)"],
+                "processSteps": ["1. Identify Accepted Materials (local rules)", "2. Set Up Sorting Stations (clear labeling)", "3. Rinse/Clean Recyclables (reduce contamination)", "4. Store Sorted Materials", "5. Coordinate Collection/Drop-off", "6. Educate Participants (contamination issues)"]
+            },
+            {
+                "uniqueId": "waste-2",
+                "title": "Upcycling",
+                "description": "Transform discarded items into useful products. Learn creative approaches to reuse materials that would otherwise become waste.",
+                "tags": ["upcycling", "creative reuse", "waste reduction", "DIY", "crafts", "resourcefulness", "zero waste"],
+                "context": "Goes beyond basic recycling by creatively transforming waste materials or unwanted items into new products of higher quality or value, reducing the need for new raw materials.",
+                "materials": ["Discarded Items (tires, bottles, cans, pallets, textiles, etc.)", "Basic Tools (cutters, drills, fasteners, adhesives)", "Cleaning Supplies", "Finishing Materials (paint, sealant)"],
+                "processSteps": ["1. Collect & Select Waste Materials", "2. Clean & Prepare Materials Safely", "3. Brainstorm/Design New Use", "4. Cut, Shape, Assemble", "5. Finish & Decorate (optional)", "6. Share Ideas & Techniques"]
+            },
+            {
+                "uniqueId": "waste-3",
+                "title": "Wastewater Management",
+                "description": "Build simple systems to treat and safely dispose of greywater and blackwater. Includes constructed wetlands, filtration beds, and safe handling practices.",
+                "tags": ["wastewater", "greywater", "blackwater", "sanitation", "treatment", "constructed wetland", "reed bed", "filtration", "hygiene", "bioremediation"],
+                "context": "Safely treats water from sinks, showers (greywater) or toilets (blackwater) to prevent environmental contamination and disease spread, potentially allowing for safe reuse (e.g., irrigation).",
+                "materials": ["Pipes/Plumbing", "Gravel (various sizes)", "Sand", "Water-loving Plants (reeds, cattails)", "Waterproof Liner (if needed)", "Settling Tank/Container", "Distribution Pipes (for treated water)"],
+                "processSteps": ["1. Identify Source & Separate Grey/Blackwater (if possible)", "2. Site Selection (away from wells, downhill)", "3. System Design (septic, mulch basin, reed bed)", "4. Excavation & Liner Installation", "5. Layering Filter Media (gravel, sand)", "6. Planting (wetland plants)", "7. Connecting Inflow/Outflow", "8. Monitoring & Maintenance"]
+            }
+        ]
+    },
+    {
+        "area": "Energy", "icon": "fa-solar-panel",
+        "subcategories": [
+            {
+                "uniqueId": "energy-0",
+                "title": "Solar Box Cookers", // Title updated based on description
+                "description": "Effective basic box cooker design of three types: parabola, box reflective enclosure with dark pot, and insulated glass cover reflector oven cookers.",
+                "tags": ["solar cooker", "DIY", "cooking technology", "off-grid", "passive solar", "solar thermal", "appropriate technology"],
+                "context": "Utilizes direct sunlight for cooking, reducing reliance on firewood or other fuels, minimizing indoor air pollution, and providing a sustainable cooking method in sunny climates.",
+                "materials": ["Cardboard Boxes (nested)", "Insulation (paper, cloth, straw)", "Reflective Material (foil, mylar)", "Glass/Oven Bag (transparent cover)", "Black Paint (non-toxic)", "Dark, Lidded Pot", "Glue/Tape"],
+                "processSteps": ["1. Construct Insulated Box (inner & outer)", "2. Line Inner Box & Flaps with Reflectors", "3. Create Transparent Lid/Cover", "4. Paint Pot Black (or use dark pot)", "5. Position Cooker in Full Sun (adjust angle)", "6. Place Pot Inside & Cook (longer times needed)"]
+                 // Note: Removed previous "materials"/"processSteps" which were for PV panels, not cookers.
+            },
+            {
+                "uniqueId": "energy-1",
+                "title": "Biogas Generation",
+                "description": "Turn kitchen and animal waste into clean-burning gas for cooking. Learn how to build a small digester, maintain it, and safely use the gas.",
+                "tags": ["biogas", "waste", "energy", "renewable", "anaerobic digestion", "cooking fuel", "waste to energy", "methane"],
+                "context": "Converts organic waste (manure, food scraps) into methane gas through anaerobic digestion, providing a renewable cooking fuel while also producing a nutrient-rich slurry (digestate) usable as fertilizer.",
+                "materials": ["Airtight Container (drum, tank, IBC)", "Inlet Pipe (for slurry)", "Outlet Pipe (for digestate)", "Gas Outlet Pipe & Valve", "Tubing (for gas transport)", "Manure/Kitchen Waste", "Water"],
+                "processSteps": ["1. Construct/Adapt Airtight Digester", "2. Install Inlet, Outlet & Gas Pipes (ensure seals)", "3. Prepare Slurry (mix waste & water)", "4. 'Seed' Digester (add existing digestate or rumen fluid if possible)", "5. Feed Regularly & Remove Digestate", "6. Safely Plumb & Use Gas (water trap, burner)"]
+            },
+            {
+                "uniqueId": "energy-2",
+                "title": "Microgrids for Sustainable Power",
+                "description": "Build small, local power systems that connect solar, wind, or battery energy to homes and clinics. Learn how to balance loads and increase energy access.",
+                "tags": ["microgrid", "sustainability", "infrastructure", "renewable energy", "off-grid power", "community power", "solar", "wind power", "battery storage"],
+                "context": "Creates localized, independent energy networks, often using renewable sources, to provide reliable electricity access to communities or facilities not served by a main grid, enhancing resilience and self-sufficiency.",
+                "materials": ["Generation Source(s) (PV panels, wind turbine)", "Charge Controllers", "Battery Bank", "Inverter(s)", "Distribution Wiring & Protection (breakers, fuses)", "Load Management System (optional)", "Monitoring Equipment"],
+                "processSteps": ["1. Energy Audit & Load Assessment (needs vs. capacity)", "2. System Design & Component Sizing", "3. Installation of Generation & Storage", "4. Wiring & Safety Implementation (grounding, protection)", "5. Distribution Network Setup", "6. Commissioning, Monitoring & Maintenance Plan", "7. Community Governance/Management Model (if applicable)"]
+            },
+            {
+                "uniqueId": "energy-3",
+                "title": "Hand Pressed Heat & Cooking Fuel Briquettes",
+                "description": "DIY cook stove Fuel produced from waste combustible biomass slurry",
+                "tags": ["cooking fuel", "upcycling", "home heating", "biomass", "briquettes", "waste to energy", "appropriate technology", "DIY"],
+                "context": "Compresses loose biomass waste (sawdust, paper, crop residue) into dense briquettes, creating a low-cost, easily transportable fuel source for cooking or heating, reducing reliance on traditional firewood.",
+                "materials": ["Dry Biomass Waste (paper, sawdust, leaves, dung)", "Water", "Binder (optional: starch, clay)", "Briquette Press (manual lever, screw type)", "Drying Rack/Area"],
+                "processSteps": ["1. Collect & Shred/Pulverize Biomass", "2. Mix with Water (and binder if used) into thick slurry", "3. Load Slurry into Press Mold", "4. Compress Firmly to Expel Water", "5. Eject Wet Briquette", "6. Dry Thoroughly in Sun/Air (crucial step)"]
+            }
+        ]
+    },
+    {
+        "area": "Health", "icon": "fa-heartbeat",
+        "subcategories": [
+            {
+                "uniqueId": "health-0",
+                "title": "EMT Skills",
+                "description": "Learn lifesaving basics such as CPR, wound dressing, splinting, and how to assess an emergency before help arrives.",
+                "tags": ["EMT", "emergency", "first response", "CPR", "basic life support", "patient assessment", "wound care", "trauma care"],
+                "context": "Provides foundational knowledge and skills for immediate response to life-threatening emergencies (cardiac arrest, severe bleeding, fractures), stabilizing patients until professional help arrives.",
+                "materials": ["First Aid Kit Supplies (bandages, gauze, tape)", "Gloves", "CPR Mask/Barrier", "Splinting Materials (improvised or commercial)", "(Training: Mannequin)"],
+                "processSteps": ["1. Ensure Scene Safety", "2. Primary Assessment (Airway, Breathing, Circulation - ABCs)", "3. Call for Help (if possible)", "4. Critical Interventions (CPR, bleeding control, recovery position)", "5. Secondary Assessment (head-to-toe exam)", "6. Splinting/Wound Dressing", "7. Ongoing Monitoring"]
+            },
+            {
+                "uniqueId": "health-1",
+                "title": "Telemedicine",
+                "description": "Use phones and simple apps to connect with doctors remotely. Learn how to explain symptoms, send photos, and follow up with online care.",
+                "tags": ["health", "telemedicine", "remote care", "digital health", "remote diagnosis", "mHealth", "communication"],
+                "context": "Leverages communication technology (phones, internet) to bridge distances, enabling remote medical consultations, diagnosis (limited), monitoring, and health education, improving access to care.",
+                "materials": ["Device (smartphone, tablet, computer)", "Internet/Phone Connectivity", "Camera (on device)", "Basic Measurement Tools (thermometer, optional)", "Relevant Health Apps/Platforms"],
+                "processSteps": ["1. Identify Telemedicine Provider/Service", "2. Ensure Connectivity & Device Function", "3. Prepare for Consultation (symptoms list, questions)", "4. Communicate Symptoms Clearly (use photos if helpful)", "5. Follow Medical Advice & Instructions", "6. Plan Follow-up / Data Sharing (if needed)"]
+            },
+            {
+                "uniqueId": "health-2",
+                "title": "First Aid",
+                "description": "Master everyday skills for cuts, burns, insect bites, and fevers. Helps reduce complications when access to a clinic is delayed.",
+                "tags": ["first aid", "injury", "emergency", "home care", "wound care", "burns", "bites & stings", "common ailments"],
+                "context": "Focuses on immediate care for common, non-life-threatening injuries and ailments (cuts, scrapes, minor burns, bites, fever) to prevent complications, reduce pain, and facilitate healing when professional care isn't immediately available.",
+                "materials": ["Well-stocked First Aid Kit (bandages, gauze, tape, antiseptic, pain relievers, thermometer, tweezers, etc.)", "Clean Water", "Cool Compresses", "Soap"],
+                "processSteps": ["1. Assess the Situation (minor vs. serious)", "2. Clean Wounds Thoroughly", "3. Apply Appropriate Dressing/Bandage", "4. Manage Minor Burns (cool water, cover)", "5. Treat Bites/Stings (remove stinger, clean, cold compress)", "6. Manage Fever (hydration, rest, cooling measures)", "7. Recognize When to Seek Professional Help"]
+            },
+            {
+                "uniqueId": "health-3",
+                "title": "Self-sufficient Healthcare",
+                "description": "Set up a basic first aid station at home or in your village. Includes herbal remedies, rehydration recipes, and supply checklists.",
+                "tags": ["health", "DIY", "self-reliance", "herbal medicine", "community health", "preventive health", "traditional medicine", "ORS", "preparedness"],
+                "context": "Empowers individuals and communities to manage basic health needs using locally available resources, preventive measures, and simple remedies, increasing resilience when access to formal healthcare is limited.",
+                "materials": ["Organized Storage (clean box/cabinet)", "Basic First Aid Supplies", "Commonly Used Medicinal Herbs (local knowledge)", "Salt, Sugar, Bicarbonate (for ORS)", "Clean Water & Containers", "Notebook & Pen (for records)"],
+                "processSteps": ["1. Assess Common Local Health Issues", "2. Create Checklist & Stock Essential Supplies", "3. Learn to Identify & Use Local Medicinal Plants (caution!)", "4. Prepare Oral Rehydration Solution (WHO formula)", "5. Practice Basic Hygiene & Sanitation", "6. Establish Record Keeping & Supply Rotation", "7. Know Limitations & When to Seek Help"]
+            }
+        ]
+    },
+    {
+        "area": "Food", "icon": "fa-utensils",
+        "subcategories": [
+            {
+                "uniqueId": "food-0",
+                "title": "Urban Gardening",
+                "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.",
+                "tags": ["urban farming", "gardening", "food security", "container gardening", "small space gardening", "rooftop garden", "balcony garden", "composting"],
+                "context": "Enables food production in densely populated areas with limited land, utilizing containers, vertical spaces, and rooftops to grow fresh produce, enhancing local food access and greening urban environments.",
+                "materials": ["Containers (buckets, pots, planters, grow bags)", "Potting Mix/Soil/Compost", "Seeds or Seedlings", "Watering Can/System", "Fertilizer (organic options)", "Sunlight/Grow Lights"],
+                "processSteps": ["1. Select Site & Assess Sunlight", "2. Choose Appropriate Containers & Plants", "3. Prepare Growing Medium", "4. Planting & Seeding", "5. Watering & Feeding Consistently", "6. Pest/Disease Management (organic methods)", "7. Harvesting & Succession Planting"]
+            },
+            {
+                "uniqueId": "food-1",
+                "title": "Hydro/Aero/Aquaponics", // Updated title slightly for clarity
+                "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.",
+                "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics", "aeroponics", "soilless culture", "vertical farming", "nutrient solution", "pH management"],
+                "context": "Cultivates plants without soil, using mineral nutrient solutions dissolved in water (hydroponics/aeroponics) or integrating fish farming (aquaponics), allowing for high-density, water-efficient food production in controlled environments.",
+                "materials": ["Growing System Components (tubs, pipes, pumps, timers)", "Growing Medium (rockwool, coco coir, perlite - optional)", "Nutrient Solution Concentrates", "pH Testing Kit & Adjusters (up/down)", "EC/TDS Meter (optional)", "(Aquaponics: fish tank, fish, pump)"],
+                "processSteps": ["1. Assemble Growing System", "2. Prepare Nutrient Solution (mix & adjust pH/EC)", "3. Germinate Seeds / Prepare Seedlings", "4. Transplant into System", "5. Monitor & Maintain Water Levels, Nutrients, pH", "6. (Aquaponics: Manage fish & water quality)", "7. Harvesting & System Cleaning"] ,
+                "videos": [ /* Keeping existing videos */
+                     { "title": "Urban Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
+                     { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics as a sustainable food...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
+                     { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
+                     { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" }
+                     // ... rest of videos ...
+                ]
+             },
+            {
+                "uniqueId": "food-2",
+                "title": "Sustainable Agriculture Techniques",
+                "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.",
+                "tags": ["agriculture", "sustainable", "soil health", "permaculture", "organic farming", "agroecology", "cover cropping", "crop rotation", "integrated pest management", "conservation agriculture"],
+                "context": "Employs ecological principles to farming, focusing on building soil health, conserving water, enhancing biodiversity, and reducing reliance on synthetic inputs (pesticides, fertilizers) for long-term productivity.",
+                "materials": ["Compost/Manure", "Cover Crop Seeds (legumes, grasses)", "Mulch Materials", "Natural Pest Control Agents (neem oil, companion plants)", "Diverse Crop Seeds/Varieties", "Soil Testing Kit (optional)"],
+                "processSteps": ["1. Soil Health Assessment", "2. Implement Crop Rotation Plan", "3. Utilize Cover Cropping & Mulching", "4. Practice Integrated Pest Management (IPM)", "5. Enhance Biodiversity (polyculture, hedgerows)", "6. Water Conservation Techniques (drip irrigation, swales)", "7. Nutrient Management (compost, manure tea)"]
+            },
+            {
+                "uniqueId": "food-3",
+                "title": "Fungi, Algae, Insects, & Tech",
+                "description": "Inventory and evaluation of modern and antiquity based food production",
+                "tags": ["alternative protein", "future food", "mycology", "entomophagy", "algae", "spirulina", "BSFL", "insect farming", "mushroom cultivation", "food technology", "fermentation"],
+                "context": "Explores less conventional but potentially highly sustainable and nutritious food sources like edible fungi, microalgae, and insects, alongside appropriate technologies for their cultivation and processing.",
+                "materials": ["Mushroom Spawn/Substrate", "Algae Culture & Growth Medium", "Insect Starter Colony (crickets, mealworms, BSFL)", "Containers/Enclosures for cultivation", "Harvesting Tools", "Processing Equipment (drying, grinding)"],
+                "processSteps": ["1. Select Organism & Cultivation Method", "2. Set Up Controlled Environment (temp, humidity, light)", "3. Inoculation/Starting Culture/Introducing Insects", "4. Feeding & Maintenance", "5. Harvesting at Optimal Stage", "6. Processing for Consumption/Storage (drying, cooking, grinding)"],
+                 "videos": [ /* Keeping existing videos */
+                      { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" },
+                      { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried and grown on various subtrates used as a healthy sustainable food, useful in food resiliency, good converter & detoxifier of materials...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
+                      { "title": "Fungi in soil and ecosystem health", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" }, // Corrected empty youtubeId
+                      { "title": "Fungi for creating structural compoments", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" },
+                      { "title": "Fungi Algae", "youtubeId": "mD5jnxhne7o", "description": "Presents farmer Jesse Straight's perspective...", "icon_tag_fa": "fas fa-tractor", "color_tag": "#ca8a04" },
+                      { "title": "Fungi eating insects so people can eat it", "youtubeId": "5eibeYxRt5w", "description": "Explores insect consumption via 'Bug Burgers'...", "icon_tag_fa": "fas fa-bug", "color_tag": "#7c2d12" },
+                      { "title": "Is Microalgae the Sustainable Food of the Future?", "youtubeId": "VFNS7Is6Td0", "description": "Investigates microalgae as a potential future food source...", "icon_tag_fa": "fas fa-bacteria", "color_tag": "#0d9488" },
+                      { "title": "Mushroom Farming Basics", "youtubeId": "9IFTMnftLgU", "description": "Growing edible mushrooms on straw and other byproducts", "icon_tag_fa": "fas fa-cloud", "color_tag": "#a1a1aa" },
+                      { "title": "Spirulina Micro-Farming at Home", "youtubeId": "SMUf_pbxkcU", "description": "Small-scale production of this nutrient-dense blue-green algae", "icon_tag_fa": "fas fa-vial", "color_tag": "#2dd4bf" },
+                      { "title": "Insect Farming: Cricket Rearing Systems", "youtubeId": "jp6OgNyTxA0", "description": "Setting up efficient cricket production for protein", "icon_tag_fa": "fas fa-crow", "color_tag": "#3f3f46" }, // Consider changing icon from fa-crow
+                      { "title": "Black Soldier Fly Larvae Composting", "youtubeId": "5j0YCyg0vpE", "description": "Converting organic waste to animal feed using insect larvae", "icon_tag_fa": "fas fa-recycle", "color_tag": "#166534" },
+                      { "title": "Ancient Grain Recovery and Cultivation", "youtubeId": "Xqn490UuVQU", "description": "Growing forgotten but nutritious grain varieties", "icon_tag_fa": "fas fa-wheat-awn", "color_tag": "#f59e0b" },
+                      { "title": "Simple Automation for Small-Scale Agriculture", "youtubeId": "eHMpkXiGEag", "description": "Low-tech solutions to reduce manual labor in food production", "icon_tag_fa": "fas fa-robot", "color_tag": "#78716c" }
+                 ]
+             }
+        ]
+    }
+];
+
+
+// --- Updated Glossary ---
+const tagGlossary = {
+    // Shelter
+    "construction": "The process, art, or business of building structures.",
+    "low-cost": "Achievable with minimal financial resources or expenditure.",
+    "durable": "Able to withstand wear, pressure, or damage over time; long-lasting.",
+    "building": "A structure with walls and a roof, such as a house, school, or factory.",
+    "DIY": "Do It Yourself; projects undertaken without direct professional help.",
+    "resilience": "The capacity to withstand or recover quickly from difficulties; toughness.",
+    "earthbag": "A construction technique using bags filled primarily with soil or earth.",
+    "bamboo": "A tall, fast-growing grass often used as a strong, sustainable building material.",
+    "superadobe": "A form of earthbag construction using long fabric tubes and barbed wire, developed by Nader Khalili.",
+    "materials": "The matter from which a thing is or can be made.",
+    "local": "Relating or restricted to a particular area or neighbourhood.",
+    "sustainability": "Meeting present needs without compromising the ability of future generations to meet theirs, often focusing on environmental, social, and economic balance.",
+    "earthship": "A type of passive solar house made of natural and recycled materials (like tires and bottles).",
+    "vernacular architecture": "Architecture concerned with domestic and functional rather than public or monumental buildings, often using local materials and traditional methods.",
+    "resourcefulness": "The ability to find quick and clever ways to overcome difficulties, especially with limited resources.",
+    "clay": "A stiff, sticky fine-grained earth, typically yellow, red, or bluish-gray, often used in building (adobe, cob, plaster).",
+    "stone": "Hard solid nonmetallic mineral matter of which rock is made, used for building.",
+    "salvaged": "Retrieved or saved from potential waste or loss for reuse.",
+    "natural building": "Building methods emphasizing sustainability and the use of minimally processed, natural materials.",
+    "climate resilience": "The ability of a structure or system to absorb stresses and maintain function in the face of climate change impacts.",
+    "insulation": "Material used to prevent heat, sound, or electricity from passing through something.",
+    "foundation": "The lowest load-bearing part of a building, typically below ground level.",
+    "roofing": "The material forming the roof of a building, or the process of constructing a roof.",
+    "pallet wood": "Wood reclaimed from shipping pallets, often used in low-cost construction.",
+
+    // Water
+    "clean water": "Water that is safe to drink (potable) and for other domestic uses, free from harmful contaminants.",
+    "filtration": "The process of removing solid particles from a liquid or gas using a filter medium.",
+    "health": "The state of being free from illness or injury; relates to practices promoting well-being.",
+    "SODIS": "Solar Water Disinfection: A simple method using sunlight and clear PET bottles to kill harmful microbes in water.",
+    "potable water": "Water that is safe to drink.",
+    "waterborne disease": "Illnesses caused by pathogenic microorganisms transmitted through contaminated water.",
+    "DIY filter": "A water filter constructed using readily available or improvised materials.",
+    "boiling": "Purifying water by heating it to its boiling point to kill most pathogens.",
+    "disinfection": "The process of cleaning something, especially with a chemical, in order to destroy bacteria and other microorganisms.",
+    "desalination": "The process of removing salt and other minerals from seawater or brackish water.",
+    "salt removal": "Synonym for desalination.",
+    "ocean": "A very large expanse of saltwater.",
+    "irrigation": "The supply of water to land or crops to help growth, typically by means of channels or pipes.",
+    "solar still": "A device using solar energy to evaporate and condense water for purification/desalination.",
+    "distillation": "The action of purifying a liquid by a process of heating and cooling.",
+    "coastal living": "Relating to life near the coast.",
+    "arid regions": "Areas characterized by severe lack of available water, hindering plant and animal life.",
+    "pipes": "Tubes used to convey water, gas, oil, or other fluid substances.",
+    "delivery": "The action of transporting something to a destination.",
+    "infrastructure": "The basic physical structures and facilities (e.g., pipes, tanks) needed for water systems.",
+    "gravity feed": "A system where liquid flows due to gravity from a higher to lower point without pumping.",
+    "water storage": "Holding water in tanks, reservoirs, or cisterns for later use.",
+    "pump": "A mechanical device using suction or pressure to raise or move liquids.",
+    "conservation": "The careful preservation and protection of something, especially water resources.",
+    "ram pump": "A cyclic water pump powered by hydropower, using the water hammer effect.",
+    "water pressure": "The force exerted by water per unit area.",
+    "water testing": "Analyzing water samples to determine quality and safety.",
+    "water acquisition": "Methods of obtaining water from various sources.",
+    "atmospheric water": "Water present in the atmosphere, collectable as dew or fog.",
+    "fog harvesting": "Collecting water from fog using nets or other surfaces.",
+
+    // Waste
+    "composting": "The process of decomposing organic matter into a nutrient-rich soil amendment.",
+    "organic waste": "Biodegradable waste from plant or animal sources (e.g., food scraps, yard trimmings).",
+    "soil improvement": "Enhancing soil structure, fertility, and water retention.",
+    // "sustainability": (Defined under Shelter)
+    "fertilizer": "A chemical or natural substance added to soil or land to increase its fertility.",
+    "vermicomposting": "Composting using various species of worms (e.g., red wigglers).",
+    "hot composting": "A method managing C:N ratio, moisture, and aeration to achieve high temperatures (130-160°F / 55-70°C) for fast decomposition.",
+    "cold composting": "A passive composting method involving less management and slower decomposition at ambient temperatures.",
+    "bokashi": "An anaerobic fermentation process, often for kitchen scraps, using specific microbes.",
+    "recycling": "Converting waste materials into new materials and objects.",
+    "waste sorting": "Separating different types of waste for proper disposal or recycling.",
+    "materials recovery": "Retrieving useful materials from the waste stream.",
+    "circular economy": "An economic system aimed at eliminating waste and the continual use of resources.",
+    "community action": "Activities undertaken by people in a geographic locality to improve their community.",
+    "plastic recycling": "Reprocessing waste plastic into new products.",
+    "paper recycling": "Reprocessing waste paper into new paper products.",
+    "metal recycling": "Reprocessing scrap metal into new metal.",
+    "glass recycling": "Reprocessing waste glass into new glass products.",
+    "upcycling": "Reusing discarded objects or material to create a product of higher quality or value.",
+    "creative reuse": "Synonym for upcycling, emphasizing the imaginative transformation.",
+    "waste reduction": "Minimizing the amount of waste produced.",
+    // "DIY": (Defined under Shelter)
+    // "crafts": "Activities involving skill in making things by hand.",
+    // "resourcefulness": (Defined under Shelter)
+    "zero waste": "A philosophy encouraging redesign of resource life cycles so all products are reused; goal is no trash sent to landfills/incinerators.",
+    "wastewater": "Water that has been used in homes, businesses, or industrial processes.",
+    "greywater": "Wastewater from baths, sinks, washing machines, etc. (excluding toilet waste).",
+    "blackwater": "Wastewater containing fecal matter and urine (from toilets).",
+    "sanitation": "Conditions relating to public health, especially the provision of clean drinking water and adequate sewage disposal.",
+    "treatment": "Application of methods to improve the quality or condition of something (e.g., wastewater).",
+    "constructed wetland": "An artificial wetland engineered to treat wastewater using natural processes.",
+    "reed bed": "A type of constructed wetland specifically using reeds.",
+    // "filtration": (Defined under Water)
+    "hygiene": "Conditions or practices conducive to maintaining health and preventing disease, especially through cleanliness.",
+    "bioremediation": "Using living organisms (microbes, plants) to remove pollutants from soil or water.",
+    "anaerobic digestion": "Breakdown of organic matter by microorganisms in the absence of oxygen.",
+    "resource recovery": "Extracting useful materials or energy from waste.",
+
+    // Energy
+    "solar cooker": "An appliance using direct sunlight for heating or cooking.",
+    // "DIY": (Defined under Shelter)
+    "cooking technology": "Methods and equipment used for preparing food with heat.",
+    "off-grid": "Not connected to public utilities, especially the main electrical grid.",
+    "passive solar": "Building design or technology that uses sunlight for heating/cooling without active mechanical systems.",
+    "solar thermal": "Technology using sunlight to generate thermal energy (heat).",
+    "appropriate technology": "Technology suited to the social, economic, and environmental context it is intended for.",
+    "biogas": "Gaseous fuel, especially methane, produced by the fermentation of organic matter.",
+    // "waste": (Implicit)
+    // "energy": (Implicit)
+    "renewable": "Energy from a source that is not depleted when used (e.g., wind, solar).",
+    // "anaerobic digestion": (Defined under Waste)
+    "cooking fuel": "Material burned to produce heat for cooking.",
+    "waste to energy": "Process of generating energy (electricity/heat) from waste.",
+    "methane": "A colorless, odorless flammable gas (CH4), the main constituent of natural gas and biogas.",
+    "microgrid": "A localized group of electricity sources and loads that normally operates connected to and synchronous with the traditional wide area grid, but can disconnect and function autonomously.",
+    // "sustainability": (Defined under Shelter)
+    // "infrastructure": (Defined under Water)
+    "renewable energy": "Energy from naturally replenished resources (solar, wind, hydro, geothermal, biomass).",
+    "off-grid power": "Electricity generation independent of the public utility grid.",
+    "community power": "Energy projects owned or controlled by local community members.",
+    // "solar": (Implicit from fa-solar-panel icon)
+    "wind power": "Energy generated from wind using wind turbines.",
+    "battery storage": "Storing electrical energy chemically in batteries for later use.",
+    "briquettes": "Compressed blocks of combustible biomass material used as fuel.",
+    "biomass": "Organic matter from plants and animals used as a fuel source.",
+    "home heating": "Systems used to heat domestic dwellings.",
+    // "upcycling": (Defined under Waste)
+    "electricity generation": "The process of producing electric energy from other forms of energy.",
+    "fuel": "Material such as coal, gas, or oil that is burned to produce heat or power.",
+
+    // Health
+    "EMT": "Emergency Medical Technician; trained to provide out-of-hospital emergency care.",
+    "emergency": "A serious, unexpected, and often dangerous situation requiring immediate action.",
+    "first response": "The initial care provided by first responders at the scene of an emergency.",
+    "CPR": "Cardiopulmonary Resuscitation: an emergency procedure involving chest compressions and artificial ventilation.",
+    "basic life support": "Level of medical care for victims of life-threatening illnesses/injuries until full medical care can be given.",
+    "patient assessment": "Systematic collection of information about a patient's condition.",
+    "wound care": "Treating wounds to promote healing and prevent infection.",
+    "trauma care": "Medical care for patients suffering from major traumatic injuries.",
+    // "health": (Defined under Water)
+    "telemedicine": "Remote diagnosis and treatment of patients by means of telecommunications technology.",
+    "remote care": "Healthcare services provided when the patient and provider are not physically present together.",
+    "digital health": "Use of information and communication technologies for health.",
+    "remote diagnosis": "Identifying the nature of an illness remotely.",
+    "mHealth": "Mobile Health; practice of medicine and public health supported by mobile devices.",
+    "communication": "The imparting or exchanging of information.",
+    "first aid": "Help given to a sick or injured person until full medical treatment is available.",
+    "injury": "Physical harm or damage to someone's body.",
+    // "emergency": (Defined above)
+    "home care": "Medical or personal care provided in a patient's home.",
+    // "wound care": (Defined above)
+    "burns": "Injuries caused by exposure to heat, flame, chemicals, radiation, or electricity.",
+    "bites & stings": "Injuries caused by insects, animals, or marine life.",
+    "common ailments": "Frequently occurring minor illnesses or disorders.",
+    // "DIY": (Defined under Shelter)
+    "self-reliance": "Reliance on one's own powers and resources rather than those of others.",
+    "herbal medicine": "Using plants or plant extracts for medicinal purposes.",
+    "community health": "Field concerned with studying and improving the health characteristics of communities.",
+    "preventive health": "Measures taken to prevent diseases rather than curing them or treating symptoms.",
+    "traditional medicine": "Health practices, knowledge, and beliefs incorporating plant, animal, and mineral based medicines, spiritual therapies, etc., used in maintenance of health.",
+    "ORS": "Oral Rehydration Solution: A mixture of water, salt, and sugar used to treat dehydration.",
+    "preparedness": "A state of readiness, especially for emergencies.",
+    // "hygiene": (Defined under Waste)
+    // "sanitation": (Defined under Waste)
+    "diagnosis": "The identification of the nature of an illness or other problem by examination of the symptoms.",
+    "treatment": "Medical care given to a patient for an illness or injury.",
+
+    // Food
+    "urban farming": "Practice of cultivating, processing, and distributing food in or around urban areas.",
+    "gardening": "The activity of tending and cultivating a garden.",
+    "food security": "State of having reliable access to a sufficient quantity of affordable, nutritious food.",
+    "container gardening": "Growing plants exclusively in containers instead of planting them in the ground.",
+    "small space gardening": "Techniques for growing plants in limited areas like balconies or patios.",
+    "rooftop garden": "A garden cultivated on the roof of a building.",
+    "balcony garden": "A garden cultivated on a balcony.",
+    // "composting": (Defined under Waste)
+    "hydroponics": "Method of growing plants without soil, using mineral nutrient solutions in aqueous solvents.",
+    "water-efficient": "Using water resources in the most effective manner possible.",
+    "urban food": "Food grown or produced within city limits.",
+    "aquaponics": "System combining aquaculture (raising fish) and hydroponics (soilless plant culture) symbiotically.",
+    "aeroponics": "Growing plants in an air or mist environment without soil or an aggregate medium.",
+    "soilless culture": "Growing plants without soil (includes hydroponics, aeroponics).",
+    "vertical farming": "Practice of growing crops in vertically stacked layers, often indoors.",
+    "nutrient solution": "Water containing dissolved inorganic nutrients, used in hydroponics.",
+    "pH management": "Controlling the acidity or alkalinity of water or soil.",
+    "agriculture": "The science or practice of farming, including cultivation of the soil for growing crops and rearing animals.",
+    // "sustainable": (Defined under Shelter)
+    "soil health": "The continued capacity of soil to function as a vital living ecosystem.",
+    "permaculture": "Development of agricultural ecosystems intended to be sustainable and self-sufficient.",
+    "organic farming": "Farming system avoiding the use of synthetic fertilizers, pesticides, and GMOs.",
+    "agroecology": "Study of ecological processes applied to agricultural production systems.",
+    "cover cropping": "Planting crops to cover the soil rather than for harvest, improving soil health.",
+    "crop rotation": "Growing different crops in succession on the same land to preserve soil fertility.",
+    "integrated pest management": "Ecosystem-based strategy focusing on long-term prevention of pests through biological control, habitat manipulation, etc.",
+    "conservation agriculture": "Farming system promoting minimum soil disturbance, permanent soil cover, and crop species diversification.",
+    "alternative protein": "Proteins sourced from plants, insects, algae, fungi, or cell culture rather than traditional animal agriculture.",
+    "future food": "Foods expected to become more common due to sustainability, nutrition, or technology.",
+    "mycology": "The scientific study of fungi.",
+    "entomophagy": "The practice of eating insects.",
+    "algae": "Simple non-flowering aquatic plants including seaweeds and many single-celled forms.",
+    "spirulina": "A biomass of cyanobacteria (blue-green algae) consumable by humans and animals.",
+    "BSFL": "Black Soldier Fly Larvae; insects used for composting waste and as animal feed.",
+    "insect farming": "Raising insects for human consumption, animal feed, or other products.",
+    "mushroom cultivation": "The process of growing mushrooms.",
+    "food technology": "Application of food science to the selection, preservation, processing, packaging, distribution, and use of safe food.",
+    "fermentation": "Chemical breakdown of a substance by bacteria, yeasts, or other microorganisms, often involving effervescence and heat.",
+    "food sovereignty": "Right of peoples to healthy and culturally appropriate food produced through ecologically sound methods, and their right to define their own food/agriculture systems.",
+    "soil science": "Study of soil as a natural resource, including formation, classification, and mapping.",
+    "pest management": "Controlling pests (insects, diseases, weeds) that interfere with human activities.",
+    "seed saving": "Practice of saving seeds from open-pollinated plants for use from year to year.",
+    "closed-loop system": "System where outputs (like waste) are reused as inputs, minimizing waste (e.g., aquaponics).",
+    "nutrition": "Process of providing or obtaining the food necessary for health and growth.",
+    "harvesting": "The process or period of gathering in crops.",
+    "food preservation": "Techniques to prevent food spoilage (drying, canning, freezing, fermenting).",
+    "mycoprotein": "Protein derived from fungi, often produced through fermentation.",
+
+};
 
         // --- Global Variables & DOM Elements ---
         const buttonBar = document.getElementById('button-bar');
@@ -606,7 +1011,7 @@
              }
         }
 
-        // --- MODIFIED: displaySubcategoryDetails ---
+
         function displaySubcategoryDetails(area, uniqueId, updateHash = true) {
             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
             const subcategory = category?.subcategories.find(sub => sub.uniqueId === uniqueId);
@@ -744,6 +1149,7 @@
              videoInfoPanel.addEventListener('mouseleave', hideInfoPanel);
         }
 
+        
         // --- Initial Setup ---
         console.log("Initializing...");
         flattenVideoData(categoryData); // Prepare flat video array **FIRST**
@@ -751,7 +1157,8 @@
         setupEventListeners();
         handlePageLoad(); // Handles loading state from URL hash
         hideInfoPanel(); // Ensure hidden initially
-
     </script>
+
+
 </body>
 </html>
