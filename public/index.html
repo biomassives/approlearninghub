@@ -265,45 +265,114 @@
                 "icon": "fa-tint",
                 "subcategories": [
                      {
-                         "uniqueId": "water-0",
-                         "title": "Purification",
-                         "description": "Use household items or low-cost filters to make water safe for drinking. Includes simple boiling, sand filtering, and solar disinfection techniques.",
-                         "tags": ["clean water", "filtration", "health", "SODIS", "potable water", "waterborne disease", "DIY filter", "boiling", "disinfection", "resourcefulness", "water testing"],
-                         "context": "Access to safe drinking water is fundamental for health, preventing debilitating waterborne diseases. This section explores methods using readily available materials to make potentially contaminated water safe for consumption.",
-                         "materials": ["Clean Containers (buckets, bottles)", "Heat Source (fire, sun)", "Clear PET Bottles (for SODIS)", "Cloth (pre-filter)", "Sand (fine, coarse)", "Gravel (small, medium)", "Activated Charcoal (optional, from clean hardwood)", "Simple Chlorine/Iodine Solution (if available & dosage known)"],
-                         "processSteps": ["1. Pre-filtration (cloth for sediment)", "2. Boiling (rolling boil for 1-3 min)", "3. Solar Disinfection (SODIS - clear bottle, 6+ hrs sunlight)", "4. Building Layered Filter (gravel, sand, charcoal)", "5. Chemical Disinfection (follow instructions precisely)", "6. Safe Storage (clean, covered container)"],
-                         "videos": [
-                            {"icon_tag_fa": "fas fa-filter", "color_tag": "#4b5563", "title": "DIY Water Filter Build (Microbial Safety Focus)", "youtubeId": "31", "description": "Detailed guide (City Prepping) on constructing a DIY water filter using available items, with emphasis on enhancing microbial removal for safer drinking water."},
-                            {"icon_tag_fa": "fas fa-flask-vial", "color_tag": "#ef4444", "title": "Understanding Water Safety & Contamination", "youtubeId": "32", "description": "Explains (TED-Ed) different types of water contaminants and the principles behind making water safe to drink, crucial for understanding purification needs and risks."},
-                            {"icon_tag_fa": "fas fa-flask", "color_tag": "#22c55e", "title": "Simple DIY Water Filter Experiment (Layer Demo)", "youtubeId": "25", "description": "Demonstrates (Hungry SciANNtist) building a basic multi-layer water filter (sand, charcoal, etc.) as a science experiment, illustrating the filtration concept and material function."}
-                         ]
-                     },
-                     {
-                         "uniqueId": "water-1",
-                         "title": "Desalination",
-                         "description": "Build small-scale systems to turn salty or brackish water into fresh water using heat and condensation. Great for coastal or saline-prone areas.",
-                         "tags": ["desalination", "salt removal", "ocean", "irrigation", "solar still", "distillation", "potable water", "coastal living", "arid regions", "solar thermal"],
-                         "context": "Provides a vital source of freshwater in coastal or arid regions where groundwater is saline or freshwater is scarce, by separating salt and minerals through evaporation and condensation.",
-                         "materials": ["Dark Basin/Container", "Clear Cover (glass, plastic sheeting)", "Collection Trough/Channel", "Freshwater Container", "Sealant (optional)", "Insulation (optional, improves efficiency)"],
-                         "processSteps": ["1. Constructing Basin & Cover (ensure airtight seal)", "2. Positioning for Maximum Sun Exposure (angle)", "3. Setting up Collection Channel & Vessel", "4. Filling Basin with Saline Water (don't overfill)", "5. Monitoring Condensation & Collection", "6. Periodic Cleaning & Maintenance"],
-                         "videos": [
-                             {"icon_tag_fa": "fas fa-sun", "color_tag": "#f97316", "title": "Build a Simple Solar Still", "youtubeId": "bJ9r8RFp4gE", "description": "Step-by-step construction of a basic solar water distiller."},
-                             {"icon_tag_fa": "fas fa-tint-slash", "color_tag": "#3b82f6", "title": "Improving Solar Still Efficiency", "youtubeId": "d5bjI9jgCxk", "description": "Tips and tricks to get more freshwater from your solar still."},
-                         ]
-                     },
-                     {
-                         "uniqueId": "water-2",
-                         "title": "Efficient Distribution",
-                         "description": "Design and improve gravity-fed or pump-based systems to distribute water evenly and reduce waste. Tips include pipe layout, storage tanks, and elevation tricks.",
-                         "tags": ["pipes", "delivery", "infrastructure", "gravity feed", "water storage", "pump", "conservation", "ram pump", "water pressure", "plumbing"],
-                         "context": "Ensuring collected or purified water reaches points of use reliably and with minimal loss conserves the resource, saves energy (if pumping), and supports equitable access within a community or household.",
-                         "materials": ["Piping (PVC, HDPE, bamboo)", "Fittings (connectors, elbows, taps)", "Storage Tanks (ferrocement, plastic, IBC)", "Pump (manual, ram, solar, bicycle)", "Basic Surveying Tools (level, line)", "Sealants/Tape"],
-                         "processSteps": ["1. Mapping Source, Storage & Use Points (elevation)", "2. System Design (gravity vs. pump, pipe sizing)", "3. Trenching & Pipe Laying (proper slope/burial)", "4. Tank Installation & Connection", "5. Pump Setup (if applicable, e.g., Ram Pump tuning)", "6. Testing, Leak Detection & Repair"],
-                         "videos": [
-                              {"icon_tag_fa": "fas fa-chart-line", "color_tag": "#06b6d4", "title": "Setting Up a Gravity Feed Water System", "youtubeId": "9ICi3rFj28M", "description": "How to use elevation to your advantage for water distribution."},
-                              {"icon_tag_fa": "fas fa-cogs", "color_tag": "#475569", "title": "Building and Installing a Ram Pump", "youtubeId": "Jl5TodxqQpc", "description": "Construct a pump that works without external power."},
-                         ]
-                     }
+                        "uniqueId": "water-0", 
+                        "title": "Purification", 
+                        "description": "Create effective water purification systems using readily available materials to remove contaminants and pathogens. Learn multiple approaches ranging from simple boiling to multi-stage filtration and UV disinfection, with specific efficacy rates for each method. Includes step-by-step instructions for building biosand filters (99% pathogen removal), ceramic pot filters, and setting up proper SODIS (Solar Disinfection) systems that effectively eliminate harmful microorganisms.",
+                        "tags": ["clean water", "filtration", "health", "SODIS", "biosand", "pathogens", "ceramic filters", "turbidity reduction"],
+                        "context": "Clean water access is fundamental to health and survival. Waterborne diseases like cholera, typhoid, and dysentery cause millions of illnesses annually. These DIY methods can reduce disease risk by 60-99.9% depending on technique, providing crucial protection when conventional infrastructure is unavailable.",
+                        "materials": [
+                          "Sand (coarse, medium, fine grades)",
+                          "Gravel (1/4\" and 1/2\")",
+                          "Activated Charcoal (coconut-based preferred)",
+                          "Clear PET Bottles (tested for UV penetration)",
+                          "Cotton Cloth (for pre-filtering)",
+                          "Food-Grade Containers",
+                          "Clay (for ceramic filters)",
+                          "Basic Tools (hacksaw, drill, scissors)",
+                          "Optional: Silver Nanoparticles (antimicrobial)"
+                        ],
+                        "processSteps": [
+                          "Water Source Assessment & Pre-Treatment (turbidity reduction)",
+                          "Boiling Procedure (rolling boil for 1-3 minutes based on elevation)",
+                          "Building a BioSand Filter (with proper flow rate calibration)",
+                          "Ceramic Pot Filter Construction",
+                          "Solar Water Disinfection (SODIS) with proper exposure times",
+                          "Chlorination Methods and Measurement (when chemicals available)",
+                          "Combined Systems for Maximum Effectiveness",
+                          "Testing and Maintenance Protocols"
+                        ],
+                        "videos": [
+                          {
+                            "icon_tag_fa": "fas fa-filter",
+                            "color_tag": "#4b5563",
+                            "title": "DIY Water Filter Build (Microbial Safety Focus)",
+                            "youtubeId": "31",
+                            "description": "Detailed guide (City Prepping) on constructing a DIY water filter using available items, with emphasis on enhancing microbial removal for safer drinking water."
+                          },
+                          {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                          {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Water acquisition", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                          {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Water evaporative capture, dew and fog harvesting", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"}
+                        ]
+                      },
+                      {
+                        "uniqueId": "water-1", 
+                        "title": "Desalination", 
+                        "description": "Convert salt water into fresh drinking water through multiple DIY desalination techniques scaled for household use. Methods include improved solar stills yielding 0.5-1.5 liters per square meter daily, multi-stage flash distillation for higher efficiency, and membrane-based systems using locally available materials. All systems can be built with basic tools and scaled according to water needs, with specific design modifications for brackish vs. seawater sources.",
+                        "tags": ["salt removal", "ocean", "irrigation", "solar still", "distillation", "multi-stage", "brackish water", "condensation efficiency", "salinity management"],
+                        "context": "Desalination provides critical fresh water access for 2+ billion people living in coastal regions and areas with saline groundwater. DIY systems can produce 5-20 liters daily depending on design, sufficient for drinking and cooking needs of small households in water-stressed environments.",
+                        "materials": [
+                          "Black heat-absorbent material (painted metal, dark plastic)",
+                          "Clear UV-resistant plastic sheeting or glass (greenhouse material ideal)",
+                          "Food-grade collection containers with lids",
+                          "Insulation materials (optional but increases yield by 30-40%)",
+                          "Heat-resistant tubing",
+                          "Silicon sealant (food grade)",
+                          "Reflective material for concentrating sunlight",
+                          "Angle materials (wood, metal) for proper condensation slope (15-30°)"
+                        ],
+                        "processSteps": [
+                          "Site selection (maximizing solar exposure 6+ hours daily)",
+                          "Basin preparation and waterproofing",
+                          "Constructing a Basic Solar Still with proper condensation angles",
+                          "Single-slope vs. Pyramid design comparison",
+                          "Adding heat retention materials to extend production hours",
+                          "Multi-stage system setup for improved efficiency",
+                          "Collection system design and contamination prevention",
+                          "Testing output for salinity and safety",
+                          "Maintenance routines and seasonal adjustments",
+                          "Scale-up techniques and modular expansion"
+                        ],
+                        "videos": [ 
+                          {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                          {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Water acquisition", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                          {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Water evaporative capture and condensation techniques", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"}
+                        ]
+                      },
+                      {
+                        "uniqueId": "water-2", 
+                        "title": "Efficient Distribution", 
+                        "description": "Design resilient water distribution systems using principles of gravity flow, appropriate technology, and resource conservation. Create systems that minimize losses (common systems lose 30-60% to leakage), maximize delivery reliability, and require minimal external inputs. Includes calculations for proper pipe sizing, pressure management techniques, storage tank construction using locally available materials, and maintenance protocols that extend system life by 200-300%.",
+                        "tags": ["pipes", "delivery", "infrastructure", "gravity feed", "head pressure", "water hammer prevention", "ferrocement", "low-maintenance systems", "pressure management", "rainwater harvesting integration"],
+                        "context": "Efficient distribution systems can reduce water usage by 30-50% while ensuring reliable access. Systems designed with proper flow rates and pressure management prevent water loss, contamination, and infrastructure damage, particularly critical in water-scarce and off-grid environments.",
+                        "materials": [
+                          "PVC/HDPE pipes (various diameters calculated for flow needs)",
+                          "Local material storage tanks (ferrocement, repurposed containers)",
+                          "Pressure-rated fittings and connectors",
+                          "Inline filters for sediment removal",
+                          "Air release valves (can be DIY constructed)",
+                          "Non-return valves for backflow prevention",
+                          "Pressure-reducing mechanisms for steep terrain",
+                          "UV-resistant materials for exposed components"
+                        ],
+                        "processSteps": [
+                          "Comprehensive site survey with elevation mapping (1m resolution)",
+                          "Water demand calculation and system capacity planning",
+                          "Head pressure calculation (1m elevation = 0.1 bar pressure)",
+                          "Pipe sizing formula application (flow rate vs. friction loss)",
+                          "Storage placement optimization for pressure management",
+                          "Air lock and water hammer prevention techniques",
+                          "Installation with proper bedding and backfill",
+                          "Valve placement and access point planning",
+                          "Testing protocols (pressure testing with soap solution)",
+                          "Seasonal maintenance scheduling",
+                          "Troubleshooting common problems (air locks, scaling, biofilms)"
+                        ],
+                        "videos": [ 
+                          {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                          {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Water acquisition", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                          {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Water evaporative capture and condensation techniques", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"}
+                        ]    
+                      }
                 ]
             },
             {
