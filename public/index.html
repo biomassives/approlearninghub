@@ -226,9 +226,8 @@
     </div>
 
     <script>
-        // --- Data ---
         const categoryData = [
-            { // Start of Shelter Area
+            {
                 "area": "Shelter",
                 "icon": "fa-home",
                 "subcategories": [
@@ -260,8 +259,8 @@
                         ]
                     }
                 ]
-            }, // *** End of Shelter Area - Comma was missing here ***
-            { // Start of Water Area
+            },
+            {
                 "area": "Water",
                 "icon": "fa-tint",
                 "subcategories": [
@@ -306,8 +305,8 @@
                          ]
                      }
                 ]
-            }, // End of Water Area
-            { // Start of Waste Area
+            },
+            {
                 "area": "Waste",
                 "icon": "fa-recycle",
                 "subcategories": [
@@ -368,8 +367,8 @@
                          ]
                     }
                 ]
-            }, // End of Waste Area
-            { // Start of Energy Area
+            },
+            {
                 "area": "Energy",
                 "icon": "fa-solar-panel",
                 "subcategories": [
@@ -410,8 +409,8 @@
                         "processSteps": ["1. Collect & Shred/Pulverize Biomass", "2. Mix with Water (and binder if used) into thick slurry", "3. Load Slurry into Press Mold", "4. Compress Firmly to Expel Water", "5. Eject Wet Briquette", "6. Dry Thoroughly in Sun/Air (crucial step)"]
                     }
                 ]
-            }, // End of Energy Area
-            { // Start of Health Area
+            },
+            {
                 "area": "Health",
                 "icon": "fa-heartbeat",
                 "subcategories": [
@@ -452,8 +451,8 @@
                         "processSteps": ["1. Assess Common Local Health Issues", "2. Create Checklist & Stock Essential Supplies", "3. Learn to Identify & Use Local Medicinal Plants (caution!)", "4. Prepare Oral Rehydration Solution (WHO formula)", "5. Practice Basic Hygiene & Sanitation", "6. Establish Record Keeping & Supply Rotation", "7. Know Limitations & When to Seek Help"]
                     }
                 ]
-            }, // End of Health Area
-            { // Start of Food Area
+            },
+            {
                 "area": "Food",
                 "icon": "fa-utensils",
                 "subcategories": [
@@ -473,7 +472,7 @@
                     },
                     {
                         "uniqueId": "food-1",
-                        "title": "Hydro/Aero/Aquaponics", // Corrected title
+                        "title": "Hydro/Aero/Aquaponics",
                         "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.",
                         "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics", "aeroponics", "soilless culture", "vertical farming", "nutrient solution", "pH management", "closed-loop system"],
                         "context": "Cultivates plants without soil, using mineral nutrient solutions dissolved in water (hydroponics/aeroponics) or integrating fish farming (aquaponics), allowing for high-density, water-efficient food production in controlled environments.",
@@ -483,7 +482,7 @@
                              { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics as a sustainable food...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
                              { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
                              { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" }
-                             // Removed duplicate videos from food-0
+                        
                         ]
                      },
                     {
@@ -512,7 +511,7 @@
                         "materials": ["Mushroom Spawn/Substrate", "Algae Culture & Growth Medium", "Insect Starter Colony (crickets, mealworms, BSFL)", "Containers/Enclosures for cultivation", "Harvesting Tools", "Processing Equipment (drying, grinding)"],
                         "processSteps": ["1. Select Organism & Cultivation Method", "2. Set Up Controlled Environment (temp, humidity, light)", "3. Inoculation/Starting Culture/Introducing Insects", "4. Feeding & Maintenance", "5. Harvesting at Optimal Stage", "6. Processing for Consumption/Storage (drying, cooking, grinding)"],
                          "videos": [
-                              // Corrected youtubeId for "Fungi in soil..."
+                           
                               { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" }, // Placeholder, needs fungi video
                               { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried and grown on various subtrates used as a healthy sustainable food, useful in food resiliency, good converter & detoxifier of materials...", "icon_tag_fa": "fas fa-utensils", "color_tag": "#3B82F6" },
                               { "title": "Fungi in soil and ecosystem health", "youtubeId": "4DMylpQqVKI", "description": "Explores the role of fungal networks in soil health and nutrient cycling.", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
@@ -529,8 +528,8 @@
                          ]
                      }
                 ]
-            } // End of Food Area
-        ]; // End of categoryData array
+            }
+        ];
 
 
         // --- Updated Glossary ---
@@ -600,7 +599,6 @@
             "composting": "The process of decomposing organic matter into a nutrient-rich soil amendment.",
             "organic waste": "Biodegradable waste from plant or animal sources (e.g., food scraps, yard trimmings).",
             "soil improvement": "Enhancing soil structure, fertility, and water retention.",
-            // "sustainability": (Defined under Shelter)
             "fertilizer": "A chemical or natural substance added to soil or land to increase its fertility.",
             "vermicomposting": "Composting using various species of worms (e.g., red wigglers).",
             "hot composting": "A method managing C:N ratio, moisture, and aeration to achieve high temperatures (130-160°F / 55-70°C) for fast decomposition.",
@@ -622,7 +620,6 @@
             "waste reduction": "Minimizing the amount of waste produced.",
             // "DIY": (Defined under Shelter)
             "crafts": "Activities involving skill in making things by hand.",
-            // "resourcefulness": (Defined under Shelter)
             "zero waste": "A philosophy encouraging redesign of resource life cycles so all products are reused; goal is no trash sent to landfills/incinerators.",
             "repurposing": "Adapting an item for use in a different way.",
             "wastewater": "Water that has been used in homes, businesses, or industrial processes.",
@@ -632,36 +629,30 @@
             "treatment": "Application of methods to improve the quality or condition of something (e.g., wastewater).",
             "constructed wetland": "An artificial wetland engineered to treat wastewater using natural processes.",
             "reed bed": "A type of constructed wetland specifically using reeds.",
-            // "filtration": (Defined under Water)
             "hygiene": "Conditions or practices conducive to maintaining health and preventing disease, especially through cleanliness.",
             "bioremediation": "Using living organisms (microbes, plants) to remove pollutants from soil or water.",
             "water reuse": "Using treated wastewater for beneficial purposes like irrigation or industrial processes.",
             "anaerobic digestion": "Breakdown of organic matter by microorganisms in the absence of oxygen.",
             "resource recovery": "Extracting useful materials or energy from waste.",
 
-
             // Energy
             "solar cooker": "An appliance using direct sunlight for heating or cooking.",
-            // "DIY": (Defined under Shelter)
             "cooking technology": "Methods and equipment used for preparing food with heat.",
             "off-grid": "Not connected to public utilities, especially the main electrical grid.",
             "passive solar": "Building design or technology that uses sunlight for heating/cooling without active mechanical systems.",
-            // "solar thermal": (Defined under Water)
             "appropriate technology": "Technology suited to the social, economic, and environmental context it is intended for.",
             "fuel efficiency": "Measure of how effectively a device converts energy in a fuel source into useful output.",
             "biogas": "Gaseous fuel, especially methane, produced by the fermentation of organic matter.",
             "waste": "Unwanted or unusable material, substances, or by-products.", // Added specific definition for this context
             "energy": "Power derived from the utilization of physical or chemical resources.", // Added specific definition
             "renewable": "Energy from a source that is not depleted when used (e.g., wind, solar).",
-            // "anaerobic digestion": (Defined under Waste)
             "cooking fuel": "Material burned to produce heat for cooking.",
             "waste to energy": "Process of generating energy (electricity/heat) from waste.",
             "methane": "A colorless, odorless flammable gas (CH4), the main constituent of natural gas and biogas.",
             "digestate": "The nutrient-rich material remaining after anaerobic digestion.",
-            // "fertilizer": (Defined under Waste)
+
             "microgrid": "A localized group of electricity sources and loads that normally operates connected to and synchronous with the traditional wide area grid, but can disconnect and function autonomously.",
-            // "sustainability": (Defined under Shelter)
-            // "infrastructure": (Defined under Water)
+
             "renewable energy": "Energy from naturally replenished resources (solar, wind, hydro, geothermal, biomass).",
             "off-grid power": "Electricity generation independent of the public utility grid.",
             "community power": "Energy projects owned or controlled by local community members.",
