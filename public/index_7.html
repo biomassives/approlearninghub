@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Approvideo Learning Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -178,8 +179,73 @@
              color: #3730a3; /* Darker text */
              cursor: default;
              pointer-events: none; /* Not clickable */
+        }           
+        .modules {
+          margin: 2rem auto;
+          max-width: 700px;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+        
+        .module {
+          display: flex;
+          align-items: center;
+          padding: 1.25rem 1.5rem;
+          border-radius: 12px;
+          border: 3px solid;
+          background-color: #fff;
+          font-size: 1.25rem;
+          font-weight: 600;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          transition: transform 0.2s ease;
+        }
+        
+        .module:hover {
+          transform: translateY(-2px);
+        }
+        
+        .module .icon {
+          width: 40px;
+          height: 40px;
+          margin-right: 1rem;
+        }
+        
+        .module .icon svg {
+          width: 100%;
+          height: 100%;
+          stroke-width: 2.5;
+        }
+        
+        /* Distinct colored borders and icons */
+        .module.water {
+          border-color: #00aaff;
+          color: #00aaff;
+        }
+        
+        .module.fuel {
+          border-color: #ff8800;
+          color: #ff8800;
+        }
+        
+        .module.power {
+          border-color: #5555ff;
+          color: #5555ff;
+        }
+        
+        .module.health {
+          border-color: #e91e63;
+          color: #e91e63;
+        }
+        
+        .module.waste {
+          border-color: #4caf50;
+          color: #4caf50;
         }
 
+
+
+        
     </style>
 </head>
 <body class="bg-gray-100 pt-8 pb-16">
@@ -209,6 +275,31 @@
             <div id="megamenu-content" class="w-[95%] md:w-[90%] max-w-4xl mx-auto bg-white rounded-b-lg shadow-xl p-6 pt-10 pb-6">
                 <div id="megamenu-columns" class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
                     <div class="text-center text-gray-500 col-span-1 md:col-span-3">Select a category above to see details.</div>
+
+                    <main class="modules">
+                        <div class="module water">
+                          <div class="icon"><i data-feather="droplet"></i></div>
+                          <h2>Water Purification</h2>
+                        </div>
+                        <div class="module fuel">
+                          <div class="icon"><i data-feather="zap"></i></div>
+                          <h2>Fuel Briquettes</h2>
+                        </div>
+                        <div class="module power">
+                          <div class="icon"><i data-feather="cpu"></i></div>
+                          <h2>Electrical Power Systems</h2>
+                        </div>
+                        <div class="module health">
+                          <div class="icon"><i data-feather="heart"></i></div>
+                          <h2>Public Health</h2>
+                        </div>
+                        <div class="module waste">
+                          <div class="icon"><i data-feather="refresh-cw"></i></div>
+                          <h2>Waste Management</h2>
+                        </div>
+                    </main>
+                    
+                    
                 </div>
                 <div id="megamenu-details-area" class="border-gray-200">
                     </div>
