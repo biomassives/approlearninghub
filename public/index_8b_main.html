@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Approvideo - Learning Modules</title>
+  <script src="https://unpkg.com/feather-icons"></script>
+ <style>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f6f8;
+  color: #222;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-header .logo {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.site-header h1 {
+  font-size: 1.5rem;
+  color: #0066cc;
+}
+
+.modules-grid {
+  margin: 2rem auto;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.module {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 3px solid;
+  background-color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.module:hover {
+  transform: translateY(-2px);
+}
+
+.module .icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+}
+
+.module .icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2.5;
+}
+
+.module h2 {
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.module.water {
+  border-color: #00aaff;
+  color: #00aaff;
+}
+.module.fuel {
+  border-color: #ff8800;
+  color: #ff8800;
+}
+.module.power {
+  border-color: #5555ff;
+  color: #5555ff;
+}
+.module.health {
+  border-color: #e91e63;
+  color: #e91e63;
+}
+
+.module {
+  position: relative;
+  overflow: hidden;
+}
+
+.module::after {
+  content: "Watch a quick training video";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.9);
+  color: inherit;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+/* Base hover effect for all modules */
+.module:hover h2 {
+  color: white !important;
+}
+
+.module:hover .icon svg {
+  stroke: white;
+}
+
+.module:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+  color: inherit;
+  background-color: rgba(255,255,255,0.9);
+}
+
+.module.water:hover {
+  background-color: #00aaff;
+}
+.module.water:hover::after {
+  color: #00aaff;
+}
+
+.module.fuel:hover {
+  background-color: #ff8800;
+}
+.module.fuel:hover::after {
+  color: #ff8800;
+}
+
+.module.power:hover {
+  background-color: #5555ff;
+}
+.module.power:hover::after {
+  color: #5555ff;
+}
+
+.module.health:hover {
+  background-color: #e91e63;
+}
+.module.health:hover::after {
+  color: #e91e63;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 6px solid #ccc; /* Default border color */
+}
+
+/* Modal theme colors */
+#waterModal .modal-content {
+  border-color: #00aaff;
+}
+#waterModal h3 {
+  color: #00aaff;
+}
+
+#fuelModal .modal-content {
+  border-color: #ff8800;
+}
+#fuelModal h3 {
+  color: #ff8800;
+}
+
+#powerModal .modal-content {
+  border-color: #5555ff;
+}
+#powerModal h3 {
+  color: #5555ff;
+}
+
+#healthModal .modal-content {
+  border-color: #e91e63;
+}
+#healthModal h3 {
+  color: #e91e63;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.modal-content iframe {
+  width: 100%;
+  height: 315px;
+  border: none;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.modal-content .close:hover {
+  color: #777;
+}
+
+/* Slider Styles */
+.slider-container {
+  width: 100%;
+  position: relative;
+}
+
+.slide {
+  display: none;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.slide.active {
+  display: block;
+}
+
+.slider-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.slider-nav button {
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.slider-nav button:hover {
+  background-color: #f0f0f0;
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dot.active {
+  background-color: #666;
+}
+
+/* Slider theme colors */
+#waterModal .slider-nav button {
+  border-color: #00aaff;
+  color: #00aaff;
+}
+#waterModal .dot.active {
+  background-color: #00aaff;
+}
+
+#fuelModal .slider-nav button {
+  border-color: #ff8800;
+  color: #ff8800;
+}
+#fuelModal .dot.active {
+  background-color: #ff8800;
+}
+
+#powerModal .slider-nav button {
+  border-color: #5555ff;
+  color: #5555ff;
+}
+#powerModal .dot.active {
+  background-color: #5555ff;
+}
+
+#healthModal .slider-nav button {
+  border-color: #e91e63;
+  color: #e91e63;
+}
+#healthModal .dot.active {
+  background-color: #e91e63;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .modules-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .modal-content iframe {
+    height: 240px;
+  }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">🌱</div>
+    <h1>Approvideo Learning Hub</h1>
+  </header>
+
+  <main class="modules-grid">
+    <div class="module water" onclick="openModule('water')">
+      <div class="icon"><i data-feather="droplet"></i></div>
+      <h2>Water Purification</h2>
+    </div>
+    <div class="module fuel" onclick="openModule('fuel')">
+      <div class="icon"><i data-feather="zap"></i></div>
+      <h2>Fuel Briquettes</h2>
+    </div>
+    <div class="module power" onclick="openModule('power')">
+      <div class="icon"><i data-feather="cpu"></i></div>
+      <h2>Electrical Power Systems</h2>
+    </div>
+    <div class="module health" onclick="openModule('health')">
+      <div class="icon"><i data-feather="heart"></i></div>
+      <h2>Public Health</h2>
+    </div>
+  </main>
+
+  <!-- Modals Container (will be populated from JSON) -->
+  <div id="modalsContainer"></div>
+
+  <script>
+    // Initialize Feather Icons
+    feather.replace();
+
+    // JSON data for modules
+    const moduleData = {
+      "water": {
+        "title": "Water Purification",
+        "type": "youtube",
+        "content": {
+          "youtubeId": "nGfVlY4xLxA" // A simple filtered water video example
+        },
+        "color": "#00aaff",
+        "icon": "droplet"
+      },
+      "fuel": {
+        "title": "Fuel Briquettes",
+        "type": "local",
+        "content": {
+          "videoSrc": "assets/fuel.mp4"
+        },
+        "color": "#ff8800",
+        "icon": "zap"
+      },
+      "power": {
+        "title": "Electrical Power Systems",
+        "type": "slider",
+        "content": {
+          "slides": [
+            "Wubba lubba dub dub! The quantum field fluctuates with the multiverse harmonics, creating a feedback loop that powers the trans-dimensional capacitors. This is the first step in understanding the basics of power systems in our dimension.",
+            "Oh geez, Rick! In this slide, we're examining the ionic conversion matrix that takes surplus energy and re-routes it through the auxiliary power grid. It's important to maintain proper polarity, or you'll end up creating a time paradox!",
+            "Nobody exists on purpose. Nobody belongs anywhere. Everybody's gonna die. Come watch TV. But first, let's understand how the molecular restructuring of energy compounds creates sustainable power sources that can run indefinitely when properly maintained.",
+            "What is my purpose? You generate electricity. Oh my god... Yes, welcome to existential dread! Now focus on how the relay mechanics distribute power across various load-bearing circuits without causing system overloads.",
+            "I turned myself into a pickle, Morty! I'm Pickle Rick! And now I'll explain how bioelectric currents can be harnessed from organic matter to create sustainable energy sources for emergency situations."
+          ]
+        },
+        "color": "#5555ff",
+        "icon": "cpu"
+      },
+      "health": {
+        "title": "Public Health",
+        "type": "slider",
+        "content": {
+          "slides": [
+            "Sometimes science is more art than science, Morty. Lot of people don't get that. Public health begins with understanding basic sanitation principles. You know what they say - clean hands save lives, even in the multiverse.",
+            "They're not robots, Morty! They're bureaucrats! I don't respect them! Similarly, health systems require proper organizational structures and clear protocols to function effectively during crises.",
+            "Nobody exists on purpose. Nobody belongs anywhere. Everybody's gonna die. So let's focus on preventive care measures that can extend quality of life and reduce the burden on healthcare systems.",
+            "I'm not a villain, Summer. I'm just ahead of the curve. Vaccination programs represent one of the most cost-effective public health interventions ever developed. Herd immunity protects the most vulnerable populations.",
+            "Wubba lubba dub dub! Community engagement is critical for successful public health initiatives. Local knowledge and cultural contexts must be respected for interventions to succeed."
+          ]
+        },
+        "color": "#e91e63",
+        "icon": "heart"
+      }
+    };
+
+    // Function to create modals from JSON data
+    function createModals() {
+      const container = document.getElementById('modalsContainer');
+      
+      for (const [id, module] of Object.entries(moduleData)) {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.id = id + 'Modal';
+        
+        const content = document.createElement('div');
+        content.className = 'modal-content';
+        content.style.borderColor = module.color;
+        
+        // Add close button
+        const closeBtn = document.createElement('span');
+        closeBtn.className = 'close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.onclick = function() { closeModal(id + 'Modal'); };
+        
+        // Add title
+        const title = document.createElement('h3');
+        title.textContent = module.title;
+        title.style.color = module.color;
+        
+        content.appendChild(closeBtn);
+        content.appendChild(title);
+        
+        // Add content based on type
+        switch(module.type) {
+          case 'youtube':
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${module.content.youtubeId}`;
+            iframe.setAttribute('allowfullscreen', '');
+            content.appendChild(iframe);
+            break;
+            
+          case 'local':
+            const video = document.createElement('video');
+            video.controls = true;
+            video.width = '100%';
+            video.src = module.content.videoSrc;
+            content.appendChild(video);
+            break;
+            
+          case 'slider':
+            // Create slider container
+            const sliderContainer = document.createElement('div');
+            sliderContainer.className = 'slider-container';
+            
+            // Create slides
+            module.content.slides.forEach((text, index) => {
+              const slide = document.createElement('div');
+              slide.className = `slide ${index === 0 ? 'active' : ''}`;
+              slide.textContent = text;
+              slide.dataset.index = index;
+              sliderContainer.appendChild(slide);
+            });
+            
+            // Create slider navigation
+            const sliderNav = document.createElement('div');
+            sliderNav.className = 'slider-nav';
+            
+            const prevBtn = document.createElement('button');
+            prevBtn.textContent = 'Previous';
+            prevBtn.onclick = function() { changeSlide(id + 'Modal', 'prev'); };
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.textContent = 'Next';
+            nextBtn.onclick = function() { changeSlide(id + 'Modal', 'next'); };
+            
+            sliderNav.appendChild(prevBtn);
+            sliderNav.appendChild(nextBtn);
+            
+            // Create dots
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'slider-dots';
+            
+            for (let i = 0; i < module.content.slides.length; i++) {
+              const dot = document.createElement('span');
+              dot.className = `dot ${i === 0 ? 'active' : ''}`;
+              dot.dataset.index = i;
+              dot.onclick = function() { 
+                goToSlide(id + 'Modal', parseInt(this.dataset.index)); 
+              };
+              dotsContainer.appendChild(dot);
+            }
+            
+            content.appendChild(sliderContainer);
+            content.appendChild(sliderNav);
+            content.appendChild(dotsContainer);
+            break;
+        }
+        
+        modal.appendChild(content);
+        container.appendChild(modal);
+      }
+    }
+
+    // Function to open a module
+    function openModule(id) {
+      openModal(id + 'Modal');
+    }
+
+    // Function to open a modal
+    function openModal(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    // Function to close a modal
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    // Function to change slide
+    function changeSlide(modalId, direction) {
+      const modal = document.getElementById(modalId);
+      const slides = modal.querySelectorAll('.slide');
+      const dots = modal.querySelectorAll('.dot');
+      
+      let currentIndex = 0;
+      
+      // Find current active slide
+      slides.forEach((slide, index) => {
+        if (slide.classList.contains('active')) {
+          currentIndex = index;
+          slide.classList.remove('active');
+          dots[index].classList.remove('active');
+        }
+      });
+      
+      // Calculate new index
+      let newIndex;
+      if (direction === 'next') {
+        newIndex = (currentIndex + 1) % slides.length;
+      } else {
+        newIndex = (currentIndex - 1 + slides.length) % slides.length;
+      }
+      
+      // Activate new slide
+      slides[newIndex].classList.add('active');
+      dots[newIndex].classList.add('active');
+    }
+
+    // Function to go to specific slide
+    function goToSlide(modalId, index) {
+      const modal = document.getElementById(modalId);
+      const slides = modal.querySelectorAll('.slide');
+      const dots = modal.querySelectorAll('.dot');
+      
+      // Remove active class from all slides and dots
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      // Activate specified slide
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+    }
+
+    // Close modal when clicking outside content
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target === modals[i]) {
+          modals[i].style.display = "none";
+        }
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        const modals = document.getElementsByClassName('modal');
+        for (let i = 0; i < modals.length; i++) {
+          if (modals[i].style.display === "flex") {
+            modals[i].style.display = "none";
+          }
+        }
+      }
+    });
+
+    // Initialize modals from JSON
+    createModals();
+  </script>
+</body>
+</html>
