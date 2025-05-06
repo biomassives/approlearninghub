@@ -71,6 +71,22 @@
         .module.energy { border-color: #FFC107; } .module.energy:hover { background-color: #FFC107; }
         .module.health { border-color: #EF5350; } .module.health:hover { background-color: #EF5350; }
         .module.food { border-color: #8BC34A; } .module.food:hover { background-color: #8BC34A; }
+
+        /* For screens smaller than 768px, make it 2 columns and let them auto-fit */
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Or repeat(2, 1fr) for exactly 2 columns */
+                max-width: 90%; /* Adjust max-width for smaller screens */
+            }
+        }
+        
+        /* Even smaller screens, 1 column */
+        @media (max-width: 480px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* --- Category Content Area (Megamenu Logic Adapted) --- */
         #category-content-container {
             display: none; /* Hidden initially */
