@@ -1,0 +1,1235 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Approvideo Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8; /* Light gray background */
+            color: #222;
+            margin: 0 0 150px 0; /* Bottom margin for sticky panel */
+        }
+        /* --- Header --- */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 50; /* Ensure header is above content but below modal/panels */
+        }
+        .site-header .logo {
+            font-size: 2rem; margin-right: 1rem; color: #54B948; /* Green */
+        }
+        .site-header h1 { font-size: 1.5rem; margin: 0; }
+        .site-header h1 .green { color: #54B948; }
+        .site-header h1 .blue { color: #1E88E5; }
+        /* --- Homepage Module Grid --- */
+        #modules-grid-container {
+             padding: 2rem 1rem;
+        }
+        .modules-grid {
+            margin: 0 auto;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        /* --- Module Button Styling --- */
+        .module {
+            cursor: pointer;
+            border-radius: 12px;
+            border: 3px solid; /* Border color set by class */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Stack top and bottom */
+            background-color: #2D3748; /* Default dark background */
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .module-top {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem 0.75rem 1.5rem; /* Adjusted padding */
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        .module-top::before { /* Subtle gradient overlay for top */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1; /* Behind content */
+            opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover .module-top::before { opacity: 0; }
+        .module .icon { width: 36px; height: 36px; margin-right: 1rem; flex-shrink: 0; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: white; }
+        .module:hover .icon svg { transform: scale(1.1); }
+        .module h2 { margin: 0; font-size: 1.1rem; font-weight: 600; color: white; }
+        .module-bottom {
+            padding: 0.75rem 1.5rem 1rem 1.5rem; /* Adjusted padding */
+            min-height: 60px; /* Ensure some space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0,0,0, 0.15); /* Slightly different shade - adjust as needed */
+            transition: background-color 0.2s ease;
+            flex-grow: 1; /* Allow bottom to take remaining space */
+        }
+        .module:hover .module-bottom {
+             /* Use a lighter/darker shade of the main hover color */
+        }
+        .module-bottom-text {
+            font-size: 0.8rem;
+            color: #e2e8f0; /* Lighter text for dark bg */
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        .module-bottom-button {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background-color: rgba(255,255,255, 0.9);
+            color: inherit; /* Will inherit from hover state */
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            align-self: flex-start; /* Align button to the left */
+        }
+        .module-bottom-button i { /* Style for icon inside button */
+             margin-right: 0.3em;
+        }
+        /* Module Colors & Hover States */
+        .module.shelter { border-color: #36B9CC; }
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter:hover .module-bottom { background-color: rgba(40, 160, 178, 0.9); } /* Slightly darker teal */
+        .module.shelter:hover .module-bottom-button { color: #36B9CC; }
+        .module.water { border-color: #1E88E5; }
+        .module.water:hover { background-color: #1E88E5; }
+        .module.water:hover .module-bottom { background-color: rgba(25, 118, 210, 0.9); } /* Slightly darker blue */
+        .module.water:hover .module-bottom-button { color: #1E88E5; }
+        .module.waste { border-color: #7CB342; }
+        .module.waste:hover { background-color: #7CB342; }
+        .module.waste:hover .module-bottom { background-color: rgba(106, 158, 58, 0.9); } /* Slightly darker green */
+        .module.waste:hover .module-bottom-button { color: #7CB342; }
+        .module.energy { border-color: #FFC107; }
+        .module.energy:hover { background-color: #FFC107; }
+        .module.energy:hover .module-bottom { background-color: rgba(255, 179, 0, 0.9); } /* Slightly darker yellow */
+        .module.energy:hover .module-bottom-button { color: #c77e02; } /* Darker color for text on yellow */
+        .module.health { border-color: #EF5350; }
+        .module.health:hover { background-color: #EF5350; }
+        .module.health:hover .module-bottom { background-color: rgba(211, 71, 68, 0.9); } /* Slightly darker red */
+        .module.health:hover .module-bottom-button { color: #EF5350; }
+        .module.food { border-color: #8BC34A; }
+        .module.food:hover { background-color: #8BC34A; }
+        .module.food:hover .module-bottom { background-color: rgba(118, 171, 68, 0.9); } /* Slightly darker lime */
+        .module.food:hover .module-bottom-button { color: #8BC34A; }
+        /* --- Category Content Area (Megamenu Logic Adapted) --- */
+        #category-content-container { display: none; max-width: 1152px; margin: 1.5rem auto 0 auto; padding: 0 1rem; }
+        #category-content-container.visible { display: block; }
+        #back-to-modules-button { display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 8px 16px; border-radius: 0.375rem; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; margin-bottom: 1rem; }
+        #back-to-modules-button:hover { background-color: #4b5563; }
+        #back-to-modules-button svg { width: 1.1rem; height: 1.1rem; margin-right: 0.5rem; }
+        #category-title-display { transition: opacity 0.4s ease-out, max-height 0.4s ease-out; overflow: hidden; max-height: 0; opacity: 0; text-align: center; font-size: 1.75rem; font-weight: 600; letter-spacing: 0.05em; color: #374151; text-transform: uppercase; margin-bottom: 1rem; }
+        #category-title-display.visible { max-height: 100px; opacity: 1; }
+        #megamenu-content { background-color: #ffffff; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); padding: 1.5rem; }
+        #glossary-panel { transition: opacity 0.4s ease-out, max-height 0.4s ease-out, padding 0.4s ease-out, margin-bottom 0.4s ease-out, visibility 0.4s ease-out; overflow: hidden; max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; visibility: hidden; background-color: #4b5563; color: #f3f4f6; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 1rem; margin-top: 1rem; position: relative; z-index: 20; }
+        #glossary-panel.visible { max-height: 300px; opacity: 1; padding-top: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; visibility: visible; }
+        .glossary-close-button { position: absolute; top: 0.5rem; right: 0.75rem; background: rgba(255, 255, 255, 0.1); color: #e5e7eb; border: none; border-radius: 9999px; width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .glossary-close-button:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        #megamenu-columns { transition: opacity 0.4s ease-out, max-height 0.5s ease-out; overflow: hidden; max-height: 2000px; opacity: 1; }
+        #megamenu-columns.columns-hidden { max-height: 0; opacity: 0; }
+        #megamenu-details-area { transition: opacity 0.4s ease-out 0.1s, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out, visibility 0.4s ease-out, border-top-width 0.4s ease-out; overflow: auto; /* Changed to auto */ max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; visibility: hidden; border-top-width: 0; border-color: #e5e7eb; }
+        #megamenu-details-area.visible { max-height: calc(100vh - 250px); /* Adjust max height dynamically */ opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; visibility: visible; border-top-width: 1px; }
+        .tag-pill-button { display: inline-block; background-color: #4b5563; color: white; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; margin-right: 4px; margin-bottom: 4px; line-height: 1.2; cursor: pointer; border: none; transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; }
+        .tag-pill-button:hover { background-color: #374151; transform: translateY(-1px); }
+        .tag-pill-button.active { background-color: #3b82f6; font-weight: 600; }
+        .subcategory-toggle { transition: color 0.2s ease-in-out; }
+        .subcategory-toggle.active { font-weight: 600; color: #2563eb; }
+        .details-back-button { display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 6px 16px; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; }
+        .details-back-button:hover { background-color: #4b5563; }
+        .sibling-links-container { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; line-height: 1.5; }
+        .sibling-links-container > span { font-size: 0.9rem; font-weight: 500; color: #6b7280; margin-right: 8px; }
+        .sibling-link-pill { display: inline-block; padding: 4px 12px; border-radius: 9999px; margin: 3px 4px; font-weight: 600; color: white; background-color: #4f46e5; text-decoration: none; font-size: 0.8rem; transition: background-color 0.2s, transform 0.1s; cursor: pointer; border: none; }
+        .sibling-link-pill:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .sibling-link-pill.current { background-color: #a5b4fc; color: #3730a3; cursor: default; pointer-events: none; }
+        /* Shared Info Panel Styles */
+        #video-info-panel { display: none; flex-direction: column; background-color: #343a40; color: #f8f9fa; border-top: 3px solid #007bff; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); transition: opacity 0.3s ease; opacity: 0; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+        #video-info-panel.visible { display: flex; opacity: 1; }
+        .local-video-row { display: none; align-items: center; background-color: #fef9c3; padding: 8px 15px; border-bottom: 1px solid #fde68a; }
+        .local-video-row.visible { display: flex; }
+        .local-video-link { display: flex; align-items: center; text-decoration: none; gap: 10px; width: 100%; }
+        .local-video-link:hover .local-video-text { text-decoration: underline; }
+        .local-video-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fcd34d; flex-shrink: 0; background-color: #fefce8; }
+        .local-video-text { font-size: 0.8rem; color: #713f12; font-weight: 500; transition: text-decoration 0.2s; }
+        .local-video-text span { font-family: monospace; font-weight: 600; }
+        .youtube-info-row { display: flex; align-items: flex-start; padding: 10px 15px; }
+        #video-info-panel .info-icon { font-size: 36px; color: #FF0000; margin-right: 15px; flex-shrink: 0; padding-top: 3px; }
+        #video-info-panel .info-text { display: flex; flex-direction: column; gap: 3px; overflow: hidden; flex-grow: 1; }
+        #video-info-panel .info-url, #video-info-panel .info-title, #video-info-panel .info-description { margin: 0; line-height: 1.4; white-space: normal; word-break: break-word; }
+        #video-info-panel .info-url { font-size: 0.75em; color: #adb5bd; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #video-info-panel .info-title { font-size: 1em; font-weight: bold; color: #ffffff; }
+        #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
+        #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+
+        /* New Accordion Styles */
+        .accordion-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: #ffffff;
+            border-radius: 0 0 12px 12px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            margin-top: -2px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .accordion-container.open {
+            max-height: 500px; /* Adjust based on your content needs */
+        }
+        
+        .video-accordion-content {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .text-accordion-content {
+            padding: 1.5rem;
+            color: #4b5563;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .accordion-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: rgba(0,0,0,0.1);
+            color: #4b5563;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.2s;
+        }
+        
+        .accordion-close:hover {
+            background-color: rgba(0,0,0,0.2);
+        }
+        
+        /* Ensure module cards remain visible when accordion is open */
+        .module-container {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="site-header">
+        <div class="logo">🌱</div>
+        <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+    </header>
+    <div id="modules-grid-container">
+        <main class="modules-grid">
+            <!-- Modules will be generated here -->
+        </main>
+    </div>
+    <div id="category-content-container">
+         <div id="button-bar" class="flex flex-wrap justify-center bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 rounded-lg shadow-md p-3 gap-2 md:gap-4 relative z-30">
+                </div>
+
+        <button id="back-to-modules-button">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+             </svg>
+             Back to Modules
+        </button>
+        <div id="category-title-display"></div>
+        <div id="glossary-panel">
+            <p class="text-center text-gray-400">Click a tag to see its definition.</p>
+        </div>
+        <div id="megamenu-content">
+            <div id="megamenu-columns" class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
+                <!-- Columns will be populated here -->
+            </div>
+            <div id="megamenu-details-area" class="border-t border-gray-200">
+                <!-- Details will be populated here -->
+            </div>
+        </div>
+    </div>
+    <div id="video-info-panel">
+        <div class="local-video-row" id="local-video-row">
+             <a href="#" target="_blank" class="local-video-link" id="local-video-link">
+                 <img src="https://placehold.co/40x40/fef9c3/713f12?text=MP4" alt="Local Video Thumbnail" class="local-video-thumb" id="local-video-thumb" onerror="this.src='https://placehold.co/40x40/fef9c3/713f12?text=MP4'; this.onerror=null;">
+                 <span class="local-video-text">Watch local version: <span id="local-video-filename-display"></span></span>
+             </a>
+        </div>
+        <div class="youtube-info-row">
+            <div class="info-icon"><i class="fab fa-youtube"></i></div>
+            <div class="info-text">
+                <p class="info-url" id="info-url"><span class="placeholder-text">Hover over a video square...</span></p>
+                <p class="info-title" id="info-title"></p>
+                <p class="info-description" id="info-description"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // --- Data (categoryData and tagGlossary should be pasted here) ---
+        const categoryData = [
+            { // Start of Shelter Area
+                "area": "Shelter", "icon": "fa-home", "featherIcon": "home",
+                "subcategories": [
+                    {
+                        "uniqueId": "shelter-0",
+                        "title": "Low-cost, Durable Construction Methods",
+                        "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                        "tags": ["construction", "low-cost", "durable", "building", "DIY", "resilience", "earthbag", "bamboo", "superadobe", "natural building"],
+                        "context": "Focuses on creating robust shelters that withstand local environmental conditions (weather, pests, minor seismic activity) using affordable, accessible techniques and minimal specialized tools, ensuring longevity with reasonable maintenance.",
+                        "materials": ["Earthbags / Superadobe tubes", "Barbed Wire", "Soil (appropriate mix)", "Bamboo (treated)", "Recycled Tires", "Pallet Wood", "Basic Fasteners", "Natural Plasters/Sealers"],
+                        "processSteps": ["1. Site Assessment & Clearing", "2. Foundation Laying (rubble trench, earthbag, tire)", "3. Wall Construction (stacking, tamping, curing)", "4. Lintels & Openings (doors, windows)", "5. Roofing Structure & Covering", "6. Plastering & Finishing (protection & aesthetics)"],
+                        "videos": [
+                            { "title": "DIY Concrete Block Foundation for Small Structures", "youtubeId": "KDvH1hoEMPQ", "description": "How to build a simple but strong foundation with concrete blocks", "icon_tag_fa": "fas fa-layer-group", "color_tag": "#78716c"},
+                            { "title": "Building With Earth - Complete Cob Workshop", "youtubeId": "0olcwSwRELw", "description": "Learn the basics of building with cob...", "icon_tag_fa": "fas fa-house-user", "color_tag": "#a16207"}
+                        ]
+                    },
+                    {
+                        "uniqueId": "shelter-1",
+                        "title": "Locally Available Materials",
+                        "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+                        "tags": ["materials", "local", "sustainability", "earthship", "vernacular architecture", "resourcefulness", "clay", "stone", "salvaged", "bamboo", "natural building"],
+                        "context": "Emphasizes using resources found nearby (soil, stone, timber, bamboo, waste streams) to minimize transport costs, reduce environmental impact, often resulting in structures well-suited to the local climate and culture.",
+                        "materials": ["Local Soil (clay, sand, silt testing)", "Stones/Rocks", "Timber/Bamboo (sustainably harvested)", "Grasses/Straw (for binder/insulation)", "Recycled Materials (bottles, cans, tires)", "Natural Binders (lime, clay slip)"],
+                        "processSteps": ["1. Site & Resource Mapping", "2. Material Identification & Field Testing (soil jar test, etc.)", "3. Sustainable Harvesting Practices", "4. Material Processing (drying, treating, shaping)", "5. Construction Integration Techniques", "6. Assessing Long-term Availability"],
+                        "videos": [
+                            {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to Identify and Process Local Clay for Construction", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                            {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                            {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"}
+                        ]
+                    }
+                ]
+            },
+            { // Start of Water Area
+                "area": "Water", "icon": "fa-tint", "featherIcon": "droplet",
+                "subcategories": [ 
+                      {
+                        "uniqueId": "water-0", 
+                        "title": "Purification", 
+                        "description": "Effective water purification systems remove contaminants and pathogens. Multiple approaches exist for using available materials from simple boiling to multi-stage filtration and UV disinfection, with specific efficacy rates for each method. Includes step-by-step instructions for building biosand filters (99% pathogen removal), ceramic pot filters, and setting up proper SODIS (Solar Disinfection) systems that effectively eliminate harmful microorganisms.",
+                        "tags": ["clean water", "filtration", "health", "SODIS", "biosand", "pathogens", "ceramic filters", "turbidity reduction"],
+                        "context": "Clean water access is fundamental to health and survival. Waterborne diseases like cholera, typhoid, and dysentery cause millions of illnesses annually. These DIY methods can reduce disease risk by 60-99.9% depending on technique, providing crucial protection when conventional infrastructure is unavailable.",
+                        "materials": [
+                          "Sand (coarse, medium, fine grades)",
+                          "Gravel (1/4\" and 1/2\")",
+                          "Activated Charcoal (coconut-based preferred)",
+                          "Clear PET Bottles (tested for UV penetration)",
+                          "Cotton Cloth (for pre-filtering)",
+                          "Food-Grade Containers",
+                          "Clay (for ceramic filters)",
+                          "Basic Tools (hacksaw, drill, scissors)",
+                          "Optional: Silver Nanoparticles (antimicrobial)"
+                        ],
+                        "processSteps": [
+                          "Water Source Assessment & Pre-Treatment (turbidity reduction)",
+                          "Boiling Procedure (rolling boil for 1-3 minutes based on elevation)",
+                          "Building a BioSand Filter (with proper flow rate calibration)",
+                          "Ceramic Pot Filter Construction",
+                          "Solar Water Disinfection (SODIS) with proper exposure times",
+                          "Chlorination Methods and Measurement (when chemicals available)",
+                          "Combined Systems for Maximum Effectiveness",
+                          "Testing and Maintenance Protocols"
+                        ],
+                        "videos": [
+                          {
+                            "icon_tag_fa": "fas fa-filter",
+                            "color_tag": "#4b5563",
+                            "title": "DIY Water Filter Build (Microbial Safety Focus)",
+                            "youtubeId": "31",
+                            "description": "Detailed guide (City Prepping) on constructing a DIY water filter using available items, with emphasis on enhancing microbial removal for safer drinking water."
+                          },
+                          {"icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "Water purification with improvised materials", "youtubeId": "eOOYrY4zxpw", "description": "Testing and preparing natural clay for building projects"},
+                          {"icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Water acquisition", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials"},
+                          {"icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Water evaporative capture, dew and fog harvesting", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function"}
+                        ]
+                      },
+                     {
+                        "uniqueId": "water-1", 
+                        "title": "Desalination", 
+                        "description": "Convert salt water into fresh drinking water through multiple DIY desalination techniques scaled for household use. Methods include improved solar stills yielding 0.5-1.5 liters per square meter daily, multi-stage flash distillation for higher efficiency, and membrane-based systems using locally available materials. All systems can be built with basic tools and scaled according to water needs, with specific design modifications for brackish vs. seawater sources.",                        "tags": ["salt removal", "ocean", "irrigation", "solar still", "distillation", "multi-stage", "brackish water", "condensation efficiency", "salinity management"],                        "context": "Desalination provides critical fresh water access for 2+ billion people living in coastal regions and areas with saline groundwater. DIY systems can produce 5-20 liters daily depending on design, sufficient for drinking and cooking needs of small households in water-stressed environments.",                     {
+                        "materials": [
+                        "Simple Bucket Still! ",
+                        "Large Bucket (dark-colored preferable to absorb more heat)",
+                        "Clear Plastic Wrap (e.g., standard kitchen plastic film)",
+                        "Strong Adhesive Tape (e.g., duct tape, packing tape)",
+                        "Small, Clean Collection Bowl or Cup (must be shorter than the bucket's inner walls)",
+                        "Small, Clean Stone or Weight (to create a dip in the plastic wrap)",
+                        "Seawater (or a prepared saltwater solution)"
+                    ],
+                    "processSteps": [
+                      "1. Gather Materials: Collect all items listed for the simple bucket still.",
+                      "2. Site Selection: Choose a stable, level location with maximum direct sunlight exposure (aim for 6+ hours daily).",
+                      "3. Still Preparation: Pour seawater into the bucket (e.g., 1/3 to 1/2 full). Place the empty collection bowl in the center of the bucket, ensuring no seawater splashes into it.",
+                      "4. Assembly & Sealing: Stretch plastic wrap tightly over the bucket rim. Secure it with tape to create an airtight seal. Place the stone on the center of the plastic wrap, directly above the collection bowl, to create a gentle slope for water to drip.",
+                      "5. Operation (Solar Distillation): Allow the sun to heat the seawater. Evaporated water will condense on the underside of the plastic wrap and drip into the collection bowl.",
+                      "6. Freshwater Collection: After several hours (e.g., 4-8 hours), carefully remove the stone and then the plastic wrap, avoiding contamination of the collected freshwater in the bowl.",
+                      "7. Understanding Expected Yield (User Provided Basis): The collection target is 100 ml of freshwater from a setup involving 1 liter of seawater over a 4-hour period.",
+                      "8. Daily Yield Calculation (Per Still): For an 8-hour day, this equates to two 4-hour cycles, potentially yielding approximately 200 ml of freshwater per still (100 ml/cycle * 2 cycles).",
+                      "9. Scaling Up (Modular Expansion): To estimate total yield for multiple stills, multiply the daily yield per still (e.g., 200 ml) by the total number of stills (N). Total yield = 200ml * N.",
+                      "10. Output Testing (Basic): Check the collected water for significantly reduced salinity (e.g., by taste). For drinking, especially if the source water is heavily contaminated, further purity testing is advised.",
+                      "11. Maintenance & Repetition: Clean components regularly to prevent salt/residue buildup. Replenish seawater and reset the still to continue collection."
+                    ]
+                  },
+                         "videos": [
+                             { "icon_tag_fa": "fas fa-sun", "color_tag": "#f97316", "title": "Build a Simple Solar Still", "youtubeId": "bJ9r8RFp4gE", "description": "Step-by-step construction...",
+                               "localVideoFilename": "water_solar_still.mp4", // *** ADDED for Desalination ***
+                               "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "icon_tag_fa": "fas fa-tint-slash", "color_tag": "#3b82f6", "title": "Improving Solar Still Efficiency", "youtubeId": "d5bjI9jgCxk", "description": "Tips and tricks...", "localVideoFilename": "water_solar_still_efficiency.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     },
+                ]
+            },
+            { // Start of Waste Area
+                "area": "Waste",
+                "icon": "fa-recycle",
+                "featherIcon": "trash-2",
+                "subcategories": [
+                    {
+                        "uniqueId": "waste-0",
+                        "title": "Composting",
+                        "description": "Learn how to convert organic waste into nutrient-rich soil. Includes techniques for both urban and rural settings, managing compost temperature, and using the final product.",
+                        "tags": ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting", "hot composting", "cold composting", "bokashi", "nutrient cycling"],
+                        "context": "Transforms kitchen scraps and yard waste into valuable soil amendment, reducing landfill burden, improving soil structure and fertility, and sequestering carbon.",
+                        "materials": ["Organic 'Greens' (fruit/veg scraps, coffee grounds)", "Organic 'Browns' (dried leaves, straw, paper)", "Compost Bin/Container (optional)", "Water Source", "Turning Tool (fork, shovel)", "(Optional: worms for vermicomposting)"],
+                        "processSteps": ["1. Choose Method (pile, bin, worms, bokashi)", "2. Collect & Chop Materials", "3. Layer Greens & Browns (ratio approx 1:2 to 1:3)", "4. Maintain Moisture (like damp sponge)", "5. Aerate/Turn Regularly (for hot composting)", "6. Harvest & Use Finished Compost"],
+                        "videos": [
+                            {"icon_tag_fa": "fas fa-seedling", "color_tag": "#84cc16", "title": "Building a Three-Bin Compost System", "youtubeId": "JehP4xlF4gI", "description": "Creating an efficient composting setup for larger volumes of organic waste."},
+                            {"icon_tag_fa": "fas fa-worm", "color_tag": "#a16207", "title": "Urban Balcony Composting With Worms", "youtubeId": "5CnSYWX-N6I", "description": "Guide to small-scale vermicomposting suitable for apartments or limited spaces."},
+                            {"icon_tag_fa": "fas fa-temperature-high", "color_tag": "#f97316", "title": "Hot Composting Technique for Fast Results", "youtubeId": "HWypVv1dzJQ", "description": "Learn the accelerated composting method that breaks down materials in weeks."}
+                        ]
+                    },
+                    {
+                        "uniqueId": "waste-1",
+                        "title": "Recycling Systems",
+                        "description": "Set up community or household recycling systems to properly sort and process recyclable materials. Covers plastic, paper, glass, and metal recycling basics.",
+                        "tags": ["recycling", "waste sorting", "materials recovery", "circular economy", "community action", "plastic recycling", "paper recycling", "metal recycling", "glass recycling", "waste management"],
+                        "context": "Organizes the collection and separation of recyclable materials, diverting them from landfills/incineration and allowing them to be reprocessed into new products, saving resources and energy.",
+                        "materials": ["Designated Bins/Containers", "Signage/Labels", "Collection Bags/Carts", "Basic Cleaning Supplies", "(Community: Central collection point/shed)"],
+                        "processSteps": ["1. Identify Accepted Materials (local rules)", "2. Set Up Sorting Stations (clear labeling)", "3. Rinse/Clean Recyclables (reduce contamination)", "4. Store Sorted Materials", "5. Coordinate Collection/Drop-off", "6. Educate Participants (contamination issues)"],
+                         "videos": [
+                            {"icon_tag_fa": "fas fa-users", "color_tag": "#6366f1", "title": "Setting Up a Community Recycling Station", "youtubeId": "IsTnQ9U5wN8", "description": "Organizing an effective central collection point for community recyclables."},
+                            {"icon_tag_fa": "fas fa-cogs", "color_tag": "#6b7280", "title": "DIY Plastic Processing for Reuse", "youtubeId": "kUR6_bQLU-E", "description": "Introduction to small-scale methods to clean, shred, and potentially melt plastic waste."},
+                            {"icon_tag_fa": "fas fa-newspaper", "color_tag": "#a8a29e", "title": "Paper Recycling and Homemade Paper Making", "youtubeId": "Gq7L9-0XdVw", "description": "How to create new paper products from waste paper at home or on a small scale."}
+                         ]
+                    },
+                    {
+                        "uniqueId": "waste-2",
+                        "title": "Upcycling",
+                        "description": "Transform discarded items into useful products. Learn creative approaches to reuse materials that would otherwise become waste.",
+                        "tags": ["upcycling", "creative reuse", "waste reduction", "DIY", "crafts", "resourcefulness", "zero waste", "repurposing"],
+                        "context": "Goes beyond basic recycling by creatively transforming waste materials or unwanted items into new products of higher quality or value, reducing the need for new raw materials.",
+                        "materials": ["Discarded Items (tires, bottles, cans, pallets, textiles, etc.)", "Basic Tools (cutters, drills, fasteners, adhesives)", "Cleaning Supplies", "Finishing Materials (paint, sealant)"],
+                        "processSteps": ["1. Collect & Select Waste Materials", "2. Clean & Prepare Materials Safely", "3. Brainstorm/Design New Use", "4. Cut, Shape, Assemble", "5. Finish & Decorate (optional)", "6. Share Ideas & Techniques"],
+                         "videos": [
+                            {"icon_tag_fa": "fas fa-couch", "color_tag": "#78350f", "title": "Making Furniture From Wooden Pallets", "youtubeId": "zIcDVPkHVmI", "description": "Constructing chairs, tables, beds, and other items from shipping pallets."},
+                            {"icon_tag_fa": "fas fa-bottle-water", "color_tag": "#0ea5e9", "title": "Plastic Bottle Building Blocks and Construction", "youtubeId": "lnT1qY0a4KA", "description": "Using plastic bottles filled with sand or other materials as construction elements."},
+                            {"icon_tag_fa": "fas fa-recycle", "color_tag": "#52525b", "title": "Tire Upcycling for Garden Projects", "youtubeId": "AxiI17y0fNk", "description": "Transforming old tires into planters, retaining walls, and play area components."}
+                         ]
+                    },
+                    {
+                        "uniqueId": "waste-3",
+                        "title": "Wastewater Management",
+                        "description": "Build simple systems to treat and safely dispose of greywater and blackwater. Includes constructed wetlands, filtration beds, and safe handling practices.",
+                        "tags": ["wastewater", "greywater", "blackwater", "sanitation", "treatment", "constructed wetland", "reed bed", "filtration", "hygiene", "bioremediation", "water reuse"],
+                        "context": "Safely treats water from sinks, showers (greywater) or toilets (blackwater) to prevent environmental contamination and disease spread, potentially allowing for safe reuse (e.g., irrigation).",
+                        "materials": ["Pipes/Plumbing", "Gravel (various sizes)", "Sand", "Water-loving Plants (reeds, cattails)", "Waterproof Liner (if needed)", "Settling Tank/Container", "Distribution Pipes (for treated water)"],
+                        "processSteps": ["1. Identify Source & Separate Grey/Blackwater (if possible)", "2. Site Selection (away from wells, downhill)", "3. System Design (septic, mulch basin, reed bed)", "4. Excavation & Liner Installation", "5. Layering Filter Media (gravel, sand)", "6. Planting (wetland plants)", "7. Connecting Inflow/Outflow", "8. Monitoring & Maintenance"],
+                         "videos": [
+                            {"icon_tag_fa": "fas fa-shower", "color_tag": "#9ca3af", "title": "DIY Greywater System for Garden Irrigation", "youtubeId": "v3KGpnRrQ_I", "description": "Simple methods for reusing household water from sinks and showers for watering plants."},
+                            {"icon_tag_fa": "fas fa-leaf", "color_tag": "#16a34a", "title": "Constructing a Basic Wetland Filtration System", "youtubeId": "6gGKKnD-Z4Q", "description": "Building a natural water treatment system using plants and gravel layers."},
+                            {"icon_tag_fa": "fas fa-toilet", "color_tag": "#a16207", "title": "Simple Septic System Installation Overview", "youtubeId": "QYyZdJc2RhY", "description": "Understanding the components and setup of a basic blackwater management system."}
+                         ]
+                    }
+                ]
+            },
+            { // Start of Energy Area
+                "area": "Energy", 
+                "icon": "fa-solar-panel", 
+                "featherIcon": "zap",
+                "subcategories": [ 
+                        {
+                        "uniqueId": "energy-0",
+                        "title": "Solar Box Cookers",
+                        "description": "Effective basic box cooker design of three types: parabola, box reflective enclosure with dark pot, and insulated glass cover reflector oven cookers.",
+                        "tags": ["solar cooker", "DIY", "cooking technology", "off-grid", "passive solar", "solar thermal", "appropriate technology", "fuel efficiency"],
+                        "context": "Utilizes direct sunlight for cooking, reducing reliance on firewood or other fuels, minimizing indoor air pollution, and providing a sustainable cooking method in sunny climates.",
+                        "materials": ["Cardboard Boxes (nested)", "Insulation (paper, cloth, straw)", "Reflective Material (foil, mylar)", "Glass/Oven Bag (transparent cover)", "Black Paint (non-toxic)", "Dark, Lidded Pot", "Glue/Tape"],
+                        "processSteps": ["1. Construct Insulated Box (inner & outer)", "2. Line Inner Box & Flaps with Reflectors", "3. Create Transparent Lid/Cover", "4. Paint Pot Black (or use dark pot)", "5. Position Cooker in Full Sun (adjust angle)", "6. Place Pot Inside & Cook (longer times needed)"]
+                     },
+                     {
+                        "uniqueId": "energy-1",
+                        "title": "Biogas Generation",
+                        "description": "Turn kitchen and animal waste into clean-burning gas for cooking. Learn how to build a small digester, maintain it, and safely use the gas.",
+                        "tags": ["biogas", "waste", "energy", "renewable", "anaerobic digestion", "cooking fuel", "waste to energy", "methane", "digestate", "fertilizer"],
+                        "context": "Converts organic waste (manure, food scraps) into methane gas through anaerobic digestion, providing a renewable cooking fuel while also producing a nutrient-rich slurry (digestate) usable as fertilizer.",
+                        "materials": ["Airtight Container (drum, tank, IBC)", "Inlet Pipe (for slurry)", "Outlet Pipe (for digestate)", "Gas Outlet Pipe & Valve", "Tubing (for gas transport)", "Manure/Kitchen Waste", "Water"],
+                        "processSteps": ["1. Construct/Adapt Airtight Digester", "2. Install Inlet, Outlet & Gas Pipes (ensure seals)", "3. Prepare Slurry (mix waste & water)", "4. 'Seed' Digester (add existing digestate or rumen fluid if possible)", "5. Feed Regularly & Remove Digestate", "6. Safely Plumb & Use Gas (water trap, burner)"]
+                     },
+                     {
+                        "uniqueId": "energy-2",
+                        "title": "Microgrids for Sustainable Power",
+                        "description": "Build small, local power systems that connect solar, wind, or battery energy to homes and clinics. Learn how to balance loads and increase energy access.",
+                        "tags": ["microgrid", "sustainability", "infrastructure", "renewable energy", "off-grid power", "community power", "solar", "wind power", "battery storage", "energy access", "resilience"],
+                        "context": "Creates localized, independent energy networks, often using renewable sources, to provide reliable electricity access to communities or facilities not served by a main grid, enhancing resilience and self-sufficiency.",
+                        "materials": ["Generation Source(s) (PV panels, wind turbine)", "Charge Controllers", "Battery Bank", "Inverter(s)", "Distribution Wiring & Protection (breakers, fuses)", "Load Management System (optional)", "Monitoring Equipment"],
+                        "processSteps": ["1. Energy Audit & Load Assessment (needs vs. capacity)", "2. System Design & Component Sizing", "3. Installation of Generation & Storage", "4. Wiring & Safety Implementation (grounding, protection)", "5. Distribution Network Setup", "6. Commissioning, Monitoring & Maintenance Plan", "7. Community Governance/Management Model (if applicable)"]
+                     },
+                     {
+                        "uniqueId": "energy-3", "title": "Hand Pressed Heat & Cooking Fuel Briquettes", "description": "DIY cook stove Fuel produced...", "tags": ["cooking fuel", "upcycling", "home heating", "biomass", "briquettes", "waste to energy", "appropriate technology", "DIY", "fuel efficiency"],
+                        "context": "Compresses loose biomass waste...", "materials": ["Dry Biomass Waste...", "Water...", "Binder...", "Briquette Press...", "Drying Rack/Area"], "processSteps": ["1. Collect & Shred...", "2. Mix with Water...", "3. Load Slurry...", "4. Compress Firmly...", "5. Eject Wet Briquette...", "6. Dry Thoroughly..."],
+                        "videos": [
+                            { "icon_tag_fa": "fas fa-fire-alt", "color_tag": "#d97706", "title": "Simple Biomass Briquette Press Construction", "youtubeId": "1LD7BhR3jTI", "description": "Building a manual press...",
+                              "localVideoFilename": "energy_briquette_press.mp4", // *** ADDED for Briquettes/Super Stove ***
+                              "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    }
+                ]
+            },
+            {
+                "area": "Health",
+                "featherIcon": "heart",
+                "icon": "fa-heartbeat",
+                "subcategories": [
+                    {
+                        "uniqueId": "health-0",
+                        "title": "EMT Skills",
+                        "description": "Learn lifesaving basics such as CPR, wound dressing, splinting, and how to assess an emergency before help arrives.",
+                        "tags": ["EMT", "emergency", "first response", "CPR", "basic life support", "patient assessment", "wound care", "trauma care", "splinting", "bleeding control"],
+                        "context": "Provides foundational knowledge and skills for immediate response to life-threatening emergencies (cardiac arrest, severe bleeding, fractures), stabilizing patients until professional help arrives.",
+                        "materials": ["First Aid Kit Supplies (bandages, gauze, tape)", "Gloves", "CPR Mask/Barrier", "Splinting Materials (improvised or commercial)", "(Training: Mannequin)"],
+                        "processSteps": ["1. Ensure Scene Safety", "2. Primary Assessment (Airway, Breathing, Circulation - ABCs)", "3. Call for Help (if possible)", "4. Critical Interventions (CPR, bleeding control, recovery position)", "5. Secondary Assessment (head-to-toe exam)", "6. Splinting/Wound Dressing", "7. Ongoing Monitoring"]
+                    },
+                    {
+                        "uniqueId": "health-1",
+                        "title": "Telemedicine",
+                        "description": "Use phones and simple apps to connect with doctors remotely. Learn how to explain symptoms, send photos, and follow up with online care.",
+                        "tags": ["health", "telemedicine", "remote care", "digital health", "remote diagnosis", "mHealth", "communication", "health access"],
+                        "context": "Leverages communication technology (phones, internet) to bridge distances, enabling remote medical consultations, diagnosis (limited), monitoring, and health education, improving access to care.",
+                        "materials": ["Device (smartphone, tablet, computer)", "Internet/Phone Connectivity", "Camera (on device)", "Basic Measurement Tools (thermometer, optional)", "Relevant Health Apps/Platforms"],
+                        "processSteps": ["1. Identify Telemedicine Provider/Service", "2. Ensure Connectivity & Device Function", "3. Prepare for Consultation (symptoms list, questions)", "4. Communicate Symptoms Clearly (use photos if helpful)", "5. Follow Medical Advice & Instructions", "6. Plan Follow-up / Data Sharing (if needed)"]
+                    },
+                    {
+                        "uniqueId": "health-2",
+                        "title": "First Aid",
+                        "description": "Master everyday skills for cuts, burns, insect bites, and fevers. Helps reduce complications when access to a clinic is delayed.",
+                        "tags": ["first aid", "injury", "emergency", "home care", "wound care", "burns", "bites & stings", "common ailments", "hygiene"],
+                        "context": "Focuses on immediate care for common, non-life-threatening injuries and ailments (cuts, scrapes, minor burns, bites, fever) to prevent complications, reduce pain, and facilitate healing when professional care isn't immediately available.",
+                        "materials": ["Well-stocked First Aid Kit (bandages, gauze, tape, antiseptic, pain relievers, thermometer, tweezers, etc.)", "Clean Water", "Cool Compresses", "Soap"],
+                        "processSteps": ["1. Assess the Situation (minor vs. serious)", "2. Clean Wounds Thoroughly", "3. Apply Appropriate Dressing/Bandage", "4. Manage Minor Burns (cool water, cover)", "5. Treat Bites/Stings (remove stinger, clean, cold compress)", "6. Manage Fever (hydration, rest, cooling measures)", "7. Recognize When to Seek Professional Help"]
+                    },
+                    {
+                        "uniqueId": "health-3",
+                        "title": "Self-sufficient Healthcare",
+                        "description": "Set up a basic first aid station at home or in your village. Includes herbal remedies, rehydration recipes, and supply checklists.",
+                        "tags": ["health", "DIY", "self-reliance", "herbal medicine", "community health", "preventive health", "traditional medicine", "ORS", "preparedness", "hygiene", "sanitation"],
+                        "context": "Empowers individuals and communities to manage basic health needs using locally available resources, preventive measures, and simple remedies, increasing resilience when access to formal healthcare is limited.",
+                        "materials": ["Organized Storage (clean box/cabinet)", "Basic First Aid Supplies", "Commonly Used Medicinal Herbs (local knowledge)", "Salt, Sugar, Bicarbonate (for ORS)", "Clean Water & Containers", "Notebook & Pen (for records)"],
+                        "processSteps": ["1. Assess Common Local Health Issues", "2. Create Checklist & Stock Essential Supplies", "3. Learn to Identify & Use Local Medicinal Plants (caution!)", "4. Prepare Oral Rehydration Solution (WHO formula)", "5. Practice Basic Hygiene & Sanitation", "6. Establish Record Keeping & Supply Rotation", "7. Know Limitations & When to Seek Help"]
+                    }
+                ]
+            },
+            {
+                "area": "Food",
+                "icon": "fa-utensils",
+                "featherIcon": "coffee",
+                "subcategories": [
+                    {
+                        "uniqueId": "food-0",
+                        "title": "Urban Gardening",
+                        "description": "Grow healthy vegetables in small spaces using buckets, rooftops, or window boxes. Learn how to compost and plant in cycles.",
+                        "tags": ["urban farming", "gardening", "food security", "container gardening", "small space gardening", "rooftop garden", "balcony garden", "composting", "vertical farming", "local food"],
+                        "context": "Enables food production in densely populated areas with limited land, utilizing containers, vertical spaces, and rooftops to grow fresh produce, enhancing local food access and greening urban environments.",
+                        "materials": ["Containers (buckets, pots, planters, grow bags)", "Potting Mix/Soil/Compost", "Seeds or Seedlings", "Watering Can/System", "Fertilizer (organic options)", "Sunlight/Grow Lights"],
+                        "processSteps": ["1. Select Site & Assess Sunlight", "2. Choose Appropriate Containers & Plants", "3. Prepare Growing Medium", "4. Planting & Seeding", "5. Watering & Feeding Consistently", "6. Pest/Disease Management (organic methods)", "7. Harvesting & Succession Planting"],
+                        "videos": [
+                             { "title": "Organic/Biodynamic Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#88bc2a" },
+                             { "title": "Community Gardens as health and vitality nodes", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together: How community gardens are important for your mental health", "icon_tag_fa": "fas fa-sprout", "color_tag": "#88bc2a" },
+                             { "title": "Community Gardens address food deserts", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together: How community gardens are important for your mental health", "icon_tag_fa": "fas fa-sprout", "color_tag": "#6B7280" } // Note: Same video ID used twice, might be intentional or a typo
+                        ]
+                    },
+                    {
+                        "uniqueId": "food-1",
+                        "title": "Hydro/Aero/Aquaponics",
+                        "description": "Use water-based growing systems to raise food without soil. Learn to mix nutrient solutions and maintain pH for healthy crops.",
+                        "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics", "aeroponics", "soilless culture", "vertical farming", "nutrient solution", "pH management", "closed-loop system"],
+                        "context": "Cultivates plants without soil, using mineral nutrient solutions dissolved in water (hydroponics/aeroponics) or integrating fish farming (aquaponics), allowing for high-density, water-efficient food production in controlled environments.",
+                        "materials": ["Growing System Components (tubs, pipes, pumps, timers)", "Growing Medium (rockwool, coco coir, perlite - optional)", "Nutrient Solution Concentrates", "pH Testing Kit & Adjusters (up/down)", "EC/TDS Meter (optional)", "(Aquaponics: fish tank, fish, pump)"],
+                        "processSteps": ["1. Assemble Growing System", "2. Prepare Nutrient Solution (mix & adjust pH/EC)", "3. Germinate Seeds / Prepare Seedlings", "4. Transplant into System", "5. Monitor & Maintain Water Levels, Nutrients, pH", "6. (Aquaponics: Manage fish & water quality)", "7. Harvesting & System Cleaning"] ,
+                        "videos": [
+                             { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics as a sustainable food...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6" },
+                             { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie' demonstrating a small-scale...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
+                             { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor Curt Yungwirth's innovations...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" }
+                        
+                        ]
+                     },
+                    {
+                        "uniqueId": "food-2",
+                        "title": "Sustainable Agriculture Techniques",
+                        "description": "Practice crop rotation, natural pest control, and cover cropping to improve soil health and increase yields without chemicals.",
+                        "tags": ["agriculture", "sustainable", "soil health", "permaculture", "organic farming", "agroecology", "cover cropping", "crop rotation", "integrated pest management", "conservation agriculture", "biodiversity", "seed saving"],
+                        "context": "Employs ecological principles to farming, focusing on building soil health, conserving water, enhancing biodiversity, and reducing reliance on synthetic inputs (pesticides, fertilizers) for long-term productivity.",
+                        "materials": ["Compost/Manure", "Cover Crop Seeds (legumes, grasses)", "Mulch Materials", "Natural Pest Control Agents (neem oil, companion plants)", "Diverse Crop Seeds/Varieties", "Soil Testing Kit (optional)"],
+                        "processSteps": ["1. Soil Health Assessment", "2. Implement Crop Rotation Plan", "3. Utilize Cover Cropping & Mulching", "4. Practice Integrated Pest Management (IPM)", "5. Enhance Biodiversity (polyculture, hedgerows)", "6. Water Conservation Techniques (drip irrigation, swales)", "7. Nutrient Management (compost, manure tea)"],
+                        "videos": [
+                            {"icon_tag_fa": "fas fa-sync-alt", "color_tag": "#ca8a04", "title": "Crop Rotation Explained: Benefits & Planning", "youtubeId": "QhH-YsDr8D4", "description": "Understanding how rotating crops improves soil and reduces pests."}, // Example ID
+                            {"icon_tag_fa": "fas fa-shield-alt", "color_tag": "#dc2626", "title": "Natural Pest Control Methods for Gardens", "youtubeId": "tgQ1L7TcDjQ", "description": "Using companion planting, beneficial insects, and natural sprays."}, // Example ID
+                            {"icon_tag_fa": "fas fa-leaf", "color_tag": "#16a34a", "title": "Cover Cropping for Beginners: Building Soil", "youtubeId": "NbvDEAomVlk", "description": "How to choose, plant, and manage cover crops to enrich your soil."}, // Specific video ID
+                            {"icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f", "title": " How to Start a No-Till Garden from Scratch ", "youtubeId": "sdmqbhQo-yw", "description": "how to start a garden from scratch, how to start a raised bed garden, how to start a no-till garden, gardening without raised beds, farming for beginners, gardening for beginners, "},
+                            {"icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f", "title": "Introduction to No-Till Farming Techniques", "youtubeId": "0xvp8sWY6Fk", "description": "Minimizing soil disturbance for better structure and water retention."},
+                            {"icon_tag_fa": "fas fa-seedling", "color_tag": "#fbbf24", "title": "Seed Saving Basics for Common Vegetables", "youtubeId": "wB8Z4LnHJ8I", "description": "How to collect, process, and store seeds from your garden."} // Example ID
+                        ]
+                    },
+                    {
+                        "uniqueId": "food-3",
+                        "title": "Fungi, Algae, Insects, & Tech",
+                        "description": "Inventory and evaluation of modern and antiquity based food production",
+                        "tags": ["alternative protein", "future food", "mycology", "entomophagy", "algae", "spirulina", "BSFL", "insect farming", "mushroom cultivation", "food technology", "fermentation", "nutrition", "mycoprotein"],
+                        "context": "Explores less conventional but potentially highly sustainable and nutritious food sources like edible fungi, microalgae, and insects, alongside appropriate technologies for their cultivation and processing.",
+                        "materials": ["Mushroom Spawn/Substrate", "Algae Culture & Growth Medium", "Insect Starter Colony (crickets, mealworms, BSFL)", "Containers/Enclosures for cultivation", "Harvesting Tools", "Processing Equipment (drying, grinding)"],
+                        "processSteps": ["1. Select Organism & Cultivation Method", "2. Set Up Controlled Environment (temp, humidity, light)", "3. Inoculation/Starting Culture/Introducing Insects", "4. Feeding & Maintenance", "5. Harvesting at Optimal Stage", "6. Processing for Consumption/Storage (drying, cooking, grinding)"],
+                         "videos": [
+                           
+                              { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities of urban farming in Portland...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280" }, // Placeholder, needs fungi video
+                              { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried and grown on various subtrates used as a healthy sustainable food, useful in food resiliency, good converter & detoxifier of materials...", "icon_tag_fa": "fas fa-utensils", "color_tag": "#3B82F6" },
+                              { "title": "Fungi in soil and ecosystem health", "youtubeId": "4DMylpQqVKI", "description": "Explores the role of fungal networks in soil health and nutrient cycling.", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981" },
+                              { "title": "Fungi for creating structural compoments", "youtubeId": "x6buXYuvXWg", "description": "Using mycelium (fungal roots) to grow biodegradable materials and structures.", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e" },
+                              { "title": "Fungi Algae (Lichens)", "youtubeId": "mD5jnxhne7o", "description": "Introduction to lichens, a symbiotic relationship between fungi and algae/cyanobacteria.", "icon_tag_fa": "fas fa-tree", "color_tag": "#ca8a04" },
+                              { "title": "Fungi eating insects so people can eat it (Entomopathogenic Fungi)", "youtubeId": "5eibeYxRt5w", "description": "Explores fungi that naturally control insect populations, relevant to agriculture & potentially food safety.", "icon_tag_fa": "fas fa-bug-slash", "color_tag": "#7c2d12" },
+                              { "title": "Is Microalgae the Sustainable Food of the Future?", "youtubeId": "VFNS7Is6Td0", "description": "Investigates microalgae as a potential future food source...", "icon_tag_fa": "fas fa-bacteria", "color_tag": "#0d9488" },
+                              { "title": "Mushroom Farming Basics", "youtubeId": "9IFTMnftLgU", "description": "Growing edible mushrooms on straw and other byproducts", "icon_tag_fa": "fas fa-cloud", "color_tag": "#a1a1aa" },
+                              { "title": "Spirulina Micro-Farming at Home", "youtubeId": "SMUf_pbxkcU", "description": "Small-scale production of this nutrient-dense blue-green algae", "icon_tag_fa": "fas fa-vial", "color_tag": "#2dd4bf" },
+                              { "title": "Insect Farming: Cricket Rearing Systems", "youtubeId": "jp6OgNyTxA0", "description": "Setting up efficient cricket production for protein", "icon_tag_fa": "fas fa-bug", "color_tag": "#3f3f46" },
+                              { "title": "Black Soldier Fly Larvae Composting", "youtubeId": "5j0YCyg0vpE", "description": "Converting organic waste to animal feed using insect larvae", "icon_tag_fa": "fas fa-recycle", "color_tag": "#166534" },
+                              { "title": "Ancient Grain Recovery and Cultivation", "youtubeId": "Xqn490UuVQU", "description": "Growing forgotten but nutritious grain varieties", "icon_tag_fa": "fas fa-wheat-awn", "color_tag": "#f59e0b" },
+                              { "title": "Simple Automation for Small-Scale Agriculture", "youtubeId": "eHMpkXiGEag", "description": "Low-tech solutions to reduce manual labor in food production", "icon_tag_fa": "fas fa-robot", "color_tag": "#78716c" }
+                         ]
+                     }
+                ]
+            }
+        ];
+
+
+      
+        
+        // --- Updated Glossary ---
+        const tagGlossary = { /* ... Include the full glossary from previous response ... */ };
+        
+        // --- Global Variables & DOM Elements ---
+        const modulesGridContainer = document.getElementById('modules-grid-container');
+        const modulesGrid = modulesGridContainer.querySelector('.modules-grid');
+        const categoryContentContainer = document.getElementById('category-content-container');
+        const backToModulesButton = document.getElementById('back-to-modules-button');
+        const categoryTitleDisplay = document.getElementById('category-title-display');
+        const glossaryPanel = document.getElementById('glossary-panel');
+        const megamenuContent = document.getElementById('megamenu-content');
+        const megamenuColumnsContainer = document.getElementById('megamenu-columns');
+        const megamenuDetailsArea = document.getElementById('megamenu-details-area');
+        const bodyElement = document.body;
+        
+        // Video Panel Elements
+        const videoInfoPanel = document.getElementById('video-info-panel');
+        const infoUrlEl = document.getElementById('info-url');
+        const infoTitleEl = document.getElementById('info-title');
+        const infoDescriptionEl = document.getElementById('info-description');
+        const placeholderText = '<span class="placeholder-text">Hover over a video square...</span>';
+        
+        // Local Video Elements
+        const localVideoRow = document.getElementById('local-video-row');
+        const localVideoLink = document.getElementById('local-video-link');
+        const localVideoThumb = document.getElementById('local-video-thumb');
+        const localVideoFilenameDisplay = document.getElementById('local-video-filename-display');
+        
+        let activeSubcategoryToggle = null;
+        let activeGlossaryTrigger = null;
+        let allVideosFlat = [];
+        let currentArea = null;
+        let activeAccordion = null;
+        
+        // --- Video Panel Functions ---
+function flattenVideoData(originalData) {
+    let flatIndex = 0;
+    allVideosFlat = []; // Reset
+    originalData.forEach(area => {
+        if (area.subcategories && Array.isArray(area.subcategories)) {
+            area.subcategories.forEach((subcat) => {
+                if (subcat.videos && Array.isArray(subcat.videos)) {
+                    subcat.videos.forEach((video) => {
+                        if (video && video.youtubeId) {
+                            video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
+                            video.color_tag = video.color_tag || '#6c757d';
+                            video.authors = video.authors || "";
+                            video.researchReviewItems = video.researchReviewItems || [];
+                            video.contentCreatorArchive = video.contentCreatorArchive || "";
+                            video.licence = video.licence || "Standard YouTube License";
+                            video.patreon = video.patreon || "";
+                            video.socials = video.socials || {};
+                            video.fundraiser = video.fundraiser || "";
+                            video.sponsorPages = video.sponsorPages || [];
+                            video.localVideoFilename = video.localVideoFilename || "";
+                            video.flat_index = flatIndex++;
+                            allVideosFlat.push(video);
+                        } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+                    });
+                }
+            });
+        } else { console.warn(`Area "${area.area}" missing subcategories.`); }
+    });
+    console.log(`Flattened ${allVideosFlat.length} videos.`);
+}
+
+// Video panel functions
+function showInfoPanel(video) {
+    if (!video || !video.youtubeId) { hideInfoPanel(); return; }
+    // Local Video Row
+    if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
+        const videoPath = `/assets/video/${video.localVideoFilename}`;
+        const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
+        localVideoLink.href = videoPath;
+        localVideoThumb.src = thumbPath;
+        localVideoThumb.alt = `Thumbnail for ${video.title}`;
+        localVideoFilenameDisplay.textContent = video.localVideoFilename;
+        localVideoRow.classList.add('visible');
+    } else if(localVideoRow) {
+        localVideoRow.classList.remove('visible');
+    }
+    // YouTube Info Row
+    const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
+    infoUrlEl.textContent = youtubeWatchUrl;
+    infoUrlEl.href = youtubeWatchUrl;
+    infoUrlEl.classList.remove('placeholder-text');
+    infoTitleEl.textContent = video.title || 'No Title';
+    infoDescriptionEl.textContent = video.description || 'No Description';
+    videoInfoPanel.classList.add('visible');
+}
+
+function hideInfoPanel() {
+    infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
+    infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
+    if (localVideoRow) { localVideoRow.classList.remove('visible'); }
+    if (localVideoLink) { localVideoLink.href = '#'; }
+    if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
+    if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
+    videoInfoPanel.classList.remove('visible');
+}
+
+// Generate Homepage Module Buttons with Accordion functionality
+function generateHomepageModules() {
+    modulesGrid.innerHTML = ''; // Clear existing grid items
+    // Define the 4 specific modules to display on the homepage
+    const homepageModules = [
+        { 
+            areaKey: 'water', 
+            title: 'Water Purification', 
+            featherIcon: 'droplet', 
+            buttonType: 'play', 
+            videoId: 'dQw4w9WgXcQ',  // Rick Roll video ID
+            text: 'Learn advanced techniques for purifying water in emergency situations.' 
+        },
+        { 
+            areaKey: 'energy', 
+            title: 'Super Stove / Briquettes', 
+            featherIcon: 'zap', 
+            buttonType: 'play', 
+            videoId: 'dQw4w9WgXcQ',  // Rick Roll video ID
+            text: 'Discover how to make efficient fuel briquettes from everyday materials.' 
+        },
+        { 
+            areaKey: 'energy', 
+            title: 'Electrical Power Systems', 
+            featherIcon: 'cpu', 
+            buttonType: 'learn', 
+            text: 'Explore microgrids and off-grid power solutions for sustainable living.' 
+        },
+        { 
+            areaKey: 'health', 
+            title: 'Public Health', 
+            featherIcon: 'heart', 
+            buttonType: 'learn', 
+            text: 'Learn essential techniques for community health, sanitation, and first aid.' 
+        }
+    ];
+    
+    homepageModules.forEach((modInfo, index) => {
+        const category = categoryData.find(cat => cat.area.toLowerCase() === modInfo.areaKey);
+        if (!category) {
+            console.warn(`Category data not found for area key: ${modInfo.areaKey}`);
+            return; // Skip if category doesn't exist
+        }
+        
+        // Create module container to hold both the module and its accordion
+        const moduleContainer = document.createElement('div');
+        moduleContainer.className = 'module-container';
+        moduleContainer.id = `module-container-${index}`;
+        
+        // Create the module card
+        const moduleDiv = document.createElement('div');
+        moduleDiv.className = `module ${modInfo.areaKey}`;
+        moduleDiv.dataset.moduleIndex = index;
+        
+        // --- Top Part ---
+        const topPart = document.createElement('div');
+        topPart.className = 'module-top';
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'icon';
+        iconContainer.innerHTML = `<i data-feather="${modInfo.featherIcon || 'box'}"></i>`;
+        const titleH2 = document.createElement('h2');
+        titleH2.textContent = modInfo.title;
+        topPart.appendChild(iconContainer);
+        topPart.appendChild(titleH2);
+        
+        // --- Bottom Part ---
+        const bottomPart = document.createElement('div');
+        bottomPart.className = 'module-bottom';
+        
+        // For both types, add descriptive text
+        const textP = document.createElement('p');
+        textP.className = 'module-bottom-text';
+        textP.textContent = modInfo.text || 'Learn more about this topic.';
+        bottomPart.appendChild(textP);
+        
+        // Create button based on type
+        const button = document.createElement('button');
+        button.className = 'module-bottom-button';
+        
+        if (modInfo.buttonType === 'play') {
+            button.innerHTML = `<i class="fas fa-play"></i> Play Video`;
+            button.onclick = (e) => {
+                e.stopPropagation(); // Prevent the module click from triggering
+                toggleAccordion(index, 'video', modInfo.videoId);
+            };
+        } else { // 'learn' type
+            button.innerHTML = `<i class="fas fa-info-circle"></i> Learn More`;
+            button.onclick = (e) => {
+                e.stopPropagation(); // Prevent the module click from triggering
+                toggleAccordion(index, 'text');
+            };
+        }
+        
+        bottomPart.appendChild(button);
+        
+        // Make the module div also navigate to category view when clicked
+        // but not when buttons or accordions are clicked
+        moduleDiv.onclick = (e) => {
+            // Only trigger if not clicking on button or accordion
+            if (!e.target.closest('.module-bottom-button') && 
+                !e.target.closest('.accordion-container')) {
+                showCategoryView(modInfo.areaKey);
+            }
+        };
+        
+        // Assemble module
+        moduleDiv.appendChild(topPart);
+        moduleDiv.appendChild(bottomPart);
+        
+        // Create accordion container (initially closed)
+        const accordionContainer = document.createElement('div');
+        accordionContainer.className = 'accordion-container';
+        accordionContainer.id = `accordion-${index}`;
+        
+        // Add module and accordion to container
+        moduleContainer.appendChild(moduleDiv);
+        moduleContainer.appendChild(accordionContainer);
+        
+        // Add the complete module container to the grid
+        modulesGrid.appendChild(moduleContainer);
+    });
+    
+    feather.replace(); // Re-initialize Feather icons
+}
+
+// Function to toggle accordion open/close state
+function toggleAccordion(moduleIndex, type, videoId = null) {
+    const accordionEl = document.getElementById(`accordion-${moduleIndex}`);
+    
+    // If this accordion is already open, close it
+    if (accordionEl.classList.contains('open')) {
+        closeAllAccordions();
+        return;
+    }
+    
+    // Close any open accordions first
+    closeAllAccordions();
+    
+    // Populate accordion content based on type
+    if (type === 'video' && videoId) {
+        accordionEl.innerHTML = `
+            <div class="video-accordion-content">
+                <button class="accordion-close"><i class="fas fa-times"></i></button>
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" 
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+            </div>
+        `;
+    } else {
+        // Text content for learn more
+        accordionEl.innerHTML = `
+            <div class="text-accordion-content">
+                <button class="accordion-close"><i class="fas fa-times"></i></button>
+                <h3 class="text-lg font-semibold mb-2">More Information</h3>
+                <p>This section contains detailed information about the technology, its applications, and implementation strategies.</p>
+                <p class="mt-2">The content can be expanded with specific details relevant to each module topic, including additional resources, step-by-step instructions, and best practices.</p>
+            </div>
+        `;
+    }
+    
+    // Add click handler to close button
+    accordionEl.querySelector('.accordion-close').addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllAccordions();
+    });
+    
+    // Open this accordion
+    accordionEl.classList.add('open');
+    activeAccordion = accordionEl;
+}
+
+// Function to close all accordions
+function closeAllAccordions() {
+    document.querySelectorAll('.accordion-container').forEach(accordion => {
+        accordion.classList.remove('open');
+        // Clear content after animation completes
+        setTimeout(() => {
+            if (!accordion.classList.contains('open')) {
+                accordion.innerHTML = '';
+            }
+        }, 400);
+    });
+    activeAccordion = null;
+}
+
+// --- Populate Megamenu Columns ---
+        function populateMegamenuColumns(area) {
+            const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+            if (!category) { 
+                megamenuColumnsContainer.innerHTML = '<div>Category data not found.</div>'; 
+                return; 
+            }
+            
+            megamenuColumnsContainer.innerHTML = '';
+            megamenuColumnsContainer.classList.remove('columns-hidden');
+            hideSubcategoryDetails(false);
+            
+            const columns = [[], [], []];
+            category.subcategories.forEach((subcat, index) => { 
+                subcat.uniqueId = subcat.uniqueId || `${area}-${index}`; 
+                columns[index % 3].push(subcat); 
+            });
+            
+            columns.forEach((columnSubcats) => {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'space-y-6';
+                
+                if (columnSubcats.length > 0) {
+                    columnSubcats.forEach((subcat) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'subcategory-item';
+                        
+                        let tagsHtml = '';
+                        if (subcat.tags && subcat.tags.length > 0) { 
+                            tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' + 
+                                      subcat.tags.map(tag => 
+                                        `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`
+                                      ).join('') + 
+                                      '</div>'; 
+                        }
+                        
+                        itemDiv.innerHTML = `
+                            <h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4>
+                            <p class="text-sm text-gray-600">${subcat.description}</p>
+                            ${tagsHtml}
+                            <button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" 
+                                    data-area="${area}" data-uniqueid="${subcat.uniqueId}">Show More Info</button>
+                        `;
+                        
+                        columnDiv.appendChild(itemDiv);
+                    });
+                }
+                
+                megamenuColumnsContainer.appendChild(columnDiv);
+            });
+        }
+
+
+        // --- (Place this function with your other JS functions) ---
+        function generateHeaderCategoryIcons() {
+            const headerNavContainer = document.getElementById('header-category-nav');
+            // Ensure categoryData is available (it's defined globally in your script)
+            if (!headerNavContainer || !window.categoryData || typeof feather === 'undefined') {
+                console.warn('Header category navigation container, categoryData, or Feather icons not found.');
+                return;
+            }
+
+            headerNavContainer.innerHTML = ''; // Clear any existing icons (if any)
+
+            window.categoryData.forEach(category => {
+                // Assuming all items in categoryData are main areas you want to show
+                if (category && category.area && category.featherIcon) {
+                    const iconLink = document.createElement('a');
+                    // Use toLowerCase() for area in href and for showCategoryView consistent with your existing setup
+                    const areaKey = category.area.toLowerCase();
+                    iconLink.href = `#${areaKey}`;
+                    iconLink.classList.add('header-category-icon');
+                    iconLink.title = category.area; // Tooltip for the icon
+
+                    const iconElement = document.createElement('i');
+                    iconElement.setAttribute('data-feather', category.featherIcon);
+
+                    iconLink.appendChild(iconElement);
+                    headerNavContainer.appendChild(iconLink);
+
+                    // Add click listener to use your existing showCategoryView function
+                    iconLink.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default anchor jump
+                        if (typeof showCategoryView === 'function') {
+                            showCategoryView(areaKey);
+                        } else {
+                            // Fallback if showCategoryView isn't global or available yet
+                            window.location.hash = areaKey;
+                        }
+                    });
+                }
+            });
+
+            feather.replace(); // IMPORTANT: Refresh Feather icons so they render
+        }
+
+
+      
+      
+// Event Delegation Setup
+function setupEventListeners() {
+    // Clicks within the category content area (glossary, subcat toggle, details back, sibling pills)
+    categoryContentContainer.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.classList.contains('glossary-trigger')) { 
+            handleGlossaryTriggerClick(event); 
+        }
+        else if (target.classList.contains('subcategory-toggle')) { 
+            handleSubcategoryToggle(event); 
+        }
+        else if (target.closest('.details-back-button')) { 
+            hideSubcategoryDetails(true); 
+        }
+        else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+            event.preventDefault();
+            const area = target.dataset.area; 
+            const uniqueId = target.dataset.uniqueid;
+            if (area && uniqueId) { 
+                displaySubcategoryDetails(area, uniqueId, true); 
+                requestAnimationFrame(() => { 
+                    setTimeout(() => { 
+                        megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
+                    }, 50); 
+                }); 
+            }
+        }
+    });
+    
+    // Back button to return to module grid
+    backToModulesButton.addEventListener('click', showHomepageView);
+    
+    // Close accordions when clicking outside
+    document.addEventListener('click', (event) => {
+        // Only close if clicking outside any module or accordion
+        if (!event.target.closest('.module-container') && activeAccordion) {
+            closeAllAccordions();
+        }
+    });
+    
+    // Close accordions with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && activeAccordion) {
+            closeAllAccordions();
+        }
+    });
+    
+    // Video Hover Listeners on Body
+    document.body.addEventListener('mouseover', (event) => {
+        const linker = event.target.closest('.video-linker');
+        if (linker) { 
+            const flatIndex = linker.getAttribute('data-flat-index'); 
+            if (flatIndex !== null) { 
+                const video = allVideosFlat[parseInt(flatIndex, 10)]; 
+                if (video) { 
+                    showInfoPanel(video); 
+                } else { 
+                    console.warn("Video data not found for index:", flatIndex); 
+                } 
+            }
+        }
+    });
+    
+    document.body.addEventListener('mouseout', (event) => {
+        const leavingLinker = event.target.closest('.video-linker'); 
+        const enteringElement = event.relatedTarget;
+        if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) { 
+            setTimeout(() => { 
+                const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover'); 
+                if (!currentlyHovered) { 
+                    hideInfoPanel(); 
+                } 
+            }, 50); 
+        }
+    });
+    
+    videoInfoPanel.addEventListener('mouseleave', hideInfoPanel);
+}
+
+// --- Show/Hide Views with Accordion Management ---
+function showCategoryView(area) {
+    console.log("Showing category:", area);
+    // Close any open accordions when navigating away
+    closeAllAccordions();
+    
+    currentArea = area;
+    populateMegamenuColumns(area);
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    if (category) { showCategoryTitle(category); }
+    modulesGridContainer.style.display = 'none';
+    categoryContentContainer.classList.add('visible');
+    window.location.hash = area;
+    window.scrollTo(0, 0);
+}
+
+function showHomepageView() {
+    console.log("Showing homepage grid");
+    currentArea = null;
+    hideSubcategoryDetails(false);
+    hideGlossaryPanel();
+    hideCategoryTitle();
+    modulesGridContainer.style.display = 'block';
+    categoryContentContainer.classList.remove('visible');
+    history.pushState("", document.title, window.location.pathname + window.location.search);
+}
+
+// --- Utility function for managing loading of content ---
+function loadContentIntoAccordion(accordionEl, type, content) {
+    // Show loading indicator if needed for slow content
+    accordionEl.innerHTML = '<div class="p-4 text-center"><i class="fas fa-spinner fa-spin mr-2"></i> Loading content...</div>';
+    
+    // Simulate loading delay (remove for production)
+    setTimeout(() => {
+        accordionEl.innerHTML = content;
+        
+        // Add click handler to close button
+        accordionEl.querySelector('.accordion-close').addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllAccordions();
+        });
+    }, 300);
+}
+
+
+
+
+
+
+
+      
+// --- Error handling function for accordion content ---
+function handleContentError(accordionEl, errorMessage) {
+    accordionEl.innerHTML = `
+        <div class="text-accordion-content">
+            <button class="accordion-close"><i class="fas fa-times"></i></button>
+            <div class="bg-red-50 p-4 rounded border border-red-200">
+                <h3 class="text-red-700 font-medium mb-2"><i class="fas fa-exclamation-circle mr-2"></i> Error Loading Content</h3>
+                <p class="text-red-600 text-sm">${errorMessage}</p>
+            </div>
+            <button class="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" 
+                    onclick="retryLoadContent(this)">Try Again</button>
+        </div>
+    `;
+}
+
+// --- Function to retry loading content ---
+function retryLoadContent(buttonEl) {
+    const accordionEl = buttonEl.closest('.accordion-container');
+    const moduleIndex = parseInt(accordionEl.id.replace('accordion-', ''), 10);
+    const moduleInfo = getModuleInfoByIndex(moduleIndex);
+    
+    if (moduleInfo) {
+        toggleAccordion(moduleIndex, moduleInfo.buttonType, moduleInfo.videoId);
+    } else {
+        handleContentError(accordionEl, "Could not find module information.");
+    }
+}
+
+// --- Helper function to get module info by index ---
+function getModuleInfoByIndex(index) {
+    // This should be updated to access your actual module data array
+    const homepageModules = [
+        { areaKey: 'water', buttonType: 'play', videoId: 'dQw4w9WgXcQ' },
+        { areaKey: 'energy', buttonType: 'play', videoId: 'dQw4w9WgXcQ' },
+        { areaKey: 'energy', buttonType: 'learn' },
+        { areaKey: 'health', buttonType: 'learn' }
+    ];
+    
+    return homepageModules[index] || null;
+}
+
+
+// Make sure homepage is displayed on initial load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the data
+    flattenVideoData(categoryData);
+    
+    // Generate the homepage modules
+    generateHomepageModules();
+
+    // Generate the new header category icons
+    generateHeaderCategoryIcons(); 
+    
+    // Set up the event listeners
+    setupEventListeners();
+    
+    // Explicitly show homepage view (should set proper visibility)
+    showHomepageView();
+    
+    // Hide info panel on initial load
+    hideInfoPanel();
+    
+    // Check URL hash for direct navigation
+    handlePageLoad();
+    
+    console.log("Homepage initialized");
+});
+
+        
+    </script>
+</body>
+</html>
