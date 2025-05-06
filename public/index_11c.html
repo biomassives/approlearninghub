@@ -183,11 +183,213 @@
         #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
         #video-info-panel .placeholder-text { font-style: italic; color: #888; }
 
-    </style>
+    /* Header Layout Updates */
+    .site-header {
+        justify-content: space-between; /* Space elements at extreme ends */
+    }
+    
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+        background: none;
+        border: none;
+        color: #4b5563;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .theme-toggle-btn:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    /* In dark mode */
+    .dark .theme-toggle-btn {
+        color: #e5e7eb;
+    }
+    
+    .dark .theme-toggle-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Language Dropdown */
+    .lang-button {
+        background: none;
+        border: none;
+        color: #4b5563;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+    }
+    
+    .lang-button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .lang-dropdown-menu {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: 0.25rem;
+        background-color: white;
+        border-radius: 0.375rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        width: 240px;
+        z-index: 50;
+        border: 1px solid #e5e7eb;
+        max-height: 320px;
+        overflow-y: auto;
+    }
+    
+    .lang-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #4b5563;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+    
+    .lang-dropdown-menu a:hover {
+        background-color: #f3f4f6;
+    }
+    
+    .lang-dropdown-menu a.active {
+        background-color: #f3f4f6;
+        font-weight: 500;
+    }
+    
+    .lang-dropdown-menu .flag {
+        margin-right: 0.5rem;
+        font-size: 1.25rem;
+    }
+    
+    .lang-dropdown-menu .lang-code {
+        width: 30px;
+        display: inline-block;
+        font-weight: 500;
+    }
+    
+    .lang-dropdown-menu .peace-message {
+        margin-left: 0.75rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+    
+    /* Dark mode styles */
+    .dark {
+        background-color: #1f2937;
+        color: #e5e7eb;
+    }
+    
+    .dark .site-header {
+        background-color: #111827;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .module {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .dark .lang-dropdown-menu {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .dark .lang-dropdown-menu a {
+        color: #e5e7eb;
+    }
+    
+    .dark .lang-dropdown-menu a:hover {
+        background-color: #374151;
+    }
+    
+    .dark .lang-dropdown-menu a.active {
+        background-color: #374151;
+    }
+    
+    .dark .lang-dropdown-menu .peace-message {
+        color: #9ca3af;
+    }
+    
+    .dark #megamenu-content {
+        background-color: #1f2937;
+    }
+    
+    .dark .video-linker {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .featured-item {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .dark .featured-item .bg-gray-50 {
+        background-color: #111827;
+    }
+    
+    .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+        color: #f3f4f6;
+    }
+    
+    .dark p {
+        color: #d1d5db;
+    }
+</style>
+   
 </head>
-<body class="bg-gray-100"> <header class="site-header">
-        <div class="logo">🌱</div>
-        <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+<body class="bg-gray-100"> 
+
+        <!-- Enhanced Header with Theme Toggle and Language Dropdown -->
+        <header class="site-header">
+            <div class="flex items-center">
+                <div class="logo">🌱</div>
+                <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+            </div>
+            
+            <div class="header-controls flex items-center space-x-4">
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode">
+                    <!-- Sun icon (for dark mode) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <!-- Moon icon (for light mode) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" id="theme-toggle-light-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                
+                <!-- Language Dropdown -->
+                <div class="language-dropdown relative">
+                    <button id="language-dropdown-btn" class="lang-button flex items-center" aria-expanded="false">
+                        <span class="flag-icon">🌐</span>
+                        <span class="lang-text">EN</span>
+                        <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    
+                    <div id="language-menu" class="lang-dropdown-menu hidden">
+                        <a href="#" data-lang="en" class="active"><span class="flag">🇺🇸</span> <span class="lang-code">EN</span> <span class="peace-message">Collaborate for Peace</span></a>
+                        <a href="#" data-lang="es"><span class="flag">🇪🇸</span> <span class="lang-code">ES</span> <span class="peace-message">Colaborar por la Paz</span></a>
+                        <a href="#" data-lang="fr"><span class="flag">🇫🇷</span> <span class="lang-code">FR</span> <span class="peace-message">Collaborer pour la Paix</span></a>
+                        <a href="#" data-lang="ar"><span class="flag">🇦🇪</span> <span class="lang-code">AR</span> <span class="peace-message">التعاون من أجل السلام</span></a>
+                        <a href="#" data-lang="zh"><span class="flag">🇨🇳</span> <span class="lang-code">ZH</span> <span class="peace-message">为和平合作</span></a>
+                        <a href="#" data-lang="hi"><span class="flag">🇮🇳</span> <span class="lang-code">HI</span> <span class="peace-message">शांति के लिए सहयोग</span></a>
+                        <a href="#" data-lang="sw"><span class="flag">🇹🇿</span> <span class="lang-code">SW</span> <span class="peace-message">Kushirikiana kwa Amani</span></a>
+                        <a href="#" data-lang="ru"><span class="flag">🇷🇺</span> <span class="lang-code">RU</span> <span class="peace-message">Сотрудничество во имя мира</span></a>
+                    </div>
+                </div>
+            </div>
         </header>
 
     <div id="modules-grid-container">
@@ -1070,6 +1272,111 @@ function showCategoryView(area) {
              categoryContentContainer.classList.remove('visible'); // Hide category content
              history.pushState("", document.title, window.location.pathname + window.location.search); // Clear hash
         }
+
+
+            // Theme Toggle Functionality
+            function setupThemeToggle() {
+                const themeToggleBtn = document.getElementById('theme-toggle');
+                const darkIcon = document.getElementById('theme-toggle-dark-icon');
+                const lightIcon = document.getElementById('theme-toggle-light-icon');
+                
+                // Check for saved theme preference or use the system preference
+                if (localStorage.getItem('color-theme') === 'dark' || 
+                    (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    // Show the sun icon (for switching to light mode)
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                    document.documentElement.classList.add('dark');
+                } else {
+                    // Show the moon icon (for switching to dark mode)
+                    darkIcon.classList.add('hidden');
+                    lightIcon.classList.remove('hidden');
+                    document.documentElement.classList.remove('dark');
+                }
+                
+                // Add click event
+                themeToggleBtn.addEventListener('click', function() {
+                    // Toggle the dark class on the html element
+                    document.documentElement.classList.toggle('dark');
+                    
+                    // Toggle the icons
+                    darkIcon.classList.toggle('hidden');
+                    lightIcon.classList.toggle('hidden');
+                    
+                    // Update local storage
+                    if (document.documentElement.classList.contains('dark')) {
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                });
+            }
+            
+            // Language Dropdown Functionality
+            function setupLanguageDropdown() {
+                const dropdownBtn = document.getElementById('language-dropdown-btn');
+                const menu = document.getElementById('language-menu');
+                const languageOptions = menu.querySelectorAll('a');
+                const langText = dropdownBtn.querySelector('.lang-text');
+                
+                // Toggle dropdown
+                dropdownBtn.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !expanded);
+                    menu.classList.toggle('hidden');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!dropdownBtn.contains(event.target) && !menu.contains(event.target)) {
+                        dropdownBtn.setAttribute('aria-expanded', 'false');
+                        menu.classList.add('hidden');
+                    }
+                });
+                
+                // Handle language selection
+                languageOptions.forEach(option => {
+                    option.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        
+                        // Update active class
+                        languageOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update button text
+                        const langCode = this.getAttribute('data-lang');
+                        langText.textContent = this.querySelector('.lang-code').textContent;
+                        
+                        // Store the selection
+                        localStorage.setItem('selected-language', langCode);
+                        
+                        // Close the dropdown
+                        dropdownBtn.setAttribute('aria-expanded', 'false');
+                        menu.classList.add('hidden');
+                        
+                        // Here you would typically trigger language change in your app
+                        // For now, we'll just log it
+                        console.log('Language changed to:', langCode);
+                    });
+                });
+                
+                // Set initial language from localStorage if available
+                const savedLang = localStorage.getItem('selected-language');
+                if (savedLang) {
+                    const selectedOption = menu.querySelector(`a[data-lang="${savedLang}"]`);
+                    if (selectedOption) {
+                        languageOptions.forEach(opt => opt.classList.remove('active'));
+                        selectedOption.classList.add('active');
+                        langText.textContent = selectedOption.querySelector('.lang-code').textContent;
+                    }
+                }
+            }
+            
+            // Initialize theme and language features
+            document.addEventListener('DOMContentLoaded', function() {
+                setupThemeToggle();
+                setupLanguageDropdown();
+            });
 
         // --- Populate Megamenu Columns (Adapted - No Major Changes Needed) ---
         function populateMegamenuColumns(area) {
