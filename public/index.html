@@ -183,6 +183,57 @@
         #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
         #video-info-panel .placeholder-text { font-style: italic; color: #888; }
 
+   /* Slideshow Container */
+    .slideshow-container {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+    }
+    
+    /* Slides */
+    .slideshow-slide {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .slideshow-slide.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* Navigation Arrows */
+    .slideshow-prev, .slideshow-next {
+        opacity: 0.7;
+        transition: opacity 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-prev:hover, .slideshow-next:hover {
+        opacity: 1;
+    }
+    
+    .slideshow-prev:active, .slideshow-next:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    
+    /* Dots */
+    .slideshow-dot {
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-dot.active {
+        background-color: white;
+        transform: scale(1.2);
+    }
+    
+    /* Dark mode adjustments */
+    .dark .slideshow-container {
+        background-color: #1f2937;
+    }
+    
+    .dark .featured-slideshow h2 {
+        color: #f3f4f6;
+    }
+        
     </style>
 </head>
 <body class="bg-gray-100"> <header class="site-header">
@@ -291,6 +342,92 @@
             <div class="relative pt-[56.25%] bg-gray-100">
                 <!-- Video thumbnail with play button overlay -->
                 <div class="absolute inset-0 flex items-center justify-center">
+                    <div id="solar-cooker-slideshow" class="featured-slideshow mt-8 mb-12 mx-auto max-w-4xl">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-sun text-yellow-500 mr-2"></i>
+                            Solar Cooker Designs
+                        </h2>
+                        
+                        <!-- Slideshow Container -->
+                        <div class="slideshow-container relative bg-gray-100 rounded-lg overflow-hidden">
+                            <!-- Slides -->
+                            <div class="slideshow-slide active">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-1.jpg" data-src="/assets/images/solar-cookers/parabolic-cooker.jpg" 
+                                         alt="Parabolic Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Parabolic+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Parabolic Solar Cooker</h3>
+                                        <p class="text-sm">High temperature cooking with focused sunlight. Ideal for boiling and frying.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-2.jpg" data-src="/assets/images/solar-cookers/box-cooker.jpg" 
+                                         alt="Solar Box Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Solar+Box+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Solar Box Cooker</h3>
+                                        <p class="text-sm">Simple and effective design using common materials. Great for slow cooking and baking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-3.jpg" data-src="/assets/images/solar-cookers/panel-cooker.jpg" 
+                                         alt="Panel Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Panel+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Panel Solar Cooker</h3>
+                                        <p class="text-sm">Lightweight, portable design with reflective panels. Easy to build and transport.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-4.jpg" data-src="/assets/images/solar-cookers/evacuated-tube-cooker.jpg" 
+                                         alt="Evacuated Tube Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Evacuated+Tube+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Evacuated Tube Solar Cooker</h3>
+                                        <p class="text-sm">Modern design using vacuum-sealed glass tubes. Efficient cooking even in moderate sunlight.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Arrows -->
+                            <button class="slideshow-prev absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="slideshow-next absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            
+                            <!-- Dots Navigation -->
+                            <div class="slideshow-dots absolute bottom-16 left-0 right-0 flex justify-center space-x-2 z-10">
+                                <button class="slideshow-dot active w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="0"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="1"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="2"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="3"></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Learn More Button -->
+                        <div class="text-center mt-4">
+                            <a href="#energy-0" class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition-colors">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                Learn More About Solar Cooking
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                    
                     <img src="/assets/video/CooKit_photo_reversed.webp" 
                          alt="Simple Solar Cooker Setup" 
                          class="w-full h-full object-cover"
@@ -1027,6 +1164,116 @@ function generateHomepageModules() {
     });
 }
 
+  function initializeSlideshows() {
+        document.querySelectorAll('.featured-slideshow').forEach(slideshow => {
+            const slides = slideshow.querySelectorAll('.slideshow-slide');
+            const prevBtn = slideshow.querySelector('.slideshow-prev');
+            const nextBtn = slideshow.querySelector('.slideshow-next');
+            const dots = slideshow.querySelectorAll('.slideshow-dot');
+            let currentIndex = 0;
+            let intervalId = null;
+            
+            // Function to show a specific slide
+            function showSlide(index) {
+                // Handle index bounds
+                if (index >= slides.length) index = 0;
+                if (index < 0) index = slides.length - 1;
+                
+                // Update current index
+                currentIndex = index;
+                
+                // Update slides
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === currentIndex);
+                });
+                
+                // Update dots
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+                
+                // Load the image if it hasn't been loaded yet (lazy loading)
+                const currentSlide = slides[currentIndex];
+                const img = currentSlide.querySelector('img');
+                const dataSrc = img.getAttribute('data-src');
+                
+                if (dataSrc && img.src !== dataSrc) {
+                    img.src = dataSrc;
+                }
+                
+                // Reset the auto-advance timer
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    startAutoAdvance();
+                }
+            }
+            
+            // Function to advance to the next slide
+            function nextSlide() {
+                showSlide(currentIndex + 1);
+            }
+            
+            // Function to go back to the previous slide
+            function prevSlide() {
+                showSlide(currentIndex - 1);
+            }
+            
+            // Function to start auto-advancing slides
+            function startAutoAdvance() {
+                intervalId = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+            }
+            
+            // Set up click handlers for controls
+            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+            
+            // Set up click handlers for dots
+            dots.forEach((dot, i) => {
+                dot.addEventListener('click', () => showSlide(i));
+            });
+            
+            // Set up keyboard navigation
+            slideshow.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevSlide();
+                else if (e.key === 'ArrowRight') nextSlide();
+            });
+            
+            // Make slideshow focusable for keyboard navigation
+            slideshow.setAttribute('tabindex', '0');
+            
+            // Start auto-advance
+            startAutoAdvance();
+            
+            // Pause auto-advance when user hovers over the slideshow
+            slideshow.addEventListener('mouseenter', () => {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+            });
+            
+            // Resume auto-advance when user leaves the slideshow
+            slideshow.addEventListener('mouseleave', () => {
+                if (!intervalId) {
+                    startAutoAdvance();
+                }
+            });
+            
+            // Load the first image immediately
+            const firstImg = slides[0].querySelector('img');
+            const firstDataSrc = firstImg.getAttribute('data-src');
+            if (firstDataSrc) {
+                firstImg.src = firstDataSrc;
+            }
+            
+            // Show the first slide
+            showSlide(0);
+        });
+    }
+    
+
+
+        
 
         // --- Show/Hide Views ---
 function showCategoryView(area) {
@@ -1379,6 +1626,7 @@ window.addEventListener('hashchange', function() {
              videoInfoPanel.addEventListener('mouseleave', hideInfoPanel); // Hide if leaving panel itself
         }
 
+        
         // --- Initial Setup ---
         console.log("Initializing Hub...");
         flattenVideoData(categoryData);
@@ -1387,6 +1635,8 @@ window.addEventListener('hashchange', function() {
         handlePageLoad(); // Check hash on load to potentially show a category/subcategory directly
        // hideInfoPanel(); // Ensure video panel is hidden initially
     console.log("Approvideo Learning Hub initialized with hash navigation support");
+
+            document.addEventListener('DOMContentLoaded', initializeSlideshows);
     </script>
 </body>
 </html>
