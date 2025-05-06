@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Approvideo Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script> <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8; /* Light gray background */
+            color: #222;
+            margin: 0 0 150px 0; /* Bottom margin for sticky panel */
+        }
+
+        /* --- Header --- */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 50; /* Ensure header is above content but below modal/panels */
+        }
+        .site-header .logo {
+            font-size: 2rem; margin-right: 1rem; color: #54B948; /* Green */
+        }
+        .site-header h1 { font-size: 1.5rem; margin: 0; }
+        .site-header h1 .green { color: #54B948; }
+        .site-header h1 .blue { color: #1E88E5; }
+
+        /* --- Homepage Module Grid --- */
+        #modules-grid-container {
+             padding: 2rem 1rem;
+        }
+        .modules-grid {
+            margin: 0 auto;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        /* --- Module Button Styling --- */
+        .module {
+            cursor: pointer;
+            border-radius: 12px;
+            border: 3px solid; /* Border color set by class */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Stack top and bottom */
+            background-color: #2D3748; /* Default dark background */
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+
+        .module-top {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem 0.75rem 1.5rem; /* Adjusted padding */
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        .module-top::before { /* Subtle gradient overlay for top */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1; /* Behind content */
+            opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover .module-top::before { opacity: 0; }
+
+        .module .icon { width: 36px; height: 36px; margin-right: 1rem; flex-shrink: 0; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: white; }
+        .module:hover .icon svg { transform: scale(1.1); }
+        .module h2 { margin: 0; font-size: 1.1rem; font-weight: 600; color: white; }
+
+        .module-bottom {
+            padding: 0.75rem 1.5rem 1rem 1.5rem; /* Adjusted padding */
+            min-height: 60px; /* Ensure some space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0,0,0, 0.15); /* Slightly different shade - adjust as needed */
+            transition: background-color 0.2s ease;
+            flex-grow: 1; /* Allow bottom to take remaining space */
+        }
+        .module:hover .module-bottom {
+             /* Use a lighter/darker shade of the main hover color */
+        }
+
+        .module-bottom-text {
+            font-size: 0.8rem;
+            color: #e2e8f0; /* Lighter text for dark bg */
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        .module-bottom-button {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background-color: rgba(255,255,255, 0.9);
+            color: inherit; /* Will inherit from hover state */
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            align-self: flex-start; /* Align button to the left */
+        }
+        .module-bottom-button i { /* Style for icon inside button */
+             margin-right: 0.3em;
+        }
+
+        /* Module Colors & Hover States */
+        .module.shelter { border-color: #36B9CC; }
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter:hover .module-bottom { background-color: rgba(40, 160, 178, 0.9); } /* Slightly darker teal */
+        .module.shelter:hover .module-bottom-button { color: #36B9CC; }
+
+        .module.water { border-color: #1E88E5; }
+        .module.water:hover { background-color: #1E88E5; }
+        .module.water:hover .module-bottom { background-color: rgba(25, 118, 210, 0.9); } /* Slightly darker blue */
+        .module.water:hover .module-bottom-button { color: #1E88E5; }
+
+        .module.waste { border-color: #7CB342; }
+        .module.waste:hover { background-color: #7CB342; }
+        .module.waste:hover .module-bottom { background-color: rgba(106, 158, 58, 0.9); } /* Slightly darker green */
+        .module.waste:hover .module-bottom-button { color: #7CB342; }
+
+        .module.energy { border-color: #FFC107; }
+        .module.energy:hover { background-color: #FFC107; }
+        .module.energy:hover .module-bottom { background-color: rgba(255, 179, 0, 0.9); } /* Slightly darker yellow */
+        .module.energy:hover .module-bottom-button { color: #c77e02; } /* Darker color for text on yellow */
+
+        .module.health { border-color: #EF5350; }
+        .module.health:hover { background-color: #EF5350; }
+        .module.health:hover .module-bottom { background-color: rgba(211, 71, 68, 0.9); } /* Slightly darker red */
+        .module.health:hover .module-bottom-button { color: #EF5350; }
+
+        .module.food { border-color: #8BC34A; }
+        .module.food:hover { background-color: #8BC34A; }
+        .module.food:hover .module-bottom { background-color: rgba(118, 171, 68, 0.9); } /* Slightly darker lime */
+        .module.food:hover .module-bottom-button { color: #8BC34A; }
+
+
+        /* --- Category Content Area (Megamenu Logic Adapted) --- */
+        #category-content-container { display: none; max-width: 1152px; margin: 1.5rem auto 0 auto; padding: 0 1rem; }
+        #category-content-container.visible { display: block; }
+        #back-to-modules-button { display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 8px 16px; border-radius: 0.375rem; font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; margin-bottom: 1rem; }
+        #back-to-modules-button:hover { background-color: #4b5563; }
+        #back-to-modules-button svg { width: 1.1rem; height: 1.1rem; margin-right: 0.5rem; }
+        #category-title-display { transition: opacity 0.4s ease-out, max-height 0.4s ease-out; overflow: hidden; max-height: 0; opacity: 0; text-align: center; font-size: 1.75rem; font-weight: 600; letter-spacing: 0.05em; color: #374151; text-transform: uppercase; margin-bottom: 1rem; }
+        #category-title-display.visible { max-height: 100px; opacity: 1; }
+        #megamenu-content { background-color: #ffffff; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); padding: 1.5rem; }
+        #glossary-panel { transition: opacity 0.4s ease-out, max-height 0.4s ease-out, padding 0.4s ease-out, margin-bottom 0.4s ease-out, visibility 0.4s ease-out; overflow: hidden; max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; visibility: hidden; background-color: #4b5563; color: #f3f4f6; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 1rem; margin-top: 1rem; position: relative; z-index: 20; }
+        #glossary-panel.visible { max-height: 300px; opacity: 1; padding-top: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; visibility: visible; }
+        .glossary-close-button { position: absolute; top: 0.5rem; right: 0.75rem; background: rgba(255, 255, 255, 0.1); color: #e5e7eb; border: none; border-radius: 9999px; width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+        .glossary-close-button:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+        #megamenu-columns { transition: opacity 0.4s ease-out, max-height 0.5s ease-out; overflow: hidden; max-height: 2000px; opacity: 1; }
+        #megamenu-columns.columns-hidden { max-height: 0; opacity: 0; }
+        #megamenu-details-area { transition: opacity 0.4s ease-out 0.1s, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out, visibility 0.4s ease-out, border-top-width 0.4s ease-out; overflow: auto; /* Changed to auto */ max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; visibility: hidden; border-top-width: 0; border-color: #e5e7eb; }
+        #megamenu-details-area.visible { max-height: calc(100vh - 250px); /* Adjust max height dynamically */ opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; visibility: visible; border-top-width: 1px; }
+        .tag-pill-button { display: inline-block; background-color: #4b5563; color: white; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; margin-right: 4px; margin-bottom: 4px; line-height: 1.2; cursor: pointer; border: none; transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; }
+        .tag-pill-button:hover { background-color: #374151; transform: translateY(-1px); }
+        .tag-pill-button.active { background-color: #3b82f6; font-weight: 600; }
+        .subcategory-toggle { transition: color 0.2s ease-in-out; }
+        .subcategory-toggle.active { font-weight: 600; color: #2563eb; }
+        .details-back-button { display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 6px 16px; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; }
+        .details-back-button:hover { background-color: #4b5563; }
+        .sibling-links-container { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; line-height: 1.5; }
+        .sibling-links-container > span { font-size: 0.9rem; font-weight: 500; color: #6b7280; margin-right: 8px; }
+        .sibling-link-pill { display: inline-block; padding: 4px 12px; border-radius: 9999px; margin: 3px 4px; font-weight: 600; color: white; background-color: #4f46e5; text-decoration: none; font-size: 0.8rem; transition: background-color 0.2s, transform 0.1s; cursor: pointer; border: none; }
+        .sibling-link-pill:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .sibling-link-pill.current { background-color: #a5b4fc; color: #3730a3; cursor: default; pointer-events: none; }
+
+        /* Shared Info Panel Styles */
+        #video-info-panel { display: none; flex-direction: column; background-color: #343a40; color: #f8f9fa; border-top: 3px solid #007bff; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); transition: opacity 0.3s ease; opacity: 0; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+        #video-info-panel.visible { display: flex; opacity: 1; }
+        .local-video-row { display: none; align-items: center; background-color: #fef9c3; padding: 8px 15px; border-bottom: 1px solid #fde68a; }
+        .local-video-row.visible { display: flex; }
+        .local-video-link { display: flex; align-items: center; text-decoration: none; gap: 10px; width: 100%; }
+        .local-video-link:hover .local-video-text { text-decoration: underline; }
+        .local-video-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fcd34d; flex-shrink: 0; background-color: #fefce8; }
+        .local-video-text { font-size: 0.8rem; color: #713f12; font-weight: 500; transition: text-decoration 0.2s; }
+        .local-video-text span { font-family: monospace; font-weight: 600; }
+        .youtube-info-row { display: flex; align-items: flex-start; padding: 10px 15px; }
+        #video-info-panel .info-icon { font-size: 36px; color: #FF0000; margin-right: 15px; flex-shrink: 0; padding-top: 3px; }
+        #video-info-panel .info-text { display: flex; flex-direction: column; gap: 3px; overflow: hidden; flex-grow: 1; }
+        #video-info-panel .info-url, #video-info-panel .info-title, #video-info-panel .info-description { margin: 0; line-height: 1.4; white-space: normal; word-break: break-word; }
+        #video-info-panel .info-url { font-size: 0.75em; color: #adb5bd; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #video-info-panel .info-title { font-size: 1em; font-weight: bold; color: #ffffff; }
+        #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
+        #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+
+    </style>
+</head>
+<body class="bg-gray-100"> <header class="site-header">
+        <div class="logo">🌱</div>
+        <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+        </header>
+
+    <div id="modules-grid-container">
+        <main class="modules-grid">
+            </main>
+    </div>
+
+    <div id="category-content-container">
+        <button id="back-to-modules-button">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path> </svg>
+             Back to Modules
+        </button>
+        <div id="category-title-display"></div>
+        <div id="glossary-panel">
+            <p class="text-center text-gray-400">Click a tag to see its definition.</p>
+        </div>
+        <div id="megamenu-content">
+            <div id="megamenu-columns" class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
+                </div>
+            <div id="megamenu-details-area" class="border-t border-gray-200">
+                </div>
+        </div>
+    </div>
+
+    <div id="video-info-panel">
+        <div class="local-video-row" id="local-video-row">
+             <a href="#" target="_blank" class="local-video-link" id="local-video-link">
+                 <img src="https://placehold.co/40x40/fef9c3/713f12?text=MP4" alt="Local Video Thumbnail" class="local-video-thumb" id="local-video-thumb" onerror="this.src='https://placehold.co/40x40/fef9c3/713f12?text=MP4'; this.onerror=null;">
+                 <span class="local-video-text">Watch local version: <span id="local-video-filename-display"></span></span>
+             </a>
+        </div>
+        <div class="youtube-info-row">
+            <div class="info-icon"><i class="fab fa-youtube"></i></div>
+            <div class="info-text">
+                <p class="info-url" id="info-url"><span class="placeholder-text">Hover over a video square...</span></p>
+                <p class="info-title" id="info-title"></p>
+                <p class="info-description" id="info-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Data (categoryData and tagGlossary should be pasted here) ---
+        const categoryData = [
+            { // Start of Shelter Area
+                "area": "Shelter", "icon": "fa-home", "featherIcon": "home",
+                "subcategories": [ /* ... Shelter Subcategories ... */ ]
+            },
+            { // Start of Water Area
+                "area": "Water", "icon": "fa-tint", "featherIcon": "droplet",
+                "subcategories": [ /* ... Water Subcategories ... */
+                     {
+                         "uniqueId": "water-1", "title": "Desalination", "description": "Build small-scale systems...", "tags": ["desalination", "solar still", "..."],
+                         "context": "Provides a vital source...", "materials": ["Dark Basin...", "..."], "processSteps": ["1. Constructing Basin...", "..."],
+                         "videos": [
+                             { "icon_tag_fa": "fas fa-sun", "color_tag": "#f97316", "title": "Build a Simple Solar Still", "youtubeId": "bJ9r8RFp4gE", "description": "Step-by-step construction...",
+                               "localVideoFilename": "water_solar_still.mp4", // *** ADDED for Desalination ***
+                               "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "icon_tag_fa": "fas fa-tint-slash", "color_tag": "#3b82f6", "title": "Improving Solar Still Efficiency", "youtubeId": "d5bjI9jgCxk", "description": "Tips and tricks...", "localVideoFilename": "water_solar_still_efficiency.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     },
+                     /* ... other water subcats ... */
+                ]
+            },
+            { // Start of Waste Area
+                "area": "Waste", "icon": "fa-recycle", "featherIcon": "trash-2",
+                "subcategories": [ /* ... Waste Subcategories ... */ ]
+            },
+            { // Start of Energy Area
+                "area": "Energy", "icon": "fa-solar-panel", "featherIcon": "zap",
+                "subcategories": [ /* ... Energy Subcategories ... */
+                     {
+                        "uniqueId": "energy-3", "title": "Hand Pressed Heat & Cooking Fuel Briquettes", "description": "DIY cook stove Fuel produced...", "tags": ["cooking fuel", "upcycling", "home heating", "biomass", "briquettes", "waste to energy", "appropriate technology", "DIY", "fuel efficiency"],
+                        "context": "Compresses loose biomass waste...", "materials": ["Dry Biomass Waste...", "Water...", "Binder...", "Briquette Press...", "Drying Rack/Area"], "processSteps": ["1. Collect & Shred...", "2. Mix with Water...", "3. Load Slurry...", "4. Compress Firmly...", "5. Eject Wet Briquette...", "6. Dry Thoroughly..."],
+                        "videos": [
+                            { "icon_tag_fa": "fas fa-fire-alt", "color_tag": "#d97706", "title": "Simple Biomass Briquette Press Construction", "youtubeId": "1LD7BhR3jTI", "description": "Building a manual press...",
+                              "localVideoFilename": "energy_briquette_press.mp4", // *** ADDED for Briquettes/Super Stove ***
+                              "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    }
+                ]
+            },
+            { // Start of Health Area
+                "area": "Health", "icon": "fa-heartbeat", "featherIcon": "heart",
+                "subcategories": [ /* ... Health Subcategories ... */ ]
+            },
+            { // Start of Food Area
+                "area": "Food", "icon": "fa-utensils", "featherIcon": "coffee",
+                "subcategories": [ /* ... Food Subcategories ... */ ]
+            }
+        ]; // End of categoryData array
+
+
+        // --- Updated Glossary ---
+        const tagGlossary = { /* ... Include the full glossary from previous response ... */ };
+
+        // --- Global Variables & DOM Elements ---
+        const modulesGridContainer = document.getElementById('modules-grid-container');
+        const modulesGrid = modulesGridContainer.querySelector('.modules-grid');
+        const categoryContentContainer = document.getElementById('category-content-container');
+        const backToModulesButton = document.getElementById('back-to-modules-button');
+        const categoryTitleDisplay = document.getElementById('category-title-display');
+        const glossaryPanel = document.getElementById('glossary-panel');
+        const megamenuContent = document.getElementById('megamenu-content');
+        const megamenuColumnsContainer = document.getElementById('megamenu-columns');
+        const megamenuDetailsArea = document.getElementById('megamenu-details-area');
+        const bodyElement = document.body;
+        // Video Panel Elements
+        const videoInfoPanel = document.getElementById('video-info-panel');
+        const infoUrlEl = document.getElementById('info-url');
+        const infoTitleEl = document.getElementById('info-title');
+        const infoDescriptionEl = document.getElementById('info-description');
+        const placeholderText = '<span class="placeholder-text">Hover over a video square...</span>';
+        // Local Video Elements
+        const localVideoRow = document.getElementById('local-video-row');
+        const localVideoLink = document.getElementById('local-video-link');
+        const localVideoThumb = document.getElementById('local-video-thumb');
+        const localVideoFilenameDisplay = document.getElementById('local-video-filename-display');
+
+        let activeSubcategoryToggle = null;
+        let activeGlossaryTrigger = null;
+        let allVideosFlat = [];
+        let currentArea = null;
+
+        // --- Video Panel Functions ---
+        function flattenVideoData(originalData) { /* ... (No changes needed here, already includes new fields) ... */
+            let flatIndex = 0;
+            allVideosFlat = []; // Reset
+            originalData.forEach(area => {
+                if (area.subcategories && Array.isArray(area.subcategories)) {
+                    area.subcategories.forEach((subcat) => {
+                        if (subcat.videos && Array.isArray(subcat.videos)) {
+                            subcat.videos.forEach((video) => {
+                                if (video && video.youtubeId) {
+                                    video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
+                                    video.color_tag = video.color_tag || '#6c757d';
+                                    video.authors = video.authors || "";
+                                    video.researchReviewItems = video.researchReviewItems || [];
+                                    video.contentCreatorArchive = video.contentCreatorArchive || "";
+                                    video.licence = video.licence || "Standard YouTube License";
+                                    video.patreon = video.patreon || "";
+                                    video.socials = video.socials || {};
+                                    video.fundraiser = video.fundraiser || "";
+                                    video.sponsorPages = video.sponsorPages || [];
+                                    video.localVideoFilename = video.localVideoFilename || "";
+                                    video.flat_index = flatIndex++;
+                                    allVideosFlat.push(video);
+                                } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+                            });
+                        }
+                    });
+                } else { console.warn(`Area "${area.area}" missing subcategories.`); }
+            });
+             console.log(`Flattened ${allVideosFlat.length} videos.`);
+        }
+
+        function showInfoPanel(video) { /* ... (No changes needed here) ... */
+             if (!video || !video.youtubeId) { hideInfoPanel(); return; }
+
+             // Local Video Row
+             if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
+                 const videoPath = `/assets/video/${video.localVideoFilename}`;
+                 const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
+                 localVideoLink.href = videoPath;
+                 localVideoThumb.src = thumbPath;
+                 localVideoThumb.alt = `Thumbnail for ${video.title}`;
+                 localVideoFilenameDisplay.textContent = video.localVideoFilename;
+                 localVideoRow.classList.add('visible');
+             } else if(localVideoRow) {
+                 localVideoRow.classList.remove('visible');
+             }
+
+             // YouTube Info Row
+             const youtubeWatchUrl = `https://www.youtube.com/watch?v={video.youtubeId}`;
+             infoUrlEl.textContent = youtubeWatchUrl;
+             infoUrlEl.href = youtubeWatchUrl;
+             infoUrlEl.classList.remove('placeholder-text');
+             infoTitleEl.textContent = video.title || 'No Title';
+             infoDescriptionEl.textContent = video.description || 'No Description';
+
+             videoInfoPanel.classList.add('visible');
+         }
+
+        function hideInfoPanel() { /* ... (No changes needed here) ... */
+            infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
+            infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
+            if (localVideoRow) { localVideoRow.classList.remove('visible'); }
+            if (localVideoLink) { localVideoLink.href = '#'; }
+            if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
+            if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
+            videoInfoPanel.classList.remove('visible');
+        }
+
+        // --- Generate Homepage Module Buttons (MODIFIED) ---
+        function generateHomepageModules() {
+             modulesGrid.innerHTML = ''; // Clear existing grid items
+
+             // Define the 4 specific modules to display on the homepage
+             const homepageModules = [
+                 { areaKey: 'water', title: 'Water Purification', featherIcon: 'droplet', buttonType: 'play', videoTopic: 'Desalination' }, // Link Desalination video
+                 { areaKey: 'energy', title: 'Super Stove / Briquettes', featherIcon: 'zap', buttonType: 'play', videoTopic: 'Briquettes' }, // Link Briquette video
+                 { areaKey: 'energy', title: 'Electrical Power Systems', featherIcon: 'cpu', buttonType: 'learn', text: 'Explore microgrids and off-grid power solutions.' },
+                 { areaKey: 'health', title: 'Public Health', featherIcon: 'heart', buttonType: 'learn', text: 'Learn about sanitation, first aid, and community health.' }
+             ];
+
+             homepageModules.forEach(modInfo => {
+                 const category = categoryData.find(cat => cat.area.toLowerCase() === modInfo.areaKey);
+                 if (!category) {
+                     console.warn(`Category data not found for area key: ${modInfo.areaKey}`);
+                     return; // Skip if category doesn't exist
+                 }
+
+                 const moduleDiv = document.createElement('div');
+                 // Use areaKey for class names
+                 moduleDiv.className = `module ${modInfo.areaKey}`;
+                 // Link the whole module div to the category view
+                 moduleDiv.onclick = () => showCategoryView(modInfo.areaKey);
+
+                 // --- Top Part ---
+                 const topPart = document.createElement('div');
+                 topPart.className = 'module-top';
+
+                 const iconContainer = document.createElement('div');
+                 iconContainer.className = 'icon';
+                 iconContainer.innerHTML = `<i data-feather="${modInfo.featherIcon || 'box'}"></i>`;
+
+                 const titleH2 = document.createElement('h2');
+                 titleH2.textContent = modInfo.title; // Use specific title
+
+                 topPart.appendChild(iconContainer);
+                 topPart.appendChild(titleH2);
+
+                 // --- Bottom Part ---
+                 const bottomPart = document.createElement('div');
+                 bottomPart.className = 'module-bottom';
+
+                 if (modInfo.buttonType === 'play') {
+                     const button = document.createElement('button'); // Changed to button for consistency, acts like a link via parent div click
+                     button.className = 'module-bottom-button';
+                     button.innerHTML = `<i class="fas fa-play"></i> Play Video`;
+                     // The onclick is handled by the parent moduleDiv to navigate to the category
+                     bottomPart.appendChild(button);
+                 } else { // 'learn' type
+                     const textP = document.createElement('p');
+                     textP.className = 'module-bottom-text';
+                     textP.textContent = modInfo.text || 'Learn more about this topic.';
+                     const button = document.createElement('button'); // Changed to button
+                     button.className = 'module-bottom-button';
+                     button.innerHTML = `<i class="fas fa-info-circle"></i> Learn More`;
+                      // The onclick is handled by the parent moduleDiv to navigate to the category
+                     bottomPart.appendChild(textP);
+                     bottomPart.appendChild(button);
+                 }
+
+                 moduleDiv.appendChild(topPart);
+                 moduleDiv.appendChild(bottomPart);
+                 modulesGrid.appendChild(moduleDiv);
+             });
+             feather.replace(); // Re-initialize Feather icons
+         }
+
+        // --- Show/Hide Views ---
+        function showCategoryView(area) { /* ... (No changes needed here) ... */
+             console.log("Showing category:", area);
+             currentArea = area;
+             populateMegamenuColumns(area);
+             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+             if (category) { showCategoryTitle(category); }
+             modulesGridContainer.style.display = 'none';
+             categoryContentContainer.classList.add('visible');
+             window.location.hash = area;
+             window.scrollTo(0, 0);
+        }
+
+        function showHomepageView() { /* ... (No changes needed here) ... */
+             console.log("Showing homepage grid");
+             currentArea = null;
+             hideSubcategoryDetails(false);
+             hideGlossaryPanel();
+             hideCategoryTitle();
+             modulesGridContainer.style.display = 'block';
+             categoryContentContainer.classList.remove('visible');
+             history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+
+        // --- Populate Megamenu Columns ---
+        function populateMegamenuColumns(area) { /* ... (No changes needed here) ... */
+             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+             if (!category) { megamenuColumnsContainer.innerHTML = '<div>Category data not found.</div>'; return; }
+             megamenuColumnsContainer.innerHTML = '';
+             megamenuColumnsContainer.classList.remove('columns-hidden');
+             hideSubcategoryDetails(false);
+             const columns = [[], [], []];
+             category.subcategories.forEach((subcat, index) => { subcat.uniqueId = subcat.uniqueId || `${area}-${index}`; columns[index % 3].push(subcat); });
+             columns.forEach((columnSubcats) => {
+                 const columnDiv = document.createElement('div');
+                 columnDiv.className = 'space-y-6';
+                 if (columnSubcats.length > 0) {
+                     columnSubcats.forEach((subcat) => {
+                         const itemDiv = document.createElement('div');
+                         itemDiv.className = 'subcategory-item';
+                         let tagsHtml = '';
+                         if (subcat.tags && subcat.tags.length > 0) { tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' + subcat.tags.map(tag => `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`).join('') + '</div>'; }
+                         itemDiv.innerHTML = `<h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4><p class="text-sm text-gray-600">${subcat.description}</p>${tagsHtml}<button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" data-area="${area}" data-uniqueid="${subcat.uniqueId}">Show More Info</button>`;
+                         columnDiv.appendChild(itemDiv);
+                     });
+                 }
+                 megamenuColumnsContainer.appendChild(columnDiv);
+             });
+         }
+
+        // --- Glossary Functions ---
+        function displayGlossaryEntry(tag) { /* ... (No changes needed here) ... */
+            const definition = tagGlossary[tag] || "Definition not found.";
+            const term = tag.charAt(0).toUpperCase() + tag.slice(1);
+            glossaryPanel.innerHTML = `<button class="glossary-close-button" aria-label="Close glossary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button><h4 class="font-semibold text-lg text-white mb-1 pr-8">${term}</h4><p class="text-sm text-gray-300">${definition}</p>`;
+            glossaryPanel.querySelector('.glossary-close-button').addEventListener('click', hideGlossaryPanel);
+            glossaryPanel.classList.add('visible');
+            bodyElement.classList.add('glossary-visible');
+        }
+        function hideGlossaryPanel() { /* ... (No changes needed here) ... */
+            glossaryPanel.classList.remove('visible');
+            bodyElement.classList.remove('glossary-visible');
+            if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); activeGlossaryTrigger = null; }
+            setTimeout(() => { if (!glossaryPanel.classList.contains('visible')) { glossaryPanel.innerHTML = '<p class="text-center text-gray-400">Click a tag to see its definition.</p>'; } }, 400);
+        }
+        function handleGlossaryTriggerClick(event) { /* ... (No changes needed here) ... */
+             event.stopPropagation();
+            const currentButton = event.target;
+            const tag = currentButton.dataset.tag;
+            if (activeGlossaryTrigger === currentButton) { hideGlossaryPanel(); }
+            else { if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); } displayGlossaryEntry(tag); currentButton.classList.add('active'); activeGlossaryTrigger = currentButton; }
+        }
+
+        // --- Subcategory Details Functions ---
+        function displaySubcategoryDetails(area, uniqueId, updateHash = true) { /* ... (No changes needed here) ... */
+             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+             const currentSubcategory = category?.subcategories.find(sub => sub.uniqueId === uniqueId);
+             if (!category || !currentSubcategory) { megamenuDetailsArea.innerHTML = '<p>Details not found.</p>'; megamenuDetailsArea.classList.add('visible'); return; }
+             let siblingLinksHtml = '';
+             if (category.subcategories && category.subcategories.length > 1) {
+                 siblingLinksHtml = '<div class="sibling-links-container"><span>See also: </span>';
+                 category.subcategories.forEach(subcat => {
+                     if (!subcat.uniqueId) { console.warn("Missing uniqueId:", subcat.title); return; }
+                     const isCurrent = subcat.uniqueId === uniqueId;
+                     siblingLinksHtml += `<button class="sibling-link-pill ${isCurrent ? 'current' : ''}" data-area="${area}" data-uniqueid="${subcat.uniqueId}" ${isCurrent ? 'disabled' : ''}>${subcat.title}</button>`;
+                 });
+                 siblingLinksHtml += '</div>';
+             }
+             let detailsHtml = `<h3 class="text-xl font-semibold text-gray-800 mb-3">${currentSubcategory.title}</h3>${siblingLinksHtml}<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"><div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Context</h5><p class="text-sm text-gray-600">${currentSubcategory.context || '...'}</p></div><div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Materials</h5><ul class="list-disc list-inside text-sm text-gray-600 space-y-1">${currentSubcategory.materials ? currentSubcategory.materials.map(m => `<li>${m}</li>`).join('') : '<li>...</li>'}</ul></div><div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Process Steps</h5><ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">${currentSubcategory.processSteps ? currentSubcategory.processSteps.map(s => `<li>${s}</li>`).join('') : '<li>...</li>'}</ol></div></div>`;
+             if (currentSubcategory.videos && currentSubcategory.videos.length > 0) {
+                 detailsHtml += `<h4 class="text-lg font-semibold text-gray-700 mb-3 pt-4 border-t">Related Videos</h4><div class="video-linker-container">`;
+                 currentSubcategory.videos.forEach(video => {
+                     if (video.flat_index === undefined || !video.youtubeId) { console.warn("Skipping video:", video.title); return; }
+                     const youtubeWatchUrl = `https://www.youtube.com/watch?v={video.youtubeId}`;
+                     const bgColor = video.color_tag; const iconClass = video.icon_tag_fa; const flatIndex = video.flat_index; const useNoIconFallback = !iconClass || iconClass === 'fas fa-video';
+                     detailsHtml += `<a href="${youtubeWatchUrl}" target="_blank" class="video-linker ${useNoIconFallback ? 'no-icon' : ''}" style="background-color: ${bgColor};" data-flat-index="${flatIndex}" title="Open video: ${video.title}">`;
+                     if (!useNoIconFallback) { detailsHtml += `<i class="${iconClass}"></i>`; } else { detailsHtml += video.title.substring(0, 15) + (video.title.length > 15 ? '...' : ''); }
+                     detailsHtml += `</a>`;
+                 });
+                 detailsHtml += `</div>`;
+             }
+             detailsHtml += `<div class="mt-8 text-right"><button class="details-back-button">Back to Subcategories</button></div>`;
+             megamenuDetailsArea.innerHTML = detailsHtml;
+             megamenuColumnsContainer.classList.add('columns-hidden');
+             megamenuDetailsArea.classList.add('visible');
+             if (updateHash) { window.location.hash = `${area}@${uniqueId}`; }
+             const correspondingToggle = megamenuColumnsContainer.querySelector(`.subcategory-toggle[data-area="${area}"][data-uniqueid="${uniqueId}"]`);
+             if (correspondingToggle && activeSubcategoryToggle !== correspondingToggle) { if(activeSubcategoryToggle) { activeSubcategoryToggle.classList.remove('active'); activeSubcategoryToggle.textContent = 'Show More Info'; } correspondingToggle.classList.add('active'); correspondingToggle.textContent = 'Hide Info'; activeSubcategoryToggle = correspondingToggle; }
+             else if (correspondingToggle && !activeSubcategoryToggle) { correspondingToggle.classList.add('active'); correspondingToggle.textContent = 'Hide Info'; activeSubcategoryToggle = correspondingToggle; }
+         }
+
+        function hideSubcategoryDetails(updateHash = true) { /* ... (No changes needed here) ... */
+             const detailsWereVisible = megamenuDetailsArea.classList.contains('visible');
+             megamenuDetailsArea.classList.remove('visible');
+             megamenuColumnsContainer.classList.remove('columns-hidden');
+             if (activeSubcategoryToggle) { activeSubcategoryToggle.classList.remove('active'); activeSubcategoryToggle.textContent = 'Show More Info'; activeSubcategoryToggle = null; }
+             if (detailsWereVisible && updateHash && currentArea) { window.location.hash = currentArea; }
+             hideInfoPanel();
+             setTimeout(() => { if (!megamenuDetailsArea.classList.contains('visible')) { megamenuDetailsArea.innerHTML = ''; } }, 400);
+         }
+
+        function handleSubcategoryToggle(event) { /* ... (No changes needed here) ... */
+             event.stopPropagation();
+             const currentButton = event.target; const area = currentButton.dataset.area; const uniqueId = currentButton.dataset.uniqueid;
+             if (activeSubcategoryToggle === currentButton) { hideSubcategoryDetails(true); }
+             else { if (activeSubcategoryToggle) { activeSubcategoryToggle.classList.remove('active'); activeSubcategoryToggle.textContent = 'Show More Info'; } displaySubcategoryDetails(area, uniqueId, true);
+                 if (!bodyElement.classList.contains('glossary-visible')) { requestAnimationFrame(() => { setTimeout(() => { megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); }); }
+             }
+          }
+
+        // --- Category Title Display Functions ---
+        function showCategoryTitle(category) { /* ... (No changes needed here) ... */
+            const displayName = category.area || 'Category';
+            categoryTitleDisplay.textContent = displayName;
+            categoryTitleDisplay.classList.add('visible');
+        }
+        function hideCategoryTitle() { /* ... (No changes needed here) ... */
+            categoryTitleDisplay.classList.remove('visible');
+            setTimeout(() => { if (!categoryTitleDisplay.classList.contains('visible')) { categoryTitleDisplay.textContent = ''; } }, 400);
+        }
+
+        // --- Page Load / Hash Handling ---
+        function handlePageLoad() { /* ... (No changes needed here) ... */
+             const hash = window.location.hash.substring(1);
+             if (!hash) { showHomepageView(); return; }
+             const parts = hash.split('@'); const categoryArea = parts[0]; const subcategoryId = parts.length > 1 ? parts[1] : null;
+             const categoryExists = categoryData.some(cat => cat.area.toLowerCase() === categoryArea);
+             if (categoryExists) {
+                 showCategoryView(categoryArea);
+                 if (subcategoryId) { requestAnimationFrame(() => { setTimeout(() => { const subcategoryToggle = megamenuColumnsContainer.querySelector( `.subcategory-toggle[data-area="${categoryArea}"][data-uniqueid="${subcategoryId}"]` ); if (subcategoryToggle) { displaySubcategoryDetails(categoryArea, subcategoryId, false); setTimeout(() => { megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); } else { console.warn(`Subcategory toggle not found for hash: ${hash}. Showing category columns.`); hideSubcategoryDetails(false); } }, 100); }); }
+                 else { hideSubcategoryDetails(false); }
+             } else { console.warn(`Category area not found for hash: ${hash}. Showing homepage.`); showHomepageView(); }
+         }
+
+        // --- Event Delegation Setup ---
+        function setupEventListeners() {
+            // Clicks within the category content area (glossary, subcat toggle, details back, sibling pills)
+            categoryContentContainer.addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('glossary-trigger')) { handleGlossaryTriggerClick(event); }
+                else if (target.classList.contains('subcategory-toggle')) { handleSubcategoryToggle(event); }
+                else if (target.closest('.details-back-button')) { hideSubcategoryDetails(true); }
+                else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+                    event.preventDefault();
+                    const area = target.dataset.area; const uniqueId = target.dataset.uniqueid;
+                    if (area && uniqueId) { displaySubcategoryDetails(area, uniqueId, true); requestAnimationFrame(() => { setTimeout(() => { megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); }); }
+                }
+            });
+
+            // Back button to return to module grid
+            backToModulesButton.addEventListener('click', showHomepageView);
+
+            // Video Hover Listeners on Body
+            document.body.addEventListener('mouseover', (event) => {
+                const linker = event.target.closest('.video-linker');
+                if (linker) { const flatIndex = linker.getAttribute('data-flat-index'); if (flatIndex !== null) { const video = allVideosFlat[parseInt(flatIndex, 10)]; if (video) { showInfoPanel(video); } else { console.warn("Video data not found for index:", flatIndex); } } }
+            });
+             document.body.addEventListener('mouseout', (event) => {
+                const leavingLinker = event.target.closest('.video-linker'); const enteringElement = event.relatedTarget;
+                if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) { setTimeout(() => { const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover'); if (!currentlyHovered) { hideInfoPanel(); } }, 50); }
+            });
+             videoInfoPanel.addEventListener('mouseleave', hideInfoPanel);
+        }
+
+        // --- Initial Setup ---
+        console.log("Initializing Hub...");
+        flattenVideoData(categoryData);
+        generateHomepageModules(); // Generate the initial module grid
+        setupEventListeners();
+        handlePageLoad(); // Check hash on load
+        hideInfoPanel(); // Ensure video panel is hidden initially
+
+    </script>
+</body>
+</html>
