@@ -850,7 +850,31 @@ function getModuleInfoByIndex(index) {
     return homepageModules[index] || null;
 }
 
-      
+
+// Make sure homepage is displayed on initial load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the data
+    flattenVideoData(categoryData);
+    
+    // Generate the homepage modules
+    generateHomepageModules();
+    
+    // Set up the event listeners
+    setupEventListeners();
+    
+    // Explicitly show homepage view (should set proper visibility)
+    showHomepageView();
+    
+    // Hide info panel on initial load
+    hideInfoPanel();
+    
+    // Check URL hash for direct navigation
+    handlePageLoad();
+    
+    console.log("Homepage initialized");
+});
+
+        
     </script>
 </body>
 </html>
