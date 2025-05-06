@@ -12,6 +12,106 @@
             font-family: 'Inter', sans-serif;
              margin-bottom: 120px; /* Ensure space for sticky footer */
         }
+
+     /* --- Module Button Styling --- */
+        .module {
+            cursor: pointer;
+            border-radius: 12px;
+            border: 3px solid; /* Border color set by class */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Stack top and bottom */
+            background-color: #2D3748; /* Default dark background */
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .module-top {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem 0.75rem 1.5rem; /* Adjusted padding */
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        .module-top::before { /* Subtle gradient overlay for top */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1; /* Behind content */
+            opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover .module-top::before { opacity: 0; }
+        .module .icon { width: 36px; height: 36px; margin-right: 1rem; flex-shrink: 0; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: white; }
+        .module:hover .icon svg { transform: scale(1.1); }
+        .module h2 { margin: 0; font-size: 1.1rem; font-weight: 600; color: white; }
+        .module-bottom {
+            padding: 0.75rem 1.5rem 1rem 1.5rem; /* Adjusted padding */
+            min-height: 60px; /* Ensure some space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0,0,0, 0.15); /* Slightly different shade - adjust as needed */
+            transition: background-color 0.2s ease;
+            flex-grow: 1; /* Allow bottom to take remaining space */
+        }
+        .module:hover .module-bottom {
+             /* Use a lighter/darker shade of the main hover color */
+        }
+        .module-bottom-text {
+            font-size: 0.8rem;
+            color: #e2e8f0; /* Lighter text for dark bg */
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+        .module-bottom-button {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background-color: rgba(255,255,255, 0.9);
+            color: inherit; /* Will inherit from hover state */
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            align-self: flex-start; /* Align button to the left */
+        }
+        .module-bottom-button i { /* Style for icon inside button */
+             margin-right: 0.3em;
+        }
+        /* Module Colors & Hover States */
+        .module.shelter { border-color: #36B9CC; }
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter:hover .module-bottom { background-color: rgba(40, 160, 178, 0.9); } /* Slightly darker teal */
+        .module.shelter:hover .module-bottom-button { color: #36B9CC; }
+        .module.water { border-color: #1E88E5; }
+        .module.water:hover { background-color: #1E88E5; }
+        .module.water:hover .module-bottom { background-color: rgba(25, 118, 210, 0.9); } /* Slightly darker blue */
+        .module.water:hover .module-bottom-button { color: #1E88E5; }
+        .module.waste { border-color: #7CB342; }
+        .module.waste:hover { background-color: #7CB342; }
+        .module.waste:hover .module-bottom { background-color: rgba(106, 158, 58, 0.9); } /* Slightly darker green */
+        .module.waste:hover .module-bottom-button { color: #7CB342; }
+        .module.energy { border-color: #FFC107; }
+        .module.energy:hover { background-color: #FFC107; }
+        .module.energy:hover .module-bottom { background-color: rgba(255, 179, 0, 0.9); } /* Slightly darker yellow */
+        .module.energy:hover .module-bottom-button { color: #c77e02; } /* Darker color for text on yellow */
+        .module.health { border-color: #EF5350; }
+        .module.health:hover { background-color: #EF5350; }
+        .module.health:hover .module-bottom { background-color: rgba(211, 71, 68, 0.9); } /* Slightly darker red */
+        .module.health:hover .module-bottom-button { color: #EF5350; }
+        .module.food { border-color: #8BC34A; }
+        .module.food:hover { background-color: #8BC34A; }
+        .module.food:hover .module-bottom { background-color: rgba(118, 171, 68, 0.9); } /* Slightly darker lime */
+        .module.food:hover .module-bottom-button { color: #8BC34A; }
+
+        
         /* --- Category Title Display --- */
         #category-title-display {
             transition: opacity 0.4s ease-out, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding 0.4s ease-out;
