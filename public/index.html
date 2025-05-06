@@ -31,16 +31,17 @@
         .site-header h1 { font-size: 1.5rem; margin: 0; }
         .site-header h1 .green { color: #54B948; }
         .site-header h1 .blue { color: #1E88E5; }
-
         /* --- Homepage Module Grid --- */
         #modules-grid-container { /* Renamed container */
-             padding: 2rem 1rem; /* Add padding */
+            padding: 2rem 1rem; /* Add padding */
         }
         .modules-grid {
             margin: 0 auto; /* Centered */
-            max-width: 900px;
+            /* max-width: 900px; */ /* Original value - this might be too narrow for 6 modules */
+            max-width: 1400px;  /* Increased max-width to better accommodate 6 modules in a row. Adjust as needed. */
+                                /* Alternatively, you could use '100%' if you want it to fill its parent container's width */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+            grid-template-columns: repeat(6, 1fr); /* This creates 6 equal-width columns */
             gap: 1.5rem;
         }
         .module {
@@ -70,7 +71,6 @@
         .module.energy { border-color: #FFC107; } .module.energy:hover { background-color: #FFC107; }
         .module.health { border-color: #EF5350; } .module.health:hover { background-color: #EF5350; }
         .module.food { border-color: #8BC34A; } .module.food:hover { background-color: #8BC34A; }
-
         /* --- Category Content Area (Megamenu Logic Adapted) --- */
         #category-content-container {
             display: none; /* Hidden initially */
