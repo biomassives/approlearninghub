@@ -31,8 +31,12 @@
         .site-header h1 { font-size: 1.5rem; margin: 0; }
         .site-header h1 .green { color: #54B948; }
         .site-header h1 .blue { color: #1E88E5; }
+
         /* --- Homepage Module Grid --- */
-        #modules-grid-container { /* Renamed container */
+
+
+
+       #modules-grid-container { /* Renamed container */
             padding: 2rem 1rem; /* Add padding */
         }
         .modules-grid {
@@ -46,12 +50,14 @@
         }
         .module {
             cursor: pointer; display: flex; align-items: center;
-            padding: 1.25rem 1.5rem; border-radius: 12px; border: 3px solid;
+            padding: 1.25rem 1.5rem; border-radius: 12px; border: 1px dashed;
             font-size: 1.1rem; /* Slightly smaller */ font-weight: 600;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
             position: relative; overflow: hidden;
-            background-color: #2D3748; /* Dark background */ color: white;
+            background-color: #2D3748; /* Dark background */ 
+            color: #1E88E5;
+            background-color: #fff; /* Dark background */ color: white;
         }
         .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
         .module::before { /* Subtle gradient overlay */
@@ -61,16 +67,25 @@
         }
         .module:hover::before { opacity: 0; }
         .module .icon { width: 36px; height: 36px; margin-right: 1rem; position: relative; z-index: 2; }
-        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: white; }
-        .module:hover .icon svg { transform: scale(1.1); }
-        .module h2 { margin: 0; transition: color 0.2s ease; position: relative; z-index: 2; color: white; }
+        .module:hover .icon svg { transform: scale(1.1); stroke: #fff; }
+        .module:hover h2 { color: #fff; }
         /* Module Colors */
-        .module.shelter { border-color: #36B9CC; } .module.shelter:hover { background-color: #36B9CC; }
-        .module.water { border-color: #1E88E5; } .module.water:hover { background-color: #1E88E5; }
-        .module.waste { border-color: #7CB342; } .module.waste:hover { background-color: #7CB342; }
-        .module.energy { border-color: #FFC107; } .module.energy:hover { background-color: #FFC107; }
-        .module.health { border-color: #EF5350; } .module.health:hover { background-color: #EF5350; }
-        .module.food { border-color: #8BC34A; } .module.food:hover { background-color: #8BC34A; }
+        .module.shelter { border-color: #1E88E5;} 
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter svg { color: #36B9CC; } 
+        .module.water { border-color: #1E88E5;} 
+        .module.water:hover { background-color: #1E88E5; }
+        .module.waste { border-color: #1E88E5;} 
+        .module.waste:hover { background-color: #7CB342; }
+        .module.energy { border-color: #1E88E5;} 
+        .module.energy:hover { background-color: #FFC107; }
+        .module.health { border-color: #1E88E5;} 
+        .module.health:hover { background-color: #EF5350; }
+        .module.food { border-color: #1E88E5;} 
+        .module.food:hover { background-color: #8BC34A; }
+        .module h2 { margin: 0; transition: color 0.2s ease; position: relative; z-index: 2; color: #1E88E5; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: #1E88E5; }
+
 
         /* For screens smaller than 768px, make it 2 columns and let them auto-fit */
         @media (max-width: 768px) {
