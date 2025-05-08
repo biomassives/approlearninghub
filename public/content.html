@@ -222,7 +222,7 @@
             searchableItems = []; // Reset for potential reloads
 
             try {
-                const response = await fetch('learning_modules-catsubcat-tags-featured.json');
+                const response = await fetch('data/learning_modules-catsubcat-tags-featured.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}. Could not load JSON file.`);
                 }
