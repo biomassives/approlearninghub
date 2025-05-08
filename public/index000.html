@@ -642,7 +642,7 @@
                 "subcategories": [
                      {
                          "uniqueId": "water-0", "title": "Purification", "description": "Use household items or low-cost filters to make water safe for drinking...", "tags": ["clean water", "filtration", "health", "SODIS", "potable water", "waterborne disease", "DIY filter", "boiling", "disinfection", "resourcefulness", "water testing"],
-                         "context": "Access to safe drinking water is fundamental for health...", "materials": ["Clean Containers...", "Heat Source...", "Clear PET Bottles...", "Cloth...", "Sand...", "Gravel...", "Activated Charcoal...", "Simple Chlorine/Iodine Solution..."], "processSteps": ["Pre-filtration...", "Boiling...", "Solar Disinfection...", "Building Layered Filter...", "Chemical Disinfection...", "Safe Storage..."],
+                         "context": "Access to safe drinking water is fundamental for health...", "materials": ["Clean Containers...", "Heat Source...", "Clear PET Bottles...", "Cloth...", "Sand...", "Gravel...", "Activated Charcoal...", "Simple Chlorine/Iodine Solution..."], "processSteps": ["1. Pre-filtration...", "2. Boiling...", "3. Solar Disinfection...", "4. Building Layered Filter...", "5. Chemical Disinfection...", "6. Safe Storage..."],
                          "videos": [
                             { "icon_tag_fa": "fas fa-filter", "color_tag": "#4b5563", "title": "DIY Water Filter Build (Microbial Safety Focus)", "youtubeId": "31", "description": "Detailed guide (City Prepping)...", "localVideoFilename": "water_diy_filter_safety.mp4", "authors": "City Prepping", "researchReviewItems": [], "contentCreatorArchive": "https://www.youtube.com/@CityPrepping", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
                             { "icon_tag_fa": "fas fa-flask-vial", "color_tag": "#ef4444", "title": "Understanding Water Safety & Contamination", "youtubeId": "32", "description": "Explains (TED-Ed) different types...", "localVideoFilename": "water_safety_teded.mp4", "authors": "TED-Ed / Mia Nacamulli", "researchReviewItems": [], "contentCreatorArchive": "https://www.youtube.com/@TEDEd", "licence": "Standard YouTube License", "patreon": "https://www.patreon.com/teded", "socials": {"twitter": "https://twitter.com/TED_ED"}, "fundraiser": "", "sponsorPages": [] },
@@ -1080,83 +1080,74 @@
         let allVideosFlat = []; // For flattened video data
         let currentArea = null; // Track the currently displayed area
 
-        /**
- * Fixed JavaScript code for Approvideo Learning Hub
- * Key fixes:
- * 1. Eliminates duplicate function definitions
- * 2. Corrects the YouTube link format in showInfoPanel
- * 3. Fixes handling of the handleHashChange function
- * 4. Creates complete subcategory details HTML
- */
-
-// --- Video Panel Functions ---
-function flattenVideoData(originalData) {
-    let flatIndex = 0;
-    allVideosFlat = []; // Reset
-    originalData.forEach(area => {
-        if (area.subcategories && Array.isArray(area.subcategories)) {
-            area.subcategories.forEach((subcat) => {
-                if (subcat.videos && Array.isArray(subcat.videos)) {
-                    subcat.videos.forEach((video) => {
-                        if (video && video.youtubeId) {
-                            video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
-                            video.color_tag = video.color_tag || '#6c757d';
-                            video.authors = video.authors || "";
-                            video.researchReviewItems = video.researchReviewItems || [];
-                            video.contentCreatorArchive = video.contentCreatorArchive || "";
-                            video.licence = video.licence || "Standard YouTube License";
-                            video.patreon = video.patreon || "";
-                            video.socials = video.socials || {};
-                            video.fundraiser = video.fundraiser || "";
-                            video.sponsorPages = video.sponsorPages || [];
-                            video.localVideoFilename = video.localVideoFilename || "";
-                            video.flat_index = flatIndex++;
-                            allVideosFlat.push(video);
-                        } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+        // --- Video Panel Functions ---
+        function flattenVideoData(originalData) {
+            let flatIndex = 0;
+            allVideosFlat = []; // Reset
+            originalData.forEach(area => {
+                if (area.subcategories && Array.isArray(area.subcategories)) {
+                    area.subcategories.forEach((subcat) => {
+                        if (subcat.videos && Array.isArray(subcat.videos)) {
+                            subcat.videos.forEach((video) => {
+                                if (video && video.youtubeId) {
+                                    video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
+                                    video.color_tag = video.color_tag || '#6c757d';
+                                    video.authors = video.authors || "";
+                                    video.researchReviewItems = video.researchReviewItems || [];
+                                    video.contentCreatorArchive = video.contentCreatorArchive || "";
+                                    video.licence = video.licence || "Standard YouTube License";
+                                    video.patreon = video.patreon || "";
+                                    video.socials = video.socials || {};
+                                    video.fundraiser = video.fundraiser || "";
+                                    video.sponsorPages = video.sponsorPages || [];
+                                    video.localVideoFilename = video.localVideoFilename || "";
+                                    video.flat_index = flatIndex++;
+                                    allVideosFlat.push(video);
+                                } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+                            });
+                        }
                     });
-                }
+                } else { console.warn(`Area "${area.area}" missing subcategories.`); }
             });
-        } else { console.warn(`Area "${area.area}" missing subcategories.`); }
-    });
-    console.log(`Flattened ${allVideosFlat.length} videos.`);
-}
+             console.log(`Flattened ${allVideosFlat.length} videos.`);
+        }
 
-function showInfoPanel(video) {
-     if (!video || !video.youtubeId) { hideInfoPanel(); return; } // Hide if invalid video
+        function showInfoPanel(video) {
+             if (!video || !video.youtubeId) { hideInfoPanel(); return; } // Hide if invalid video
 
-     // Local Video Row
-     if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
-         const videoPath = `/assets/video/${video.localVideoFilename}`;
-         const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
-         localVideoLink.href = videoPath;
-         localVideoThumb.src = thumbPath;
-         localVideoThumb.alt = `Thumbnail for ${video.title}`;
-         localVideoFilenameDisplay.textContent = video.localVideoFilename;
-         localVideoRow.classList.add('visible');
-     } else if(localVideoRow) {
-         localVideoRow.classList.remove('visible');
-     }
+             // Local Video Row
+             if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
+                 const videoPath = `/assets/video/${video.localVideoFilename}`;
+                 const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
+                 localVideoLink.href = videoPath;
+                 localVideoThumb.src = thumbPath;
+                 localVideoThumb.alt = `Thumbnail for ${video.title}`;
+                 localVideoFilenameDisplay.textContent = video.localVideoFilename;
+                 localVideoRow.classList.add('visible');
+             } else if(localVideoRow) {
+                 localVideoRow.classList.remove('visible');
+             }
 
-     // YouTube Info Row - FIX: Correct the URL format
-     const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
-     infoUrlEl.textContent = youtubeWatchUrl;
-     infoUrlEl.href = youtubeWatchUrl; // Make clickable
-     infoUrlEl.classList.remove('placeholder-text');
-     infoTitleEl.textContent = video.title || 'No Title';
-     infoDescriptionEl.textContent = video.description || 'No Description';
+             // YouTube Info Row
+             const youtubeWatchUrl = `https://www.youtube.com/watch?v={video.youtubeId}`; // Use the correct link structure
+             infoUrlEl.textContent = youtubeWatchUrl;
+             infoUrlEl.href = youtubeWatchUrl; // Make clickable
+             infoUrlEl.classList.remove('placeholder-text');
+             infoTitleEl.textContent = video.title || 'No Title';
+             infoDescriptionEl.textContent = video.description || 'No Description';
 
-     videoInfoPanel.classList.add('visible');
-}
+             videoInfoPanel.classList.add('visible');
+         }
 
-function hideInfoPanel() {
-    infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
-    infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
-    if (localVideoRow) { localVideoRow.classList.remove('visible'); }
-    if (localVideoLink) { localVideoLink.href = '#'; }
-    if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
-    if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
-    videoInfoPanel.classList.remove('visible');
-}
+        function hideInfoPanel() {
+            infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
+            infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
+            if (localVideoRow) { localVideoRow.classList.remove('visible'); }
+            if (localVideoLink) { localVideoLink.href = '#'; }
+            if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
+            if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
+            videoInfoPanel.classList.remove('visible');
+        }
 
 function generateHomepageModules() {
     modulesGrid.innerHTML = '';
@@ -1191,6 +1182,11 @@ function generateHomepageModules() {
     });
 }
 
+/**
+ * Improved slideshow initialization for Approvideo Learning Hub
+ * This function properly initializes all slideshows on the page
+ * without interfering with the megamenu functionality
+ */
 function initializeSlideshows() {
     document.querySelectorAll('.featured-slideshow').forEach(slideshow => {
         const slides = slideshow.querySelectorAll('.slideshow-slide');
@@ -1319,75 +1315,23 @@ function initializeSlideshows() {
     });
 }
 
-// --- Hash Navigation Functions ---
-// IMPORTANT: Define handleHashChange FIRST to avoid reference errors
-function handleHashChange() {
-    // Get the hash without the # prefix
-    let hash = window.location.hash.substring(1);
-    
-    if (!hash) {
-        showHomepageView(); // Show grid if no hash
-        return;
-    }
+// Make sure we initialize slideshows only after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing slideshows...');
+    initializeSlideshows();
+});
 
-    // Normalize hash to lowercase and trim any spaces
-    hash = hash.toLowerCase().trim();
-    console.log(`Processing hash: ${hash}`);
+// If the slideshows need to be reinitialized after dynamic content changes,
+// you can call this function from elsewhere in your code
+window.reinitializeSlideshows = function() {
+    console.log('Reinitializing slideshows...');
+    initializeSlideshows();
+};
 
-    // Split the hash by @ to check for subcategory requests
-    const parts = hash.split('@');
-    const categoryArea = parts[0]; 
-    const subcategoryId = parts.length > 1 ? parts[1] : null;
 
-    // Find if this category exists in our data
-    const categoryMatch = categoryData.find(cat => 
-        cat.area.toLowerCase() === categoryArea
-    );
-
-    if (categoryMatch) {
-        console.log(`Found category match for hash: #${hash}`);
         
-        // Show the category view for the requested area
-        showCategoryView(categoryArea);
 
-        // If there's also a subcategory ID specified
-        if (subcategoryId) {
-            // Use requestAnimationFrame + setTimeout to ensure DOM is updated
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    console.log(`Looking for subcategory: ${subcategoryId}`);
-                    
-                    // Try to find the subcategory in the data first
-                    const subcategoryExists = categoryMatch.subcategories.some(
-                        subcat => subcat.uniqueId === subcategoryId
-                    );
-                    
-                    if (subcategoryExists) {
-                        // Display details for the requested subcategory
-                        displaySubcategoryDetails(categoryArea, subcategoryId, false);
-                        
-                        // Scroll to details area after a short delay
-                        setTimeout(() => {
-                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                    } else {
-                        console.warn(`Subcategory not found for hash: ${hash}. Showing category view.`);
-                        // Ensure we reset the hash to just the category
-                        history.pushState(null, null, '#' + categoryArea);
-                    }
-                }, 100);
-            });
-        } else {
-            // Just show the category columns view (no specific subcategory)
-            hideSubcategoryDetails(false);
-        }
-    } else {
-        console.warn(`Category not found for hash: ${hash}. Showing homepage.`);
-        showHomepageView(); // Fallback to homepage if invalid category
-    }
-}
-
-// --- Show/Hide Views ---
+        // --- Show/Hide Views ---
 function showCategoryView(area) {
     console.log("Showing category:", area);
     
@@ -1415,8 +1359,7 @@ function showCategoryView(area) {
         
         // Update hash if it's not already set correctly
         if (window.location.hash.substring(1).toLowerCase() !== area) {
-            // Use pushState for visible URL change
-            history.pushState(null, null, '#' + area);
+            window.location.hash = area;
         }
         
         // Scroll to top for better user experience
@@ -1426,438 +1369,330 @@ function showCategoryView(area) {
     }
 }
 
-function showHomepageView() {
-    console.log("Showing homepage grid");
-    currentArea = null; // Reset current area
-    hideSubcategoryDetails(false); // Ensure details are hidden
-    hideGlossaryPanel();
-    hideCategoryTitle();
-    modulesGridContainer.style.display = 'block'; // Show module grid
-    categoryContentContainer.classList.remove('visible'); // Hide category content
-    
-    // Use pushState for visible URL change - remove hash
-    if (window.location.hash) {
-        history.pushState(null, document.title, window.location.pathname + window.location.search);
-    }
-}
-
-function populateMegamenuColumns(area) {
-    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
-    if (!category) {
-        megamenuColumnsContainer.innerHTML = '<div class="text-center text-gray-500 col-span-1 md:col-span-3">Category data not found.</div>';
-        return;
-    }
-    megamenuColumnsContainer.innerHTML = ''; // Clear previous columns
-    megamenuColumnsContainer.classList.remove('columns-hidden'); // Ensure columns are potentially visible
-    hideSubcategoryDetails(false); // Ensure details area is hidden when showing columns
-
-    const columns = [[], [], []];
-    category.subcategories.forEach((subcat, index) => {
-         subcat.uniqueId = subcat.uniqueId || `${area}-${index}`;
-         columns[index % 3].push(subcat);
-    });
-
-    columns.forEach((columnSubcats) => {
-        const columnDiv = document.createElement('div');
-        columnDiv.className = 'space-y-6';
-        if (columnSubcats.length > 0) {
-            columnSubcats.forEach((subcat) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'subcategory-item';
-                let tagsHtml = '';
-                if (subcat.tags && subcat.tags.length > 0) {
-                    tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' +
-                        subcat.tags.map(tag =>
-                            `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`
-                        ).join('') + '</div>';
-                }
-                itemDiv.innerHTML = `
-                    <h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4>
-                    <p class="text-sm text-gray-600">${subcat.description}</p>
-                    ${tagsHtml}
-                    <button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" data-area="${area}" data-uniqueid="${subcat.uniqueId}">
-                        Show More Info
-                    </button>`;
-                columnDiv.appendChild(itemDiv);
-            });
+        function showHomepageView() {
+             console.log("Showing homepage grid");
+             currentArea = null; // Reset current area
+             hideSubcategoryDetails(false); // Ensure details are hidden
+             hideGlossaryPanel();
+             hideCategoryTitle();
+             modulesGridContainer.style.display = 'block'; // Show module grid
+             categoryContentContainer.classList.remove('visible'); // Hide category content
+             history.pushState("", document.title, window.location.pathname + window.location.search); // Clear hash
         }
-        megamenuColumnsContainer.appendChild(columnDiv);
-    });
-}
 
-// --- Glossary Functions ---
-function displayGlossaryEntry(tag) {
-    const definition = tagGlossary[tag] || "Definition not found for this tag.";
-    const term = tag.charAt(0).toUpperCase() + tag.slice(1);
-    glossaryPanel.innerHTML = `
-        <button class="glossary-close-button" aria-label="Close glossary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg>
-        </button>
-        <h4 class="font-semibold text-lg text-white mb-1 pr-8">${term}</h4>
-        <p class="text-sm text-gray-300">${definition}</p>
-    `;
-    glossaryPanel.querySelector('.glossary-close-button').addEventListener('click', hideGlossaryPanel);
-    glossaryPanel.classList.add('visible');
-    bodyElement.classList.add('glossary-visible'); // Keep this class for potential styling needs
-}
+        // --- Populate Megamenu Columns (Adapted - No Major Changes Needed) ---
+        function populateMegamenuColumns(area) {
+             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+             if (!category) {
+                 megamenuColumnsContainer.innerHTML = '<div class="text-center text-gray-500 col-span-1 md:col-span-3">Category data not found.</div>';
+                 return;
+             }
+             megamenuColumnsContainer.innerHTML = ''; // Clear previous columns
+             megamenuColumnsContainer.classList.remove('columns-hidden'); // Ensure columns are potentially visible
+             hideSubcategoryDetails(false); // Ensure details area is hidden when showing columns
 
-function hideGlossaryPanel() {
-    glossaryPanel.classList.remove('visible');
-    bodyElement.classList.remove('glossary-visible');
-    if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); activeGlossaryTrigger = null; }
-    setTimeout(() => { if (!glossaryPanel.classList.contains('visible')) { glossaryPanel.innerHTML = '<p class="text-center text-gray-400">Click a tag to see its definition.</p>'; } }, 400);
-}
+             const columns = [[], [], []];
+             category.subcategories.forEach((subcat, index) => {
+                  subcat.uniqueId = subcat.uniqueId || `${area}-${index}`;
+                  columns[index % 3].push(subcat);
+             });
 
-function handleGlossaryTriggerClick(event) {
-    event.stopPropagation();
-    const currentButton = event.target;
-    const tag = currentButton.dataset.tag;
-    if (activeGlossaryTrigger === currentButton) { hideGlossaryPanel(); }
-    else { if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); } displayGlossaryEntry(tag); currentButton.classList.add('active'); activeGlossaryTrigger = currentButton; }
-}
+             columns.forEach((columnSubcats) => {
+                 const columnDiv = document.createElement('div');
+                 columnDiv.className = 'space-y-6';
+                 if (columnSubcats.length > 0) {
+                     columnSubcats.forEach((subcat) => {
+                         const itemDiv = document.createElement('div');
+                         itemDiv.className = 'subcategory-item';
+                         let tagsHtml = '';
+                         if (subcat.tags && subcat.tags.length > 0) {
+                             tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' +
+                                 subcat.tags.map(tag =>
+                                     `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`
+                                 ).join('') + '</div>';
+                         }
+                         itemDiv.innerHTML = `
+                             <h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4>
+                             <p class="text-sm text-gray-600">${subcat.description}</p>
+                             ${tagsHtml}
+                             <button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" data-area="${area}" data-uniqueid="${subcat.uniqueId}">
+                                 Show More Info
+                             </button>`;
+                         columnDiv.appendChild(itemDiv);
+                     });
+                 } else {
+                     // Add placeholder if column is empty? Optional.
+                     // columnDiv.innerHTML = '<div class="text-gray-400 text-sm italic">No items</div>';
+                 }
+                 megamenuColumnsContainer.appendChild(columnDiv);
+             });
+         }
 
-// --- Subcategory Details Functions ---
-function displaySubcategoryDetails(area, uniqueId, updateHash = true) {
-    console.log(`Displaying subcategory details: ${area}/${uniqueId}`);
+        // --- Glossary Functions ---
+        function displayGlossaryEntry(tag) { /* ... (no changes) ... */
+            const definition = tagGlossary[tag] || "Definition not found for this tag.";
+            const term = tag.charAt(0).toUpperCase() + tag.slice(1);
+            glossaryPanel.innerHTML = `
+                <button class="glossary-close-button" aria-label="Close glossary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg>
+                </button>
+                <h4 class="font-semibold text-lg text-white mb-1 pr-8">${term}</h4>
+                <p class="text-sm text-gray-300">${definition}</p>
+            `;
+            glossaryPanel.querySelector('.glossary-close-button').addEventListener('click', hideGlossaryPanel);
+            glossaryPanel.classList.add('visible');
+            bodyElement.classList.add('glossary-visible'); // Keep this class for potential styling needs
+        }
+        function hideGlossaryPanel() { /* ... (no changes) ... */
+            glossaryPanel.classList.remove('visible');
+            bodyElement.classList.remove('glossary-visible');
+            if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); activeGlossaryTrigger = null; }
+            setTimeout(() => { if (!glossaryPanel.classList.contains('visible')) { glossaryPanel.innerHTML = '<p class="text-center text-gray-400">Click a tag to see its definition.</p>'; } }, 400);
+        }
+        function handleGlossaryTriggerClick(event) { /* ... (no changes) ... */
+             event.stopPropagation();
+            const currentButton = event.target;
+            const tag = currentButton.dataset.tag;
+            if (activeGlossaryTrigger === currentButton) { hideGlossaryPanel(); }
+            else { if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); } displayGlossaryEntry(tag); currentButton.classList.add('active'); activeGlossaryTrigger = currentButton; }
+        }
+
+        // --- Subcategory Details Functions ---
+        function displaySubcategoryDetails(area, uniqueId, updateHash = true) {
+             const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+             const currentSubcategory = category?.subcategories.find(sub => sub.uniqueId === uniqueId);
+             if (!category || !currentSubcategory) { megamenuDetailsArea.innerHTML = '<p>Details not found.</p>'; megamenuDetailsArea.classList.add('visible'); return; }
+
+             let siblingLinksHtml = '';
+             if (category.subcategories && category.subcategories.length > 1) {
+                 siblingLinksHtml = '<div class="sibling-links-container"><span>See also: </span>';
+                 category.subcategories.forEach(subcat => {
+                     if (!subcat.uniqueId) { console.warn("Missing uniqueId:", subcat.title); return; }
+                     const isCurrent = subcat.uniqueId === uniqueId;
+                     siblingLinksHtml += `<button class="sibling-link-pill ${isCurrent ? 'current' : ''}" data-area="${area}" data-uniqueid="${subcat.uniqueId}" ${isCurrent ? 'disabled' : ''}>${subcat.title}</button>`;
+                 });
+                 siblingLinksHtml += '</div>';
+             }
+
+             let detailsHtml = `
+                 <h3 class="text-xl font-semibold text-gray-800 mb-3">${currentSubcategory.title}</h3>
+                 ${siblingLinksHtml}
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                     <div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Context</h5><p class="text-sm text-gray-600">${currentSubcategory.context || '...'}</p></div>
+                     <div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Materials</h5><ul class="list-disc list-inside text-sm text-gray-600 space-y-1">${currentSubcategory.materials ? currentSubcategory.materials.map(m => `<li>${m}</li>`).join('') : '<li>...</li>'}</ul></div>
+                     <div><h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Process Steps</h5><ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">${currentSubcategory.processSteps ? currentSubcategory.processSteps.map(s => `<li>${s}</li>`).join('') : '<li>...</li>'}</ol></div>
+                 </div>`;
+
+             if (currentSubcategory.videos && currentSubcategory.videos.length > 0) {
+                 detailsHtml += `<h4 class="text-lg font-semibold text-gray-700 mb-3 pt-4 border-t">Related Videos</h4><div class="video-linker-container">`;
+                 currentSubcategory.videos.forEach(video => {
+                     if (video.flat_index === undefined || !video.youtubeId) { console.warn("Skipping video:", video.title); return; }
+                     const youtubeWatchUrl = `https://www.youtube.com/watch?v={video.youtubeId}`; // Use the correct link structure
+                     const bgColor = video.color_tag;
+                     const iconClass = video.icon_tag_fa;
+                     const flatIndex = video.flat_index;
+                     const useNoIconFallback = !iconClass || iconClass === 'fas fa-video';
+                     detailsHtml += `<a href="${youtubeWatchUrl}" target="_blank" class="video-linker ${useNoIconFallback ? 'no-icon' : ''}" style="background-color: ${bgColor};" data-flat-index="${flatIndex}" title="Open video: ${video.title}">`;
+                     if (!useNoIconFallback) { detailsHtml += `<i class="${iconClass}"></i>`; }
+                     else { detailsHtml += video.title.substring(0, 15) + (video.title.length > 15 ? '...' : ''); }
+                     detailsHtml += `</a>`;
+                 });
+                 detailsHtml += `</div>`;
+             }
+
+             detailsHtml += `<div class="mt-8 text-right"><button class="details-back-button">Back to Subcategories</button></div>`; // Changed button text
+
+             megamenuDetailsArea.innerHTML = detailsHtml;
+             megamenuColumnsContainer.classList.add('columns-hidden'); // Hide columns
+             megamenuDetailsArea.classList.add('visible'); // Show details
+
+             if (updateHash) { window.location.hash = `${area}@${uniqueId}`; }
+
+             // Update the active state of the toggle button in the (hidden) columns view
+             const correspondingToggle = megamenuColumnsContainer.querySelector(`.subcategory-toggle[data-area="${area}"][data-uniqueid="${uniqueId}"]`);
+             if (correspondingToggle && activeSubcategoryToggle !== correspondingToggle) {
+                  if(activeSubcategoryToggle) { activeSubcategoryToggle.classList.remove('active'); activeSubcategoryToggle.textContent = 'Show More Info'; }
+                  correspondingToggle.classList.add('active'); correspondingToggle.textContent = 'Hide Info'; activeSubcategoryToggle = correspondingToggle;
+             } else if (correspondingToggle && !activeSubcategoryToggle) {
+                  correspondingToggle.classList.add('active'); correspondingToggle.textContent = 'Hide Info'; activeSubcategoryToggle = correspondingToggle;
+             }
+         }
+
+        function hideSubcategoryDetails(updateHash = true) {
+             const detailsWereVisible = megamenuDetailsArea.classList.contains('visible');
+             megamenuDetailsArea.classList.remove('visible');
+             megamenuColumnsContainer.classList.remove('columns-hidden'); // Show columns again
+             if (activeSubcategoryToggle) {
+                 activeSubcategoryToggle.classList.remove('active');
+                 activeSubcategoryToggle.textContent = 'Show More Info';
+                 activeSubcategoryToggle = null;
+             }
+             if (detailsWereVisible && updateHash && currentArea) { // Use currentArea
+                  window.location.hash = currentArea; // Reset hash to main category area
+             }
+             hideInfoPanel(); // Also hide video panel
+             setTimeout(() => { if (!megamenuDetailsArea.classList.contains('visible')) { megamenuDetailsArea.innerHTML = ''; } }, 400);
+         }
+
+        function handleSubcategoryToggle(event) {
+             event.stopPropagation();
+             const currentButton = event.target;
+             const area = currentButton.dataset.area;
+             const uniqueId = currentButton.dataset.uniqueid;
+             if (activeSubcategoryToggle === currentButton) { hideSubcategoryDetails(true); }
+             else {
+                 // No need to manipulate columns visibility here, displaySubcategoryDetails handles it
+                 if (activeSubcategoryToggle) { activeSubcategoryToggle.classList.remove('active'); activeSubcategoryToggle.textContent = 'Show More Info'; }
+                 displaySubcategoryDetails(area, uniqueId, true);
+                 // State update for the button is now handled inside displaySubcategoryDetails
+                 if (!bodyElement.classList.contains('glossary-visible')) {
+                    requestAnimationFrame(() => { setTimeout(() => { megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); });
+                 }
+             }
+          }
+
+        // --- Category Title Display Functions ---
+        function showCategoryTitle(category) {
+            const displayName = category.area || 'Category'; // Use Area name
+            categoryTitleDisplay.textContent = displayName;
+            categoryTitleDisplay.classList.add('visible');
+        }
+        function hideCategoryTitle() {
+            categoryTitleDisplay.classList.remove('visible');
+            setTimeout(() => { if (!categoryTitleDisplay.classList.contains('visible')) { categoryTitleDisplay.textContent = ''; } }, 400);
+        }
+
+        // --- Page Load / Hash Handling ---
+       function handlePageLoad() {
+    // Get the hash without the # prefix
+    let hash = window.location.hash.substring(1);
     
-    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
-    if (!category) {
-        console.error(`Category not found: ${area}`);
-        megamenuDetailsArea.innerHTML = '<p>Category not found.</p>'; 
-        megamenuDetailsArea.classList.add('visible');
+    if (!hash) {
+        showHomepageView(); // Show grid if no hash
         return;
     }
-    
-    const currentSubcategory = category.subcategories.find(sub => sub.uniqueId === uniqueId);
-    if (!currentSubcategory) {
-        console.error(`Subcategory not found: ${uniqueId}`);
-        megamenuDetailsArea.innerHTML = '<p>Subcategory details not found.</p>'; 
-        megamenuDetailsArea.classList.add('visible');
-        return;
-    }
-    
-    console.log("Found subcategory:", currentSubcategory.title);
 
-    // Generate sibling links for navigation between subcategories
-    let siblingLinksHtml = '';
-    if (category.subcategories && category.subcategories.length > 1) {
-        siblingLinksHtml = '<div class="sibling-links-container"><span>See also: </span>';
-        category.subcategories.forEach(subcat => {
-            if (!subcat.uniqueId) { 
-                console.warn("Missing uniqueId:", subcat.title); 
-                return; 
-            }
-            const isCurrent = subcat.uniqueId === uniqueId;
-            siblingLinksHtml += `<button class="sibling-link-pill ${isCurrent ? 'current' : ''}" 
-                                data-area="${area}" data-uniqueid="${subcat.uniqueId}" 
-                                ${isCurrent ? 'disabled' : ''}>${subcat.title}</button>`;
-        });
-        siblingLinksHtml += '</div>';
-    }
+    // Normalize hash to lowercase and trim any spaces
+    hash = hash.toLowerCase().trim();
 
-    // Start building the detailed content HTML
-    let detailsHtml = `
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">${currentSubcategory.title}</h3>
-        ${siblingLinksHtml}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div>
-                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Context</h5>
-                <p class="text-sm text-gray-600">${currentSubcategory.context || 'No context information available.'}</p>
-            </div>
-            <div>
-                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Materials</h5>
-                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
-                    ${currentSubcategory.materials && currentSubcategory.materials.length > 0 
-                        ? currentSubcategory.materials.map(m => `<li>${m}</li>`).join('') 
-                        : '<li>No materials information available.</li>'}
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Process Steps</h5>
-                <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
-                    ${currentSubcategory.processSteps && currentSubcategory.processSteps.length > 0
-                        ? currentSubcategory.processSteps.map(s => `<li>${s}</li>`).join('') 
-                        : '<li>No process steps information available.</li>'}
-                </ol>
-            </div>
-        </div>`;
+    // Split the hash by @ to check for subcategory requests
+    const parts = hash.split('@');
+    const categoryArea = parts[0]; 
+    const subcategoryId = parts.length > 1 ? parts[1] : null;
 
-    // Add videos section if available
-    if (currentSubcategory.videos && currentSubcategory.videos.length > 0) {
-        detailsHtml += `
-            <h4 class="text-lg font-semibold text-gray-700 mb-3 pt-4 border-t">Related Videos</h4>
-            <div class="video-linker-container">`;
-        
-        currentSubcategory.videos.forEach(video => {
-            // Skip invalid videos
-            if (!video.youtubeId) {
-                console.warn("Skipping video with missing youtubeId:", video);
-                return;
-            }
-            
-            // Ensure flat_index exists (create one if needed)
-            const flatIndex = video.flat_index !== undefined ? video.flat_index : 0;
-            
-            // Build video link
-            const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
-            const bgColor = video.color_tag || '#6c757d';
-            const iconClass = video.icon_tag_fa || 'fas fa-video';
-            const useNoIconFallback = !iconClass || iconClass === 'fas fa-video';
-            
-            detailsHtml += `
-                <a href="${youtubeWatchUrl}" target="_blank" 
-                   class="video-linker ${useNoIconFallback ? 'no-icon' : ''}" 
-                   style="background-color: ${bgColor};" data-flat-index="${flatIndex}" 
-                   title="Open video: ${video.title || 'Watch Video'}">`;
-            
-            if (!useNoIconFallback) { 
-                detailsHtml += `<i class="${iconClass}"></i>`; 
-            } else { 
-                detailsHtml += (video.title || 'Video').substring(0, 15) + 
-                    ((video.title && video.title.length > 15) ? '...' : ''); 
-            }
-            
-            detailsHtml += `</a>`;
-        });
-        
-        detailsHtml += `</div>`;
-    }
-
-    // Add share and back buttons
-    detailsHtml += `
-        <div class="mt-8 flex justify-between items-center"  style="height: 100px;">
-            <div>
-                <button class="bg-blue-600 text-white py-1 px-3 rounded text-sm share-subcategory-link" 
-                        data-area="${area}" data-uniqueid="${uniqueId}">
-                    <i class="fas fa-link mr-1"></i> Share Link
-                </button>
-            </div>
-            <div>
-                <button class="details-back-button">
-                    <i class="fas fa-arrow-left mr-1"></i> Back to Subcategories
-                </button>
-            </div>
-        </div>`;
-
-    // Update the DOM
-    megamenuDetailsArea.innerHTML = detailsHtml;
-    megamenuColumnsContainer.classList.add('columns-hidden'); // Hide columns
-    megamenuDetailsArea.classList.add('visible'); // Show details
-
-    // Update URL hash for deep linking
-    if (updateHash) {
-        const newHash = `${area}@${uniqueId}`;
-        history.pushState(null, null, '#' + newHash);
-    }
-
-    // Update the active state of the toggle button in the columns view
-    const correspondingToggle = megamenuColumnsContainer.querySelector(
-        `.subcategory-toggle[data-area="${area}"][data-uniqueid="${uniqueId}"]`
+    // Find if this category exists in our data
+    const categoryMatch = categoryData.find(cat => 
+        cat.area.toLowerCase() === categoryArea
     );
-    
-    if (correspondingToggle) {
-        if (activeSubcategoryToggle && activeSubcategoryToggle !== correspondingToggle) {
-            activeSubcategoryToggle.classList.remove('active');
-            activeSubcategoryToggle.textContent = 'Show More Info';
-        }
+
+    if (categoryMatch) {
+        console.log(`Found category match for hash: #${hash}`);
         
-        correspondingToggle.classList.add('active');
-        correspondingToggle.textContent = 'Hide Info';
-        activeSubcategoryToggle = correspondingToggle;
-    }
-    
-    // Set up share button functionality
-    setupShareButton(area, uniqueId);
-}
+        // Show the category view for the requested area
+        showCategoryView(categoryArea);
 
-function hideSubcategoryDetails(updateHash = true) {
-    const detailsWereVisible = megamenuDetailsArea.classList.contains('visible');
-    megamenuDetailsArea.classList.remove('visible');
-    megamenuColumnsContainer.classList.remove('columns-hidden'); // Show columns again
-    
-    // Reset toggle button states
-    if (activeSubcategoryToggle) {
-        activeSubcategoryToggle.classList.remove('active');
-        activeSubcategoryToggle.textContent = 'Show More Info';
-        activeSubcategoryToggle = null;
-    }
-    
-    // Update URL
-    if (detailsWereVisible && updateHash && currentArea) {
-        history.pushState(null, null, '#' + currentArea);
-    }
-    
-    hideInfoPanel(); // Hide video panel
-    
-    setTimeout(() => { 
-        if (!megamenuDetailsArea.classList.contains('visible')) { 
-            megamenuDetailsArea.innerHTML = ''; 
-        } 
-    }, 400);
-}
-
-function handleSubcategoryToggle(event) {
-    event.stopPropagation();
-    const currentButton = event.target;
-    const area = currentButton.dataset.area;
-    const uniqueId = currentButton.dataset.uniqueid;
-    
-    if (activeSubcategoryToggle === currentButton) {
-        // If the same toggle is clicked, hide details
-        hideSubcategoryDetails(true);
+        // If there's also a subcategory ID specified
+        if (subcategoryId) {
+            // Use requestAnimationFrame + setTimeout to ensure DOM is updated
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    // Find the subcategory toggle button
+                    const subcategoryToggle = megamenuColumnsContainer.querySelector(
+                        `.subcategory-toggle[data-area="${categoryArea}"][data-uniqueid="${subcategoryId}"]`
+                    );
+                    
+                    if (subcategoryToggle) {
+                        // Display details for the requested subcategory
+                        displaySubcategoryDetails(categoryArea, subcategoryId, false);
+                        
+                        // Scroll to details area after a short delay
+                        setTimeout(() => {
+                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    } else {
+                        console.warn(`Subcategory not found for hash: ${hash}. Showing category view.`);
+                    }
+                }, 100);
+            });
+        } else {
+            // Just show the category columns view (no specific subcategory)
+            hideSubcategoryDetails(false);
+        }
     } else {
-        // Display the subcategory details
-        displaySubcategoryDetails(area, uniqueId, true);
+        console.warn(`Category not found for hash: ${hash}. Showing homepage.`);
+        showHomepageView(); // Fallback to homepage if invalid category
+    }
+}
+
+
+
         
-        // Scroll to details area
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 50);
-        });
+window.addEventListener('hashchange', function() {
+    // Only handle if hash actually changed to avoid infinite loops
+    const newHash = window.location.hash.substring(1).toLowerCase();
+    if (newHash !== currentArea) {
+        handlePageLoad();
     }
-}
-
-// --- Category Title Display Functions ---
-function showCategoryTitle(category) {
-    const displayName = category.area || 'Category'; // Use Area name
-    categoryTitleDisplay.textContent = displayName;
-    categoryTitleDisplay.classList.add('visible');
-}
-
-function hideCategoryTitle() {
-    categoryTitleDisplay.classList.remove('visible');
-    setTimeout(() => { if (!categoryTitleDisplay.classList.contains('visible')) { categoryTitleDisplay.textContent = ''; } }, 400);
-}
-
-// --- Sharing Functions ---
-function setupShareButton(area, uniqueId) {
-    const shareButton = megamenuDetailsArea.querySelector('.share-subcategory-link');
-    if (shareButton) {
-        shareButton.addEventListener('click', function() {
-            const shareableLink = getShareableLink(area, uniqueId);
-            
-            // Copy the link to clipboard
-            navigator.clipboard.writeText(shareableLink)
-                .then(() => {
-                    // Provide visual feedback
-                    const originalText = shareButton.innerHTML;
-                    shareButton.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
-                    setTimeout(() => {
-                        shareButton.innerHTML = originalText;
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy: ', err);
-                    // Fallback method
-                    prompt('Copy this link to share:', shareableLink);
-                });
-        });
-    }
-}
-
-function getShareableLink(area, uniqueId) {
-    const baseUrl = window.location.origin + window.location.pathname;
-    return `${baseUrl}#${area.toLowerCase()}@${uniqueId}`;
-}
-
-// --- Event Delegation Setup ---
-function setupEventListeners() {
-    // Glossary and Subcategory toggles within the category content
-    categoryContentContainer.addEventListener('click', function(event) {
-        const target = event.target;
-        if (target.classList.contains('glossary-trigger')) { 
-            handleGlossaryTriggerClick(event); 
-        }
-        else if (target.classList.contains('subcategory-toggle')) { 
-            handleSubcategoryToggle(event); 
-        }
-        else if (target.closest('.details-back-button')) { 
-            event.preventDefault();
-            hideSubcategoryDetails(true); 
-        }
-        else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
-            event.preventDefault();
-            const area = target.dataset.area;
-            const uniqueId = target.dataset.uniqueid;
-            if (area && uniqueId) {
-                displaySubcategoryDetails(area, uniqueId, true);
-                requestAnimationFrame(() => { 
-                    setTimeout(() => { 
-                        megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-                    }, 50); 
-                });
-            }
-        }
-    });
-
-    // Back button to return to module grid
-    backToModulesButton.addEventListener('click', showHomepageView);
-
-    // Video Hover Listeners on Body (covers videos in details view)
-    document.body.addEventListener('mouseover', (event) => {
-        const linker = event.target.closest('.video-linker');
-        if (linker) {
-            const flatIndex = linker.getAttribute('data-flat-index');
-            if (flatIndex !== null) {
-                const video = allVideosFlat[parseInt(flatIndex, 10)];
-                if (video) { showInfoPanel(video); }
-                else { console.warn("Video data not found for index:", flatIndex); }
-            }
-        }
-    });
-    
-    document.body.addEventListener('mouseout', (event) => {
-        const leavingLinker = event.target.closest('.video-linker');
-        const enteringElement = event.relatedTarget;
-        if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
-            setTimeout(() => {
-                const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
-                if (!currentlyHovered) { hideInfoPanel(); }
-            }, 50);
-        }
-    });
-    
-    videoInfoPanel.addEventListener('mouseleave', hideInfoPanel); // Hide if leaving panel itself
-}
-
-// Set up hash navigation
-function setupHashNavigation() {
-    // Handle browser back/forward buttons and direct links
-    window.addEventListener('hashchange', handleHashChange);
-    
-    // Process initial hash on page load
-    handleHashChange();
-}
-
-// --- Initial Setup ---
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("Initializing Approvideo Learning Hub...");
-    
-    // Initialize data
-    flattenVideoData(categoryData);
-    
-    // Generate the initial module grid
-    generateHomepageModules();
-    
-    // Set up all event listeners
-    setupEventListeners();
-    
-    // Set up hash navigation
-    setupHashNavigation();
-    
-    // Initialize slideshows
-    initializeSlideshows();
-    
-    console.log("Approvideo Learning Hub initialized with hash navigation support");
 });
 
+        // --- Event Delegation Setup ---
+        function setupEventListeners() {
+            // Glossary and Subcategory toggles within the category content
+            categoryContentContainer.addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('glossary-trigger')) { handleGlossaryTriggerClick(event); }
+                else if (target.classList.contains('subcategory-toggle')) { handleSubcategoryToggle(event); }
+                else if (target.closest('.details-back-button')) { hideSubcategoryDetails(true); } // Back from details to columns
+                else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+                    event.preventDefault();
+                    const area = target.dataset.area;
+                    const uniqueId = target.dataset.uniqueid;
+                    if (area && uniqueId) {
+                        displaySubcategoryDetails(area, uniqueId, true);
+                        requestAnimationFrame(() => { setTimeout(() => { megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); });
+                    }
+                }
+            });
 
+            // Back button to return to module grid
+            backToModulesButton.addEventListener('click', showHomepageView);
 
+            // Video Hover Listeners on Body (covers videos in details view)
+            document.body.addEventListener('mouseover', (event) => {
+                const linker = event.target.closest('.video-linker');
+                if (linker) {
+                    const flatIndex = linker.getAttribute('data-flat-index');
+                    if (flatIndex !== null) {
+                        const video = allVideosFlat[parseInt(flatIndex, 10)];
+                        if (video) { showInfoPanel(video); }
+                        else { console.warn("Video data not found for index:", flatIndex); }
+                    }
+                }
+            });
+             document.body.addEventListener('mouseout', (event) => {
+                const leavingLinker = event.target.closest('.video-linker');
+                const enteringElement = event.relatedTarget;
+                if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
+                     setTimeout(() => {
+                         const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
+                         if (!currentlyHovered) { hideInfoPanel(); }
+                     }, 50);
+                }
+            });
+             videoInfoPanel.addEventListener('mouseleave', hideInfoPanel); // Hide if leaving panel itself
+        }
 
-
-
-     
+        
+        // --- Initial Setup ---
+        console.log("Initializing Hub...");
+        flattenVideoData(categoryData);
+        generateHomepageModules(); // Generate the initial module grid
+        setupEventListeners();
+        handlePageLoad(); // Check hash on load to potentially show a category/subcategory directly
+       // hideInfoPanel(); // Ensure video panel is hidden initially
+        
+       console.log("Approvideo Learning Hub initialized with hash navigation support");
+       document.addEventListener('DOMContentLoaded', initializeSlideshows);
     </script>
     
 </body>
