@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approvideo Learning Hub Concept</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+ <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-darker: #0056b3;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: relative; /* For positioning search results if needed */
+        }
+        h1 {
+            color: var(--dark-gray);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        /* Area Styles */
+        .area-section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--medium-gray); }
+        .area-section:last-child { border-bottom: none; }
+        .area-header {
+            font-size: 2.2em; color: var(--primary-darker); margin-bottom: 25px; display: flex;
+            align-items: center; border-left: 5px solid var(--primary-color); padding-left: 15px;
+        }
+        .area-header i { margin-right: 15px; width: 35px; text-align: center; }
+
+        /* Subcategory Styles */
+        .subcategory-card {
+            background-color: #fdfdfd; border: 1px solid var(--medium-gray); border-radius: 8px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .subcategory-card h3 { font-size: 1.6em; color: #2c3e50; margin-top: 0; margin-bottom: 15px; }
+
+        /* Accordion Styles */
+        .accordion-item { margin-bottom: 10px; border-top: 1px solid #eee; padding-top:10px;}
+        .accordion-item:first-child {border-top:none; padding-top:0px;}
+        .accordion-button {
+            background-color: #f7f7f7; color: #444; cursor: pointer; padding: 12px 18px;
+            width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em;
+            transition: background-color 0.3s ease; border-radius: 4px; margin-bottom: 5px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+        }
+        .accordion-button:hover, .accordion-button.active { background-color: #e9e9e9; }
+        .accordion-button::after {
+            font-family: "Font Awesome 5 Free"; font-weight: 900; content: '\f078'; /* fa-chevron-down */
+            font-size: 0.9em; transition: transform 0.3s ease;
+        }
+        .accordion-button.active::after { transform: rotate(-180deg); /* fa-chevron-up */ }
+        .accordion-content {
+            padding: 0 18px; background-color: white; max-height: 0;
+            overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border-bottom: 1px solid #eee; margin-bottom:5px;
+        }
+        .accordion-content.open { padding: 15px 18px; /* Will be set by JS */ }
+        .accordion-content ul { padding-left: 20px; margin-top: 5px; }
+        .accordion-content p { margin-top: 5px; }
+
+
+        /* Tags Styles */
+        .tags-container { margin-top: 15px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; background-color: var(--primary-color); color: white; padding: 6px 12px;
+            margin-right: 6px; margin-bottom: 6px; border-radius: 15px; font-size: 0.85em; font-weight: 500;
+        }
+
+        /* Videos Section Styles */
+        .videos-section-header {
+            font-size: 1.3em; color: var(--dark-gray); margin-top: 25px; margin-bottom: 15px;
+            border-top: 1px dashed #ced4da; padding-top: 20px; font-weight: bold;
+        }
+        .video-entry {
+            display: flex; align-items: flex-start; margin-bottom: 20px; padding: 15px;
+            background-color: var(--card-bg); border: 1px solid #f1f1f1; border-left-width: 4px;
+            border-radius: 6px; transition: box-shadow 0.3s ease;
+        }
+        .video-entry:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .video-icon { font-size: 1.8em; margin-right: 20px; min-width: 35px; text-align: center; padding-top: 5px; }
+        .video-details { flex-grow: 1; }
+        .video-details a {
+            font-size: 1.15em; font-weight: 600; color: var(--primary-darker); text-decoration: none;
+            display: block; margin-bottom: 5px;
+        }
+        .video-details a:hover { text-decoration: underline; color: #003d80; }
+        .video-details p { font-size: 0.95em; color: #6c757d; margin-top: 0; margin-bottom: 0; }
+
+        /* Floating Search Menu Styles */
+        .floating-search-menu {
+            position: fixed; top: 20px; right: 20px; width: 300px; background-color: var(--card-bg);
+            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000;
+            padding: 15px;
+        }
+        .floating-search-menu h4 { margin-top: 0; margin-bottom: 10px; color: var(--dark-gray); font-size: 1.1em;}
+        #searchInput {
+            width: calc(100% - 20px); padding: 10px; border: 1px solid var(--medium-gray);
+            border-radius: 4px; margin-bottom: 10px; font-size: 1em;
+        }
+        #searchResults { max-height: 300px; overflow-y: auto; }
+        .suggestion-item {
+            padding: 10px; cursor: pointer; border-bottom: 1px solid var(--medium-gray);
+            display: flex; align-items: center; font-size: 0.9em;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background-color: var(--light-gray); }
+        .suggestion-item i { margin-right: 10px; color: var(--primary-color); width: 20px; text-align: center;}
+        .suggestion-item .module-icon { color: #28a745; /* Green for modules */ }
+        .suggestion-item .video-icon-search { color: #dc3545; /* Red for videos */ }
+        .suggestion-item span { flex-grow: 1; }
+        .suggestion-category-label {
+            font-weight: bold; color: #555; padding: 8px 0px 5px 0px; font-size: 0.8em;
+            text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 5px;
+        }
+
+
+        .error-message {
+            color: #dc3545; font-weight: bold; padding: 15px; background-color: #f8d7da;
+            border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <div class="thin-header-bar" id="thin-header-bar">
+            <a href="/" class="logo-link" aria-label="Approvideo Learning Hub - Home">
+                <img src="leaf-logo-placeholder.svg" alt="Approvideo Learning Hub" class="leaf-logo">
+                </a>
+            <nav class="thin-header-nav-icons">
+                <button class="icon-button" id="search-toggle-btn-thin" aria-label="Open Search" aria-expanded="false">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#section-clinics" class="icon-button section-nav-icon thin-nav-icon" aria-label="Go to Clinics section">
+                    <i class="fas fa-briefcase-medical"></i> </a>
+                <a href="#section-earning" class="icon-button section-nav-icon thin-nav-icon" aria-label="Go to Earning Modules section">
+                    <i class="fas fa-coins"></i> </a>
+                <a href="#section-tech" class="icon-button section-nav-icon thin-nav-icon" aria-label="Go to Appropriate Technology section">
+                    <i class="fas fa-cogs"></i> </a>
+                <a href="#section-mentors" class="icon-button section-nav-icon thin-nav-icon" aria-label="Go to Expert Mentors section">
+                    <i class="fas fa-chalkboard-teacher"></i> </a>
+            </nav>
+        </div>
+
+        <div class="search-area-container" id="search-area-container">
+            <nav class="main-section-nav" id="main-section-nav-icons">
+                <a href="#section-clinics" class="icon-button section-nav-icon main-nav-icon" aria-label="Go to Clinics section">
+                    <i class="fas fa-briefcase-medical"></i>
+                    <span class="nav-icon-text">Clinics</span>
+                </a>
+                <a href="#section-earning" class="icon-button section-nav-icon main-nav-icon" aria-label="Go to Earning Modules section">
+                    <i class="fas fa-coins"></i>
+                    <span class="nav-icon-text">Earning</span>
+                </a>
+                <a href="#section-tech" class="icon-button section-nav-icon main-nav-icon" aria-label="Go to Appropriate Technology section">
+                    <i class="fas fa-cogs"></i>
+                    <span class="nav-icon-text">Tech</span>
+                </a>
+                <a href="#section-mentors" class="icon-button section-nav-icon main-nav-icon" aria-label="Go to Expert Mentors section">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="nav-icon-text">Mentors</span>
+                </a>
+            </nav>
+            <div class="search-input-wrapper">
+                <label for="search-content-input" class="sr-only">Search Content</label>
+                <input type="search" id="search-content-input" placeholder="Search Content..." aria-label="Search Content">
+                <button class="icon-button search-submit-btn" aria-label="Submit Search">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <button class="icon-button close-search-btn" id="close-search-btn" aria-label="Close Search Area">
+                <i class="fas fa-times"></i> </button>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="section-home" style="padding-top: 150px; height: 300px; background: #f9f9f9;">
+             </section>
+        <section id="section-clinics" class="page-section"><h2>Clinics Section</h2></section>
+        <section id="section-earning" class="page-section"><h2>Earning Modules Section</h2></section>
+        <section id="section-tech" class="page-section"><h2>Appropriate Technology Section</h2></section>
+        <section id="section-mentors" class="page-section"><h2>Expert Mentors Section</h2></section>
+    </main>
+
+    <script src="content-review-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Modules Review Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --primary-darker: #0056b3;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: relative; /* For positioning search results if needed */
+        }
+        h1 {
+            color: var(--dark-gray);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        /* Area Styles */
+        .area-section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--medium-gray); }
+        .area-section:last-child { border-bottom: none; }
+        .area-header {
+            font-size: 2.2em; color: var(--primary-darker); margin-bottom: 25px; display: flex;
+            align-items: center; border-left: 5px solid var(--primary-color); padding-left: 15px;
+        }
+        .area-header i { margin-right: 15px; width: 35px; text-align: center; }
+
+        /* Subcategory Styles */
+        .subcategory-card {
+            background-color: #fdfdfd; border: 1px solid var(--medium-gray); border-radius: 8px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .subcategory-card h3 { font-size: 1.6em; color: #2c3e50; margin-top: 0; margin-bottom: 15px; }
+
+        /* Accordion Styles */
+        .accordion-item { margin-bottom: 10px; border-top: 1px solid #eee; padding-top:10px;}
+        .accordion-item:first-child {border-top:none; padding-top:0px;}
+        .accordion-button {
+            background-color: #f7f7f7; color: #444; cursor: pointer; padding: 12px 18px;
+            width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em;
+            transition: background-color 0.3s ease; border-radius: 4px; margin-bottom: 5px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+        }
+        .accordion-button:hover, .accordion-button.active { background-color: #e9e9e9; }
+        .accordion-button::after {
+            font-family: "Font Awesome 5 Free"; font-weight: 900; content: '\f078'; /* fa-chevron-down */
+            font-size: 0.9em; transition: transform 0.3s ease;
+        }
+        .accordion-button.active::after { transform: rotate(-180deg); /* fa-chevron-up */ }
+        .accordion-content {
+            padding: 0 18px; background-color: white; max-height: 0;
+            overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border-bottom: 1px solid #eee; margin-bottom:5px;
+        }
+        .accordion-content.open { padding: 15px 18px; /* Will be set by JS */ }
+        .accordion-content ul { padding-left: 20px; margin-top: 5px; }
+        .accordion-content p { margin-top: 5px; }
+
+
+        /* Tags Styles */
+        .tags-container { margin-top: 15px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; background-color: var(--primary-color); color: white; padding: 6px 12px;
+            margin-right: 6px; margin-bottom: 6px; border-radius: 15px; font-size: 0.85em; font-weight: 500;
+        }
+
+        /* Videos Section Styles */
+        .videos-section-header {
+            font-size: 1.3em; color: var(--dark-gray); margin-top: 25px; margin-bottom: 15px;
+            border-top: 1px dashed #ced4da; padding-top: 20px; font-weight: bold;
+        }
+        .video-entry {
+            display: flex; align-items: flex-start; margin-bottom: 20px; padding: 15px;
+            background-color: var(--card-bg); border: 1px solid #f1f1f1; border-left-width: 4px;
+            border-radius: 6px; transition: box-shadow 0.3s ease;
+        }
+        .video-entry:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .video-icon { font-size: 1.8em; margin-right: 20px; min-width: 35px; text-align: center; padding-top: 5px; }
+        .video-details { flex-grow: 1; }
+        .video-details a {
+            font-size: 1.15em; font-weight: 600; color: var(--primary-darker); text-decoration: none;
+            display: block; margin-bottom: 5px;
+        }
+        .video-details a:hover { text-decoration: underline; color: #003d80; }
+        .video-details p { font-size: 0.95em; color: #6c757d; margin-top: 0; margin-bottom: 0; }
+
+        /* Floating Search Menu Styles */
+        .floating-search-menu {
+            position: fixed; top: 20px; right: 20px; width: 300px; background-color: var(--card-bg);
+            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000;
+            padding: 15px;
+        }
+        .floating-search-menu h4 { margin-top: 0; margin-bottom: 10px; color: var(--dark-gray); font-size: 1.1em;}
+        #searchInput {
+            width: calc(100% - 20px); padding: 10px; border: 1px solid var(--medium-gray);
+            border-radius: 4px; margin-bottom: 10px; font-size: 1em;
+        }
+        #searchResults { max-height: 300px; overflow-y: auto; }
+        .suggestion-item {
+            padding: 10px; cursor: pointer; border-bottom: 1px solid var(--medium-gray);
+            display: flex; align-items: center; font-size: 0.9em;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background-color: var(--light-gray); }
+        .suggestion-item i { margin-right: 10px; color: var(--primary-color); width: 20px; text-align: center;}
+        .suggestion-item .module-icon { color: #28a745; /* Green for modules */ }
+        .suggestion-item .video-icon-search { color: #dc3545; /* Red for videos */ }
+        .suggestion-item span { flex-grow: 1; }
+        .suggestion-category-label {
+            font-weight: bold; color: #555; padding: 8px 0px 5px 0px; font-size: 0.8em;
+            text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 5px;
+        }
+
+
+        .error-message {
+            color: #dc3545; font-weight: bold; padding: 15px; background-color: #f8d7da;
+            border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-search-menu">
+        <h4>Search Content</h4>
+        <input type="text" id="searchInput" placeholder="Search videos & modules...">
+        <div id="searchResults"></div>
+    </div>
+
+    <div class="container" id="modulesContainer">
+        <h1>Learning Modules Review Portal</h1>
+        </div>
+
+    <script>
+        let searchableItems = []; // For search functionality
+
+        // Debounce function
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        function createAccordionItem(title, contentHtml, parentElement, defaultOpen = false) {
+            if (!contentHtml || (Array.isArray(contentHtml) && contentHtml.length === 0) || (typeof contentHtml === 'string' && contentHtml.trim() === '')) {
+                return; // Don't create accordion for empty content
+            }
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'accordion-item';
+
+            const button = document.createElement('button');
+            button.className = 'accordion-button';
+            button.textContent = title;
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'accordion-content';
+
+            if (Array.isArray(contentHtml)) {
+                const ul = document.createElement('ul');
+                contentHtml.forEach(itemText => {
+                    const li = document.createElement('li');
+                    li.textContent = itemText;
+                    ul.appendChild(li);
+                });
+                contentDiv.appendChild(ul);
+            } else {
+                contentDiv.innerHTML = `<p>${contentHtml}</p>`; // Use innerHTML if content might have simple HTML
+            }
+            
+            itemDiv.appendChild(button);
+            itemDiv.appendChild(contentDiv);
+            parentElement.appendChild(itemDiv);
+
+            if (defaultOpen) {
+                button.classList.add('active');
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
+                contentDiv.classList.add('open');
+            }
+
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                    content.style.maxHeight = null;
+                    content.classList.remove('open');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.classList.add('open');
+                }
+            });
+        }
+
+
+        async function loadLearningModules() {
+            const container = document.getElementById('modulesContainer');
+            searchableItems = []; // Reset for potential reloads
+
+            try {
+                const response = await fetch('learning_modules-catsubcat-tags-featured.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}. Could not load JSON file.`);
+                }
+                const categoryData = await response.json();
+
+                if (!categoryData || !Array.isArray(categoryData) || categoryData.length === 0) {
+                    // Handle no data
+                    return;
+                }
+
+                categoryData.forEach(area => {
+                    const areaSection = document.createElement('section');
+                    areaSection.className = 'area-section';
+                    // ... (area header rendering - same as before)
+                    const areaHeader = document.createElement('h2');
+                    areaHeader.className = 'area-header';
+                    const areaIcon = document.createElement('i');
+                    areaIcon.className = `fas ${area.icon || 'fa-folder'}`;
+                    areaHeader.appendChild(areaIcon);
+                    areaHeader.appendChild(document.createTextNode(` ${area.area || 'Unnamed Area'}`));
+                    areaSection.appendChild(areaHeader);
+
+
+                    if (area.subcategories && area.subcategories.length > 0) {
+                        area.subcategories.forEach((subcategory, subcatIndex) => {
+                            const subcategoryId = `subcategory-${subcategory.uniqueId || area.area.replace(/\s+/g, '-') + '-' + subcatIndex}`;
+                            const subcategoryCard = document.createElement('div');
+                            subcategoryCard.className = 'subcategory-card';
+                            subcategoryCard.id = subcategoryId;
+
+                            const subcategoryTitleEl = document.createElement('h3');
+                            subcategoryTitleEl.textContent = subcategory.title || 'Untitled Subcategory';
+                            subcategoryCard.appendChild(subcategoryTitleEl);
+
+                            // Add subcategory to searchable items
+                            searchableItems.push({
+                                id: subcategoryId,
+                                title: subcategory.title,
+                                type: 'module',
+                                icon: area.icon || 'fa-cube' // Use area icon for module
+                            });
+                            
+                            // Accordion for details
+                            createAccordionItem('Description', subcategory.description, subcategoryCard);
+                            createAccordionItem('Context', subcategory.context, subcategoryCard);
+                            createAccordionItem('Materials', subcategory.materials, subcategoryCard); // Assuming materials is an array
+                            createAccordionItem('Process Steps', subcategory.processSteps, subcategoryCard); // Assuming processSteps is an array
+                            
+
+                            if (subcategory.tags && subcategory.tags.length > 0) {
+                                // ... (tags rendering - same as before)
+                                const tagsContainer = document.createElement('div');
+                                tagsContainer.className = 'tags-container';
+                                subcategory.tags.forEach(tagText => {
+                                    const tagElement = document.createElement('span');
+                                    tagElement.className = 'tag';
+                                    tagElement.textContent = tagText;
+                                    tagsContainer.appendChild(tagElement);
+                                });
+                                subcategoryCard.appendChild(tagsContainer);
+                            }
+
+                            if (subcategory.videos && subcategory.videos.length > 0) {
+                                const videosHeader = document.createElement('h4');
+                                videosHeader.className = 'videos-section-header';
+                                videosHeader.textContent = 'Relevant Videos:';
+                                subcategoryCard.appendChild(videosHeader);
+
+                                subcategory.videos.forEach((video, videoIndex) => {
+                                    const videoId = `video-${subcategory.uniqueId || subcatIndex}-${videoIndex}`;
+                                    const videoEntry = document.createElement('div');
+                                    videoEntry.className = 'video-entry';
+                                    videoEntry.id = videoId;
+                                    
+                                    const videoIconColor = video.color_tag || 'var(--primary-color)';
+                                    videoEntry.style.borderLeftColor = videoIconColor;
+
+                                    // ... (video icon rendering - same as before)
+                                    const videoIconContainer = document.createElement('div');
+                                    videoIconContainer.className = 'video-icon';
+                                    const iconElement = document.createElement('i');
+                                    iconElement.className = video.icon_tag_fa || 'fas fa-play-circle';
+                                    iconElement.style.color = videoIconColor;
+                                    videoIconContainer.appendChild(iconElement);
+                                    videoEntry.appendChild(videoIconContainer);
+
+                                    const videoDetails = document.createElement('div');
+                                    videoDetails.className = 'video-details';
+
+                                    const videoLink = document.createElement('a');
+                                    videoLink.href = `https://www.youtube.com/watch?v=_odf0yOL6Kk1{video.youtubeId}`;
+                                    videoLink.textContent = video.title || 'Untitled Video';
+                                    videoLink.target = '_blank';
+                                    videoLink.rel = 'noopener noreferrer';
+                                    videoDetails.appendChild(videoLink);
+
+                                    if (video.description) {
+                                        const videoDesc = document.createElement('p');
+                                        videoDesc.textContent = video.description;
+                                        videoDetails.appendChild(videoDesc);
+                                    }
+                                    videoEntry.appendChild(videoDetails);
+                                    subcategoryCard.appendChild(videoEntry);
+
+                                    // Add video to searchable items
+                                    searchableItems.push({
+                                        id: videoId,
+                                        title: video.title,
+                                        description: video.description,
+                                        type: 'video',
+                                        icon: video.icon_tag_fa || 'fa-play-circle'
+                                    });
+                                });
+                            }
+                            areaSection.appendChild(subcategoryCard);
+                        });
+                    }
+                    container.appendChild(areaSection);
+                });
+
+            } catch (error) {
+                // ... (error handling - same as before)
+                console.error('Error loading or processing learning modules:', error);
+                const errorElement = document.createElement('p');
+                errorElement.className = 'error-message';
+                errorElement.textContent = `Error: ${error.message}. Please check the console for more details.`;
+                while (container.children.length > 1) { container.removeChild(container.lastChild); }
+                container.appendChild(errorElement);
+            }
+        }
+
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+
+            if (searchTerm.length < 2) { // Only search if term is 2+ chars
+                return;
+            }
+
+            const filteredModules = searchableItems.filter(item =>
+                item.type === 'module' && item.title.toLowerCase().includes(searchTerm)
+            );
+
+            const filteredVideos = searchableItems.filter(item =>
+                item.type === 'video' &&
+                (item.title.toLowerCase().includes(searchTerm) || (item.description && item.description.toLowerCase().includes(searchTerm)))
+            );
+
+            if (filteredModules.length > 0) {
+                const moduleLabel = document.createElement('div');
+                moduleLabel.className = 'suggestion-category-label';
+                moduleLabel.textContent = 'Learning Modules';
+                resultsContainer.appendChild(moduleLabel);
+
+                filteredModules.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerHTML = `<i class="fas ${item.icon} module-icon"></i> <span>${item.title}</span>`;
+                    div.onclick = () => {
+                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        resultsContainer.innerHTML = ''; // Clear results after click
+                        document.getElementById('searchInput').value = ''; // Clear search input
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            }
+
+            if (filteredVideos.length > 0) {
+                 const videoLabel = document.createElement('div');
+                videoLabel.className = 'suggestion-category-label';
+                videoLabel.textContent = 'Videos';
+                resultsContainer.appendChild(videoLabel);
+
+                filteredVideos.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    // Highlight search term in title - basic implementation
+                    let displayTitle = item.title;
+                    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    displayTitle = displayTitle.replace(regex, '<mark>$1</mark>');
+
+                    div.innerHTML = `<i class="fas ${item.icon} video-icon-search"></i> <span title="${item.description || ''}">${displayTitle}</span>`;
+                    div.onclick = () => {
+                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        resultsContainer.innerHTML = '';
+                        document.getElementById('searchInput').value = '';
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            }
+             if (filteredModules.length === 0 && filteredVideos.length === 0) {
+                resultsContainer.innerHTML = '<div class="suggestion-item" style="justify-content:center;">No results found.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLearningModules();
+            const searchInput = document.getElementById('searchInput');
+            // Use debounced version for input event
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+
+            // Clear search results if user clicks outside search area
+            document.addEventListener('click', function(event) {
+                const searchMenu = document.querySelector('.floating-search-menu');
+                const resultsContainer = document.getElementById('searchResults');
+                if (!searchMenu.contains(event.target) && resultsContainer.innerHTML !== '') {
+                    // resultsContainer.innerHTML = ''; // Optionally clear results
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
