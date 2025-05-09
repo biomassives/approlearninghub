@@ -23,6 +23,10 @@
             <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
         </div>
         <div class="site-header-right">
+            <button id="browseTopicsBtn" class="site-header-button browse-topics-button">
+                Browse Topics
+            </button>
+
             <div id="areaNavIconsMinimized" class="area-nav-icons minimized">
             </div>
             <button id="openSearchHeaderButton" title="Open Search">
@@ -32,6 +36,11 @@
         </div>
     </header>
     
+    <div id="megaMenuPanel" class="mega-menu-panel">
+        <div class="mega-menu-content-wrapper">
+            </div>
+    </div>
+
     <div class="floating-search-menu" id="floatingSearchMenu">
         <div class="search-menu-header-bar">
             <span class="eaf-brand">EAF</span> <div class="header-controls-right">
@@ -61,11 +70,7 @@
         <main class="modules-grid">
         </main>
 
-        <nav id="subcategory-navigation-bar" class="bg-gray-200 p-4 mb-6 shadow-md">
-            <h3 class="text-xl font-semibold text-gray-700 mb-3 text-center">Quick Navigation</h3>
-            <div id="subcategory-pills-container" class="flex flex-wrap justify-center gap-3">
-                </div>
-        </nav>
+
         <div id="subcategory-preview"></div>
 
 
@@ -148,7 +153,7 @@
                     <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">fuel efficiency</div>
                     <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">sustainable</div>
                     <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2"><a href="/assets/SUPER_STOVE_AR.mp4">audio arabic</a></div>
-                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800"<a href="/assets/SUPER_STOVE_EN.mp4">audio english</a></div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800"></div><a href="/assets/SUPER_STOVE_EN.mp4">audio english</a></div>
 
                 </div>
             </div>
@@ -495,25 +500,22 @@
     </div>
 
 
-    <footer class="site-footer-main">
-        <div class="footer-container">
 
-    
-            <div class="footer-section action-section">
-                <h4>Support Us</h4>
-                <p>Help us continue to provide valuable learning resources.</p>
-                <a href="/donate" class="donate-button">Donate Now</a>
-            </div>
-    
-            <div class="footer-section contact-info">
-                <h4>Contact</h4>
-                <p>Approvideo Learning Hub</p>
-                <p><a href="mailto:info@approvideo.com">info@approvideo.com</a></p>
-            </div>
+
+
+
+
+    <footer class="site-footer-main">
+        <div class="footer-container bg-slate-600">
         </div>
         <div class="footer-bottom">
             <p>&copy; <span id="currentYear"></span> Approvideo Learning Hub. All Rights Reserved. <a href="#" id="termsLinkFooter">Terms</a> <a href="#" id="conditionsLinkFooter">Free access</a> <a href="#" id="privacyLinkFooter">Privacy</a> <a href="#" id="visionLinkFooter">Vision</a> <a href="#" id="gplCcLinkFooter">(GPL/CC)</a></p>
         </div>
+
+
+        <div id="subcategory-pills-container" class=" hidden flex flex-wrap justify-center gap-3">
+        </div>
+
     </footer>
 
 
@@ -1005,20 +1007,23 @@ function populateSubcategoryPills(categories) { // Changed from categoryData to 
 
 
                 const pillButton = document.createElement('button');
-                pillButton.className = 'subcategory-pill bg-slate-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75';
+                pillButton.className = 'subcategory-pill';
 
-                let iconHtml = '';
-                // Use parent category's Font Awesome icon if available, or a generic one.
-                // Ensure Font Awesome is linked in your HTML for these icons to appear.
-                if (category.icon) { // `category.icon` is for Font Awesome
-                    iconHtml = `<i class="fas ${category.icon} mr-2"></i>`;
-                } else if (typeof feather !== 'undefined' && category.featherIcon && feather.icons[category.featherIcon]) { // Fallback to Feather if no FA
-                     iconHtml = feather.icons[category.featherIcon].toSvg({ class: 'inline-block mr-2 w-4 h-4' }); // Adjust class/size as needed
+                
+                let iconElementHtml = '';
+                if (category.svgString && category.svgString.trim().startsWith('<svg')) { // Assuming you might use svgString here too
+                    iconElementHtml = category.svgString; // This SVG itself should get class 'pill-icon' or be styled
+                } else if (category.icon) {
+                    iconElementHtml = `<i class="fas ${category.icon} pill-icon mr-0"></i>`; // Added pill-icon, removed mr-2
+                } else if (typeof feather !== 'undefined' && category.featherIcon && feather.icons[category.featherIcon]) {
+                    iconElementHtml = feather.icons[category.featherIcon].toSvg({ class: 'pill-icon inline-block w-4 h-4' });
                 } else {
-                    iconHtml = `<i class="fas fa-tag mr-2"></i>`; // Generic fallback
+                    iconElementHtml = `<i class="fas fa-tag pill-icon mr-0"></i>`;
                 }
+                pillButton.innerHTML = '<span class="math-inline">'+iconElementHtml+'<span class="pill-text"></span>'+subcat.title+'</span>';
 
-                pillButton.innerHTML = `${iconHtml}${subcat.title}`;
+
+
                 pillButton.dataset.area = category.area.toLowerCase();
                 pillButton.dataset.uniqueid = uniqueId;
 
@@ -2110,6 +2115,191 @@ function displaySingleVideoInPane(videoItemFromSearch) {
 }
 
 
+/////////////////
+
+// --- Megamenu Functions ---
+let isMegaMenuOpen = false; // Track state
+
+function populateMegaMenu(sortedCategoryData) {
+    const megaMenuWrapper = document.querySelector('#megaMenuPanel .mega-menu-content-wrapper');
+    if (!megaMenuWrapper) {
+        console.error("Megamenu content wrapper not found.");
+        return;
+    }
+    megaMenuWrapper.innerHTML = ''; // Clear existing
+
+    if (!sortedCategoryData || sortedCategoryData.length === 0) {
+        megaMenuWrapper.innerHTML = '<p>No categories to display.</p>';
+        return;
+    }
+
+    sortedCategoryData.forEach(category => {
+        if (!category.area || !category.subcategories) return;
+
+        const columnDiv = document.createElement('div');
+        columnDiv.className = 'mega-menu-category-column';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'mega-menu-category-title';
+
+        // Icon for the main category title
+        if (category.svgString && typeof category.svgString === 'string' && category.svgString.trim().startsWith('<svg')) {
+            const iconWrapper = document.createElement('span');
+            iconWrapper.innerHTML = category.svgString;
+            const svgElement = iconWrapper.querySelector('svg');
+            if (svgElement) {
+                svgElement.classList.add('area-nav-svg'); // Use existing class for sizing
+                svgElement.removeAttribute('width');
+                svgElement.removeAttribute('height');
+            }
+            titleDiv.appendChild(iconWrapper);
+        } else if (category.icon) { // Fallback to Font Awesome
+            const iconElement = document.createElement('i');
+            iconElement.className = `fas ${category.icon} nav-area-fallback-icon`;
+            titleDiv.appendChild(iconElement);
+        }
+        
+        const titleText = document.createElement('span');
+        titleText.textContent = category.area;
+        titleDiv.appendChild(titleText);
+        // Make the main category title itself clickable to show its column view
+        titleDiv.style.cursor = 'pointer';
+        titleDiv.addEventListener('click', () => {
+            const areaSlug = category.area.toLowerCase().replace(/\s+/g, '-');
+            if (typeof showCategoryView === 'function') {
+                showCategoryView(areaSlug);
+                closeMegaMenu(); // Close megamenu after navigation
+            }
+        });
+
+
+        columnDiv.appendChild(titleDiv);
+
+        const subcatList = document.createElement('ul');
+        subcatList.className = 'mega-menu-subcategory-list';
+
+        category.subcategories.forEach(subcat => {
+            if (!subcat.title) return;
+            const areaSlug = category.area.toLowerCase().replace(/\s+/g, '-');
+            const subcatUniqueId = subcat.uniqueId || `${areaSlug}-${subcat.title.toLowerCase().replace(/\s+/g, '-')}`;
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${areaSlug}@${subcatUniqueId}`;
+            link.textContent = subcat.title;
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (typeof showCategoryView === 'function') {
+                    showCategoryView(areaSlug); // Show the main category context
+                    requestAnimationFrame(() => {
+                        setTimeout(() => { // Ensure category view is rendered
+                            if (typeof displaySubcategoryDetails === 'function') {
+                                displaySubcategoryDetails(areaSlug, subcatUniqueId, true); // true to update hash
+                                if (megamenuDetailsArea) {
+                                    megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }
+                        }, 50);
+                    });
+                }
+                closeMegaMenu(); // Close megamenu after navigation
+            });
+
+            listItem.appendChild(link);
+            subcatList.appendChild(listItem);
+        });
+
+        columnDiv.appendChild(subcatList);
+        megaMenuWrapper.appendChild(columnDiv);
+    });
+    console.log("Megamenu populated.");
+}
+
+function openMegaMenu() {
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    if (megaMenuPanel && browseBtn) {
+        megaMenuPanel.classList.add('visible');
+        browseBtn.classList.add('active');
+        browseBtn.setAttribute('aria-expanded', 'true');
+        isMegaMenuOpen = true;
+        console.log("Megamenu opened.");
+    }
+}
+
+function closeMegaMenu() {
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    if (megaMenuPanel && browseBtn) {
+        megaMenuPanel.classList.remove('visible');
+        browseBtn.classList.remove('active');
+        browseBtn.setAttribute('aria-expanded', 'false');
+        isMegaMenuOpen = false;
+        console.log("Megamenu closed.");
+    }
+}
+
+function toggleMegaMenu() {
+    if (isMegaMenuOpen) {
+        closeMegaMenu();
+    } else {
+        openMegaMenu();
+    }
+}
+
+function initializeMegaMenu(categoryDataForMenu) {
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+
+    if (!browseBtn || !megaMenuPanel) {
+        console.error("Browse Topics button or Megamenu panel not found.");
+        return;
+    }
+
+    // Sort categoryData alphabetically by area name for the megamenu
+    const sortedCategoryData = [...categoryDataForMenu].sort((a, b) => {
+        if (a.area && b.area) {
+            return a.area.localeCompare(b.area);
+        }
+        return 0;
+    });
+
+    if (typeof populateMegaMenu === 'function') {
+        populateMegaMenu(sortedCategoryData);
+    } else {
+        console.error("populateMegaMenu function is not defined.");
+    }
+
+    browseBtn.setAttribute('aria-haspopup', 'true');
+    browseBtn.setAttribute('aria-expanded', 'false');
+
+    browseBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent click outside from immediately closing
+        toggleMegaMenu();
+    });
+
+    // Close megamenu if clicked outside
+    document.addEventListener('click', function(event) {
+        if (isMegaMenuOpen && !megaMenuPanel.contains(event.target) && event.target !== browseBtn && !browseBtn.contains(event.target)) {
+            closeMegaMenu();
+        }
+    });
+
+    // Close megamenu with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (isMegaMenuOpen && event.key === 'Escape') {
+            closeMegaMenu();
+            browseBtn.focus(); // Return focus to the trigger button
+        }
+    });
+    console.log("Megamenu initialized.");
+}
+
+
+
+
+
 
 
 
@@ -2212,7 +2402,8 @@ function handleSearch() {
             }
         }
 
-        document.addEventListener('DOMContentLoaded', async function() { // Main (and only) DOMContentLoaded listener
+    document.addEventListener('DOMContentLoaded', async function() { 
+
     console.log("Initializing Approvideo Learning Hub...");
 
     try {
@@ -2258,6 +2449,16 @@ function handleSearch() {
     } else {
         console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
     }
+
+    // Initialize Megamenu (depends on categoryData)
+    if (typeof initializeMegaMenu === 'function') {
+            initializeMegaMenu(categoryData); // Pass the original categoryData or categoryAreasForNav if it has all needed fields
+        } else {
+            console.error("CRITICAL: initializeMegaMenu function is NOT defined.");
+    }
+
+
+
 
     // 3. Initialize UI Components & Main Interactions
     generateHomepageModules();           // Renders homepage category cards
@@ -2308,6 +2509,11 @@ function handleSearch() {
 
     console.log("Approvideo Learning Hub initialized successfully.");
 });
+
+
+
+
+
 
 
 

@@ -7,7 +7,8 @@
     "subcategories": [
       {
         "uniqueId": "shelter-0",
-        "title": "Low-cost, Durable Construction Methods",
+        "title": "Methods",
+        "subtitle": "Low-cost, Durable Construction Methods",
         "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
         "tags": [
           "construction",
@@ -78,7 +79,8 @@
       },
       {
         "uniqueId": "shelter-1",
-        "title": "Locally Available Materials",
+        "title": "Materials",
+        "subtitle": "Locally Available Materials",
         "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
         "tags": [
           "materials",
@@ -328,7 +330,7 @@
       },
       {
         "uniqueId": "water-2",
-        "title": "Efficient Distribution",
+        "title": "Distribution",
         "description": "Design and improve gravity-fed or pump-based systems...",
         "tags": [
           "pipes",
@@ -490,7 +492,7 @@
       },
       {
         "uniqueId": "waste-1",
-        "title": "Recycling Systems",
+        "title": "Recycling",
         "description": "Set up community or household recycling systems...",
         "tags": [
           "recycling",
@@ -653,7 +655,7 @@
       },
       {
         "uniqueId": "waste-3",
-        "title": "Wastewater Management",
+        "title": "Wastewater",
         "description": "Build simple systems to treat and safely dispose of greywater and blackwater...",
         "tags": [
           "wastewater",
@@ -749,7 +751,7 @@
     "subcategories": [
       {
         "uniqueId": "energy-0",
-        "title": "Solar Box Cookers",
+        "title": "Solar Cookers",
         "description": "Effective basic box cooker design...",
         "tags": [
           "solar cooker",
@@ -783,7 +785,7 @@
       },
       {
         "uniqueId": "energy1",
-        "title": "Biogas Systems: Detailed Materials and Processes",
+        "title": "Biogas",
         "description": "A comprehensive guide to the materials required and the step-by-step process for planning, building, and operating a biogas digester.",
         "tags": [
             "biogas",
@@ -866,7 +868,7 @@
         },
           {
             "uniqueId": "energy-2",
-            "title": "Microgrids for Sustainable Power",
+            "title": "Power Microgrids",
             "description": "Build small, local power systems...",
             "tags": [
               "microgrid",
@@ -904,7 +906,8 @@
           },
           {
             "uniqueId": "energy-3",
-            "title": "Hand Pressed Heat & Cooking Fuel Briquettes",
+            "title": "Briquettes",
+            "subtitle": "Hand Pressed Heat & Cooking Fuel Briquettes",
             "description": "DIY cook stove Fuel produced...",
             "tags": [
               "cooking fuel",
@@ -962,7 +965,7 @@
         "subcategories": [
           {
             "uniqueId": "health-0",
-            "title": "EMT Skills",
+            "title": "EMT",
             "description": "Learn lifesaving basics...",
             "tags": [
               "EMT",

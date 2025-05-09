@@ -432,6 +432,117 @@
     color: #718096; /* Tailwind gray-600 */
 }
 
+
+/* --- Styling for "Browse Topics" button in header --- */
+.browse-topics-button {
+    background-color: transparent;
+    border: 1px solid transparent; /* Or a subtle border: 1px solid #E2E8F0; */
+    color: #374151; /* Tailwind gray-700 */
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem; /* Space before next icon */
+    border-radius: 0.375rem; /* 6px */
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.browse-topics-button:hover,
+.browse-topics-button.active { /* Added .active class for when menu is open */
+    background-color: #EDF2F7; /* Tailwind gray-200 */
+    color: #1A202C; /* Tailwind gray-900 */
+}
+
+.browse-topics-button .browse-topics-arrow {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.browse-topics-button.active .browse-topics-arrow {
+    transform: rotate(180deg);
+}
+
+/* --- Megamenu Panel Styling --- */
+.mega-menu-panel {
+    display: none; /* Hidden by default, JS will toggle */
+    position: absolute; /* Positioned relative to the nearest positioned ancestor or body */
+    top: 100%; /* Position it right below the header (assuming header is position:relative or sticky) */
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 1010; /* Below floating search menu, above most content */
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #e2e8f0; /* Tailwind gray-300 */
+    /* Animation for appearing */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, display 0s linear 0.3s; /* Delay display none */
+}
+
+.mega-menu-panel.visible {
+    display: block; /* Or flex/grid depending on internal content */
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0s, 0s, 0s; /* Reset display transition delay */
+}
+
+.mega-menu-content-wrapper {
+    max-width: 1200px; /* Or your preferred max-width */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
+    gap: 2rem; /* Gap between columns/categories */
+}
+
+.mega-menu-category-column {
+    /* Styling for each category column in the megamenu */
+}
+
+.mega-menu-category-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600; /* semibold */
+    color: #2D3748; /* Tailwind gray-800 */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color, #007bff); /* Accent color */
+}
+
+.mega-menu-category-title .area-nav-svg, /* For your SVG icons */
+.mega-menu-category-title .nav-area-fallback-icon { /* For Font Awesome fallback */
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+    /* fill: currentColor; */ /* If SVGs use currentColor */
+}
+
+.mega-menu-subcategory-list {
+    list-style: none;
+    padding-left: 0; /* Remove default padding if using custom layout */
+    margin: 0;
+}
+
+.mega-menu-subcategory-list li a {
+    display: block;
+    padding: 0.5rem 0.25rem; /* Padding for links */
+    color: #4A5568; /* Tailwind gray-700 */
+    text-decoration: none;
+    border-radius: 0.25rem; /* 4px */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.mega-menu-subcategory-list li a:hover {
+    background-color: #F7FAFC; /* Tailwind gray-100 */
+    color: var(--primary-color, #007bff);
+}
+
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .footer-category-navigation {
