@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Approvideo Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script> <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8; /* Light gray background */
+            color: #222;
+            margin: 0 0 150px 0; /* Bottom margin for sticky panel */
+        }
+
+        /* --- Header --- */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 50; /* Ensure header is above content but below modal/panels */
+        }
+        .site-header .logo {
+            font-size: 2rem; margin-right: 1rem; color: #54B948; /* Green */
+        }
+        .site-header h1 { font-size: 1.5rem; margin: 0; }
+        .site-header h1 .green { color: #54B948; }
+        .site-header h1 .blue { color: #1E88E5; }
+
+
+
+
+            /* Styles for the wrapper of pills inside the accordion panel */
+        .subcategory-pills-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem; /* Adjust gap between pills */
+            padding-top: 0.5rem; /* Add some padding if panel has padding:0 initially */
+        }
+
+        /* Base subcategory pill style (ensure this class is on your pills) */
+        .subcategory-pill {
+            /* text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium hover:opacity-80 transition-opacity shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 */
+            /* The classes above are from your JS - ensure they are applied */
+            /* Default/Fallback background if no category-specific color is matched or needed */
+            /* background-color: #555; */ /* Example fallback */
+            /* color: white; */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1; /* Helps with icon alignment */
+        }
+        .subcategory-pill .fas, 
+        .subcategory-pill .fab, 
+        .subcategory-pill svg { /* For feather icons */
+            font-size: 0.8em; /* Adjust icon size within pill if needed */
+        }
+
+
+        /* --- CATEGORY-SPECIFIC PILL COLORS --- */
+        /* You need to define these based on your categories from the JSON file */
+        /* The class names are generated as 'category-[areaname]' (e.g., category-shelter) */
+
+        .subcategory-pill.category-shelter {
+            background-color: #A0522D; /* Sienna - Example for Shelter */
+            /* border: 1px solid darken(#A0522D, 10%); */ /* Optional border */
+        }
+        .subcategory-pill.category-shelter:hover {
+            background-color: #8B4513; /* Darker Sienna on hover */
+        }
+        .subcategory-pill.category-shelter:focus { /* For accessibility */
+            ring-color: #CD853F; /* Lighter sienna for focus ring */
+        }
+
+
+        .subcategory-pill.category-water {
+            background-color: #1E90FF; /* DodgerBlue - Example for Water */
+        }
+        .subcategory-pill.category-water:hover {
+            background-color: #1C86EE; 
+        }
+        .subcategory-pill.category-water:focus {
+            ring-color: #6495ED; 
+        }
+
+        .subcategory-pill.category-food {
+            background-color: #228B22; /* ForestGreen - Example for Food */
+        }
+        .subcategory-pill.category-food:hover {
+            background-color: #207A20;
+        }
+        .subcategory-pill.category-food:focus {
+            ring-color: #3CB371;
+        }
+
+        .subcategory-pill.category-waste {
+            background-color: #696969; /* DimGray - Example for Waste */
+        }
+        .subcategory-pill.category-waste:hover {
+            background-color: #595959;
+        }
+        .subcategory-pill.category-waste:focus {
+            ring-color: #808080;
+        }
+
+        .subcategory-pill.category-energy {
+            background-color: #FF8C00; /* DarkOrange - Example for Energy */
+        }
+        .subcategory-pill.category-energy:hover {
+            background-color: #EE7600;
+        }
+        .subcategory-pill.category-energy:focus {
+            ring-color: #FFA500;
+        }
+
+        .subcategory-pill.category-health {
+            background-color: #DC143C; /* Crimson - Example for Health */
+        }
+        .subcategory-pill.category-health:hover {
+            background-color: #C71585;
+        }
+        .subcategory-pill.category-health:focus {
+            ring-color: #FF69B4;
+        }
+
+        /* Add more category color rules as needed based on your data's "area" names */
+
+
+        /* Ensure accordion panel can accommodate content for max-height transition */
+        .accordion-panel {
+            /* padding: 0; REMOVE THIS if you had it, or ensure .accordion-panel-pills-content has padding */
+            /* background-color: var(--bg-color, #2c3e50); */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease-out, padding 0.35s ease-out; /* Ensure padding transitions if used */
+            /* border-top: 1px solid var(--border-color, #4a5e70); */
+        }
+        .accordion-panel.open {
+            padding: 0.75rem 1rem; /* Add padding back when panel is open */
+        }
+        .accordion-panel-pills-content {
+            /* This div now holds the pills wrapper */
+        }
+
+        .accordion-panel .no-subcategories-text {
+            padding: 0.5rem 0; /* Padding for this text if pills wrapper has none */
+            font-style: italic;
+            color: var(--placeholder-color, #95a5a6);
+        }
+
+
+
+        /* --- Homepage Module Grid --- */
+       #modules-grid-container { /* Renamed container */
+            padding: 2rem 1rem; /* Add padding */
+        }
+        .modules-grid {
+            margin: 0 auto; /* Centered */
+            /* max-width: 900px; */ /* Original value - this might be too narrow for 6 modules */
+            max-width: 1400px;  /* Increased max-width to better accommodate 6 modules in a row. Adjust as needed. */
+                                /* Alternatively, you could use '100%' if you want it to fill its parent container's width */
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* This creates 6 equal-width columns */
+            gap: 1.5rem;
+        }
+        .module {
+            cursor: pointer; display: flex; align-items: center;
+            padding: 1.25rem 1.5rem; border-radius: 12px; border: 1px dashed;
+            font-size: 1.1rem; /* Slightly smaller */ font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative; overflow: hidden;
+            background-color: #2D3748; /* Dark background */ 
+            color: #1E88E5;
+            background-color: #fff; /* Dark background */ color: white;
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .module::before { /* Subtle gradient overlay */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            z-index: 1; opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover::before { opacity: 0; }
+
+        .module .icon { width: 38px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-right: 1rem; z-index: 2; }
+
+
+
+
+        .module:hover .icon svg { transform: scale(1.1); stroke: #fff; }
+        .module:hover h2 { color: #fff; }
+        /* Module Colors */
+        .module.shelter { border-color: #1E88E5;} 
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter svg { color: #36B9CC; } 
+        .module.water { border-color: #1E88E5;} 
+        .module.water:hover { background-color: #1E88E5; }
+        .module.waste { border-color: #1E88E5;} 
+        .module.waste:hover { background-color: #7CB342; }
+        .module.energy { border-color: #1E88E5;} 
+        .module.energy:hover { background-color: #FFC107; }
+        .module.health { border-color: #1E88E5;} 
+        .module.health:hover { background-color: #EF5350; }
+        .module.food { border-color: #1E88E5;} 
+        .module.food:hover { background-color: #8BC34A; }
+        .module h2 { margin: 0; transition: color 0.2s ease; position: relative; z-index: 2; color: #1E88E5; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: #1E88E5; }
+
+
+        /* For screens smaller than 768px, make it 2 columns and let them auto-fit */
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Or repeat(2, 1fr) for exactly 2 columns */
+                max-width: 90%; /* Adjust max-width for smaller screens */
+            }
+        }
+        
+        /* Even smaller screens, 1 column */
+        @media (max-width: 480px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Category Content Area (Megamenu Logic Adapted) --- */
+        #category-content-container {
+            display: none; /* Hidden initially */
+            max-width: 1152px; /* max-w-6xl */
+            margin: 1.5rem auto 0 auto; /* mt-6 */
+            padding: 0 1rem; /* px-4 */
+        }
+        #category-content-container.visible { display: block; }
+
+        /* Back Button for Category View */
+        #back-to-modules-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 8px 16px; border-radius: 0.375rem;
+             font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; margin-bottom: 1rem;
+        }
+        #back-to-modules-button:hover { background-color: #4b5563; }
+        #back-to-modules-button svg { width: 1.1rem; height: 1.1rem; margin-right: 0.5rem; }
+
+        /* Category Title Display */
+        #category-title-display {
+            transition: opacity 0.4s ease-out, max-height 0.4s ease-out;
+            overflow: hidden; max-height: 0; opacity: 0;
+            text-align: center; font-size: 1.75rem; /* Increased size */ font-weight: 600; letter-spacing: 0.05em; color: #374151; text-transform: uppercase;
+            margin-bottom: 1rem; /* Added margin */
+        }
+        #category-title-display.visible { max-height: 100px; opacity: 1; }
+
+        /* Megamenu Content Container (holds columns/details) */
+        #megamenu-content {
+             background-color: #ffffff; border-radius: 0.5rem; /* rounded-lg */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+             padding: 1.5rem; /* p-6 */
+             /* No transitions needed here as parent controls visibility */
+        }
+
+        /* Glossary Panel */
+        #glossary-panel {
+             transition: opacity 0.4s ease-out, max-height 0.4s ease-out, padding 0.4s ease-out, margin-bottom 0.4s ease-out, visibility 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; visibility: hidden;
+             background-color: #4b5563; /* gray-600 */ color: #f3f4f6; /* gray-100 */ border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+             padding: 1rem; margin-top: 1rem; position: relative; z-index: 20;
+        }
+        #glossary-panel.visible { max-height: 300px; opacity: 1; padding-top: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; visibility: visible; }
+        .glossary-close-button {
+             position: absolute; top: 0.5rem; right: 0.75rem; background: rgba(255, 255, 255, 0.1); color: #e5e7eb;
+             border: none; border-radius: 9999px; width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
+             transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .glossary-close-button:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+
+        /* Columns & Details Area */
+        #megamenu-columns { transition: opacity 0.4s ease-out, max-height 0.5s ease-out; overflow: hidden; max-height: 2000px; opacity: 1; }
+        #megamenu-columns.columns-hidden { max-height: 0; opacity: 0; }
+        #megamenu-details-area {
+             transition: opacity 0.4s ease-out 0.1s, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out, visibility 0.4s ease-out, border-top-width 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; visibility: hidden; border-top-width: 0;
+             border-color: #e5e7eb; /* gray-200 */
+        }
+        #megamenu-details-area.visible { max-height: 3500px; /* Increased */ opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; visibility: visible; border-top-width: 1px; }
+
+        /* Tag pills */
+        .tag-pill-button {
+             display: inline-block; background-color: #4b5563; color: white; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+             margin-right: 4px; margin-bottom: 4px; line-height: 1.2; cursor: pointer; border: none; transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .tag-pill-button:hover { background-color: #374151; transform: translateY(-1px); }
+        .tag-pill-button.active { background-color: #3b82f6; /* blue-600 */ font-weight: 600; }
+
+        /* Subcategory toggle */
+        .subcategory-toggle { transition: color 0.2s ease-in-out; }
+        .subcategory-toggle.active { font-weight: 600; color: #2563eb; /* blue-600 */ }
+
+        /* Details Back Button */
+        .details-back-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 6px 16px; border-radius: 0.375rem;
+             font-size: 0.875rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none;
+        }
+        .details-back-button:hover { background-color: #4b5563; }
+
+        /* Sibling Subcategory Link Styles */
+        .sibling-links-container { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; line-height: 1.5; }
+        .sibling-links-container > span { font-size: 0.9rem; font-weight: 500; color: #6b7280; margin-right: 8px; }
+        .sibling-link-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 9999px; margin: 3px 4px; font-weight: 600; color: white; background-color: #4f46e5; /* Indigo */
+            text-decoration: none; font-size: 0.8rem; transition: background-color 0.2s, transform 0.1s; cursor: pointer; border: none;
+        }
+        .sibling-link-pill:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .sibling-link-pill.current { background-color: #a5b4fc; color: #3730a3; cursor: default; pointer-events: none; }
+
+        /* Video Linker Styles */
+        .video-linker-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed #e5e7eb; }
+        .video-linker { display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 8px; text-decoration: none; color: white; font-size: 30px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 1px 1px 4px rgba(0,0,0,0.15); overflow: hidden; cursor: pointer; flex-shrink: 0; }
+        .video-linker:hover { transform: scale(1.05); box-shadow: 3px 3px 7px rgba(0,0,0,0.25); }
+        .video-linker.no-icon { font-size: 9px; line-height: 1.1; padding: 5px; text-align: center; word-wrap: break-word; color: #333; background-color: #e5e7eb !important; }
+
+        /* Shared Info Panel Styles */
+        #video-info-panel { display: none; flex-direction: column; background-color: #343a40; color: #f8f9fa; border-top: 3px solid #007bff; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); transition: opacity 0.3s ease; opacity: 0; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+        #video-info-panel.visible { display: flex; opacity: 1; }
+        .local-video-row { display: none; align-items: center; background-color: #fef9c3; padding: 8px 15px; border-bottom: 1px solid #fde68a; }
+        .local-video-row.visible { display: flex; }
+        .local-video-link { display: flex; align-items: center; text-decoration: none; gap: 10px; width: 100%; }
+        .local-video-link:hover .local-video-text { text-decoration: underline; }
+        .local-video-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fcd34d; flex-shrink: 0; background-color: #fefce8; }
+        .local-video-text { font-size: 0.8rem; color: #713f12; font-weight: 500; transition: text-decoration 0.2s; }
+        .local-video-text span { font-family: monospace; font-weight: 600; }
+        .youtube-info-row { display: flex; align-items: flex-start; padding: 10px 15px; }
+        #video-info-panel .info-icon { font-size: 36px; color: #FF0000; margin-right: 15px; flex-shrink: 0; padding-top: 3px; }
+        #video-info-panel .info-text { display: flex; flex-direction: column; gap: 3px; overflow: hidden; flex-grow: 1; }
+        #video-info-panel .info-url, #video-info-panel .info-title, #video-info-panel .info-description { margin: 0; line-height: 1.4; white-space: normal; word-break: break-word; }
+        #video-info-panel .info-url { font-size: 0.75em; color: #adb5bd; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #video-info-panel .info-title { font-size: 1em; font-weight: bold; color: #ffffff; }
+        #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
+        #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+
+   /* Slideshow Container */
+    .slideshow-container {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+    }
+    
+    /* Slides */
+    .slideshow-slide {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .slideshow-slide.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* Navigation Arrows */
+    .slideshow-prev, .slideshow-next {
+        opacity: 0.7;
+        transition: opacity 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-prev:hover, .slideshow-next:hover {
+        opacity: 1;
+    }
+    
+    .slideshow-prev:active, .slideshow-next:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    
+    /* Dots */
+    .slideshow-dot {
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-dot.active {
+        background-color: white;
+        transform: scale(1.2);
+    }
+    
+    /* Dark mode adjustments */
+    .dark .slideshow-container {
+        background-color: #1f2937;
+    }
+    
+    .dark .featured-slideshow h2 {
+        color: #f3f4f6;
+    }
+        
+/* Add to your style.css */
+
+.module.homepage-module {
+    /* ... your existing .module styles ... */
+    position: relative; /* For positioning the preview if needed */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    /* cursor: pointer; /* Already there */
+}
+
+.subcategory-preview {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly different background for the preview area */
+    border-top: 1px solid var(--border-color, #4a5e70);
+    margin-top: 0.5rem; /* my-2 */
+    padding: 0.75rem; /* p-3 */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out;
+    border-bottom-left-radius: 6px; /* If your module has rounded corners */
+    border-bottom-right-radius: 6px;
+}
+
+.subcategory-preview.visible {
+    max-height: 200px; /* Adjust as needed, make it large enough for content */
+    opacity: 1;
+    padding: 0.75rem; /* Restore padding */
+    overflow-y: auto; /* Add scroll if content exceeds max-height */
+}
+
+.subcategory-preview-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.subcategory-preview-list li {
+    margin-bottom: 0.35rem; /* mb-1.5 */
+}
+
+.subcategory-preview-link {
+    color: var(--text-color, #ecf0f1);
+    text-decoration: none;
+    display: block;
+    padding: 0.35rem 0.5rem; /* py-1.5 px-2 */
+    border-radius: 4px; /* rounded */
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.subcategory-preview-link:hover,
+.subcategory-preview-link:focus {
+    background-color: var(--accent-color, #27ae60);
+    color: white; /* Or your chosen hover text color */
+}
+
+.no-subcategories-text {
+    font-size: 0.9rem;
+    color: var(--placeholder-color, #95a5a6);
+    text-align: center;
+}
+
+/* Optional: Style for the active module showing preview */
+.module.homepage-module.preview-active {
+    /* background-color: #3a5064; /* Slightly different bg when active */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+
+
+
+
+    </style>
+</head>
+<body class="bg-gray-100"> <header class="site-header">
+        <div class="logo">🌱</div>
+        <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+        </header>
+
+
+
+
+    <div id="modules-grid-container">
+        <main class="modules-grid">
+        </main>
+
+
+        <div id="accordion-container"></div> (inside the <div class="learning-areas-accordion">
+
+        </div>
+  
+
+<div id="featured-content-container" class="mt-6 mx-auto max-w-6xl px-4">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Featured Content</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Featured Item 1: Water Distillation -->
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <!-- Video thumbnail with play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+
+
+                    
+                    <img src="/assets/video/thumbnails/water_distillation_diy.jpg" 
+                         alt="DIY Water Distillation System" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e5e7eb/64748b?text=Water+Distillation'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+                            <i class="fas fa-play text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">Water</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>14:22</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">DIY Water Distillation System</h3>
+                <p class="text-gray-600 text-sm mb-3">Learn how to build an efficient water distillation system using common household materials. Perfect for emergency preparedness or off-grid living.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">purification</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">desalination</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">DIY</div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="/assets/video/WATER DESALINATION notes - DHAKA.mp4" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Featured Item 2: Rocket Stove -->
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <!-- Video thumbnail with play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <img src="/assets/video/thumbnails/rocket_stove_diy.jpg" 
+                         alt="How to Build a Rocket Stove" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e5e7eb/64748b?text=Rocket+Stove'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+                            <i class="fas fa-play text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>18:35</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">How to Build a Rocket Stove</h3>
+                <p class="text-gray-600 text-sm mb-3">Create a highly efficient cooking stove using minimal materials. This design burns cleanly, uses less fuel, and can be built in under an hour with common materials.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">fuel efficiency</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">sustainable</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2"><a href="/assets/SUPER_STOVE_AR.mp4">audio arabic</a></div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800"<a href="/assets/SUPER_STOVE_EN.mp4">audio english</a></div>
+
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="/assets/video/rocket_stove_diy.mp4" class="text-amber-600 hover:text-amber-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <div class="absolute inset-0">
+                    <div class="featured-slideshow w-full h-full">
+                        <div class="slideshow-container relative bg-gray-100 rounded-lg overflow-hidden w-full h-full">
+                            <div class="slideshow-slide active">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-1.jpg" data-src="/assets/images/solar-cookers/parabolic-cooker.jpg" 
+                                         alt="Parabolic Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Parabolic+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Parabolic Solar Cooker</h3>
+                                        <p class="text-sm">High temperature cooking with focused sunlight. Ideal for boiling and frying.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-2.jpg" data-src="/assets/images/solar-cookers/box-cooker.jpg" 
+                                         alt="Solar Box Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Solar+Box+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Solar Box Cooker</h3>
+                                        <p class="text-sm">Simple and effective design using common materials. Great for slow cooking and baking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-3.jpg" data-src="/assets/images/solar-cookers/panel-cooker.jpg" 
+                                         alt="Panel Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Panel+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Panel Solar Cooker</h3>
+                                        <p class="text-sm">Lightweight, portable design with reflective panels. Easy to build and transport.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-4.jpg" data-src="/assets/images/solar-cookers/evacuated-tube-cooker.jpg" 
+                                         alt="Evacuated Tube Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Evacuated+Tube+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Evacuated Tube Solar Cooker</h3>
+                                        <p class="text-sm">Modern design using vacuum-sealed glass tubes. Efficient cooking even in moderate sunlight.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Arrows -->
+                            <button class="slideshow-prev absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="slideshow-next absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            
+                            <!-- Dots Navigation -->
+                            <div class="slideshow-dots absolute bottom-16 left-0 right-0 flex justify-center space-x-2 z-10">
+                                <button class="slideshow-dot active w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="0"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="1"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="2"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="3"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>12:48</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Simple Solar Cooker Setup</h3>
+                <p class="text-gray-600 text-sm mb-3">Learn how to harness the sun's energy for cooking with this easy-to-build solar cooker. Perfect for fuel-free cooking during daylight hours in sunny regions.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">solar</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">zero-fuel</div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="/assets/video/solar_cooker_diy.mp4" class="text-yellow-600 hover:text-yellow-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+        </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>12:48</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Simple Solar Cooker Setup</h3>
+                <p class="text-gray-600 text-sm mb-3">Learn how to harness the sun's energy for cooking with this easy-to-build solar cooker. Perfect for fuel-free cooking during daylight hours in sunny regions.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">solar</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">zero-fuel</div>
+                </div>
+            </div>
+            
+
+        </div>
+        
+        <!-- Featured Item 4: Food Security Research -->
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <!-- Research document thumbnail -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <img src="/assets/images/food_security_research.jpg" 
+                         alt="Food Security Research" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x400/e5e7eb/64748b?text=Food+Security+Research'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+                            <i class="fas fa-file-alt text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">Food</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-calendar mr-1"></i>May 2025</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Food Security Research: Resilient Systems</h3>
+                <p class="text-gray-600 text-sm mb-3">Comprehensive study on building resilient local food systems in challenging environments. Includes case studies, practical frameworks, and implementation guidelines.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">research</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">food systems</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">resilience</div>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+
+<!-- CSS styles for Featured Content -->
+<style>
+    .featured-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .featured-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .featured-item .play-button {
+        opacity: 0.9;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    
+    .featured-item:hover .play-button {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+</style>
+
+
+
+    </div>
+
+    <div id="category-content-container">
+        <button id="back-to-modules-button">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path> </svg>
+             Back to Modules
+            </button>
+
+           
+
+            <div id="category-title-display"></div>
+        <div id="glossary-panel">
+            <p class="text-center text-gray-400">Click a tag to see its definition.</p>
+        </div>
+        <div id="megamenu-content">
+            <div id="megamenu-columns" class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
+                </div>
+            <div id="megamenu-details-area" class="border-t border-gray-200">
+                </div>
+        </div>
+    </div>
+
+    <div id="video-info-panel">
+        <div class="local-video-row" id="local-video-row">
+             <a href="#" target="_blank" class="local-video-link" id="local-video-link">
+                 <img src="https://placehold.co/40x40/fef9c3/713f12?text=MP4" alt="Local Video Thumbnail" class="local-video-thumb" id="local-video-thumb" onerror="this.src='https://placehold.co/40x40/fef9c3/713f12?text=MP4'; this.onerror=null;">
+                 <span class="local-video-text">Watch local version: <span id="local-video-filename-display"></span></span>
+             </a>
+        </div>
+        <div class="youtube-info-row">
+            <div class="info-icon"><i class="fab fa-youtube"></i></div>
+            <div class="info-text">
+                <p class="info-url" id="info-url"><span class="placeholder-text">Hover over a video square...</span></p>
+                <p class="info-title" id="info-title"></p>
+                <p class="info-description" id="info-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+// --- Global Variables & DOM Elements ---
+        let categoryData = []; // holds the data fetched from the JSON file
+        const modulesGridContainer = document.getElementById('modules-grid-container'); // Get homepage grid container
+        const modulesGrid = modulesGridContainer.querySelector('.modules-grid'); // Get the grid itself
+        const categoryContentContainer = document.getElementById('category-content-container'); // Get the container for detailed view
+        const backToModulesButton = document.getElementById('back-to-modules-button'); // Get the back button
+        const categoryTitleDisplay = document.getElementById('category-title-display');
+        const glossaryPanel = document.getElementById('glossary-panel');
+        const megamenuContent = document.getElementById('megamenu-content'); // Container within category view
+        const megamenuColumnsContainer = document.getElementById('megamenu-columns');
+        const megamenuDetailsArea = document.getElementById('megamenu-details-area');
+        const bodyElement = document.body;
+
+        // Video Panel Elements
+        const videoInfoPanel = document.getElementById('video-info-panel');
+        const infoUrlEl = document.getElementById('info-url');
+        const infoTitleEl = document.getElementById('info-title');
+        const infoDescriptionEl = document.getElementById('info-description');
+        const placeholderText = '<span class="placeholder-text">Hover over a video square...</span>';
+
+        // Local Video Elements
+        const localVideoRow = document.getElementById('local-video-row');
+        const localVideoLink = document.getElementById('local-video-link');
+        const localVideoThumb = document.getElementById('local-video-thumb');
+        const localVideoFilenameDisplay = document.getElementById('local-video-filename-display');
+        let activeSubcategoryToggle = null;
+        let activeGlossaryTrigger = null;
+        let allVideosFlat = []; // For flattened video data
+        let currentArea = null; // Track the currently displayed area
+
+
+// --- Video Panel Functions ---
+function flattenVideoData(originalData) {
+    let flatIndex = 0;
+    allVideosFlat = []; // Reset
+    originalData.forEach(area => {
+        if (area.subcategories && Array.isArray(area.subcategories)) {
+            area.subcategories.forEach((subcat) => {
+                if (subcat.videos && Array.isArray(subcat.videos)) {
+                    subcat.videos.forEach((video) => {
+                        if (video && video.youtubeId) {
+                            video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
+                            video.color_tag = video.color_tag || '#6c757d';
+                            video.authors = video.authors || "";
+                            video.researchReviewItems = video.researchReviewItems || [];
+                            video.contentCreatorArchive = video.contentCreatorArchive || "";
+                            video.licence = video.licence || "Standard YouTube License";
+                            video.patreon = video.patreon || "";
+                            video.socials = video.socials || {};
+                            video.fundraiser = video.fundraiser || "";
+                            video.sponsorPages = video.sponsorPages || [];
+                            video.localVideoFilename = video.localVideoFilename || "";
+                            video.flat_index = flatIndex++;
+                            allVideosFlat.push(video);
+                        } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+                    });
+                }
+            });
+        } else { console.warn(`Area "${area.area}" missing subcategories.`); }
+    });
+    console.log(`Flattened ${allVideosFlat.length} videos.`);
+}
+
+
+/**
+ * Populates a target container with subcategory pill buttons for a given category.
+ * Each pill will have a base class and a category-specific class for styling.
+ *
+ * @param {HTMLElement} targetContainer - The DOM element to append the pills to.
+ * @param {object} category - The category object from categoryData (e.g., containing area, subcategories).
+ */
+ function populateSubcategoryPills(targetContainer, category) {
+    if (!targetContainer) {
+        console.error("Target container for subcategory pills not provided!");
+        return;
+    }
+    if (!category || !category.area || !category.subcategories) {
+        console.error("Valid category data with area and subcategories is required for populating pills.", category);
+        targetContainer.innerHTML = '<p class="no-subcategories-text">Subcategory data missing or invalid.</p>';
+        return;
+    }
+
+    targetContainer.innerHTML = ''; // Clear any existing pills in this specific container
+
+    // Create a category-specific class name (e.g., "category-shelter")
+    const categoryAreaClass = `category-${category.area.toLowerCase().replace(/\s+/g, '-')}`;
+
+    if (category.subcategories && Array.isArray(category.subcategories) && category.subcategories.length > 0) {
+        const pillsWrapper = document.createElement('div');
+        pillsWrapper.className = 'subcategory-pills-wrapper'; // For flex layout of pills
+
+        category.subcategories.forEach((subcat, index) => {
+            // Ensure uniqueId is reliably available or generated
+            const uniqueId = subcat.uniqueId || `${category.area.toLowerCase().replace(/\s+/g, '-')}-${index}`;
+
+            const pillButton = document.createElement('button');
+            // Base classes + dynamically added category-specific class.
+            // Removed default background like 'bg-sky-500' to allow category class to define it.
+            pillButton.className = `subcategory-pill text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium hover:opacity-80 transition-opacity shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800`;
+            pillButton.classList.add(categoryAreaClass); // Add category-specific class for coloring
+
+            let iconHtml = '';
+            // Use parent category's icon for the pill
+            if (category.icon) { // Font Awesome icon from category object
+                iconHtml = `<i class="fas ${category.icon} mr-1 md:mr-2"></i>`;
+            } else if (typeof feather !== 'undefined' && category.featherIcon && feather.icons[category.featherIcon]) {
+                iconHtml = feather.icons[category.featherIcon].toSvg({ class: 'inline-block mr-1 md:mr-2 w-3 h-3 md:w-4 md:h-4' });
+            } else {
+                iconHtml = `<i class="fas fa-tag mr-1 md:mr-2"></i>`; // Generic fallback
+            }
+
+            pillButton.innerHTML = `${iconHtml}${subcat.title}`;
+            pillButton.dataset.area = category.area.toLowerCase();
+            pillButton.dataset.uniqueid = uniqueId;
+
+            // Event listener for pill click (navigates to subcategory detail)
+            pillButton.addEventListener('click', () => {
+                const area = pillButton.dataset.area;
+                const subId = pillButton.dataset.uniqueid;
+
+                // Navigate to the main category view first (shows megamenu columns etc.)
+                showCategoryView(area);
+
+                // Then, display the specific subcategory details and scroll to them
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        displaySubcategoryDetails(area, subId, true); // true to update hash
+                        const detailsArea = document.getElementById('megamenu-details-area');
+                        if (detailsArea && detailsArea.classList.contains('visible')) {
+                            detailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                            // Fallback scroll if details area isn't immediately ready/visible
+                            const categoryContent = document.getElementById('category-content-container');
+                            if (categoryContent) {
+                                categoryContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }
+                    }, 100); // Delay to allow DOM updates from showCategoryView
+                });
+            });
+            pillsWrapper.appendChild(pillButton);
+        });
+        targetContainer.appendChild(pillsWrapper);
+    } else {
+        targetContainer.innerHTML = '<p class="no-subcategories-text">No subcategories available for this area.</p>';
+    }
+}
+
+
+/**
+ * Creates the main accordion navigation for Learning Module Areas.
+ * Each accordion panel, when opened, will display subcategory pills.
+ */
+function createLearningAreasAccordion() {
+    const accordionContainer = document.getElementById('accordion-container');
+    if (!accordionContainer) {
+        console.error("Accordion container (#accordion-container) not found!");
+        return;
+    }
+    if (!window.categoryData || window.categoryData.length === 0) {
+        console.error("Global categoryData is not available or empty for accordion.");
+        accordionContainer.innerHTML = "<p>Learning areas could not be loaded (no data).</p>";
+        return;
+    }
+    accordionContainer.innerHTML = ''; // Clear previous content
+
+    window.categoryData.forEach(categoryDetails => { // Use categoryDetails to avoid conflict
+        const areaName = categoryDetails.area;
+        const areaIdForPanel = areaName.toLowerCase().replace(/\s+/g, '-');
+
+        // Accordion Item Button (for the Area)
+        const button = document.createElement('button');
+        button.className = 'accordion-button';
+        button.setAttribute('aria-expanded', 'false');
+        button.setAttribute('aria-controls', `panel-${areaIdForPanel}`);
+        
+        let iconHtml = '';
+        if (typeof feather !== 'undefined' && categoryDetails.featherIcon && feather.icons[categoryDetails.featherIcon]) {
+            iconHtml = feather.icons[categoryDetails.featherIcon].toSvg({ class: 'accordion-icon' });
+        } else if (categoryDetails.icon) { // Font Awesome icon
+            iconHtml = `<i class="fas ${categoryDetails.icon} accordion-icon"></i>`;
+        } else {
+            iconHtml = `<i class="fas fa-folder accordion-icon"></i>`; // Generic fallback
+        }
+        button.innerHTML = `${iconHtml} <span class="accordion-button-text">${areaName}</span> <span class="accordion-indicator"><i class="fas fa-chevron-down"></i></span>`;
+
+        // Panel for Subcategory Pills
+        const panel = document.createElement('div');
+        panel.id = `panel-${areaIdForPanel}`;
+        panel.className = 'accordion-panel';
+
+        // Create a specific container inside the panel for the pills
+        const pillsContentDiv = document.createElement('div');
+        pillsContentDiv.className = 'accordion-panel-pills-content'; 
+        
+        // Populate this container with pills using the modified function
+        // This happens when the accordion is first created.
+        populateSubcategoryPills(pillsContentDiv, categoryDetails); 
+
+        panel.appendChild(pillsContentDiv);
+
+        accordionContainer.appendChild(button);
+        accordionContainer.appendChild(panel);
+
+        // Event Listener for the Accordion Button
+        button.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            const currentPanel = this.nextElementSibling; // The panel associated with this button
+
+            // Close all other open panels
+            accordionContainer.querySelectorAll('.accordion-button').forEach(otherButton => {
+                if (otherButton !== this) {
+                    otherButton.setAttribute('aria-expanded', 'false');
+                    otherButton.classList.remove('active');
+                    const otherPanel = otherButton.nextElementSibling;
+                    if (otherPanel) {
+                        otherPanel.style.maxHeight = null;
+                        otherPanel.classList.remove('open');
+                    }
+                    const otherIndicator = otherButton.querySelector('.accordion-indicator i');
+                    if(otherIndicator) otherIndicator.className = 'fas fa-chevron-down';
+                }
+            });
+
+            // Toggle current panel
+            if (isExpanded) {
+                this.setAttribute('aria-expanded', 'false');
+                this.classList.remove('active');
+                currentPanel.style.maxHeight = null;
+                currentPanel.classList.remove('open');
+                const indicator = this.querySelector('.accordion-indicator i');
+                if(indicator) indicator.className = 'fas fa-chevron-down';
+            } else {
+                this.setAttribute('aria-expanded', 'true');
+                this.classList.add('active');
+                currentPanel.classList.add('open'); // Add 'open' class first for padding transition
+                currentPanel.style.maxHeight = currentPanel.scrollHeight + "px"; // Then set max-height
+                const indicator = this.querySelector('.accordion-indicator i');
+                if(indicator) indicator.className = 'fas fa-chevron-up';
+            }
+        });
+    });
+}
+
+
+function showInfoPanel(video) {
+     if (!video || !video.youtubeId) { hideInfoPanel(); return; } // Hide if invalid video
+
+     // Local Video Row
+     if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
+         const videoPath = `/assets/video/${video.localVideoFilename}`;
+         const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
+         localVideoLink.href = videoPath;
+         localVideoThumb.src = thumbPath;
+         localVideoThumb.alt = `Thumbnail for ${video.title}`;
+         localVideoFilenameDisplay.textContent = video.localVideoFilename;
+         localVideoRow.classList.add('visible');
+     } else if(localVideoRow) {
+         localVideoRow.classList.remove('visible');
+     }
+
+     // YouTube Info Row - FIX: Correct the URL format
+     const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
+     infoUrlEl.textContent = youtubeWatchUrl;
+     infoUrlEl.href = youtubeWatchUrl; // Make clickable
+     infoUrlEl.classList.remove('placeholder-text');
+     infoTitleEl.textContent = video.title || 'No Title';
+     infoDescriptionEl.textContent = video.description || 'No Description';
+
+     videoInfoPanel.classList.add('visible');
+}
+
+function hideInfoPanel() {
+    infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
+    infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
+    if (localVideoRow) { localVideoRow.classList.remove('visible'); }
+    if (localVideoLink) { localVideoLink.href = '#'; }
+    if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
+    if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
+    videoInfoPanel.classList.remove('visible');
+}
+
+function generateHomepageModules() {
+    modulesGrid.innerHTML = '';
+    categoryData.forEach(category => {
+        const moduleDiv = document.createElement('div');
+        moduleDiv.className = `module ${category.area.toLowerCase()}`;
+        moduleDiv.onclick = () => showCategoryView(category.area.toLowerCase());
+
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'icon';
+        
+        // Try Feather first, fall back to Font Awesome
+        try {
+            if (typeof feather !== 'undefined' && feather.icons && category.featherIcon && feather.icons[category.featherIcon]) {
+                // Use direct SVG insertion from feather
+                iconContainer.innerHTML = feather.icons[category.featherIcon].toSvg();
+            } else {
+                // Fallback to Font Awesome
+                iconContainer.innerHTML = `<i class="fas ${category.icon}"></i>`;
+            }
+        } catch(e) {
+            console.error("Error with Feather icon, falling back to Font Awesome", e);
+            iconContainer.innerHTML = `<i class="fas ${category.icon}"></i>`;
+        }
+
+        const titleH2 = document.createElement('h2');
+        titleH2.textContent = category.area;
+
+        moduleDiv.appendChild(iconContainer);
+        moduleDiv.appendChild(titleH2);
+        modulesGrid.appendChild(moduleDiv);
+
+         // NEW BEHAVIOR: Click to toggle subcategory preview
+         moduleDiv.addEventListener('click', (event) => {
+            // Prevent click from bubbling if a subcategory link inside preview is clicked later
+            if (event.target.closest('.subcategory-preview-link')) {
+                return;
+            }
+            toggleSubcategoryPreview(moduleDiv, category.area.toLowerCase());
+        });
+
+    });
+}
+
+function toggleSubcategoryPreview(moduleElement, areaName) {
+    const previewDiv = moduleElement.querySelector('.subcategory-preview');
+    const isActive = moduleElement.classList.contains('preview-active');
+
+    // Hide any other open previews
+    document.querySelectorAll('.homepage-module.preview-active').forEach(activeModule => {
+        if (activeModule !== moduleElement) {
+            activeModule.classList.remove('preview-active');
+            activeModule.querySelector('.subcategory-preview').innerHTML = '';
+            activeModule.querySelector('.subcategory-preview').classList.remove('visible');
+        }
+    });
+
+    if (isActive) {
+        previewDiv.innerHTML = ''; // Clear content
+        previewDiv.classList.remove('visible');
+        moduleElement.classList.remove('preview-active');
+    } else {
+        const category = categoryData.find(cat => cat.area.toLowerCase() === areaName);
+        if (category && category.subcategories && category.subcategories.length > 0) {
+            const ul = document.createElement('ul');
+            ul.className = 'subcategory-preview-list';
+            category.subcategories.forEach(subcat => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${areaName}@${subcat.uniqueId}`; // For hash navigation
+                link.textContent = subcat.title;
+                link.className = 'subcategory-preview-link';
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent immediate jump
+                    showCategoryView(areaName); // Show the main category view
+                    // Use rAF and setTimeout to ensure DOM is ready for scrolling to detail
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            displaySubcategoryDetails(areaName, subcat.uniqueId, true);
+                            const detailsArea = document.getElementById('megamenu-details-area');
+                            if (detailsArea) {
+                                detailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    });
+                });
+                li.appendChild(link);
+                ul.appendChild(li);
+            });
+            previewDiv.appendChild(ul);
+            previewDiv.classList.add('visible');
+            moduleElement.classList.add('preview-active');
+        } else {
+            previewDiv.innerHTML = '<p class="no-subcategories-text">No subcategories available.</p>';
+            previewDiv.classList.add('visible');
+            moduleElement.classList.add('preview-active');
+        }
+    }
+}
+
+function initializeSlideshows() {
+    document.querySelectorAll('.featured-slideshow').forEach(slideshow => {
+        const slides = slideshow.querySelectorAll('.slideshow-slide');
+        const prevBtn = slideshow.querySelector('.slideshow-prev');
+        const nextBtn = slideshow.querySelector('.slideshow-next');
+        const dots = slideshow.querySelectorAll('.slideshow-dot');
+        
+        // Skip initialization if no slides found
+        if (!slides.length) {
+            console.warn('No slides found in slideshow:', slideshow);
+            return;
+        }
+        
+        let currentIndex = 0;
+        let intervalId = null;
+        
+        // Function to show a specific slide
+        function showSlide(index) {
+            // Handle index bounds
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            
+            // Update current index
+            currentIndex = index;
+            
+            // Update slides
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentIndex);
+            });
+            
+            // Update dots - make sure we only update as many dots as slides
+            dots.forEach((dot, i) => {
+                if (i < slides.length) {
+                    dot.classList.toggle('active', i === currentIndex);
+                }
+            });
+            
+            // Load the image if it hasn't been loaded yet (lazy loading)
+            const currentSlide = slides[currentIndex];
+            const img = currentSlide.querySelector('img');
+            if (img) {
+                const dataSrc = img.getAttribute('data-src');
+                if (dataSrc && img.src !== dataSrc) {
+                    img.src = dataSrc;
+                }
+            }
+            
+            // Reset the auto-advance timer
+            resetAutoAdvance();
+        }
+        
+        // Function to advance to the next slide
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+        
+        // Function to go back to the previous slide
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+        
+        // Function to start auto-advancing slides
+        function startAutoAdvance() {
+            intervalId = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+        
+        // Function to reset auto-advance timer
+        function resetAutoAdvance() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                startAutoAdvance();
+            }
+        }
+        
+        // Set up click handlers for controls
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        
+        // Set up click handlers for dots
+        dots.forEach((dot, i) => {
+            if (i < slides.length) { // Only add handlers for valid slides
+                dot.addEventListener('click', () => showSlide(i));
+            }
+        });
+        
+        // Set up keyboard navigation
+        slideshow.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            else if (e.key === 'ArrowRight') nextSlide();
+        });
+        
+        // Make slideshow focusable for keyboard navigation
+        slideshow.setAttribute('tabindex', '0');
+        
+        // Start auto-advance
+        startAutoAdvance();
+        
+        // Pause auto-advance when user hovers over the slideshow
+        slideshow.addEventListener('mouseenter', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        });
+        
+        // Resume auto-advance when user leaves the slideshow
+        slideshow.addEventListener('mouseleave', () => {
+            if (!intervalId) {
+                startAutoAdvance();
+            }
+        });
+        
+        // Load the first image immediately
+        const firstImg = slides[0]?.querySelector('img');
+        if (firstImg) {
+            const firstDataSrc = firstImg.getAttribute('data-src');
+            if (firstDataSrc) {
+                firstImg.src = firstDataSrc;
+            }
+        }
+        
+        // Show the first slide
+        showSlide(0);
+
+        console.log(`Initialized slideshow with ${slides.length} slides`);
+    });
+}
+
+// --- Hash Navigation Functions ---
+// IMPORTANT: Define handleHashChange FIRST to avoid reference errors
+function handleHashChange() {
+    // Get the hash without the # prefix
+    let hash = window.location.hash.substring(1);
+    
+    if (!hash) {
+        showHomepageView(); // Show grid if no hash
+        return;
+    }
+
+    // Normalize hash to lowercase and trim any spaces
+    hash = hash.toLowerCase().trim();
+    console.log(`Processing hash: ${hash}`);
+
+    // Split the hash by @ to check for subcategory requests
+    const parts = hash.split('@');
+    const categoryArea = parts[0]; 
+    const subcategoryId = parts.length > 1 ? parts[1] : null;
+
+    // Find if this category exists in our data
+    const categoryMatch = categoryData.find(cat => 
+        cat.area.toLowerCase() === categoryArea
+    );
+
+    if (categoryMatch) {
+        console.log(`Found category match for hash: #${hash}`);
+        
+        // Show the category view for the requested area
+        showCategoryView(categoryArea);
+
+        // If there's also a subcategory ID specified
+        if (subcategoryId) {
+            // Use requestAnimationFrame + setTimeout to ensure DOM is updated
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    console.log(`Looking for subcategory: ${subcategoryId}`);
+                    
+                    // Try to find the subcategory in the data first
+                    const subcategoryExists = categoryMatch.subcategories.some(
+                        subcat => subcat.uniqueId === subcategoryId
+                    );
+                    
+                    if (subcategoryExists) {
+                        // Display details for the requested subcategory
+                        displaySubcategoryDetails(categoryArea, subcategoryId, false);
+                        
+                        // Scroll to details area after a short delay
+                        setTimeout(() => {
+                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    } else {
+                        console.warn(`Subcategory not found for hash: ${hash}. Showing category view.`);
+                        // Ensure we reset the hash to just the category
+                        history.pushState(null, null, '#' + categoryArea);
+                    }
+                }, 100);
+            });
+        } else {
+            // Just show the category columns view (no specific subcategory)
+            hideSubcategoryDetails(false);
+        }
+    } else {
+        console.warn(`Category not found for hash: ${hash}. Showing homepage.`);
+        showHomepageView(); // Fallback to homepage if invalid category
+    }
+}
+
+// --- Show/Hide Views ---
+function showCategoryView(area) {
+    console.log("Showing category:", area);
+    
+    // Normalize area to lowercase
+    area = area.toLowerCase();
+    
+    // Store current area
+    currentArea = area; 
+    
+    // Find the category object
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    
+    if (category) {
+        // Show the category title
+        showCategoryTitle(category);
+        
+        // Populate the content columns for this area
+        populateMegamenuColumns(area);
+        
+        // Hide the homepage modules grid
+        modulesGridContainer.style.display = 'none'; 
+        
+        // Show the category content container
+        categoryContentContainer.classList.add('visible');
+        
+        // Update hash if it's not already set correctly
+        if (window.location.hash.substring(1).toLowerCase() !== area) {
+            // Use pushState for visible URL change
+            history.pushState(null, null, '#' + area);
+        }
+        
+        // Scroll to top for better user experience
+        window.scrollTo(0, 0);
+    } else {
+        console.error(`Category not found: ${area}`);
+    }
+}
+
+function showHomepageView() {
+    console.log("Showing homepage grid");
+    currentArea = null; // Reset current area
+    hideSubcategoryDetails(false); // Ensure details are hidden
+    hideGlossaryPanel();
+    hideCategoryTitle();
+    modulesGridContainer.style.display = 'block'; // Show module grid
+    categoryContentContainer.classList.remove('visible'); // Hide category content
+    
+    // Use pushState for visible URL change - remove hash
+    if (window.location.hash) {
+        history.pushState(null, document.title, window.location.pathname + window.location.search);
+    }
+}
+
+function populateMegamenuColumns(area) {
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    if (!category) {
+        megamenuColumnsContainer.innerHTML = '<div class="text-center text-gray-500 col-span-1 md:col-span-3">Category data not found.</div>';
+        return;
+    }
+    megamenuColumnsContainer.innerHTML = ''; // Clear previous columns
+    megamenuColumnsContainer.classList.remove('columns-hidden'); // Ensure columns are potentially visible
+    hideSubcategoryDetails(false); // Ensure details area is hidden when showing columns
+
+    const columns = [[], [], []];
+    category.subcategories.forEach((subcat, index) => {
+         subcat.uniqueId = subcat.uniqueId || `${area}-${index}`;
+         columns[index % 3].push(subcat);
+    });
+
+    columns.forEach((columnSubcats) => {
+        const columnDiv = document.createElement('div');
+        columnDiv.className = 'space-y-6';
+        if (columnSubcats.length > 0) {
+            columnSubcats.forEach((subcat) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'subcategory-item';
+                let tagsHtml = '';
+                if (subcat.tags && subcat.tags.length > 0) {
+                    tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' +
+                        subcat.tags.map(tag =>
+                            `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`
+                        ).join('') + '</div>';
+                }
+                itemDiv.innerHTML = `
+                    <h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4>
+                    <p class="text-sm text-gray-600">${subcat.description}</p>
+                    ${tagsHtml}
+                    <button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" data-area="${area}" data-uniqueid="${subcat.uniqueId}">
+                        Show More Info
+                    </button>`;
+                columnDiv.appendChild(itemDiv);
+            });
+        }
+        megamenuColumnsContainer.appendChild(columnDiv);
+    });
+}
+
+// --- Glossary Functions ---
+function displayGlossaryEntry(tag) {
+    const definition = tagGlossary[tag] || "Definition not found for this tag.";
+    const term = tag.charAt(0).toUpperCase() + tag.slice(1);
+    glossaryPanel.innerHTML = `
+        <button class="glossary-close-button" aria-label="Close glossary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg>
+        </button>
+        <h4 class="font-semibold text-lg text-white mb-1 pr-8">${term}</h4>
+        <p class="text-sm text-gray-300">${definition}</p>
+    `;
+    glossaryPanel.querySelector('.glossary-close-button').addEventListener('click', hideGlossaryPanel);
+    glossaryPanel.classList.add('visible');
+    bodyElement.classList.add('glossary-visible'); // Keep this class for potential styling needs
+}
+
+function hideGlossaryPanel() {
+    glossaryPanel.classList.remove('visible');
+    bodyElement.classList.remove('glossary-visible');
+    if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); activeGlossaryTrigger = null; }
+    setTimeout(() => { if (!glossaryPanel.classList.contains('visible')) { glossaryPanel.innerHTML = '<p class="text-center text-gray-400">Click a tag to see its definition.</p>'; } }, 400);
+}
+
+function handleGlossaryTriggerClick(event) {
+    event.stopPropagation();
+    const currentButton = event.target;
+    const tag = currentButton.dataset.tag;
+    if (activeGlossaryTrigger === currentButton) { hideGlossaryPanel(); }
+    else { if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); } displayGlossaryEntry(tag); currentButton.classList.add('active'); activeGlossaryTrigger = currentButton; }
+}
+
+// --- Subcategory Details Functions ---
+function displaySubcategoryDetails(area, uniqueId, updateHash = true) {
+    console.log(`Displaying subcategory details: ${area}/${uniqueId}`);
+    
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    if (!category) {
+        console.error(`Category not found: ${area}`);
+        megamenuDetailsArea.innerHTML = '<p>Category not found.</p>'; 
+        megamenuDetailsArea.classList.add('visible');
+        return;
+    }
+    
+    const currentSubcategory = category.subcategories.find(sub => sub.uniqueId === uniqueId);
+    if (!currentSubcategory) {
+        console.error(`Subcategory not found: ${uniqueId}`);
+        megamenuDetailsArea.innerHTML = '<p>Subcategory details not found.</p>'; 
+        megamenuDetailsArea.classList.add('visible');
+        return;
+    }
+    
+    console.log("Found subcategory:", currentSubcategory.title);
+
+    // Generate sibling links for navigation between subcategories
+    let siblingLinksHtml = '';
+    if (category.subcategories && category.subcategories.length > 1) {
+        siblingLinksHtml = '<div class="sibling-links-container"><span>See also: </span>';
+        category.subcategories.forEach(subcat => {
+            if (!subcat.uniqueId) { 
+                console.warn("Missing uniqueId:", subcat.title); 
+                return; 
+            }
+            const isCurrent = subcat.uniqueId === uniqueId;
+            siblingLinksHtml += `<button class="sibling-link-pill ${isCurrent ? 'current' : ''}" 
+                                data-area="${area}" data-uniqueid="${subcat.uniqueId}" 
+                                ${isCurrent ? 'disabled' : ''}>${subcat.title}</button>`;
+        });
+        siblingLinksHtml += '</div>';
+    }
+
+    // Start building the detailed content HTML
+    let detailsHtml = `
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">${currentSubcategory.title}</h3>
+        ${siblingLinksHtml}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Context</h5>
+                <p class="text-sm text-gray-600">${currentSubcategory.context || 'No context information available.'}</p>
+            </div>
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Materials</h5>
+                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                    ${currentSubcategory.materials && currentSubcategory.materials.length > 0 
+                        ? currentSubcategory.materials.map(m => `<li>${m}</li>`).join('') 
+                        : '<li>No materials information available.</li>'}
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Process Steps</h5>
+                <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                    ${currentSubcategory.processSteps && currentSubcategory.processSteps.length > 0
+                        ? currentSubcategory.processSteps.map(s => `<li>${s}</li>`).join('') 
+                        : '<li>No process steps information available.</li>'}
+                </ol>
+            </div>
+        </div>`;
+
+    // Add videos section if available
+    if (currentSubcategory.videos && currentSubcategory.videos.length > 0) {
+        detailsHtml += `
+            <h4 class="text-lg font-semibold text-gray-700 mb-3 pt-4 border-t">Related Videos</h4>
+            <div class="video-linker-container">`;
+        
+        currentSubcategory.videos.forEach(video => {
+            // Skip invalid videos
+            if (!video.youtubeId) {
+                console.warn("Skipping video with missing youtubeId:", video);
+                return;
+            }
+            
+            // Ensure flat_index exists (create one if needed)
+            const flatIndex = video.flat_index !== undefined ? video.flat_index : 0;
+            
+            // Build video link
+            const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
+            const bgColor = video.color_tag || '#6c757d';
+            const iconClass = video.icon_tag_fa || 'fas fa-video';
+            const useNoIconFallback = !iconClass || iconClass === 'fas fa-video';
+            
+            detailsHtml += `
+                <a href="${youtubeWatchUrl}" target="_blank" 
+                   class="video-linker ${useNoIconFallback ? 'no-icon' : ''}" 
+                   style="background-color: ${bgColor};" data-flat-index="${flatIndex}" 
+                   title="Open video: ${video.title || 'Watch Video'}">`;
+            
+            if (!useNoIconFallback) { 
+                detailsHtml += `<i class="${iconClass}"></i>`; 
+            } else { 
+                detailsHtml += (video.title || 'Video').substring(0, 15) + 
+                    ((video.title && video.title.length > 15) ? '...' : ''); 
+            }
+            
+            detailsHtml += `</a>`;
+        });
+        
+        detailsHtml += `</div>`;
+    }
+
+    // Add share and back buttons
+    detailsHtml += `
+        <div class="mt-8 flex justify-between items-center"  style="height: 100px;">
+            <div>
+                <button class="bg-blue-600 text-white py-1 px-3 rounded text-sm share-subcategory-link" 
+                        data-area="${area}" data-uniqueid="${uniqueId}">
+                    <i class="fas fa-link mr-1"></i> Share Link
+                </button>
+            </div>
+            <div>
+                <button class="details-back-button">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Subcategories
+                </button>
+            </div>
+        </div>`;
+
+    // Update the DOM
+    megamenuDetailsArea.innerHTML = detailsHtml;
+    megamenuColumnsContainer.classList.add('columns-hidden'); // Hide columns
+    megamenuDetailsArea.classList.add('visible'); // Show details
+
+    // Update URL hash for deep linking
+    if (updateHash) {
+        const newHash = `${area}@${uniqueId}`;
+        history.pushState(null, null, '#' + newHash);
+    }
+
+    // Update the active state of the toggle button in the columns view
+    const correspondingToggle = megamenuColumnsContainer.querySelector(
+        `.subcategory-toggle[data-area="${area}"][data-uniqueid="${uniqueId}"]`
+    );
+    
+    if (correspondingToggle) {
+        if (activeSubcategoryToggle && activeSubcategoryToggle !== correspondingToggle) {
+            activeSubcategoryToggle.classList.remove('active');
+            activeSubcategoryToggle.textContent = 'Show More Info';
+        }
+        
+        correspondingToggle.classList.add('active');
+        correspondingToggle.textContent = 'Hide Info';
+        activeSubcategoryToggle = correspondingToggle;
+    }
+    
+    // Set up share button functionality
+    setupShareButton(area, uniqueId);
+}
+
+function hideSubcategoryDetails(updateHash = true) {
+    const detailsWereVisible = megamenuDetailsArea.classList.contains('visible');
+    megamenuDetailsArea.classList.remove('visible');
+    megamenuColumnsContainer.classList.remove('columns-hidden'); // Show columns again
+    
+    // Reset toggle button states
+    if (activeSubcategoryToggle) {
+        activeSubcategoryToggle.classList.remove('active');
+        activeSubcategoryToggle.textContent = 'Show More Info';
+        activeSubcategoryToggle = null;
+    }
+    
+    // Update URL
+    if (detailsWereVisible && updateHash && currentArea) {
+        history.pushState(null, null, '#' + currentArea);
+    }
+    
+    hideInfoPanel(); // Hide video panel
+    
+    setTimeout(() => { 
+        if (!megamenuDetailsArea.classList.contains('visible')) { 
+            megamenuDetailsArea.innerHTML = ''; 
+        } 
+    }, 400);
+}
+
+function handleSubcategoryToggle(event) {
+    event.stopPropagation();
+    const currentButton = event.target;
+    const area = currentButton.dataset.area;
+    const uniqueId = currentButton.dataset.uniqueid;
+    
+    if (activeSubcategoryToggle === currentButton) {
+        // If the same toggle is clicked, hide details
+        hideSubcategoryDetails(true);
+    } else {
+        // Display the subcategory details
+        displaySubcategoryDetails(area, uniqueId, true);
+        
+        // Scroll to details area
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    }
+}
+
+// --- Category Title Display Functions ---
+function showCategoryTitle(category) {
+    const displayName = category.area || 'Category'; // Use Area name
+    categoryTitleDisplay.textContent = displayName;
+    categoryTitleDisplay.classList.add('visible');
+}
+
+function hideCategoryTitle() {
+    categoryTitleDisplay.classList.remove('visible');
+    setTimeout(() => { if (!categoryTitleDisplay.classList.contains('visible')) { categoryTitleDisplay.textContent = ''; } }, 400);
+}
+
+// --- Sharing Functions ---
+function setupShareButton(area, uniqueId) {
+    const shareButton = megamenuDetailsArea.querySelector('.share-subcategory-link');
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            const shareableLink = getShareableLink(area, uniqueId);
+            
+            // Copy the link to clipboard
+            navigator.clipboard.writeText(shareableLink)
+                .then(() => {
+                    // Provide visual feedback
+                    const originalText = shareButton.innerHTML;
+                    shareButton.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+                    setTimeout(() => {
+                        shareButton.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback method
+                    prompt('Copy this link to share:', shareableLink);
+                });
+        });
+    }
+}
+
+function getShareableLink(area, uniqueId) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}#${area.toLowerCase()}@${uniqueId}`;
+}
+
+// --- Event Delegation Setup ---
+function setupEventListeners() {
+    // Glossary and Subcategory toggles within the category content
+    categoryContentContainer.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.classList.contains('glossary-trigger')) { 
+            handleGlossaryTriggerClick(event); 
+        }
+        else if (target.classList.contains('subcategory-toggle')) { 
+            handleSubcategoryToggle(event); 
+        }
+        else if (target.closest('.details-back-button')) { 
+            event.preventDefault();
+            hideSubcategoryDetails(true); 
+        }
+        else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+            event.preventDefault();
+            const area = target.dataset.area;
+            const uniqueId = target.dataset.uniqueid;
+            if (area && uniqueId) {
+                displaySubcategoryDetails(area, uniqueId, true);
+                requestAnimationFrame(() => { 
+                    setTimeout(() => { 
+                        megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
+                    }, 50); 
+                });
+            }
+        }
+    });
+
+    // Back button to return to module grid
+    backToModulesButton.addEventListener('click', showHomepageView);
+
+    // Video Hover Listeners on Body (covers videos in details view)
+    document.body.addEventListener('mouseover', (event) => {
+        const linker = event.target.closest('.video-linker');
+        if (linker) {
+            const flatIndex = linker.getAttribute('data-flat-index');
+            if (flatIndex !== null) {
+                const video = allVideosFlat[parseInt(flatIndex, 10)];
+                if (video) { showInfoPanel(video); }
+                else { console.warn("Video data not found for index:", flatIndex); }
+            }
+        }
+    });
+    
+    document.body.addEventListener('mouseout', (event) => {
+        const leavingLinker = event.target.closest('.video-linker');
+        const enteringElement = event.relatedTarget;
+        if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
+            setTimeout(() => {
+                const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
+                if (!currentlyHovered) { hideInfoPanel(); }
+            }, 50);
+        }
+    });
+    
+    videoInfoPanel.addEventListener('mouseleave', hideInfoPanel); // Hide if leaving panel itself
+}
+
+// Set up hash navigation
+function setupHashNavigation() {
+    // Handle browser back/forward buttons and direct links
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Process initial hash on page load
+    handleHashChange();
+}
+
+// --- Initial Setup ---
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log("Initializing Approvideo Learning Hub...");
+    
+    try {
+        const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonData = await response.json(); // Parse the JSON
+        categoryData = jsonData;
+        console.log("Successfully loaded categoryData from JSON file:", categoryData);
+        if (!categoryData || categoryData.length === 0) {
+             console.error("Fetched JSON data is empty or invalid. Halting further app initialization that depends on this data.");
+             // Display a user-friendly error message on the page
+             document.body.innerHTML = "<p style='color:white; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
+             return; // Stop further execution
+        }
+
+
+    } catch (error) {
+
+        console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
+        // Display a user-friendly error message on the page
+        document.body.innerHTML = "<p style='color:white; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
+        return; // Stop further execution
+
+    }
+
+    // Now, categoryData refers to the global variable populated by the fetch.
+    console.log("Proceeding with page initialization using fetched categoryData. Total items:", categoryData.length);
+
+
+
+
+    // Initialize data
+    flattenVideoData(categoryData);
+    
+    // Generate the initial module grid
+    generateHomepageModules();
+    populateSubcategoryPills(categoryData); 
+
+    
+    // Set up all event listeners
+    setupEventListeners();
+    
+    // Set up hash navigation
+    setupHashNavigation();
+    
+    // Initialize slideshows
+    initializeSlideshows();
+    
+    if (window.categoryData && window.categoryData.length > 0) {
+        createLearningAreasAccordion();
+    }
+
+
+    console.log("Approvideo Learning Hub initialized with hash navigation support");
+});
+
+
+
+
+     
+    </script>
+    
+</body>
+</html>

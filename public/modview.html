@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Modules Review Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ... (Keep all previous CSS from the last good version) ... */
+        :root {
+            --primary-color: #007bff;
+            --primary-darker: #0056b3;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --menu-transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        h1 {
+            color: var(--dark-gray);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        /* Area Styles */
+        .area-section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--medium-gray); }
+        .area-section:last-child { border-bottom: none; }
+        .area-header {
+            font-size: 2.2em; color: var(--primary-darker); margin-bottom: 25px; display: flex;
+            align-items: center; border-left: 5px solid var(--primary-color); padding-left: 15px;
+        }
+        .area-header i { margin-right: 15px; width: 35px; text-align: center; }
+
+        /* Subcategory Styles */
+        .subcategory-card {
+            background-color: #fdfdfd; border: 1px solid var(--medium-gray); border-radius: 8px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .subcategory-card h3 { font-size: 1.6em; color: #2c3e50; margin-top: 0; margin-bottom: 15px; }
+
+        /* Accordion Styles */
+        .accordion-item { margin-bottom: 10px; border-top: 1px solid #eee; padding-top:10px;}
+        .accordion-item:first-child {border-top:none; padding-top:0px;}
+        .accordion-button {
+            background-color: #f7f7f7; color: #444; cursor: pointer; padding: 12px 18px;
+            width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em;
+            transition: background-color 0.3s ease; border-radius: 4px; margin-bottom: 5px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+        }
+        .accordion-button:hover, .accordion-button.active { background-color: #e9e9e9; }
+        .accordion-button::after {
+            font-family: "Font Awesome 5 Free"; font-weight: 900; content: '\f078'; /* fa-chevron-down */
+            font-size: 0.9em; transition: transform 0.3s ease;
+        }
+        .accordion-button.active::after { transform: rotate(-180deg); /* fa-chevron-up */ }
+        .accordion-content {
+            padding: 0 18px; background-color: white; max-height: 0;
+            overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border-bottom: 1px solid #eee; margin-bottom:5px;
+        }
+        .accordion-content.open { padding: 15px 18px; }
+        .accordion-content ul { padding-left: 20px; margin-top: 5px; }
+        .accordion-content p { margin-top: 5px; }
+
+
+        /* Tags Styles */
+        .tags-container { margin-top: 15px; margin-bottom: 20px; }
+        .tag {
+            display: inline-block; background-color: var(--primary-color); color: white; padding: 6px 12px;
+            margin-right: 6px; margin-bottom: 6px; border-radius: 15px; font-size: 0.85em; font-weight: 500;
+        }
+
+        /* Videos Section Styles */
+        .videos-section-header {
+            font-size: 1.3em; color: var(--dark-gray); margin-top: 25px; margin-bottom: 15px;
+            border-top: 1px dashed #ced4da; padding-top: 20px; font-weight: bold;
+        }
+        .video-entry {
+            display: flex; align-items: flex-start; margin-bottom: 20px; padding: 15px;
+            background-color: var(--card-bg); border: 1px solid #f1f1f1; border-left-width: 4px;
+            border-radius: 6px; transition: box-shadow 0.3s ease;
+        }
+        .video-entry:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .video-icon { font-size: 1.8em; margin-right: 20px; min-width: 35px; text-align: center; padding-top: 5px; }
+        .video-details { flex-grow: 1; }
+        .video-details a {
+            font-size: 1.15em; font-weight: 600; color: var(--primary-darker); text-decoration: none;
+            display: block; margin-bottom: 5px;
+        }
+        .video-details a:hover { text-decoration: underline; color: #003d80; }
+        .video-details p { font-size: 0.95em; color: #6c757d; margin-top: 0; margin-bottom: 0; }
+        
+        /* --- Floating Search Menu Styles --- */
+        .floating-search-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 320px; /* Slightly wider for icons */
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: width var(--menu-transition-speed) ease, height var(--menu-transition-speed) ease, padding var(--menu-transition-speed) ease;
+            overflow: hidden; /* Important for collapse animation */
+        }
+
+        .search-menu-header-bar { /* This is the thin, always visible bar */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--medium-gray);
+            transition: border-bottom var(--menu-transition-speed) ease;
+        }
+        .eaf-brand {
+            font-weight: bold;
+            color: var(--primary-darker);
+            font-size: 1.1em;
+        }
+        .header-controls-right {
+            display: flex;
+            align-items: center;
+        }
+        #toggleSearchDisplayBtn {
+            background: none;
+            border: none;
+            font-size: 1.3em; /* Make toggle icon larger */
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 8px; /* Space from area icons */
+            line-height: 1; /* Ensure icon is centered */
+        }
+        #toggleSearchDisplayBtn:hover {
+            color: var(--primary-darker);
+        }
+
+        .area-nav-icons { /* Common style for both area icon containers */
+            display: flex;
+            gap: 8px; /* Space between icons */
+        }
+        .area-nav-icons.minimized-view { /* Specific to header bar when menu is minimized */
+            /* Styles for icons in the minimized header bar */
+        }
+        .area-nav-icons.expanded-view { /* Specific to expanded content area */
+            padding: 10px 15px 5px; /* Above "Search Content" title */
+            border-bottom: 1px dashed var(--medium-gray);
+            margin-bottom: 10px;
+            justify-content: center; /* Center icons in expanded view */
+        }
+        .area-nav-icons .nav-area-icon {
+            font-size: 1.3em; /* Size for icons in expanded view */
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 5px;
+        }
+        .area-nav-icons.minimized-view .nav-area-icon {
+            font-size: 1.1em; /* Slightly smaller for header bar */
+            color: #555;
+        }
+        .area-nav-icons .nav-area-icon:hover {
+            color: var(--primary-darker);
+        }
+
+
+        .search-main-content { /* This part expands/collapses */
+            padding: 0px 15px 15px; /* No top padding, expanded-view icons give it */
+            max-height: 500px; /* Default max height for content */
+            opacity: 1;
+            visibility: visible;
+            transition: max-height var(--menu-transition-speed) ease-in-out, opacity var(--menu-transition-speed) ease-in-out, visibility var(--menu-transition-speed) ease-in-out, padding var(--menu-transition-speed) ease-in-out;
+        }
+        .floating-search-menu.minimized .search-main-content {
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .floating-search-menu.minimized .search-menu-header-bar {
+             border-bottom: none; /* No border when collapsed to just the bar */
+        }
+        .floating-search-menu.minimized .area-nav-icons.expanded-view {
+            display: none; /* Hide expanded view icons when minimized */
+        }
+         .floating-search-menu:not(.minimized) .area-nav-icons.minimized-view {
+            display: none; /* Hide minimized view icons when expanded */
+        }
+
+
+        #searchContentTitle { /* Added ID for H4 */
+             margin-top: 0; margin-bottom: 10px; color: var(--dark-gray); font-size: 1.1em;
+        }
+        #searchInput {
+            width: calc(100% - 22px); /* Account for padding */
+            padding: 10px; border: 1px solid var(--medium-gray);
+            border-radius: 4px; margin-bottom: 10px; font-size: 1em;
+        }
+        #searchResults { max-height: 250px; overflow-y: auto; } /* Adjusted height */
+        .suggestion-item {
+            padding: 10px; cursor: pointer; border-bottom: 1px solid var(--medium-gray);
+            display: flex; align-items: center; font-size: 0.9em;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background-color: var(--light-gray); }
+        .suggestion-item i { margin-right: 10px; width: 20px; text-align: center;} /* Common icon style */
+        .suggestion-item .module-icon { color: #28a745; }
+        .suggestion-item .video-icon-search { color: #dc3545; }
+        .suggestion-category-label {
+            font-weight: bold; color: #555; padding: 8px 0px 5px 0px; font-size: 0.8em;
+            text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 5px;
+        }
+
+        .error-message {
+            color: #dc3545; font-weight: bold; padding: 15px; background-color: #f8d7da;
+            border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="floating-search-menu" id="floatingSearchMenu">
+        <div class="search-menu-header-bar">
+            <span class="eaf-brand">EAF</span>
+            <div class="header-controls-right">
+                <div id="areaNavIconsMinimized" class="area-nav-icons minimized-view">
+                    </div>
+                <button id="toggleSearchDisplayBtn" title="Collapse Search"><i class="fas fa-chevron-up"></i></button>
+            </div>
+        </div>
+
+        <div class="search-main-content" id="searchMainContent">
+            <div id="areaNavIconsExpanded" class="area-nav-icons expanded-view">
+                </div>
+            <h4 id="searchContentTitle">Search Content</h4>
+            <input type="text" id="searchInput" placeholder="Search videos & modules...">
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+    <div class="container" id="modulesContainer">
+        <h1>Learning Modules Review Portal</h1>
+    </div>
+
+    <script>
+        let searchableItems = [];
+        let categoryAreas = []; // To store area info for nav icons
+
+        function debounce(func, delay) { /* ... (debounce function from before) ... */ 
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+        function createAccordionItem(title, contentHtml, parentElement, defaultOpen = false) { /* ... (accordion function from before) ... */ 
+            if (!contentHtml || (Array.isArray(contentHtml) && contentHtml.length === 0) || (typeof contentHtml === 'string' && contentHtml.trim() === '')) {
+                return; 
+            }
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'accordion-item';
+            const button = document.createElement('button');
+            button.className = 'accordion-button';
+            button.textContent = title;
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'accordion-content';
+            if (Array.isArray(contentHtml)) {
+                const ul = document.createElement('ul');
+                contentHtml.forEach(itemText => {
+                    const li = document.createElement('li');
+                    li.textContent = itemText;
+                    ul.appendChild(li);
+                });
+                contentDiv.appendChild(ul);
+            } else {
+                contentDiv.innerHTML = `<p>${contentHtml}</p>`;
+            }
+            itemDiv.appendChild(button);
+            itemDiv.appendChild(contentDiv);
+            parentElement.appendChild(itemDiv);
+            if (defaultOpen) {
+                button.classList.add('active');
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
+                contentDiv.classList.add('open');
+            }
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                    content.style.maxHeight = null;
+                    content.classList.remove('open');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.classList.add('open');
+                }
+            });
+        }
+
+        function populateAreaNavIcons(areaData) {
+            const expandedNavContainer = document.getElementById('areaNavIconsExpanded');
+            const minimizedNavContainer = document.getElementById('areaNavIconsMinimized');
+            expandedNavContainer.innerHTML = ''; // Clear previous
+            minimizedNavContainer.innerHTML = ''; // Clear previous
+
+            areaData.forEach(area => {
+                const iconClass = area.icon || 'fa-folder-open';
+                const areaTargetId = `area-${area.area.replace(/\s+/g, '-').toLowerCase()}`;
+
+                // Create icon for expanded view
+                const iconExp = document.createElement('i');
+                iconExp.className = `fas ${iconClass} nav-area-icon`;
+                iconExp.title = `Go to ${area.area}`;
+                iconExp.onclick = () => {
+                    document.getElementById(areaTargetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                };
+                expandedNavContainer.appendChild(iconExp);
+
+                // Create icon for minimized view
+                const iconMin = document.createElement('i');
+                iconMin.className = `fas ${iconClass} nav-area-icon`;
+                iconMin.title = `Go to ${area.area}`;
+                iconMin.onclick = () => {
+                    document.getElementById(areaTargetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Optionally, if menu is minimized, expand it after scroll, or keep it minimized
+                };
+                minimizedNavContainer.appendChild(iconMin);
+            });
+        }
+
+
+        async function loadLearningModules() {
+            const container = document.getElementById('modulesContainer');
+            searchableItems = []; 
+            categoryAreas = []; // Reset area data
+
+            try {
+                const response = await fetch('learning_modules-catsubcat-tags-featured.json');
+                if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}.`); }
+                const categoryData = await response.json();
+                if (!categoryData || !Array.isArray(categoryData) || categoryData.length === 0) { /* Handle no data */ return; }
+
+                categoryData.forEach(area => {
+                    const areaId = `area-${area.area.replace(/\s+/g, '-').toLowerCase()}`;
+                    categoryAreas.push({ name: area.area, id: areaId, icon: area.icon }); // Store for nav icons
+
+                    const areaSection = document.createElement('section');
+                    areaSection.className = 'area-section';
+                    areaSection.id = areaId; // ID for scrolling
+
+                    const areaHeader = document.createElement('h2');
+                    areaHeader.className = 'area-header';
+                    const areaIcon = document.createElement('i');
+                    areaIcon.className = `fas ${area.icon || 'fa-folder'}`;
+                    areaHeader.appendChild(areaIcon);
+                    areaHeader.appendChild(document.createTextNode(` ${area.area || 'Unnamed Area'}`));
+                    areaSection.appendChild(areaHeader);
+
+                    if (area.subcategories && area.subcategories.length > 0) {
+                        area.subcategories.forEach((subcategory, subcatIndex) => {
+                            // ... (Subcategory and video rendering, including accordion and searchableItems.push - same as before)
+                            const subcategoryId = `subcategory-${subcategory.uniqueId || area.area.replace(/\s+/g, '-') + '-' + subcatIndex}`;
+                            const subcategoryCard = document.createElement('div');
+                            subcategoryCard.className = 'subcategory-card';
+                            subcategoryCard.id = subcategoryId;
+
+                            const subcategoryTitleEl = document.createElement('h3');
+                            subcategoryTitleEl.textContent = subcategory.title || 'Untitled Subcategory';
+                            subcategoryCard.appendChild(subcategoryTitleEl);
+
+                            searchableItems.push({
+                                id: subcategoryId,
+                                title: subcategory.title,
+                                type: 'module',
+                                icon: area.icon || 'fa-cube'
+                            });
+                            
+                            createAccordionItem('Description', subcategory.description, subcategoryCard);
+                            createAccordionItem('Context', subcategory.context, subcategoryCard);
+                            createAccordionItem('Materials', subcategory.materials, subcategoryCard);
+                            createAccordionItem('Process Steps', subcategory.processSteps, subcategoryCard);
+                            
+                            if (subcategory.tags && subcategory.tags.length > 0) {
+                                const tagsContainer = document.createElement('div');
+                                tagsContainer.className = 'tags-container';
+                                subcategory.tags.forEach(tagText => {
+                                    const tagElement = document.createElement('span');
+                                    tagElement.className = 'tag';
+                                    tagElement.textContent = tagText;
+                                    tagsContainer.appendChild(tagElement);
+                                });
+                                subcategoryCard.appendChild(tagsContainer);
+                            }
+
+                            if (subcategory.videos && subcategory.videos.length > 0) {
+                                const videosHeader = document.createElement('h4');
+                                videosHeader.className = 'videos-section-header';
+                                videosHeader.textContent = 'Relevant Videos:';
+                                subcategoryCard.appendChild(videosHeader);
+
+                                subcategory.videos.forEach((video, videoIndex) => {
+                                    const videoId = `video-${subcategory.uniqueId || subcatIndex}-${videoIndex}`;
+                                    const videoEntry = document.createElement('div');
+                                    videoEntry.className = 'video-entry';
+                                    videoEntry.id = videoId;
+                                    
+                                    const videoIconColor = video.color_tag || 'var(--primary-color)';
+                                    videoEntry.style.borderLeftColor = videoIconColor;
+
+                                    const videoIconContainer = document.createElement('div');
+                                    videoIconContainer.className = 'video-icon';
+                                    const iconElement = document.createElement('i');
+                                    iconElement.className = video.icon_tag_fa || 'fas fa-play-circle';
+                                    iconElement.style.color = videoIconColor;
+                                    videoIconContainer.appendChild(iconElement);
+                                    videoEntry.appendChild(videoIconContainer);
+
+                                    const videoDetails = document.createElement('div');
+                                    videoDetails.className = 'video-details';
+
+                                    const videoLink = document.createElement('a');
+                                    videoLink.href = `https://www.youtube.com/watch?v=_odf0yOL6Kk2{video.youtubeId}`; // Ensure unique URL if this means anything
+                                    videoLink.textContent = video.title || 'Untitled Video';
+                                    videoLink.target = '_blank';
+                                    videoLink.rel = 'noopener noreferrer';
+                                    videoDetails.appendChild(videoLink);
+
+                                    if (video.description) {
+                                        const videoDesc = document.createElement('p');
+                                        videoDesc.textContent = video.description;
+                                        videoDetails.appendChild(videoDesc);
+                                    }
+                                    videoEntry.appendChild(videoDetails);
+                                    subcategoryCard.appendChild(videoEntry);
+
+                                    searchableItems.push({
+                                        id: videoId,
+                                        title: video.title,
+                                        description: video.description,
+                                        type: 'video',
+                                        icon: video.icon_tag_fa || 'fa-play-circle'
+                                    });
+                                });
+                            }
+                            areaSection.appendChild(subcategoryCard);
+                        });
+                    }
+                    container.appendChild(areaSection);
+                });
+                populateAreaNavIcons(categoryAreas); // Populate nav icons after data is processed
+
+            } catch (error) { /* ... (error handling - same as before) ... */ 
+                console.error('Error loading or processing learning modules:', error);
+                const errorElement = document.createElement('p');
+                errorElement.className = 'error-message';
+                errorElement.textContent = `Error: ${error.message}. Please check the console for more details.`;
+                while (container.children.length > 1) { container.removeChild(container.lastChild); }
+                container.appendChild(errorElement);
+            }
+        }
+
+        function handleSearch() { /* ... (handleSearch function from before, ensure it targets correct searchResults ID) ... */ 
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+
+            if (searchTerm.length < 2) { return; }
+
+            const filteredModules = searchableItems.filter(item =>
+                item.type === 'module' && item.title.toLowerCase().includes(searchTerm)
+            );
+            const filteredVideos = searchableItems.filter(item =>
+                item.type === 'video' &&
+                (item.title.toLowerCase().includes(searchTerm) || (item.description && item.description.toLowerCase().includes(searchTerm)))
+            );
+
+            if (filteredModules.length > 0) {
+                const moduleLabel = document.createElement('div');
+                moduleLabel.className = 'suggestion-category-label';
+                moduleLabel.textContent = 'Learning Modules';
+                resultsContainer.appendChild(moduleLabel);
+                filteredModules.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerHTML = `<i class="fas ${item.icon} module-icon"></i> <span>${item.title}</span>`;
+                    div.onclick = () => {
+                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        resultsContainer.innerHTML = ''; 
+                        document.getElementById('searchInput').value = '';
+                         // Optionally collapse search menu after selection
+                        // document.getElementById('floatingSearchMenu').classList.add('minimized');
+                        // updateToggleSearchButton(true);
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            }
+            if (filteredVideos.length > 0) {
+                 const videoLabel = document.createElement('div');
+                videoLabel.className = 'suggestion-category-label';
+                videoLabel.textContent = 'Videos';
+                resultsContainer.appendChild(videoLabel);
+                filteredVideos.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    let displayTitle = item.title;
+                    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    displayTitle = displayTitle.replace(regex, '<mark>$1</mark>');
+                    div.innerHTML = `<i class="fas ${item.icon} video-icon-search"></i> <span title="${item.description || ''}">${displayTitle}</span>`;
+                    div.onclick = () => {
+                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        resultsContainer.innerHTML = '';
+                        document.getElementById('searchInput').value = '';
+                        // Optionally collapse
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            }
+            if (filteredModules.length === 0 && filteredVideos.length === 0) {
+                resultsContainer.innerHTML = '<div class="suggestion-item" style="justify-content:center; cursor:default;">No results found.</div>';
+            }
+        }
+
+        function updateToggleSearchButton(isMinimized) {
+            const toggleButton = document.getElementById('toggleSearchDisplayBtn');
+            const icon = toggleButton.querySelector('i');
+            if (isMinimized) {
+                icon.className = 'fas fa-search'; // Show search icon to expand
+                toggleButton.title = 'Open Search';
+            } else {
+                icon.className = 'fas fa-chevron-up'; // Show chevron-up to collapse
+                toggleButton.title = 'Collapse Search';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLearningModules();
+            
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+
+            const toggleSearchBtn = document.getElementById('toggleSearchDisplayBtn');
+            const floatingMenu = document.getElementById('floatingSearchMenu');
+
+            // Set initial state based on class (e.g. if you want it minimized by default)
+            // floatingMenu.classList.add('minimized'); 
+            updateToggleSearchButton(floatingMenu.classList.contains('minimized'));
+
+
+            toggleSearchBtn.addEventListener('click', () => {
+                const isMinimized = floatingMenu.classList.toggle('minimized');
+                updateToggleSearchButton(isMinimized);
+                if (!isMinimized) { // If just expanded, focus search input
+                    document.getElementById('searchInput').focus();
+                } else { // If just minimized, clear search results
+                     document.getElementById('searchResults').innerHTML = '';
+                     document.getElementById('searchInput').value = '';
+                }
+            });
+            
+            // Initial state for toggle button based on if 'minimized' class is present
+             updateToggleSearchButton(floatingMenu.classList.contains('minimized'));
+             // Ensure correct icons are shown based on initial state
+             if (floatingMenu.classList.contains('minimized')) {
+                 document.querySelector('.area-nav-icons.expanded-view').style.display = 'none';
+             } else {
+                 document.querySelector('.area-nav-icons.minimized-view').style.display = 'none';
+             }
+        });
+    </script>
+</body>
+</html>

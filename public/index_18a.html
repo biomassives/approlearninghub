@@ -6,69 +6,287 @@
     <title>Approvideo Learning Hub</title>
     <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/feather-icons"></script>
-    <link href="index_18b.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script> <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8; /* Light gray background */
+            color: #222;
+            margin: 0 0 150px 0; /* Bottom margin for sticky panel */
+        }
 
-    <style>
-            .floating-search-menu { display:block; }
-    </style>
+        /* --- Header --- */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Make header sticky */
+            top: 0;
+            z-index: 50; /* Ensure header is above content but below modal/panels */
+        }
+        .site-header .logo {
+            font-size: 2rem; margin-right: 1rem; color: #54B948; /* Green */
+        }
+        .site-header h1 { font-size: 1.5rem; margin: 0; }
+        .site-header h1 .green { color: #54B948; }
+        .site-header h1 .blue { color: #1E88E5; }
 
-</head>
-<body class="bg-gray-100"> 
+        /* --- Homepage Module Grid --- */
 
 
-    <header class="site-header">
-        <div class="site-header-left">
-            <div class="logo">🌱</div>
-            <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
-        </div>
-        <div class="site-header-right">
-            <div id="areaNavIconsMinimized" class="area-nav-icons minimized">
-            </div>
-            <button id="openSearchHeaderButton" title="Open Search">
-                <i class="fas fa-search"></i>
-            </button>
 
-        </div>
-    </header>
+       #modules-grid-container { /* Renamed container */
+            padding: 2rem 1rem; /* Add padding */
+        }
+        .modules-grid {
+            margin: 0 auto; /* Centered */
+            /* max-width: 900px; */ /* Original value - this might be too narrow for 6 modules */
+            max-width: 1400px;  /* Increased max-width to better accommodate 6 modules in a row. Adjust as needed. */
+                                /* Alternatively, you could use '100%' if you want it to fill its parent container's width */
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* This creates 6 equal-width columns */
+            gap: 1.5rem;
+        }
+        .module {
+            cursor: pointer; display: flex; align-items: center;
+            padding: 1.25rem 1.5rem; border-radius: 12px; border: 1px dashed;
+            font-size: 1.1rem; /* Slightly smaller */ font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative; overflow: hidden;
+            background-color: #2D3748; /* Dark background */ 
+            color: #1E88E5;
+            background-color: #fff; /* Dark background */ color: white;
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .module::before { /* Subtle gradient overlay */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            z-index: 1; opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover::before { opacity: 0; }
+
+        .module .icon { width: 38px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-right: 1rem; z-index: 2; }
+
+
+
+
+        .module:hover .icon svg { transform: scale(1.1); stroke: #fff; }
+        .module:hover h2 { color: #fff; }
+        /* Module Colors */
+        .module.shelter { border-color: #1E88E5;} 
+        .module.shelter:hover { background-color: #36B9CC; }
+        .module.shelter svg { color: #36B9CC; } 
+        .module.water { border-color: #1E88E5;} 
+        .module.water:hover { background-color: #1E88E5; }
+        .module.waste { border-color: #1E88E5;} 
+        .module.waste:hover { background-color: #7CB342; }
+        .module.energy { border-color: #1E88E5;} 
+        .module.energy:hover { background-color: #FFC107; }
+        .module.health { border-color: #1E88E5;} 
+        .module.health:hover { background-color: #EF5350; }
+        .module.food { border-color: #1E88E5;} 
+        .module.food:hover { background-color: #8BC34A; }
+        .module h2 { margin: 0; transition: color 0.2s ease; position: relative; z-index: 2; color: #1E88E5; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: #1E88E5; }
+
+
+        /* For screens smaller than 768px, make it 2 columns and let them auto-fit */
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Or repeat(2, 1fr) for exactly 2 columns */
+                max-width: 90%; /* Adjust max-width for smaller screens */
+            }
+        }
+        
+        /* Even smaller screens, 1 column */
+        @media (max-width: 480px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Category Content Area (Megamenu Logic Adapted) --- */
+        #category-content-container {
+            display: none; /* Hidden initially */
+            max-width: 1152px; /* max-w-6xl */
+            margin: 1.5rem auto 0 auto; /* mt-6 */
+            padding: 0 1rem; /* px-4 */
+        }
+        #category-content-container.visible { display: block; }
+
+        /* Back Button for Category View */
+        #back-to-modules-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 8px 16px; border-radius: 0.375rem;
+             font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; margin-bottom: 1rem;
+        }
+        #back-to-modules-button:hover { background-color: #4b5563; }
+        #back-to-modules-button svg { width: 1.1rem; height: 1.1rem; margin-right: 0.5rem; }
+
+        /* Category Title Display */
+        #category-title-display {
+            transition: opacity 0.4s ease-out, max-height 0.4s ease-out;
+            overflow: hidden; max-height: 0; opacity: 0;
+            text-align: center; font-size: 1.75rem; /* Increased size */ font-weight: 600; letter-spacing: 0.05em; color: #374151; text-transform: uppercase;
+            margin-bottom: 1rem; /* Added margin */
+        }
+        #category-title-display.visible { max-height: 100px; opacity: 1; }
+
+        /* Megamenu Content Container (holds columns/details) */
+        #megamenu-content {
+             background-color: #ffffff; border-radius: 0.5rem; /* rounded-lg */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+             padding: 1.5rem; /* p-6 */
+             /* No transitions needed here as parent controls visibility */
+        }
+
+        /* Glossary Panel */
+        #glossary-panel {
+             transition: opacity 0.4s ease-out, max-height 0.4s ease-out, padding 0.4s ease-out, margin-bottom 0.4s ease-out, visibility 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; visibility: hidden;
+             background-color: #4b5563; /* gray-600 */ color: #f3f4f6; /* gray-100 */ border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+             padding: 1rem; margin-top: 1rem; position: relative; z-index: 20;
+        }
+        #glossary-panel.visible { max-height: 300px; opacity: 1; padding-top: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; visibility: visible; }
+        .glossary-close-button {
+             position: absolute; top: 0.5rem; right: 0.75rem; background: rgba(255, 255, 255, 0.1); color: #e5e7eb;
+             border: none; border-radius: 9999px; width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
+             transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .glossary-close-button:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+
+        /* Columns & Details Area */
+        #megamenu-columns { transition: opacity 0.4s ease-out, max-height 0.5s ease-out; overflow: hidden; max-height: 2000px; opacity: 1; }
+        #megamenu-columns.columns-hidden { max-height: 0; opacity: 0; }
+        #megamenu-details-area {
+             transition: opacity 0.4s ease-out 0.1s, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out, visibility 0.4s ease-out, border-top-width 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; visibility: hidden; border-top-width: 0;
+             border-color: #e5e7eb; /* gray-200 */
+        }
+        #megamenu-details-area.visible { max-height: 3500px; /* Increased */ opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; visibility: visible; border-top-width: 1px; }
+
+        /* Tag pills */
+        .tag-pill-button {
+             display: inline-block; background-color: #4b5563; color: white; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+             margin-right: 4px; margin-bottom: 4px; line-height: 1.2; cursor: pointer; border: none; transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .tag-pill-button:hover { background-color: #374151; transform: translateY(-1px); }
+        .tag-pill-button.active { background-color: #3b82f6; /* blue-600 */ font-weight: 600; }
+
+        /* Subcategory toggle */
+        .subcategory-toggle { transition: color 0.2s ease-in-out; }
+        .subcategory-toggle.active { font-weight: 600; color: #2563eb; /* blue-600 */ }
+
+        /* Details Back Button */
+        .details-back-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 6px 16px; border-radius: 0.375rem;
+             font-size: 0.875rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none;
+        }
+        .details-back-button:hover { background-color: #4b5563; }
+
+        /* Sibling Subcategory Link Styles */
+        .sibling-links-container { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; line-height: 1.5; }
+        .sibling-links-container > span { font-size: 0.9rem; font-weight: 500; color: #6b7280; margin-right: 8px; }
+        .sibling-link-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 9999px; margin: 3px 4px; font-weight: 600; color: white; background-color: #4f46e5; /* Indigo */
+            text-decoration: none; font-size: 0.8rem; transition: background-color 0.2s, transform 0.1s; cursor: pointer; border: none;
+        }
+        .sibling-link-pill:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .sibling-link-pill.current { background-color: #a5b4fc; color: #3730a3; cursor: default; pointer-events: none; }
+
+        /* Video Linker Styles */
+        .video-linker-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed #e5e7eb; }
+        .video-linker { display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 8px; text-decoration: none; color: white; font-size: 30px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 1px 1px 4px rgba(0,0,0,0.15); overflow: hidden; cursor: pointer; flex-shrink: 0; }
+        .video-linker:hover { transform: scale(1.05); box-shadow: 3px 3px 7px rgba(0,0,0,0.25); }
+        .video-linker.no-icon { font-size: 9px; line-height: 1.1; padding: 5px; text-align: center; word-wrap: break-word; color: #333; background-color: #e5e7eb !important; }
+
+        /* Shared Info Panel Styles */
+        #video-info-panel { display: none; flex-direction: column; background-color: #343a40; color: #f8f9fa; border-top: 3px solid #007bff; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); transition: opacity 0.3s ease; opacity: 0; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+        #video-info-panel.visible { display: flex; opacity: 1; }
+        .local-video-row { display: none; align-items: center; background-color: #fef9c3; padding: 8px 15px; border-bottom: 1px solid #fde68a; }
+        .local-video-row.visible { display: flex; }
+        .local-video-link { display: flex; align-items: center; text-decoration: none; gap: 10px; width: 100%; }
+        .local-video-link:hover .local-video-text { text-decoration: underline; }
+        .local-video-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fcd34d; flex-shrink: 0; background-color: #fefce8; }
+        .local-video-text { font-size: 0.8rem; color: #713f12; font-weight: 500; transition: text-decoration 0.2s; }
+        .local-video-text span { font-family: monospace; font-weight: 600; }
+        .youtube-info-row { display: flex; align-items: flex-start; padding: 10px 15px; }
+        #video-info-panel .info-icon { font-size: 36px; color: #FF0000; margin-right: 15px; flex-shrink: 0; padding-top: 3px; }
+        #video-info-panel .info-text { display: flex; flex-direction: column; gap: 3px; overflow: hidden; flex-grow: 1; }
+        #video-info-panel .info-url, #video-info-panel .info-title, #video-info-panel .info-description { margin: 0; line-height: 1.4; white-space: normal; word-break: break-word; }
+        #video-info-panel .info-url { font-size: 0.75em; color: #adb5bd; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #video-info-panel .info-title { font-size: 1em; font-weight: bold; color: #ffffff; }
+        #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
+        #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+
+   /* Slideshow Container */
+    .slideshow-container {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+    }
     
-    <div class="floating-search-menu" id="floatingSearchMenu">
-        <div class="search-menu-header-bar">
-            <span class="eaf-brand">EAF</span> <div class="header-controls-right">
-                <button id="toggleSearchDisplayBtn" title="Collapse/Expand Search">
-                    <i class="fas fa-chevron-up"></i>
-                </button>
-            </div>
-        </div>
-        <div class="search-main-content" id="searchMainContent">
-            <div id="areaNavIconsExpanded" class="hidden area-nav-icons expanded-view">
-                </div>
-            <h4 id="searchContentTitle">Search Content</h4>
-            <input type="text" id="searchInput" placeholder="Search videos & modules...">
-            <div id="searchResults"></div>
-        </div>
-    </div>
-
-
-
-
-
-
-    <div id="modules-grid-container">
-
-
-
-        <main class="modules-grid">
-        </main>
+    /* Slides */
+    .slideshow-slide {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .slideshow-slide.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    /* Navigation Arrows */
+    .slideshow-prev, .slideshow-next {
+        opacity: 0.7;
+        transition: opacity 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-prev:hover, .slideshow-next:hover {
+        opacity: 1;
+    }
+    
+    .slideshow-prev:active, .slideshow-next:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    
+    /* Dots */
+    .slideshow-dot {
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    .slideshow-dot.active {
+        background-color: white;
+        transform: scale(1.2);
+    }
+    
+    /* Dark mode adjustments */
+    .dark .slideshow-container {
+        background-color: #1f2937;
+    }
+    
+    .dark .featured-slideshow h2 {
+        color: #f3f4f6;
+    }
+        
+    </style>
+</head>
+<body class="bg-gray-100"> <header class="site-header">
+        <div class="logo">🌱</div>
+        <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+        </header>
 
         <nav id="subcategory-navigation-bar" class="bg-gray-200 p-4 mb-6 shadow-md">
             <h3 class="text-xl font-semibold text-gray-700 mb-3 text-center">Quick Navigation</h3>
             <div id="subcategory-pills-container" class="flex flex-wrap justify-center gap-3">
                 </div>
         </nav>
-        <div id="subcategory-preview"></div>
 
 
+    <div id="modules-grid-container">
+        <main class="modules-grid">
+            </main>
 
 <div id="featured-content-container" class="mt-6 mx-auto max-w-6xl px-4">
     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Featured Content</h2>
@@ -344,11 +562,8 @@
         <button id="back-to-modules-button">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path> </svg>
              Back to Modules
-            </button>
-
-           
-
-            <div id="category-title-display"></div>
+        </button>
+        <div id="category-title-display"></div>
         <div id="glossary-panel">
             <p class="text-center text-gray-400">Click a tag to see its definition.</p>
         </div>
@@ -377,128 +592,310 @@
         </div>
     </div>
 
-
-
-    <div id="termsModal" class="modal-overlay">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
-            <button class="modal-close-button" aria-label="Close modal">&times;</button>
-            <h2 class="modal-title" id="termsModalTitle">Terms of Service</h2>
-            <div class="modal-content">
-                <p><strong>IMPORTANT: This is placeholder text and NOT legal advice. You MUST consult with a legal professional to draft appropriate and legally binding Terms of Service for your specific platform and jurisdiction.</strong></p>
-                <p>Welcome to Approvideo Learning Hub! These terms and conditions outline the rules and regulations for the use of Approvideo Learning Hub's Website, accessible from [Your Website URL Here].</p>
-                <p>By accessing this website, we assume you accept these terms and conditions in full. Do not continue to use Approvideo Learning Hub if you do not accept all of the terms and conditions stated on this page.</p>
-                
-                <h3>1. Definitions</h3>
-                <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves.</p>
-    
-                <h3>2. License</h3>
-                <p>Unless otherwise stated, Approvideo Learning Hub and/or its licensors own the intellectual property rights for all material on Approvideo Learning Hub. All intellectual property rights are reserved. You may access this from Approvideo Learning Hub for your own personal use subjected to restrictions set in these terms and conditions.</p>
-                <p>You are free to:</p>
-                <ul>
-                    <li>Republish material from Approvideo Learning Hub</li>
-                    <li>Sell, rent or sub-license material from Approvideo Learning Hub</li>
-                    <li>Reproduce, duplicate or copy material from Approvideo Learning Hub</li>
-                    <li>Redistribute content from Approvideo Learning Hub</li>
-                </ul>
-    
-                <h3>3. User Content</h3>
-                <p>In these Website Standard Terms and Conditions, “Your Content” shall mean any audio, video text, images or other material you choose to display on this Website. By displaying Your Content, you grant Approvideo Learning Hub a non-exclusive, worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.</p>
-                <p>Your Content must be your own and must not be invading any third-party’s rights. Approvideo Learning Hub reserves the right to remove any of Your Content from this Website at any time without notice.</p>
-                
-                <h3>4. Disclaimer</h3>
-                <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
-                <p><strong>Again, this is template text. Please seek professional legal counsel.</strong></p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="conditionsModal" class="modal-overlay">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="conditionsModalTitle">
-            <button class="modal-close-button" aria-label="Close modal">&times;</button>
-            <h2 class="modal-title" id="conditionsModalTitle">Conditions of Use</h2>
-            <div class="modal-content">
-                <p><strong>IMPORTANT: This is placeholder text. Consult a legal professional. "Conditions" are often integrated within "Terms of Service" or might refer to specific conditions for using certain features, community guidelines, etc.</strong></p>
-                <p>Please read these Conditions of Use carefully. By using Approvideo Learning Hub, you signify your agreement to these Conditions.</p>
-                <h3>1. Community Guidelines</h3>
-                <p>Users are expected to interact respectfully and constructively. Harassment, spam, or anmy harmful content is strictly prohibited.</p>
-                <h3>2. Content Accuracy</h3>
-                <p>While we strive for accuracy, content on Approvideo Learning Hub is provided for educational and informational purposes. We do not guarantee the completeness or accuracy of any information presented.</p>
-                <p><strong>Please tailor these to your platform's specific operational conditions and user interactions.</strong></p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="privacyModal" class="modal-overlay">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
-            <button class="modal-close-button" aria-label="Close modal">&times;</button>
-            <h2 class="modal-title" id="privacyModalTitle">Privacy Policy</h2>
-            <div class="modal-content">
-                <p><strong>IMPORTANT: This is placeholder text and NOT legal advice. Data privacy is critical and regulated (e.g., GDPR, CCPA). You MUST consult with a legal professional to create a compliant Privacy Policy.</strong></p>
-                <p>Your privacy is important to us. It is Approvideo Learning Hub's policy to respect your privacy regarding any information we may collect from you across our website, [Your Website URL Here], and other sites we own and operate.</p>
-                <h3>1. Information We Collect</h3>
-                <p>Log data: When you visit our website, our servers may automatically log the standard data provided by your web browser. It may include your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
-                <p>Personal information: We may ask for personal information, such as your name, email, social media profiles, phone/mobile number, home/mailing address, payment information.</p>
-                <h3>2. Use of Information</h3>
-                <p>We may use a combination of personally identifiable and non-personally identifiable information to understand how our visitors use our website, how we may improve their experience of our website in future, and to communicate with them.</p>
-                <h3>3. Data Security</h3>
-                <p>We take security seriously and take precautions to protect your information.</p>
-                <p><strong>This section needs to be significantly detailed based on your actual data practices.</strong></p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="visionModal" class="modal-overlay">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="visionModalTitle">
-            <button class="modal-close-button" aria-label="Close modal">&times;</button>
-            <h2 class="modal-title" id="visionModalTitle">Our Vision at Approvideo Learning Hub</h2>
-            <div class="modal-content">
-                <p>At Approvideo Learning Hub, we envision a world where accessible, practical knowledge empowers individuals and communities to build resilient, sustainable, and self-sufficient futures.</p>
-                <h3>Our Mission:</h3>
-                <ul>
-                    <li>To curate and create high-quality, easy-to-understand learning modules focused on essential life skills, sustainable practices, and appropriate technologies.</li>
-                    <li>To foster a collaborative platform where knowledge seekers and sharers can connect and grow.</li>
-                    <li>To leverage technology to break down barriers to education, making learning available to anyone, anywhere.</li>
-                    <li>To inspire innovation and resourcefulness, helping people to thrive with what is locally available.</li>
-                </ul>
-                <p>We believe that by sharing knowledge openly and effectively, we can collectively contribute to a more equitable and thriving planet for all.</p>
-                <p><em>(Please refine this starter text to perfectly match your unique vision!)</em></p>
-            </div>
-        </div>
-    </div>
-
-
-
-    <footer class="site-footer-main">
-        <div class="footer-container">
-            <div class="footer-section links-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li> {/* I assume you'll add this if it was missed */}
-                </ul>
-            </div>
-            <div class="footer-section action-section">
-                <h4>Support Us</h4>
-                <p>Help us continue to provide valuable learning resources.</p>
-                <a href="/donate" class="donate-button">Donate Now</a>
-            </div>
-            <div class="footer-section contact-info">
-                <h4>Contact</h4>
-                <p>Approvideo Learning Hub</p>
-                <p><a href="mailto:info@approvideo.com">info@approvideo.com</a></p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; <span id="currentYear">2025</span> Approvideo Learning Hub. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-
-
     <script>
+        // --- Data (categoryData and tagGlossary should be pasted here) ---
+        const categoryData = [
+            { // Start of Shelter Area
+                "area": "Shelter",
+                "icon": "fa-home", // Font Awesome icon used for data, Feather for grid
+                "featherIcon": "home", // Added Feather icon name
+                "subcategories": [
+                    {
+                        "uniqueId": "shelter-0",
+                        "title": "Low-cost, Durable Construction Methods",
+                        "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+                        "tags": ["construction", "low-cost", "durable", "building", "DIY", "resilience", "earthbag", "bamboo", "superadobe", "natural building"],
+                        "context": "Focuses on creating robust shelters that withstand local environmental conditions (weather, pests, minor seismic activity) using affordable, accessible techniques and minimal specialized tools, ensuring longevity with reasonable maintenance.",
+                        "materials": ["Earthbags / Superadobe tubes", "Barbed Wire", "Soil (appropriate mix)", "Bamboo (treated)", "Recycled Tires", "Pallet Wood", "Basic Fasteners", "Natural Plasters/Sealers"],
+                        "processSteps": ["1. Site Assessment & Clearing", "2. Foundation Laying (rubble trench, earthbag, tire)", "3. Wall Construction (stacking, tamping, curing)", "4. Lintels & Openings (doors, windows)", "5. Roofing Structure & Covering", "6. Plastering & Finishing (protection & aesthetics)"],
+                        "videos": [
+          {
+            "title": "Building The Perfect Gabion Retaining Wall (2024)!",
+            "youtubeId": "vHfN4gYFgu8",
+            "description": "Stone in a mesh cage solution for retaining walls, gabion bases and fences",
+            "icon_tag_fa": "fas fa-layer-group",
+            "color_tag": "#78716c",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Aircrete building material explained",
+            "youtubeId": "EDNpgqOwlJM",
+            "description": "..",
+            "tags": "cellular concrete, lightweight concrete, foamcrete, low density concrete",
+            "icon_tag_fa": "fas fa-house-user",
+            "color_tag": "#a16207",
+            "localVideoFilename": "",
+            "authors": "Domegaia",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/@domegaia",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": [""]
+          }
+
+                        ]
+                    },
+                    {
+                        "uniqueId": "shelter-1",
+                        "title": "Locally Available Materials",
+                        "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+                        "tags": ["materials", "local", "sustainability", "earthship", "vernacular architecture", "resourcefulness", "clay", "stone", "salvaged", "bamboo", "natural building"],
+                        "context": "Emphasizes using resources found nearby (soil, stone, timber, bamboo, waste streams) to minimize transport costs, reduce environmental impact, often resulting in structures well-suited to the local climate and culture.",
+                        "materials": ["Local Soil (clay, sand, silt testing)", "Stones/Rocks", "Timber/Bamboo (sustainably harvested)", "Grasses/Straw (for binder/insulation)", "Recycled Materials (bottles, cans, tires)", "Natural Binders (lime, clay slip)"],
+                        "processSteps": ["Site & Resource Mapping", "Material Identification & Field Testing (soil jar test, etc.)", "Sustainable Harvesting Practices", "Material Processing (drying, treating, shaping)", "Construction Integration Techniques", "Assessing Long-term Availability"],
+                        "videos": [
+                            {
+                                "icon_tag_fa": "fas fa-paint-roller", "color_tag": "#a16207", "title": "How to build a wall out of dirt | Rammed Earth ", "youtubeId": "TjyGOOtOFik", "description": "", "localVideoFilename": "shelter_local_clay.mp4",
+                                "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": []
+                            },
+                            {
+                                "icon_tag_fa": "fas fa-tree", "color_tag": "#16a34a", "title": "Bamboo Harvesting and Treatment for Construction", "youtubeId": "9-Ka4YcyOFo", "description": "How to select, harvest, and treat bamboo for long-lasting building materials", "localVideoFilename": "shelter_bamboo_harvest.mp4",
+                                "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": []
+                            },
+                            {
+                                "icon_tag_fa": "fas fa-recycle", "color_tag": "#059669", "title": "Creative Reuse: Building With Glass Bottles", "youtubeId": "M7P8YAIhBkY", "description": "How to incorporate waste glass bottles into walls for beauty and function", "localVideoFilename": "shelter_glass_bottles.mp4",
+                                "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": []
+                            }
+                        ]
+                    },
+		{
+		"uniqueId": "shelter-2",
+		"title": "Rammed Earth Wall Construction",
+		"description": "Create durable, sustainable wall structures using primarily local soil with excellent thermal mass properties and minimal environmental impact.",
+		"tags": ["rammed earth", "natural building", "sustainable construction", "thermal mass", "local materials", "low-cost", "DIY construction", "soil building", "earth construction", "tamping"],
+		"context": "Focuses on creating durable, sustainable wall structures using primarily local soil, with excellent thermal mass properties and minimal environmental impact. Rammed earth walls withstand weather conditions, provide natural temperature regulation, and have minimal maintenance requirements when properly constructed and protected from excessive moisture.",
+		"materials": [
+		   "Local Soil (screened to remove large rocks)",
+		   "Portland Cement (approximately 10% of soil volume)",
+		   "Water (for proper moisture content)",
+		   "3/4-inch Plywood (for formwork, reusable)",
+		   "2×6 and 2×10 Lumber (for wailers)",
+		   "Pipe Clamps and PVC Pipe Spacers",
+		   "Vegetable Oil (as form release agent)",
+		   "Concrete (for footer/foundation)",
+		   "Hand Tampers (8-inch recommended)"
+		 ],
+		 "processSteps": [
+   			"Site Preparation & Foundation - Pour concrete footer as base for wall and ensure proper drainage",
+   			"Formwork Assembly - Grease and assemble plywood panels with wailers and secure with pipe clamps",
+   			"Soil Preparation - Screen soil, mix with 10% Portland cement, add water to proper consistency",
+   			"Layering & Tamping - Add 6-7 inches of soil mixture, level, tamp systematically until compressed",
+ 			"Building Up Layers - Repeat adding and tamping in consistent lifts until desired height",
+   			"Finishing & Protection - Cap top with soil/cement mix, remove formwork the next day, allow to cure"
+ 			],
+		 "videos": [
+  		 {
+     "title": "Rammed Earth Wall Construction at Factotum Farms",
+     "youtubeId": "video_id_here",
+     "description": "Complete guide to building a rammed earth wall in just four hours with community assistance, covering formwork, soil preparation, tamping, and finishing.",
+     "icon_tag_fa": "fas fa-home",
+     "color_tag": "#a16207",
+     "localVideoFilename": "rammed_earth_wall_construction.mp4",
+     "authors": "Factotum Farms",
+     "researchReviewItems": [],
+     "contentCreatorArchive": "",
+     "licence": "Standard YouTube License",
+     "patreon": "",
+     "socials": {},
+     "fundraiser": "",
+     "sponsorPages": [""]
+   		}
+		]
+		}
+                ]
+            },
+            {
+                "area": "Water", "icon": "fa-tint", "featherIcon": "droplet",
+                "subcategories": [
+                     {
+                         "uniqueId": "water-0", "title": "Purification", "description": "Use household items or low-cost filters to make water safe for drinking...", "tags": ["clean water", "filtration", "health", "SODIS", "potable water", "waterborne disease", "DIY filter", "boiling", "disinfection", "resourcefulness", "water testing"],
+                         "context": "Access to safe drinking water is fundamental for health...", "materials": ["Clean Containers...", "Heat Source...", "Clear PET Bottles...", "Cloth...", "Sand...", "Gravel...", "Activated Charcoal...", "Simple Chlorine/Iodine Solution..."], "processSteps": ["Pre-filtration...", "Boiling...", "Solar Disinfection...", "Building Layered Filter...", "Chemical Disinfection...", "Safe Storage..."],
+                         "videos": [
+                            { "icon_tag_fa": "fas fa-filter", "color_tag": "#4b5563", "title": "DIY Water Filter Build (Microbial Safety Focus)", "youtubeId": "31", "description": "Detailed guide (City Prepping)...", "localVideoFilename": "water_diy_filter_safety.mp4", "authors": "City Prepping", "researchReviewItems": [], "contentCreatorArchive": "https://www.youtube.com/@CityPrepping", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-flask-vial", "color_tag": "#ef4444", "title": "Understanding Water Safety & Contamination", "youtubeId": "32", "description": "Explains (TED-Ed) different types...", "localVideoFilename": "water_safety_teded.mp4", "authors": "TED-Ed / Mia Nacamulli", "researchReviewItems": [], "contentCreatorArchive": "https://www.youtube.com/@TEDEd", "licence": "Standard YouTube License", "patreon": "https://www.patreon.com/teded", "socials": {"twitter": "https://twitter.com/TED_ED"}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-flask", "color_tag": "#22c55e", "title": "Simple DIY Water Filter Experiment (Layer Demo)", "youtubeId": "25", "description": "Demonstrates (Hungry SciANNtist)...", "localVideoFilename": "water_filter_experiment.mp4", "authors": "Hungry SciANNtist", "researchReviewItems": [], "contentCreatorArchive": "https://www.youtube.com/@HungrySciANNtist", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     },
+                     {
+                         "uniqueId": "water-1", "title": "Desalination", "description": "Build small-scale systems to turn salty or brackish water into fresh water...", "tags": ["desalination", "salt removal", "ocean", "irrigation", "solar still", "distillation", "potable water", "coastal living", "arid regions", "solar thermal"],
+                         "context": "Provides a vital source of freshwater in coastal or arid regions...", "materials": ["Dark Basin/Container...", "Clear Cover...", "Collection Trough/Channel...", "Freshwater Container...", "Sealant...", "Insulation..."], "processSteps": ["1. Constructing Basin & Cover...", "2. Positioning for Maximum Sun...", "3. Setting up Collection Channel...", "4. Filling Basin...", "5. Monitoring Condensation...", "6. Periodic Cleaning..."],
+                         "videos": [
+                             { "icon_tag_fa": "fas fa-sun", "color_tag": "#f97316", "title": "Build a Simple Solar Still", "youtubeId": "bJ9r8RFp4gE", "description": "Step-by-step construction...", "localVideoFilename": "water_solar_still.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "icon_tag_fa": "fas fa-tint-slash", "color_tag": "#3b82f6", "title": "Improving Solar Still Efficiency", "youtubeId": "d5bjI9jgCxk", "description": "Tips and tricks...", "localVideoFilename": "water_solar_still_efficiency.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     },
+                     {
+                         "uniqueId": "water-2", "title": "Efficient Distribution", "description": "Design and improve gravity-fed or pump-based systems...", "tags": ["pipes", "delivery", "infrastructure", "gravity feed", "water storage", "pump", "conservation", "ram pump", "water pressure", "plumbing"],
+                         "context": "Ensuring collected or purified water reaches points of use reliably...", "materials": ["Piping...", "Fittings...", "Storage Tanks...", "Pump...", "Basic Surveying Tools...", "Sealants/Tape"], "processSteps": ["1. Mapping Source...", "2. System Design...", "3. Trenching & Pipe Laying...", "4. Tank Installation...", "5. Pump Setup...", "6. Testing, Leak Detection..."],
+                         "videos": [
+                              { "icon_tag_fa": "fas fa-chart-line", "color_tag": "#06b6d4", "title": "Setting Up a Gravity Feed Water System", "youtubeId": "9ICi3rFj28M", "description": "How to use elevation...", "localVideoFilename": "water_gravity_feed.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "icon_tag_fa": "fas fa-cogs", "color_tag": "#475569", "title": "Building and Installing a Ram Pump", "youtubeId": "Jl5TodxqQpc", "description": "Construct a pump that works...", "localVideoFilename": "water_ram_pump.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     }
+                ]
+            },
+            {
+                "area": "Waste", "icon": "fa-recycle", "featherIcon": "trash-2",
+                "subcategories": [
+                    {
+                        "uniqueId": "waste-0", "title": "Composting", "description": "Learn how to convert organic waste into nutrient-rich soil...", "tags": ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting", "hot composting", "cold composting", "bokashi", "nutrient cycling"],
+                        "context": "Transforms kitchen scraps and yard waste...", "materials": ["Organic 'Greens'...", "Organic 'Browns'...", "Compost Bin/Container...", "Water Source...", "Turning Tool...", "(Optional: worms...)"], "processSteps": ["1. Choose Method...", "2. Collect & Chop...", "3. Layer Greens & Browns...", "4. Maintain Moisture...", "5. Aerate/Turn...", "6. Harvest & Use..."],
+                        "videos": [
+                            { "icon_tag_fa": "fas fa-seedling", "color_tag": "#84cc16", "title": "Building a Three-Bin Compost System", "youtubeId": "JehP4xlF4gI", "description": "Creating an efficient composting setup...", "localVideoFilename": "waste_3bin_compost.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-worm", "color_tag": "#a16207", "title": "Urban Balcony Composting With Worms", "youtubeId": "5CnSYWX-N6I", "description": "Guide to small-scale vermicomposting...", "localVideoFilename": "waste_vermicompost.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-temperature-high", "color_tag": "#f97316", "title": "Hot Composting Technique for Fast Results", "youtubeId": "HWypVv1dzJQ", "description": "Learn the accelerated composting method...", "localVideoFilename": "waste_hot_compost.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    },
+                    {
+                        "uniqueId": "waste-1", "title": "Recycling Systems", "description": "Set up community or household recycling systems...", "tags": ["recycling", "waste sorting", "materials recovery", "circular economy", "community action", "plastic recycling", "paper recycling", "metal recycling", "glass recycling", "waste management"],
+                        "context": "Organizes the collection and separation...", "materials": ["Designated Bins/Containers...", "Signage/Labels...", "Collection Bags/Carts...", "Basic Cleaning Supplies...", "(Community: Central collection point...)"], "processSteps": ["1. Identify Accepted Materials...", "2. Set Up Sorting Stations...", "3. Rinse/Clean Recyclables...", "4. Store Sorted Materials...", "5. Coordinate Collection/Drop-off...", "6. Educate Participants..."],
+                         "videos": [
+                            { "icon_tag_fa": "fas fa-users", "color_tag": "#6366f1", "title": "Setting Up a Community Recycling Station", "youtubeId": "IsTnQ9U5wN8", "description": "Organizing an effective central collection point...", "localVideoFilename": "waste_community_recycling.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-cogs", "color_tag": "#6b7280", "title": "DIY Plastic Processing for Reuse", "youtubeId": "kUR6_bQLU-E", "description": "Introduction to small-scale methods...", "localVideoFilename": "waste_plastic_processing.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-newspaper", "color_tag": "#a8a29e", "title": "Paper Recycling and Homemade Paper Making", "youtubeId": "Gq7L9-0XdVw", "description": "How to create new paper products...", "localVideoFilename": "waste_paper_recycling.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                    },
+                    {
+                        "uniqueId": "waste-2", "title": "Upcycling", "description": "Transform discarded items into useful products...", "tags": ["upcycling", "creative reuse", "waste reduction", "DIY", "crafts", "resourcefulness", "zero waste", "repurposing"],
+                        "context": "Goes beyond basic recycling by creatively transforming waste...", "materials": ["Discarded Items...", "Basic Tools...", "Cleaning Supplies...", "Finishing Materials..."], "processSteps": ["1. Collect & Select...", "2. Clean & Prepare...", "3. Brainstorm/Design...", "4. Cut, Shape, Assemble...", "5. Finish & Decorate...", "6. Share Ideas..."],
+                         "videos": [
+                            { "icon_tag_fa": "fas fa-couch", "color_tag": "#78350f", "title": "Making Furniture From Wooden Pallets", "youtubeId": "zIcDVPkHVmI", "description": "Constructing chairs, tables, beds...", "localVideoFilename": "waste_pallet_furniture.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-bottle-water", "color_tag": "#0ea5e9", "title": "Plastic Bottle Building Blocks and Construction", "youtubeId": "lnT1qY0a4KA", "description": "Using plastic bottles filled with sand...", "localVideoFilename": "waste_bottle_bricks.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-recycle", "color_tag": "#52525b", "title": "Tire Upcycling for Garden Projects", "youtubeId": "AxiI17y0fNk", "description": "Transforming old tires into planters...", "localVideoFilename": "waste_tire_garden.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                    },
+                    {
+                        "uniqueId": "waste-3", "title": "Wastewater Management", "description": "Build simple systems to treat and safely dispose of greywater and blackwater...", "tags": ["wastewater", "greywater", "blackwater", "sanitation", "treatment", "constructed wetland", "reed bed", "filtration", "hygiene", "bioremediation", "water reuse"],
+                        "context": "Safely treats water from sinks, showers (greywater) or toilets (blackwater)...", "materials": ["Pipes/Plumbing...", "Gravel...", "Sand...", "Water-loving Plants...", "Waterproof Liner...", "Settling Tank/Container...", "Distribution Pipes..."], "processSteps": ["1. Identify Source...", "2. Site Selection...", "3. System Design...", "4. Excavation & Liner...", "5. Layering Filter Media...", "6. Planting...", "7. Connecting Inflow/Outflow...", "8. Monitoring & Maintenance..."],
+                         "videos": [
+                            { "icon_tag_fa": "fas fa-shower", "color_tag": "#9ca3af", "title": "DIY Greywater System for Garden Irrigation", "youtubeId": "v3KGpnRrQ_I", "description": "Simple methods for reusing household water...", "localVideoFilename": "waste_greywater_garden.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-leaf", "color_tag": "#16a34a", "title": "Constructing a Basic Wetland Filtration System", "youtubeId": "6gGKKnD-Z4Q", "description": "Building a natural water treatment system...", "localVideoFilename": "waste_constructed_wetland.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-toilet", "color_tag": "#a16207", "title": "Simple Septic System Installation Overview", "youtubeId": "QYyZdJc2RhY", "description": "Understanding the components and setup...", "localVideoFilename": "waste_septic_overview.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                    }
+                ]
+            },
+            {
+                "area": "Energy", "icon": "fa-solar-panel", "featherIcon": "zap",
+                "subcategories": [
+                    {
+                        "uniqueId": "energy-0", "title": "Solar Box Cookers", "description": "Effective basic box cooker design...", "tags": ["solar cooker", "DIY", "cooking technology", "off-grid", "passive solar", "solar thermal", "appropriate technology", "fuel efficiency"],
+                        "context": "Utilizes direct sunlight for cooking...", "materials": ["Cardboard Boxes...", "Insulation...", "Reflective Material...", "Glass/Oven Bag...", "Black Paint...", "Dark, Lidded Pot...", "Glue/Tape"], "processSteps": ["1. Construct Insulated Box...", "2. Line Inner Box...", "3. Create Transparent Lid...", "4. Paint Pot Black...", "5. Position Cooker...", "6. Place Pot Inside..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "energy-1", "title": "Biogas ration", "description": "Turn kitchen and animal waste into clean-burning gas...", "tags": ["biogas", "waste", "energy", "renewable", "anaerobic digestion", "cooking fuel", "waste to energy", "methane", "digestate", "fertilizer"],
+                        "context": "Converts organic waste into methane gas...", "materials": ["Airtight Container...", "Inlet Pipe...", "Outlet Pipe...", "Gas Outlet Pipe...", "Tubing...", "Manure/Kitchen Waste...", "Water"], "processSteps": ["1. Construct/Adapt Digester...", "2. Install Pipes...", "3. Prepare Slurry...", "4. 'Seed' Digester...", "5. Feed Regularly...", "6. Safely Plumb & Use Gas..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "energy-2", "title": "Microgrids for Sustainable Power", "description": "Build small, local power systems...", "tags": ["microgrid", "sustainability", "infrastructure", "renewable energy", "off-grid power", "community power", "solar", "wind power", "battery storage", "energy access", "resilience"],
+                        "context": "Creates localized, independent energy networks...", "materials": ["ration Source(s)...", "Charge Controllers...", "Battery Bank...", "Inverter(s)...", "Distribution Wiring...", "Load Management System...", "Monitoring Equipment"], "processSteps": ["1. Energy Audit...", "2. System Design...", "3. Installation...", "4. Wiring & Safety...", "5. Distribution Network...", "6. Commissioning...", "7. Community Governance..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "energy-3", "title": "Hand Pressed Heat & Cooking Fuel Briquettes", "description": "DIY cook stove Fuel produced...", "tags": ["cooking fuel", "upcycling", "home heating", "biomass", "briquettes", "waste to energy", "appropriate technology", "DIY", "fuel efficiency"],
+                        "context": "Compresses loose biomass waste...", "materials": ["Dry Biomass Waste...", "Water...", "Binder...", "Briquette Press...", "Drying Rack/Area"], "processSteps": ["1. Collect & Shred...", "2. Mix with Water...", "3. Load Slurry...", "4. Compress Firmly...", "5. Eject Wet Briquette...", "6. Dry Thoroughly..."],
+                        "videos": [
+                            { "icon_tag_fa": "fas fa-fire-alt", "color_tag": "#d97706", "title": "Simple Biomass Briquette Press Construction", "youtubeId": "1LD7BhR3jTI", "description": "Building a manual press...", "localVideoFilename": "energy_briquette_press.mp4", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    }
+                ]
+            },
+            {
+                "area": "Health", "icon": "fa-heartbeat", "featherIcon": "heart",
+                "subcategories": [
+                    {
+                        "uniqueId": "health-0", "title": "EMT Skills", "description": "Learn lifesaving basics...", "tags": ["EMT", "emergency", "first response", "CPR", "basic life support", "patient assessment", "wound care", "trauma care", "splinting", "bleeding control"],
+                        "context": "Provides foundational knowledge and skills...", "materials": ["First Aid Kit Supplies...", "Gloves...", "CPR Mask/Barrier...", "Splinting Materials...", "(Training: Mannequin)"], "processSteps": ["1. Ensure Scene Safety...", "2. Primary Assessment...", "3. Call for Help...", "4. Critical Interventions...", "5. Secondary Assessment...", "6. Splinting/Wound Dressing...", "7. Ongoing Monitoring..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "health-1", "title": "Telemedicine", "description": "Use phones and simple apps...", "tags": ["health", "telemedicine", "remote care", "digital health", "remote diagnosis", "mHealth", "communication", "health access"],
+                        "context": "Leverages communication technology...", "materials": ["Device...", "Internet/Phone Connectivity...", "Camera...", "Basic Measurement Tools...", "Relevant Health Apps/Platforms"], "processSteps": ["1. Identify Provider...", "2. Ensure Connectivity...", "3. Prepare for Consultation...", "4. Communicate Symptoms...", "5. Follow Medical Advice...", "6. Plan Follow-up..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "health-2", "title": "First Aid", "description": "Master everyday skills...", "tags": ["first aid", "injury", "emergency", "home care", "wound care", "burns", "bites & stings", "common ailments", "hygiene"],
+                        "context": "Focuses on immediate care for common injuries...", "materials": ["Well-stocked First Aid Kit...", "Clean Water...", "Cool Compresses...", "Soap"], "processSteps": ["1. Assess the Situation...", "2. Clean Wounds...", "3. Apply Dressing...", "4. Manage Minor Burns...", "5. Treat Bites/Stings...", "6. Manage Fever...", "7. Recognize When to Seek Help..."],
+                        "videos": []
+                    },
+                    {
+                        "uniqueId": "health-3", "title": "Self-sufficient Healthcare", "description": "Set up a basic first aid station...", "tags": ["health", "DIY", "self-reliance", "herbal medicine", "community health", "preventive health", "traditional medicine", "ORS", "preparedness", "hygiene", "sanitation"],
+                        "context": "Empowers individuals and communities...", "materials": ["Organized Storage...", "Basic First Aid Supplies...", "Medicinal Herbs...", "Salt, Sugar, Bicarbonate...", "Clean Water & Containers...", "Notebook & Pen..."], "processSteps": ["1. Assess Local Health Issues...", "2. Create Checklist & Stock...", "3. Learn Plant Identification...", "4. Prepare ORS...", "5. Practice Hygiene...", "6. Record Keeping...", "7. Know Limitations..."],
+                        "videos": []
+                    }
+                ]
+            },
+            {
+                "area": "Food", "icon": "fa-utensils", "featherIcon": "coffee", // Note: Feather 'coffee' used, maybe 'package' or 'shopping-bag'?
+                "subcategories": [
+                    {
+                        "uniqueId": "food-0", "title": "Urban Gardening", "description": "Grow healthy vegetables in small spaces...", "tags": ["urban farming", "gardening", "food security", "container gardening", "small space gardening", "rooftop garden", "balcony garden", "composting", "vertical farming", "local food"],
+                        "context": "Enables food production in densely populated areas...", "materials": ["Containers...", "Potting Mix/Soil/Compost...", "Seeds or Seedlings...", "Watering Can/System...", "Fertilizer...", "Sunlight/Grow Lights"], "processSteps": ["1. Select Site...", "2. Choose Containers...", "3. Prepare Growing Medium...", "4. Planting & Seeding...", "5. Watering & Feeding...", "6. Pest/Disease Management...", "7. Harvesting..."],
+                        "videos": [
+                             { "title": "Organic/Biodynamic Farming in the City", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "title": "Community Gardens as health and vitality nodes", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together...", "icon_tag_fa": "fas fa-sprout", "color_tag": "#6B7280", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "title": "Community Gardens address food deserts", "youtubeId": "QZQpIHIr7s0", "description": "Growing Together...", "icon_tag_fa": "fas fa-sprout", "color_tag": "#6B7280", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    },
+                    {
+                        "uniqueId": "food-1", "title": "Hydro/Aero/Aquaponics", "description": "Use water-based growing systems...", "tags": ["hydroponics", "water-efficient", "urban food", "aquaponics", "aeroponics", "soilless culture", "vertical farming", "nutrient solution", "pH management", "closed-loop system"],
+                        "context": "Cultivates plants without soil...", "materials": ["Growing System Components...", "Growing Medium...", "Nutrient Solution...", "pH Testing Kit...", "EC/TDS Meter...", "(Aquaponics: fish tank...)"], "processSteps": ["1. Assemble System...", "2. Prepare Nutrient Solution...", "3. Germinate Seeds...", "4. Transplant...", "5. Monitor & Maintain...", "6. (Aquaponics: Manage fish...)", "7. Harvesting..."] ,
+                        "videos": [
+                             { "title": "Feed the World – Aquaponics", "youtubeId": "ofS9MFXFIBE", "description": "Introduces aquaponics...", "icon_tag_fa": "fas fa-fish", "color_tag": "#3B82F6", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "title": "Aquaponics Simplified: A Guide...", "youtubeId": "4DMylpQqVKI", "description": "Features 'Aqua Annie'...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                             { "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch", "youtubeId": "x6buXYuvXWg", "description": "Showcases inventor...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                     },
+                    {
+                        "uniqueId": "food-2", "title": "Sustainable Agriculture Techniques", "description": "Practice crop rotation, natural pest control...", "tags": ["agriculture", "sustainable", "soil health", "permaculture", "organic farming", "agroecology", "cover cropping", "crop rotation", "integrated pest management", "conservation agriculture", "biodiversity", "seed saving"],
+                        "context": "Employs ecological principles to farming...", "materials": ["Compost/Manure...", "Cover Crop Seeds...", "Mulch Materials...", "Natural Pest Control Agents...", "Diverse Crop Seeds...", "Soil Testing Kit..."], "processSteps": ["1. Soil Health Assessment...", "2. Implement Crop Rotation...", "3. Utilize Cover Cropping...", "4. Practice IPM...", "5. Enhance Biodiversity...", "6. Water Conservation...", "7. Nutrient Management..."],
+                        "videos": [
+                            { "icon_tag_fa": "fas fa-sync-alt", "color_tag": "#ca8a04", "title": "Crop Rotation Explained: Benefits & Planning", "youtubeId": "QhH-YsDr8D4", "description": "Understanding how rotating crops...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-shield-alt", "color_tag": "#dc2626", "title": "Natural Pest Control Methods for Gardens", "youtubeId": "tgQ1L7TcDjQ", "description": "Using companion planting...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-leaf", "color_tag": "#16a34a", "title": "Cover Cropping for Beginners: Building Soil", "youtubeId": "NbvDEAomVlk", "description": "How to choose, plant, and manage...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f", "title": " How to Start a No-Till Garden from Scratch ", "youtubeId": "sdmqbhQo-yw", "description": "how to start a garden...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-tractor", "color_tag": "#78350f", "title": "Introduction to No-Till Farming Techniques", "youtubeId": "0xvp8sWY6Fk", "description": "Minimizing soil disturbance...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                            { "icon_tag_fa": "fas fa-seedling", "color_tag": "#fbbf24", "title": "Seed Saving Basics for Common Vegetables", "youtubeId": "wB8Z4LnHJ8I", "description": "How to collect, process, and store seeds...", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                        ]
+                    },
+                    {
+                        "uniqueId": "food-3", "title": "Fungi, Algae, Insects, & Tech", "description": "Inventory and evaluation of modern...", "tags": ["alternative protein", "future food", "mycology", "entomophagy", "algae", "spirulina", "BSFL", "insect farming", "mushroom cultivation", "food technology", "fermentation", "nutrition", "mycoprotein"],
+                        "context": "Explores less conventional but potentially highly sustainable...", "materials": ["Mushroom Spawn/Substrate...", "Algae Culture...", "Insect Starter Colony...", "Containers/Enclosures...", "Harvesting Tools...", "Processing Equipment..."], "processSteps": ["1. Select Organism...", "2. Set Up Environment...", "3. Inoculation/Starting...", "4. Feeding & Maintenance...", "5. Harvesting...", "6. Processing..."],
+                         "videos": [
+                              { "title": "Fungi", "youtubeId": "QJcACw_--Nk", "description": "Explores the realities...", "icon_tag_fa": "fas fa-city", "color_tag": "#6B7280", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Fungi as Edible Mycelium", "youtubeId": "ofS9MFXFIBE", "description": "Mycelial cake can be dried...", "icon_tag_fa": "fas fa-utensils", "color_tag": "#3B82F6", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Fungi in soil and ecosystem health", "youtubeId": "4DMylpQqVKI", "description": "Explores the role of fungal networks...", "icon_tag_fa": "fas fa-seedling", "color_tag": "#10B981", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Fungi for creating structural compoments", "youtubeId": "x6buXYuvXWg", "description": "Using mycelium (fungal roots)...", "icon_tag_fa": "fas fa-cogs", "color_tag": "#57534e", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Fungi Algae (Lichens)", "youtubeId": "mD5jnxhne7o", "description": "Introduction to lichens...", "icon_tag_fa": "fas fa-tree", "color_tag": "#ca8a04", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Fungi eating insects so people can eat it (Entomopathogenic Fungi)", "youtubeId": "5eibeYxRt5w", "description": "Explores fungi that naturally control...", "icon_tag_fa": "fas fa-bug-slash", "color_tag": "#7c2d12", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Is Microalgae the Sustainable Food of the Future?", "youtubeId": "VFNS7Is6Td0", "description": "Investigates microalgae...", "icon_tag_fa": "fas fa-bacteria", "color_tag": "#0d9488", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Mushroom Farming Basics", "youtubeId": "9IFTMnftLgU", "description": "Growing edible mushrooms...", "icon_tag_fa": "fas fa-cloud", "color_tag": "#a1a1aa", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Spirulina Micro-Farming at Home", "youtubeId": "SMUf_pbxkcU", "description": "Small-scale production...", "icon_tag_fa": "fas fa-vial", "color_tag": "#2dd4bf", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Insect Farming: Cricket Rearing Systems", "youtubeId": "jp6OgNyTxA0", "description": "Setting up efficient cricket production...", "icon_tag_fa": "fas fa-bug", "color_tag": "#3f3f46", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Black Soldier Fly Larvae Composting", "youtubeId": "5j0YCyg0vpE", "description": "Converting organic waste...", "icon_tag_fa": "fas fa-recycle", "color_tag": "#166534", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Ancient Grain Recovery and Cultivation", "youtubeId": "Xqn490UuVQU", "description": "Growing forgotten but nutritious...", "icon_tag_fa": "fas fa-wheat-awn", "color_tag": "#f59e0b", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] },
+                              { "title": "Simple Automation for Small-Scale Agriculture", "youtubeId": "eHMpkXiGEag", "description": "Low-tech solutions...", "icon_tag_fa": "fas fa-robot", "color_tag": "#78716c", "localVideoFilename": "", "authors": "", "researchReviewItems": [], "contentCreatorArchive": "", "licence": "Standard YouTube License", "patreon": "", "socials": {}, "fundraiser": "", "sponsorPages": [] }
+                         ]
+                     }
+                ]
+            } // End of Food Area
+        ]; // End of categoryData array
+
 
         // --- Updated Glossary ---
-        const tagGlossary = {
+    const tagGlossary = {
             // Shelter
             "construction": "The process, art, or business of building structures.",
             "low-cost": "Achievable with minimal financial resources or expenditure.",
@@ -729,209 +1126,45 @@
 
         };
 
-
-
-let searchableItems = []; // For search functionality
-
-// Debounce function
-function debounce(func, delay) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-    };
-}
-
-function createAccordionItem(title, contentHtml, parentElement, defaultOpen = false) {
-    if (!contentHtml || (Array.isArray(contentHtml) && contentHtml.length === 0) || (typeof contentHtml === 'string' && contentHtml.trim() === '')) {
-        return; // Don't create accordion for empty content
-    }
-
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'accordion-item';
-
-    const button = document.createElement('button');
-    button.className = 'accordion-button';
-    button.textContent = title;
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'accordion-content';
-
-    if (Array.isArray(contentHtml)) {
-        const ul = document.createElement('ul');
-        contentHtml.forEach(itemText => {
-            const li = document.createElement('li');
-            li.textContent = itemText;
-            ul.appendChild(li);
-        });
-        contentDiv.appendChild(ul);
-    } else {
-        contentDiv.innerHTML = `<p>${contentHtml}</p>`; // Use innerHTML if content might have simple HTML
-    }
-    
-    itemDiv.appendChild(button);
-    itemDiv.appendChild(contentDiv);
-    parentElement.appendChild(itemDiv);
-
-    if (defaultOpen) {
-        button.classList.add('active');
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
-        contentDiv.classList.add('open');
-    }
-
-    button.addEventListener('click', function() {
-        this.classList.toggle('active');
-        const content = this.nextElementSibling;
-        if (content.style.maxHeight && content.style.maxHeight !== "0px") {
-            content.style.maxHeight = null;
-            content.classList.remove('open');
-        } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-            content.classList.add('open');
-        }
-    });
-}
-
-
-
-
-
-
-
-
-
-
-// --- Global Variables & DOM Elements ---
-        let categoryData = []; // holds the data fetched from the JSON file
+        // --- Global Variables & DOM Elements ---
+        // const buttonBar = document.getElementById('button-bar'); // No longer needed
         const modulesGridContainer = document.getElementById('modules-grid-container'); // Get homepage grid container
         const modulesGrid = modulesGridContainer.querySelector('.modules-grid'); // Get the grid itself
         const categoryContentContainer = document.getElementById('category-content-container'); // Get the container for detailed view
         const backToModulesButton = document.getElementById('back-to-modules-button'); // Get the back button
-        const backToHomeLogoButton = document.getElementById('back-to-home-logo-button'); // Get the back button
         const categoryTitleDisplay = document.getElementById('category-title-display');
         const glossaryPanel = document.getElementById('glossary-panel');
         const megamenuContent = document.getElementById('megamenu-content'); // Container within category view
         const megamenuColumnsContainer = document.getElementById('megamenu-columns');
         const megamenuDetailsArea = document.getElementById('megamenu-details-area');
         const bodyElement = document.body;
-
         // Video Panel Elements
         const videoInfoPanel = document.getElementById('video-info-panel');
         const infoUrlEl = document.getElementById('info-url');
         const infoTitleEl = document.getElementById('info-title');
         const infoDescriptionEl = document.getElementById('info-description');
         const placeholderText = '<span class="placeholder-text">Hover over a video square...</span>';
-
         // Local Video Elements
         const localVideoRow = document.getElementById('local-video-row');
         const localVideoLink = document.getElementById('local-video-link');
         const localVideoThumb = document.getElementById('local-video-thumb');
         const localVideoFilenameDisplay = document.getElementById('local-video-filename-display');
+
+
+        // let currentlyOpenTrigger = null; // No longer needed for header buttons
         let activeSubcategoryToggle = null;
         let activeGlossaryTrigger = null;
         let allVideosFlat = []; // For flattened video data
         let currentArea = null; // Track the currently displayed area
 
-
-
-// --- Modal Interaction Functions ---
-let lastFocusedElement = null; // To store focus before modal opens
-
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal && !modal.classList.contains('visible')) {
-        lastFocusedElement = document.activeElement; // Save current focus
-
-        modal.classList.add('visible');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-
-        // Focus the modal box or its first focusable element for accessibility
-        const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-        const firstFocusableElement = modal.querySelector(focusableElements);
-        if (firstFocusableElement) {
-            firstFocusableElement.focus();
-        } else {
-            modal.querySelector('.modal-box').setAttribute('tabindex', '-1'); // Make modal-box focusable if no other elements
-            modal.querySelector('.modal-box').focus();
-        }
-        console.log(`Modal ${modalId} opened.`);
-    } else if (!modal) {
-        console.error(`Modal with ID ${modalId} not found.`);
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal && modal.classList.contains('visible')) {
-        modal.classList.remove('visible');
-        document.body.style.overflow = ''; // Restore background scrolling
-        
-        // Restore focus to the element that opened the modal
-        if (lastFocusedElement) {
-            lastFocusedElement.focus();
-            lastFocusedElement = null;
-        }
-        console.log(`Modal ${modalId} closed.`);
-    }
-}
-
-function setupModalEventListeners(modalId, triggerId) {
-    const triggerButton = document.getElementById(triggerId);
-    const modal = document.getElementById(modalId);
-
-    if (!triggerButton) {
-        // console.warn(`Trigger button with ID ${triggerId} not found for modal ${modalId}.`);
-        return; // Silently fail if trigger isn't there, maybe it's optional
-    }
-    if (!modal) {
-        console.error(`Modal with ID ${modalId} not found. Cannot attach events for trigger ${triggerId}.`);
-        return;
-    }
-
-    const closeButton = modal.querySelector('.modal-close-button');
-
-    triggerButton.addEventListener('click', (event) => {
-        event.preventDefault(); 
-        openModal(modalId);
-    });
-
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            closeModal(modalId);
-        });
-    }
-
-    // Close modal if overlay (area outside .modal-box) is clicked
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) { 
-            closeModal(modalId);
-        }
-    });
-}
-
-// Function to initialize all modals
-function initializeAllModals() {
-    setupModalEventListeners('termsModal', 'termsLink');
-    setupModalEventListeners('conditionsModal', 'conditionsLink');
-    setupModalEventListeners('privacyModal', 'privacyLink');
-    setupModalEventListeners('visionModal', 'visionLink');
-
-    // Close any open modal with the Escape key
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            const visibleModal = document.querySelector('.modal-overlay.visible');
-            if (visibleModal) {
-                closeModal(visibleModal.id);
-            }
-        }
-    });
-    console.log("All modals initialized.");
-}
-
-
-
-
-
+        /**
+ * Fixed JavaScript code for Approvideo Learning Hub
+ * Key fixes:
+ * 1. Eliminates duplicate function definitions
+ * 2. Corrects the YouTube link format in showInfoPanel
+ * 3. Fixes handling of the handleHashChange function
+ * 4. Creates complete subcategory details HTML
+ */
 
 // --- Video Panel Functions ---
 function flattenVideoData(originalData) {
@@ -1076,160 +1309,36 @@ function hideInfoPanel() {
 }
 
 function generateHomepageModules() {
-    // Assuming 'modulesGrid' is already defined in your scope
-    if (!modulesGrid) {
-        console.error('Error: modulesGrid element not found.');
-        return;
-    }
-    modulesGrid.innerHTML = ''; // Clear previous content
-
-    if (!categoryData || !Array.isArray(categoryData)) {
-        console.error('Error: categoryData is not available or not an array.');
-        return;
-    }
-
+    modulesGrid.innerHTML = '';
     categoryData.forEach(category => {
         const moduleDiv = document.createElement('div');
-        const categorySlug = category.area ? category.area.toLowerCase().replace(/\s+/g, '-') : 'unknown-area';
-        moduleDiv.className = `module homepage-module-item ${categorySlug}`;
-        
+        moduleDiv.className = `module ${category.area.toLowerCase()}`;
+        moduleDiv.onclick = () => showCategoryView(category.area.toLowerCase());
+
         const iconContainer = document.createElement('div');
         iconContainer.className = 'icon';
-
-        let iconSet = false;
-
-        // 1. Prioritize svgString
-        if (category.svgString && typeof category.svgString === 'string' && category.svgString.trim().startsWith('<svg')) {
-            iconContainer.innerHTML = category.svgString;
-            const svgElement = iconContainer.querySelector('svg');
-            if (svgElement) {
-                svgElement.classList.add('custom-svg-icon');
-            }
-            iconSet = true;
-        }
         
-        // 2. Fallback to Feather Icons
-        if (!iconSet && typeof feather !== 'undefined' && feather.icons && category.featherIcon && feather.icons[category.featherIcon]) {
-            try {
+        // Try Feather first, fall back to Font Awesome
+        try {
+            if (typeof feather !== 'undefined' && feather.icons && category.featherIcon && feather.icons[category.featherIcon]) {
+                // Use direct SVG insertion from feather
                 iconContainer.innerHTML = feather.icons[category.featherIcon].toSvg();
-                const svgElement = iconContainer.querySelector('svg');
-                if (svgElement) {
-                     svgElement.classList.add('feather-svg-icon');
-                }
-                iconSet = true;
-            } catch (e) {
-                console.error(`Error rendering Feather icon "${category.featherIcon}" for ${category.area || 'Unknown Area'}:`, e);
+            } else {
+                // Fallback to Font Awesome
+                iconContainer.innerHTML = `<i class="fas ${category.icon}"></i>`;
             }
-        }
-
-        // 3. Fallback to Font Awesome
-        if (!iconSet && category.icon) {
+        } catch(e) {
+            console.error("Error with Feather icon, falling back to Font Awesome", e);
             iconContainer.innerHTML = `<i class="fas ${category.icon}"></i>`;
-            iconSet = true;
-        }
-
-        // 4. Generic Fallback
-        if (!iconSet) {
-            console.warn(`No icon specified for category: ${category.area || 'Unknown Area'}. Using default.`);
-            iconContainer.innerHTML = `<i class="fas fa-shapes"></i>`;
         }
 
         const titleH2 = document.createElement('h2');
-        titleH2.textContent = category.area || "Untitled Area";
+        titleH2.textContent = category.area;
 
         moduleDiv.appendChild(iconContainer);
         moduleDiv.appendChild(titleH2);
-
-        // ***** ADD PREVIEW DIV PLACEHOLDER *****
-        const subcategoryPreviewDiv = document.createElement('div');
-        // Assign a class or ID that toggleSubcategoryPreview will use to find it.
-        // Option 1: Using a class name (recommended if multiple previews)
-        subcategoryPreviewDiv.className = 'subcategory-preview-content'; 
-        // Option 2: Using a unique ID (if toggleSubcategoryPreview uses getElementById)
-        // subcategoryPreviewDiv.id = `preview-${categorySlug}`;
-        
-        subcategoryPreviewDiv.style.display = 'none'; // Initially hidden
-        moduleDiv.appendChild(subcategoryPreviewDiv);
-        // *****************************************
-
         modulesGrid.appendChild(moduleDiv);
-
-        moduleDiv.addEventListener('click', (event) => {
-            if (event.target.closest('.subcategory-preview-link')) {
-                return; 
-            }
-            if (typeof toggleSubcategoryPreview === 'function') {
-                // Pass the moduleDiv (which now contains the preview placeholder)
-                // and the category or its slug.
-                toggleSubcategoryPreview(moduleDiv, category); // Pass the whole category object or just the slug
-            } else {
-                console.warn('toggleSubcategoryPreview function not found, but module was clicked.');
-                if (typeof showCategoryView === 'function' && category.area) {
-                    showCategoryView(category.area.toLowerCase());
-                }
-            }
-        });
     });
-}
-
-function toggleSubcategoryPreview(moduleElement, areaName) {
-
-
-    const previewDiv = moduleElement.querySelector('.subcategory-preview-content');
-    const isActive = moduleElement.classList.contains('preview-active');
-
-    // Hide any other open previews
-    document.querySelectorAll('.homepage-module.preview-active').forEach(activeModule => {
-        if (activeModule !== moduleElement) {
-            activeModule.classList.remove('preview-active');
-
-            activeModule.querySelector('.subcategory-preview-content').innerHTML = '';
-            activeModule.querySelector('.subcategory-preview-content').classList.remove('visible');
-
-        }
-    });
-
-    if (isActive) {
-        previewDiv.innerHTML = ''; // Clear content
-        previewDiv.classList.remove('visible');
-        moduleElement.classList.remove('preview-active');
-    } else {
-        const category = categoryData.find(cat => cat.area.toLowerCase() === areaName);
-        if (category && category.subcategories && category.subcategories.length > 0) {
-            const ul = document.createElement('ul');
-            ul.className = 'subcategory-preview-list';
-            category.subcategories.forEach(subcat => {
-                const li = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = `#${areaName}@${subcat.uniqueId}`; // For hash navigation
-                link.textContent = subcat.title;
-                link.className = 'subcategory-preview-link';
-                link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent immediate jump
-                    showCategoryView(areaName); // Show the main category view
-                    // Use rAF and setTimeout to ensure DOM is ready for scrolling to detail
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            displaySubcategoryDetails(areaName, subcat.uniqueId, true);
-                            const detailsArea = document.getElementById('megamenu-details-area');
-                            if (detailsArea) {
-                                detailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                        }, 100);
-                    });
-                });
-                li.appendChild(link);
-                ul.appendChild(li);
-            });
-            previewDiv.appendChild(ul);
-            previewDiv.classList.add('visible');
-            moduleElement.classList.add('preview-active');
-        } else {
-            previewDiv.innerHTML = '<p class="no-subcategories-text">No subcategories available.</p>';
-            previewDiv.classList.add('visible');
-            moduleElement.classList.add('preview-active');
-        }
-    }
 }
 
 function initializeSlideshows() {
@@ -1802,621 +1911,65 @@ function getShareableLink(area, uniqueId) {
     return `${baseUrl}#${area.toLowerCase()}@${uniqueId}`;
 }
 
-
-function populateAreaNavIcons(categoriesInfo) { // Expects array like [{ name: "Area Name", svgString: "<svg...", slug: "area-slug", icon: "fa-fallback" }]
-    const expandedNavContainer = document.getElementById('areaNavIconsExpanded');
-    const minimizedNavContainer = document.getElementById('areaNavIconsMinimized');
-
-    if (!expandedNavContainer || !minimizedNavContainer) {
-        console.error("Area navigation icon containers ('areaNavIconsExpanded' or 'areaNavIconsMinimized') not found in the DOM. Ensure these IDs exist in your floating search menu HTML.");
-        return;
-    }
-
-    expandedNavContainer.innerHTML = ''; // Clear previous icons
-    minimizedNavContainer.innerHTML = ''; // Clear previous icons
-
-    if (!categoriesInfo || categoriesInfo.length === 0) {
-        console.warn("No category information provided to populateAreaNavIcons.");
-        return;
-    }
-
-    categoriesInfo.forEach(areaInfo => {
-        const areaSlug = areaInfo.slug; // Expecting slug like 'water', 'shelter'
-        const areaDisplayName = areaInfo.name;
-
-        if (!areaSlug || !areaDisplayName) {
-            console.error("Missing slug or name in areaInfo for navigation icons:", areaInfo);
-            return; // Skip this icon if essential info is missing
-        }
-
-        // Helper function to create each icon element (since we need two identical ones)
-        const createIconElement = () => {
-            const iconWrapper = document.createElement('div');
-            iconWrapper.className = 'nav-area-icon-wrapper'; // For styling the clickable area & SVG container
-            iconWrapper.title = `Go to ${areaDisplayName}`;
-
-            if (areaInfo.svgString && typeof areaInfo.svgString === 'string' && areaInfo.svgString.trim().startsWith('<svg')) {
-                iconWrapper.innerHTML = areaInfo.svgString;
-                const svgElement = iconWrapper.querySelector('svg');
-                if (svgElement) {
-                    svgElement.classList.add('area-nav-svg'); // Add class for specific CSS targeting of the SVG
-                    // Ensure SVG scales by removing fixed dimensions if CSS is to control it
-                    svgElement.removeAttribute('width');
-                    svgElement.removeAttribute('height');
-                }
-            } else {
-                // Fallback if no svgString (e.g., use Font Awesome)
-                const fallbackIcon = document.createElement('i');
-                fallbackIcon.className = `fas ${areaInfo.icon || 'fa-folder-open'} nav-area-fallback-icon`;
-                iconWrapper.appendChild(fallbackIcon);
-                console.warn(`SVG string missing for area "${areaDisplayName}", using fallback icon.`);
-            }
-
-            iconWrapper.addEventListener('click', () => {
-                console.log(`Header icon clicked for area: '${areaDisplayName}'. Calling showCategoryView with slug: '${areaSlug}'`);
-                if (typeof showCategoryView === 'function') {
-                    showCategoryView(areaSlug); // This is the key call to change the view
-
-                    // Optionally, close/minimize the search menu after navigation
-                    const floatingMenu = document.getElementById('floatingSearchMenu');
-                    const toggleButton = document.getElementById('toggleSearchDisplayBtn');
-                    if (floatingMenu && toggleButton && !floatingMenu.classList.contains('minimized')) {
-                        toggleButton.click(); // Simulate click to trigger minimize logic
-                    }
-                } else {
-                    console.error(`showCategoryView function is not defined! Cannot navigate to area '${areaDisplayName}'.`);
-                }
-            });
-            return iconWrapper;
-        };
-
-        expandedNavContainer.appendChild(createIconElement());
-        minimizedNavContainer.appendChild(createIconElement());
-    });
-    console.log("Area navigation icons populated.");
-}
-
-// --- Function to build the searchableItems array for search autocomplete ---
-
-function buildSearchableItems(data) {
-    searchableItems = []; // Reset before building
-    if (!data || !Array.isArray(data)) {
-        console.error("Invalid data provided to buildSearchableItems");
-        return;
-    }
-    data.forEach(area => {
-        if (!area || !area.area) return; // Skip if area or area.area is undefined
-
-        // Add Area itself as a searchable module (if you want to search for main areas)
-        // searchableItems.push({
-        //     id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`, // ID for the area section
-        //     title: area.area,
-        //     type: 'module', // or 'area'
-        //     icon: area.icon || 'fa-cubes',
-        //     areaName: area.area, // For navigation
-        //     slug: area.area.toLowerCase().replace(/\s+/g, '-')
-        // });
-
-        if (area.subcategories && Array.isArray(area.subcategories)) {
-            area.subcategories.forEach((subcategory, subcatIndex) => {
-                if (!subcategory || !subcategory.title) return; // Skip if subcategory or title is undefined
-
-                const subcategorySlugBase = area.area.toLowerCase().replace(/\s+/g, '-');
-                const subcategoryUniqueId = subcategory.uniqueId || `${subcategorySlugBase}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
-                
-                // Add Subcategory to searchable items
-                searchableItems.push({
-                    id: `subcategory-${subcategoryUniqueId}`, // An ID for a potential element representing the subcategory
-                    title: subcategory.title,
-                    type: 'module', // Or 'subcategory'
-                    icon: subcategory.icon || area.icon || 'fa-cube',
-                    areaName: area.area,
-                    areaSlug: subcategorySlugBase,
-                    uniqueId: subcategoryUniqueId // Used by displaySubcategoryDetails
-                });
-
-                if (subcategory.videos && Array.isArray(subcategory.videos)) {
-                    subcategory.videos.forEach((video, videoIndex) => {
-                        if (video && video.youtubeId && video.title) {
-                            const videoSearchableId = `video-search-${subcategoryUniqueId}-${videoIndex}`;
-                            searchableItems.push({
-                                id: videoSearchableId, // This ID needs to be on the video element if you want to scroll to it
-                                title: video.title,
-                                description: video.description || '',
-                                type: 'video',
-                                icon: video.icon_tag_fa || 'fa-play-circle',
-                                areaName: area.area,
-                                areaSlug: subcategorySlugBase,
-                                subcatUniqueId: subcategoryUniqueId,
-                                flat_index: video.flat_index // Useful for showInfoPanel
-                                // Add youtubeId if search result click should play video directly
-                                // youtubeId: video.youtubeId 
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-    console.log(`Built ${searchableItems.length} searchable items.`);
-}
-
-// --- Function to set up interactions for the floating search menu ---
-function setupSearchMenuInteractions() {
-    const openSearchHeaderButton = document.getElementById('openSearchHeaderButton');
-    const floatingMenu = document.getElementById('floatingSearchMenu');
-    const internalToggleBtn = document.getElementById('toggleSearchDisplayBtn');
-    const searchInput = document.getElementById('searchInput');
-
-    if (!floatingMenu || !internalToggleBtn) {
-        console.error("Floating search menu (#floatingSearchMenu) or its toggle button (#toggleSearchDisplayBtn) not found.");
-        return;
-    }
-
-    // Initial state: hidden & minimized (CSS handles opacity/transform, JS adds 'visible' class)
-    floatingMenu.classList.add('minimized');
-    // floatingMenu.classList.remove('visible'); // Start fully hidden, or manage with CSS transitions
-
-    if (openSearchHeaderButton) {
-        openSearchHeaderButton.addEventListener('click', () => {
-            console.log("Open Search Header Button clicked");
-            floatingMenu.classList.add('visible'); // Make it appear
-
-            if (floatingMenu.classList.contains('minimized')) {
-                internalToggleBtn.click(); // Expands it and handles icon
-            } else {
-                 // If already visible and expanded, maybe just focus input
-                if (searchInput) setTimeout(() => searchInput.focus(), 50);
-            }
-        });
-    }
-
-    internalToggleBtn.addEventListener('click', () => {
-        const isNowMinimized = floatingMenu.classList.toggle('minimized');
-        const icon = internalToggleBtn.querySelector('i');
-        if (!icon) return;
-
-        if (isNowMinimized) {
-            icon.className = 'fas fa-search'; // Or your preferred "magnifying glass" icon
-            internalToggleBtn.title = 'Expand Search';
-            floatingMenu.classList.remove('visible'); // Hide completely when minimized by its own button
-        } else {
-            icon.className = 'fas fa-chevron-up';
-            internalToggleBtn.title = 'Collapse Search';
-            floatingMenu.classList.add('visible'); // Ensure it's visible when expanded
-            if (searchInput) setTimeout(() => searchInput.focus(), 50);
-        }
-    });
-
-    // Optional: Click outside to hide the floating search menu
-    document.addEventListener('click', function(event) {
-        if (floatingMenu.classList.contains('visible') &&
-            !floatingMenu.contains(event.target) &&
-            (!openSearchHeaderButton || !openSearchHeaderButton.contains(event.target))) {
-            
-            // If it's expanded, minimize it first (which also hides it via the logic above)
-            if (!floatingMenu.classList.contains('minimized')) {
-                 internalToggleBtn.click();
-            } else {
-                // If already minimized but still 'visible', just remove 'visible'
-                floatingMenu.classList.remove('visible');
-            }
-        }
-    }, true); // Use capture phase
-
-    console.log("Search menu interactions set up.");
-}
-
-
-// Ensure allVideosFlat is populated by flattenVideoData() and accessible globally
-// Ensure megamenuDetailsArea and megamenuColumnsContainer are accessible
-
-function displaySingleVideoInPane(videoItemFromSearch) {
-    if (!allVideosFlat || !megamenuDetailsArea || !megamenuColumnsContainer) {
-        console.error("Required elements or data for displaySingleVideoInPane are missing.");
-        return;
-    }
-
-    const fullVideoData = allVideosFlat.find(v => v.flat_index === videoItemFromSearch.flat_index);
-
-    if (!fullVideoData || !fullVideoData.youtubeId) {
-        console.error("Full video data not found or invalid for:", videoItemFromSearch);
-        megamenuDetailsArea.innerHTML = '<p class="p-4 text-red-600">Video details could not be loaded.</p>';
-        megamenuDetailsArea.classList.add('visible');
-        megamenuColumnsContainer.classList.add('columns-hidden'); // Hide subcategory columns
-        return;
-    }
-
-    console.log("Displaying single video in pane:", fullVideoData.title);
-    const youtubeEmbedUrl = `https://www.youtube.com/embed/${fullVideoData.youtubeId}?autoplay=1&rel=0`; // Added autoplay and removed related videos
-
-    let videoDetailsHtml = `
-        <div class="video-detail-pane-content p-4 md:p-6">
-            <h3 class="text-2xl font-semibold text-gray-800 mb-3">${fullVideoData.title}</h3>
-            
-            
-            <div class="aspect-w-16 aspect-h-9 mb-4 rounded-lg overflow-hidden shadow-lg">
-                <iframe 
-                    src="${youtubeEmbedUrl}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen
-                    title="YouTube video player for ${fullVideoData.title}"
-                ></iframe>
-            </div>
-
-            <div class="text-sm text-gray-700 space-y-2">
-                ${fullVideoData.description ? `<p><strong>Description:</strong><br>${fullVideoData.description}</p>` : ''}
-                ${fullVideoData.authors ? `<p><strong>Author(s):</strong> ${fullVideoData.authors}</p>` : ''}
-                ${fullVideoData.licence ? `<p><strong>License:</strong> ${fullVideoData.licence}</p>` : ''}
-                ${fullVideoData.contentCreatorArchive ? `<p><strong>Creator Archive:</strong> <a href="${fullVideoData.contentCreatorArchive}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.contentCreatorArchive}</a></p>` : ''}
-                ${fullVideoData.patreon ? `<p><strong>Patreon:</strong> <a href="${fullVideoData.patreon}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.patreon}</a></p>` : ''}
-                {/* Add more fields as needed: socials, tags related to the video itself, etc. */}
-            </div>
-
-            <div class="mt-8 flex justify-end">
-                <button class="details-back-button-video-pane bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md flex items-center transition">
-                    <i class="fas fa-arrow-left mr-2"></i> Back to Subcategory
-                </button>
-            </div>
-        </div>
-    `;
-
-    megamenuDetailsArea.innerHTML = videoDetailsHtml;
-    megamenuColumnsContainer.classList.add('columns-hidden'); // Ensure subcategory columns are hidden
-    megamenuDetailsArea.classList.add('visible');             // Ensure details area is visible
-
-    // Update URL hash if you want a specific hash for videos (e.g., #area@subcatId@videoId)
-    // For now, we can update it to the parent subcategory or just the area.
-    // Let's assume videoItemFromSearch has .areaSlug and .subcatUniqueId from buildSearchableItems
-    if (videoItemFromSearch.areaSlug && videoItemFromSearch.subcatUniqueId) {
-        const newHash = `${videoItemFromSearch.areaSlug}@${videoItemFromSearch.subcatUniqueId}`; // Points to parent subcategory
-        if (window.location.hash.substring(1) !== newHash) {
-            history.pushState(null, null, '#' + newHash);
-        }
-    }
-
-    // Event listener for the "Back to Subcategory" button in this specific view
-    const backButton = megamenuDetailsArea.querySelector('.details-back-button-video-pane');
-    if (backButton) {
-        backButton.addEventListener('click', () => {
-            if (typeof displaySubcategoryDetails === 'function' && videoItemFromSearch.areaSlug && videoItemFromSearch.subcatUniqueId) {
-                // Go back to the parent subcategory's detailed view
-                displaySubcategoryDetails(videoItemFromSearch.areaSlug, videoItemFromSearch.subcatUniqueId, true);
-            } else {
-                // Fallback: just hide details, which should show subcategory columns of the current area
-                hideSubcategoryDetails(true); 
-            }
-        });
-    }
-}
-
-
-
-
-
-function handleSearch() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const resultsContainer = document.getElementById('searchResults');
-            resultsContainer.innerHTML = '';
-
-            if (searchTerm.length < 2) { // Only search if term is 2+ chars
-                return;
-            }
-
-            const filteredModules = searchableItems.filter(item =>
-                item.type === 'module' && item.title.toLowerCase().includes(searchTerm)
-            );
-
-            const filteredVideos = searchableItems.filter(item =>
-                item.type === 'video' &&
-                (item.title.toLowerCase().includes(searchTerm) || (item.description && item.description.toLowerCase().includes(searchTerm)))
-            );
-
-            if (filteredModules.length > 0) {
-                const moduleLabel = document.createElement('div');
-                moduleLabel.className = 'suggestion-category-label';
-                moduleLabel.textContent = 'Learning Modules';
-                resultsContainer.appendChild(moduleLabel);
-
-                filteredModules.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    div.innerHTML = `<i class="fas ${item.icon} module-icon"></i> <span>${item.title}</span>`;
-                    div.onclick = () => {
-                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        resultsContainer.innerHTML = ''; // Clear results after click
-                        document.getElementById('searchInput').value = ''; // Clear search input
-                    };
-                    resultsContainer.appendChild(div);
-                });
-            }
-
-            if (filteredVideos.length > 0) {
-                 const videoLabel = document.createElement('div');
-                videoLabel.className = 'suggestion-category-label';
-                videoLabel.textContent = 'Videos';
-                resultsContainer.appendChild(videoLabel);
-
-                filteredVideos.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    // Highlight search term in title - basic implementation
-                    let displayTitle = item.title;
-                    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-                    displayTitle = displayTitle.replace(regex, '<mark>$1</mark>');
-
-                    div.innerHTML = `<i class="fas ${item.icon} video-icon-search"></i> <span title="${item.description || ''}">${displayTitle}</span>`;
-
-                    div.onclick = () => {
-                        if (!item.areaSlug) { // item here is the video object from searchableItems
-                            console.error("Video item from search is missing areaSlug:", item);
-                            return;
-                        }
-
-                        if (typeof showCategoryView === 'function') {
-                            showCategoryView(item.areaSlug); // Show the general category view container (makes megamenuDetailsArea available)
-                            
-                            requestAnimationFrame(() => { // Ensure DOM is ready for content update
-                                setTimeout(() => {
-                                    if (typeof displaySingleVideoInPane === 'function') {
-                                        displaySingleVideoInPane(item); // 'item' is the video object from searchableItems
-                                        
-                                        if (megamenuDetailsArea) { // Scroll the details area into view
-                                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                        }
-                                    } else {
-                                        console.error("displaySingleVideoInPane function not defined.");
-                                    }
-                                }, 50); // Small delay might be needed for showCategoryView to complete its DOM changes
-                            });
-                        } else {
-                            console.error("showCategoryView function not defined.");
-                        }
-
-                        // Clear search input and results, and close the search menu
-                        if (resultsContainer) resultsContainer.innerHTML = '';
-                        const searchInputEl = document.getElementById('searchInput');
-                        if (searchInputEl) searchInputEl.value = '';
-                        
-                        const floatingMenu = document.getElementById('floatingSearchMenu');
-                        const internalToggleBtn = document.getElementById('toggleSearchDisplayBtn');
-                        if (floatingMenu && internalToggleBtn && !floatingMenu.classList.contains('minimized') && floatingMenu.classList.contains('visible')) {
-                            internalToggleBtn.click(); // This should minimize and hide it
-                        }
-                    };    
-
-                    resultsContainer.appendChild(div);
-                });
-            }
-             if (filteredModules.length === 0 && filteredVideos.length === 0) {
-                resultsContainer.innerHTML = '<div class="suggestion-item" style="justify-content:center;">No results found.</div>';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', async function() { // Main (and only) DOMContentLoaded listener
-    console.log("Initializing Approvideo Learning Hub...");
-
-    try {
-        const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        categoryData = jsonData;
-        console.log("Successfully loaded categoryData from JSON file:", categoryData.length, "items");
-
-        if (!categoryData || categoryData.length === 0) {
-            console.error("Fetched JSON data is empty or invalid. Halting further app initialization.");
-            document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
-            return;
-        }
-    } catch (error) {
-        console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
-        document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
-        return;
-    }
-
-    console.log("Proceeding with page initialization using fetched categoryData.");
-
-    // 1. Initialize Core Data Structures
-    flattenVideoData(categoryData);     // Populates global 'allVideosFlat'
-    if (typeof buildSearchableItems === 'function') {
-        buildSearchableItems(categoryData); // Populates global 'searchableItems'
-    } else {
-        console.error("CRITICAL: buildSearchableItems function is NOT defined.");
-    }
-
-    // 2. Prepare Data for and Populate Area Navigation Icons (for header and search menu)
-    const categoryAreasForNav = categoryData.map(cat => ({
-        name: cat.area,
-        slug: cat.area ? cat.area.toLowerCase().replace(/\s+/g, '-') : `unknown-area-${Date.now()}`,
-        svgString: cat.svgString,
-        icon: cat.icon 
-    }));
-
-    if (typeof populateAreaNavIcons === 'function') {
-        populateAreaNavIcons(categoryAreasForNav);
-    } else {
-        console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
-    }
-
-    // 3. Initialize UI Components & Main Interactions
-    generateHomepageModules();           // Renders homepage category cards
-    populateSubcategoryPills(categoryData); // Renders subcategory filter pills
-
-    if (typeof setupSearchMenuInteractions === 'function') {
-        setupSearchMenuInteractions();   // Handles floating search menu open/close logic
-    } else {
-        console.error("CRITICAL: setupSearchMenuInteractions function is NOT defined.");
-    }
-    
-    if (typeof setupEventListeners === 'function') { // This function should now include search input listeners
-        setupEventListeners();           
-    } else {
-        console.error("CRITICAL: setupEventListeners function is NOT defined.");
-    }
-    
-    if (typeof initializeAllModals === 'function') {
-        initializeAllModals();
-    } else {
-        console.error("CRITICAL: initializeAllModals function is NOT defined.");
-    }
-
-    // Update current year in footer
-    const yearSpan = document.getElementById('currentYear');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
-
-    setupHashNavigation();               // Handles URL hash changes for navigation
-    initializeSlideshows();              // Sets up any slideshows on the page
-    
-    // Call to function that renders main page sections (if different from generateHomepageModules)
-    // Ensure this function exists and creates elements with IDs if search results need to scroll to them.
-    if (typeof createLearningAreasAccordion === 'function') { 
-        createLearningAreasAccordion();
-    } else {
-        // If you don't have/need createLearningAreasAccordion, you can remove this.
-        // Or if its functionality is now part of generateHomepageModules, that's also fine.
-        console.warn("createLearningAreasAccordion function is not defined (optional).");
-    }
-
-    console.log("Approvideo Learning Hub initialized successfully.");
-});
-
-
-
-// --- Event Delegation Setup ---
-// Make sure these DOM element variables are defined in the global scope
-// or are accessible to this function. Based on your provided code, they are:
-// const categoryContentContainer = document.getElementById('category-content-container');
-// const backToModulesButton = document.getElementById('back-to-modules-button');
-// const videoInfoPanel = document.getElementById('video-info-panel');
-// let allVideosFlat = []; // Populated by flattenVideoData
-
 // --- Event Delegation Setup ---
 function setupEventListeners() {
-    console.log("Setting up event listeners...");
-
-    // --- Listeners for Category Content Area ---
-    if (categoryContentContainer) {
-        categoryContentContainer.addEventListener('click', function(event) {
-            const target = event.target;
-
-            // Glossary Triggers
-            if (target.classList.contains('glossary-trigger')) {
-                if (typeof handleGlossaryTriggerClick === 'function') {
-                    handleGlossaryTriggerClick(event);
-                } else { console.warn("handleGlossaryTriggerClick function not defined."); }
-            }
-            // Subcategory Toggles (in megamenu columns)
-            else if (target.classList.contains('subcategory-toggle')) {
-                if (typeof handleSubcategoryToggle === 'function') {
-                    handleSubcategoryToggle(event);
-                } else { console.warn("handleSubcategoryToggle function not defined."); }
-            }
-            // Back button within subcategory details view
-            else if (target.closest('.details-back-button')) {
-                event.preventDefault();
-                if (typeof hideSubcategoryDetails === 'function') {
-                    hideSubcategoryDetails(true);
-                } else { console.warn("hideSubcategoryDetails function not defined."); }
-            }
-            // Sibling subcategory navigation pills within details view
-            else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
-                event.preventDefault();
-                const area = target.dataset.area;
-                const uniqueId = target.dataset.uniqueid;
-                if (area && uniqueId) {
-                    if (typeof displaySubcategoryDetails === 'function') {
-                        displaySubcategoryDetails(area, uniqueId, true);
-                        requestAnimationFrame(() => {
-                            setTimeout(() => {
-                                if (megamenuDetailsArea) {
-                                    megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }, 50);
-                        });
-                    } else { console.warn("displaySubcategoryDetails function not defined."); }
-                }
-            }
-        });
-    } else {
-        console.warn("#category-content-container not found for event delegation.");
-    }
-
-    // --- Back to Modules Button (main back button) ---
-    if (backToModulesButton) {
-        backToModulesButton.addEventListener('click', () => {
-            if (typeof showHomepageView === 'function') {
-                showHomepageView();
-            } else { console.warn("showHomepageView function not defined."); }
-        });
-    } else {
-        console.warn("#back-to-modules-button not found.");
-    }
-
-    // --- Video Hover Info Panel Listeners ---
-    // These listeners are on document.body, so they are always active if functions exist.
-    if (typeof showInfoPanel === 'function' && typeof hideInfoPanel === 'function' && allVideosFlat) {
-        document.body.addEventListener('mouseover', (event) => {
-            const linker = event.target.closest('.video-linker');
-            if (linker) {
-                const flatIndex = linker.getAttribute('data-flat-index');
-                if (flatIndex !== null && flatIndex < allVideosFlat.length) {
-                    const video = allVideosFlat[parseInt(flatIndex, 10)];
-                    if (video) { showInfoPanel(video); }
-                    else { console.warn("Video data not found for index:", flatIndex); }
-                } else if (flatIndex !== null) {
-                    console.warn("Invalid flat_index for video:", flatIndex);
-                }
-            }
-        });
-
-        document.body.addEventListener('mouseout', (event) => {
-            const leavingLinker = event.target.closest('.video-linker');
-            const enteringElement = event.relatedTarget;
-            // Hide only if mouse leaves a video linker AND does not enter another linker or the panel itself
-            if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
-                setTimeout(() => {
-                    // Double check nothing relevant is hovered before hiding
-                    const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
-                    if (!currentlyHovered) { hideInfoPanel(); }
-                }, 50); // Small delay to handle quick mouse movements between elements
-            }
-        });
-
-        if (videoInfoPanel) {
-            videoInfoPanel.addEventListener('mouseleave', () => {
-                // If mouse leaves the panel itself, hide it
-                // (This handles the case where mouse moves from linker to panel, then out of panel)
-                hideInfoPanel();
-            });
-        } else {
-            console.warn("#video-info-panel not found for mouseleave listener.");
+    // Glossary and Subcategory toggles within the category content
+    categoryContentContainer.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.classList.contains('glossary-trigger')) { 
+            handleGlossaryTriggerClick(event); 
         }
-    } else {
-        console.warn("Video info panel functions or allVideosFlat data not fully available for hover listeners.");
-    }
-
-    // --- Search Input Listener (for autocomplete) ---
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        if (typeof debounce === 'function' && typeof handleSearch === 'function') {
-            searchInput.addEventListener('input', debounce(handleSearch, 300));
-            console.log("Search input listener attached.");
-        } else {
-            console.warn("debounce or handleSearch function not defined. Search input will not work.");
+        else if (target.classList.contains('subcategory-toggle')) { 
+            handleSubcategoryToggle(event); 
         }
-    } else {
-        console.warn("#searchInput element not found for event listener setup.");
-    }
+        else if (target.closest('.details-back-button')) { 
+            event.preventDefault();
+            hideSubcategoryDetails(true); 
+        }
+        else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+            event.preventDefault();
+            const area = target.dataset.area;
+            const uniqueId = target.dataset.uniqueid;
+            if (area && uniqueId) {
+                displaySubcategoryDetails(area, uniqueId, true);
+                requestAnimationFrame(() => { 
+                    setTimeout(() => { 
+                        megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
+                    }, 50); 
+                });
+            }
+        }
+    });
 
-    console.log("Event listeners setup complete.");
+    // Back button to return to module grid
+    backToModulesButton.addEventListener('click', showHomepageView);
+
+    // Video Hover Listeners on Body (covers videos in details view)
+    document.body.addEventListener('mouseover', (event) => {
+        const linker = event.target.closest('.video-linker');
+        if (linker) {
+            const flatIndex = linker.getAttribute('data-flat-index');
+            if (flatIndex !== null) {
+                const video = allVideosFlat[parseInt(flatIndex, 10)];
+                if (video) { showInfoPanel(video); }
+                else { console.warn("Video data not found for index:", flatIndex); }
+            }
+        }
+    });
+    
+    document.body.addEventListener('mouseout', (event) => {
+        const leavingLinker = event.target.closest('.video-linker');
+        const enteringElement = event.relatedTarget;
+        if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
+            setTimeout(() => {
+                const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
+                if (!currentlyHovered) { hideInfoPanel(); }
+            }, 50);
+        }
+    });
+    
+    videoInfoPanel.addEventListener('mouseleave', hideInfoPanel); // Hide if leaving panel itself
 }
-
-
 
 // Set up hash navigation
 function setupHashNavigation() {
@@ -2426,6 +1979,54 @@ function setupHashNavigation() {
     // Process initial hash on page load
     handleHashChange();
 }
+
+// --- Initial Setup ---
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log("Initializing Approvideo Learning Hub...");
+    
+    let categoryData = [];
+    try {
+        const response = await fetch('/learning_modules-catsubcat-tags-featured.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        categoryData = await response.json();
+        console.log("Successfully loaded categoryData from JSON file:", categoryData);
+    } catch (error) {
+        console.error("Failed to load category data from JSON file:", error);
+        // Optionally, display an error message to the user on the page
+        // For now, we'll proceed with empty data or you could use a fallback.
+        // categoryData = YOUR_ORIGINAL_HARDCODED_DATA; // As a fallback if needed
+    }
+
+    // Ensure categoryData is available before proceeding
+    if (categoryData.length === 0 && !YOUR_ORIGINAL_HARDCODED_DATA) { // Remove YOUR_ORIGINAL_HARDCODED_DATA or handle appropriately
+        console.error("No category data available to initialize the page.");
+        // You might want to display a user-friendly message on the page here
+        return; // Stop further execution if data essential for the page is missing
+    }
+
+
+
+    // Initialize data
+    flattenVideoData(categoryData);
+    
+    // Generate the initial module grid
+    generateHomepageModules();
+    
+    // Set up all event listeners
+    setupEventListeners();
+    
+    // Set up hash navigation
+    setupHashNavigation();
+    
+    // Initialize slideshows
+    initializeSlideshows();
+    
+    console.log("Approvideo Learning Hub initialized with hash navigation support");
+});
+
+
 
 
 
