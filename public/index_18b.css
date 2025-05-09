@@ -279,133 +279,186 @@
                 
 
 
-
-/* --- Main Site Footer --- */
+/* --- New Footer Styling --- */
 .site-footer-main {
-    background-color: #1A202C; /* TailwindCSS gray-900 - A very dark, near-black background */
-    color: #A0AEC0;           /* TailwindCSS gray-500 - Light gray text for good contrast */
-    padding: 3rem 2rem 1.5rem; /* Generous top padding, moderate sides/bottom */
-    margin-top: 4rem;          /* Adds space between main content and footer */
-    font-family: 'Inter', sans-serif; /* Matches font from your <head> */
-    line-height: 1.7;         /* Improved readability for footer text */
-    border-top: 4px solid #4299E1; /* TailwindCSS blue-500 - or your primary brand color */
+    background-color: #1A202C; /* Your existing dark background (Tailwind gray-900) */
+    color: #A0AEC0;           /* Default light text (Tailwind gray-500) */
+    padding: 2.5rem 1rem 1.5rem; /* Top/LR/Bottom padding */
+    margin-top: 4rem;
+    font-family: 'Inter', sans-serif;
 }
 
-.footer-container {
-    max-width: 1200px;     /* Limits width of footer content for better readability on large screens */
-    margin: 0 auto;        /* Centers the container */
+.footer-section-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600;
+    color: #E2E8F0; /* Tailwind gray-200 */
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Layer 1: Category Area Navigation */
+.footer-category-navigation {
+    max-width: 1200px;
+    margin: 0 auto 2.5rem auto; /* Center and add space below */
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #2D3748; /* Tailwind gray-800, subtle separator */
+}
+
+.area-nav-footer-icons {
     display: flex;
-    flex-wrap: wrap;       /* Allows sections to stack on smaller screens */
-    justify-content: space-between; /* Distributes space, pushes items to edges if fewer than fit */
-    gap: 2rem;             /* Consistent spacing between footer sections */
+    flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
+    justify-content: center; /* Center the icons/links */
+    gap: 1rem 1.5rem; /* Row and column gap */
 }
 
-.footer-section {
-    flex: 1;               /* Allows sections to share space equally */
-    min-width: 230px;      /* Minimum width before wrapping - adjust as needed */
-    margin-bottom: 1.5rem; /* Space below each section if they stack */
-}
-
-.footer-section h4 {
-    font-size: 1.25rem;    /* text-xl in Tailwind */
-    color: #E2E8F0;         /* TailwindCSS gray-200 or gray-100 - Brighter for headings */
-    margin-bottom: 1.25rem;
-    font-weight: 600;       /* semibold */
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-/* Optional decorative underline for footer headings */
-.footer-section h4::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px; /* Length of the underline */
-    height: 2px;
-    background-color: #4299E1; /* TailwindCSS blue-500 - same as top border for consistency */
-}
-
-.footer-section p {
-    font-size: 0.9rem;      /* Slightly smaller paragraph text */
-    margin-bottom: 0.75rem;
-    color: #CBD5E0;         /* TailwindCSS gray-400 */
-}
-
-.footer-section.links-section ul {
-    list-style: none;      /* Remove default bullet points */
-    padding: 0;
-    margin: 0;
-}
-
-.footer-section.links-section ul li {
-    margin-bottom: 0.75rem; /* Space between links */
-}
-
-.footer-section a {
-    color: #63B3ED;         /* TailwindCSS blue-400 - A clear link color */
+.area-nav-footer-link { /* Container for each category icon + name */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #CBD5E0; /* Tailwind gray-400 */
     text-decoration: none;
-    transition: color 0.2s ease-in-out;
-}
-
-.footer-section a:hover,
-.footer-section a:focus {   /* Added focus state for accessibility */
-    color: #BEE3F8;         /* TailwindCSS blue-200 - Lighter on hover/focus */
-    text-decoration: underline;
-}
-
-.footer-section .donate-button {
-    display: inline-block;
-    background-color: #4299E1; /* TailwindCSS blue-500, or your primary call-to-action color */
-    color: #ffffff;            /* White text on the button */
-    padding: 0.75rem 1.75rem;  /* Generous padding */
-    border-radius: 0.375rem;   /* 6px rounded corners */
-    text-decoration: none;
-    font-weight: 600;          /* semibold */
-    transition: background-color 0.2s ease-in-out, transform 0.15s ease-out;
-    margin-top: 0.75rem;       /* Space above the button */
-    border: none;              /* No border by default */
+    transition: color 0.2s ease;
+    min-width: 80px; /* Ensure some space */
     text-align: center;
 }
 
-.footer-section .donate-button:hover,
-.footer-section .donate-button:focus {
-    background-color: #2B6CB0; /* TailwindCSS blue-700 - Darker shade on hover */
-    color: #ffffff;
-    text-decoration: none;
-    transform: translateY(-2px); /* Slight lift effect */
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Subtle shadow matching button color */
+.area-nav-footer-link:hover {
+    color: #FFFFFF;
 }
 
+.area-nav-footer-link .area-nav-svg, /* For the SVGs from categoryData.svgString */
+.area-nav-footer-link .nav-area-fallback-icon { /* For Font Awesome fallback */
+    width: 32px;  /* Adjust size as needed */
+    height: 32px;
+    /* For SVGs using fill="currentColor" or if you want to override: */
+    /* fill: currentColor;  */
+}
+.area-nav-footer-link .nav-area-fallback-icon { /* Specific for FA if needed */
+    font-size: 28px; /* Adjust if using FA */
+}
+
+.area-nav-footer-link .area-name-footer {
+    font-size: 0.8rem; /* Smaller text for names */
+    font-weight: 500;
+}
+
+
+/* Layer 2: Interactive Icon Links Bar */
+.footer-icon-link-bar {
+    display: flex;
+    justify-content: center; /* Center the row of icons */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Space between icon links */
+    padding: 1.5rem 0;
+    max-width: 800px; /* Constrain width if many icons */
+    margin: 0 auto 2rem auto; /* Center and add space below */
+}
+
+.footer-interactive-link {
+    display: inline-flex; /* Align icon and text span */
+    align-items: center;
+    padding: 0.6rem 0.8rem; /* Slightly smaller padding */
+    border: 2px solid transparent; /* Start with a transparent border */
+    border-radius: 25px; /* Pill shape or adjust for rounded rectangle */
+    color: #A0AEC0; /* Tailwind gray-500 */
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    overflow: hidden; /* Important for the text reveal */
+    position: relative;
+}
+
+.footer-interactive-link .footer-icon {
+    font-size: 1.1rem; /* Legible icon size */
+    transition: transform 0.3s ease;
+    /* margin-right will be handled by the text span's margin on hover */
+}
+
+.footer-interactive-link .link-text {
+    display: inline-block;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px); /* Start slightly to the left for slide-in */
+    transition: max-width 0.35s ease-out, opacity 0.25s ease-out 0.1s, transform 0.35s ease-out, margin-left 0.35s ease-out;
+    margin-left: 0;
+}
+
+.footer-interactive-link:hover {
+    background-color: #2D3748; /* Tailwind gray-800 - Slightly lighter than bg */
+    border-color: #4A5568;    /* Tailwind gray-700 - Lightened border */
+    color: #E2E8F0;           /* Tailwind gray-300 - Brighter text on hover */
+}
+
+.footer-interactive-link:hover .footer-icon {
+    /* Optional: slightly move icon to make space if needed */
+    /* transform: translateX(-2px); */
+}
+
+.footer-interactive-link:hover .link-text {
+    max-width: 150px; /* Adjust based on longest text */
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    margin-left: 0.6rem; /* Space between icon and text when text is visible */
+}
+
+/* Special styling for donate link if desired */
+.footer-interactive-link.donate-footer-link {
+    /* You can give it slightly different base styles or hover states */
+}
+.footer-interactive-link.donate-footer-link:hover {
+    border-color: #63B3ED; /* Tailwind blue-400 */
+    color: #fff;
+    background-color: #4299E1; /* Tailwind blue-500 */
+}
+.footer-interactive-link.donate-footer-link:hover .footer-icon,
+.footer-interactive-link.donate-footer-link:hover .link-text {
+    color: #fff;
+}
+
+
+/* Layer 3: Footer Bottom */
 .footer-bottom {
     text-align: center;
-    padding-top: 2rem;         /* More space above copyright */
-    margin-top: 2rem;          /* Space between main footer content and bottom bar */
-    border-top: 1px solid #4A5568; /* TailwindCSS gray-700 - A subtle separator */
-    font-size: 0.875rem;       /* text-sm */
-    color: #718096;           /* TailwindCSS gray-600 - Muted color for copyright */
+    padding-top: 1.5rem;
+    margin-top: 1rem; /* Reduced space if icon bar is substantial */
+    border-top: 1px solid #2D3748; /* Tailwind gray-800 */
+    font-size: 0.875rem;
+    color: #718096; /* Tailwind gray-600 */
 }
 
-/* Responsive adjustments for smaller screens */
+/* Responsive */
 @media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column; /* Stack sections vertically */
-        align-items: flex-start; 
+    .footer-category-navigation {
+        margin-bottom: 2rem;
     }
-    .footer-section {
-        min-width: 100%;       /* Each section takes full width */
-        margin-bottom: 2rem;   /* More space between stacked sections */
+    .area-nav-footer-icons {
+        gap: 0.8rem 1rem;
     }
-    .site-footer-main {
-        padding: 2rem 1rem 1rem; /* Adjust padding for mobile */
+    .area-nav-footer-link .area-nav-svg,
+    .area-nav-footer-link .nav-area-fallback-icon {
+        width: 28px;
+        height: 28px;
     }
-    .footer-section h4::after { /* Center underline if headings are centered */
-        /* If you center h4 text on mobile, uncomment these: */
-        /* left: 50%; */
-        /* transform: translateX(-50%); */
+    .area-nav-footer-link .area-name-footer {
+        font-size: 0.75rem;
+    }
+    .footer-icon-link-bar {
+        gap: 0.3rem; /* Tighter gap on mobile */
+        padding: 1rem 0;
+    }
+    .footer-interactive-link {
+        padding: 0.5rem 0.7rem;
+    }
+    .footer-interactive-link .footer-icon {
+        font-size: 1rem;
     }
 }
-
 
 
 

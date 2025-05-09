@@ -10,7 +10,139 @@
     <link href="index_18b.css" rel="stylesheet">
 
     <style>
+
+            .featured-item {
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            
+            .featured-item:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            
+            .featured-item .play-button {
+                opacity: 0.9;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+            }
+            
+            .featured-item:hover .play-button {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+
             .homepage-module-item { display:none; }
+            /* --- Hero Section --- */
+            .hero-section {
+                position: relative; /* Establishes a positioning context for absolute children */
+                width: 100%;
+                min-height: 400px; /* Adjust as needed, or use vh units e.g., 50vh or 60vh */
+                display: flex;     /* To center hero-content */
+                align-items: center;
+                justify-content: center;
+                overflow: hidden; /* To ensure overlay/background don't spill */
+                color: #fff; /* Default text color for hero content (if any) */
+                text-align: center; /* Center text within hero-content */
+                margin-bottom: 2rem; /* Space below the hero section */
+            }
+
+            .hero-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('/assets/images/your-hero-graphic.jpg'); /* REPLACE with your hero image path */
+                background-size: cover;
+                background-position: center center;
+                z-index: 1;
+                /* Optional: Add a subtle animation or parallax effect if desired later */
+            }
+
+            .hero-overlay { /* Optional: for better text readability over a busy image */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4); /* Adjust opacity (0.3 to 0.6 is common) */
+                z-index: 2;
+            }
+
+            .hero-content {
+                position: relative; /* To sit on top of background and overlay */
+                z-index: 3;
+                padding: 2rem;
+                max-width: 900px; /* Max width for the navigation content on hero */
+                margin: 0 auto;
+                background-color: rgba(42, 42, 52, 0.7); /* Semi-transparent dark background for the nav block (Tailwind gray-800 at 70% opacity) */
+                border-radius: 0.75rem; /* Rounded corners for the nav block */
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            }
+
+            /* Optional Hero Title Styling (if you add a title) */
+            .hero-title {
+                font-size: 2.5rem; /* Adjust */
+                font-weight: 700;
+                color: #fff;
+                margin-bottom: 0.5rem;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            }
+            .hero-subtitle {
+                font-size: 1.2rem; /* Adjust */
+                color: #f0f0f0;
+                margin-bottom: 2rem;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            }
+
+            /* --- Quick Navigation on Hero --- */
+            .quick-navigation-on-hero {
+                /* Container for the "Quick Navigation" title and pills */
+            }
+
+            .quick-navigation-on-hero .quick-nav-title {
+                font-size: 1.5rem; /* text-xl or text-2xl */
+                font-weight: 600;  /* semibold */
+                color: #fff;       /* White text for the title */
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+
+            .subcategory-pills-on-hero {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem; /* 12px */
+            }
+
+            /* Styling for the pills (you can adapt your existing .subcategory-pill styles) */
+            .subcategory-pills-on-hero .subcategory-pill {
+                /* Your existing pill styles from Tailwind might largely work, but you might want to adjust for contrast */
+                /* Example adjustments if needed: */
+                background-color: rgba(255, 255, 255, 0.2); /* Light, semi-transparent background */
+                color: #fff; /* White text */
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                padding: 0.5rem 1rem; /* text-sm */
+                font-size: 0.875rem;
+                font-weight: 500; /* medium */
+                border-radius: 9999px; /* pill shape */
+                transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+            .subcategory-pills-on-hero .subcategory-pill:hover {
+                background-color: rgba(255, 255, 255, 0.35);
+                border-color: rgba(255, 255, 255, 0.6);
+                transform: translateY(-1px);
+            }
+
+            .subcategory-pills-on-hero .subcategory-pill i,
+            .subcategory-pills-on-hero .subcategory-pill svg { /* For both FA and Feather */
+                margin-right: 0.5rem;
+                /* Ensure icon color contrasts with pill background, or use currentcolor */
+            }
+
+
+
     </style>
 
 </head>
@@ -49,25 +181,16 @@
         </div>
     </div>
 
-
-
-
-
-
     <div id="modules-grid-container">
-
-
 
         <main class="modules-grid">
         </main>
 
         <nav id="subcategory-navigation-bar" class="bg-gray-200 p-4 mb-6 shadow-md">
-            <h3 class="text-xl font-semibold text-gray-700 mb-3 text-center">Quick Navigation</h3>
             <div id="subcategory-pills-container" class="flex flex-wrap justify-center gap-3">
                 </div>
         </nav>
         <div id="subcategory-preview"></div>
-
 
 
 <div id="featured-content-container" class="mt-6 mx-auto max-w-6xl px-4">
@@ -314,31 +437,32 @@
     </div>
 </div>
 
-<!-- CSS styles for Featured Content -->
-<style>
-    .featured-item {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
-    .featured-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .featured-item .play-button {
-        opacity: 0.9;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-    
-    .featured-item:hover .play-button {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-</style>
 
 
 
     </div>
+
+
+    <section class="hero-section">
+        <div class="hero-background" style="background-image: url('http://googleusercontent.com/image_generation_content/30');">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Build, Learn, Thrive</h1>
+            <p class="hero-subtitle">Resourceful solutions for a sustainable future.</p>
+            
+            <nav id="hero-quick-navigation" class="quick-navigation-on-hero">
+                <div id="subcategory-pills-container-hero" class="subcategory-pills-on-hero">
+                    </div>
+            </nav>
+        </div>
+    </section>
+
+
+
+
+
+
 
     <div id="category-content-container">
         <button id="back-to-modules-button">
@@ -465,54 +589,45 @@
             </div>
         </div>
     </div>
-    <div id="gplCcModal" class="modal-overlay">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="gplCcModalTitle">
-            <button class="modal-close-button" aria-label="Close modal">&times;</button>
-            <h2 class="modal-title" id="gplCcModalTitle">Content Licensing</h2>
-            <div class="modal-content">
-                <p><strong>IMPORTANT: This section contains general information about common open licenses. You MUST clearly specify the actual license(s) under which your content is shared and consult with licensing experts or legal resources if unsure. This is NOT legal advice.</strong></p>
-                
-                <p>Approvideo Learning Hub is committed to open access and knowledge sharing. The content provided on this platform may be subject to one or more of the following types of licenses, or a specific license detailed by the content creator or Approvideo Learning Hub.</p>
-                
-                <h3>Open Source Software Licenses (e.g., GPL)</h3>
-                <p>If any software components or code shared on this platform are licensed under an open-source license like the GNU General Public License (GPL), it generally means you are free to use, study, share, and modify that software under the terms of the specified GPL version. Such licenses are designed to protect these freedoms for all users.</p>
-                <p><em>Example: "Software component X is licensed under the GPLv3."</em></p>
-    
-                <h3>Creative Commons (CC) Licenses for Content</h3>
-                <p>Creative Commons licenses provide a standard way for creators to grant public permission to share and use their creative works (like text, images, videos) on conditions of their choice. Some common CC licenses include:</p>
-                <ul>
-                    <li><strong>CC BY (Attribution):</strong> Allows others to distribute, remix, adapt, and build upon the work, even commercially, as long as they give credit to the original creator.</li>
-                    <li><strong>CC BY-SA (Attribution-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work even for commercial purposes, as long as they give credit and license their new creations under identical terms.</li>
-                    <li><strong>CC BY-NC (Attribution-NonCommercial):</strong> Allows others to remix, adapt, and build upon the work non-commercially. Their new works must also acknowledge the original creator and be non-commercial, but they don’t have to license their derivative works on the same terms.</li>
-                    <li><strong>CC BY-NC-SA (Attribution-NonCommercial-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work non-commercially, as long as they credit the original creator and license their new creations under the identical terms.</li>
-                    <li><strong>CC0 (Public Domain Dedication):</strong> The creator waives all copyright and related rights to their work to the extent possible under law, allowing others to copy, modify, distribute, and perform the work, even for commercial purposes, all without asking permission.</li>
-                </ul>
-                <p><em>Example: "Learning modules on Approvideo Learning Hub are licensed under CC BY-NC-SA 4.0 unless otherwise specified on the material itself."</em></p>
-                
-                <p><strong>Please check individual content items or site-wide policies for specific licensing information. If no specific license is mentioned for particular content created by Approvideo Learning Hub, you should assume [Specify Your Default License Here - e.g., "All Rights Reserved" or a chosen CC license like "CC BY-NC-SA 4.0"]. Clearly defining your licensing is crucial.</strong></p>
-            </div>
-        </div>
-    </div>
+
 
 
     <footer class="site-footer-main">
-        <div class="footer-container">
-
-    
-            <div class="footer-section action-section">
-                <h4>Support Us</h4>
-                <p>Help us continue to provide valuable learning resources.</p>
-                <a href="/donate" class="donate-button">Donate Now</a>
-            </div>
-    
-            <div class="footer-section contact-info">
-                <h4>Contact</h4>
-                <p>Approvideo Learning Hub</p>
-                <p><a href="mailto:info@approvideo.com">info@approvideo.com</a></p>
-            </div>
+        <div class="footer-category-navigation">
+            <h4 class="footer-section-title">Explore Our Learning Areas</h4>
+            <div id="footerAreaNavContainer" class="area-nav-footer-icons">
+                </div>
         </div>
+    
+        <div class="footer-icon-link-bar">
+            <a href="#" id="termsLinkFooter" class="footer-interactive-link" title="Terms of Service">
+                <i class="fas fa-file-contract footer-icon"></i>
+                <span class="link-text">Terms</span>
+            </a>
+            <a href="#" id="conditionsLinkFooter" class="footer-interactive-link" title="Conditions of Use">
+                <i class="fas fa-gavel footer-icon"></i>
+                <span class="link-text">Conditions</span>
+            </a>
+            <a href="#" id="privacyLinkFooter" class="footer-interactive-link" title="Privacy Policy">
+                <i class="fas fa-user-secret footer-icon"></i>
+                <span class="link-text">Privacy</span>
+            </a>
+            <a href="#" id="visionLinkFooter" class="footer-interactive-link" title="Our Vision">
+                <i class="fas fa-lightbulb footer-icon"></i> {/* Or fa-eye */}
+                <span class="link-text">Vision</span>
+            </a>
+            <a href="/donate" class="footer-interactive-link donate-footer-link" title="Support Us"> {/* Assuming /donate is a page */}
+                <i class="fas fa-hand-holding-heart footer-icon"></i>
+                <span class="link-text">Donate</span>
+            </a>
+            <a href="mailto:info@approvideo.com" class="footer-interactive-link" title="Contact Us">
+                <i class="fas fa-envelope footer-icon"></i>
+                <span class="link-text">Contact</span>
+            </a>
+        </div>
+    
         <div class="footer-bottom">
-            <p>&copy; <span id="currentYear"></span> Approvideo Learning Hub. All Rights Reserved. <a href="#" id="termsLinkFooter">Terms</a> <a href="#" id="conditionsLinkFooter">Free access</a> <a href="#" id="privacyLinkFooter">Privacy</a> <a href="#" id="visionLinkFooter">Vision</a> <a href="#" id="gplCcLinkFooter">(GPL/CC)</a></p>
+            <p>&copy; <span id="currentYear"></span> Approvideo Learning Hub. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -856,25 +971,103 @@ function createAccordionItem(title, contentHtml, parentElement, defaultOpen = fa
         let currentArea = null; // Track the currently displayed area
 
 
-// --- Modal Interaction Functions (ensure these are defined in your script) ---
-let lastFocusedElement = null; 
+
+
+// Add this function to your script
+function populateFooterCategoryNav(categoriesInfo) {
+    const container = document.getElementById('footerAreaNavContainer');
+    if (!container) {
+        console.error("Footer area navigation container ('footerAreaNavContainer') not found.");
+        return;
+    }
+    container.innerHTML = ''; // Clear previous
+
+    if (!categoriesInfo || categoriesInfo.length === 0) {
+        console.warn("No category information for footer navigation.");
+        return;
+    }
+
+    categoriesInfo.forEach(areaInfo => {
+        const areaSlug = areaInfo.slug;
+        const areaDisplayName = areaInfo.name;
+
+        if (!areaSlug || !areaDisplayName) {
+            console.error("Missing slug or name in areaInfo for footer nav icons:", areaInfo);
+            return;
+        }
+
+        const linkElement = document.createElement('a');
+        linkElement.href = `#${areaSlug}`; // Link to the category view
+        linkElement.className = 'area-nav-footer-link';
+        linkElement.title = `Explore ${areaDisplayName}`;
+
+        const iconWrapper = document.createElement('div'); // Wrapper for consistent icon sizing if needed
+
+        if (areaInfo.svgString && typeof areaInfo.svgString === 'string' && areaInfo.svgString.trim().startsWith('<svg')) {
+            iconWrapper.innerHTML = areaInfo.svgString;
+            const svgElement = iconWrapper.querySelector('svg');
+            if (svgElement) {
+                svgElement.classList.add('area-nav-svg');
+                svgElement.removeAttribute('width');
+                svgElement.removeAttribute('height');
+                // Consider adding: svgElement.style.fill = 'currentColor'; if SVGs are designed for it
+            }
+        } else {
+            const fallbackIcon = document.createElement('i');
+            fallbackIcon.className = `fas ${areaInfo.icon || 'fa-folder-open'} nav-area-fallback-icon`;
+            iconWrapper.appendChild(fallbackIcon);
+        }
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'area-name-footer';
+        nameSpan.textContent = areaDisplayName;
+
+        linkElement.appendChild(iconWrapper);
+        linkElement.appendChild(nameSpan);
+
+        // Event listener to call showCategoryView (and potentially close search if open)
+        linkElement.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor jump if showCategoryView handles navigation
+            console.log(`Footer category icon clicked for: '${areaDisplayName}'. Calling showCategoryView with slug: '${areaSlug}'`);
+            if (typeof showCategoryView === 'function') {
+                showCategoryView(areaSlug);
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page after view change
+            } else {
+                console.error(`showCategoryView function is not defined for area '${areaDisplayName}'.`);
+            }
+        });
+
+        container.appendChild(linkElement);
+    });
+    console.log("Footer category navigation icons populated.");
+}
+
+
+
+
+
+
+
+
+// --- Modal Interaction Functions ---
+let lastFocusedElement = null; // To store focus before modal opens
 
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal && !modal.classList.contains('visible')) {
-        lastFocusedElement = document.activeElement; 
+        lastFocusedElement = document.activeElement; // Save current focus
+
         modal.classList.add('visible');
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+        // Focus the modal box or its first focusable element for accessibility
         const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
         const firstFocusableElement = modal.querySelector(focusableElements);
         if (firstFocusableElement) {
             firstFocusableElement.focus();
         } else {
-            const modalBox = modal.querySelector('.modal-box');
-            if (modalBox) {
-                modalBox.setAttribute('tabindex', '-1'); 
-                modalBox.focus();
-            }
+            modal.querySelector('.modal-box').setAttribute('tabindex', '-1'); // Make modal-box focusable if no other elements
+            modal.querySelector('.modal-box').focus();
         }
         console.log(`Modal ${modalId} opened.`);
     } else if (!modal) {
@@ -886,9 +1079,11 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal && modal.classList.contains('visible')) {
         modal.classList.remove('visible');
-        document.body.style.overflow = ''; 
+        document.body.style.overflow = ''; // Restore background scrolling
+        
+        // Restore focus to the element that opened the modal
         if (lastFocusedElement) {
-            lastFocusedElement.focus(); 
+            lastFocusedElement.focus();
             lastFocusedElement = null;
         }
         console.log(`Modal ${modalId} closed.`);
@@ -901,10 +1096,10 @@ function setupModalEventListeners(modalId, triggerId) {
 
     if (!triggerButton) {
         // console.warn(`Trigger button with ID ${triggerId} not found for modal ${modalId}.`);
-        return; 
+        return; // Silently fail if trigger isn't there, maybe it's optional
     }
     if (!modal) {
-        console.error(`Modal with ID ${modalId} not found for trigger ${triggerId}.`);
+        console.error(`Modal with ID ${modalId} not found. Cannot attach events for trigger ${triggerId}.`);
         return;
     }
 
@@ -921,6 +1116,7 @@ function setupModalEventListeners(modalId, triggerId) {
         });
     }
 
+    // Close modal if overlay (area outside .modal-box) is clicked
     modal.addEventListener('click', (event) => {
         if (event.target === modal) { 
             closeModal(modalId);
@@ -928,14 +1124,14 @@ function setupModalEventListeners(modalId, triggerId) {
     });
 }
 
-// Updated Function to initialize all modals
+// Function to initialize all modals
 function initializeAllModals() {
     setupModalEventListeners('termsModal', 'termsLinkFooter');
     setupModalEventListeners('conditionsModal', 'conditionsLinkFooter');
     setupModalEventListeners('privacyModal', 'privacyLinkFooter');
     setupModalEventListeners('visionModal', 'visionLinkFooter');
-    setupModalEventListeners('gplCcModal', 'gplCcLinkFooter'); // Added new GPL/CC Modal
 
+    // Close any open modal with the Escape key
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             const visibleModal = document.querySelector('.modal-overlay.visible');
@@ -944,8 +1140,9 @@ function initializeAllModals() {
             }
         }
     });
-    console.log("All modals event listeners initialized.");
+    console.log("All modals initialized.");
 }
+
 
 
 
@@ -984,10 +1181,10 @@ function flattenVideoData(originalData) {
 }
 
 
-function populateSubcategoryPills(categories) { // Changed from categoryData to categories to avoid conflict if global categoryData is used
-    const container = document.getElementById('subcategory-pills-container');
+function populateSubcategoryPills(categories, containerId = 'subcategory-pills-container') { // Default to old ID if not provided
+    const container = document.getElementById(containerId);
     if (!container) {
-        console.error("Subcategory pills container not found!");
+        console.error(`Pills container with ID "${containerId}" not found!`);
         return;
     }
     container.innerHTML = ''; // Clear any existing pills
@@ -2069,7 +2266,6 @@ function displaySingleVideoInPane(videoItemFromSearch) {
                 ${fullVideoData.licence ? `<p><strong>License:</strong> ${fullVideoData.licence}</p>` : ''}
                 ${fullVideoData.contentCreatorArchive ? `<p><strong>Creator Archive:</strong> <a href="${fullVideoData.contentCreatorArchive}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.contentCreatorArchive}</a></p>` : ''}
                 ${fullVideoData.patreon ? `<p><strong>Patreon:</strong> <a href="${fullVideoData.patreon}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.patreon}</a></p>` : ''}
-                
             </div>
 
             <div class="mt-8 flex justify-end">
@@ -2212,102 +2408,116 @@ function handleSearch() {
             }
         }
 
-        document.addEventListener('DOMContentLoaded', async function() { // Main (and only) DOMContentLoaded listener
-    console.log("Initializing Approvideo Learning Hub...");
 
-    try {
-        const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        categoryData = jsonData;
-        console.log("Successfully loaded categoryData from JSON file:", categoryData.length, "items");
 
-        if (!categoryData || categoryData.length === 0) {
-            console.error("Fetched JSON data is empty or invalid. Halting further app initialization.");
-            document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
+
+        document.addEventListener('DOMContentLoaded', async function() {
+        console.log("Initializing Approvideo Learning Hub...");
+
+
+        try {
+            const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const jsonData = await response.json();
+            categoryData = jsonData;
+            console.log("Successfully loaded categoryData from JSON file:", categoryData.length, "items");
+
+            if (!categoryData || categoryData.length === 0) {
+                console.error("Fetched JSON data is empty or invalid. Halting further app initialization.");
+                document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
+                return;
+            }
+        } catch (error) {
+            console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
+            document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
             return;
         }
-    } catch (error) {
-        console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
-        document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
-        return;
-    }
 
-    console.log("Proceeding with page initialization using fetched categoryData.");
+        console.log("Proceeding with page initialization using fetched categoryData.");
 
-    // 1. Initialize Core Data Structures
-    flattenVideoData(categoryData);     // Populates global 'allVideosFlat'
-    if (typeof buildSearchableItems === 'function') {
-        buildSearchableItems(categoryData); // Populates global 'searchableItems'
-    } else {
-        console.error("CRITICAL: buildSearchableItems function is NOT defined.");
-    }
-
-    // 2. Prepare Data for and Populate Area Navigation Icons (for header and search menu)
-    const categoryAreasForNav = categoryData.map(cat => ({
-        name: cat.area,
-        slug: cat.area ? cat.area.toLowerCase().replace(/\s+/g, '-') : `unknown-area-${Date.now()}`,
-        svgString: cat.svgString,
-        icon: cat.icon 
-    }));
-
-    if (typeof populateAreaNavIcons === 'function') {
-        populateAreaNavIcons(categoryAreasForNav);
-    } else {
-        console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
-    }
-
-    // 3. Initialize UI Components & Main Interactions
-    generateHomepageModules();           // Renders homepage category cards
-    populateSubcategoryPills(categoryData); // Renders subcategory filter pills
-
-    if (typeof setupSearchMenuInteractions === 'function') {
-        setupSearchMenuInteractions();   // Handles floating search menu open/close logic
-    } else {
-        console.error("CRITICAL: setupSearchMenuInteractions function is NOT defined.");
-    }
-    
-    if (typeof setupEventListeners === 'function') { // This function should now include search input listeners
-        setupEventListeners();           
-    } else {
-        console.error("CRITICAL: setupEventListeners function is NOT defined.");
-    }
-    
-
-    console.log("Approvideo Learning Hub fully initialized including modals.");
-
-    setupHashNavigation();               // Handles URL hash changes for navigation
-    initializeSlideshows();              // Sets up any slideshows on the page
-    
-    // Call to function that renders main page sections (if different from generateHomepageModules)
-    // Ensure this function exists and creates elements with IDs if search results need to scroll to them.
-    if (typeof createLearningAreasAccordion === 'function') { 
-        createLearningAreasAccordion();
-    } else {
-        // If you don't have/need createLearningAreasAccordion, you can remove this.
-        // Or if its functionality is now part of generateHomepageModules, that's also fine.
-        console.warn("createLearningAreasAccordion function is not defined (optional).");
-    }
-
-    if (typeof initializeAllModals === 'function') {
-        initializeAllModals(); // This will now set up all 5 modals
-    } else {
-        console.error("CRITICAL: initializeAllModals function is NOT defined.");
-    }
-
-    // Update current year in footer
-    const yearSpan = document.getElementById('currentYear');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
+        if (typeof populateSubcategoryPills === 'function') {
+            populateSubcategoryPills(categoryData, 'subcategory-pills-container-hero'); // Target new hero container
+            // If you still have the old nav bar and want to populate it too, call it again with the old ID
+            // populateSubcategoryPills(categoryData, 'subcategory-pills-container');
+        }
 
 
 
+        // 1. Initialize Core Data Structures
+        flattenVideoData(categoryData);     // Populates global 'allVideosFlat'
+        if (typeof buildSearchableItems === 'function') {
+            buildSearchableItems(categoryData); // Populates global 'searchableItems'
+        } else {
+            console.error("CRITICAL: buildSearchableItems function is NOT defined.");
+        }
 
-    console.log("Approvideo Learning Hub initialized successfully.");
-});
+
+
+        // --- Populate Nav Icons in the Floating Search Menu ---
+        if (typeof populateAreaNavIcons === 'function') {
+            populateAreaNavIcons(categoryAreasForNav); 
+        } else {
+            console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
+        }
+
+        // 3. Initialize UI Components & Main Interactions
+        generateHomepageModules();           // Renders homepage category cards
+
+        if (typeof setupSearchMenuInteractions === 'function') {
+            setupSearchMenuInteractions();   // Handles floating search menu open/close logic
+        } else {
+            console.error("CRITICAL: setupSearchMenuInteractions function is NOT defined.");
+        }
+        
+        if (typeof setupEventListeners === 'function') { // This function should now include search input listeners
+            setupEventListeners();           
+        } else {
+            console.error("CRITICAL: setupEventListeners function is NOT defined.");
+        }
+        
+        if (typeof initializeAllModals === 'function') {
+            initializeAllModals();
+        } else {
+            console.error("CRITICAL: initializeAllModals function is NOT defined.");
+        }
+
+        // Update current year in footer
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+
+        const categoryAreasForNav = categoryData.map(cat => ({
+            name: cat.area,
+            slug: cat.area ? cat.area.toLowerCase().replace(/\s+/g, '-') : `unknown-area-${Date.now()}`,
+            svgString: cat.svgString, 
+            icon: cat.icon // Fallback Font Awesome class
+        }));
+
+        // --- Populate Nav Icons in the Floating Search Menu ---
+        if (typeof populateAreaNavIcons === 'function') {
+                populateAreaNavIcons(categoryAreasForNav); 
+            } else {
+                console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
+            }
+
+        setupHashNavigation();               // Handles URL hash changes for navigation
+        initializeSlideshows();              // Sets up any slideshows on the page
+        
+        // Call to function that renders main page sections (if different from generateHomepageModules)
+        // Ensure this function exists and creates elements with IDs if search results need to scroll to them.
+        if (typeof createLearningAreasAccordion === 'function') { 
+            createLearningAreasAccordion();
+        } else {
+            // If you don't have/need createLearningAreasAccordion, you can remove this.
+            // Or if its functionality is now part of generateHomepageModules, that's also fine.
+            console.warn("createLearningAreasAccordion function is not defined (optional).");
+        }
+
+        console.log("Approvideo Learning Hub initialized successfully.");
+    });
 
 
 

@@ -10,7 +10,7 @@
     <link href="index_18b.css" rel="stylesheet">
 
     <style>
-            .floating-search-menu { display:block; }
+            .homepage-module-item { display:none; }
     </style>
 
 </head>
@@ -465,23 +465,46 @@
             </div>
         </div>
     </div>
-
+    <div id="gplCcModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="gplCcModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="gplCcModalTitle">Content Licensing</h2>
+            <div class="modal-content">
+                <p><strong>IMPORTANT: This section contains general information about common open licenses. You MUST clearly specify the actual license(s) under which your content is shared and consult with licensing experts or legal resources if unsure. This is NOT legal advice.</strong></p>
+                
+                <p>Approvideo Learning Hub is committed to open access and knowledge sharing. The content provided on this platform may be subject to one or more of the following types of licenses, or a specific license detailed by the content creator or Approvideo Learning Hub.</p>
+                
+                <h3>Open Source Software Licenses (e.g., GPL)</h3>
+                <p>If any software components or code shared on this platform are licensed under an open-source license like the GNU General Public License (GPL), it generally means you are free to use, study, share, and modify that software under the terms of the specified GPL version. Such licenses are designed to protect these freedoms for all users.</p>
+                <p><em>Example: "Software component X is licensed under the GPLv3."</em></p>
+    
+                <h3>Creative Commons (CC) Licenses for Content</h3>
+                <p>Creative Commons licenses provide a standard way for creators to grant public permission to share and use their creative works (like text, images, videos) on conditions of their choice. Some common CC licenses include:</p>
+                <ul>
+                    <li><strong>CC BY (Attribution):</strong> Allows others to distribute, remix, adapt, and build upon the work, even commercially, as long as they give credit to the original creator.</li>
+                    <li><strong>CC BY-SA (Attribution-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work even for commercial purposes, as long as they give credit and license their new creations under identical terms.</li>
+                    <li><strong>CC BY-NC (Attribution-NonCommercial):</strong> Allows others to remix, adapt, and build upon the work non-commercially. Their new works must also acknowledge the original creator and be non-commercial, but they don’t have to license their derivative works on the same terms.</li>
+                    <li><strong>CC BY-NC-SA (Attribution-NonCommercial-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work non-commercially, as long as they credit the original creator and license their new creations under the identical terms.</li>
+                    <li><strong>CC0 (Public Domain Dedication):</strong> The creator waives all copyright and related rights to their work to the extent possible under law, allowing others to copy, modify, distribute, and perform the work, even for commercial purposes, all without asking permission.</li>
+                </ul>
+                <p><em>Example: "Learning modules on Approvideo Learning Hub are licensed under CC BY-NC-SA 4.0 unless otherwise specified on the material itself."</em></p>
+                
+                <p><strong>Please check individual content items or site-wide policies for specific licensing information. If no specific license is mentioned for particular content created by Approvideo Learning Hub, you should assume [Specify Your Default License Here - e.g., "All Rights Reserved" or a chosen CC license like "CC BY-NC-SA 4.0"]. Clearly defining your licensing is crucial.</strong></p>
+            </div>
+        </div>
+    </div>
 
 
     <footer class="site-footer-main">
         <div class="footer-container">
-            <div class="footer-section links-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="/terms-and-conditions">Terms &amp; Conditions</a></li>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li> {/* I assume you'll add this if it was missed */}
-                </ul>
-            </div>
+
+    
             <div class="footer-section action-section">
                 <h4>Support Us</h4>
                 <p>Help us continue to provide valuable learning resources.</p>
                 <a href="/donate" class="donate-button">Donate Now</a>
             </div>
+    
             <div class="footer-section contact-info">
                 <h4>Contact</h4>
                 <p>Approvideo Learning Hub</p>
@@ -489,7 +512,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <span id="currentYear">2025</span> Approvideo Learning Hub. All Rights Reserved.</p>
+            <p>&copy; <span id="currentYear"></span> Approvideo Learning Hub. All Rights Reserved. <a href="#" id="termsLinkFooter">Terms</a> <a href="#" id="conditionsLinkFooter">Free access</a> <a href="#" id="privacyLinkFooter">Privacy</a> <a href="#" id="visionLinkFooter">Vision</a> <a href="#" id="gplCcLinkFooter">(GPL/CC)</a></p>
         </div>
     </footer>
 
@@ -833,26 +856,25 @@ function createAccordionItem(title, contentHtml, parentElement, defaultOpen = fa
         let currentArea = null; // Track the currently displayed area
 
 
-
-// --- Modal Interaction Functions ---
-let lastFocusedElement = null; // To store focus before modal opens
+// --- Modal Interaction Functions (ensure these are defined in your script) ---
+let lastFocusedElement = null; 
 
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal && !modal.classList.contains('visible')) {
-        lastFocusedElement = document.activeElement; // Save current focus
-
+        lastFocusedElement = document.activeElement; 
         modal.classList.add('visible');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-
-        // Focus the modal box or its first focusable element for accessibility
+        document.body.style.overflow = 'hidden'; 
         const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
         const firstFocusableElement = modal.querySelector(focusableElements);
         if (firstFocusableElement) {
             firstFocusableElement.focus();
         } else {
-            modal.querySelector('.modal-box').setAttribute('tabindex', '-1'); // Make modal-box focusable if no other elements
-            modal.querySelector('.modal-box').focus();
+            const modalBox = modal.querySelector('.modal-box');
+            if (modalBox) {
+                modalBox.setAttribute('tabindex', '-1'); 
+                modalBox.focus();
+            }
         }
         console.log(`Modal ${modalId} opened.`);
     } else if (!modal) {
@@ -864,11 +886,9 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal && modal.classList.contains('visible')) {
         modal.classList.remove('visible');
-        document.body.style.overflow = ''; // Restore background scrolling
-        
-        // Restore focus to the element that opened the modal
+        document.body.style.overflow = ''; 
         if (lastFocusedElement) {
-            lastFocusedElement.focus();
+            lastFocusedElement.focus(); 
             lastFocusedElement = null;
         }
         console.log(`Modal ${modalId} closed.`);
@@ -881,10 +901,10 @@ function setupModalEventListeners(modalId, triggerId) {
 
     if (!triggerButton) {
         // console.warn(`Trigger button with ID ${triggerId} not found for modal ${modalId}.`);
-        return; // Silently fail if trigger isn't there, maybe it's optional
+        return; 
     }
     if (!modal) {
-        console.error(`Modal with ID ${modalId} not found. Cannot attach events for trigger ${triggerId}.`);
+        console.error(`Modal with ID ${modalId} not found for trigger ${triggerId}.`);
         return;
     }
 
@@ -901,7 +921,6 @@ function setupModalEventListeners(modalId, triggerId) {
         });
     }
 
-    // Close modal if overlay (area outside .modal-box) is clicked
     modal.addEventListener('click', (event) => {
         if (event.target === modal) { 
             closeModal(modalId);
@@ -909,14 +928,14 @@ function setupModalEventListeners(modalId, triggerId) {
     });
 }
 
-// Function to initialize all modals
+// Updated Function to initialize all modals
 function initializeAllModals() {
-    setupModalEventListeners('termsModal', 'termsLink');
-    setupModalEventListeners('conditionsModal', 'conditionsLink');
-    setupModalEventListeners('privacyModal', 'privacyLink');
-    setupModalEventListeners('visionModal', 'visionLink');
+    setupModalEventListeners('termsModal', 'termsLinkFooter');
+    setupModalEventListeners('conditionsModal', 'conditionsLinkFooter');
+    setupModalEventListeners('privacyModal', 'privacyLinkFooter');
+    setupModalEventListeners('visionModal', 'visionLinkFooter');
+    setupModalEventListeners('gplCcModal', 'gplCcLinkFooter'); // Added new GPL/CC Modal
 
-    // Close any open modal with the Escape key
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             const visibleModal = document.querySelector('.modal-overlay.visible');
@@ -925,9 +944,8 @@ function initializeAllModals() {
             }
         }
     });
-    console.log("All modals initialized.");
+    console.log("All modals event listeners initialized.");
 }
-
 
 
 
@@ -987,7 +1005,7 @@ function populateSubcategoryPills(categories) { // Changed from categoryData to 
 
 
                 const pillButton = document.createElement('button');
-                pillButton.className = 'subcategory-pill bg-sky-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75';
+                pillButton.className = 'subcategory-pill bg-slate-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-sky-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75';
 
                 let iconHtml = '';
                 // Use parent category's Font Awesome icon if available, or a generic one.
@@ -2051,7 +2069,7 @@ function displaySingleVideoInPane(videoItemFromSearch) {
                 ${fullVideoData.licence ? `<p><strong>License:</strong> ${fullVideoData.licence}</p>` : ''}
                 ${fullVideoData.contentCreatorArchive ? `<p><strong>Creator Archive:</strong> <a href="${fullVideoData.contentCreatorArchive}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.contentCreatorArchive}</a></p>` : ''}
                 ${fullVideoData.patreon ? `<p><strong>Patreon:</strong> <a href="${fullVideoData.patreon}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.patreon}</a></p>` : ''}
-                {/* Add more fields as needed: socials, tags related to the video itself, etc. */}
+                
             </div>
 
             <div class="mt-8 flex justify-end">
@@ -2257,17 +2275,8 @@ function handleSearch() {
         console.error("CRITICAL: setupEventListeners function is NOT defined.");
     }
     
-    if (typeof initializeAllModals === 'function') {
-        initializeAllModals();
-    } else {
-        console.error("CRITICAL: initializeAllModals function is NOT defined.");
-    }
 
-    // Update current year in footer
-    const yearSpan = document.getElementById('currentYear');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
+    console.log("Approvideo Learning Hub fully initialized including modals.");
 
     setupHashNavigation();               // Handles URL hash changes for navigation
     initializeSlideshows();              // Sets up any slideshows on the page
@@ -2281,6 +2290,21 @@ function handleSearch() {
         // Or if its functionality is now part of generateHomepageModules, that's also fine.
         console.warn("createLearningAreasAccordion function is not defined (optional).");
     }
+
+    if (typeof initializeAllModals === 'function') {
+        initializeAllModals(); // This will now set up all 5 modals
+    } else {
+        console.error("CRITICAL: initializeAllModals function is NOT defined.");
+    }
+
+    // Update current year in footer
+    const yearSpan = document.getElementById('currentYear');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+
+
+
 
     console.log("Approvideo Learning Hub initialized successfully.");
 });
