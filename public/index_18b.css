@@ -475,7 +475,7 @@
 
 .mega-menu-panel {
     position: absolute;   /* Positioned relative to the .site-header */
-    top: 100%;            /* Aligns the top of the megamenu with the bottom of .site-header */
+    top: 80px;            /* Aligns the top of the megamenu with the bottom of .site-header */
     left: 0;
     right: 0;
     background-color: #ffffff;
