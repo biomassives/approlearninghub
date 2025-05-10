@@ -7,15 +7,11 @@
 
         /* --- Site Header (main bar) --- */
         .site-header {
-            display: flex;
-            justify-content: space-between; /* Key for left/right alignment */
-            align-items: center;
-            padding: 0.75rem 1.5rem; /* Adjust padding */
-            background-color: #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            position: sticky;
+            /* ... your existing styles (display: flex, padding, background, etc.) ... */
+            position: sticky; /* This is crucial for the child's absolute positioning context */
             top: 0;
-            z-index: 1020; /* High z-index */
+            z-index: 1020; /* Ensure it's above page content, megamenu will be relative to this */
+            /* NO bottom padding on .site-header itself if top:100% is to align with content bottom */
         }
 
         .site-header-left {
@@ -463,30 +459,45 @@
     transform: rotate(180deg);
 }
 
-/* --- Megamenu Panel Styling --- */
+
+.site-header-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    /* This wrapper's height will effectively be the header's content height */
+    /* Add any padding that defines your header's visual height here, e.g.: */
+    /* padding-top: 0.75rem; */
+    /* padding-bottom: 0.75rem; */
+}
+
 .mega-menu-panel {
-    display: none; /* Hidden by default, JS will toggle */
-    position: absolute; /* Positioned relative to the nearest positioned ancestor or body */
-    top: 100%; /* Position it right below the header (assuming header is position:relative or sticky) */
+    position: absolute;   /* Positioned relative to the .site-header */
+    top: 100%;            /* Aligns the top of the megamenu with the bottom of .site-header */
     left: 0;
     right: 0;
     background-color: #ffffff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    z-index: 1010; /* Below floating search menu, above most content */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 100;         /* Stacking context within the header */
     padding: 2rem 1.5rem;
-    border-top: 1px solid #e2e8f0; /* Tailwind gray-300 */
-    /* Animation for appearing */
+    border-top: 1px solid #e2e8f0;
+    
+    visibility: hidden;
     opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease, display 0s linear 0.3s; /* Delay display none */
+    transform: translateY(-10px); /* Start slightly up for dropdown effect */
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out, visibility 0s linear 0.25s;
+    pointer-events: none;
 }
 
 .mega-menu-panel.visible {
-    display: block; /* Or flex/grid depending on internal content */
+    visibility: visible;
     opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0s, 0s, 0s; /* Reset display transition delay */
+    transform: translateY(0); /* End at its natural position */
+    transition-delay: 0s;
+    pointer-events: auto;
 }
+
 
 .mega-menu-content-wrapper {
     max-width: 1200px; /* Or your preferred max-width */
