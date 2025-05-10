@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Optional: You might want to ensure the video player fits well */
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Or 'contain' depending on your preference */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col max-w-xl mx-auto">
+        <div class="relative pt-[56.25%] bg-gray-100 video-container">
+            <div class="absolute inset-0 flex items-center justify-center" id="videoThumbnailContainer2">
+                <img src="/assets/video/thumbnails/rocket_stove_diy.jpg"
+                     alt="How to Build a Rocket Stove"
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/600x400/e5e7eb/64748b?text=Rocket+Stove'; this.onerror=null;">
+                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                    <button id="playRocketStoveVideo"
+                            aria-label="Play Rocket Stove Video"
+                            data-video-src="https://archive.org/download/SuperStove-English/SuperStove-English.mp4"
+                            class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50">
+                        <i class="fas fa-play text-white text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="videoPlayerContainer2" class="absolute inset-0"></div>
+        </div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50">
+            <a href="https://archive.org/download/SuperStove-English/SuperStove-English.mp4"
+               target="_blank" rel="noopener noreferrer"
+               class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center transition">
+                <i class="fas fa-play-circle mr-2"></i>
+                Watch Video on Archive.org
+                <i class="fas fa-external-link-alt ml-auto"></i>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const playButton = document.getElementById('playRocketStoveVideo');
+            const thumbnailContainer = document.getElementById('videoThumbnailContainer2');
+            const videoPlayerContainer = document.getElementById('videoPlayerContainer2');
+            const videoSrc = playButton.getAttribute('data-video-src');
+
+            playButton.addEventListener('click', function () {
+                // Hide thumbnail and play button
+                if (thumbnailContainer) {
+                    thumbnailContainer.style.display = 'none';
+                }
+
+                // Remove any existing video player to prevent duplicates if clicked multiple times
+                // (though hiding the button makes this less likely)
+                videoPlayerContainer.innerHTML = '';
+
+                // Create video element
+                const videoElement = document.createElement('video');
+                videoElement.setAttribute('src', videoSrc);
+                videoElement.setAttribute('controls', ''); // Add browser default controls
+                videoElement.setAttribute('autoplay', ''); // Autoplay the video
+                videoElement.setAttribute('playsinline', ''); // Important for iOS
+                videoElement.setAttribute('preload', 'auto'); // Hint to browser to start loading
+                videoElement.classList.add('w-full', 'h-full', 'object-cover'); // Match thumbnail styling
+
+                // Append video element to the player container
+                videoPlayerContainer.appendChild(videoElement);
+
+                // Optional: Request fullscreen on play, though browser support/behavior varies
+                // videoElement.play().then(() => {
+                //     if (videoElement.requestFullscreen) {
+                //         videoElement.requestFullscreen();
+                //     } else if (videoElement.mozRequestFullScreen) { /* Firefox */
+                //         videoElement.mozRequestFullScreen();
+                //     } else if (videoElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                //         videoElement.webkitRequestFullscreen();
+                //     } else if (videoElement.msRequestFullscreen) { /* IE/Edge */
+                //         videoElement.msRequestFullscreen();
+                //     }
+                // }).catch(error => {
+                //     console.error("Error attempting to play or enter fullscreen:", error);
+                // });
+            });
+        });
+    </script>
+
+</body>
+</html>
