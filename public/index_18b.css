@@ -10,6 +10,7 @@
             /* ... your existing styles (display: flex, padding, background, etc.) ... */
             position: sticky; /* This is crucial for the child's absolute positioning context */
             top: 0;
+	    background-color: #fff;
             z-index: 1020; /* Ensure it's above page content, megamenu will be relative to this */
             /* NO bottom padding on .site-header itself if top:100% is to align with content bottom */
         }
