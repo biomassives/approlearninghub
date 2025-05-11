@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Approvideo Learning Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="index_18b.css" rel="stylesheet">
@@ -821,147 +822,6 @@ function createAccordionItem(title, contentHtml, parentElement, defaultOpen = fa
         }
     });
 }
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const playButtons = document.querySelectorAll('.play-button-overlay');
-
-    playButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const videoType = this.dataset.videoType;
-            const playerTargetId = this.dataset.playerTarget;
-            const thumbnailTargetId = this.dataset.thumbnailTarget;
-
-            const playerContainer = document.getElementById(playerTargetId);
-            const thumbnailContainer = document.getElementById(thumbnailTargetId);
-
-            if (!playerContainer || !thumbnailContainer) {
-                console.error('Player or thumbnail container not found for button:', this);
-                return;
-            }
-
-            // Hide thumbnail
-            thumbnailContainer.style.display = 'none';
-
-            // Clear previous player if any (important if user clicks multiple times or plays another video)
-            // More robustly, you might want to store the created player and remove it specifically.
-            // For now, just clearing innerHTML of the main player container before adding a new one.
-            playerContainer.innerHTML = '';
-
-
-            if (videoType === 'local') {
-                const videoSrc = this.dataset.videoSrc;
-                if (!videoSrc) {
-                    console.error('Local video source not found for button:', this);
-                    thumbnailContainer.style.display = 'flex'; // Show thumbnail again
-                    return;
-                }
-                const videoElement = document.createElement('video');
-                videoElement.setAttribute('src', videoSrc);
-                videoElement.setAttribute('controls', '');
-                videoElement.setAttribute('autoplay', '');
-                videoElement.setAttribute('playsinline', '');
-                videoElement.classList.add('video-player-element'); // For styling
-                playerContainer.appendChild(videoElement);
-                videoElement.play().catch(e => console.error("Error playing local video:", e));
-
-            } else if (videoType === 'archive') {
-                const archiveId = this.dataset.videoId;
-                if (!archiveId) {
-                    console.error('Archive.org video ID not found for button:', this);
-                    thumbnailContainer.style.display = 'flex'; // Show thumbnail again
-                    return;
-                }
-                const iframeElement = document.createElement('iframe');
-                // Add ?autoplay=1 to attempt autoplay, though browsers might block it
-                iframeElement.setAttribute('src', `https://archive.org/embed/${archiveId}?autoplay=1`);
-                iframeElement.setAttribute('frameborder', '0');
-                iframeElement.setAttribute('webkitallowfullscreen', 'true');
-                iframeElement.setAttribute('mozallowfullscreen', 'true');
-                iframeElement.setAttribute('allowfullscreen', '');
-                iframeElement.setAttribute('allow', 'autoplay; fullscreen'); // Allow autoplay
-                iframeElement.classList.add('video-player-element'); // For styling
-                playerContainer.appendChild(iframeElement);
-            }
-        });
-    });
-
-    // --- Slideshow Functionality (Copied from previous good version) ---
-    const slideshows = document.querySelectorAll('.featured-slideshow');
-    slideshows.forEach(slideshow => {
-        const slides = slideshow.querySelectorAll('.slideshow-slide');
-        const prevButton = slideshow.querySelector('.slideshow-prev');
-        const nextButton = slideshow.querySelector('.slideshow-next');
-        const dots = slideshow.querySelectorAll('.slideshow-dot');
-        let currentIndex = 0;
-        const totalSlides = slides.length;
-        let autoPlayInterval = null;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-                // Lazy load images
-                if (i === index) {
-                    const img = slide.querySelector('img[data-src]');
-                    if (img && img.getAttribute('data-src') !== img.getAttribute('src')) {
-                        img.setAttribute('src', img.getAttribute('data-src'));
-                    }
-                }
-            });
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-            currentIndex = index;
-        }
-
-        function nextSlide() {
-            showSlide((currentIndex + 1) % totalSlides);
-        }
-        function prevSlide() {
-            showSlide((currentIndex - 1 + totalSlides) % totalSlides);
-        }
-
-        function startAutoPlay() {
-            stopAutoPlay(); // Clear existing interval
-            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
-        }
-
-        function stopAutoPlay() {
-            clearInterval(autoPlayInterval);
-        }
-
-        if (prevButton && nextButton) {
-            prevButton.addEventListener('click', () => {
-                prevSlide();
-                stopAutoPlay(); // Stop autoplay on manual navigation
-            });
-            nextButton.addEventListener('click', () => {
-                nextSlide();
-                stopAutoPlay(); // Stop autoplay on manual navigation
-            });
-        }
-
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                const index = parseInt(e.target.getAttribute('data-index'));
-                showSlide(index);
-                stopAutoPlay(); // Stop autoplay on manual navigation
-            });
-        });
-
-        if (slides.length > 0) {
-             showSlide(0); // Initialize first slide
-             startAutoPlay(); // Start autoplay
-        }
-        // Pause on hover
-        slideshow.addEventListener('mouseenter', stopAutoPlay);
-        slideshow.addEventListener('mouseleave', startAutoPlay);
-    });
-});
-
-
-
-
 
 
 
@@ -2650,6 +2510,105 @@ function handleSearch() {
 });
 
 
+    // Video Player Functionality (from previous response)
+    const playButtons = document.querySelectorAll('.play-button-overlay');
+    playButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const videoType = this.dataset.videoType;
+            const playerTargetId = this.dataset.playerTarget;
+            const thumbnailTargetId = this.dataset.thumbnailTarget;
+            const playerContainer = document.getElementById(playerTargetId);
+            const thumbnailContainer = document.getElementById(thumbnailTargetId);
+
+            if (!playerContainer || !thumbnailContainer) return;
+            thumbnailContainer.style.display = 'none';
+            playerContainer.innerHTML = ''; // Clear previous player
+
+            if (videoType === 'local') {
+                const videoSrc = this.dataset.videoSrc;
+                if (!videoSrc) { thumbnailContainer.style.display = 'flex'; return; }
+                const videoElement = document.createElement('video');
+                videoElement.setAttribute('src', videoSrc);
+                videoElement.setAttribute('controls', '');
+                videoElement.setAttribute('autoplay', '');
+                videoElement.setAttribute('playsinline', '');
+                videoElement.classList.add('video-player-element');
+                playerContainer.appendChild(videoElement);
+                videoElement.play().catch(e => console.error("Error playing local video:", e));
+            } else if (videoType === 'archive') {
+                const archiveId = this.dataset.videoId;
+                if (!archiveId) { thumbnailContainer.style.display = 'flex'; return; }
+                const iframeElement = document.createElement('iframe');
+                iframeElement.setAttribute('src', `https://archive.org/embed/${archiveId}?autoplay=1`);
+                iframeElement.setAttribute('frameborder', '0');
+                iframeElement.setAttribute('webkitallowfullscreen', 'true');
+                iframeElement.setAttribute('mozallowfullscreen', 'true');
+                iframeElement.setAttribute('allowfullscreen', '');
+                iframeElement.setAttribute('allow', 'autoplay; fullscreen');
+                iframeElement.classList.add('video-player-element');
+                playerContainer.appendChild(iframeElement);
+            }
+        });
+    });
+
+    // Slideshow Functionality (from previous response - it will pick up ALL slideshows)
+    const slideshows = document.querySelectorAll('.featured-slideshow');
+    slideshows.forEach(slideshow => {
+        const slides = slideshow.querySelectorAll('.slideshow-slide');
+        const prevButton = slideshow.querySelector('.slideshow-prev');
+        const nextButton = slideshow.querySelector('.slideshow-next');
+        const dots = slideshow.querySelectorAll('.slideshow-dot');
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        let autoPlayInterval = null;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                if (i === index) {
+                    const img = slide.querySelector('img[data-src]');
+                    if (img && img.getAttribute('data-src') !== img.getAttribute('src')) {
+                        img.setAttribute('src', img.getAttribute('data-src'));
+                         img.style.opacity = '1'; // Ensure visible after loading
+                    }
+                }
+            });
+            // Ensure dots only toggle 'active' if they exist for the current slide index
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentIndex = index;
+        }
+
+        function nextSlide() { showSlide((currentIndex + 1) % totalSlides); }
+        function prevSlide() { showSlide((currentIndex - 1 + totalSlides) % totalSlides); }
+        function startAutoPlay() { stopAutoPlay(); autoPlayInterval = setInterval(nextSlide, 7000); } // Adjusted interval
+        function stopAutoPlay() { clearInterval(autoPlayInterval); }
+
+        if (slides.length > 0) { // Check if there are any slides before proceeding
+            if (prevButton) { // Check if prevButton exists
+                prevButton.addEventListener('click', () => { prevSlide(); stopAutoPlay(); });
+            }
+            if (nextButton) { // Check if nextButton exists
+                nextButton.addEventListener('click', () => { nextSlide(); stopAutoPlay(); });
+            }
+            dots.forEach((dot, index) => { // Ensure index is within bounds
+                if (index < totalSlides) {
+                    dot.addEventListener('click', () => { showSlide(index); stopAutoPlay(); });
+                }
+            });
+            showSlide(0);
+            startAutoPlay();
+            slideshow.addEventListener('mouseenter', stopAutoPlay);
+            slideshow.addEventListener('mouseleave', startAutoPlay);
+        } else {
+            // Optionally hide nav elements if no slides
+            if(prevButton) prevButton.style.display = 'none';
+            if(nextButton) nextButton.style.display = 'none';
+            const dotsContainer = slideshow.querySelector('.slideshow-dots');
+            if(dotsContainer) dotsContainer.style.display = 'none';
+        }
+    });
 
 
 
