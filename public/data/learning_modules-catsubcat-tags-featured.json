@@ -749,112 +749,40 @@
     "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M224,224H182.94l-6.3-44.12,3.24,1.91a16,16,0,0,0,21.91-5.67l12-20.34a16,16,0,0,0-5.67-21.91l-35-20.61,40.69-69.13a16,16,0,0,0-5.67-21.91l-20.34-12a16,16,0,0,0-21.91,5.67l-20.61,35L76.12,10.22a16,16,0,0,0-21.91,5.67l-12,20.33a16,16,0,0,0,5.67,21.92l35,20.61L42.21,147.88a16,16,0,0,0,5.67,21.91l20.34,12a15.57,15.57,0,0,0,10.58,2L73.06,224H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16Zm-24-76.34L188,168l-69.13-40.69,12-20.35ZM179.66,24,200,36l-40.69,69.14L139,93.17ZM56,44.35,68,24,137.14,64.7l-12,20.35ZM76.34,168,56,156,96.69,86.86l20.36,12Zm12.88,56L98,162.8l12.77-21.7L159,169.5l7.79,54.5Z\"></path></svg>",
     "featherIcon": "zap",
     "subcategories": [
-[
-  {
-    "uniqueId": "solar-1",
-    "title": "Solar Cookers",
-    "subtitle": "3 Types of Solar Cookers",
-    "description": "Explore three primary solar cooker designs—insulated box, parabolic concentrator, and black-jar with reflective concentrator—to cook meals or purify water using only sunlight.",
-    "tags": [
-      "solar cooking",
-      "zero-fuel",
-      "insulated box",
-      "panel cooker",
-      "parabolic concentrator",
-      "reflective concentrator",
-      "black jar",
-      "water purification",
-      "sustainable",
-      "renewable energy"
-    ],
-    "context": "Solar cookers harness sunlight to generate heat for cooking and water distillation without external fuel. Each design balances simplicity, achievable temperatures, and ideal use cases—from slow stews to frying or pure water production.",
-    "materials": [
-      "Insulated box or cooler",
-      "Glass or transparent plastic lid",
-      "Reflective panels (foil, mirrors, or mylar)",
-      "Parabolic reflector (metal dish or mylar cone)",
-      "Black pot or jar (heat-absorbing)",
-      "Support frame or wooden stand",
-      "Adhesive tape and sealant",
-      "Insulation materials (foam board, hay, wool)"
-    ],
-    "processSteps": [
-      "1. Choose cooker type based on desired use (baking, frying, distillation).",
-      "2. Gather and test local materials (insulation, reflectors, container).",
-      "3. Build or assemble the cooker body and install insulation.",
-      "4. Attach and angle reflective panels or parabolic dish.",
-      "5. Position the cooking vessel at the heat focal point.",
-      "6. Track and realign the cooker with the sun periodically.",
-      "7. Monitor cooking temperature and collect distilled water if applicable."
-    ],
-    "videos": [
       {
-        "icon_tag_fa": "fas fa-box",
-        "color_tag": "#D97706",
-        "title": "Building a Simple Solar Box Cooker",
-        "youtubeId": "3aB-Jfyl2qU",
-        "description": "Step-by-step DIY solar oven using an insulated box and reflective panels.",
-        "localVideoFilename": "solar_box_cooker.mp4",
-        "authors": "",
-        "researchReviewItems": [],
-        "contentCreatorArchive": "",
-        "licence": "Standard YouTube License",
-        "patreon": "",
-        "socials": {},
-        "fundraiser": "",
-        "sponsorPages": []
+        "uniqueId": "energy-0",
+        "title": "Solar Cookers",
+        "description": "Effective basic box cooker design...",
+        "tags": [
+          "solar cooker",
+          "DIY",
+          "cooking technology",
+          "off-grid",
+          "passive solar",
+          "solar thermal",
+          "appropriate technology",
+          "fuel efficiency"
+        ],
+        "context": "Utilizes direct sunlight for cooking...",
+        "materials": [
+          "Cardboard Boxes...",
+          "Insulation...",
+          "Reflective Material...",
+          "Glass/Oven Bag...",
+          "Black Paint...",
+          "Dark, Lidded Pot...",
+          "Glue/Tape"
+        ],
+        "processSteps": [
+          "1. Construct Insulated Box...",
+          "2. Line Inner Box...",
+          "3. Create Transparent Lid...",
+          "4. Paint Pot Black...",
+          "5. Position Cooker...",
+          "6. Place Pot Inside..."
+        ],
+        "videos": []
       },
-      {
-        "icon_tag_fa": "fas fa-bullseye",
-        "color_tag": "#16A34A",
-        "title": "DIY Parabolic Solar Cooker",
-        "youtubeId": "B4FjPv-89eg",
-        "description": "How to build and use a high-temperature parabolic reflector for frying and grilling.",
-        "localVideoFilename": "solar_parabolic_cooker.mp4",
-        "authors": "",
-        "researchReviewItems": [],
-        "contentCreatorArchive": "",
-        "licence": "Standard YouTube License",
-        "patreon": "",
-        "socials": {},
-        "fundraiser": "",
-        "sponsorPages": []
-      },
-      {
-        "icon_tag_fa": "fas fa-water",
-        "color_tag": "#3B82F6",
-        "title": "Black‐Jar Solar Cooker & Water Distiller",
-        "youtubeId": "u_LaZMBTyI4",
-        "description": "Combine a blackened jar, insulated box, and simple reflectors to cook and distill water.",
-        "localVideoFilename": "solar_black_jar_distiller.mp4",
-        "authors": "",
-        "researchReviewItems": [],
-        "contentCreatorArchive": "",
-        "licence": "Standard YouTube License",
-        "patreon": "",
-        "socials": {},
-        "fundraiser": "",
-        "sponsorPages": []
-      },
-      {
-        "icon_tag_fa": "fas fa-sun",
-        "color_tag": "#F59E0B",
-        "title": "Zero-Fuel Solar Cooking Basics",
-        "youtubeId": "Z0iZWnTnXm8",
-        "description": "Overview of solar cooking principles for off-grid kitchens and water purification.",
-        "localVideoFilename": "solar_cooking_basics.mp4",
-        "authors": "",
-        "researchReviewItems": [],
-        "contentCreatorArchive": "",
-        "licence": "Standard YouTube License",
-        "patreon": "",
-        "socials": {},
-        "fundraiser": "",
-        "sponsorPages": []
-      }
-    ]
-  },
-
       {
         "uniqueId": "energy1",
         "title": "Biogas",
