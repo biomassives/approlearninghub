@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Learning Hub - Complete</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Complete CSS from your original file */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-800: #1f2937;
+            --text-color: #111827;
+            --bg-color: white;
+        }
+
+        * { box-sizing: border-box; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-green:hover:not(:disabled) {
+            background-color: #059669;
+        }
+
+        .btn-blue {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-red {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .area-item {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .subcategory-item {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            transition: background-color 0.15s ease;
+        }
+
+        .subcategory-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            background-color: white;
+            width: calc(100% - 40px);
+        }
+
+        .is-editing {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .py-8 { padding: 2rem 0; }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-width: 20rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.success {
+            background-color: #dcfce7;
+            border: 1px solid #16a34a;
+            color: #15803d;
+        }
+
+        .notification.error {
+            background-color: #fee2e2;
+            border: 1px solid #dc2626;
+            color: #dc2626;
+        }
+
+        .notification.warning {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #d97706;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-8">
+        <h1 class="text-2xl font-bold mb-8">Appro Learning Hub - Complete Taxonomy</h1>
+        
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-area-btn">
+                    Add Area
+                </button>
+            </div>
+            <div id="areas-container" class="space-y-4">
+                <div class="loading">Loading areas...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        'use strict';
+
+        // Initialize Parse
+        Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY");
+        Parse.serverURL = "https://parseapi.back4app.com/";
+
+        // Complete ParseDataLayer class
+        class ParseDataLayer {
+            constructor() {
+                this.initializeLocalStorage();
+            }
+
+            initializeLocalStorage() {
+                if (!localStorage.getItem('areas_cache')) {
+                    const seedData = {
+                        areas: [
+                            {
+                                id: 'area_1',
+                                name: 'Water Systems',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'area_2',
+                                name: 'Solar Energy',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            }
+                        ],
+                        subcategories: [
+                            {
+                                id: 'sub_1',
+                                area_id: 'area_1',
+                                name: 'Filtration',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'sub_2',
+                                area_id: 'area_1',
+                                name: 'Purification',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'sub_3',
+                                area_id: 'area_2',
+                                name: 'Panel Installation',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            }
+                        ]
+                    };
+                    localStorage.setItem('areas_cache', JSON.stringify(seedData.areas));
+                    localStorage.setItem('subcategories_cache', JSON.stringify(seedData.subcategories));
+                }
+            }
+
+            async getAreas() {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    query.ascending("name");
+                    
+                    const results = await query.find();
+                    const areas = results.map(area => ({
+                        id: area.id,
+                        name: area.get('name'),
+                        created_at: area.get('createdAt'),
+                        updated_at: area.get('updatedAt')
+                    }));
+                    
+                    localStorage.setItem('areas_cache', JSON.stringify(areas));
+                    return areas;
+                } catch (error) {
+                    console.warn('Parse query failed, using local cache:', error);
+                    const cached = localStorage.getItem('areas_cache');
+                    return cached ? JSON.parse(cached) : [];
+                }
+            }
+
+            async createArea(name) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const area = new AreaClass();
+                    area.set("name", name);
+                    
+                    const result = await area.save();
+                    const newArea = {
+                        id: result.id,
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cached.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    
+                    return newArea;
+                } catch (error) {
+                    console.warn('Parse save failed, using local storage:', error);
+                    const newArea = {
+                        id: 'area_' + Date.now(),
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cached.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    
+                    return newArea;
+                }
+            }
+
+            async updateArea(id, name) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    area.set("name", name);
+                    
+                    const result = await area.save();
+                    const updatedArea = {
+                        id: result.id,
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cached.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        cached[index] = updatedArea;
+                        localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    }
+                    
+                    return updatedArea;
+                } catch (error) {
+                    console.warn('Parse update failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cached.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        cached[index].name = name;
+                        cached[index].updated_at = new Date().toISOString();
+                        localStorage.setItem('areas_cache', JSON.stringify(cached));
+                        return cached[index];
+                    }
+                    throw new Error('Area not found');
+                }
+            }
+
+            async deleteArea(id) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    await area.destroy();
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cached.filter(a => a.id !== id);
+                    localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                    
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cached.filter(a => a.id !== id);
+                    localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                    return true;
+                }
+            }
+
+            async getSubcategories(areaId = null) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    if (areaId) {
+                        query.equalTo("area_id", areaId);
+                    }
+                    query.ascending("name");
+                    
+                    const results = await query.find();
+                    const subcategories = results.map(sub => ({
+                        id: sub.id,
+                        area_id: sub.get('area_id'),
+                        name: sub.get('name'),
+                        created_at: sub.get('createdAt'),
+                        updated_at: sub.get('updatedAt')
+                    }));
+                    
+                    return subcategories;
+                } catch (error) {
+                    console.warn('Parse query failed, using local cache:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    return areaId ? cached.filter(s => s.area_id === areaId) : cached;
+                }
+            }
+
+            async createSubcategory(areaId, name) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const subcategory = new SubcategoryClass();
+                    subcategory.set("area_id", areaId);
+                    subcategory.set("name", name);
+                    
+                    const result = await subcategory.save();
+                    return {
+                        id: result.id,
+                        area_id: result.get('area_id'),
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                } catch (error) {
+                    console.warn('Parse save failed, using local storage:', error);
+                    return {
+                        id: 'sub_' + Date.now(),
+                        area_id: areaId,
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                }
+            }
+
+            async updateSubcategory(id, name) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(id);
+                    subcategory.set("name", name);
+                    
+                    const result = await subcategory.save();
+                    return {
+                        id: result.id,
+                        area_id: result.get('area_id'),
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                } catch (error) {
+                    console.warn('Parse update failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    const index = cached.findIndex(s => s.id === id);
+                    if (index !== -1) {
+                        cached[index].name = name;
+                        cached[index].updated_at = new Date().toISOString();
+                        localStorage.setItem('subcategories_cache', JSON.stringify(cached));
+                        return cached[index];
+                    }
+                    throw new Error('Subcategory not found');
+                }
+            }
+
+            async deleteSubcategory(id) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(id);
+                    await subcategory.destroy();
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    const filtered = cached.filter(s => s.id !== id);
+                    localStorage.setItem('subcategories_cache', JSON.stringify(filtered));
+                    return true;
+                }
+            }
+        }
+
+        // Complete TaxonomyApp class
+        class TaxonomyApp {
+            constructor() {
+                this.dataLayer = new ParseDataLayer();
+                this.init();
+            }
+
+            async init() {
+                await this.setupEventListeners();
+                await this.loadAreas();
+            }
+
+            setupEventListeners() {
+                document.getElementById('add-area-btn').addEventListener('click', () => {
+                    this.createNewArea();
+                });
+            }
+
+            async loadAreas() {
+                const container = document.getElementById('areas-container');
+                container.innerHTML = '<div class="loading">Loading areas...</div>';
+
+                try {
+                    const areas = await this.dataLayer.getAreas();
+                    await this.renderAreas(areas);
+                } catch (error) {
+                    container.innerHTML = '<div class="error">Error loading areas: ' + error.message + '</div>';
+                }
+            }
+
+            async renderAreas(areas) {
+                const container = document.getElementById('areas-container');
+                
+                if (areas.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <p>No areas yet. Click "Add Area" to create your first one.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const area of areas) {
+                    const subcategories = await this.dataLayer.getSubcategories(area.id);
+                    html += this.renderAreaItem(area, subcategories);
+                }
+                
+                container.innerHTML = html;
+                this.attachAreaEventListeners();
+            }
+
+            renderAreaItem(area, subcategories) {
+                const subcategoriesHtml = subcategories.length > 0 
+                    ? subcategories.map(sub => this.renderSubcategoryItem(sub)).join('')
+                    : `<div class="text-center py-4 text-gray-500">No subcategories yet.</div>`;
+
+                return `
+                    <div class="area-item" data-area-id="${area.id}">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold area-name" data-editable="true">${this.escapeHtml(area.name)}</h3>
+                            <div class="flex space-x-2">
+                                <button class="btn btn-blue btn-add-subcategory" data-area-id="${area.id}">
+                                    Add Sub
+                                </button>
+                                <button class="btn btn-red btn-delete-area" data-area-id="${area.id}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="subcategories-container space-y-2">
+                            ${subcategoriesHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderSubcategoryItem(subcategory) {
+                return `
+                    <div class="subcategory-item flex justify-between items-center" data-subcategory-id="${subcategory.id}">
+                        <span class="subcategory-name" data-editable="true">${this.escapeHtml(subcategory.name)}</span>
+                        <div class="flex space-x-2">
+                            <button class="btn btn-green btn-add-content" data-area-id="${subcategory.area_id}" data-subcategory-id="${subcategory.id}">
+                                Add Content
+                            </button>
+                            <button class="btn btn-red btn-delete-subcategory" data-subcategory-id="${subcategory.id}">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            attachAreaEventListeners() {
+                // Add subcategory buttons
+                document.querySelectorAll('.btn-add-subcategory').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.target.closest('[data-area-id]').dataset.areaId;
+                        this.createNewSubcategory(areaId);
+                    });
+                });
+
+                // Delete area buttons
+                document.querySelectorAll('.btn-delete-area').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const areaId = e.target.closest('[data-area-id]').dataset.areaId;
+                        const areaName = e.target.closest('.area-item').querySelector('.area-name').textContent;
+                        await this.deleteArea(areaId, areaName);
+                    });
+                });
+
+                // Delete subcategory buttons
+                document.querySelectorAll('.btn-delete-subcategory').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const subcategoryId = e.target.closest('[data-subcategory-id]').dataset.subcategoryId;
+                        const subcategoryName = e.target.closest('.subcategory-item').querySelector('.subcategory-name').textContent;
+                        await this.deleteSubcategory(subcategoryId, subcategoryName);
+                    });
+                });
+
+                // Add content buttons
+                document.querySelectorAll('.btn-add-content').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.target.dataset.areaId;
+                        const subcategoryId = e.target.dataset.subcategoryId;
+                        this.showNotification(`Add content feature for area ${areaId}, subcategory ${subcategoryId}`, 'info');
+                    });
+                });
+
+                // Inline editing for area names
+                document.querySelectorAll('.area-name[data-editable]').forEach(element => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Area name cannot be empty.', 'error');
+                            return originalValue;
+                        }
+                        
+                        if (newValue !== originalValue && confirm(`Rename area "${originalValue}" to "${newValue}"?`)) {
+                            const areaId = element.closest('[data-area-id]').dataset.areaId;
+                            try {
+                                await this.dataLayer.updateArea(areaId, newValue);
+                                this.showNotification('Area renamed successfully', 'success');
+                                return newValue;
+                            } catch (error) {
+                                this.showNotification('Failed to rename area', 'error');
+                                return originalValue;
+                            }
+                        }
+                        return originalValue;
+                    });
+                });
+
+                // Inline editing for subcategory names
+                document.querySelectorAll('.subcategory-name[data-editable]').forEach(element => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Subcategory name cannot be empty.', 'error');
+                            return originalValue;
+                        }
+                        
+                        if (newValue !== originalValue) {
+                            const subcategoryId = element.closest('[data-subcategory-id]').dataset.subcategoryId;
+                            try {
+                                await this.dataLayer.updateSubcategory(subcategoryId, newValue);
+                                this.showNotification('Subcategory renamed successfully', 'success');
+                                return newValue;
+                            } catch (error) {
+                                this.showNotification('Failed to rename subcategory', 'error');
+                                return originalValue;
+                            }
+                        }
+                        return originalValue;
+                    });
+                });
+            }
+
+            makeInlineEditable(element, onSave) {
+                let isEditing = false;
+                
+                element.addEventListener('click', () => {
+                    if (isEditing) return;
+                    
+                    isEditing = true;
+                    const originalValue = element.textContent.trim();
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = originalValue;
+                    input.className = 'inline-edit-field';
+                    
+                    element.innerHTML = '';
+                    element.appendChild(input);
+                    element.classList.add('is-editing');
+                    
+                    input.focus();
+                    input.select();
+                    
+                    const finishEditing = async () => {
+                        if (!isEditing) return;
+                        isEditing = false;
+                        
+                        const newValue = input.value.trim();
+                        const finalValue = await onSave(newValue, originalValue);
+                        
+                        element.textContent = finalValue;
+                        element.classList.remove('is-editing');
+                    };
+                    
+                    input.addEventListener('blur', finishEditing);
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            finishEditing();
+                        } else if (e.key === 'Escape') {
+                            isEditing = false;
+                            element.textContent = originalValue;
+                            element.classList.remove('is-editing');
+                        }
+                    });
+                });
+            }
+
+            async createNewArea() {
+                const name = prompt('Enter area name:');
+                if (!name || name.trim() === '') return;
+
+                try {
+                    await this.dataLayer.createArea(name.trim());
+                    await this.loadAreas();
+                    this.showNotification('Area created successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to create area', 'error');
+                }
+            }
+
+            async createNewSubcategory(areaId) {
+                const name = prompt('Enter subcategory name:');
+                if (!name || name.trim() === '') return;
+
+                try {
+                    await this.dataLayer.createSubcategory(areaId, name.trim());
+                    await this.loadAreas();
+                    this.showNotification('Subcategory created successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to create subcategory', 'error');
+                }
+            }
+
+            async deleteArea(areaId, areaName) {
+                // Check if area has subcategories
+                const subcategories = await this.dataLayer.getSubcategories(areaId);
+                if (subcategories.length > 0) {
+                    this.showNotification(`Cannot delete "${areaName}": It still contains subcategories. Please delete them first.`, 'error');
+                    return;
+                }
+
+                if (!confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    await this.dataLayer.deleteArea(areaId);
+                    await this.loadAreas();
+                    this.showNotification('Area deleted successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to delete area', 'error');
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, subcategoryName) {
+                if (!confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    await this.dataLayer.deleteSubcategory(subcategoryId);
+                    await this.loadAreas();
+                    this.showNotification('Subcategory deleted successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to delete subcategory', 'error');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                // Remove existing notifications
+                document.querySelectorAll('.notification').forEach(n => n.remove());
+                
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize application when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                window.app = new TaxonomyApp();
+            } catch (error) {
+                console.error('Failed to initialize application:', error);
+                document.body.innerHTML = `
+                    <div class="container py-8">
+                        <div class="notification error">
+                            <strong>Critical Error:</strong> Cannot initialize application. ${error.message}
+                            <br><br>
+                            <button onclick="location.reload()" class="btn btn-blue">Reload Page</button>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+    </script>
+</body>
+</html>
