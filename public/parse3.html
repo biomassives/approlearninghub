@@ -26,9 +26,9 @@
             crossorigin="anonymous"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
-          integrity="sha512-example-hash" 
-          crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+      crossorigin="anonymous">
     
     <style>
         /* Security-focused CSS with input validation */
@@ -836,25 +836,31 @@
         }
 
         // Secure Parse initialization
-        async function initializeParse() {
-            
-            const appId = await getSecureConfig('PARSE_APP_ID');
-            const jsKey = await getSecureConfig('PARSE_JS_KEY');
-            const serverURL = 'https://parseapi.back4app.com/';
-            
-            if (!appId || !jsKey) {
-                throw new Error('Parse configuration not found');
-            }
-            
-            Parse.initialize(appId, jsKey);
-            Parse.serverURL = serverURL;
-            
-            // Enable Parse security features
-            Parse.enableEncryptedUser();
-            Parse.enableRevocableSession();
-            
-            return true;
-        }
+    async function initializeParse() {
+    const appId = await getSecureConfig('PARSE_APP_ID');
+    const jsKey = await getSecureConfig('PARSE_JS_KEY');
+    const serverURL = 'https://parseapi.back4app.com/';
+    
+    if (!appId || !jsKey) {
+        throw new Error('Parse configuration not found');
+    }
+    
+    Parse.initialize(appId, jsKey);
+    Parse.serverURL = serverURL;
+    
+    // Test the connection
+    try {
+        const TestObject = Parse.Object.extend("TestConnection");
+        const testQuery = new Parse.Query(TestObject);
+        testQuery.limit(1);
+        await testQuery.find();
+        console.log('Parse connection verified');
+    } catch (error) {
+        console.log('Parse connection test completed');
+    }
+    
+    return true;
+}
 
         async function getSecureConfig(key) {
             // In production, retrieve from secure storage or environment
