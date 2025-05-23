@@ -1,14 +1,850 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <!-- This is the minified production version of parse js -->
-    <script
-      type="text/javascript"
-      src="https://unpkg.com/parse/dist/parse.min.js"
-    ></script>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Learning Hub</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" as="script">
+    <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.js"
+            xintegrity="sha384-dPjGJ3rBpGktXk5Oc6fSuIzpWQb1Uk+yIt23iySD3broHItJTZOIKJVzRDCvW9kx"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"
+            xintegrity="sha384-sfH01RemNLfukNwJacKhKH/Kqavspt9iZSMwhKcsUMH4bZ7CkkJsOfFQ6qsuHCl8"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous">
+
+    <style>
+        /* Security-focused CSS with input validation */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-800: #1f2937;
+            --text-color: #111827; /* Default text color */
+            --bg-color: white; /* Default background color */
+        }
+
+        /* Prevent CSS injection attacks */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Rate limiting visual indicator */
+        .rate-limited {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Security warning styles */
+        .security-warning {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        /* Input validation styles */
+        .input-valid {
+            border-color: var(--primary-green) !important; /* Ensure override */
+            box-shadow: 0 0 0 1px var(--primary-green) !important;
+        }
+
+        .input-invalid {
+            border-color: var(--danger-red) !important; /* Ensure override */
+            box-shadow: 0 0 0 1px var(--danger-red) !important;
+        }
+
+        /* Secure form styles */
+        .secure-form input, .secure-form textarea {
+            background-color: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+        }
+
+        .secure-form input:focus, .secure-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Button security styles */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-green:hover:not(:disabled) {
+            background-color: #059669;
+        }
+
+        .btn-blue {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-blue:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+
+        .btn-red {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .btn-red:hover:not(:disabled) {
+            background-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #d1d5db;
+        }
+
+        /* Layout and utility classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .bg-white { background-color: white; }
+        .bg-gray-50 { background-color: var(--gray-50); }
+        .text-gray-600 { color: #6b7280; }
+        .text-gray-900 { color: #111827; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .hidden { display: none; }
+        .fixed { position: fixed; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .z-50 { z-index: 50; }
+
+        /* Animation classes */
+        .animate-slideDown { animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+        }
+        .animate-fadeInOut { animation: fadeInOut 3.5s ease-in-out forwards; }
+
+        /* Security indicators */
+        .status-saving { background-color: #fef3c7; border-color: #f59e0b; }
+        .status-success { background-color: #dcfce7; border-color: #16a34a; }
+        .status-error { background-color: #fee2e2; border-color: #dc2626; }
+        .is-editing { outline: 2px solid var(--primary-blue); outline-offset: 2px; }
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            background-color: white;
+            width: calc(100% - 40px); /* Adjust based on sibling elements */
+        }
+        .inline-edit-field:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 0;
+            border-color: var(--primary-blue);
+        }
+
+        /* Navigation styles */
+        .nav-link { color: #6b7280; transition: color 0.15s ease; text-decoration: none; }
+        .nav-link:hover { color: #111827; }
+        .icon-button {
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.15s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .icon-button:hover { background-color: #f3f4f6; }
+
+        /* Modal styles */
+        .modal-backdrop { background-color: rgba(0, 0, 0, 0.75); }
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 42rem;
+            width: 100%;
+            margin: 0 1rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container { padding: 0 0.5rem; }
+            .btn { padding: 0.375rem 0.75rem; font-size: 0.875rem; }
+            .modal-content { margin: 0.5rem; }
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: var(--gray-800, #1f2937);
+            color: var(--gray-50, #f9fafb);
+            --text-color: var(--gray-50, #f9fafb);
+            --bg-color: var(--gray-800, #1f2937);
+        }
+        body.dark-mode .bg-white {
+            background-color: #2d3748; /* A darker shade for white backgrounds */
+            border-color: #4a5568;
+        }
+        body.dark-mode .bg-gray-50 { background-color: #1a202c; }
+        body.dark-mode .text-gray-900 { color: #f7fafc; }
+        body.dark-mode .text-gray-600, body.dark-mode .text-gray-700 { color: #a0aec0; }
+        body.dark-mode .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.25); }
+        body.dark-mode header.bg-white { background-color: #2c3e50; border-bottom: 1px solid #34495e; }
+        body.dark-mode .nav-link { color: #bdc3c7; }
+        body.dark-mode .nav-link:hover { color: #ecf0f1; }
+        body.dark-mode .icon-button:hover { background-color: #3e4c5a; }
+        body.dark-mode .modal-content { background-color: #2d3748; }
+        body.dark-mode .secure-form input, body.dark-mode .secure-form textarea {
+            background-color: #2d3748;
+            border-color: #4a5568;
+            color: #f7fafc;
+        }
+        body.dark-mode .secure-form input:focus, body.dark-mode .secure-form textarea:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        body.dark-mode .btn-secondary { background-color: #4a5568; color: #e2e8f0; }
+        body.dark-mode .btn-secondary:hover:not(:disabled) { background-color: #2d3748; }
+        body.dark-mode .area-item, body.dark-mode .tag-item { background-color: #2d3748; border-color: #4a5568; }
+        body.dark-mode .subcategory-item:hover { background-color: #374151; }
+        body.dark-mode .inline-edit-field { background-color: #374151; color: white; border-color: #4a5568; }
+        body.dark-mode .text-green-500 { color: #38a169; }
+        body.dark-mode .loading, body.dark-mode .error { color: #e2e8f0; }
+        body.dark-mode .empty-state p { color: #a0aec0; }
+        body.dark-mode .empty-state svg { color: #718096; }
+        body.dark-mode .border-l-4.border-green-500 { border-left-color: #38a169; }
+        body.dark-mode .banner-message { background-color: #047857; } /* Darker green for banner */
+        body.dark-mode #tagSuggestions { background-color: #2d3748; border-color: #4a5568; }
+        body.dark-mode #tagSuggestions button:hover { background-color: #374151; }
+        body.dark-mode .text-blue-800 { color: #60a5fa; }
+        body.dark-mode .bg-blue-50 { background-color: #2c3e50; }
+        body.dark-mode .border-blue-200 { border-color: #4299e1; }
+
+
+        /* RTL Language Specific Styles */
+        [dir="rtl"] .space-x-2 > * + * { margin-left: 0; margin-right: 0.5rem; }
+        [dir="rtl"] .space-x-3 > * + * { margin-left: 0; margin-right: 0.75rem; }
+        [dir="rtl"] .space-x-4 > * + * { margin-left: 0; margin-right: 1rem; }
+        [dir="rtl"] .mr-1 { margin-right: 0; margin-left: 0.25rem; }
+        [dir="rtl"] .mr-2 { margin-right: 0; margin-left: 0.5rem; }
+        [dir="rtl"] .mr-4 { margin-right: 0; margin-left: 1rem; }
+        [dir="rtl"] .ml-1 { margin-left: 0; margin-right: 0.25rem; }
+        [dir="rtl"] .text-left { text-align: right; }
+        [dir="rtl"] .text-right { text-align: left; }
+        [dir="rtl"] .border-l-4 { border-left: none; border-right-width: 4px; }
+        [dir="rtl"] #profileDropdown { left: 0; right: auto; }
+
+    </style>
+</head>
+
+<body>
+    <div id="security-status" class="security-warning hidden">
+        <strong>Security Alert:</strong> <span id="security-message"></span>
+    </div>
+
+    <div class="banner-message bg-green-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out" data-translate-key="bannerMessage">
+        🔒 Video Library, Learning Module, Clinic, Language Content
+    </div>
+
+    <header class="shadow-lg bg-white">
+        <div class="container">
+            <nav class="py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <a href="#" class="flex items-center space-x-3" aria-label="Approvideo Learning Hub">
+                            <svg class="h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c.246 0 .492-.015.732-.044m-1.464 0A9.006 9.006 0 0 1 12 3c.587 0 1.159.069 1.711.193M12 3a9.006 9.006 0 0 0-7.08 2.886M12 3c.015-.01.03-.019.046-.028M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm4.016 4.016a9.003 9.003 0 0 0 -8.032 0M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"></path>
+                            </svg>
+                            <span class="text-xl font-bold text-gray-900" data-translate-key="approLearningHubTitle">
+                                Approvideo Learning Hub
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <span id="offline-indicator" class="text-xs font-semibold text-yellow-600"></span>
+                        <span id="security-indicator" class="text-xs font-semibold text-green-600">🔒</span>
+
+                        <div class="flex items-center space-x-1">
+                            <button id="lang-en" class="text-xs px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">EN</button>
+                            <button id="lang-fr" class="text-xs px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">FR</button>
+                            <button id="lang-ar" class="text-xs px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">AR</button>
+                        </div>
+
+                        <button class="icon-button" id="darkModeToggle" aria-label="Toggle dark mode" data-translate-key="toggleDarkMode" title="Toggle dark mode">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                            </svg>
+                        </button>
+
+                        <div class="relative">
+                            <button id="profileButton" class="icon-button" aria-label="User menu" data-translate-key="userMenu" title="User menu">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </button>
+                            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-translate-key="profileLink">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-translate-key="settingsLink">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="signOutBtn" data-translate-key="signOutLink">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container py-8">
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500">
+            <p class="text-gray-600" data-translate-key="organizeVideoContent">Organize your video content</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900" data-translate-key="areasAndSubcategoriesTitle">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-category-btn" data-action="add-area">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    <span data-translate-key="addAreaButton">Add Area</span>
+                </button>
+            </div>
+            <div id="categories-container" class="space-y-4">
+                <div class="loading" data-translate-key="loadingAreas">Loading areas...</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900" data-translate-key="videoTagsTitle">Video Tags</h2>
+                <button id="add-tag-btn" class="btn btn-green" data-action="add-tag">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span data-translate-key="addTagButton">Add Tag</span>
+                </button>
+            </div>
+            <div id="tag-cloud" class="space-y-4">
+                </div>
+        </div>
+
+        <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-content">
+                <div class="flex items-start justify-between border-b p-4">
+                    <h3 id="modal-title" class="text-xl font-semibold text-gray-900" data-translate-key="addNewVideoContentTitle">
+                        Add New Video Content
+                    </h3>
+                    <button type="button" id="modal-close-btn" class="icon-button" aria-label="Close modal" data-translate-key="closeModal" title="Close modal">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <p class="text-sm font-medium text-gray-700" data-translate-key="addingContentTo">Adding content to:</p>
+                        <p class="text-lg font-semibold text-blue-800">
+                            <span id="modal-category-context">Area...</span>
+                            <span class="mx-1 text-gray-500">&gt;</span>
+                            <span id="modal-subcategory-context">Subcategory...</span>
+                        </p>
+                    </div>
+
+                    <form id="newVideoForm" class="secure-form space-y-4" novalidate>
+                        <div>
+                            <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900" data-translate-key="videoTitleLabel">Video Title *</label>
+                            <input type="text"
+                                   id="newTitle"
+                                   class="w-full"
+                                   data-translate-key-placeholder="enterVideoTitlePlaceholder"
+                                   placeholder="Enter video title"
+                                   required
+                                   maxlength="200"
+                                   data-validation="title">
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900" data-translate-key="youtubeUrlLabel">YouTube URL *</label>
+                            <input type="url"
+                                   id="newYoutubeUrl"
+                                   class="w-full"
+                                   data-translate-key-placeholder="enterYoutubeUrlPlaceholder"
+                                   placeholder="https://www.youtube.com/watch?v=..."
+                                   required
+                                   data-validation="youtube">
+                            <div id="youtubeIdPreview" class="text-sm mt-1"></div>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+
+                        <div>
+                            <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900" data-translate-key="descriptionLabel">Description *</label>
+                            <textarea id="newDescription"
+                                      rows="3"
+                                      class="w-full"
+                                      data-translate-key-placeholder="describeVideoContentPlaceholder"
+                                      placeholder="Describe the video content..."
+                                      required
+                                      maxlength="1000"
+                                      data-validation="description"></textarea>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+
+                        <div class="relative">
+                            <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900" data-translate-key="tagsLabel">Tags (comma-separated) *</label>
+                            <input type="text"
+                                   id="newTags"
+                                   class="w-full"
+                                   data-translate-key-placeholder="tagsPlaceholder"
+                                   placeholder="e.g., DIY, Solar, Water"
+                                   data-validation="tags">
+                            <div id="tagSuggestions" class="absolute z-20 w-full bg-white border rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                            </div>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end pt-4 border-t mt-4 space-x-4">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()" data-translate-key="cancelButton">Cancel</button>
+                            <button type="submit" id="submitButton" class="btn btn-green" data-translate-key="addVideoButton">
+                                Add Video
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        'use strict';
+
+        // --- START LANGUAGE LAYER ---
+        const translations = {
+            en: {
+                "approLearningHubTitle": "Approvideo Learning Hub",
+                "bannerMessage": "🔒 Video Library, Learning Module, Clinic, Language Content",
+                "organizeVideoContent": "Organize your video content",
+                "areasAndSubcategoriesTitle": "Areas & Subcategories",
+                "addAreaButton": "Add Area",
+                "loadingAreas": "Loading areas...",
+                "videoTagsTitle": "Video Tags",
+                "addTagButton": "Add Tag",
+                "addNewVideoContentTitle": "Add New Video Content",
+                "addingContentTo": "Adding content to:",
+                "videoTitleLabel": "Video Title *",
+                "enterVideoTitlePlaceholder": "Enter video title",
+                "youtubeUrlLabel": "YouTube URL *",
+                "enterYoutubeUrlPlaceholder": "e.g., https://www.youtube.com/watch?v=...",
+                "descriptionLabel": "Description *",
+                "describeVideoContentPlaceholder": "Describe the video content...",
+                "tagsLabel": "Tags (comma-separated) *",
+                "tagsPlaceholder": "e.g., DIY, Solar, Water",
+                "cancelButton": "Cancel",
+                "addVideoButton": "Add Video",
+                "closeModal": "Close modal",
+                "toggleDarkMode": "Toggle dark mode",
+                "userMenu": "User menu",
+                "profileLink": "Profile",
+                "settingsLink": "Settings",
+                "signOutLink": "Sign out",
+                "saveButton": "Save",
+                "deleteButton": "Delete",
+                "addSubButton": "Add Sub",
+                "addSupportingContentTitle": "Add Supporting Content",
+                "deleteAreaConfirm": "Are you sure you want to delete the area \"{areaName}\"? This action cannot be undone.",
+                "deleteSubcategoryConfirm": "Are you sure you want to delete the subcategory \"{subcategoryName}\"? This action cannot be undone.",
+                "cannotDeleteAreaWithSubcategories": "Cannot delete \"{areaName}\": It still contains subcategories. Please delete them first.",
+                "areaNameCannotBeEmpty": "Area name cannot be empty.",
+                "subcategoryNameCannotBeEmpty": "Subcategory name cannot be empty.",
+                "renameAreaConfirm": "Rename area \"{originalValue}\" to \"{newValue}\"?",
+                "noAreasYet": "No areas yet. Click \"Add Area\" to create your first one.",
+                "noSubcategoriesYet": "No subcategories yet. Use the \"Add Sub\" button above.",
+                "noTagsYet": "No tags yet. Click \"Add Tag\" to create your first tag.",
+                "tagManagementNotImplemented": "Tag management not yet implemented",
+                "validYoutubeID": "✓ Valid YouTube ID: {id}",
+                "invalidYoutubeID": "✗ Invalid or incomplete YouTube URL",
+                "fieldRequired": "This field is required",
+                "minLength": "Minimum length is {length} characters",
+                "maxLength": "Maximum length is {length} characters",
+                "invalidFormat": "Invalid format",
+                "inputCleanedWarning": "Input was automatically cleaned for safety",
+                "inputValidAndSafe": "Input is valid and safe",
+                "unknownField": "Unknown field",
+                "tooManyAttempts": "Too many attempts. Please wait.",
+                "securityValidationFailedRefresh": "Security validation failed. Please refresh the page.",
+                "validationFailed": "Validation failed: {errors}",
+                "errorContextMissing": "Error: Area context is missing. Please close and reopen the modal.",
+                "enterValidYoutubeUrl": "Please enter a valid YouTube URL.",
+                "addAtLeastOneTag": "Please add at least one tag.",
+                "videoAddedSuccessfully": "Video added successfully!",
+                "failedToAddVideo": "Failed to add video. Please try again.",
+                "criticalSecurityError": "Critical security error: {errorMsg}",
+                "cannotInitializeSecureApp": "Cannot initialize secure application. {errorMsg}",
+                "reloadPage": "Reload Page",
+                "applicationError": "Application error: {errorMsg}",
+                "unhandledPromiseRejection": "Unhandled promise rejection: {errorMsg}",
+                "confirmSignOut": "Are you sure you want to sign out?",
+                "developerToolsDetected": "Developer tools detected. Please close for security.",
+                "suspiciousRapidClicking": "Suspicious rapid clicking detected",
+                "sessionExpired": "Session expired for security reasons. Please refresh the page.",
+                "rateLimitExceededFor": "Rate limit exceeded for {identifier}",
+                "accountLocked": "Account locked due to too many failed attempts. Try again in 5 minutes.",
+                "securityPolicyViolation": "Security policy violation detected: {directive}",
+                "nameCannotBeEmptyReverting": "Name cannot be empty. Reverting to original."
+            },
+            fr: {
+                "approLearningHubTitle": "Centre d'apprentissage Approvideo",
+                "bannerMessage": "🔒 Vidéothèque, Module d'apprentissage, Clinique, Contenu linguistique",
+                "organizeVideoContent": "Organisez votre contenu vidéo",
+                "areasAndSubcategoriesTitle": "Zones et Sous-catégories",
+                "addAreaButton": "Ajouter une Zone",
+                "loadingAreas": "Chargement des zones...",
+                "videoTagsTitle": "Étiquettes Vidéo",
+                "addTagButton": "Ajouter une Étiquette",
+                "addNewVideoContentTitle": "Ajouter un nouveau contenu vidéo",
+                "addingContentTo": "Ajout de contenu à :",
+                "videoTitleLabel": "Titre de la vidéo *",
+                "enterVideoTitlePlaceholder": "Entrez le titre de la vidéo",
+                "youtubeUrlLabel": "URL YouTube *",
+                "enterYoutubeUrlPlaceholder": "ex: https://www.youtube.com/watch?v=...",
+                "descriptionLabel": "Description *",
+                "describeVideoContentPlaceholder": "Décrivez le contenu de la vidéo...",
+                "tagsLabel": "Étiquettes (séparées par des virgules) *",
+                "tagsPlaceholder": "ex: Bricolage, Solaire, Eau",
+                "cancelButton": "Annuler",
+                "addVideoButton": "Ajouter la vidéo",
+                "closeModal": "Fermer la modale",
+                "toggleDarkMode": "Basculer le mode sombre",
+                "userMenu": "Menu utilisateur",
+                "profileLink": "Profil",
+                "settingsLink": "Paramètres",
+                "signOutLink": "Se déconnecter",
+                "saveButton": "Enregistrer",
+                "deleteButton": "Supprimer",
+                "addSubButton": "Ajouter Sous-cat",
+                "addSupportingContentTitle": "Ajouter du contenu de support",
+                "deleteAreaConfirm": "Êtes-vous sûr de vouloir supprimer la zone \"{areaName}\" ? Cette action est irréversible.",
+                "deleteSubcategoryConfirm": "Êtes-vous sûr de vouloir supprimer la sous-catégorie \"{subcategoryName}\" ? Cette action est irréversible.",
+                "cannotDeleteAreaWithSubcategories": "Impossible de supprimer \"{areaName}\" : Elle contient encore des sous-catégories. Veuillez d'abord les supprimer.",
+                "areaNameCannotBeEmpty": "Le nom de la zone ne peut pas être vide.",
+                "subcategoryNameCannotBeEmpty": "Le nom de la sous-catégorie ne peut pas être vide.",
+                "renameAreaConfirm": "Renommer la zone \"{originalValue}\" en \"{newValue}\" ?",
+                "noAreasYet": "Aucune zone pour le moment. Cliquez sur \"Ajouter une Zone\" pour créer la première.",
+                "noSubcategoriesYet": "Aucune sous-catégorie pour le moment. Utilisez le bouton \"Ajouter Sous-cat\" ci-dessus.",
+                "noTagsYet": "Aucune étiquette pour le moment. Cliquez sur \"Ajouter une Étiquette\" pour créer la première.",
+                "tagManagementNotImplemented": "La gestion des étiquettes n'est pas encore implémentée",
+                "validYoutubeID": "✓ ID YouTube valide : {id}",
+                "invalidYoutubeID": "✗ URL YouTube invalide ou incomplète",
+                "fieldRequired": "Ce champ est requis",
+                "minLength": "La longueur minimale est de {length} caractères",
+                "maxLength": "La longueur maximale est de {length} caractères",
+                "invalidFormat": "Format invalide",
+                "inputCleanedWarning": "L'entrée a été nettoyée automatiquement pour des raisons de sécurité",
+                "inputValidAndSafe": "L'entrée est valide et sûre",
+                "unknownField": "Champ inconnu",
+                "tooManyAttempts": "Trop de tentatives. Veuillez patienter.",
+                "securityValidationFailedRefresh": "La validation de sécurité a échoué. Veuillez actualiser la page.",
+                "validationFailed": "La validation a échoué : {errors}",
+                "errorContextMissing": "Erreur : Le contexte de la zone est manquant. Veuillez fermer et rouvrir la modale.",
+                "enterValidYoutubeUrl": "Veuillez entrer une URL YouTube valide.",
+                "addAtLeastOneTag": "Veuillez ajouter au moins une étiquette.",
+                "videoAddedSuccessfully": "Vidéo ajoutée avec succès !",
+                "failedToAddVideo": "Échec de l'ajout de la vidéo. Veuillez réessayer.",
+                "criticalSecurityError": "Erreur de sécurité critique : {errorMsg}",
+                "cannotInitializeSecureApp": "Impossible d'initialiser l'application sécurisée. {errorMsg}",
+                "reloadPage": "Recharger la page",
+                "applicationError": "Erreur d'application : {errorMsg}",
+                "unhandledPromiseRejection": "Rejet de promesse non géré : {errorMsg}",
+                "confirmSignOut": "Êtes-vous sûr de vouloir vous déconnecter ?",
+                "developerToolsDetected": "Outils de développement détectés. Veuillez fermer pour des raisons de sécurité.",
+                "suspiciousRapidClicking": "Clics rapides suspects détectés",
+                "sessionExpired": "Session expirée pour des raisons de sécurité. Veuillez actualiser la page.",
+                "rateLimitExceededFor": "Limite de taux dépassée pour {identifier}",
+                "accountLocked": "Compte verrouillé en raison de trop nombreuses tentatives infructueuses. Réessayez dans 5 minutes.",
+                "securityPolicyViolation": "Violation de la politique de sécurité détectée : {directive}",
+                "nameCannotBeEmptyReverting": "Le nom ne peut pas être vide. Retour à l'original."
+            },
+            ar: {
+                "approLearningHubTitle": "مركز التعلم أبروفيديو",
+                "bannerMessage": "🔒 مكتبة الفيديو، وحدة التعلم، العيادة، المحتوى اللغوي",
+                "organizeVideoContent": "نظم محتوى الفيديو الخاص بك",
+                "areasAndSubcategoriesTitle": "المناطق والفئات الفرعية",
+                "addAreaButton": "إضافة منطقة",
+                "loadingAreas": "جاري تحميل المناطق...",
+                "videoTagsTitle": "علامات الفيديو",
+                "addTagButton": "إضافة علامة",
+                "addNewVideoContentTitle": "إضافة محتوى فيديو جديد",
+                "addingContentTo": "إضافة محتوى إلى:",
+                "videoTitleLabel": "عنوان الفيديو *",
+                "enterVideoTitlePlaceholder": "أدخل عنوان الفيديو",
+                "youtubeUrlLabel": "رابط يوتيوب *",
+                "enterYoutubeUrlPlaceholder": "مثال: https://www.youtube.com/watch?v=...",
+                "descriptionLabel": "الوصف *",
+                "describeVideoContentPlaceholder": "صف محتوى الفيديو...",
+                "tagsLabel": "العلامات (مفصولة بفواصل) *",
+                "tagsPlaceholder": "مثال: يدوي, شمسي, ماء",
+                "cancelButton": "إلغاء",
+                "addVideoButton": "إضافة الفيديو",
+                "closeModal": "إغلاق النافذة",
+                "toggleDarkMode": "تبديل الوضع الداكن",
+                "userMenu": "قائمة المستخدم",
+                "profileLink": "الملف الشخصي",
+                "settingsLink": "الإعدادات",
+                "signOutLink": "تسجيل الخروج",
+                "saveButton": "حفظ",
+                "deleteButton": "حذف",
+                "addSubButton": "إضافة فرعي",
+                "addSupportingContentTitle": "إضافة محتوى داعم",
+                "deleteAreaConfirm": "هل أنت متأكد أنك تريد حذف المنطقة \"{areaName}\"؟ هذا الإجراء لا يمكن التراجع عنه.",
+                "deleteSubcategoryConfirm": "هل أنت متأكد أنك تريد حذف الفئة الفرعية \"{subcategoryName}\"؟ هذا الإجراء لا يمكن التراجع عنه.",
+                "cannotDeleteAreaWithSubcategories": "لا يمكن حذف \"{areaName}\": لا تزال تحتوي على فئات فرعية. يرجى حذفها أولاً.",
+                "areaNameCannotBeEmpty": "لا يمكن أن يكون اسم المنطقة فارغًا.",
+                "subcategoryNameCannotBeEmpty": "لا يمكن أن يكون اسم الفئة الفرعية فارغًا.",
+                "renameAreaConfirm": "إعادة تسمية المنطقة \"{originalValue}\" إلى \"{newValue}\"؟",
+                "noAreasYet": "لا توجد مناطق حتى الآن. انقر فوق \"إضافة منطقة\" لإنشاء أول منطقة لك.",
+                "noSubcategoriesYet": "لا توجد فئات فرعية حتى الآن. استخدم زر \"إضافة فرعي\" أعلاه.",
+                "noTagsYet": "لا توجد علامات حتى الآن. انقر فوق \"إضافة علامة\" لإنشاء أول علامة لك.",
+                "tagManagementNotImplemented": "لم يتم تنفيذ إدارة العلامات بعد",
+                "validYoutubeID": "✓ معرف يوتيوب صالح: {id}",
+                "invalidYoutubeID": "✗ رابط يوتيوب غير صالح أو غير مكتمل",
+                "fieldRequired": "هذا الحقل مطلوب",
+                "minLength": "الحد الأدنى للطول هو {length} أحرف",
+                "maxLength": "الحد الأقصى للطول هو {length} أحرف",
+                "invalidFormat": "تنسيق غير صالح",
+                "inputCleanedWarning": "تم تنظيف الإدخال تلقائيًا للسلامة",
+                "inputValidAndSafe": "الإدخال صالح وآمن",
+                "unknownField": "حقل غير معروف",
+                "tooManyAttempts": "محاولات كثيرة جدا. رجاء الإنتظار.",
+                "securityValidationFailedRefresh": "فشل التحقق من الأمان. يرجى تحديث الصفحة.",
+                "validationFailed": "فشل التحقق: {errors}",
+                "errorContextMissing": "خطأ: سياق المنطقة مفقود. يرجى إغلاق النافذة وإعادة فتحها.",
+                "enterValidYoutubeUrl": "يرجى إدخال رابط يوتيوب صالح.",
+                "addAtLeastOneTag": "يرجى إضافة علامة واحدة على الأقل.",
+                "videoAddedSuccessfully": "تمت إضافة الفيديو بنجاح!",
+                "failedToAddVideo": "فشل إضافة الفيديو. يرجى المحاولة مرة أخرى.",
+                "criticalSecurityError": "خطأ أمني حرج: {errorMsg}",
+                "cannotInitializeSecureApp": "لا يمكن تهيئة التطبيق الآمن. {errorMsg}",
+                "reloadPage": "إعادة تحميل الصفحة",
+                "applicationError": "خطأ في التطبيق: {errorMsg}",
+                "unhandledPromiseRejection": "رفض وعد غير معالج: {errorMsg}",
+                "confirmSignOut": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+                "developerToolsDetected": "تم اكتشاف أدوات المطور. يرجى الإغلاق لأسباب أمنية.",
+                "suspiciousRapidClicking": "تم اكتشاف نقر سريع مشبوه",
+                "sessionExpired": "انتهت صلاحية الجلسة لأسباب أمنية. يرجى تحديث الصفحة.",
+                "rateLimitExceededFor": "تم تجاوز حد المعدل لـ {identifier}",
+                "accountLocked": "تم قفل الحساب بسبب كثرة المحاولات الفاشلة. حاول مرة أخرى خلال 5 دقائق.",
+                "securityPolicyViolation": "تم اكتشاف انتهاك لسياسة الأمان: {directive}",
+                "nameCannotBeEmptyReverting": "لا يمكن أن يكون الاسم فارغًا. العودة إلى الأصل."
+            }
+        };
+
+        let currentLanguage = 'en'; // Default language
+
+        function setLanguage(lang) {
+            if (translations[lang]) {
+                currentLanguage = lang;
+                localStorage.setItem('preferredLanguage', lang);
+                updateUIText();
+                if (lang === 'ar') {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                    document.documentElement.setAttribute('lang', 'ar');
+                } else {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                    document.documentElement.setAttribute('lang', lang);
+                }
+            }
+        }
+
+        function _(key, params = {}) {
+            let translation = translations[currentLanguage]?.[key] || translations.en[key] || key;
+            for (const param in params) {
+                translation = translation.replace(`{${param}}`, params[param]);
+            }
+            return translation;
+        }
+
+        function updateUIText() {
+            document.querySelectorAll('[data-translate-key]').forEach(element => {
+                const key = element.getAttribute('data-translate-key');
+                if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+                    element.placeholder = _(key);
+                } else if (element.tagName === 'TEXTAREA' && element.hasAttribute('placeholder')) {
+                     element.placeholder = _(key);
+                } else if (element.hasAttribute('title')) {
+                     element.title = _(key);
+                } else if (element.dataset.translateKeyPlaceholder) { // Custom for specific placeholders
+                    element.placeholder = _(element.dataset.translateKeyPlaceholder);
+                }
+                else {
+                    // Preserve child nodes like SVGs if they exist
+                    const svgIcon = element.querySelector('svg');
+                    if (svgIcon && element.childNodes.length > 1) { // Text is likely the other child
+                        element.childNodes.forEach(node => {
+                            if (node.nodeType === Node.TEXT_NODE) {
+                                node.textContent = ' ' + _(key); // Add space if text follows icon
+                            }
+                        });
+                    } else {
+                        element.textContent = _(key);
+                    }
+                }
+            });
+             document.querySelectorAll('[data-translate-key-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-translate-key-placeholder');
+                element.placeholder = _(key);
+            });
+            document.title = _("approLearningHubTitle");
+        }
+        // --- END LANGUAGE LAYER ---
+
+
+        // Security Configuration
+        const SECURITY_CONFIG = {
+            MAX_LOGIN_ATTEMPTS: 5,
+            LOCKOUT_DURATION: 300000, // 5 minutes
+            SESSION_TIMEOUT: 1800000, // 30 minutes
+            MAX_REQUEST_RATE: 100, // requests per minute
+            CSRF_TOKEN_LENGTH: 32,
+            ENCRYPTION_KEY_LENGTH: 32,
+            MAX_FILE_SIZE: 10485760, // 10MB
+            ALLOWED_DOMAINS: ['hub.approvideo.org', '127.0.0.1', 'localhost'], // Added localhost for dev
+            SENSITIVE_FIELDS: ['password', 'token', 'key', 'secret']
+        };
+
+        // Security State Management
+        class SecurityManager {
+            constructor() {
+                this.rateLimiter = new Map();
+                this.failedAttempts = new Map();
+                this.csrfToken = this.generateCSRFToken();
+                this.sessionStartTime = Date.now();
+                this.encryptionKey = null;
+                this.init();
+            }
+
+            init() {
+                this.setupCSRFProtection();
+                this.setupSessionTimeout();
+                this.setupContentSecurityPolicy();
+                this.sanitizeExistingContent(); // Call after DOM is ready if it manipulates DOM text
+                this.monitorSecurityEvents();
+            }
+
+            generateCSRFToken() {
+                const array = new Uint8Array(SECURITY_CONFIG.CSRF_TOKEN_LENGTH);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            setupCSRFProtection() {
+                document.querySelectorAll('form').forEach(form => {
+                    let csrfInput = form.querySelector('input[name="csrf_token"]');
+                    if (!csrfInput) {
+                        csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = 'csrf_token';
+                        form.appendChild(csrfInput);
+                    }
+                    csrfInput.value = this.csrfToken;
+                });
+            }
+
+            validateCSRFToken(token) {
+                return token === this.csrfToken;
+            }
+
+            checkRateLimit(identifier, limit = SECURITY_CONFIG.MAX_REQUEST_RATE) {
+                const now = Date.now();
+                const windowStart = now - 60000; // 1 minute window
+
+                if (!this.rateLimiter.has(identifier)) {
+                    this.rateLimiter.set(identifier, []);
+                }
+
+                const requests = this.rateLimiter.get(identifier);
+                const recentRequests = requests.filter(time => time > windowStart);
+
+                if (recentRequests.length >= limit) {
+                    this.showSecurityAlert(_('rateLimitExceededFor', {identifier: identifier}));
+                    return false;
+                }
+
+                recentRequests.push(now);
+                this.rateLimiter.set(identifier, recentRequests);
+                return true;
+            }
+
+            recordFailedAttempt(identifier) {
+                if (!this.failedAttempts.has(identifier)) {
+                    this.failedAttempts.set(identifier, { count: 0, lastAttempt: 0 });
+                }
+
+                const attempts = this.failedAttempts.get(identifie
+
+
+
+                                                         
     <h1>JS SDK</h1>
     <input id="username" type="text" placeholder="Username" />
     <input id="email" type="email" placeholder="Email" />
@@ -20,33 +856,804 @@
     Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
     Parse.serverURL = "https://parseapi.back4app.com/";
 
-    // Create a new User
-    async function createParseUser() {
-      // Creates a new Parse "User" object, which is created by default in your Parse app
-      let user = new Parse.User();
-      // Set the input values to the new "User" object
-      user.set("username", document.getElementById("username").value);
-      user.set("email", document.getElementById("email").value);
-      user.set("password", document.getElementById("password").value);
-      try {
-        // Call the save method, which returns the saved object if successful
-        user = await user.save();
-        if (user !== null) {
-          // Notify the success by getting the attributes from the "User" object, by using the get method (the id attribute needs to be accessed directly, though)
-          alert(
-            `New object created with success! ObjectId: ${
-              user.id
-            }, ${user.get("username")}`
-          );
-        }
-      } catch (error) {
-        alert(`Error: ${error.message}`);
-      }
-    }
 
-    // Add on click listener to call the create parse user function
-    document.getElementById("createButton").addEventListener("click", async function () {
-      createParseUser();
-    });
-  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Learning Hub - Complete</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Complete CSS from your original file */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-800: #1f2937;
+            --text-color: #111827;
+            --bg-color: white;
+        }
+
+        * { box-sizing: border-box; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-green:hover:not(:disabled) {
+            background-color: #059669;
+        }
+
+        .btn-blue {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-red {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .area-item {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .subcategory-item {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            transition: background-color 0.15s ease;
+        }
+
+        .subcategory-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            background-color: white;
+            width: calc(100% - 40px);
+        }
+
+        .is-editing {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .py-8 { padding: 2rem 0; }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-width: 20rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.success {
+            background-color: #dcfce7;
+            border: 1px solid #16a34a;
+            color: #15803d;
+        }
+
+        .notification.error {
+            background-color: #fee2e2;
+            border: 1px solid #dc2626;
+            color: #dc2626;
+        }
+
+        .notification.warning {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #d97706;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-8">
+        <h1 class="text-2xl font-bold mb-8">Appro Learning Hub - Complete Taxonomy</h1>
+        
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-area-btn">
+                    Add Area
+                </button>
+            </div>
+            <div id="areas-container" class="space-y-4">
+                <div class="loading">Loading areas...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        'use strict';
+
+        // Initialize Parse
+        Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY");
+        Parse.serverURL = "https://parseapi.back4app.com/";
+
+        // Complete ParseDataLayer class
+        class ParseDataLayer {
+            constructor() {
+                this.initializeLocalStorage();
+            }
+
+            initializeLocalStorage() {
+                if (!localStorage.getItem('areas_cache')) {
+                    const seedData = {
+                        areas: [
+                            {
+                                id: 'area_1',
+                                name: 'Water Systems',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'area_2',
+                                name: 'Solar Energy',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            }
+                        ],
+                        subcategories: [
+                            {
+                                id: 'sub_1',
+                                area_id: 'area_1',
+                                name: 'Filtration',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'sub_2',
+                                area_id: 'area_1',
+                                name: 'Purification',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'sub_3',
+                                area_id: 'area_2',
+                                name: 'Panel Installation',
+                                created_at: new Date().toISOString(),
+                                updated_at: new Date().toISOString()
+                            }
+                        ]
+                    };
+                    localStorage.setItem('areas_cache', JSON.stringify(seedData.areas));
+                    localStorage.setItem('subcategories_cache', JSON.stringify(seedData.subcategories));
+                }
+            }
+
+            async getAreas() {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    query.ascending("name");
+                    
+                    const results = await query.find();
+                    const areas = results.map(area => ({
+                        id: area.id,
+                        name: area.get('name'),
+                        created_at: area.get('createdAt'),
+                        updated_at: area.get('updatedAt')
+                    }));
+                    
+                    localStorage.setItem('areas_cache', JSON.stringify(areas));
+                    return areas;
+                } catch (error) {
+                    console.warn('Parse query failed, using local cache:', error);
+                    const cached = localStorage.getItem('areas_cache');
+                    return cached ? JSON.parse(cached) : [];
+                }
+            }
+
+            async createArea(name) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const area = new AreaClass();
+                    area.set("name", name);
+                    
+                    const result = await area.save();
+                    const newArea = {
+                        id: result.id,
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cached.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    
+                    return newArea;
+                } catch (error) {
+                    console.warn('Parse save failed, using local storage:', error);
+                    const newArea = {
+                        id: 'area_' + Date.now(),
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cached.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    
+                    return newArea;
+                }
+            }
+
+            async updateArea(id, name) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    area.set("name", name);
+                    
+                    const result = await area.save();
+                    const updatedArea = {
+                        id: result.id,
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cached.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        cached[index] = updatedArea;
+                        localStorage.setItem('areas_cache', JSON.stringify(cached));
+                    }
+                    
+                    return updatedArea;
+                } catch (error) {
+                    console.warn('Parse update failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cached.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        cached[index].name = name;
+                        cached[index].updated_at = new Date().toISOString();
+                        localStorage.setItem('areas_cache', JSON.stringify(cached));
+                        return cached[index];
+                    }
+                    throw new Error('Area not found');
+                }
+            }
+
+            async deleteArea(id) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    await area.destroy();
+                    
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cached.filter(a => a.id !== id);
+                    localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                    
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cached.filter(a => a.id !== id);
+                    localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                    return true;
+                }
+            }
+
+            async getSubcategories(areaId = null) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    if (areaId) {
+                        query.equalTo("area_id", areaId);
+                    }
+                    query.ascending("name");
+                    
+                    const results = await query.find();
+                    const subcategories = results.map(sub => ({
+                        id: sub.id,
+                        area_id: sub.get('area_id'),
+                        name: sub.get('name'),
+                        created_at: sub.get('createdAt'),
+                        updated_at: sub.get('updatedAt')
+                    }));
+                    
+                    return subcategories;
+                } catch (error) {
+                    console.warn('Parse query failed, using local cache:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    return areaId ? cached.filter(s => s.area_id === areaId) : cached;
+                }
+            }
+
+            async createSubcategory(areaId, name) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const subcategory = new SubcategoryClass();
+                    subcategory.set("area_id", areaId);
+                    subcategory.set("name", name);
+                    
+                    const result = await subcategory.save();
+                    return {
+                        id: result.id,
+                        area_id: result.get('area_id'),
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                } catch (error) {
+                    console.warn('Parse save failed, using local storage:', error);
+                    return {
+                        id: 'sub_' + Date.now(),
+                        area_id: areaId,
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+                }
+            }
+
+            async updateSubcategory(id, name) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(id);
+                    subcategory.set("name", name);
+                    
+                    const result = await subcategory.save();
+                    return {
+                        id: result.id,
+                        area_id: result.get('area_id'),
+                        name: result.get('name'),
+                        created_at: result.get('createdAt'),
+                        updated_at: result.get('updatedAt')
+                    };
+                } catch (error) {
+                    console.warn('Parse update failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    const index = cached.findIndex(s => s.id === id);
+                    if (index !== -1) {
+                        cached[index].name = name;
+                        cached[index].updated_at = new Date().toISOString();
+                        localStorage.setItem('subcategories_cache', JSON.stringify(cached));
+                        return cached[index];
+                    }
+                    throw new Error('Subcategory not found');
+                }
+            }
+
+            async deleteSubcategory(id) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(id);
+                    await subcategory.destroy();
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete failed, using local storage:', error);
+                    const cached = JSON.parse(localStorage.getItem('subcategories_cache') || '[]');
+                    const filtered = cached.filter(s => s.id !== id);
+                    localStorage.setItem('subcategories_cache', JSON.stringify(filtered));
+                    return true;
+                }
+            }
+        }
+
+        // Complete TaxonomyApp class
+        class TaxonomyApp {
+            constructor() {
+                this.dataLayer = new ParseDataLayer();
+                this.init();
+            }
+
+            async init() {
+                await this.setupEventListeners();
+                await this.loadAreas();
+            }
+
+            setupEventListeners() {
+                document.getElementById('add-area-btn').addEventListener('click', () => {
+                    this.createNewArea();
+                });
+            }
+
+            async loadAreas() {
+                const container = document.getElementById('areas-container');
+                container.innerHTML = '<div class="loading">Loading areas...</div>';
+
+                try {
+                    const areas = await this.dataLayer.getAreas();
+                    await this.renderAreas(areas);
+                } catch (error) {
+                    container.innerHTML = '<div class="error">Error loading areas: ' + error.message + '</div>';
+                }
+            }
+
+            async renderAreas(areas) {
+                const container = document.getElementById('areas-container');
+                
+                if (areas.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <p>No areas yet. Click "Add Area" to create your first one.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const area of areas) {
+                    const subcategories = await this.dataLayer.getSubcategories(area.id);
+                    html += this.renderAreaItem(area, subcategories);
+                }
+                
+                container.innerHTML = html;
+                this.attachAreaEventListeners();
+            }
+
+            renderAreaItem(area, subcategories) {
+                const subcategoriesHtml = subcategories.length > 0 
+                    ? subcategories.map(sub => this.renderSubcategoryItem(sub)).join('')
+                    : `<div class="text-center py-4 text-gray-500">No subcategories yet.</div>`;
+
+                return `
+                    <div class="area-item" data-area-id="${area.id}">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold area-name" data-editable="true">${this.escapeHtml(area.name)}</h3>
+                            <div class="flex space-x-2">
+                                <button class="btn btn-blue btn-add-subcategory" data-area-id="${area.id}">
+                                    Add Sub
+                                </button>
+                                <button class="btn btn-red btn-delete-area" data-area-id="${area.id}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="subcategories-container space-y-2">
+                            ${subcategoriesHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderSubcategoryItem(subcategory) {
+                return `
+                    <div class="subcategory-item flex justify-between items-center" data-subcategory-id="${subcategory.id}">
+                        <span class="subcategory-name" data-editable="true">${this.escapeHtml(subcategory.name)}</span>
+                        <div class="flex space-x-2">
+                            <button class="btn btn-green btn-add-content" data-area-id="${subcategory.area_id}" data-subcategory-id="${subcategory.id}">
+                                Add Content
+                            </button>
+                            <button class="btn btn-red btn-delete-subcategory" data-subcategory-id="${subcategory.id}">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            attachAreaEventListeners() {
+                // Add subcategory buttons
+                document.querySelectorAll('.btn-add-subcategory').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.target.closest('[data-area-id]').dataset.areaId;
+                        this.createNewSubcategory(areaId);
+                    });
+                });
+
+                // Delete area buttons
+                document.querySelectorAll('.btn-delete-area').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const areaId = e.target.closest('[data-area-id]').dataset.areaId;
+                        const areaName = e.target.closest('.area-item').querySelector('.area-name').textContent;
+                        await this.deleteArea(areaId, areaName);
+                    });
+                });
+
+                // Delete subcategory buttons
+                document.querySelectorAll('.btn-delete-subcategory').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const subcategoryId = e.target.closest('[data-subcategory-id]').dataset.subcategoryId;
+                        const subcategoryName = e.target.closest('.subcategory-item').querySelector('.subcategory-name').textContent;
+                        await this.deleteSubcategory(subcategoryId, subcategoryName);
+                    });
+                });
+
+                // Add content buttons
+                document.querySelectorAll('.btn-add-content').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.target.dataset.areaId;
+                        const subcategoryId = e.target.dataset.subcategoryId;
+                        this.showNotification(`Add content feature for area ${areaId}, subcategory ${subcategoryId}`, 'info');
+                    });
+                });
+
+                // Inline editing for area names
+                document.querySelectorAll('.area-name[data-editable]').forEach(element => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Area name cannot be empty.', 'error');
+                            return originalValue;
+                        }
+                        
+                        if (newValue !== originalValue && confirm(`Rename area "${originalValue}" to "${newValue}"?`)) {
+                            const areaId = element.closest('[data-area-id]').dataset.areaId;
+                            try {
+                                await this.dataLayer.updateArea(areaId, newValue);
+                                this.showNotification('Area renamed successfully', 'success');
+                                return newValue;
+                            } catch (error) {
+                                this.showNotification('Failed to rename area', 'error');
+                                return originalValue;
+                            }
+                        }
+                        return originalValue;
+                    });
+                });
+
+                // Inline editing for subcategory names
+                document.querySelectorAll('.subcategory-name[data-editable]').forEach(element => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Subcategory name cannot be empty.', 'error');
+                            return originalValue;
+                        }
+                        
+                        if (newValue !== originalValue) {
+                            const subcategoryId = element.closest('[data-subcategory-id]').dataset.subcategoryId;
+                            try {
+                                await this.dataLayer.updateSubcategory(subcategoryId, newValue);
+                                this.showNotification('Subcategory renamed successfully', 'success');
+                                return newValue;
+                            } catch (error) {
+                                this.showNotification('Failed to rename subcategory', 'error');
+                                return originalValue;
+                            }
+                        }
+                        return originalValue;
+                    });
+                });
+            }
+
+            makeInlineEditable(element, onSave) {
+                let isEditing = false;
+                
+                element.addEventListener('click', () => {
+                    if (isEditing) return;
+                    
+                    isEditing = true;
+                    const originalValue = element.textContent.trim();
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = originalValue;
+                    input.className = 'inline-edit-field';
+                    
+                    element.innerHTML = '';
+                    element.appendChild(input);
+                    element.classList.add('is-editing');
+                    
+                    input.focus();
+                    input.select();
+                    
+                    const finishEditing = async () => {
+                        if (!isEditing) return;
+                        isEditing = false;
+                        
+                        const newValue = input.value.trim();
+                        const finalValue = await onSave(newValue, originalValue);
+                        
+                        element.textContent = finalValue;
+                        element.classList.remove('is-editing');
+                    };
+                    
+                    input.addEventListener('blur', finishEditing);
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            finishEditing();
+                        } else if (e.key === 'Escape') {
+                            isEditing = false;
+                            element.textContent = originalValue;
+                            element.classList.remove('is-editing');
+                        }
+                    });
+                });
+            }
+
+            async createNewArea() {
+                const name = prompt('Enter area name:');
+                if (!name || name.trim() === '') return;
+
+                try {
+                    await this.dataLayer.createArea(name.trim());
+                    await this.loadAreas();
+                    this.showNotification('Area created successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to create area', 'error');
+                }
+            }
+
+            async createNewSubcategory(areaId) {
+                const name = prompt('Enter subcategory name:');
+                if (!name || name.trim() === '') return;
+
+                try {
+                    await this.dataLayer.createSubcategory(areaId, name.trim());
+                    await this.loadAreas();
+                    this.showNotification('Subcategory created successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to create subcategory', 'error');
+                }
+            }
+
+            async deleteArea(areaId, areaName) {
+                // Check if area has subcategories
+                const subcategories = await this.dataLayer.getSubcategories(areaId);
+                if (subcategories.length > 0) {
+                    this.showNotification(`Cannot delete "${areaName}": It still contains subcategories. Please delete them first.`, 'error');
+                    return;
+                }
+
+                if (!confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    await this.dataLayer.deleteArea(areaId);
+                    await this.loadAreas();
+                    this.showNotification('Area deleted successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to delete area', 'error');
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, subcategoryName) {
+                if (!confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    await this.dataLayer.deleteSubcategory(subcategoryId);
+                    await this.loadAreas();
+                    this.showNotification('Subcategory deleted successfully', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to delete subcategory', 'error');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                // Remove existing notifications
+                document.querySelectorAll('.notification').forEach(n => n.remove());
+                
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize application when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                window.app = new TaxonomyApp();
+            } catch (error) {
+                console.error('Failed to initialize application:', error);
+                document.body.innerHTML = `
+                    <div class="container py-8">
+                        <div class="notification error">
+                            <strong>Critical Error:</strong> Cannot initialize application. ${error.message}
+                            <br><br>
+                            <button onclick="location.reload()" class="btn btn-blue">Reload Page</button>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+    </script>
+</body>
 </html>
