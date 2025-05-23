@@ -18,11 +18,11 @@
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" as="script">
     
     <!-- Load external resources with integrity checks -->
-    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" 
-            integrity="sha384-example-hash" 
-            crossorigin="anonymous"></script>
     <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.js" 
-            integrity="sha384-example-hash" 
+            integrity="sha384-dPjGJ3rBpGktXk5Oc6fSuIzpWQb1Uk+yIt23iySD3broHItJTZOIKJVzRDCvW9kx" 
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" 
+            integrity="sha384-sfH01RemNLfukNwJacKhKH/Kqavspt9iZSMwhKcsUMH4bZ7CkkJsOfFQ6qsuHCl8" 
             crossorigin="anonymous"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -858,9 +858,14 @@
 
         async function getSecureConfig(key) {
             // In production, retrieve from secure storage or environment
+
+
+
+
+            
             const configs = {
-                'PARSE_APP_ID': 'your-secure-app-id',
-                'PARSE_JS_KEY': 'your-secure-js-key'
+                'PARSE_APP_ID': 'UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo',
+                'PARSE_JS_KEY': '1wGFqqvSJsemmoIJiQCEnRi9ZkiFT67Qgli3DeFC'
             };
             return configs[key];
         }
