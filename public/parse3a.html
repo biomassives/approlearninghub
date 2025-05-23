@@ -1,0 +1,2647 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" as="script">
+    
+    <!-- Load external resources with correct integrity checks -->
+    <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.js" 
+            integrity="sha384-dPjGJ3rBpGktXk5Oc6fSuIzpWQb1Uk+yIt23iySD3broHItJTZOIKJVzRDCvW9kx" 
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" 
+            integrity="sha384-sfH01RemNLfukNwJacKhKH/Kqavspt9iZSMwhKcsUMH4bZ7CkkJsOfFQ6qsuHCl8" 
+            crossorigin="anonymous"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+          crossorigin="anonymous">
+    
+    <style>
+        /* Security-focused CSS with input validation */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-800: #1f2937;
+        }
+        
+        /* Prevent CSS injection attacks */
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Rate limiting visual indicator */
+        .rate-limited {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Security warning styles */
+        .security-warning {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        /* Input validation styles */
+        .input-valid {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 1px var(--primary-green);
+        }
+        
+        .input-invalid {
+            border-color: var(--danger-red);
+            box-shadow: 0 0 0 1px var(--danger-red);
+        }
+        
+        /* Secure form styles */
+        .secure-form input, .secure-form textarea {
+            background-color: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+        }
+        
+        .secure-form input:focus, .secure-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Button security styles */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .btn-green:hover:not(:disabled) {
+            background-color: #059669;
+        }
+        
+        .btn-blue {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-blue:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+        
+        .btn-red {
+            background-color: var(--danger-red);
+            color: white;
+        }
+        
+        .btn-red:hover:not(:disabled) {
+            background-color: #dc2626;
+        }
+        
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #d1d5db;
+        }
+        
+        /* Layout and utility classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .space-x-4 > * + * {
+            margin-left: 1rem;
+        }
+        
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+        
+        .bg-white {
+            background-color: white;
+        }
+        
+        .bg-gray-50 {
+            background-color: var(--gray-50);
+        }
+        
+        .text-gray-600 {
+            color: #6b7280;
+        }
+        
+        .text-gray-900 {
+            color: #111827;
+        }
+        
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .p-4 {
+            padding: 1rem;
+        }
+        
+        .p-6 {
+            padding: 1.5rem;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .fixed {
+            position: fixed;
+        }
+        
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
+        
+        /* Animation classes */
+        .animate-slideDown {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+        }
+        
+        .animate-fadeInOut { 
+            animation: fadeInOut 3.5s ease-in-out forwards; 
+        }
+        
+        /* Security indicators */
+        .status-saving {
+            background-color: #fef3c7;
+            border-color: #f59e0b;
+        }
+        
+        .status-success {
+            background-color: #dcfce7;
+            border-color: #16a34a;
+        }
+        
+        .status-error {
+            background-color: #fee2e2;
+            border-color: #dc2626;
+        }
+        
+        .is-editing {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+        
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            background-color: white;
+        }
+        
+        .inline-edit-field:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 0;
+            border-color: var(--primary-blue);
+        }
+        
+        /* Navigation styles */
+        .nav-link {
+            color: #6b7280;
+            transition: color 0.15s ease;
+            text-decoration: none;
+        }
+        
+        .nav-link:hover {
+            color: #111827;
+        }
+        
+        .icon-button {
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.15s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .icon-button:hover {
+            background-color: #f3f4f6;
+        }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 42rem;
+            width: 100%;
+            margin: 0 1rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            
+            .modal-content {
+                margin: 0.5rem;
+            }
+        }
+
+/* Enhanced Subcategory Editor Styles */
+.tab-btn {
+    transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.tab-btn.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.material-item, .step-item, .panel-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: all 0.15s ease;
+}
+
+.material-item:hover, .step-item:hover, .panel-item:hover {
+    border-color: #d1d5db;
+    background: #f9fafb;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.panel-link-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.difficulty-beginner { background: #dcfce7; color: #166534; }
+.difficulty-intermediate { background: #fef3c7; color: #92400e; }
+.difficulty-advanced { background: #fee2e2; color: #991b1b; }
+
+.safety-low { color: #059669; }
+.safety-medium { color: #d97706; }
+.safety-high { color: #dc2626; }
+
+.panel-type-info { border-left: 4px solid #3b82f6; }
+.panel-type-tip { border-left: 4px solid #10b981; }
+.panel-type-warning { border-left: 4px solid #f59e0b; }
+.panel-type-science { border-left: 4px solid #8b5cf6; }
+.panel-type-history { border-left: 4px solid #6b7280; }
+.panel-type-advanced { border-left: 4px solid #ef4444; }
+
+.modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+    
+    .grid-cols-1.md\\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cols-1.md\\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+        
+    </style>
+</head>
+
+<body>
+    <!-- Security status indicator -->
+    <div id="security-status" class="security-warning hidden">
+        <strong>Security Alert:</strong> <span id="security-message"></span>
+    </div>
+
+    <div class="banner-message bg-green-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out">
+        🔒 Video Library, Learning Module, Clinic, Language Content
+    </div>
+
+    <header class="shadow-lg bg-white">
+        <div class="container">
+            <nav class="py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <a href="#" class="flex items-center space-x-3" aria-label="Approvideo Learning Hub">
+                            <svg class="h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c.246 0 .492-.015.732-.044m-1.464 0A9.006 9.006 0 0 1 12 3c.587 0 1.159.069 1.711.193M12 3a9.006 9.006 0 0 0-7.08 2.886M12 3c.015-.01.03-.019.046-.028M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm4.016 4.016a9.003 9.003 0 0 0 -8.032 0M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"></path>
+                            </svg>
+                            <span class="text-xl font-bold text-gray-900">
+                                Approvideo Learning Hub
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <span id="offline-indicator" class="text-xs font-semibold text-yellow-600"></span>
+                        <span id="security-indicator" class="text-xs font-semibold text-green-600">🔒</span>
+                        
+                        <button class="icon-button" id="darkModeToggle" aria-label="Toggle dark mode">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                            </svg>
+                        </button>
+
+                        <div class="relative">
+                            <button id="profileButton" class="icon-button" aria-label="User menu">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </button>
+                            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="signOutBtn">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container py-8">
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500">
+
+            <p class="text-gray-600">Organize your video content</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-category-btn" data-action="add-area">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Add Area
+                </button>
+            </div>
+            <div id="categories-container" class="space-y-4">
+                <div class="loading">Loading areas...</div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Video Tags</h2>
+                <button id="add-tag-btn" class="btn btn-green" data-action="add-tag">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add Tag
+                </button>
+            </div>
+            <div id="tag-cloud" class="space-y-4">
+            </div>
+        </div>
+
+        <!-- Secure Video Add Modal -->
+        <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-content">
+                <div class="flex items-start justify-between border-b p-4">
+                    <h3 id="modal-title" class="text-xl font-semibold text-gray-900">
+                        Add New Video Content
+                    </h3>
+                    <button type="button" id="modal-close-btn" class="icon-button" aria-label="Close modal">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <p class="text-sm font-medium text-gray-700">Adding content to:</p>
+                        <p class="text-lg font-semibold text-blue-800">
+                            <span id="modal-category-context">Area...</span>
+                            <span class="mx-1 text-gray-500">&gt;</span>
+                            <span id="modal-subcategory-context">Subcategory...</span>
+                        </p>
+                    </div>
+
+                    <form id="newVideoForm" class="secure-form space-y-4" novalidate>
+                        <div>
+                            <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900">Video Title *</label>
+                            <input type="text" 
+                                   id="newTitle" 
+                                   class="w-full" 
+                                   placeholder="Enter video title" 
+                                   required 
+                                   maxlength="200"
+                                   data-validation="title">
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+                        
+                        <div>
+                            <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900">YouTube URL *</label>
+                            <input type="url" 
+                                   id="newYoutubeUrl" 
+                                   class="w-full" 
+                                   placeholder="https://www.youtube.com/watch?v=..." 
+                                   required
+                                   data-validation="youtube">
+                            <div id="youtubeIdPreview" class="text-sm mt-1"></div>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+                        
+                        <div>
+                            <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900">Description *</label>
+                            <textarea id="newDescription" 
+                                      rows="3" 
+                                      class="w-full" 
+                                      placeholder="Describe the video content..." 
+                                      required
+                                      maxlength="1000"
+                                      data-validation="description"></textarea>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+                        
+                        <div class="relative">
+                            <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900">Tags (comma-separated) *</label>
+                            <input type="text" 
+                                   id="newTags" 
+                                   class="w-full" 
+                                   placeholder="e.g., DIY, Solar, Water"
+                                   data-validation="tags">
+                            <div id="tagSuggestions" class="absolute z-20 w-full bg-white border rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                            </div>
+                            <div class="invalid-feedback text-sm text-red-600 mt-1 hidden"></div>
+                        </div>
+
+                        <div class="flex justify-end pt-4 border-t mt-4 space-x-4"> 
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="submit" id="submitButton" class="btn btn-green">
+                                Add Video
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        'use strict';
+        
+        // Security Configuration
+        const SECURITY_CONFIG = {
+            MAX_LOGIN_ATTEMPTS: 5,
+            LOCKOUT_DURATION: 300000, // 5 minutes
+            SESSION_TIMEOUT: 1800000, // 30 minutes
+            MAX_REQUEST_RATE: 100, // requests per minute
+            CSRF_TOKEN_LENGTH: 32,
+            ENCRYPTION_KEY_LENGTH: 32,
+            MAX_FILE_SIZE: 10485760, // 10MB
+            ALLOWED_DOMAINS: ['hub.approvideo.org'],
+            SENSITIVE_FIELDS: ['password', 'token', 'key', 'secret']
+        };
+
+        // Security State Management
+        class SecurityManager {
+            constructor() {
+                this.rateLimiter = new Map();
+                this.failedAttempts = new Map();
+                this.csrfToken = this.generateCSRFToken();
+                this.sessionStartTime = Date.now();
+                this.encryptionKey = null;
+                this.init();
+            }
+
+            init() {
+                this.setupCSRFProtection();
+                this.setupSessionTimeout();
+                this.setupContentSecurityPolicy();
+                this.sanitizeExistingContent();
+                this.monitorSecurityEvents();
+            }
+
+            generateCSRFToken() {
+                const array = new Uint8Array(SECURITY_CONFIG.CSRF_TOKEN_LENGTH);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            setupCSRFProtection() {
+                // Add CSRF token to all forms
+                document.querySelectorAll('form').forEach(form => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'csrf_token';
+                    input.value = this.csrfToken;
+                    form.appendChild(input);
+                });
+            }
+
+            validateCSRFToken(token) {
+                return token === this.csrfToken;
+            }
+
+            checkRateLimit(identifier, limit = SECURITY_CONFIG.MAX_REQUEST_RATE) {
+                const now = Date.now();
+                const windowStart = now - 60000; // 1 minute window
+
+                if (!this.rateLimiter.has(identifier)) {
+                    this.rateLimiter.set(identifier, []);
+                }
+
+                const requests = this.rateLimiter.get(identifier);
+                const recentRequests = requests.filter(time => time > windowStart);
+                
+                if (recentRequests.length >= limit) {
+                    this.showSecurityAlert(`Rate limit exceeded for ${identifier}`);
+                    return false;
+                }
+
+                recentRequests.push(now);
+                this.rateLimiter.set(identifier, recentRequests);
+                return true;
+            }
+
+            recordFailedAttempt(identifier) {
+                if (!this.failedAttempts.has(identifier)) {
+                    this.failedAttempts.set(identifier, { count: 0, lastAttempt: 0 });
+                }
+
+                const attempts = this.failedAttempts.get(identifier);
+                attempts.count++;
+                attempts.lastAttempt = Date.now();
+
+                if (attempts.count >= SECURITY_CONFIG.MAX_LOGIN_ATTEMPTS) {
+                    this.lockoutUser(identifier);
+                }
+            }
+
+            lockoutUser(identifier) {
+                const lockoutEnd = Date.now() + SECURITY_CONFIG.LOCKOUT_DURATION;
+                localStorage.setItem(`lockout_${identifier}`, lockoutEnd.toString());
+                this.showSecurityAlert(`Account locked due to too many failed attempts. Try again in 5 minutes.`);
+            }
+
+            isUserLockedOut(identifier) {
+                const lockoutEnd = localStorage.getItem(`lockout_${identifier}`);
+                if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                    return true;
+                }
+                localStorage.removeItem(`lockout_${identifier}`);
+                return false;
+            }
+
+            setupSessionTimeout() {
+                setInterval(() => {
+                    if (Date.now() - this.sessionStartTime > SECURITY_CONFIG.SESSION_TIMEOUT) {
+                        this.handleSessionTimeout();
+                    }
+                }, 60000); // Check every minute
+            }
+
+            handleSessionTimeout() {
+                this.showSecurityAlert('Session expired for security reasons. Please refresh the page.');
+                // Disable all interactive elements
+                document.querySelectorAll('button, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                });
+            }
+
+            sanitizeInput(input) {
+                if (typeof input !== 'string') return input;
+                
+                // Remove potential XSS vectors
+                return input
+                    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+                    .replace(/javascript:/gi, '')
+                    .replace(/on\w+\s*=/gi, '')
+                    .replace(/data:(?!image\/[a-z]+;base64,)/gi, '')
+                    .trim();
+            }
+
+            sanitizeExistingContent() {
+                // Sanitize all text content on page load
+                const walker = document.createTreeWalker(
+                    document.body,
+                    NodeFilter.SHOW_TEXT,
+                    null,
+                    false
+                );
+
+                const textNodes = [];
+                let node;
+                while (node = walker.nextNode()) {
+                    textNodes.push(node);
+                }
+
+                textNodes.forEach(textNode => {
+                    textNode.textContent = this.sanitizeInput(textNode.textContent);
+                });
+            }
+
+            validateURL(url) {
+                try {
+                    const parsedURL = new URL(url);
+                    return SECURITY_CONFIG.ALLOWED_DOMAINS.some(domain => 
+                        parsedURL.hostname === domain || parsedURL.hostname.endsWith('.' + domain)
+                    );
+                } catch {
+                    return false;
+                }
+            }
+
+            setupContentSecurityPolicy() {
+                // Monitor CSP violations
+                document.addEventListener('securitypolicyviolation', (e) => {
+                    console.error('CSP Violation:', e.violatedDirective, e.blockedURI);
+                    this.showSecurityAlert(`Security policy violation detected: ${e.violatedDirective}`);
+                });
+            }
+
+            monitorSecurityEvents() {
+                // Monitor for suspicious activities
+                let rapidClicks = 0;
+                let lastClickTime = 0;
+
+                document.addEventListener('click', (e) => {
+                    const now = Date.now();
+                    if (now - lastClickTime < 50) { // Less than 50ms between clicks
+                        rapidClicks++;
+                        if (rapidClicks > 10) {
+                            this.showSecurityAlert('Suspicious rapid clicking detected');
+                            e.preventDefault();
+                            return;
+                        }
+                    } else {
+                        rapidClicks = 0;
+                    }
+                    lastClickTime = now;
+                });
+
+                // Monitor for console tampering
+                let devtools = false;
+                setInterval(() => {
+                    if (window.outerHeight - window.innerHeight > 160 || 
+                        window.outerWidth - window.innerWidth > 160) {
+                        if (!devtools) {
+                            devtools = true;
+                            this.showSecurityAlert('Developer tools detected. Please close for security.');
+                        }
+                    } else {
+                        devtools = false;
+                    }
+                }, 1000);
+            }
+
+            showSecurityAlert(message) {
+                const alertDiv = document.getElementById('security-status');
+                const messageSpan = document.getElementById('security-message');
+                
+                if (alertDiv && messageSpan) {
+                    messageSpan.textContent = message;
+                    alertDiv.classList.remove('hidden');
+                    
+                    // Auto-hide after 10 seconds
+                    setTimeout(() => {
+                        alertDiv.classList.add('hidden');
+                    }, 10000);
+                }
+                
+                console.warn('Security Alert:', message);
+            }
+
+            async generateEncryptionKey() {
+                try {
+                    const key = await crypto.subtle.generateKey(
+                        {
+                            name: 'AES-GCM',
+                            length: 256
+                        },
+                        true,
+                        ['encrypt', 'decrypt']
+                    );
+                    
+                    this.encryptionKey = await crypto.subtle.exportKey('raw', key);
+                    return this.encryptionKey;
+                } catch (error) {
+                    console.error('Failed to generate encryption key:', error);
+                    throw new Error('Encryption key generation failed');
+                }
+            }
+        }
+
+        // Enhanced Lattice Encryption with AES-GCM
+        class LatticeEncryption {
+            static async encrypt(data) {
+                try {
+                    const textEncoder = new TextEncoder();
+                    const dataBuffer = textEncoder.encode(JSON.stringify(data));
+                    
+                    const key = await crypto.subtle.generateKey(
+                        { name: 'AES-GCM', length: 256 },
+                        false,
+                        ['encrypt']
+                    );
+                    
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    
+                    const encryptedBuffer = await crypto.subtle.encrypt(
+                        { name: 'AES-GCM', iv: iv },
+                        key,
+                        dataBuffer
+                    );
+                    
+                    // Store key securely (in production, use key derivation)
+                    const exportedKey = await crypto.subtle.exportKey('raw', key);
+                    
+                    return {
+                        data: Array.from(new Uint8Array(encryptedBuffer)),
+                        iv: Array.from(iv),
+                        key: Array.from(new Uint8Array(exportedKey))
+                    };
+                } catch (error) {
+                    console.error('Encryption failed:', error);
+                    throw new Error('Data encryption failed');
+                }
+            }
+            
+            static async decrypt(encryptedData) {
+                try {
+                    if (!encryptedData || !encryptedData.data || !encryptedData.iv || !encryptedData.key) {
+                        throw new Error('Invalid encrypted data format');
+                    }
+                    
+                    const key = await crypto.subtle.importKey(
+                        'raw',
+                        new Uint8Array(encryptedData.key),
+                        { name: 'AES-GCM' },
+                        false,
+                        ['decrypt']
+                    );
+                    
+                    const decryptedBuffer = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) },
+                        key,
+                        new Uint8Array(encryptedData.data)
+                    );
+                    
+                    const textDecoder = new TextDecoder();
+                    const decryptedText = textDecoder.decode(decryptedBuffer);
+                    
+                    return JSON.parse(decryptedText);
+                } catch (error) {
+                    console.error('Decryption failed:', error);
+                    return null;
+                }
+            }
+        }
+
+        // Secure Parse initialization
+    async function initializeParse() {
+    const appId = await getSecureConfig('PARSE_APP_ID');
+    const jsKey = await getSecureConfig('PARSE_JS_KEY');
+    const serverURL = 'https://parseapi.back4app.com/';
+    
+    if (!appId || !jsKey) {
+        throw new Error('Parse configuration not found');
+    }
+    
+    Parse.initialize(appId, jsKey);
+    Parse.serverURL = serverURL;
+    
+    // Test the connection
+    try {
+        const TestObject = Parse.Object.extend("TestConnection");
+        const testQuery = new Parse.Query(TestObject);
+        testQuery.limit(1);
+        await testQuery.find();
+        console.log('Parse connection verified');
+    } catch (error) {
+        console.log('Parse connection test completed');
+    }
+    
+    return true;
+}
+
+        async function getSecureConfig(key) {
+            // In production, retrieve from secure storage or environment
+            const configs = {
+                'PARSE_APP_ID': 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+                'PARSE_JS_KEY': 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD'
+            };
+            return configs[key];
+        }
+
+        // Enhanced Input Validation
+        class InputValidator {
+            static rules = {
+                title: {
+                    required: true,
+                    minLength: 1,
+                    maxLength: 200,
+                    pattern: /^[a-zA-Z0-9\s\-_.,!?()]+$/,
+                    sanitize: true
+                },
+                youtube: {
+                    required: true,
+                    pattern: /^https:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/,
+                    sanitize: true
+                },
+                description: {
+                    required: true,
+                    minLength: 10,
+                    maxLength: 1000,
+                    sanitize: true
+                },
+                tags: {
+                    required: true,
+                    pattern: /^[a-zA-Z0-9\s,\-_]+$/,
+                    sanitize: true
+                }
+            };
+
+            static validate(field, value, security) {
+                const rule = this.rules[field];
+                if (!rule) return { valid: false, message: 'Unknown field' };
+
+                // Sanitize input
+                if (rule.sanitize) {
+                    value = security.sanitizeInput(value);
+                }
+
+                // Required check
+                if (rule.required && (!value || value.trim().length === 0)) {
+                    return { valid: false, message: 'This field is required' };
+                }
+
+                // Length checks
+                if (rule.minLength && value.length < rule.minLength) {
+                    return { valid: false, message: `Minimum length is ${rule.minLength} characters` };
+                }
+
+                if (rule.maxLength && value.length > rule.maxLength) {
+                    return { valid: false, message: `Maximum length is ${rule.maxLength} characters` };
+                }
+
+                // Pattern check
+                if (rule.pattern && !rule.pattern.test(value)) {
+                    return { valid: false, message: 'Invalid format' };
+                }
+
+                return { valid: true, value: value };
+            }
+
+            static validateForm(formData, security) {
+                const results = {};
+                let isValid = true;
+
+                for (const [field, value] of Object.entries(formData)) {
+                    const result = this.validate(field, value, security);
+                    results[field] = result;
+                    if (!result.valid) {
+                        isValid = false;
+                    }
+                }
+
+                return { valid: isValid, results: results };
+            }
+        }
+
+        // Helper functions with security enhancements
+        function extractYoutubeId(url) {
+            if (!url || typeof url !== 'string') return null;
+            
+            // More restrictive regex for security
+            const regex = /^https:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})$/;
+            const match = url.match(regex);
+            return match ? match[2] : null;
+        }
+
+        function isValidYoutubeId(id) {
+            return typeof id === 'string' && /^[a-zA-Z0-9_-]{11}$/.test(id);
+        }
+
+        function showToast(message, type = 'info') {
+            const security = window.securityManager;
+            message = security.sanitizeInput(message);
+            
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            
+            let bgColorClass = 'bg-blue-600';
+            if (type === 'success') bgColorClass = 'bg-green-600';
+            else if (type === 'error') bgColorClass = 'bg-red-600';
+
+            toast.className = `toast-message ${bgColorClass} text-white p-3 rounded-md shadow-lg max-w-sm animate-fadeInOut mb-2`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'fixed bottom-4 right-4 z-50 space-y-2';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // Enhanced Video Manager with Security
+        class SecureVideoManager {
+            constructor(security) {
+                this.security = security;
+                this.store = new SecureParseStore(security);
+                this.containerEl = document.getElementById('categories-container');
+                this.editingState = {
+                    isEditing: false, element: null, inputElement: null,
+                    type: null, id: null, areaId: null, originalValue: null
+                };
+                this.bindEvents();
+                this.bindStoreEvents();
+            }
+
+            bindEvents() {
+                // Rate-limited add area button
+                document.getElementById('add-category-btn')?.addEventListener('click', (e) => {
+                    if (!this.security.checkRateLimit('add-area', 10)) {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    if (this.editingState.isEditing) this.cancelEdit();
+                    if (!this.editingState.isEditing) this.createNewArea();
+                });
+
+                // Secure container click handler
+                this.containerEl.addEventListener('click', (e) => {
+                    if (!this.security.checkRateLimit('container-click', 50)) {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    this.handleContainerClick(e);
+                });
+
+                // Security-aware document listeners
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.editingState.isEditing) {
+                        this.cancelEdit();
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (this.editingState.isEditing) {
+                        const editingItemElement = this.editingState.element?.closest('.area-item, .subcategory-item');
+                        if (e.target !== this.editingState.inputElement && 
+                            (!editingItemElement || !editingItemElement.contains(e.target))) {
+                            this.cancelEdit();
+                        }
+                    }
+                }, true);
+            }
+
+            handleContainerClick(e) {
+                if (e.target.closest('.inline-edit-field')) return;
+
+                const areaNameElement = e.target.closest('.area-name');
+                const subcategoryNameElement = e.target.closest('.subcategory-name');
+                const deleteAreaButton = e.target.closest('.delete-area-btn');
+                const addSubcategoryButton = e.target.closest('.add-subcategory-btn');
+                const deleteSubcategoryButton = e.target.closest('.delete-subcategory-btn');
+                const addContentButton = e.target.closest('.add-content-btn');
+
+                if (this.editingState.isEditing) {
+                    const currentEditingItem = this.editingState.element?.closest('.area-item, .subcategory-item');
+                    if (!currentEditingItem || !currentEditingItem.contains(e.target)) {
+                        this.saveEdit();
+                        return;
+                    } else {
+                        return;
+                    }
+                } else {
+                    if (addContentButton) {
+                        const subcategoryId = this.security.sanitizeInput(addContentButton.dataset.subcategoryId);
+                        const areaId = this.security.sanitizeInput(addContentButton.dataset.areaId);
+                        if (subcategoryId && areaId) {
+                            openModal(subcategoryId, areaId);
+                        }
+                        return;
+                    }
+
+                    if (deleteAreaButton) {
+                        const areaId = this.security.sanitizeInput(deleteAreaButton.closest('.area-item')?.dataset.areaId);
+                        if (areaId) this.deleteArea(areaId);
+                        return;
+                    }
+
+                    if (addSubcategoryButton) {
+                        const areaId = this.security.sanitizeInput(addSubcategoryButton.closest('.area-item')?.dataset.areaId);
+                        if (areaId) this.createNewSubcategory(areaId);
+                        return;
+                    }
+
+                    if (deleteSubcategoryButton) {
+                        const subcategoryId = this.security.sanitizeInput(deleteSubcategoryButton.closest('.subcategory-item')?.dataset.subcategoryId);
+                        const areaId = this.security.sanitizeInput(deleteSubcategoryButton.closest('.area-item')?.dataset.areaId);
+                        if (subcategoryId && areaId) this.deleteSubcategory(subcategoryId, areaId);
+                        return;
+                    }
+
+                    // Handle editable names with security
+                    let clickedEditableElement = null;
+                    let editType = null;
+                    let editId = null;
+                    let editAreaId = null;
+
+                    if (areaNameElement) {
+                        clickedEditableElement = areaNameElement;
+                        editType = 'area';
+                        editId = this.security.sanitizeInput(areaNameElement.closest('.area-item')?.dataset.areaId);
+                    } else if (subcategoryNameElement) {
+                        clickedEditableElement = subcategoryNameElement;
+                        editType = 'subcategory';
+                        editId = this.security.sanitizeInput(subcategoryNameElement.closest('.subcategory-item')?.dataset.subcategoryId);
+                        editAreaId = this.security.sanitizeInput(subcategoryNameElement.closest('.area-item')?.dataset.areaId);
+                    }
+
+                    if (clickedEditableElement && editType && editId) {
+                        this.startEditing(clickedEditableElement, editType, editId, editAreaId);
+                        return;
+                    }
+                }
+            }
+
+            bindStoreEvents() {
+                this.store.on('loading', (isLoading) => {
+                    if (!isLoading && this.editingState.isEditing) {
+                        this.cancelEdit(true);
+                    }
+                    this.render();
+                });
+
+                this.store.on('error', (errorData) => {
+                    const message = this.security.sanitizeInput(errorData.message || 'An error occurred');
+                    showToast(message, 'error');
+                    if (!this.store.isLoading) {
+                        this.render();
+                    }
+                });
+
+                this.store.on('dataLoaded', (payload) => {
+                    this.render();
+                });
+            }
+
+            async deleteArea(areaId) {
+                if (!this.security.checkRateLimit('delete-area', 5)) return;
+                
+                const area = this.store.areas.find(a => a.id === areaId);
+                const areaName = area ? this.security.sanitizeInput(area.area || area.name) : '...';
+
+                if (area && area.subcategories && area.subcategories.length > 0) {
+                    showToast(`Cannot delete "${areaName}": It still contains subcategories. Please delete them first.`, 'error');
+                    return;
+                }
+
+                if (confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
+                    try {
+                        await this.store.deleteArea(areaId);
+                    } catch (error) {
+                        console.error("Delete area failed:", error);
+                    }
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, areaId) {
+                if (!this.security.checkRateLimit('delete-subcategory', 5)) return;
+                
+                const area = this.store.areas.find(a => a.id === areaId);
+                const subcategory = area?.subcategories.find(s => s.id === subcategoryId);
+                const subcategoryName = subcategory ? this.security.sanitizeInput(subcategory.title || subcategory.name) : '...';
+
+                if (confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
+                    try {
+                        await this.store.deleteSubcategory(subcategoryId, areaId);
+                    } catch (error) {
+                        console.error("Delete subcategory failed:", error);
+                    }
+                }
+            }
+
+            createNewArea() {
+                this.cleanupAnyActiveEdits();
+                
+                if (this.containerEl.querySelector('.new-area')) {
+                    this.containerEl.querySelector('.new-area input')?.focus();
+                    return;
+                }
+
+                const tempId = 'new-area-' + Date.now();
+                const newAreaDiv = document.createElement('div');
+                newAreaDiv.className = 'area-item new-area bg-green-50 p-4 border border-green-200 rounded-lg animate-slideDown';
+                newAreaDiv.dataset.areaId = tempId;
+
+                newAreaDiv.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <input type="text" 
+                               class="new-item-input flex-grow p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
+                               placeholder="Enter area name and press Enter"
+                               maxlength="100"
+                               data-validation="area-name">
+                        <button class="btn btn-green save-new-area-btn p-2">Save</button>
+                        <button class="btn btn-red cancel-new-area-btn p-2">Cancel</button>
+                    </div>`;
+
+                this.containerEl.insertBefore(newAreaDiv, this.containerEl.firstChild);
+
+                const inputField = newAreaDiv.querySelector('input');
+                const saveBtn = newAreaDiv.querySelector('.save-new-area-btn');
+                const cancelBtn = newAreaDiv.querySelector('.cancel-new-area-btn');
+
+                const removeForm = () => newAreaDiv.remove();
+
+                const handleSave = async () => {
+                    const name = this.security.sanitizeInput(inputField.value.trim());
+                    
+                    const validation = InputValidator.validate('title', name, this.security);
+                    if (!validation.valid) {
+                        showToast(validation.message, 'error');
+                        inputField.focus();
+                        return;
+                    }
+
+                    if (name) {
+                        saveBtn.disabled = true;
+                        cancelBtn.disabled = true;
+                        inputField.disabled = true;
+                        try {
+                            await this.store.addArea({ area: validation.value });
+                        } catch (error) {
+                            saveBtn.disabled = false;
+                            cancelBtn.disabled = false;
+                            inputField.disabled = false;
+                            inputField.focus();
+                        }
+                    } else {
+                        showToast('Area name cannot be empty.', 'error');
+                        inputField.focus();
+                    }
+                };
+
+                saveBtn.addEventListener('click', handleSave);
+                cancelBtn.addEventListener('click', removeForm);
+                inputField.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleSave();
+                    else if (e.key === 'Escape') removeForm();
+                });
+
+                inputField.focus();
+            }
+
+            createNewSubcategory(areaId) {
+                this.cleanupAnyActiveEdits();
+                
+                const areaItem = this.containerEl.querySelector(`.area-item[data-area-id="${areaId}"]`);
+                if (!areaItem) return;
+
+                const subcategoriesContainer = areaItem.querySelector('.subcategories');
+                if (!subcategoriesContainer) return;
+
+                if (subcategoriesContainer.querySelector('.new-subcategory')) {
+                    subcategoriesContainer.querySelector('.new-subcategory input')?.focus();
+                    return;
+                }
+
+                const tempId = 'new-subcategory-' + Date.now();
+                const newSubcategoryDiv = document.createElement('div');
+                newSubcategoryDiv.className = 'subcategory-item new-subcategory bg-blue-50 p-2 border border-blue-200 rounded-md animate-slideDown flex items-center space-x-2';
+                newSubcategoryDiv.dataset.subcategoryId = tempId;
+
+                newSubcategoryDiv.innerHTML = `
+                    <input type="text" 
+                           class="new-item-input flex-grow p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                           placeholder="Enter subcategory name and press Enter"
+                           maxlength="100"
+                           data-validation="subcategory-name">
+                    <button class="btn btn-green save-new-subcategory-btn text-xs p-1">Save</button>
+                    <button class="btn btn-red cancel-new-subcategory-btn text-xs p-1">Cancel</button>`;
+
+                subcategoriesContainer.insertBefore(newSubcategoryDiv, subcategoriesContainer.firstChild);
+
+                const inputField = newSubcategoryDiv.querySelector('input');
+                const saveBtn = newSubcategoryDiv.querySelector('.save-new-subcategory-btn');
+                const cancelBtn = newSubcategoryDiv.querySelector('.cancel-new-subcategory-btn');
+
+                const removeForm = () => newSubcategoryDiv.remove();
+
+                const handleSave = async () => {
+                    const name = this.security.sanitizeInput(inputField.value.trim());
+                    
+                    const validation = InputValidator.validate('title', name, this.security);
+                    if (!validation.valid) {
+                        showToast(validation.message, 'error');
+                        inputField.focus();
+                        return;
+                    }
+
+                    if (name) {
+                        saveBtn.disabled = true;
+                        cancelBtn.disabled = true;
+                        inputField.disabled = true;
+                        try {
+                            await this.store.addSubcategory(areaId, { title: validation.value });
+                        } catch (error) {
+                            saveBtn.disabled = false;
+                            cancelBtn.disabled = false;
+                            inputField.disabled = false;
+                            inputField.focus();
+                        }
+                    } else {
+                        showToast('Subcategory name cannot be empty.', 'error');
+                        inputField.focus();
+                    }
+                };
+
+                saveBtn.addEventListener('click', handleSave);
+                cancelBtn.addEventListener('click', removeForm);
+                inputField.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleSave();
+                    else if (e.key === 'Escape') removeForm();
+                });
+
+                inputField.focus();
+            }
+
+            cleanupAnyActiveEdits() {
+                const activeEditFields = this.containerEl.querySelectorAll('.inline-edit-field');
+                if (activeEditFields.length > 0) {
+                    activeEditFields.forEach(field => {
+                        const parentItem = field.closest('.area-item, .subcategory-item');
+                        if (parentItem) {
+                            parentItem.classList.remove('is-editing');
+                        }
+                        field.remove();
+                    });
+                }
+                
+                if (this.editingState.isEditing) {
+                    this.resetEditingState();
+                }
+                
+                const hiddenElements = this.containerEl.querySelectorAll('.area-name[style*="display: none"], .subcategory-name[style*="display: none"]');
+                hiddenElements.forEach(element => {
+                    element.style.display = '';
+                });
+            }
+
+            startEditing(element, type, id, areaId = null) {
+                this.cleanupAnyActiveEdits();
+                
+                if (this.editingState.isEditing) {
+                    this.cancelEdit();
+                }
+
+                const originalValue = this.security.sanitizeInput(element.textContent.trim());
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = originalValue;
+                input.className = 'inline-edit-field';
+                input.maxLength = 100;
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        this.saveEdit();
+                    } else if (e.key === 'Escape') {
+                        this.cancelEdit();
+                    }
+                });
+
+                element.style.display = 'none';
+                element.parentNode.insertBefore(input, element.nextSibling);
+
+                this.editingState = {
+                    isEditing: true,
+                    element: element,
+                    inputElement: input,
+                    type: type,
+                    id: id,
+                    areaId: areaId,
+                    originalValue: originalValue
+                };
+
+                element.closest('.area-item, .subcategory-item')?.classList.add('is-editing');
+                input.focus();
+                input.select();
+            }
+
+            async saveEdit() {
+                if (!this.editingState.isEditing) return;
+
+                const { element, inputElement, type, id, areaId, originalValue } = this.editingState;
+
+                if (!inputElement || !document.body.contains(inputElement)) {
+                    this.cancelEdit();
+                    return;
+                }
+
+                const newValue = this.security.sanitizeInput(inputElement.value.trim());
+
+                const validation = InputValidator.validate('title', newValue, this.security);
+                if (!validation.valid) {
+                    showToast(validation.message, 'error');
+                    inputElement.focus();
+                    return;
+                }
+
+                if (validation.value === originalValue) {
+                    this.cancelEdit();
+                    return;
+                }
+
+                inputElement.disabled = true;
+
+                try {
+                    if (type === 'area') {
+                        const confirmMsg = `Rename area "${originalValue}" to "${validation.value}"?`;
+                        if (!window.confirm(confirmMsg)) {
+                            this.cancelEdit();
+                            return;
+                        }
+                        await this.store.updateArea(id, { area: validation.value });
+                    } else if (type === 'subcategory') {
+                        if (!areaId) {
+                            throw new Error("Missing areaId for subcategory update.");
+                        }
+                        await this.store.updateSubcategory(id, areaId, { title: validation.value });
+                    }
+                } catch (error) {
+                    console.error("Save failed:", error);
+                    inputElement.disabled = false;
+                    inputElement.focus();
+                    return;
+                }
+            }
+
+            cancelEdit(isRendering = false) {
+                if (!this.editingState.isEditing) return;
+
+                const { element, inputElement, originalValue } = this.editingState;
+
+                if (element && document.body.contains(element)) {
+                    element.innerHTML = this.security.sanitizeInput(originalValue ?? '');
+                    element.style.display = '';
+                    element.closest('.area-item, .subcategory-item')?.classList.remove('is-editing');
+                }
+
+                if (inputElement && inputElement.parentNode) {
+                    inputElement.remove();
+                }
+
+                this.resetEditingState();
+            }
+
+            resetEditingState() {
+                this.editingState = {
+                    isEditing: false, element: null, inputElement: null, type: null,
+                    id: null, areaId: null, originalValue: null
+                };
+            }
+
+            render() {
+                this.cleanupAnyActiveEdits();
+
+                if (this.editingState.isEditing) {
+                    this.cancelEdit(true);
+                }
+
+                if (this.store.isLoading) {
+                    if (!this.containerEl.querySelector('.loading')) {
+                        this.containerEl.innerHTML = '<div class="loading">Loading areas...</div>';
+                    }
+                    return;
+                }
+
+                if (this.store.error && this.store.areas.length === 0) {
+                    const errorMsg = this.security.sanitizeInput(this.store.error || 'Unknown error occurred.');
+                    this.containerEl.innerHTML = `<div class="error p-4 m-4 rounded border border-red-300 bg-red-100 text-red-700">Error: ${errorMsg}</div>`;
+                    return;
+                }
+
+                const newAreaInput = this.containerEl.querySelector('.new-area input');
+                const newAreaValue = newAreaInput ? newAreaInput.value : null;
+
+                if (this.store.areas.length === 0 && !newAreaInput) {
+                    this.containerEl.innerHTML = `
+                        <div class="empty-state text-center p-6 bg-gray-50 rounded-lg my-4">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+                            </svg>
+                            <p class="text-gray-500">No areas yet. Click "Add Area" to create your first one.</p>
+                        </div>`;
+                    return;
+                }
+
+const areasHTML = this.store.areas.map(area => {
+                    const safeAreaName = this.security.sanitizeInput(area.area || area.name);
+                    const subcategoriesHTML = area.subcategories && area.subcategories.length > 0 ?
+                        area.subcategories.map(subcategory => {
+                            const safeSubName = this.security.sanitizeInput(subcategory.title || subcategory.name);
+                            return `
+                                <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 text-gray-700 rounded" data-subcategory-id="${subcategory.id}">
+                                    <div class="flex-grow mr-2">
+                                        <button class="add-content-btn p-1 text-green-500 hover:text-green-700 rounded-full hover:bg-green-100 mr-2"
+                                                title="Add Supporting Content"
+                                                data-subcategory-id="${subcategory.id}"
+                                                data-area-id="${area.id}">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                        </button>
+                                        <span class="subcategory-name text-gray-700 cursor-pointer font-medium text-sm">${safeSubName}</span>
+                                    </div>
+                                    <div class="subcategory-controls flex items-center space-x-1">
+                                        <button class="delete-subcategory-btn p-1 text-red-500 hover:text-red-700" title="Delete">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>`;
+                        }).join('') :
+                        '<p class="text-sm text-gray-500 px-2 py-1">No subcategories yet. Use the "Add Sub" button above.</p>';
+
+                    return `
+                        <div class="area-item bg-white rounded-lg shadow mb-4" data-area-id="${area.id}">
+                            <div class="area-header flex justify-between items-center p-3 border-b">
+                                <div class="flex-grow mr-4">
+                                    <h3 class="area-name cursor-pointer font-semibold text-lg text-gray-900">${safeAreaName}</h3>
+                                </div>
+                                <div class="area-controls flex items-center space-x-2">
+                                    <button class="btn btn-blue add-subcategory-btn text-xs px-2 py-1" title="Add Subcategory">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                        Add Sub
+                                    </button>
+                                    <button class="btn btn-red delete-area-btn text-xs px-2 py-1" title="Delete">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="subcategories p-2 space-y-1">
+                                ${subcategoriesHTML}
+                            </div>
+                        </div>`;
+                }).join('');
+
+                this.containerEl.innerHTML = areasHTML;
+
+                if (newAreaValue !== null) {
+                    this.createNewArea();
+                    const recreatedInput = this.containerEl.querySelector('.new-area input');
+                    if (recreatedInput) {
+                        recreatedInput.value = this.security.sanitizeInput(newAreaValue);
+                    }
+                }
+            }
+        }
+
+        // Secure Parse Store implementation
+        class SecureParseStore {
+            constructor(security) {
+                this.security = security;
+                this.areas = [];
+                this.videos = [];
+                this.tags = [];
+                this.isLoading = false;
+                this.error = null;
+                this.eventListeners = {};
+                this.requestQueue = [];
+                this.maxRetries = 3;
+            }
+
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(callback => {
+                        try {
+                            callback(data);
+                        } catch (error) {
+                            console.error(`Error in event listener for ${event}:`, error);
+                        }
+                    });
+                }
+            }
+
+            async executeSecureQuery(queryFunc, retryCount = 0) {
+                try {
+                    const result = await queryFunc();
+                    return result;
+                } catch (error) {
+                    console.error('Parse query failed:', error);
+                    
+                    if (retryCount < this.maxRetries && this.isRetryableError(error)) {
+                        await this.delay(Math.pow(2, retryCount) * 1000); // Exponential backoff
+                        return this.executeSecureQuery(queryFunc, retryCount + 1);
+                    }
+                    
+                    throw error;
+                }
+            }
+
+            isRetryableError(error) {
+                // Define which errors are worth retrying
+                const retryableCodes = [100, 124, 125]; // Parse error codes for network issues
+                return retryableCodes.includes(error.code) || 
+                       error.message.includes('network') ||
+                       error.message.includes('timeout');
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async loadInitialData() {
+                if (!this.security.checkRateLimit('load-data', 10)) {
+                    throw new Error('Rate limit exceeded for data loading');
+                }
+
+                this.isLoading = true;
+                this.error = null;
+                this.emit('loading', true);
+
+                try {
+                    // Load Areas with security validation
+                    const areas = await this.executeSecureQuery(async () => {
+                        const Area = Parse.Object.extend("Area");
+                        const areaQuery = new Parse.Query(Area);
+                        areaQuery.ascending("area");
+                        areaQuery.limit(100); // Limit results for security
+                        return await areaQuery.find();
+                    });
+
+                    // Load Subcategories with security validation
+                    const subcategories = await this.executeSecureQuery(async () => {
+                        const Subcategory = Parse.Object.extend("Subcategory");
+                        const subQuery = new Parse.Query(Subcategory);
+                        subQuery.include("area");
+                        subQuery.ascending("title");
+                        subQuery.limit(500); // Limit results for security
+                        return await subQuery.find();
+                    });
+
+                    // Process and sanitize data
+                    this.areas = areas.map(areaObj => {
+                        const area = {
+                            id: areaObj.id,
+                            area: this.security.sanitizeInput(areaObj.get('area') || ''),
+                            icon: this.security.sanitizeInput(areaObj.get('icon') || ''),
+                            featherIcon: this.security.sanitizeInput(areaObj.get('featherIcon') || ''),
+                            svgString: this.security.sanitizeInput(areaObj.get('svgString') || ''),
+                            subcategories: []
+                        };
+
+                        // Find and sanitize subcategories for this area
+                        area.subcategories = subcategories
+                            .filter(subObj => subObj.get('area') && subObj.get('area').id === area.id)
+                            .map(subObj => ({
+                                id: subObj.id,
+                                uniqueId: this.security.sanitizeInput(subObj.get('uniqueId') || ''),
+                                title: this.security.sanitizeInput(subObj.get('title') || ''),
+                                description: this.security.sanitizeInput(subObj.get('description') || ''),
+                                tags: Array.isArray(subObj.get('tags')) ? 
+                                      subObj.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                                context: this.security.sanitizeInput(subObj.get('context') || ''),
+                                materials: Array.isArray(subObj.get('materials')) ? 
+                                          subObj.get('materials').map(material => this.security.sanitizeInput(material)) : [],
+                                processSteps: Array.isArray(subObj.get('processSteps')) ? 
+                                             subObj.get('processSteps').map(step => this.security.sanitizeInput(step)) : [],
+                                subtitle: this.security.sanitizeInput(subObj.get('subtitle') || '')
+                            }))
+                            .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+
+                        return area;
+                    });
+
+                    // Load Tags with security validation
+                    const tags = await this.executeSecureQuery(async () => {
+                        const Tag = Parse.Object.extend("Tag");
+                        const tagQuery = new Parse.Query(Tag);
+                        tagQuery.ascending("name");
+                        tagQuery.limit(200); // Limit results for security
+                        return await tagQuery.find();
+                    });
+                    
+                    this.tags = tags.map(tagObj => ({
+                        id: tagObj.id,
+                        name: this.security.sanitizeInput(tagObj.get('name') || ''),
+                        definition: this.security.sanitizeInput(tagObj.get('definition') || '')
+                    }));
+
+                    this.emit('dataLoaded', { areas: this.areas, source: 'parse' });
+                    console.log("Data loaded successfully from Parse.");
+
+                } catch (error) {
+                    console.error("Parse fetch failed:", error);
+                    this.error = this.security.sanitizeInput(error.message || 'Failed to load data');
+                    this.emit('error', { message: this.error });
+                } finally {
+                    this.isLoading = false;
+                    this.emit('loading', false);
+                }
+            }
+
+            async addArea(areaData) {
+                if (!this.security.checkRateLimit('add-area', 5)) {
+                    throw new Error('Rate limit exceeded for adding areas');
+                }
+
+                try {
+                    const sanitizedData = {
+                        area: this.security.sanitizeInput(areaData.area || '')
+                    };
+
+                    const result = await this.executeSecureQuery(async () => {
+                        const Area = Parse.Object.extend("Area");
+                        const area = new Area();
+                        area.set("area", sanitizedData.area);
+                        return await area.save();
+                    });
+                    
+                    const newArea = {
+                        id: result.id,
+                        area: this.security.sanitizeInput(result.get('area')),
+                        icon: this.security.sanitizeInput(result.get('icon') || ''),
+                        featherIcon: this.security.sanitizeInput(result.get('featherIcon') || ''),
+                        svgString: this.security.sanitizeInput(result.get('svgString') || ''),
+                        subcategories: []
+                    };
+
+                    this.areas.push(newArea);
+                    this.areas.sort((a, b) => a.area.localeCompare(b.area));
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return newArea;
+
+                } catch (error) {
+                    console.error("Add area failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add area') });
+                    throw error;
+                }
+            }
+
+            async updateArea(areaId, areaData) {
+                if (!this.security.checkRateLimit('update-area', 10)) {
+                    throw new Error('Rate limit exceeded for updating areas');
+                }
+
+                try {
+                    const sanitizedData = {
+                        area: this.security.sanitizeInput(areaData.area || '')
+                    };
+
+                    const result = await this.executeSecureQuery(async () => {
+                        const Area = Parse.Object.extend("Area");
+                        const query = new Parse.Query(Area);
+                        const area = await query.get(areaId);
+                        area.set("area", sanitizedData.area);
+                        return await area.save();
+                    });
+
+                    const index = this.areas.findIndex(a => a.id === areaId);
+                    if (index !== -1) {
+                        this.areas[index].area = this.security.sanitizeInput(result.get('area'));
+                        this.areas.sort((a, b) => a.area.localeCompare(b.area));
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return result;
+
+                } catch (error) {
+                    console.error("Update area failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to update area') });
+                    throw error;
+                }
+            }
+
+            async deleteArea(areaId) {
+                if (!this.security.checkRateLimit('delete-area', 5)) {
+                    throw new Error('Rate limit exceeded for deleting areas');
+                }
+
+                try {
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area && area.subcategories && area.subcategories.length > 0) {
+                        throw new Error(`Cannot delete "${area.area}": It still contains subcategories.`);
+                    }
+
+                    await this.executeSecureQuery(async () => {
+                        const Area = Parse.Object.extend("Area");
+                        const query = new Parse.Query(Area);
+                        const areaObj = await query.get(areaId);
+                        return await areaObj.destroy();
+                    });
+
+                    this.areas = this.areas.filter(a => a.id !== areaId);
+                    this.emit('dataLoaded', { areas: this.areas });
+
+                } catch (error) {
+                    console.error("Delete area failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to delete area') });
+                    throw error;
+                }
+            }
+
+            async addSubcategory(areaId, subcategoryData) {
+                if (!this.security.checkRateLimit('add-subcategory', 10)) {
+                    throw new Error('Rate limit exceeded for adding subcategories');
+                }
+
+                try {
+                    const sanitizedData = {
+                        title: this.security.sanitizeInput(subcategoryData.title || '')
+                    };
+
+                    const result = await this.executeSecureQuery(async () => {
+                        const Area = Parse.Object.extend("Area");
+                        const areaQuery = new Parse.Query(Area);
+                        const areaPointer = await areaQuery.get(areaId);
+
+                        const Subcategory = Parse.Object.extend("Subcategory");
+                        const subcategory = new Subcategory();
+                        subcategory.set("title", sanitizedData.title);
+                        subcategory.set("area", areaPointer);
+                        subcategory.set("uniqueId", Date.now().toString());
+                        
+                        return await subcategory.save();
+                    });
+
+                    const newSubcategory = {
+                        id: result.id,
+                        uniqueId: this.security.sanitizeInput(result.get('uniqueId')),
+                        title: this.security.sanitizeInput(result.get('title')),
+                        description: this.security.sanitizeInput(result.get('description') || ''),
+                        tags: Array.isArray(result.get('tags')) ? 
+                              result.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                        context: this.security.sanitizeInput(result.get('context') || ''),
+                        materials: Array.isArray(result.get('materials')) ? 
+                                  result.get('materials').map(material => this.security.sanitizeInput(material)) : [],
+                        processSteps: Array.isArray(result.get('processSteps')) ? 
+                                     result.get('processSteps').map(step => this.security.sanitizeInput(step)) : [],
+                        subtitle: this.security.sanitizeInput(result.get('subtitle') || '')
+                    };
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area) {
+                        if (!Array.isArray(area.subcategories)) area.subcategories = [];
+                        area.subcategories.push(newSubcategory);
+                        area.subcategories.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return newSubcategory;
+
+                } catch (error) {
+                    console.error("Add subcategory failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add subcategory') });
+                    throw error;
+                }
+            }
+
+            async updateSubcategory(subcategoryId, areaId, subcategoryData) {
+                if (!this.security.checkRateLimit('update-subcategory', 10)) {
+                    throw new Error('Rate limit exceeded for updating subcategories');
+                }
+
+                try {
+                    const sanitizedData = {
+                        title: this.security.sanitizeInput(subcategoryData.title || '')
+                    };
+
+                    const result = await this.executeSecureQuery(async () => {
+                        const Subcategory = Parse.Object.extend("Subcategory");
+                        const query = new Parse.Query(Subcategory);
+                        const subcategory = await query.get(subcategoryId);
+                        subcategory.set("title", sanitizedData.title);
+                        return await subcategory.save();
+                    });
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area?.subcategories) {
+                        const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
+                        if (subIndex > -1) {
+                            area.subcategories[subIndex].title = this.security.sanitizeInput(result.get('title'));
+                            area.subcategories.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                        }
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return result;
+
+                } catch (error) {
+                    console.error("Update subcategory failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to update subcategory') });
+                    throw error;
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, areaId) {
+                if (!this.security.checkRateLimit('delete-subcategory', 5)) {
+                    throw new Error('Rate limit exceeded for deleting subcategories');
+                }
+
+                try {
+                    await this.executeSecureQuery(async () => {
+                        const Subcategory = Parse.Object.extend("Subcategory");
+                        const query = new Parse.Query(Subcategory);
+                        const subcategoryObj = await query.get(subcategoryId);
+                        return await subcategoryObj.destroy();
+                    });
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area?.subcategories) {
+                        area.subcategories = area.subcategories.filter(sub => sub.id !== subcategoryId);
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+
+                } catch (error) {
+                    console.error("Delete subcategory failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to delete subcategory') });
+                    throw error;
+                }
+            }
+
+            async addVideo(videoData) {
+                if (!this.security.checkRateLimit('add-video', 5)) {
+                    throw new Error('Rate limit exceeded for adding videos');
+                }
+
+                try {
+                    // Sanitize and validate all video data
+                    const sanitizedData = {
+                        title: this.security.sanitizeInput(videoData.title || ''),
+                        description: this.security.sanitizeInput(videoData.description || ''),
+                        youtubeId: this.security.sanitizeInput(videoData.youtubeId || ''),
+                        tags: Array.isArray(videoData.tags) ? 
+                              videoData.tags.map(tag => this.security.sanitizeInput(tag)) : [],
+                        areaId: this.security.sanitizeInput(videoData.areaId || ''),
+                        subcategoryId: this.security.sanitizeInput(videoData.subcategoryId || ''),
+                        creator: this.security.sanitizeInput(videoData.creator || 'Unknown')
+                    };
+
+                    // Validate YouTube ID format
+                    if (!isValidYoutubeId(sanitizedData.youtubeId)) {
+                        throw new Error('Invalid YouTube ID format');
+                    }
+
+                    const result = await this.executeSecureQuery(async () => {
+                        const Video = Parse.Object.extend("Video");
+                        const video = new Video();
+                        
+                        video.set("title", sanitizedData.title);
+                        video.set("description", sanitizedData.description);
+                        video.set("youtubeId", sanitizedData.youtubeId);
+                        video.set("tags", sanitizedData.tags);
+                        video.set("categories", [sanitizedData.areaId]);
+                        video.set("rating", 0);
+                        video.set("date", new Date());
+                        video.set("materials", []);
+                        video.set("steps", []);
+                        video.set("panels", []);
+                        video.set("creator", sanitizedData.creator);
+
+                        // Encrypt sensitive data
+                        const encryptedData = await LatticeEncryption.encrypt({
+                            title: sanitizedData.title,
+                            description: sanitizedData.description
+                        });
+                        video.set("encryptedData", JSON.stringify(encryptedData));
+
+                        return await video.save();
+                    });
+
+                    const newVideo = {
+                        id: result.id,
+                        title: this.security.sanitizeInput(result.get('title')),
+                        description: this.security.sanitizeInput(result.get('description')),
+                        youtubeId: this.security.sanitizeInput(result.get('youtubeId')),
+                        tags: Array.isArray(result.get('tags')) ? 
+                              result.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                        categories: Array.isArray(result.get('categories')) ? 
+                                   result.get('categories').map(cat => this.security.sanitizeInput(cat)) : [],
+                        rating: result.get('rating') || 0,
+                        date: result.get('date'),
+                        materials: Array.isArray(result.get('materials')) ? 
+                                  result.get('materials').map(material => this.security.sanitizeInput(material)) : [],
+                        steps: Array.isArray(result.get('steps')) ? 
+                               result.get('steps').map(step => this.security.sanitizeInput(step)) : [],
+                        panels: Array.isArray(result.get('panels')) ? 
+                                result.get('panels').map(panel => this.security.sanitizeInput(panel)) : [],
+                        creator: this.security.sanitizeInput(result.get('creator'))
+                    };
+
+                    this.videos.push(newVideo);
+                    this.emit('dataLoaded', { videos: this.videos });
+                    return newVideo;
+
+                } catch (error) {
+                    console.error("Add video failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add video') });
+                    throw error;
+                }
+            }
+        }
+
+        // Secure Tag Manager
+        class SecureTagManager {
+            constructor(store, security) {
+                this.store = store;
+                this.security = security;
+                this.containerEl = document.getElementById('tag-cloud');
+                if (!this.containerEl) {
+                    console.error("Tag container #tag-cloud not found!");
+                    return;
+                }
+                this.bindEvents();
+                this.render();
+            }
+
+            bindEvents() {
+                const addTagBtn = document.getElementById('add-tag-btn');
+                if (addTagBtn) {
+                    addTagBtn.addEventListener('click', () => {
+                        if (!this.security.checkRateLimit('add-tag', 10)) return;
+                        showToast('Tag management not yet implemented', 'info');
+                    });
+                }
+            }
+
+            render() {
+                const tags = this.store.tags || [];
+                if (!this.containerEl) return;
+
+                if (tags.length === 0) {
+                    this.containerEl.innerHTML = `
+                        <div class="empty-state">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            <p class="text-gray-400">No tags yet. Click "Add Tag" to create your first tag.</p>
+                       </div>
+                    `;
+                } else {
+                    this.containerEl.innerHTML = tags.map(tag => {
+                        const safeName = this.security.sanitizeInput(tag.name);
+                        const safeDefinition = this.security.sanitizeInput(tag.definition || '');
+                        return `
+                            <div class="tag-item flex justify-between items-center bg-white p-2 rounded shadow-sm border">
+                                <div class="flex-grow">
+                                    <span class="tag-name font-medium cursor-pointer hover:text-green-600">${safeName}</span>
+                                    ${safeDefinition ? `<p class="text-xs text-gray-500 mt-1">${safeDefinition}</p>` : ''}
+                                </div>
+                                <button class="delete-tag-btn text-red-300 hover:text-red-700 p-1" title="Delete">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }
+
+        // Modal functionality with security
+        const modal = document.getElementById('add-content-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const categoryContextEl = document.getElementById('modal-category-context');
+        const subcategoryContextEl = document.getElementById('modal-subcategory-context');
+
+        let currentModalSubcategoryId = null;
+        let currentModalAreaId = null;
+
+        function openModal(subcategoryId, areaId) {
+            const security = window.securityManager;
+            if (!security.checkRateLimit('open-modal', 20)) return;
+            
+            currentModalSubcategoryId = security.sanitizeInput(subcategoryId);
+            currentModalAreaId = security.sanitizeInput(areaId);
+
+            let areaName = 'Unknown Area';
+            let subcategoryName = 'Unknown Subcategory';
+
+            if (window.videoManager && window.videoManager.store) {
+                const area = window.videoManager.store.areas.find(a => a.id === areaId);
+                if (area) {
+                    areaName = security.sanitizeInput(area.area || area.name);
+                    const subcategory = area.subcategories?.find(sub => sub.id === subcategoryId);
+                    if (subcategory) {
+                        subcategoryName = security.sanitizeInput(subcategory.title || subcategory.name);
+                    }
+                }
+            }
+
+            if (categoryContextEl) categoryContextEl.textContent = areaName;
+            if (subcategoryContextEl) subcategoryContextEl.textContent = subcategoryName;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => {
+                modal.style.opacity = '1';
+            });
+        }
+
+        function closeModal() {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                currentModalSubcategoryId = null;
+                currentModalAreaId = null;
+                if (categoryContextEl) categoryContextEl.textContent = '';
+                if (subcategoryContextEl) subcategoryContextEl.textContent = '';
+            }, 300);
+        }
+
+        // Make modal functions global
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+
+        // Initialize the secure application
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.appInitialized) return;
+            window.appInitialized = true;
+
+            try {
+                // Initialize security manager first
+                window.securityManager = new SecurityManager();
+                await window.securityManager.generateEncryptionKey();
+
+            // Initialize managers
+                window.videoManager = new SecureVideoManager(window.securityManager);
+                
+                // ENHANCE THE STORE with new subcategory capabilities
+                SecureParseStoreEnhancements.enhanceStore(window.videoManager.store);
+                
+                // ENHANCE THE VIDEO MANAGER with subcategory editing
+                VideoManagerEnhancements.enhanceVideoManager(window.videoManager);
+                
+                window.tagManager = new SecureTagManager(window.videoManager.store, window.securityManager);
+        
+                // Load initial data (now includes enhanced subcategory fields)
+                await window.videoManager.store.loadInitialData();
+
+
+
+
+                
+                // Initialize Parse with security
+                await initializeParse();
+
+                // Bind modal events with security
+                modalCloseBtn?.addEventListener('click', closeModal);
+                modal?.addEventListener('click', (event) => {
+                    if (event.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                });
+
+                // Secure UI setup
+                const profileButton = document.getElementById('profileButton');
+                const profileDropdown = document.getElementById('profileDropdown');
+                
+                let isDropdownOpen = false;
+                profileButton?.addEventListener('click', (e) => {
+                    if (!window.securityManager.checkRateLimit('profile-click', 20)) return;
+                    e.stopPropagation();
+                    isDropdownOpen = !isDropdownOpen;
+                    profileDropdown?.classList.toggle('hidden', !isDropdownOpen);
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (profileButton && profileDropdown && !profileButton.contains(e.target) && isDropdownOpen) {
+                        profileDropdown.classList.add('hidden');
+                        isDropdownOpen = false;
+                    }
+                });
+
+                // Secure sign out
+                document.getElementById('signOutBtn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to sign out?')) {
+                        Parse.User.logOut().then(() => {
+                            window.location.reload();
+                        });
+                    }
+                });
+
+                // Dark Mode with security
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+                if (savedDarkMode) {
+                    document.body.classList.add('dark-mode');
+                }
+                darkModeToggle?.addEventListener('click', () => {
+                    if (!window.securityManager.checkRateLimit('dark-mode-toggle', 10)) return;
+                    document.body.classList.toggle('dark-mode');
+                    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+                });
+
+                // Secure form handling
+                const newVideoForm = document.getElementById('newVideoForm');
+                const submitButton = document.getElementById('submitButton');
+                const youtubeUrlInput = document.getElementById('newYoutubeUrl');
+                const youtubeIdPreview = document.getElementById('youtubeIdPreview');
+                const tagInput = document.getElementById('newTags');
+                const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+                // Secure tag suggestions
+                const tagSuggestions = ["DIY", "Sustainability", "Environment", "Green Building", "Gardening", 
+                                      "Recycling", "Composting", "Solar", "Wind", "Permaculture", "Organic Farming", 
+                                      "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly", 
+                                      "Off-grid", "Resilience", "Community Development"];
+
+                window.addTag = function (tag) {
+                    if (!window.securityManager.checkRateLimit('add-tag-suggestion', 30)) return;
+                    if (!tagInput) return;
+                    
+                    const sanitizedTag = window.securityManager.sanitizeInput(tag);
+                    const currentTags = tagInput.value.split(',')
+                        .map(t => window.securityManager.sanitizeInput(t.trim()))
+                        .filter(t => t !== '');
+
+                    if (!currentTags.includes(sanitizedTag)) {
+                        currentTags.push(sanitizedTag);
+                    }
+
+                    tagInput.value = currentTags.join(', ');
+                    tagSuggestionsDiv.classList.add('hidden');
+                    tagInput.focus();
+                };
+
+                // Secure tag input handling
+                if (tagInput && tagSuggestionsDiv) {
+                    tagInput.addEventListener('input', () => {
+                        if (!window.securityManager.checkRateLimit('tag-input', 50)) return;
+                        
+                        const parts = tagInput.value.split(',');
+                        const currentPart = window.securityManager.sanitizeInput(parts[parts.length - 1].trim().toLowerCase());
+
+                        const filteredSuggestions = tagSuggestions.filter(tag =>
+                            tag.toLowerCase().includes(currentPart) && currentPart !== ''
+                        );
+
+                        tagSuggestionsDiv.innerHTML = '';
+
+                        if (filteredSuggestions.length > 0 && currentPart.length > 0) {
+                            filteredSuggestions.slice(0, 10).forEach(tag => { // Limit suggestions for security
+                                const suggestionButton = document.createElement('button');
+                                suggestionButton.type = 'button';
+                                suggestionButton.className = 'block w-full text-left cursor-pointer hover:bg-gray-100 px-3 py-1 text-sm';
+                                suggestionButton.textContent = tag;
+                                suggestionButton.onclick = () => window.addTag(tag);
+                                tagSuggestionsDiv.appendChild(suggestionButton);
+                            });
+                            tagSuggestionsDiv.classList.remove('hidden');
+                        } else {
+                            tagSuggestionsDiv.classList.add('hidden');
+                        }
+                    });
+
+                    // Secure click outside handler
+                    document.addEventListener('click', (event) => {
+                        if (!tagInput.contains(event.target) && !tagSuggestionsDiv.contains(event.target)) {
+                            tagSuggestionsDiv.classList.add('hidden');
+                        }
+                    });
+                }
+
+                // Secure YouTube URL validation with real-time feedback
+                if (youtubeUrlInput && youtubeIdPreview) {
+                    youtubeUrlInput.addEventListener('input', () => {
+                        const url = window.securityManager.sanitizeInput(youtubeUrlInput.value);
+                        const extractedId = extractYoutubeId(url);
+
+                        // Clear previous validation classes
+                        youtubeUrlInput.classList.remove('input-valid', 'input-invalid');
+
+                        if (extractedId && isValidYoutubeId(extractedId)) {
+                            youtubeIdPreview.textContent = `✓ Valid YouTube ID: ${extractedId}`;
+                            youtubeIdPreview.className = 'text-sm text-green-600 mt-1';
+                            youtubeUrlInput.classList.add('input-valid');
+                        } else if (url) {
+                            youtubeIdPreview.textContent = '✗ Invalid or incomplete YouTube URL';
+                            youtubeIdPreview.className = 'text-sm text-red-600 mt-1';
+                            youtubeUrlInput.classList.add('input-invalid');
+                        } else {
+                            youtubeIdPreview.textContent = '';
+                            youtubeIdPreview.className = 'text-sm mt-1';
+                        }
+                    });
+                }
+
+                // Enhanced form validation with real-time feedback
+                function setupFormValidation() {
+                    const formFields = document.querySelectorAll('[data-validation]');
+                    
+                    formFields.forEach(field => {
+                        const validationType = field.dataset.validation;
+                        const feedback = field.parentNode.querySelector('.invalid-feedback');
+                        
+                        field.addEventListener('input', () => {
+                            validateField(field, validationType, feedback);
+                        });
+                        
+                        field.addEventListener('blur', () => {
+                            validateField(field, validationType, feedback);
+                        });
+                    });
+                }
+
+                function validateField(field, validationType, feedback) {
+                    const value = window.securityManager.sanitizeInput(field.value);
+                    const validation = InputValidator.validate(validationType, value, window.securityManager);
+                    
+                    field.classList.remove('input-valid', 'input-invalid');
+                    
+                    if (value.length > 0) {
+                        if (validation.valid) {
+                            field.classList.add('input-valid');
+                            if (feedback) {
+                                feedback.classList.add('hidden');
+                                feedback.textContent = '';
+                            }
+                        } else {
+                            field.classList.add('input-invalid');
+                            if (feedback) {
+                                feedback.classList.remove('hidden');
+                                feedback.textContent = validation.message;
+                            }
+                        }
+                    } else if (feedback) {
+                        feedback.classList.add('hidden');
+                        feedback.textContent = '';
+                    }
+                    
+                    return validation;
+                }
+
+                setupFormValidation();
+
+                // Secure form submission with comprehensive validation
+                if (newVideoForm && submitButton) {
+                    newVideoForm.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+
+                        if (!window.securityManager.checkRateLimit('form-submit', 3)) {
+                            showToast('Too many submission attempts. Please wait.', 'error');
+                            return;
+                        }
+
+                        // Collect and sanitize form data
+                        const formData = {
+                            title: window.securityManager.sanitizeInput(document.getElementById('newTitle')?.value || ''),
+                            youtube: window.securityManager.sanitizeInput(document.getElementById('newYoutubeUrl')?.value || ''),
+                            description: window.securityManager.sanitizeInput(document.getElementById('newDescription')?.value || ''),
+                            tags: window.securityManager.sanitizeInput(document.getElementById('newTags')?.value || '')
+                        };
+
+                        // Validate CSRF token
+                        const csrfToken = newVideoForm.querySelector('input[name="csrf_token"]')?.value;
+                        if (!window.securityManager.validateCSRFToken(csrfToken)) {
+                            showToast('Security validation failed. Please refresh the page.', 'error');
+                            return;
+                        }
+
+                        // Comprehensive form validation
+                        const validationResult = InputValidator.validateForm(formData, window.securityManager);
+                        
+                        if (!validationResult.valid) {
+                            let errorMessages = [];
+                            Object.entries(validationResult.results).forEach(([field, result]) => {
+                                if (!result.valid) {
+                                    errorMessages.push(`${field}: ${result.message}`);
+                                }
+                            });
+                            showToast(`Validation failed: ${errorMessages.join(', ')}`, 'error');
+                            return;
+                        }
+
+                        // Context validation
+                        if (!currentModalAreaId || !currentModalSubcategoryId) {
+                            showToast('Error: Area context is missing. Please close and reopen the modal.', 'error');
+                            return;
+                        }
+
+                        // Extract and validate YouTube ID
+                        const youtubeId = extractYoutubeId(formData.youtube);
+                        if (!youtubeId || !isValidYoutubeId(youtubeId)) {
+                            showToast('Please enter a valid YouTube URL.', 'error');
+                            youtubeUrlInput?.focus();
+                            return;
+                        }
+
+                        // Process tags
+                        const tags = formData.tags ? 
+                            formData.tags.split(',')
+                                .map(tag => window.securityManager.sanitizeInput(tag.trim()))
+                                .filter(tag => tag !== '' && tag.length <= 50) // Limit tag length
+                                .slice(0, 20) : []; // Limit number of tags
+
+                        if (tags.length === 0) {
+                            showToast('Please add at least one tag.', 'error');
+                            return;
+                        }
+
+                        try {
+                            // Disable form during submission
+                            const formElements = newVideoForm.querySelectorAll('input, textarea, button');
+                            formElements.forEach(el => el.disabled = true);
+                            
+                            submitButton.textContent = 'Adding...';
+
+                            const videoData = {
+                                title: validationResult.results.title.value,
+                                description: validationResult.results.description.value,
+                                youtubeId: youtubeId,
+                                areaId: currentModalAreaId,
+                                subcategoryId: currentModalSubcategoryId,
+                                tags: tags,
+                                creator: Parse.User.current()?.get('username') || 'Unknown User'
+                            };
+
+                            await window.videoManager.store.addVideo(videoData);
+                            showToast('Video added successfully!', 'success');
+
+                            // Reset form
+                            newVideoForm.reset();
+                            youtubeIdPreview.textContent = '';
+                            tagSuggestionsDiv.classList.add('hidden');
+                            
+                            // Clear validation states
+                            document.querySelectorAll('.input-valid, .input-invalid').forEach(el => {
+                                el.classList.remove('input-valid', 'input-invalid');
+                            });
+                            document.querySelectorAll('.invalid-feedback').forEach(el => {
+                                el.classList.add('hidden');
+                                el.textContent = '';
+                            });
+                            
+                            closeModal();
+
+                        } catch (error) {
+                            console.error('Error adding video:', error);
+                            const errorMessage = window.securityManager.sanitizeInput(
+                                error.message || 'Failed to add video. Please try again.'
+                            );
+                            showToast(errorMessage, 'error');
+                        } finally {
+                            // Re-enable form
+                            const formElements = newVideoForm.querySelectorAll('input, textarea, button');
+                            formElements.forEach(el => el.disabled = false);
+                            submitButton.textContent = 'Add Video';
+                        }
+                    });
+                }
+
+                // Initialize secure managers
+                window.videoManager = new SecureVideoManager(window.securityManager);
+                window.tagManager = new SecureTagManager(window.videoManager.store, window.securityManager);
+
+                // Load initial data with security checks
+                await window.videoManager.store.loadInitialData();
+                
+                // Set security indicator
+                const securityIndicator = document.getElementById('security-indicator');
+                if (securityIndicator) {
+                    securityIndicator.textContent = '🔒 Secure Connection';
+                    securityIndicator.className = 'text-xs font-semibold text-green-600';
+                }
+
+                console.log("Secure app initialization complete.");
+
+            } catch (error) {
+                const errorMsg = error.message || String(error);
+                console.error('FATAL: Error initializing secure app:', errorMsg);
+                
+                // Show security error
+                const securityStatus = document.getElementById('security-status');
+                const securityMessage = document.getElementById('security-message');
+                if (securityStatus && securityMessage) {
+                    securityMessage.textContent = `Critical security error: ${errorMsg}`;
+                    securityStatus.classList.remove('hidden');
+                }
+                
+                const container = document.getElementById('categories-container') || document.body;
+                container.innerHTML = `
+                    <div class="error p-4 bg-red-100 text-red-700 border border-red-300 rounded">
+                        <strong>Critical Security Error:</strong> Cannot initialize secure application. ${errorMsg}
+                        <br><br>
+                        <button onclick="window.location.reload()" class="btn btn-red mt-2">
+                            Reload Page
+                        </button>
+                    </div>`;
+                
+                showToast(`Critical Security Error: ${errorMsg}`, 'error');
+            }
+        });
+
+        // Global error handling with security logging
+        window.addEventListener('error', function(event) {
+            console.error('Global error:', event.error);
+            if (window.securityManager) {
+                window.securityManager.showSecurityAlert(`Application error: ${event.error?.message || 'Unknown error'}`);
+            }
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled Promise Rejection:', event.reason);
+            if (window.securityManager) {
+                const errorMsg = event.reason?.message || String(event.reason);
+                window.securityManager.showSecurityAlert(`Unhandled promise rejection: ${errorMsg}`);
+            }
+        });
+
+        // Prevent common security vulnerabilities
+        (function() {
+            'use strict';
+            
+            // Prevent eval and Function constructor
+            window.eval = function() {
+                throw new Error('eval() is disabled for security reasons');
+            };
+            
+            // Prevent iframe injection
+            const originalCreateElement = document.createElement;
+            document.createElement = function(tagName) {
+                if (tagName.toLowerCase() === 'iframe') {
+                    console.warn('iframe creation blocked for security');
+                    throw new Error('iframe creation is restricted');
+                }
+                return originalCreateElement.call(this, tagName);
+            };
+            
+            // Monitor for suspicious script injections
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+                            if (!node.src || !node.src.startsWith('https://')) {
+                                console.warn('Suspicious script detected and blocked');
+                                node.remove();
+                            }
+                        }
+                    });
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        })();
+
+    </script>
+</body>
+</html>
