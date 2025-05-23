@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en" data-translate-title-key="PORTAL_TITLE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/parse/dist/parse.min.js"></script>
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <style>
+        /* Local CSS for emulated Tailwind classes */
+        .btn {
+            @apply px-4 py-2 font-medium rounded transition-colors cursor-pointer inline-flex items-center;
+        }
+        .btn-green {
+            @apply bg-green-600 text-white hover:bg-green-700;
+        }
+        .btn-blue {
+            @apply bg-blue-600 text-white hover:bg-blue-700;
+        }
+        .btn-red {
+            @apply bg-red-600 text-white hover:bg-red-700;
+        }
+        .btn-secondary {
+            @apply bg-gray-300 text-gray-700 hover:bg-gray-400;
+        }
+        
+        .nav-link {
+            @apply text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors;
+        }
+        
+        .icon-button {
+            @apply p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+        }
+        
+        .profile-dropdown {
+            @apply absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border dark:border-gray-700;
+        }
+        
+        .dropdown-inactive {
+            @apply hidden;
+        }
+        
+        .dropdown-active {
+            @apply block;
+        }
+        
+        .categories-wrapper {
+            @apply space-y-4;
+        }
+        
+        .animate-slideDown {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .status-saving {
+            @apply bg-yellow-100 border-yellow-300;
+        }
+        
+        .status-success {
+            @apply bg-green-100 border-green-300;
+        }
+        
+        .status-error {
+            @apply bg-red-100 border-red-300;
+        }
+        
+        .is-editing {
+            @apply ring-2 ring-blue-500;
+        }
+        
+        .inline-edit-field {
+            @apply px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner-message bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm transition-opacity duration-300 ease-in-out">
+    </div>
+
+    <header class="shadow-lg">
+        <div class="container mx-auto">
+            <nav class="shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center space-x-4">
+                            <a href="index.html" class="flex items-center space-x-3 group">
+                                <svg id="logoIcon" class="h-10 w-10 text-green-500 group-hover:text-green-600 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c.246 0 .492-.015.732-.044m-1.464 0A9.006 9.006 0 0 1 12 3c.587 0 1.159.069 1.711.193M12 3a9.006 9.006 0 0 0-7.08 2.886M12 3c.015-.01.03-.019.046-.028M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm4.016 4.016a9.003 9.003 0 0 0 -8.032 0M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"></path>
+                                </svg>
+                                <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                                    Approvideo Learning Hub
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="flex items-center space-x-6">
+                            <span id="offline-indicator" class="text-xs ml-2 font-semibold text-yellow-600 dark:text-yellow-400"></span>
+
+                            <a href="#" class="add-content-btn nav-link group" data-translate-title="NAV_LINK_NEW_TITLE">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </a>
+                       
+                            <a href="#" id="darkModeToggle" class="nav-link group" data-translate-title="NAV_LINK_NEW_TITLE">
+                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                                </svg>
+                            </a>
+                            
+                            <!-- Language selector container -->
+                            <div id="lang-dropdown" class="relative">
+                              <button id="lang-toggle" class="flex items-center space-x-1 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md border border-gray-600 transition duration-150">
+                                <span id="current-lang">EN</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                              
+                              <div id="lang-panel" class="absolute right-0 mt-2 bg-gray-800 rounded-md shadow-lg z-50 border border-gray-700 hidden">
+                                <div class="p-3">
+                                  <div id="lang-switcher" class="grid gap-2 max-h-[60vh] overflow-y-auto">
+                                    <button data-lang="en" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">EN</button>
+                                    <button data-lang="es" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">ES</button>
+                                    <button data-lang="fr" class="lang-button bg-gray-700 hover:bg-gray-600 text-white p-1.5 text-xs font-medium rounded border border-gray-600 transition duration-150">FR</button>
+                                  </div>
+                                  
+                                  <a href="#" class="bg-green-600 hover:bg-green-500 text-white p-2 text-xs font-medium rounded flex items-center justify-center mt-3 border border-green-500 transition duration-150">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Help Translate
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="relative">
+                                <button id="profileButton" class="icon-button" data-translate-title="PROFILE_MENU_TITLE">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                </button>
+                                <div id="profileDropdown" class="profile-dropdown dropdown-inactive">
+                                    <div class="py-1">
+                                        <a href="https://content.approvideo.org" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-translate-key="DROPDOWN_APPROVIDEO_BETA">Approvideo beta</a>
+                                        <a href="pending.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-translate-key="DROPDOWN_PENDING">Pending</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-translate-key="DROPDOWN_SIGN_OUT">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500">
+            <h1 class="text-3xl font-bold mb-2" data-translate-key="TAXONOMY_TITLE">Video Content Management</h1>
+            <p class="text-gray-600 dark:text-gray-300" data-translate-key="TAXONOMY_DESC">Organize your video content with areas and subcategories.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold" data-translate-key="CATEGORIES_HEADER">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-category-btn">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    <span data-translate-key="ADD_CATEGORY_BUTTON">Add Area</span>
+                </button>
+            </div>
+            <div id="categories-container" class="categories-wrapper">
+                <div class="loading" data-translate-key="LOADING_CATEGORIES">Loading areas...</div>
+            </div>
+        </div>
+
+         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold" data-translate-key="TAG_MANAGEMENT_HEADER">Video Tags</h2>
+                <button id="add-tag-btn" class="btn btn-green">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                     <span data-translate-key="ADD_TAG_BUTTON">Add Tag</span>
+                </button>
+            </div>
+            <div id="tag-cloud" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            </div>
+        </div>
+
+        <!-- Video Add Modal -->
+        <div id="add-content-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 transition-opacity duration-300 ease-in-out" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full">
+                <div class="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 p-4 rounded-t">
+                    <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Add New Video Content
+                    </h3>
+                    <button type="button" id="modal-close-btn" class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" aria-label="Close modal">
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4 p-3 bg-blue-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-md">
+                         <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Adding content to:</p>
+                         <p class="text-lg font-semibold text-blue-800 dark:text-blue-300">
+                             <span id="modal-category-context">Area...</span>
+                             <span class="mx-1 text-gray-500 dark:text-gray-400">&gt;</span>
+                             <span id="modal-subcategory-context">Subcategory...</span>
+                         </p>
+                     </div>
+
+                     <form id="newVideoForm" class="space-y-4">
+                         <div>
+                             <label for="newTitle" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Video Title *</label>
+                             <input type="text" id="newTitle" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter video title" required>
+                         </div>
+                         <div>
+                             <label for="newYoutubeUrl" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">YouTube URL *</label>
+                             <input type="url" id="newYoutubeUrl" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="https://www.youtube.com/watch?v=..." required>
+                             <div id="youtubeIdPreview" class="text-sm mt-1"></div>
+                         </div>
+                         <div>
+                             <label for="newDescription" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description *</label>
+                             <textarea id="newDescription" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Describe the video content..." required></textarea>
+                         </div>
+                         <div class="relative">
+                             <label for="newTags" class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Tags (comma-separated) *</label>
+                             <input type="text" id="newTags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="e.g., DIY, Solar, Water">
+                             <div id="tagSuggestions" class="absolute z-20 w-full bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                             </div>
+                         </div>
+
+                         <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-4"> 
+                            <button type="button" class="btn btn-secondary mr-3" onclick="closeModal()">Cancel</button>
+                            <button type="submit" id="submitButton" class="btn btn-green">
+                                Add Video
+                            </button>
+                         </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Initialize Parse
+        Parse.initialize("your-app-id", "your-js-key");
+        Parse.serverURL = "https://hub.approvideo.org/parse";
+
+        // Lattice method for data security (placeholder implementation)
+        class LatticeEncryption {
+            static encrypt(data) {
+                // Implement your lattice encryption method here
+                return btoa(JSON.stringify(data)); // Basic base64 for demo
+            }
+            
+            static decrypt(encryptedData) {
+                // Implement your lattice decryption method here
+                try {
+                    return JSON.parse(atob(encryptedData));
+                } catch (e) {
+                    return null;
+                }
+            }
+        }
+
+        // Helper functions for YouTube ID extraction and validation
+        function extractYoutubeId(url) {
+            if (!url) return null;
+            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+        function isValidYoutubeId(id) {
+            return typeof id === 'string' && /^[a-zA-Z0-9_-]{11}$/.test(id);
+        }
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            let bgColorClass = 'bg-blue-600';
+            if (type === 'success') bgColorClass = 'bg-green-600';
+            else if (type === 'error') bgColorClass = 'bg-red-600';
+
+            toast.className = `toast-message ${bgColorClass} text-white p-3 rounded-md shadow-lg max-w-sm animate-fadeInOut mb-2`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'fixed bottom-4 right-4 z-50 space-y-2';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateY(10px); }
+                15% { opacity: 1; transform: translateY(0); }
+                85% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(10px); }
+            }
+            .animate-fadeInOut { animation: fadeInOut 3.5s ease-in-out forwards; }
+        `;
+        document.head.appendChild(style);
+
+        // Modal functionality
+        const modal = document.getElementById('add-content-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const categoryContextEl = document.getElementById('modal-category-context');
+        const subcategoryContextEl = document.getElementById('modal-subcategory-context');
+
+        let currentModalSubcategoryId = null;
+        let currentModalAreaId = null;
+
+        function openModal(subcategoryId, areaId) {
+            currentModalSubcategoryId = subcategoryId;
+            currentModalAreaId = areaId;
+
+            // Find names and update display
+            let areaName = 'Unknown Area';
+            let subcategoryName = 'Unknown Subcategory';
+
+            if (window.videoManager && window.videoManager.store) {
+                const area = window.videoManager.store.areas.find(a => a.id === areaId);
+                if (area) {
+                    areaName = area.area || area.name;
+                    const subcategory = area.subcategories?.find(sub => sub.id === subcategoryId);
+                    if (subcategory) {
+                        subcategoryName = subcategory.title || subcategory.name;
+                    }
+                }
+            }
+
+            if (categoryContextEl) categoryContextEl.textContent = areaName;
+            if (subcategoryContextEl) subcategoryContextEl.textContent = subcategoryName;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => {
+                modal.style.opacity = '1';
+            });
+        }
+
+        function closeModal() {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                currentModalSubcategoryId = null;
+                currentModalAreaId = null;
+                if (categoryContextEl) categoryContextEl.textContent = '';
+                if (subcategoryContextEl) subcategoryContextEl.textContent = '';
+            }, 300);
+        }
+
+        // Bind modal events
+        modalCloseBtn?.addEventListener('click', closeModal);
+        modal?.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Make openModal global
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+
+        // Video Manager Class for Parse
+        class VideoManager {
+            constructor() {
+                this.store = new ParseVideoStore();
+                this.containerEl = document.getElementById('categories-container');
+                this.editingState = {
+                    isEditing: false, element: null, inputElement: null,
+                    type: null, id: null, areaId: null, originalValue: null
+                };
+                this.bindEvents();
+                this.bindStoreEvents();
+            }
+
+            bindEvents() {
+                // Add Area button
+                document.getElementById('add-category-btn')?.addEventListener('click', () => {
+                    if (this.editingState.isEditing) this.cancelEdit();
+                    if (!this.editingState.isEditing) this.createNewArea();
+                });
+
+                // Main container click handler
+                this.containerEl.addEventListener('click', (e) => {
+                    if (e.target.closest('.inline-edit-field')) return;
+
+                    const areaNameElement = e.target.closest('.area-name');
+                    const subcategoryNameElement = e.target.closest('.subcategory-name');
+                    const deleteAreaButton = e.target.closest('.delete-area-btn');
+                    const addSubcategoryButton = e.target.closest('.add-subcategory-btn');
+                    const deleteSubcategoryButton = e.target.closest('.delete-subcategory-btn');
+                    const addContentButton = e.target.closest('.add-content-btn');
+
+                    if (this.editingState.isEditing) {
+                        const currentEditingItem = this.editingState.element?.closest('.area-item, .subcategory-item');
+                        if (!currentEditingItem || !currentEditingItem.contains(e.target)) {
+                            this.saveEdit();
+                            return;
+                        } else {
+                            return;
+                        }
+                    } else {
+                        if (addContentButton) {
+                            const subcategoryId = addContentButton.dataset.subcategoryId;
+                            const areaId = addContentButton.dataset.areaId;
+                            if (subcategoryId && areaId) {
+                                openModal(subcategoryId, areaId);
+                            }
+                            return;
+                        }
+
+                        if (deleteAreaButton) {
+                            const areaId = deleteAreaButton.closest('.area-item')?.dataset.areaId;
+                            if (areaId) this.deleteArea(areaId);
+                            return;
+                        }
+
+                        if (addSubcategoryButton) {
+                            const areaId = addSubcategoryButton.closest('.area-item')?.dataset.areaId;
+                            if (areaId) this.createNewSubcategory(areaId);
+                            return;
+                        }
+
+                        if (deleteSubcategoryButton) {
+                            const subcategoryId = deleteSubcategoryButton.closest('.subcategory-item')?.dataset.subcategoryId;
+                            const areaId = deleteSubcategoryButton.closest('.area-item')?.dataset.areaId;
+                            if (subcategoryId && areaId) this.deleteSubcategory(subcategoryId, areaId);
+                            return;
+                        }
+
+                        // Handle editable names
+                        let clickedEditableElement = null;
+                        let editType = null;
+                        let editId = null;
+                        let editAreaId = null;
+
+                        if (areaNameElement) {
+                            clickedEditableElement = areaNameElement;
+                            editType = 'area';
+                            editId = areaNameElement.closest('.area-item')?.dataset.areaId;
+                        } else if (subcategoryNameElement) {
+                            clickedEditableElement = subcategoryNameElement;
+                            editType = 'subcategory';
+                            editId = subcategoryNameElement.closest('.subcategory-item')?.dataset.subcategoryId;
+                            editAreaId = subcategoryNameElement.closest('.area-item')?.dataset.areaId;
+                        }
+
+                        if (clickedEditableElement && editType && editId) {
+                            this.startEditing(clickedEditableElement, editType, editId, editAreaId);
+                            return;
+                        }
+                    }
+                });
+
+                // Document listeners for escape and outside clicks
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.editingState.isEditing) {
+                        this.cancelEdit();
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (this.editingState.isEditing) {
+                        const editingItemElement = this.editingState.element?.closest('.area-item, .subcategory-item');
+                        if (e.target !== this.editingState.inputElement && 
+                            (!editingItemElement || !editingItemElement.contains(e.target))) {
+                            this.cancelEdit();
+                        }
+                    }
+                }, true);
+            }
+
+            bindStoreEvents() {
+                this.store.on('loading', (isLoading) => {
+                    if (!isLoading && this.editingState.isEditing) {
+                        this.cancelEdit(true);
+                    }
+                    this.render();
+                });
+
+                this.store.on('error', (errorData) => {
+                    showToast(errorData.message || 'An error occurred', 'error');
+                    if (!this.store.isLoading) {
+                        this.render();
+                    }
+                });
+
+                this.store.on('dataLoaded', (payload) => {
+                    this.render();
+                });
+            }
+
+            async deleteArea(areaId) {
+                const area = this.store.areas.find(a => a.id === areaId);
+                const areaName = area ? (area.area || area.name) : '...';
+
+                if (area && area.subcategories && area.subcategories.length > 0) {
+                    alert(`Cannot delete "${areaName}": It still contains subcategories. Please delete them first.`);
+                    return;
+                }
+
+                if (confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
+                    try {
+                        await this.store.deleteArea(areaId);
+                    } catch (error) {
+                        console.error("Delete area failed:", error);
+                    }
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, areaId) {
+                const area = this.store.areas.find(a => a.id === areaId);
+                const subcategory = area?.subcategories.find(s => s.id === subcategoryId);
+                const subcategoryName = subcategory ? (subcategory.title || subcategory.name) : '...';
+
+                if (confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
+                    try {
+                        await this.store.deleteSubcategory(subcategoryId, areaId);
+                    } catch (error) {
+                        console.error("Delete subcategory failed:", error);
+                    }
+                }
+            }
+
+            createNewArea() {
+                this.cleanupAnyActiveEdits();
+                
+                if (this.containerEl.querySelector('.new-area')) {
+                    this.containerEl.querySelector('.new-area input')?.focus();
+                    return;
+                }
+
+                const tempId = 'new-area-' + Date.now();
+                const newAreaDiv = document.createElement('div');
+                newAreaDiv.className = 'area-item new-area bg-green-50 dark:bg-green-900 p-4 border border-green-200 dark:border-green-700 rounded-lg animate-slideDown';
+                newAreaDiv.dataset.areaId = tempId;
+
+                newAreaDiv.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <input type="text" class="new-item-input flex-grow p-2 border border-gray-300 rounded focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="Enter area name and press Enter">
+                        <button class="btn btn-green save-new-area-btn p-2">Save</button>
+                        <button class="btn btn-red cancel-new-area-btn p-2">Cancel</button>
+                    </div>`;
+
+                this.containerEl.insertBefore(newAreaDiv, this.containerEl.firstChild);
+
+                const inputField = newAreaDiv.querySelector('input');
+                const saveBtn = newAreaDiv.querySelector('.save-new-area-btn');
+                const cancelBtn = newAreaDiv.querySelector('.cancel-new-area-btn');
+
+                const removeForm = () => newAreaDiv.remove();
+
+                const handleSave = async () => {
+                    const name = inputField.value.trim();
+                    if (name) {
+                        saveBtn.disabled = true;
+                        cancelBtn.disabled = true;
+                        inputField.disabled = true;
+                        try {
+                            await this.store.addArea({ area: name });
+                        } catch (error) {
+                            saveBtn.disabled = false;
+                            cancelBtn.disabled = false;
+                            inputField.disabled = false;
+                            inputField.focus();
+                        }
+                    } else {
+                        showToast('Area name cannot be empty.', 'error');
+                        inputField.focus();
+                    }
+                };
+
+                saveBtn.addEventListener('click', handleSave);
+                cancelBtn.addEventListener('click', removeForm);
+                inputField.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleSave();
+                    else if (e.key === 'Escape') removeForm();
+                });
+
+                inputField.focus();
+            }
+
+            createNewSubcategory(areaId) {
+                this.cleanupAnyActiveEdits();
+                
+                const areaItem = this.containerEl.querySelector(`.area-item[data-area-id="${areaId}"]`);
+                if (!areaItem) return;
+
+                const subcategoriesContainer = areaItem.querySelector('.subcategories');
+                if (!subcategoriesContainer) return;
+
+                if (subcategoriesContainer.querySelector('.new-subcategory')) {
+                    subcategoriesContainer.querySelector('.new-subcategory input')?.focus();
+                    return;
+                }
+
+                const tempId = 'new-subcategory-' + Date.now();
+                const newSubcategoryDiv = document.createElement('div');
+                newSubcategoryDiv.className = 'subcategory-item new-subcategory bg-blue-50 dark:bg-blue-900 p-2 border border-blue-200 dark:border-blue-700 rounded-md animate-slideDown flex items-center space-x-2';
+                newSubcategoryDiv.dataset.subcategoryId = tempId;
+
+                newSubcategoryDiv.innerHTML = `
+                    <input type="text" class="new-item-input flex-grow p-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                           placeholder="Enter subcategory name and press Enter">
+                    <button class="btn btn-green save-new-subcategory-btn text-xs p-1">Save</button>
+                    <button class="btn btn-red cancel-new-subcategory-btn text-xs p-1">Cancel</button>`;
+
+                subcategoriesContainer.insertBefore(newSubcategoryDiv, subcategoriesContainer.firstChild);
+
+                const inputField = newSubcategoryDiv.querySelector('input');
+                const saveBtn = newSubcategoryDiv.querySelector('.save-new-subcategory-btn');
+                const cancelBtn = newSubcategoryDiv.querySelector('.cancel-new-subcategory-btn');
+
+                const removeForm = () => newSubcategoryDiv.remove();
+
+                const handleSave = async () => {
+                    const name = inputField.value.trim();
+                    if (name) {
+                        saveBtn.disabled = true;
+                        cancelBtn.disabled = true;
+                        inputField.disabled = true;
+                        try {
+                            await this.store.addSubcategory(areaId, { title: name });
+                        } catch (error) {
+                            saveBtn.disabled = false;
+                            cancelBtn.disabled = false;
+                            inputField.disabled = false;
+                            inputField.focus();
+                        }
+                    } else {
+                        showToast('Subcategory name cannot be empty.', 'error');
+                        inputField.focus();
+                    }
+                };
+
+                saveBtn.addEventListener('click', handleSave);
+                cancelBtn.addEventListener('click', removeForm);
+                inputField.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleSave();
+                    else if (e.key === 'Escape') removeForm();
+                });
+
+                inputField.focus();
+            }
+
+            cleanupAnyActiveEdits() {
+                const activeEditFields = this.containerEl.querySelectorAll('.inline-edit-field');
+                if (activeEditFields.length > 0) {
+                    activeEditFields.forEach(field => {
+                        const parentItem = field.closest('.area-item, .subcategory-item');
+                        if (parentItem) {
+                            parentItem.classList.remove('is-editing');
+                        }
+                        field.remove();
+                    });
+                }
+                
+                if (this.editingState.isEditing) {
+                    this.resetEditingState();
+                }
+                
+                const hiddenElements = this.containerEl.querySelectorAll('.area-name[style*="display: none"], .subcategory-name[style*="display: none"]');
+                hiddenElements.forEach(element => {
+                    element.style.display = '';
+                });
+            }
+
+            startEditing(element, type, id, areaId = null) {
+                this.cleanupAnyActiveEdits();
+                
+                if (this.editingState.isEditing) {
+                    this.cancelEdit();
+                }
+
+                const originalValue = element.textContent.trim();
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = originalValue;
+                input.className = 'inline-edit-field';
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        this.saveEdit();
+                    } else if (e.key === 'Escape') {
+                        this.cancelEdit();
+                    }
+                });
+
+                element.style.display = 'none';
+                element.parentNode.insertBefore(input, element.nextSibling);
+
+                this.editingState = {
+                    isEditing: true,
+                    element: element,
+                    inputElement: input,
+                    type: type,
+                    id: id,
+                    areaId: areaId,
+                    originalValue: originalValue
+                };
+
+                element.closest('.area-item, .subcategory-item')?.classList.add('is-editing');
+                input.focus();
+                input.select();
+            }
+
+            async saveEdit() {
+                if (!this.editingState.isEditing) return;
+
+                const { element, inputElement, type, id, areaId, originalValue } = this.editingState;
+
+                if (!inputElement || !document.body.contains(inputElement)) {
+                    this.cancelEdit();
+                    return;
+                }
+
+                const newValue = inputElement.value.trim();
+
+                if (!newValue) {
+                    showToast(`${type} name cannot be empty.`, 'error');
+                    inputElement.focus();
+                    return;
+                }
+
+                if (newValue === originalValue) {
+                    this.cancelEdit();
+                    return;
+                }
+
+                inputElement.disabled = true;
+
+                try {
+                    if (type === 'area') {
+                        const confirmMsg = `Rename area "${originalValue}" to "${newValue}"?`;
+                        if (!window.confirm(confirmMsg)) {
+                            this.cancelEdit();
+                            return;
+                        }
+                        await this.store.updateArea(id, { area: newValue });
+                    } else if (type === 'subcategory') {
+                        if (!areaId) {
+                            throw new Error("Missing areaId for subcategory update.");
+                        }
+                        await this.store.updateSubcategory(id, areaId, { title: newValue });
+                    }
+                } catch (error) {
+                    console.error("Save failed:", error);
+                    inputElement.disabled = false;
+                    inputElement.focus();
+                    return;
+                }
+            }
+
+            cancelEdit(isRendering = false) {
+                if (!this.editingState.isEditing) return;
+
+                const { element, inputElement, originalValue } = this.editingState;
+
+                if (element && document.body.contains(element)) {
+                    element.innerHTML = originalValue ?? '';
+                    element.style.display = '';
+                    element.closest('.area-item, .subcategory-item')?.classList.remove('is-editing');
+                }
+
+                if (inputElement && inputElement.parentNode) {
+                    inputElement.remove();
+                }
+
+                this.resetEditingState();
+            }
+
+            resetEditingState() {
+                this.editingState = {
+                    isEditing: false, element: null, inputElement: null, type: null,
+                    id: null, areaId: null, originalValue: null
+                };
+            }
+
+            render() {
+                this.cleanupAnyActiveEdits();
+
+                if (this.editingState.isEditing) {
+                    this.cancelEdit(true);
+                }
+
+                if (this.store.isLoading) {
+                    if (!this.containerEl.querySelector('.loading')) {
+                        this.containerEl.innerHTML = '<div class="loading">Loading areas...</div>';
+                    }
+                    return;
+                }
+
+                if (this.store.error && this.store.areas.length === 0) {
+                    const errorMsg = this.store.error || 'Unknown error occurred.';
+                    this.containerEl.innerHTML = `<div class="error p-4 m-4 rounded border border-red-300 bg-red-100 text-red-700">Error: ${errorMsg}</div>`;
+                    return;
+                }
+
+                const newAreaInput = this.containerEl.querySelector('.new-area input');
+                const newAreaValue = newAreaInput ? newAreaInput.value : null;
+
+                if (this.store.areas.length === 0 && !newAreaInput) {
+                    this.containerEl.innerHTML = `
+                        <div class="empty-state text-center p-6 bg-gray-50 dark:bg-gray-700 rounded-lg my-4">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+                            </svg>
+                            <p class="text-gray-500 dark:text-gray-400">No areas yet. Click "Add Area" to create your first one.</p>
+                        </div>`;
+                    return;
+                }
+
+                const areasHTML = this.store.areas.map(area => {
+                    const subcategoriesHTML = area.subcategories && area.subcategories.length > 0 ?
+                        area.subcategories.map(subcategory => `
+                            <div class="subcategory-item flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 rounded" data-subcategory-id="${subcategory.id}">
+                                <div class="flex-grow mr-2">
+                                    <button class="add-content-btn p-1 text-green-500 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 rounded-full hover:bg-green-100 dark:hover:bg-gray-600 mr-2"
+                                            title="Add Supporting Content"
+                                            data-subcategory-id="${subcategory.id}"
+                                            data-area-id="${area.id}">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                        </svg>
+                                    </button>
+                                    <span class="subcategory-name text-slate-100 hover:text-orange-200 dark:text-slate-200 cursor-pointer font-medium text-sm">${subcategory.title || subcategory.name}</span>
+                                </div>
+                                <div class="subcategory-controls flex items-center space-x-1">
+                                    <button class="delete-subcategory-btn p-1 text-red-500 hover:text-red-700" title="Delete">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                            </div>`).join('') :
+                        '<p class="text-sm text-gray-500 dark:text-gray-400 px-2 py-1">No subcategories yet. Use the "Add Sub" button above.</p>';
+
+                    return `
+                        <div class="area-item bg-white dark:bg-gray-800 rounded-lg shadow mb-4 group" data-area-id="${area.id}">
+                            <div class="area-header flex justify-between items-center p-3 border-b dark:border-gray-700">
+                                <div class="flex-grow mr-4">
+                                    <h3 class="area-name cursor-pointer font-semibold text-lg">${area.area || area.name}</h3>
+                                </div>
+                                <div class="area-controls flex items-center space-x-2">
+                                    <button class="btn btn-blue add-subcategory-btn text-xs px-2 py-1" title="Add Subcategory">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                        Add Sub
+                                    </button>
+                                    <button class="btn btn-red delete-area-btn text-xs px-2 py-1" title="Delete">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="subcategories p-2 space-y-1">
+                                ${subcategoriesHTML}
+                            </div>
+                        </div>`;
+                }).join('');
+
+                this.containerEl.innerHTML = areasHTML;
+
+                if (newAreaValue !== null) {
+                    this.createNewArea();
+                    const recreatedInput = this.containerEl.querySelector('.new-area input');
+                    if (recreatedInput) {
+                        recreatedInput.value = newAreaValue;
+                    }
+                }
+            }
+        }
+
+        // Parse Store implementation
+        class ParseVideoStore {
+            constructor() {
+                this.areas = [];
+                this.videos = [];
+                this.tags = [];
+                this.isLoading = false;
+                this.error = null;
+                this.eventListeners = {};
+            }
+
+            // Event emitter methods
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(callback => {
+                        try {
+                            callback(data);
+                        } catch (error) {
+                            console.error(`Error in event listener for ${event}:`, error);
+                        }
+                    });
+                }
+            }
+
+            // Load initial data from Parse
+            async loadInitialData() {
+                this.isLoading = true;
+                this.error = null;
+                this.emit('loading', true);
+
+                try {
+                    // Load Areas
+                    const Area = Parse.Object.extend("Area");
+                    const areaQuery = new Parse.Query(Area);
+                    areaQuery.ascending("area");
+                    const parseAreas = await areaQuery.find();
+
+                    // Load Subcategories
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subQuery = new Parse.Query(Subcategory);
+                    subQuery.include("area");
+                    subQuery.ascending("title");
+                    const parseSubcategories = await subQuery.find();
+
+                    // Process areas and attach subcategories
+                    this.areas = parseAreas.map(areaObj => {
+                        const area = {
+                            id: areaObj.id,
+                            area: areaObj.get('area'),
+                            icon: areaObj.get('icon'),
+                            featherIcon: areaObj.get('featherIcon'),
+                            svgString: areaObj.get('svgString'),
+                            subcategories: []
+                        };
+
+                        // Find subcategories for this area
+                        area.subcategories = parseSubcategories
+                            .filter(subObj => subObj.get('area') && subObj.get('area').id === area.id)
+                            .map(subObj => ({
+                                id: subObj.id,
+                                uniqueId: subObj.get('uniqueId'),
+                                title: subObj.get('title'),
+                                description: subObj.get('description'),
+                                tags: subObj.get('tags') || [],
+                                context: subObj.get('context'),
+                                materials: subObj.get('materials') || [],
+                                processSteps: subObj.get('processSteps') || [],
+                                subtitle: subObj.get('subtitle')
+                            }))
+                            .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+
+                        return area;
+                    });
+
+                    // Load Tags
+                    const Tag = Parse.Object.extend("Tag");
+                    const tagQuery = new Parse.Query(Tag);
+                    tagQuery.ascending("name");
+                    const parseTags = await tagQuery.find();
+                    
+                    this.tags = parseTags.map(tagObj => ({
+                        id: tagObj.id,
+                        name: tagObj.get('name'),
+                        definition: tagObj.get('definition')
+                    }));
+
+                    this.emit('dataLoaded', { areas: this.areas, source: 'parse' });
+                    console.log("Data loaded successfully from Parse.");
+
+                } catch (error) {
+                    console.error("Parse fetch failed:", error);
+                    this.error = error.message || 'Failed to load data';
+                    this.emit('error', { message: this.error });
+                } finally {
+                    this.isLoading = false;
+                    this.emit('loading', false);
+                }
+            }
+
+            // Add new area
+            async addArea(areaData) {
+                try {
+                    const Area = Parse.Object.extend("Area");
+                    const area = new Area();
+                    area.set("area", areaData.area);
+                    
+                    const savedArea = await area.save();
+                    
+                    const newArea = {
+                        id: savedArea.id,
+                        area: savedArea.get('area'),
+                        icon: savedArea.get('icon'),
+                        featherIcon: savedArea.get('featherIcon'),
+                        svgString: savedArea.get('svgString'),
+                        subcategories: []
+                    };
+
+                    this.areas.push(newArea);
+                    this.areas.sort((a, b) => a.area.localeCompare(b.area));
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return newArea;
+
+                } catch (error) {
+                    console.error("Add area failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to add area' });
+                    throw error;
+                }
+            }
+
+            // Update area
+            async updateArea(areaId, areaData) {
+                try {
+                    const Area = Parse.Object.extend("Area");
+                    const query = new Parse.Query(Area);
+                    const area = await query.get(areaId);
+                    
+                    area.set("area", areaData.area);
+                    const updatedArea = await area.save();
+
+                    const index = this.areas.findIndex(a => a.id === areaId);
+                    if (index !== -1) {
+                        this.areas[index].area = updatedArea.get('area');
+                        this.areas.sort((a, b) => a.area.localeCompare(b.area));
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return updatedArea;
+
+                } catch (error) {
+                    console.error("Update area failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to update area' });
+                    throw error;
+                }
+            }
+
+            // Delete area
+            async deleteArea(areaId) {
+                try {
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area && area.subcategories && area.subcategories.length > 0) {
+                        throw new Error(`Cannot delete "${area.area}": It still contains subcategories.`);
+                    }
+
+                    const Area = Parse.Object.extend("Area");
+                    const query = new Parse.Query(Area);
+                    const areaObj = await query.get(areaId);
+                    await areaObj.destroy();
+
+                    this.areas = this.areas.filter(a => a.id !== areaId);
+                    this.emit('dataLoaded', { areas: this.areas });
+
+                } catch (error) {
+                    console.error("Delete area failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to delete area' });
+                    throw error;
+                }
+            }
+
+            // Add subcategory
+            async addSubcategory(areaId, subcategoryData) {
+                try {
+                    const Area = Parse.Object.extend("Area");
+                    const areaQuery = new Parse.Query(Area);
+                    const areaPointer = await areaQuery.get(areaId);
+
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subcategory = new Subcategory();
+                    subcategory.set("title", subcategoryData.title);
+                    const updatedSubcategory = await subcategory.save();
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area?.subcategories) {
+                        const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
+                        if (subIndex > -1) {
+                            area.subcategories[subIndex].title = updatedSubcategory.get('title');
+                            area.subcategories.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                        }
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return updatedSubcategory;
+
+                } catch (error) {
+                    console.error("Update subcategory failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to update subcategory' });
+                    throw error;
+                }
+            }
+
+            // Delete subcategory
+            async deleteSubcategory(subcategoryId, areaId) {
+                try {
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(Subcategory);
+                    const subcategoryObj = await query.get(subcategoryId);
+                    await subcategoryObj.destroy();
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area?.subcategories) {
+                        area.subcategories = area.subcategories.filter(sub => sub.id !== subcategoryId);
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+
+                } catch (error) {
+                    console.error("Delete subcategory failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to delete subcategory' });
+                    throw error;
+                }
+            }
+
+            // Add video
+            async addVideo(videoData) {
+                try {
+                    // Get area and subcategory references
+                    const Area = Parse.Object.extend("Area");
+                    const areaQuery = new Parse.Query(Area);
+                    const areaPointer = await areaQuery.get(videoData.areaId);
+
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subQuery = new Parse.Query(Subcategory);
+                    const subcategoryPointer = await subQuery.get(videoData.subcategoryId);
+
+                    const Video = Parse.Object.extend("Video");
+                    const video = new Video();
+                    
+                    video.set("title", videoData.title);
+                    video.set("description", videoData.description);
+                    video.set("youtubeId", videoData.youtubeId);
+                    video.set("tags", videoData.tags || []);
+                    video.set("categories", [videoData.areaId]); // Store area ID in categories array
+                    video.set("rating", 0);
+                    video.set("date", new Date());
+                    video.set("materials", videoData.materials || []);
+                    video.set("steps", videoData.steps || []);
+                    video.set("panels", videoData.panels || []);
+                    video.set("creator", videoData.creator || "Unknown");
+
+                    // Use lattice encryption for sensitive data
+                    const encryptedData = LatticeEncryption.encrypt({
+                        title: videoData.title,
+                        description: videoData.description
+                    });
+                    video.set("encryptedData", encryptedData);
+
+                    const savedVideo = await video.save();
+
+                    const newVideo = {
+                        id: savedVideo.id,
+                        title: savedVideo.get('title'),
+                        description: savedVideo.get('description'),
+                        youtubeId: savedVideo.get('youtubeId'),
+                        tags: savedVideo.get('tags') || [],
+                        categories: savedVideo.get('categories') || [],
+                        rating: savedVideo.get('rating') || 0,
+                        date: savedVideo.get('date'),
+                        materials: savedVideo.get('materials') || [],
+                        steps: savedVideo.get('steps') || [],
+                        panels: savedVideo.get('panels') || [],
+                        creator: savedVideo.get('creator')
+                    };
+
+                    this.videos.push(newVideo);
+                    this.emit('dataLoaded', { videos: this.videos });
+                    return newVideo;
+
+                } catch (error) {
+                    console.error("Add video failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to add video' });
+                    throw error;
+                }
+            }
+        }
+
+        // Tag Manager Class
+        class TagManager {
+            constructor(store) {
+                this.store = store;
+                this.containerEl = document.getElementById('tag-cloud');
+                if (!this.containerEl) {
+                    console.error("Tag container #tag-cloud not found!");
+                    return;
+                }
+                this.bindEvents();
+                this.render();
+            }
+
+            bindEvents() {
+                const addTagBtn = document.getElementById('add-tag-btn');
+                if (addTagBtn) {
+                    addTagBtn.addEventListener('click', () => {
+                        showToast('Tag management not yet implemented', 'info');
+                    });
+                }
+            }
+
+            render() {
+                const tags = this.store.tags || [];
+                if (!this.containerEl) return;
+
+                if (tags.length === 0) {
+                    this.containerEl.innerHTML = `
+                        <div class="empty-state col-span-full">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            <p class="dark:text-gray-400">No tags yet. Click "Add Tag" to create your first tag.</p>
+                       </div>
+                    `;
+                } else {
+                    this.containerEl.innerHTML = tags.map(tag => `
+                        <div class="tag-item flex justify-between items-center bg-white dark:bg-gray-700 p-2 rounded shadow-sm border dark:border-gray-600">
+                            <span class="tag-name font-medium cursor-pointer hover:text-green-600">${tag.name}</span>
+                            <button class="delete-tag-btn text-red-300 hover:text-red-700 p-1" title="Delete">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Prevent double initialization
+            if (window.appInitialized) return;
+            window.appInitialized = true;
+
+            // Language and UI setup
+            const profileButton = document.getElementById('profileButton');
+            const profileDropdown = document.getElementById('profileDropdown');
+            
+            let isDropdownOpen = false;
+            profileButton?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isDropdownOpen = !isDropdownOpen;
+                profileDropdown?.classList.toggle('dropdown-active', isDropdownOpen);
+                profileDropdown?.classList.toggle('dropdown-inactive', !isDropdownOpen);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (profileButton && profileDropdown && !profileButton.contains(e.target) && isDropdownOpen) {
+                    profileDropdown.classList.remove('dropdown-active');
+                    profileDropdown.classList.add('dropdown-inactive');
+                    isDropdownOpen = false;
+                }
+            });
+
+            // Dark Mode
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            darkModeToggle?.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            });
+
+            // Language switcher
+            document.getElementById('lang-switcher')?.addEventListener('click', (e) => {
+                const button = e.target.closest('.lang-button');
+                if (button && button.dataset.lang) {
+                    // Handle language change
+                    document.querySelectorAll('.lang-button').forEach(btn => 
+                        btn.classList.remove('font-bold', 'bg-gray-200', 'dark:bg-gray-600'));
+                    button.classList.add('font-bold', 'bg-gray-200', 'dark:bg-gray-600');
+                    
+                    // Update current language display
+                    const currentLangEl = document.getElementById('current-lang');
+                    if (currentLangEl) {
+                        currentLangEl.textContent = button.dataset.lang.toUpperCase();
+                    }
+                }
+            });
+
+            // Language dropdown toggle
+            const langToggle = document.getElementById('lang-toggle');
+            const langPanel = document.getElementById('lang-panel');
+            
+            langToggle?.addEventListener('click', function() {
+                langPanel?.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('#lang-dropdown')) {
+                    langPanel?.classList.add('hidden');
+                }
+            });
+
+            // Form handling for video addition
+            const newVideoForm = document.getElementById('newVideoForm');
+            const submitButton = document.getElementById('submitButton');
+            const youtubeUrlInput = document.getElementById('newYoutubeUrl');
+            const youtubeIdPreview = document.getElementById('youtubeIdPreview');
+            const tagInput = document.getElementById('newTags');
+            const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+            // Tag suggestions
+            const tagSuggestions = ["DIY", "Sustainability", "Environment", "Green Building", "Gardening", 
+                                  "Recycling", "Composting", "Solar", "Wind", "Permaculture", "Organic Farming", 
+                                  "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly", 
+                                  "Off-grid", "Resilience", "Community Development"];
+
+            window.addTag = function (tag) {
+                if (!tagInput) return;
+                const currentTags = tagInput.value.split(',')
+                    .map(t => t.trim())
+                    .filter(t => t !== '');
+
+                if (!currentTags.includes(tag)) {
+                    currentTags.push(tag);
+                }
+
+                tagInput.value = currentTags.join(', ');
+                tagSuggestionsDiv.classList.add('hidden');
+                tagInput.focus();
+            };
+
+            if (tagInput && tagSuggestionsDiv) {
+                tagInput.addEventListener('input', () => {
+                    const parts = tagInput.value.split(',');
+                    const currentPart = parts[parts.length - 1].trim().toLowerCase();
+
+                    const filteredSuggestions = tagSuggestions.filter(tag =>
+                        tag.toLowerCase().includes(currentPart) && currentPart !== ''
+                    );
+
+                    tagSuggestionsDiv.innerHTML = '';
+
+                    if (filteredSuggestions.length > 0) {
+                        filteredSuggestions.forEach(tag => {
+                            const suggestionButton = document.createElement('button');
+                            suggestionButton.type = 'button';
+                            suggestionButton.className = 'block w-full text-left cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 px-3 py-1 text-sm';
+                            suggestionButton.textContent = tag;
+                            suggestionButton.onclick = () => window.addTag(tag);
+                            tagSuggestionsDiv.appendChild(suggestionButton);
+                        });
+                        tagSuggestionsDiv.classList.remove('hidden');
+                    } else {
+                        tagSuggestionsDiv.classList.add('hidden');
+                    }
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!tagInput.contains(event.target) && !tagSuggestionsDiv.contains(event.target)) {
+                        tagSuggestionsDiv.classList.add('hidden');
+                    }
+                });
+            }
+
+            // YouTube URL validation
+            if (youtubeUrlInput && youtubeIdPreview) {
+                youtubeUrlInput.addEventListener('input', () => {
+                    const url = youtubeUrlInput.value;
+                    const extractedId = extractYoutubeId(url);
+
+                    if (extractedId && isValidYoutubeId(extractedId)) {
+                        youtubeIdPreview.textContent = `Valid YouTube ID: ${extractedId}`;
+                        youtubeIdPreview.className = 'text-sm text-green-600 dark:text-green-400 mt-1';
+                    } else {
+                        youtubeIdPreview.textContent = url ? 'Invalid or incomplete YouTube URL' : '';
+                        youtubeIdPreview.className = 'text-sm text-red-600 dark:text-red-400 mt-1';
+                    }
+                });
+            }
+
+            // Form submission
+            if (newVideoForm && submitButton) {
+                newVideoForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const title = document.getElementById('newTitle')?.value.trim();
+                    const youtubeUrl = document.getElementById('newYoutubeUrl')?.value.trim();
+                    const description = document.getElementById('newDescription')?.value.trim();
+                    const tagsValue = document.getElementById('newTags')?.value;
+
+                    const areaId = currentModalAreaId;
+                    const subcategoryId = currentModalSubcategoryId;
+
+                    let tags = [];
+                    if (tagsValue) {
+                        tags = tagsValue.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+                    }
+
+                    const youtubeId = extractYoutubeId(youtubeUrl);
+
+                    // Validation
+                    if (!title || !youtubeUrl || !description || tags.length === 0) {
+                        showToast('Please fill in title, URL, description, and add at least one tag.', 'error');
+                        return;
+                    }
+                    if (!areaId || !subcategoryId) {
+                        showToast('Error: Area context is missing. Please close and reopen the modal.', 'error');
+                        return;
+                    }
+                    if (!youtubeId || !isValidYoutubeId(youtubeId)) {
+                        showToast('Please enter a valid YouTube URL.', 'error');
+                        youtubeUrlInput?.focus();
+                        return;
+                    }
+
+                    try {
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Adding...';
+
+                        const videoData = {
+                            title: title,
+                            description: description,
+                            youtubeId: youtubeId,
+                            areaId: areaId,
+                            subcategoryId: subcategoryId,
+                            tags: tags,
+                            creator: 'Current User' // You might want to get this from Parse User
+                        };
+
+                        await window.videoManager.store.addVideo(videoData);
+                        showToast('Video added successfully!', 'success');
+
+                        newVideoForm.reset();
+                        youtubeIdPreview.textContent = '';
+                        tagSuggestionsDiv.classList.add('hidden');
+                        closeModal();
+
+                    } catch (error) {
+                        console.error('Error adding video:', error);
+                        showToast(error.message || 'Failed to add video. Please check console.', 'error');
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Add Video';
+                    }
+                });
+            }
+
+            // Initialize managers
+            try {
+                window.videoManager = new VideoManager();
+                window.tagManager = new TagManager(window.videoManager.store);
+
+                // Load initial data
+                await window.videoManager.store.loadInitialData();
+                console.log("App initialization complete.");
+
+            } catch (error) {
+                const errorMsg = error.message || String(error);
+                console.error('FATAL: Error initializing app:', errorMsg);
+                const container = document.getElementById('categories-container') || document.body;
+                container.innerHTML = `<div class="error p-4 bg-red-100 text-red-700 border border-red-300 rounded">Critical Error: Cannot initialize application. ${errorMsg} Please check console and refresh.</div>`;
+                showToast(`Critical Error: ${errorMsg}`, 'error');
+            }
+        });
+
+    </script>
+</body>
+</html>.title);
+                    subcategory.set("area", areaPointer);
+                    subcategory.set("uniqueId", Date.now().toString());
+                    
+                    const savedSubcategory = await subcategory.save();
+
+                    const newSubcategory = {
+                        id: savedSubcategory.id,
+                        uniqueId: savedSubcategory.get('uniqueId'),
+                        title: savedSubcategory.get('title'),
+                        description: savedSubcategory.get('description'),
+                        tags: savedSubcategory.get('tags') || [],
+                        context: savedSubcategory.get('context'),
+                        materials: savedSubcategory.get('materials') || [],
+                        processSteps: savedSubcategory.get('processSteps') || [],
+                        subtitle: savedSubcategory.get('subtitle')
+                    };
+
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area) {
+                        if (!Array.isArray(area.subcategories)) area.subcategories = [];
+                        area.subcategories.push(newSubcategory);
+                        area.subcategories.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                    }
+
+                    this.emit('dataLoaded', { areas: this.areas });
+                    return newSubcategory;
+
+                } catch (error) {
+                    console.error("Add subcategory failed:", error);
+                    this.emit('error', { message: error.message || 'Failed to add subcategory' });
+                    throw error;
+                }
+            }
+
+            // Update subcategory
+            async updateSubcategory(subcategoryId, areaId, subcategoryData) {
+                try {
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(Subcategory);
+                    const subcategory = await query.get(subcategoryId);
+                    
+                    subcategory.set("title", subcategoryData
