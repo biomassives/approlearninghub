@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Learning Hub - Complete</title>
+    <!--
+      Content Security Policy:
+      - default-src 'self': Allows content from the same origin.
+      - script-src:
+        - 'self': Scripts from the same origin.
+        - 'unsafe-inline': Allows inline scripts (used for the main app script). Consider moving to external file for stricter CSP.
+        - https://cdn.jsdelivr.net, https://unpkg.com, https://cdnjs.cloudflare.com: Allows scripts from these CDNs (Parse, potentially other libraries, FontAwesome).
+      - style-src:
+        - 'self': Stylesheets from the same origin.
+        - 'unsafe-inline': Allows inline styles (used for the main <style> block and dynamic styles on video icons). Consider moving all styles to external files.
+        - https://fonts.googleapis.com, https://cdnjs.cloudflare.com: Allows stylesheets from these CDNs (Google Fonts, FontAwesome).
+      - font-src:
+        - 'self': Fonts from the same origin.
+        - https://fonts.gstatic.com, https://cdnjs.cloudflare.com: Allows fonts from Google Fonts and FontAwesome CDN.
+      - img-src:
+        - 'self': Images from the same origin.
+        - data:: Allows data URIs for images (e.g., inline SVGs if they were base64).
+        - https:: Allows images from any HTTPS source (consider restricting if possible).
+      - connect-src:
+        - 'self': API calls to the same origin.
+        - https://hub.approvideo.org, https://parseapi.back4app.com: Allows API calls to these specific domains (Parse server).
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Global styles and CSS variables */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-800: #1f2937;
+            --text-color: #111827;
+            --bg-color: white;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        .btn-green:hover:not(:disabled) { background-color: #059669; }
+        .btn-blue { background-color: var(--primary-blue); color: white; }
+        .btn-blue:hover:not(:disabled) { background-color: #2563eb; }
+        .btn-red { background-color: var(--danger-red); color: white; }
+        .btn-red:hover:not(:disabled) { background-color: #dc2626; }
+        .btn-secondary { background-color: #e5e7eb; color: #374151; }
+        .btn-secondary:hover:not(:disabled) { background-color: #d1d5db; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Area and Subcategory item styles */
+        .area-item {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem; /* Increased padding */
+            margin-bottom: 1.5rem; /* Increased margin */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .area-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem; /* Space between icon/title and buttons */
+        }
+
+        .area-icon {
+            width: 28px; /* Slightly larger icon */
+            height: 28px;
+            margin-right: 0.75rem; /* Increased space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue); /* Default icon color */
+        }
+        .area-icon svg { /* Ensure SVG scales well */
+            width: 100%;
+            height: 100%;
+        }
+        .area-icon i { /* For FontAwesome icons */
+            font-size: 1.5em; /* Adjust if needed */
+        }
+
+
+        .subcategory-item {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 1rem; /* Increased padding */
+            margin: 0.75rem 0; /* Increased margin */
+            transition: background-color 0.15s ease;
+        }
+        .subcategory-item:hover { background-color: #f3f4f6; }
+
+        .subcategory-details {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 0.75rem; /* Increased space */
+            padding-left: 0.5rem; /* Slight indent */
+            border-left: 2px solid #e0e0e0; /* Visual separator */
+        }
+        .subcategory-details p { margin-bottom: 0.5rem; }
+        .subcategory-details strong { color: #333; font-weight: 600; }
+
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem; /* Increased gap */
+            padding: 0;
+            list-style: none;
+            margin-top: 0.25rem;
+        }
+        .tags-list li {
+            background-color: #e0e7ff; /* Lighter blue for tags */
+            color: #3730a3; /* Darker blue text for tags */
+            padding: 0.2rem 0.5rem; /* Slightly more padding */
+            border-radius: 1rem; /* Pill shape */
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+
+        .videos-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.25rem;
+        }
+        .videos-list li {
+            margin-bottom: 0.35rem;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+        }
+        .videos-list .video-icon {
+            margin-right: 0.5rem; /* More space for video icon */
+            min-width: 16px; /* Ensure icon space */
+        }
+        .videos-list .video-icon i {
+             font-size: 1em;
+        }
+
+
+        /* Inline editing */
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            background-color: white;
+            width: calc(100% - 40px); /* Adjust if needed */
+            font-size: inherit; /* Inherit font size from parent */
+        }
+        .is-editing {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+            padding: 2px; /* Add some padding so outline doesn't cut into text */
+        }
+        .area-name.is-editing, .subcategory-name.is-editing {
+            display: inline-block; /* Prevents layout shift for block elements */
+            width: auto; /* Allow it to size to content */
+        }
+
+
+        /* Utility classes */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-md { font-size: 1rem; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-gray-500 { color: #6b7280; }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-width: 22rem; /* Slightly wider */
+            animation: slideIn 0.3s ease-out;
+            font-size: 0.9rem;
+        }
+        .notification.success { background-color: #dcfce7; border: 1px solid #16a34a; color: #15803d; }
+        .notification.error   { background-color: #fee2e2; border: 1px solid #dc2626; color: #b91c1c; }
+        .notification.warning { background-color: #fef3c7; border: 1px solid #f59e0b; color: #d97706; }
+        .notification.info    { background-color: #e0f2fe; border: 1px solid #0ea5e9; color: #0369a1; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .loading, .error-message {
+            text-align: center;
+            color: #6b7280;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+        .error-message { color: var(--danger-red); }
+    </style>
+</head>
+
+<body>
+    <div class="container py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-2xl font-bold">Appro Learning Hub - Taxonomy Management</h1>
+        </header>
+
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Areas & Subcategories</h2>
+                <button class="btn btn-green" id="add-area-btn">
+                    <i class="fas fa-plus" style="margin-right: 0.5em;"></i> Add Area
+                </button>
+            </div>
+            <div id="areas-container" class="space-y-4">
+                <div class="loading">Loading areas...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        'use strict';
+
+        // Initialize Parse
+        // IMPORTANT: Replace with your actual Parse App ID and JavaScript Key
+        Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY");
+        Parse.serverURL = "https://parseapi.back4app.com/";
+
+        class ParseDataLayer {
+            constructor() {
+                this.initializeLocalStorage();
+            }
+
+            initializeLocalStorage() {
+                if (!localStorage.getItem('areas_cache')) {
+                    const seedData = [
+                        {
+                            id: 'area_waste_01',
+                            name: "Waste",
+                            icon_fa: "fa-recycle",
+                            featherIcon: "trash-2", // Feather icons would need a library like feathericons.com
+                            svgString: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path></svg>`,
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString(),
+                            subcategories: [
+                                {
+                                    id: "waste-0",
+                                    area_id: 'area_waste_01',
+                                    name: "Composting",
+                                    description: "Learn how to convert organic waste into nutrient-rich soil that can be used to improve gardens and reduce landfill contributions. This section covers various methods suitable for different scales and types of organic materials.",
+                                    tags: ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting", "hot composting", "cold composting", "bokashi", "mycelium", "nutrient cycling"],
+                                    context: "Transforms kitchen scraps and yard waste into a valuable soil amendment, diverting it from landfills and enriching garden ecosystems.",
+                                    materials: ["Organic 'Greens' (fruit/veg scraps, coffee grounds, grass clippings)", "Organic 'Browns' (dry leaves, twigs, cardboard, paper)", "Compost Bin/Container (various types available or DIY)", "Water Source (for moisture)", "Turning Tool (fork, shovel, or specialized aerator)", "(Optional: worms for vermicomposting, inoculants)"],
+                                    processSteps: ["1. Choose Method & Location: Select a composting method (e.g., bin, pile, vermicompost) and a suitable, accessible spot.", "2. Collect & Chop Materials: Gather appropriate green and brown materials. Chop larger items to speed up decomposition.", "3. Layer Greens & Browns: Aim for a ratio of roughly 2:1 or 3:1 browns to greens. Alternate layers or mix them.", "4. Maintain Moisture: Keep the pile moist like a wrung-out sponge. Add water if too dry.", "5. Aerate/Turn Regularly: Turn the pile every 1-2 weeks to provide oxygen, mix materials, and distribute heat.", "6. Harvest & Use: Compost is ready when dark, crumbly, and earthy-smelling (few weeks to months). Sift if needed and apply to garden."],
+                                    videos: [
+                                        { youtubeId: "JehP4xlF4gI", title: "Making Compost: Homemade Worm Farm Compost System | Vermicompost", icon_tag_fa: "fas fa-seedling", color_tag: "#84cc16" },
+                                        { youtubeId: "gNqkEGpv0vg", title: "Urban Balcony Composting With Worms", icon_tag_fa: "fas fa-worm", color_tag: "#a16207" },
+                                        { youtubeId: "HWypVv1dzJQ", title: "Hot Composting Technique for Fast Results", icon_tag_fa: "fas fa-temperature-high", color_tag: "#f97316" }
+                                    ],
+                                    created_at: new Date().toISOString(),
+                                    updated_at: new Date().toISOString()
+                                },
+                                {
+                                    id: "waste-1",
+                                    area_id: 'area_waste_01',
+                                    name: "Recycling",
+                                    description: "Set up community or household recycling systems to effectively sort and process recyclable materials, reducing waste and promoting a circular economy. Learn about different material types and best practices.",
+                                    tags: ["recycling", "waste sorting", "materials recovery", "circular economy", "community action", "plastic recycling", "paper recycling", "metal recycling", "glass recycling", "waste management"],
+                                    context: "Organizes the collection and separation of materials like paper, plastic, glass, and metal for reprocessing into new products.",
+                                    materials: ["Designated Bins/Containers (for different material types)", "Signage/Labels (clear instructions for sorting)", "Collection Bags/Carts", "Basic Cleaning Supplies (for rinsing containers)", "(Community: Central collection point, baler, transport)"],
+                                    processSteps: ["1. Identify Accepted Materials: Check local guidelines for what's recyclable in your area.", "2. Set Up Sorting Stations: Provide clearly labeled bins for each material type at home or in the community.", "3. Rinse/Clean Recyclables: Remove food residue from containers to prevent contamination.", "4. Store Sorted Materials: Keep sorted materials separate and dry until collection or drop-off.", "5. Coordinate Collection/Drop-off: Understand local schedules or find nearby recycling centers.", "6. Educate Participants: Ensure everyone involved knows how to sort correctly and the importance of recycling."],
+                                    videos: [
+                                         { youtubeId: "IsTnQ9U5wN8", title: "Setting Up a Community Recycling Station", icon_tag_fa: "fas fa-users", color_tag: "#6366f1" },
+                                         { youtubeId: "kUR6_bQLU-E", title: "DIY Plastic Processing for Reuse", icon_tag_fa: "fas fa-cogs", color_tag: "#6b7280" },
+                                         { youtubeId: "Gq7L9-0XdVw", title: "Paper Recycling and Homemade Paper Making", icon_tag_fa: "fas fa-newspaper", color_tag: "#a8a29e" }
+                                    ],
+                                    created_at: new Date().toISOString(),
+                                    updated_at: new Date().toISOString()
+                                }
+                                // ... (Add other subcategories from your JSON here if needed)
+                            ]
+                        }
+                        // ... (Add other areas from your JSON here if needed)
+                    ];
+                    localStorage.setItem('areas_cache', JSON.stringify(seedData));
+                    // Subcategories are now embedded in areas for this local cache example.
+                    // If you had a separate subcategories_cache, you might clear or update it.
+                    // localStorage.removeItem('subcategories_cache');
+                }
+            }
+
+            async getAreas() {
+                // This method will primarily rely on the enriched local storage for demo purposes.
+                // Fetching and stitching this rich data from Parse would require careful schema design
+                // (e.g., using Relations or Pointers and including them in queries).
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    query.ascending("name");
+                    // Example if subcategories were a Relation named 'subcategoriesRelation':
+                    // query.include("subcategoriesRelation");
+
+                    const results = await query.find();
+
+                    if (results.length > 0) {
+                        const areas = results.map(area => {
+                            const areaData = {
+                                id: area.id,
+                                name: area.get('name'),
+                                icon_fa: area.get('icon_fa'),       // Ensure these fields exist in your Parse 'Area' class
+                                featherIcon: area.get('featherIcon'),
+                                svgString: area.get('svgString'),
+                                created_at: area.createdAt ? area.createdAt.toISOString() : new Date().toISOString(),
+                                updated_at: area.updatedAt ? area.updatedAt.toISOString() : new Date().toISOString(),
+                                subcategories: [] // This would be populated from the relation or a separate query
+                            };
+                            // Example for populating from a relation:
+                            // const relatedSubs = area.get('subcategoriesRelation');
+                            // if (relatedSubs) {
+                            //   areaData.subcategories = relatedSubs.map(sub => ({ id: sub.id, name: sub.get('name'), ... }));
+                            // }
+                            return areaData;
+                        });
+                        // Update cache with fresh data from Parse, but ensure it matches the rich structure
+                        // For this demo, we'll assume the fetched data isn't as rich as seed, so we might not overwrite
+                        // or we'd need a merge strategy.
+                        // localStorage.setItem('areas_cache', JSON.stringify(areas));
+                        return areas; // Return Parse data if available
+                    } else {
+                        // If Parse is empty or query returns no results, fall back to local cache (which has seed data)
+                        console.warn('No areas found in Parse, using local cache.');
+                        const cached = localStorage.getItem('areas_cache');
+                        return cached ? JSON.parse(cached) : [];
+                    }
+                } catch (error) {
+                    console.warn('Parse query for areas failed, using local cache:', error);
+                    const cached = localStorage.getItem('areas_cache');
+                    return cached ? JSON.parse(cached) : [];
+                }
+            }
+
+            async createArea(name) {
+                // This simplified version only saves the name.
+                // To save rich data, you'd pass more parameters and set more fields.
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const area = new AreaClass();
+                    area.set("name", name);
+                    // area.set("svgString", defaultSvg); // etc.
+
+                    const result = await area.save();
+                    const newArea = {
+                        id: result.id,
+                        name: result.get('name'),
+                        created_at: result.createdAt.toISOString(),
+                        updated_at: result.updatedAt.toISOString(),
+                        subcategories: [] // New areas start with no subcategories
+                    };
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cachedAreas.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                    return newArea;
+                } catch (error) {
+                    console.warn('Parse save for Area failed, attempting local cache update:', error);
+                    const newArea = {
+                        id: 'area_local_' + Date.now(),
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                        subcategories: []
+                    };
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    cachedAreas.push(newArea);
+                    localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                    return newArea;
+                }
+            }
+
+            async updateArea(id, name) {
+                // This simplified version only updates the name.
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    area.set("name", name);
+                    // area.set("svgString", newSvg); // etc.
+
+                    const result = await area.save();
+                    const updatedAreaPartial = { // We only get back what was saved from Parse
+                        id: result.id,
+                        name: result.get('name'),
+                        updated_at: result.updatedAt.toISOString()
+                    };
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cachedAreas.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        // Merge updated fields with existing cached object to preserve subcategories etc.
+                        cachedAreas[index] = { ...cachedAreas[index], ...updatedAreaPartial, name: name };
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                        return cachedAreas[index];
+                    }
+                    return updatedAreaPartial; // Should ideally not happen if ID was valid
+                } catch (error) {
+                    console.warn('Parse update for Area failed, attempting local cache update:', error);
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const index = cachedAreas.findIndex(a => a.id === id);
+                    if (index !== -1) {
+                        cachedAreas[index].name = name;
+                        cachedAreas[index].updated_at = new Date().toISOString();
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                        return cachedAreas[index];
+                    }
+                    throw new Error('Area not found in local cache for update.');
+                }
+            }
+
+            async deleteArea(id) {
+                try {
+                    const AreaClass = Parse.Object.extend("Area");
+                    const query = new Parse.Query(AreaClass);
+                    const area = await query.get(id);
+                    await area.destroy();
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cachedAreas.filter(a => a.id !== id);
+                    localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete for Area failed, attempting local cache update:', error);
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const filtered = cachedAreas.filter(a => a.id !== id);
+                    if (cachedAreas.length !== filtered.length) {
+                         localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                         return true;
+                    }
+                    // If Parse failed AND it wasn't in cache, it's an issue.
+                    // For robustness, we might still say true if the intent is removal.
+                    console.error('Area not found for deletion in Parse and not removed from cache.');
+                    return false; // Or true if we want to ensure UI updates regardless
+                }
+            }
+
+
+            // This method now primarily pulls subcategories from the cached area object.
+            // Fetching directly from Parse would require its own query and schema alignment.
+            async getSubcategories(areaId) {
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                const area = cachedAreas.find(a => a.id === areaId);
+                return area ? area.subcategories || [] : [];
+            }
+
+            async createSubcategory(areaId, name) {
+                // This simplified version only saves the name and area_id.
+                // To save rich data, you'd pass more parameters.
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const subcategory = new SubcategoryClass();
+                    subcategory.set("name", name);
+
+                    // Link to parent Area in Parse:
+                    // 1. If area_id is a string field storing the Area's objectId:
+                    subcategory.set("area_id_string_ref", areaId); // Adjust field name
+                    // 2. If using a Pointer:
+                    // const areaPointer = Parse.Object.extend("Area").createWithoutData(areaId);
+                    // subcategory.set("areaParent", areaPointer); // Adjust field name
+
+                    const result = await subcategory.save();
+                    const newSub = {
+                        id: result.id,
+                        area_id: areaId, // or result.get('areaParent')?.id
+                        name: result.get('name'),
+                        created_at: result.createdAt.toISOString(),
+                        updated_at: result.updatedAt.toISOString(),
+                        // Initialize other rich fields as empty or default
+                        description: "", tags: [], videos: []
+                    };
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const areaIndex = cachedAreas.findIndex(a => a.id === areaId);
+                    if (areaIndex !== -1) {
+                        if (!cachedAreas[areaIndex].subcategories) {
+                            cachedAreas[areaIndex].subcategories = [];
+                        }
+                        cachedAreas[areaIndex].subcategories.push(newSub);
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                    }
+                    return newSub;
+                } catch (error) {
+                    console.warn('Parse save for Subcategory failed, attempting local cache update:', error);
+                    const newSub = {
+                        id: 'sub_local_' + Date.now(),
+                        area_id: areaId,
+                        name: name,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                        description: "", tags: [], videos: []
+                    };
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    const areaIndex = cachedAreas.findIndex(a => a.id === areaId);
+                    if (areaIndex !== -1) {
+                         if (!cachedAreas[areaIndex].subcategories) {
+                            cachedAreas[areaIndex].subcategories = [];
+                        }
+                        cachedAreas[areaIndex].subcategories.push(newSub);
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                    }
+                    return newSub;
+                }
+            }
+
+            async updateSubcategory(subcategoryId, name) {
+                 // This simplified version only updates the name.
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(subcategoryId);
+                    subcategory.set("name", name);
+                    // subcategory.set("description", newDescription); // etc.
+
+                    const result = await subcategory.save();
+                    const updatedSubPartial = {
+                        id: result.id,
+                        name: result.get('name'),
+                        updated_at: result.updatedAt.toISOString()
+                    };
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    for (let area of cachedAreas) {
+                        if (area.subcategories) {
+                            const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
+                            if (subIndex !== -1) {
+                                area.subcategories[subIndex] = { ...area.subcategories[subIndex], ...updatedSubPartial, name: name };
+                                localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                                return area.subcategories[subIndex];
+                            }
+                        }
+                    }
+                    return updatedSubPartial; // Should ideally not happen
+                } catch (error) {
+                    console.warn('Parse update for Subcategory failed, attempting local cache update:', error);
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                     for (let area of cachedAreas) {
+                        if (area.subcategories) {
+                            const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
+                            if (subIndex !== -1) {
+                                area.subcategories[subIndex].name = name;
+                                area.subcategories[subIndex].updated_at = new Date().toISOString();
+                                localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                                return area.subcategories[subIndex];
+                            }
+                        }
+                    }
+                    throw new Error('Subcategory not found in local cache for update.');
+                }
+            }
+
+            async deleteSubcategory(subcategoryId) {
+                try {
+                    const SubcategoryClass = Parse.Object.extend("Subcategory");
+                    const query = new Parse.Query(SubcategoryClass);
+                    const subcategory = await query.get(subcategoryId);
+                    await subcategory.destroy();
+
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    let modified = false;
+                    for (let area of cachedAreas) {
+                        if (area.subcategories) {
+                            const originalLength = area.subcategories.length;
+                            area.subcategories = area.subcategories.filter(s => s.id !== subcategoryId);
+                            if (area.subcategories.length !== originalLength) {
+                                modified = true;
+                            }
+                        }
+                    }
+                    if (modified) {
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                    }
+                    return true;
+                } catch (error) {
+                    console.warn('Parse delete for Subcategory failed, attempting local cache update:', error);
+                    const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                    let modified = false;
+                    for (let area of cachedAreas) {
+                        if (area.subcategories) {
+                             const originalLength = area.subcategories.length;
+                            area.subcategories = area.subcategories.filter(s => s.id !== subcategoryId);
+                            if (area.subcategories.length !== originalLength) {
+                                modified = true;
+                            }
+                        }
+                    }
+                    if (modified) {
+                        localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                        return true;
+                    }
+                    console.error('Subcategory not found for deletion in Parse and not removed from cache.');
+                    return false;
+                }
+            }
+        }
+
+        class TaxonomyApp {
+            constructor() {
+                this.dataLayer = new ParseDataLayer();
+                this.init();
+            }
+
+            async init() {
+                this.setupEventListeners();
+                await this.loadAreas();
+            }
+
+            setupEventListeners() {
+                document.getElementById('add-area-btn').addEventListener('click', () => {
+                    this.createNewArea();
+                });
+            }
+
+            async loadAreas() {
+                const container = document.getElementById('areas-container');
+                container.innerHTML = '<div class="loading">Loading areas...</div>';
+
+                try {
+                    const areas = await this.dataLayer.getAreas();
+                    await this.renderAreas(areas); // renderAreas is now async due to getSubcategories
+                } catch (error) {
+                    console.error("Error loading areas:", error);
+                    container.innerHTML = `<div class="error-message">Error loading areas: ${error.message}</div>`;
+                }
+            }
+
+            async renderAreas(areas) {
+                const container = document.getElementById('areas-container');
+                if (!areas || areas.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-gray-500">No areas yet. Click "Add Area" to create your first one.</p>
+                        </div>`;
+                    return;
+                }
+
+                let htmlPromises = areas.map(async (area) => {
+                    // Subcategories are now expected to be part of the area object from getAreas (from cache)
+                    const subcategories = area.subcategories || await this.dataLayer.getSubcategories(area.id);
+                    return this.renderAreaItem(area, subcategories);
+                });
+
+                const htmlResults = await Promise.all(htmlPromises);
+                container.innerHTML = htmlResults.join('');
+                this.attachAreaEventListeners();
+            }
+
+            renderAreaItem(area, subcategories) {
+                const subcategoriesHtml = subcategories && subcategories.length > 0
+                    ? subcategories.map(sub => this.renderSubcategoryItem(sub)).join('')
+                    : `<div class="text-center py-4 text-gray-500">No subcategories yet for this area.</div>`;
+
+                let iconHtml = '';
+                if (area.svgString) {
+                    iconHtml = `<div class="area-icon">${area.svgString}</div>`;
+                } else if (area.icon_fa) {
+                    iconHtml = `<div class="area-icon"><i class="fas ${area.icon_fa}"></i></div>`;
+                } else if (area.featherIcon) {
+                    // Placeholder for Feather icons; requires Feather Icons library and rendering logic
+                    iconHtml = `<div class="area-icon"><span title="${area.featherIcon}">Fe</span></div>`;
+                }
+
+
+                return `
+                    <div class="area-item" data-area-id="${area.id}">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="area-header">
+                                ${iconHtml}
+                                <h3 class="text-lg font-semibold area-name" data-editable="true">${this.escapeHtml(area.name)}</h3>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="btn btn-blue btn-sm btn-add-subcategory" data-area-id="${area.id}">
+                                   <i class="fas fa-plus" style="margin-right: 0.4em;"></i> Add Sub
+                                </button>
+                                <button class="btn btn-red btn-sm btn-delete-area" data-area-id="${area.id}">
+                                   <i class="fas fa-trash-alt" style="margin-right: 0.4em;"></i> Delete Area
+                                </button>
+                            </div>
+                        </div>
+                        <div class="subcategories-container space-y-2">
+                            ${subcategoriesHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderSubcategoryItem(subcategory) {
+                let detailsHtml = '<div class="subcategory-details">';
+                if (subcategory.description) {
+                    detailsHtml += `<p><strong>Description:</strong> ${this.escapeHtml(subcategory.description)}</p>`;
+                }
+                if (subcategory.tags && subcategory.tags.length > 0) {
+                    detailsHtml += `<p><strong>Tags:</strong> <ul class="tags-list">${subcategory.tags.map(tag => `<li>${this.escapeHtml(tag)}</li>`).join('')}</ul></p>`;
+                }
+                if (subcategory.context) {
+                    detailsHtml += `<p><strong>Context:</strong> ${this.escapeHtml(subcategory.context)}</p>`;
+                }
+                if (subcategory.materials && subcategory.materials.length > 0) {
+                    detailsHtml += `<p><strong>Materials:</strong> ${this.escapeHtml(subcategory.materials.join('; '))}</p>`;
+                }
+                if (subcategory.processSteps && subcategory.processSteps.length > 0) {
+                    detailsHtml += `<p><strong>Process:</strong><br/>${subcategory.processSteps.map(step => `<span>${this.escapeHtml(step)}</span>`).join('<br/>')}</p>`;
+                }
+                if (subcategory.videos && subcategory.videos.length > 0) {
+                    detailsHtml += `<p><strong>Videos:</strong></p><ul class="videos-list">`;
+                    subcategory.videos.forEach(video => {
+                        const videoIcon = video.icon_tag_fa ? `<span class="video-icon"><i class="${video.icon_tag_fa}" ${video.color_tag ? `style="color:${video.color_tag}"` : ''}></i></span>` : '';
+                        detailsHtml += `<li>${videoIcon}${this.escapeHtml(video.title)} ${video.youtubeId ? `(YouTube ID: ${video.youtubeId})` : ''}</li>`;
+                    });
+                    detailsHtml += `</ul>`;
+                }
+                detailsHtml += '</div>';
+
+                return `
+                    <div class="subcategory-item" data-subcategory-id="${subcategory.id}" data-area-id-ref="${subcategory.area_id}">
+                        <div class="flex justify-between items-center">
+                            <span class="subcategory-name text-md font-semibold" data-editable="true">${this.escapeHtml(subcategory.name)}</span>
+                            <div class="flex space-x-2">
+                                <button class="btn btn-green btn-sm btn-add-content" data-area-id="${subcategory.area_id}" data-subcategory-id="${subcategory.id}">
+                                    <i class="fas fa-edit" style="margin-right: 0.4em;"></i> Edit Content
+                                </button>
+                                <button class="btn btn-red btn-sm btn-delete-subcategory" data-subcategory-id="${subcategory.id}">
+                                    <i class="fas fa-trash-alt" style="margin-right: 0.4em;"></i> Delete Sub
+                                </button>
+                            </div>
+                        </div>
+                        ${subcategory.description || (subcategory.tags && subcategory.tags.length > 0) ? detailsHtml : ''}
+                    </div>
+                `;
+            }
+
+
+            attachAreaEventListeners() {
+                document.querySelectorAll('.btn-add-subcategory').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.currentTarget.dataset.areaId;
+                        this.createNewSubcategory(areaId);
+                    });
+                });
+
+                document.querySelectorAll('.btn-delete-area').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const areaId = e.currentTarget.dataset.areaId;
+                        const areaName = e.currentTarget.closest('.area-item').querySelector('.area-name').textContent;
+                        await this.deleteArea(areaId, areaName);
+                    });
+                });
+
+                document.querySelectorAll('.btn-delete-subcategory').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const subcategoryId = e.currentTarget.dataset.subcategoryId;
+                        const subcategoryName = e.currentTarget.closest('.subcategory-item').querySelector('.subcategory-name').textContent;
+                        await this.deleteSubcategory(subcategoryId, subcategoryName);
+                    });
+                });
+
+                document.querySelectorAll('.btn-add-content').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const areaId = e.currentTarget.dataset.areaId;
+                        const subcategoryId = e.currentTarget.dataset.subcategoryId;
+                        // This is where you would open a modal or form to edit the rich content
+                        this.showNotification(`Editing content for Subcategory ID: ${subcategoryId} (Area ID: ${areaId}). Feature to be implemented.`, 'info');
+                    });
+                });
+
+                document.querySelectorAll('.area-name[data-editable="true"]').forEach(element => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Area name cannot be empty.', 'error');
+                            return originalValue; // Revert to original
+                        }
+                        if (newValue === originalValue) return originalValue; // No change
+
+                        // Custom confirmation dialog would be better than window.confirm
+                        if (window.confirm(`Rename area "${originalValue}" to "${newValue}"?`)) {
+                            const areaId = element.closest('[data-area-id]').dataset.areaId;
+                            try {
+                                await this.dataLayer.updateArea(areaId, newValue.trim());
+                                this.showNotification('Area renamed successfully!', 'success');
+                                return newValue.trim();
+                            } catch (error) {
+                                this.showNotification(`Failed to rename area: ${error.message}`, 'error');
+                                return originalValue; // Revert on error
+                            }
+                        }
+                        return originalValue; // User cancelled
+                    });
+                });
+
+                document.querySelectorAll('.subcategory-name[data-editable="true"]').forEach(element => {
+                     this.makeInlineEditable(element, async (newValue, originalValue) => {
+                        if (newValue.trim() === '') {
+                            this.showNotification('Subcategory name cannot be empty.', 'error');
+                            return originalValue;
+                        }
+                        if (newValue === originalValue) return originalValue;
+
+                        // Custom confirmation dialog would be better
+                        if (window.confirm(`Rename subcategory "${originalValue}" to "${newValue}"?`)) {
+                            const subcategoryId = element.closest('[data-subcategory-id]').dataset.subcategoryId;
+                            try {
+                                await this.dataLayer.updateSubcategory(subcategoryId, newValue.trim());
+                                this.showNotification('Subcategory renamed successfully!', 'success');
+                                return newValue.trim();
+                            } catch (error) {
+                                this.showNotification(`Failed to rename subcategory: ${error.message}`, 'error');
+                                return originalValue;
+                            }
+                        }
+                        return originalValue;
+                    });
+                });
+            }
+
+            makeInlineEditable(element, onSave) {
+                let isEditing = false;
+
+                element.addEventListener('dblclick', () => { // Changed to dblclick to avoid accidental edits
+                    if (isEditing || !element.dataset.editable) return;
+                    isEditing = true;
+
+                    const originalValue = element.textContent.trim();
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = originalValue;
+                    input.className = 'inline-edit-field';
+
+                    // Store original display style
+                    const originalDisplay = element.style.display;
+                    element.style.display = 'inline-block'; // Or 'block' if it was block
+                    element.innerHTML = '';
+                    element.appendChild(input);
+                    element.classList.add('is-editing');
+                    input.focus();
+                    input.select();
+
+                    const finishEditing = async (saveChanges) => {
+                        if (!isEditing) return;
+                        isEditing = false;
+
+                        let finalValue = originalValue;
+                        if (saveChanges) {
+                            const newValue = input.value.trim();
+                            finalValue = await onSave(newValue, originalValue);
+                        }
+
+                        element.innerHTML = this.escapeHtml(finalValue); // Ensure it's escaped
+                        element.classList.remove('is-editing');
+                        element.style.display = originalDisplay; // Restore original display
+                        // Re-enable editing capability if needed, or re-attach listener if it was one-time
+                    };
+
+                    input.addEventListener('blur', () => finishEditing(true)); // Save on blur
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault(); // Prevent form submission if inside one
+                            finishEditing(true);
+                        } else if (e.key === 'Escape') {
+                            finishEditing(false); // Cancel on Escape
+                        }
+                    });
+                });
+            }
+
+
+            async createNewArea() {
+                const name = prompt('Enter new area name:'); // Replace with a custom modal/form
+                if (!name || name.trim() === '') {
+                    this.showNotification('Area name cannot be empty.', 'warning');
+                    return;
+                }
+                try {
+                    this.showNotification('Creating area...', 'info');
+                    await this.dataLayer.createArea(name.trim());
+                    await this.loadAreas(); // Reload all areas to show the new one
+                    this.showNotification('Area created successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(`Failed to create area: ${error.message}`, 'error');
+                }
+            }
+
+            async createNewSubcategory(areaId) {
+                const name = prompt('Enter new subcategory name:'); // Replace with a custom modal/form
+                if (!name || name.trim() === '') {
+                    this.showNotification('Subcategory name cannot be empty.', 'warning');
+                    return;
+                }
+                try {
+                    this.showNotification('Creating subcategory...', 'info');
+                    await this.dataLayer.createSubcategory(areaId, name.trim());
+                    await this.loadAreas(); // Reload all areas to show the new subcategory
+                    this.showNotification('Subcategory created successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(`Failed to create subcategory: ${error.message}`, 'error');
+                }
+            }
+
+            async deleteArea(areaId, areaName) {
+                const subcategories = await this.dataLayer.getSubcategories(areaId);
+                if (subcategories.length > 0) {
+                    this.showNotification(`Cannot delete Area "${areaName}" as it contains subcategories. Please delete them first.`, 'error');
+                    return;
+                }
+
+                // Replace with a custom confirmation modal
+                if (window.confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
+                    try {
+                        this.showNotification('Deleting area...', 'info');
+                        await this.dataLayer.deleteArea(areaId);
+                        await this.loadAreas();
+                        this.showNotification(`Area "${areaName}" deleted successfully.`, 'success');
+                    } catch (error) {
+                        this.showNotification(`Failed to delete area: ${error.message}`, 'error');
+                    }
+                }
+            }
+
+            async deleteSubcategory(subcategoryId, subcategoryName) {
+                 // Replace with a custom confirmation modal
+                if (window.confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
+                    try {
+                        this.showNotification('Deleting subcategory...', 'info');
+                        await this.dataLayer.deleteSubcategory(subcategoryId);
+                        await this.loadAreas(); // Reload to reflect deletion
+                        this.showNotification(`Subcategory "${subcategoryName}" deleted successfully.`, 'success');
+                    } catch (error) {
+                        this.showNotification(`Failed to delete subcategory: ${error.message}`, 'error');
+                    }
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                document.querySelectorAll('.notification').forEach(n => n.remove()); // Remove old notifications
+
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 3500); // Slightly longer display time
+            }
+
+            escapeHtml(text) {
+                if (text === null || typeof text === 'undefined') return '';
+                const div = document.createElement('div');
+                div.textContent = String(text); // Ensure text is a string
+                return div.innerHTML;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                window.app = new TaxonomyApp();
+            } catch (error) {
+                console.error('Failed to initialize application:', error);
+                const container = document.querySelector('.container') || document.body;
+                container.innerHTML = `
+                    <div class="notification error" style="position: static; margin: 2rem auto; animation: none;">
+                        <strong>Critical Error:</strong> Cannot initialize application. ${error.message}
+                        <br><br>Please check the console for more details.
+                        <br><button onclick="location.reload()" class="btn btn-blue" style="margin-top:1rem;">Reload Page</button>
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
