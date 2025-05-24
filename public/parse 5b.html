@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Learning Hub - Global Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-green: #10b981;
+            --primary-purple: #8b5cf6;
+            --primary-orange: #f97316;
+            --danger-red: #ef4444;
+            --warning-yellow: #f59e0b;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--gray-900);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.videos { border-left-color: var(--primary-blue); }
+        .stat-card.resources { border-left-color: var(--primary-green); }
+        .stat-card.clinics { border-left-color: var(--primary-purple); }
+        .stat-card.people { border-left-color: var(--primary-orange); }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, var(--primary-blue) 0%, #2563eb 100%); }
+        .stat-icon.green { background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%); }
+        .stat-icon.purple { background: linear-gradient(135deg, var(--primary-purple) 0%, #7c3aed 100%); }
+        .stat-icon.orange { background: linear-gradient(135deg, var(--primary-orange) 0%, #ea580c 100%); }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .stat-breakdown {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .breakdown-label {
+            color: var(--gray-600);
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .status-planned { background: #fef3c7; color: #92400e; }
+        .status-underway { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+
+        .map-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .map-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        #world-map {
+            width: 100%;
+            height: 500px;
+            border-radius: 0.5rem;
+            background: #f8fafc;
+        }
+
+        .country {
+            fill: #e2e8f0;
+            stroke: #cbd5e1;
+            stroke-width: 0.5;
+            transition: fill 0.3s ease;
+        }
+
+        .country:hover {
+            fill: #cbd5e1;
+            stroke: var(--primary-blue);
+            stroke-width: 1;
+        }
+
+        .activity-dot {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .activity-dot:hover {
+            stroke-width: 3;
+            stroke: rgba(255, 255, 255, 0.8);
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: var(--gray-600);
+            font-size: 1.125rem;
+        }
+
+        .loading-spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid var(--gray-200);
+            border-top: 3px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            margin: 2rem 0;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            color: var(--danger-red);
+            margin-bottom: 1rem;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container { padding: 1rem 0.5rem; }
+            .header h1 { font-size: 2rem; }
+            .header p { font-size: 1rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .stat-card { padding: 1.5rem; }
+            .map-container { padding: 1rem; }
+            #world-map { height: 300px; }
+            .legend { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>🌍 Appro Learning Hub</h1>
+            <p>Global Impact Dashboard - Connecting Communities Through Knowledge</p>
+        </div>
+
+        <div id="loading-state" class="loading">
+            <div class="loading-spinner"></div>
+            <span>Loading dashboard data...</span>
+        </div>
+
+        <div id="dashboard-content" class="hidden">
+            <div class="stats-grid">
+                <div class="stat-card videos">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="videos-count">0</div>
+                            <div class="stat-label">Learning Videos</div>
+                        </div>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="stat-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">YouTube Content</span>
+                            <span class="breakdown-value" id="youtube-videos">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Local Content</span>
+                            <span class="breakdown-value" id="local-videos">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total Hours</span>
+                            <span class="breakdown-value" id="total-hours">0h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card resources">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="resources-count">0</div>
+                            <div class="stat-label">Learning Resources</div>
+                        </div>
+                        <div class="stat-icon green">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="stat-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Knowledge Areas</span>
+                            <span class="breakdown-value" id="areas-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Subcategories</span>
+                            <span class="breakdown-value" id="subcategories-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Tags</span>
+                            <span class="breakdown-value" id="tags-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card clinics">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="clinics-total">47</div>
+                            <div class="stat-label">Learning Clinics</div>
+                        </div>
+                        <div class="stat-icon purple">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="stat-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Planned</span>
+                            <span class="breakdown-value status-planned" id="clinics-planned">12</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Underway</span>
+                            <span class="breakdown-value status-underway" id="clinics-underway">18</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Completed</span>
+                            <span class="breakdown-value status-completed" id="clinics-completed">17</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card people">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-number" id="people-total">1,247</div>
+                            <div class="stat-label">Community Members</div>
+                        </div>
+                        <div class="stat-icon orange">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Experts</span>
+                            <span class="breakdown-value" id="experts-count">89</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Researchers</span>
+                            <span class="breakdown-value" id="researchers-count">156</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Community</span>
+                            <span class="breakdown-value" id="community-count">1,002</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div class="map-header">
+                    <h2 class="map-title">🌐 Global Activity Heat Map</h2>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--primary-green);"></div>
+                            <span>Active Clinics</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--primary-blue);"></div>
+                            <span>Research Centers</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--primary-orange);"></div>
+                            <span>Community Hubs</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="world-map"></div>
+            </div>
+        </div>
+
+        <div id="error-state" class="error-state hidden">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Unable to Load Dashboard</h3>
+            <p>There was an error connecting to the database. Please check your connection and try again.</p>
+            <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-blue); color: white; border: none; border-radius: 0.5rem; cursor: pointer;">
+                Retry
+            </button>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="last-updated-time">-</span>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script type="module">
+        'use strict';
+
+        // Initialize Parse
+        Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY");
+        Parse.serverURL = "https://parseapi.back4app.com/";
+
+        // Global activity data for heat map
+        const globalActivityData = [
+            // North America
+            { lat: 40.7128, lng: -74.0060, type: 'clinic', count: 5, location: 'New York, USA' },
+            { lat: 34.0522, lng: -118.2437, type: 'research', count: 3, location: 'Los Angeles, USA' },
+            { lat: 45.5017, lng: -73.5673, type: 'community', count: 8, location: 'Montreal, Canada' },
+            { lat: 19.4326, lng: -99.1332, type: 'clinic', count: 4, location: 'Mexico City, Mexico' },
+
+            // South America
+            { lat: -23.5505, lng: -46.6333, type: 'community', count: 12, location: 'São Paulo, Brazil' },
+            { lat: -34.6037, lng: -58.3816, type: 'research', count: 2, location: 'Buenos Aires, Argentina' },
+            { lat: -12.0464, lng: -77.0428, type: 'clinic', count: 6, location: 'Lima, Peru' },
+
+            // Europe
+            { lat: 51.5074, lng: -0.1278, type: 'research', count: 7, location: 'London, UK' },
+            { lat: 48.8566, lng: 2.3522, type: 'clinic', count: 3, location: 'Paris, France' },
+            { lat: 52.5200, lng: 13.4050, type: 'community', count: 9, location: 'Berlin, Germany' },
+            { lat: 41.9028, lng: 12.4964, type: 'clinic', count: 2, location: 'Rome, Italy' },
+            { lat: 59.3293, lng: 18.0686, type: 'research', count: 4, location: 'Stockholm, Sweden' },
+
+            // Africa
+            { lat: -26.2041, lng: 28.0473, type: 'community', count: 15, location: 'Johannesburg, South Africa' },
+            { lat: 30.0444, lng: 31.2357, type: 'clinic', count: 8, location: 'Cairo, Egypt' },
+            { lat: -1.2921, lng: 36.8219, type: 'clinic', count: 11, location: 'Nairobi, Kenya' },
+            { lat: 6.5244, lng: 3.3792, type: 'community', count: 13, location: 'Lagos, Nigeria' },
+            { lat: -33.9249, lng: 18.4241, type: 'research', count: 3, location: 'Cape Town, South Africa' },
+
+            // Asia
+            { lat: 35.6762, lng: 139.6503, type: 'research', count: 6, location: 'Tokyo, Japan' },
+            { lat: 39.9042, lng: 116.4074, type: 'clinic', count: 9, location: 'Beijing, China' },
+            { lat: 28.6139, lng: 77.2090, type: 'community', count: 18, location: 'New Delhi, India' },
+            { lat: 19.0760, lng: 72.8777, type: 'clinic', count: 14, location: 'Mumbai, India' },
+            { lat: 1.3521, lng: 103.8198, type: 'research', count: 4, location: 'Singapore' },
+            { lat: 13.7563, lng: 100.5018, type: 'community', count: 7, location: 'Bangkok, Thailand' },
+            { lat: -6.2088, lng: 106.8456, type: 'clinic', count: 10, location: 'Jakarta, Indonesia' },
+
+            // Oceania
+            { lat: -33.8688, lng: 151.2093, type: 'research', count: 5, location: 'Sydney, Australia' },
+            { lat: -37.8136, lng: 144.9631, type: 'community', count: 6, location: 'Melbourne, Australia' },
+            { lat: -36.8485, lng: 174.7633, type: 'clinic', count: 3, location: 'Auckland, New Zealand' }
+        ];
+
+        class ApproDashboard {
+            constructor() {
+                this.data = {
+                    videos: 0,
+                    areas: 0,
+                    subcategories: 0,
+                    tags: 0
+                };
+                this.init();
+            }
+
+            async init() {
+                try {
+                    await this.loadDashboardData();
+                    this.renderDashboard();
+                    this.createWorldMap();
+                    document.getElementById('last-updated-time').textContent = new Date().toLocaleString();
+                } catch (error) {
+                    console.error('Dashboard initialization failed:', error);
+                    this.showErrorState();
+                }
+            }
+
+            async loadDashboardData() {
+                try {
+                    // Load real data from Parse
+                    const [areas, subcategories, videos, tags] = await Promise.all([
+                        this.getAreas(),
+                        this.getSubcategories(),
+                        this.getVideos(),
+                        this.getTags()
+                    ]);
+
+                    this.data = {
+                        areas: areas.length,
+                        subcategories: subcategories.length,
+                        videos: videos.length,
+                        tags: tags.length,
+                        videoDetails: videos
+                    };
+
+                } catch (error) {
+                    console.warn('Parse data loading failed, using demo data:', error);
+                    // Fallback to demo data
+                    this.data = {
+                        areas: 6,
+                        subcategories: 24,
+                        videos: 42,
+                        tags: 156,
+                        videoDetails: []
+                    };
+                }
+            }
+
+            async getAreas() {
+                const AreaClass = Parse.Object.extend("Area");
+                const query = new Parse.Query(AreaClass);
+                return await query.find();
+            }
+
+            async getSubcategories() {
+                const SubcategoryClass = Parse.Object.extend("Subcategory");
+                const query = new Parse.Query(SubcategoryClass);
+                return await query.find();
+            }
+
+            async getVideos() {
+                const VideoClass = Parse.Object.extend("Video");
+                const query = new Parse.Query(VideoClass);
+                query.limit(1000); // Get up to 1000 videos
+                return await query.find();
+            }
+
+            async getTags() {
+                const TagClass = Parse.Object.extend("Tag");
+                const query = new Parse.Query(TagClass);
+                return await query.find();
+            }
+
+            renderDashboard() {
+                // Hide loading, show content
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
+
+                // Update video stats
+                document.getElementById('videos-count').textContent = this.data.videos.toLocaleString();
+                
+                // Calculate video breakdown
+                const youtubeVideos = this.data.videoDetails.filter(v => v.get('youtubeId')).length;
+                const localVideos = this.data.videos - youtubeVideos;
+                const estimatedHours = Math.round(this.data.videos * 8.5); // Assume 8.5 min average
+
+                document.getElementById('youtube-videos').textContent = youtubeVideos;
+                document.getElementById('local-videos').textContent = localVideos;
+                document.getElementById('total-hours').textContent = `${estimatedHours}h`;
+
+                // Update resource stats
+                document.getElementById('resources-count').textContent = this.data.videos + this.data.areas + this.data.subcategories;
+                document.getElementById('areas-count').textContent = this.data.areas;
+                document.getElementById('subcategories-count').textContent = this.data.subcategories;
+                document.getElementById('tags-count').textContent = this.data.tags;
+
+                // Clinic and people stats are static for demo
+                // In a real app, these would come from Parse as well
+            }
+
+            createWorldMap() {
+                const width = document.getElementById('world-map').clientWidth;
+                const height = 500;
+
+                const svg = d3.select('#world-map')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height);
+
+                const projection = d3.geoNaturalEarth1()
+                    .scale(width / 6.5)
+                    .translate([width / 2, height / 2]);
+
+                const path = d3.geoPath().projection(projection);
+
+                // Load and render world map
+                d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+                    .then(world => {
+                        // Draw countries
+                        svg.append('g')
+                            .selectAll('path')
+                            .data(topojson.feature(world, world.objects.countries).features)
+                            .enter().append('path')
+                            .attr('class', 'country')
+                            .attr('d', path);
+
+                        // Add activity dots
+                        this.addActivityDots(svg, projection);
+                    })
+                    .catch(error => {
+                        console.error('Failed to load world map:', error);
+                        // Fallback: show activity dots without world map
+                        this.addActivityDots(svg, projection);
+                    });
+            }
+
+            addActivityDots(svg, projection) {
+                const colorMap = {
+                    clinic: 'var(--primary-green)',
+                    research: 'var(--primary-blue)',
+                    community: 'var(--primary-orange)'
+                };
+
+                const tooltip = d3.select('#tooltip');
+
+                svg.selectAll('.activity-dot')
+                    .data(globalActivityData)
+                    .enter().append('circle')
+                    .attr('class', 'activity-dot')
+                    .attr('cx', d => projection([d.lng, d.lat])[0])
+                    .attr('cy', d => projection([d.lng, d.lat])[1])
+                    .attr('r', d => Math.sqrt(d.count) * 2 + 3)
+                    .style('fill', d => colorMap[d.type])
+                    .style('opacity', 0.8)
+                    .style('stroke', 'white')
+                    .style('stroke-width', 2)
+                    .on('mouseover', function(event, d) {
+                        d3.select(this).style('opacity', 1);
+                        tooltip
+                            .style('opacity', 1)
+                            .html(`
+                                <strong>${d.location}</strong><br>
+                                Type: ${d.type.charAt(0).toUpperCase() + d.type.slice(1)}<br>
+                                Activity: ${d.count} ${d.type === 'clinic' ? 'clinics' : d.type === 'research' ? 'centers' : 'hubs'}
+                            `)
+                            .style('left', (event.pageX + 10) + 'px')
+                            .style('top', (event.pageY - 10) + 'px');
+                    })
+                    .on('mouseout', function() {
+                        d3.select(this).style('opacity', 0.8);
+                        tooltip.style('opacity', 0);
+                    });
+
+                // Add pulsing animation to some dots
+                svg.selectAll('.activity-dot')
+                    .filter((d, i) => i % 3 === 0) // Every third dot
+                    .append('animate')
+                    .attr('attributeName', 'r')
+                    .attr('values', function() {
+                        const baseRadius = d3.select(this.parentNode).attr('r');
+                        return `${baseRadius};${baseRadius * 1.5};${baseRadius}`;
+                    })
+                    .attr('dur', '2s')
+                    .attr('repeatCount', 'indefinite');
+            }
+
+            showErrorState() {
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('error-state').classList.remove('hidden');
+            }
+        }
+
+        // Utility to add hidden class
+        const style = document.createElement('style');
+        style.textContent = '.hidden { display: none !important; }';
+        document.head.appendChild(style);
+
+        // Initialize dashboard when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ApproDashboard();
+        });
+
+        // Handle window resize for map
+        window.addEventListener('resize', () => {
+            // Debounce resize
+            clearTimeout(window.resizeTimeout);
+            window.resizeTimeout = setTimeout(() => {
+                const mapElement = document.getElementById('world-map');
+                if (mapElement && mapElement.querySelector('svg')) {
+                    // Clear existing map and recreate
+                    mapElement.innerHTML = '';
+                    const dashboard = new ApproDashboard();
+                    dashboard.createWorldMap();
+                }
+            }, 300);
+        });
+
+    </script>
+</body>
+</html>
