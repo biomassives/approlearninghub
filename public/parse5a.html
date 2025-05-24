@@ -3,36 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appro Learning Hub - Complete</title>
-    <!--
-      Content Security Policy:
-      - default-src 'self': Allows content from the same origin.
-      - script-src:
-        - 'self': Scripts from the same origin.
-        - 'unsafe-inline': Allows inline scripts (used for the main app script). Consider moving to external file for stricter CSP.
-        - https://cdn.jsdelivr.net, https://unpkg.com, https://cdnjs.cloudflare.com: Allows scripts from these CDNs (Parse, potentially other libraries, FontAwesome).
-      - style-src:
-        - 'self': Stylesheets from the same origin.
-        - 'unsafe-inline': Allows inline styles (used for the main <style> block and dynamic styles on video icons). Consider moving all styles to external files.
-        - https://fonts.googleapis.com, https://cdnjs.cloudflare.com: Allows stylesheets from these CDNs (Google Fonts, FontAwesome).
-      - font-src:
-        - 'self': Fonts from the same origin.
-        - https://fonts.gstatic.com, https://cdnjs.cloudflare.com: Allows fonts from Google Fonts and FontAwesome CDN.
-      - img-src:
-        - 'self': Images from the same origin.
-        - data:: Allows data URIs for images (e.g., inline SVGs if they were base64).
-        - https:: Allows images from any HTTPS source (consider restricting if possible).
-      - connect-src:
-        - 'self': API calls to the same origin.
-        - https://hub.approvideo.org, https://parseapi.back4app.com: Allows API calls to these specific domains (Parse server).
-    -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <title>Appro Learning Hub - Enhanced</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: https://img.youtube.com; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com; frame-src https://www.youtube.com https://youtube.com;">
     <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+          crossorigin="anonymous">
 
     <style>
-        /* Global styles and CSS variables */
         :root {
             --primary-green: #10b981;
             --primary-blue: #3b82f6;
@@ -42,6 +21,7 @@
             --gray-800: #1f2937;
             --text-color: #111827;
             --bg-color: white;
+            --modal-backdrop: rgba(0, 0, 0, 0.75);
         }
 
         * { box-sizing: border-box; }
@@ -60,6 +40,57 @@
             padding: 0 1rem;
         }
 
+        /* Enhanced Header with Search */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .search-section {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
         /* Button styles */
         .btn {
             padding: 0.5rem 1rem;
@@ -72,12 +103,10 @@
             align-items: center;
             justify-content: center;
             font-size: 0.9rem;
+            text-decoration: none;
         }
 
-        .btn-green {
-            background-color: var(--primary-green);
-            color: white;
-        }
+        .btn-green { background-color: var(--primary-green); color: white; }
         .btn-green:hover:not(:disabled) { background-color: #059669; }
         .btn-blue { background-color: var(--primary-blue); color: white; }
         .btn-blue:hover:not(:disabled) { background-color: #2563eb; }
@@ -87,116 +116,307 @@
         .btn-secondary:hover:not(:disabled) { background-color: #d1d5db; }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Area and Subcategory item styles */
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: 50%;
+            min-width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        /* Area and Subcategory styles */
         .area-item {
             background-color: white;
             border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            padding: 1.5rem; /* Increased padding */
-            margin-bottom: 1.5rem; /* Increased margin */
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .area-item:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .area-header {
             display: flex;
             align-items: center;
-            margin-bottom: 0.5rem; /* Space between icon/title and buttons */
+            margin-bottom: 1rem;
         }
 
         .area-icon {
-            width: 28px; /* Slightly larger icon */
-            height: 28px;
-            margin-right: 0.75rem; /* Increased space */
+            width: 32px;
+            height: 32px;
+            margin-right: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-blue); /* Default icon color */
+            color: var(--primary-blue);
+            background: #f0f9ff;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
         }
-        .area-icon svg { /* Ensure SVG scales well */
+
+        .area-icon svg {
             width: 100%;
             height: 100%;
         }
-        .area-icon i { /* For FontAwesome icons */
-            font-size: 1.5em; /* Adjust if needed */
-        }
 
+        .area-icon i {
+            font-size: 1.2em;
+        }
 
         .subcategory-item {
-            background-color: #f9fafb;
+            background: linear-gradient(135deg, #f9fafb, #ffffff);
             border: 1px solid #e5e7eb;
-            border-radius: 0.25rem;
-            padding: 1rem; /* Increased padding */
-            margin: 0.75rem 0; /* Increased margin */
-            transition: background-color 0.15s ease;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 0.75rem 0;
+            transition: all 0.15s ease;
+            position: relative;
         }
-        .subcategory-item:hover { background-color: #f3f4f6; }
 
+        .subcategory-item:hover {
+            background: linear-gradient(135deg, #f3f4f6, #ffffff);
+            border-color: var(--primary-blue);
+        }
+
+        .subcategory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .subcategory-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .stat-badge {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 500;
+        }
+
+        /* Enhanced subcategory details */
         .subcategory-details {
             font-size: 0.9em;
             color: #555;
-            margin-top: 0.75rem; /* Increased space */
-            padding-left: 0.5rem; /* Slight indent */
-            border-left: 2px solid #e0e0e0; /* Visual separator */
+            margin-top: 0.75rem;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.02);
+            border-radius: 0.5rem;
+            border-left: 3px solid var(--primary-blue);
         }
-        .subcategory-details p { margin-bottom: 0.5rem; }
-        .subcategory-details strong { color: #333; font-weight: 600; }
+
+        .detail-section {
+            margin-bottom: 1rem;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
         .tags-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.35rem; /* Increased gap */
+            gap: 0.35rem;
             padding: 0;
             list-style: none;
-            margin-top: 0.25rem;
+            margin: 0.5rem 0;
         }
+
         .tags-list li {
-            background-color: #e0e7ff; /* Lighter blue for tags */
-            color: #3730a3; /* Darker blue text for tags */
-            padding: 0.2rem 0.5rem; /* Slightly more padding */
-            border-radius: 1rem; /* Pill shape */
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            color: #3730a3;
+            padding: 0.25rem 0.6rem;
+            border-radius: 1rem;
             font-size: 0.75em;
             font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .videos-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 0.25rem;
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
         }
-        .videos-list li {
-            margin-bottom: 0.35rem;
-            font-size: 0.85em;
+
+        .video-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 120px;
+            background: #f3f4f6;
+            border-radius: 0.375rem;
             display: flex;
             align-items: center;
-        }
-        .videos-list .video-icon {
-            margin-right: 0.5rem; /* More space for video icon */
-            min-width: 16px; /* Ensure icon space */
-        }
-        .videos-list .video-icon i {
-             font-size: 1em;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
 
+        .video-thumbnail::after {
+            content: '▶';
+            position: absolute;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-title {
+            font-weight: 600;
+            color: #111827;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .materials-list, .steps-list {
+            background: #f9fafb;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .materials-list ul, .steps-list ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .materials-list li, .steps-list li {
+            margin-bottom: 0.25rem;
+            font-size: 0.85em;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: var(--modal-backdrop);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 1.5rem 1.5rem 0 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
+            transition: border-color 0.15s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* YouTube Player Modal */
+        .video-modal-content {
+            width: 90vw;
+            max-width: 1000px;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 400px;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
 
         /* Inline editing */
         .inline-edit-field {
             padding: 0.25rem 0.5rem;
-            border: 1px solid #d1d5db;
+            border: 2px solid var(--primary-blue);
             border-radius: 0.25rem;
             background-color: white;
-            width: calc(100% - 40px); /* Adjust if needed */
-            font-size: inherit; /* Inherit font size from parent */
-        }
-        .is-editing {
-            outline: 2px solid var(--primary-blue);
-            outline-offset: 2px;
-            padding: 2px; /* Add some padding so outline doesn't cut into text */
-        }
-        .area-name.is-editing, .subcategory-name.is-editing {
-            display: inline-block; /* Prevents layout shift for block elements */
-            width: auto; /* Allow it to size to content */
+            font-size: inherit;
+            width: 100%;
         }
 
+        .is-editing {
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+        }
 
         /* Utility classes */
         .flex { display: flex; }
@@ -214,7 +434,6 @@
         .text-2xl { font-size: 1.5rem; }
         .text-xl { font-size: 1.25rem; }
         .text-lg { font-size: 1.125rem; }
-        .text-md { font-size: 1rem; }
         .font-bold { font-weight: 700; }
         .font-semibold { font-weight: 600; }
         .text-gray-500 { color: #6b7280; }
@@ -224,49 +443,308 @@
             position: fixed;
             top: 1rem;
             right: 1rem;
-            z-index: 1000;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            max-width: 22rem; /* Slightly wider */
+            z-index: 1100;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-width: 24rem;
             animation: slideIn 0.3s ease-out;
             font-size: 0.9rem;
+            backdrop-filter: blur(10px);
         }
-        .notification.success { background-color: #dcfce7; border: 1px solid #16a34a; color: #15803d; }
-        .notification.error   { background-color: #fee2e2; border: 1px solid #dc2626; color: #b91c1c; }
-        .notification.warning { background-color: #fef3c7; border: 1px solid #f59e0b; color: #d97706; }
-        .notification.info    { background-color: #e0f2fe; border: 1px solid #0ea5e9; color: #0369a1; }
+
+        .notification.success { background: linear-gradient(135deg, #dcfce7, #bbf7d0); border: 1px solid #16a34a; color: #15803d; }
+        .notification.error { background: linear-gradient(135deg, #fee2e2, #fecaca); border: 1px solid #dc2626; color: #b91c1c; }
+        .notification.warning { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; color: #d97706; }
+        .notification.info { background: linear-gradient(135deg, #e0f2fe, #bae6fd); border: 1px solid #0ea5e9; color: #0369a1; }
 
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(100%); }
             to { opacity: 1; transform: translateX(0); }
         }
 
+        /* Loading and error states */
         .loading, .error-message {
             text-align: center;
             color: #6b7280;
-            padding: 2rem;
+            padding: 3rem;
             font-size: 1.1rem;
         }
+
         .error-message { color: var(--danger-red); }
+
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container { padding: 0 0.5rem; }
+            .header-content { flex-direction: column; text-align: center; }
+            .search-section { max-width: 100%; }
+            .form-row { grid-template-columns: 1fr; }
+            .videos-grid { grid-template-columns: 1fr; }
+            .modal-content { margin: 1rem; }
+            .video-player { height: 250px; }
+        }
+
+        /* Import/Export styles */
+        .import-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .import-area.dragover {
+            border-color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .import-area input[type="file"] {
+            display: none;
+        }
+
+        .drag-text {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        /* Collapsible sections */
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0.25rem;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.open {
+            max-height: 2000px;
+        }
+
+        .chevron {
+            transition: transform 0.2s ease;
+        }
+
+        .chevron.rotated {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 
 <body>
-    <div class="container py-8">
-        <header class="text-center mb-8">
-            <h1 class="text-2xl font-bold">Appro Learning Hub - Taxonomy Management</h1>
-        </header>
+    <!-- Enhanced Header -->
+    <header class="app-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1><i class="fas fa-graduation-cap"></i> Appro Learning Hub</h1>
+                    <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Enhanced Taxonomy Management</p>
+                </div>
+                
+                <div class="search-section">
+                    <div style="position: relative;">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" id="globalSearch" 
+                               placeholder="Search areas, subcategories, videos...">
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-icon btn-secondary" id="importBtn" title="Import Data">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <button class="btn btn-icon btn-secondary" id="exportBtn" title="Export Data">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn btn-green" id="add-area-btn">
+                        <i class="fas fa-plus"></i> Add Area
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
+    <div class="container py-8">
+        <!-- Quick Stats -->
+        <div class="mb-6" id="quickStats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <!-- Main Content -->
         <div class="mb-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold">Areas & Subcategories</h2>
-                <button class="btn btn-green" id="add-area-btn">
-                    <i class="fas fa-plus" style="margin-right: 0.5em;"></i> Add Area
+            <div id="areas-container" class="space-y-4">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Loading areas...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content video-modal-content">
+            <div class="modal-header">
+                <h3 id="videoModalTitle">Video Player</h3>
+                <button class="btn btn-icon btn-secondary" id="closeVideoModal">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="areas-container" class="space-y-4">
-                <div class="loading">Loading areas...</div>
+            <div class="modal-body">
+                <div id="videoPlayerContainer"></div>
+                <div id="videoDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Editor Modal -->
+    <div id="contentModal" class="modal">
+        <div class="modal-content" style="width: 90vw; max-width: 800px;">
+            <div class="modal-header">
+                <h3 id="contentModalTitle">Edit Content</h3>
+                <button class="btn btn-icon btn-secondary" id="closeContentModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="contentForm">
+                    <div class="form-group">
+                        <label class="form-label">Subcategory Name</label>
+                        <input type="text" class="form-input" id="editName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="editDescription" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tags (comma-separated)</label>
+                        <input type="text" class="form-input" id="editTags" 
+                               placeholder="solar, DIY, sustainable, energy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Context</label>
+                        <textarea class="form-textarea" id="editContext" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Materials (one per line)</label>
+                        <textarea class="form-textarea" id="editMaterials" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Process Steps (one per line)</label>
+                        <textarea class="form-textarea" id="editSteps" rows="6"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                        <button type="button" class="btn btn-secondary" id="cancelContentEdit">Cancel</button>
+                        <button type="submit" class="btn btn-green">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Add Modal -->
+    <div id="videoAddModal" class="modal">
+        <div class="modal-content" style="width: 90vw; max-width: 600px;">
+            <div class="modal-header">
+                <h3>Add Video</h3>
+                <button class="btn btn-icon btn-secondary" id="closeVideoAddModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="videoForm">
+                    <div class="form-group">
+                        <label class="form-label">Video Title</label>
+                        <input type="text" class="form-input" id="videoTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">YouTube URL</label>
+                        <input type="url" class="form-input" id="videoUrl" 
+                               placeholder="https://www.youtube.com/watch?v=..." required>
+                        <div id="urlPreview" style="margin-top: 0.5rem; font-size: 0.85rem; color: #6b7280;"></div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Icon Class</label>
+                            <input type="text" class="form-input" id="videoIcon" 
+                                   placeholder="fas fa-play-circle">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Color</label>
+                            <input type="color" class="form-input" id="videoColor" value="#3b82f6">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                        <button type="button" class="btn btn-secondary" id="cancelVideoAdd">Cancel</button>
+                        <button type="submit" class="btn btn-green">Add Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content" style="width: 90vw; max-width: 600px;">
+            <div class="modal-header">
+                <h3>Import Data</h3>
+                <button class="btn btn-icon btn-secondary" id="closeImportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-area" id="importArea">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #6b7280; margin-bottom: 1rem;"></i>
+                    <div class="drag-text">
+                        <p><strong>Drag & drop</strong> your JSON file here</p>
+                        <p>or</p>
+                    </div>
+                    <input type="file" id="fileInput" accept=".json">
+                    <button class="btn btn-blue" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                </div>
+                <div id="importPreview" class="hidden" style="margin-top: 1rem;">
+                    <h4>Import Preview:</h4>
+                    <div id="importSummary" style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem;"></div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
+                        <button class="btn btn-secondary" id="cancelImport">Cancel</button>
+                        <button class="btn btn-green" id="confirmImport">Import Data</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -275,9 +753,22 @@
         'use strict';
 
         // Initialize Parse
-        // IMPORTANT: Replace with your actual Parse App ID and JavaScript Key
         Parse.initialize("UfzsgyKHmk2QWYMomGU0rBwwFNF0WZHHGLg3jMwo", "4uKq0LmOdKIDD9d2LvGhRSRgpZNNPBo1ciXdFJqY");
         Parse.serverURL = "https://parseapi.back4app.com/";
+
+        // Security utilities
+        function sanitizeInput(input) {
+            if (typeof input !== 'string') return input;
+            const div = document.createElement('div');
+            div.textContent = input;
+            return div.innerHTML;
+        }
+
+        function extractYouTubeId(url) {
+            const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
 
         class ParseDataLayer {
             constructor() {
@@ -288,10 +779,67 @@
                 if (!localStorage.getItem('areas_cache')) {
                     const seedData = [
                         {
+                            id: 'area_energy_01',
+                            name: "Energy",
+                            icon_fa: "fa-solar-panel",
+                            featherIcon: "zap",
+                            svgString: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M224,224H182.94l-6.3-44.12,3.24,1.91a16,16,0,0,0,21.91-5.67l12-20.34a16,16,0,0,0-5.67-21.91l-35-20.61,40.69-69.13a16,16,0,0,0-5.67-21.91l-20.34-12a16,16,0,0,0-21.91,5.67l-20.61,35L76.12,10.22a16,16,0,0,0-21.91,5.67l-12,20.33a16,16,0,0,0,5.67,21.92l35,20.61L42.21,147.88a16,16,0,0,0,5.67,21.91l20.34,12a15.57,15.57,0,0,0,10.58,2L73.06,224H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16Zm-24-76.34L188,168l-69.13-40.69,12-20.35ZM179.66,24,200,36l-40.69,69.14L139,93.17ZM56,44.35,68,24,137.14,64.7l-12,20.35ZM76.34,168,56,156,96.69,86.86l20.36,12Zm12.88,56L98,162.8l12.77-21.7L159,169.5l7.79,54.5Z"></path></svg>`,
+                            created_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString(),
+                            subcategories: [
+                                {
+                                    id: "energy-0",
+                                    area_id: 'area_energy_01',
+                                    name: "Solar Cookers",
+                                    description: "Effective basic box cooker design for outdoor cooking using solar energy. A sustainable cooking solution for off-grid locations.",
+                                    tags: ["solar cooker", "DIY", "cooking technology", "off-grid", "passive solar", "solar thermal", "appropriate technology", "fuel efficiency"],
+                                    context: "Utilizes direct sunlight for cooking without fuel, reducing environmental impact and providing cooking solutions in areas with limited energy access.",
+                                    materials: ["Cardboard Boxes (inner and outer)", "Insulation (newspaper, straw, wool)", "Reflective Material (aluminum foil, mirrors)", "Glass/Oven Bag (transparent cover)", "Black Paint (heat absorption)", "Dark, Lidded Pot", "Glue/Tape"],
+                                    processSteps: ["1. Construct Insulated Box: Create double-walled box with insulation between walls", "2. Line Inner Box: Paint interior black and line with reflective material", "3. Create Transparent Lid: Install glass or clear plastic cover", "4. Paint Pot Black: Prepare dark cooking vessel for heat absorption", "5. Position Cooker: Angle toward sun for maximum exposure", "6. Place Pot Inside: Add food and monitor cooking progress"],
+                                    videos: [
+                                        { 
+                                            youtubeId: "JehP4xlF4gI", 
+                                            title: "DIY Solar Box Cooker Construction", 
+                                            icon_tag_fa: "fas fa-sun", 
+                                            color_tag: "#f59e0b" 
+                                        },
+                                        { 
+                                            youtubeId: "gNqkEGpv0vg", 
+                                            title: "Advanced Solar Cooker Designs", 
+                                            icon_tag_fa: "fas fa-fire", 
+                                            color_tag: "#ef4444" 
+                                        }
+                                    ],
+                                    created_at: new Date().toISOString(),
+                                    updated_at: new Date().toISOString()
+                                },
+                                {
+                                    id: "energy-1",
+                                    area_id: 'area_energy_01',
+                                    name: "Biogas",
+                                    description: "A comprehensive guide to building and operating biogas digesters for renewable methane production from organic waste.",
+                                    tags: ["biogas", "anaerobic digestion", "renewable energy", "waste to energy", "methane", "digester construction", "DIY energy"],
+                                    context: "Converts organic waste into clean-burning methane gas while producing valuable liquid fertilizer as a byproduct.",
+                                    materials: ["Digester Tank (IBC tote or custom-built)", "PVC Pipes (various diameters)", "Gas Collection System", "Water Seals", "Organic Feedstock", "pH Testing Kit"],
+                                    processSteps: ["1. Site Selection: Choose level ground near waste source", "2. Tank Preparation: Install inlet and outlet pipes", "3. Gas Collection: Set up gasholder and safety valves", "4. Initial Loading: Add inoculum and feedstock", "5. Daily Feeding: Maintain consistent feeding schedule", "6. Gas Utilization: Connect to stove or other appliances"],
+                                    videos: [
+                                        { 
+                                            youtubeId: "HWypVv1dzJQ", 
+                                            title: "Biogas Digester Construction Guide", 
+                                            icon_tag_fa: "fas fa-industry", 
+                                            color_tag: "#10b981" 
+                                        }
+                                    ],
+                                    created_at: new Date().toISOString(),
+                                    updated_at: new Date().toISOString()
+                                }
+                            ]
+                        },
+                        {
                             id: 'area_waste_01',
                             name: "Waste",
                             icon_fa: "fa-recycle",
-                            featherIcon: "trash-2", // Feather icons would need a library like feathericons.com
+                            featherIcon: "trash-2",
                             svgString: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path></svg>`,
                             created_at: new Date().toISOString(),
                             updated_at: new Date().toISOString(),
@@ -300,87 +848,49 @@
                                     id: "waste-0",
                                     area_id: 'area_waste_01',
                                     name: "Composting",
-                                    description: "Learn how to convert organic waste into nutrient-rich soil that can be used to improve gardens and reduce landfill contributions. This section covers various methods suitable for different scales and types of organic materials.",
-                                    tags: ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting", "hot composting", "cold composting", "bokashi", "mycelium", "nutrient cycling"],
-                                    context: "Transforms kitchen scraps and yard waste into a valuable soil amendment, diverting it from landfills and enriching garden ecosystems.",
-                                    materials: ["Organic 'Greens' (fruit/veg scraps, coffee grounds, grass clippings)", "Organic 'Browns' (dry leaves, twigs, cardboard, paper)", "Compost Bin/Container (various types available or DIY)", "Water Source (for moisture)", "Turning Tool (fork, shovel, or specialized aerator)", "(Optional: worms for vermicomposting, inoculants)"],
-                                    processSteps: ["1. Choose Method & Location: Select a composting method (e.g., bin, pile, vermicompost) and a suitable, accessible spot.", "2. Collect & Chop Materials: Gather appropriate green and brown materials. Chop larger items to speed up decomposition.", "3. Layer Greens & Browns: Aim for a ratio of roughly 2:1 or 3:1 browns to greens. Alternate layers or mix them.", "4. Maintain Moisture: Keep the pile moist like a wrung-out sponge. Add water if too dry.", "5. Aerate/Turn Regularly: Turn the pile every 1-2 weeks to provide oxygen, mix materials, and distribute heat.", "6. Harvest & Use: Compost is ready when dark, crumbly, and earthy-smelling (few weeks to months). Sift if needed and apply to garden."],
+                                    description: "Transform organic waste into nutrient-rich soil amendment through controlled decomposition processes.",
+                                    tags: ["composting", "organic waste", "soil improvement", "sustainability", "fertilizer", "vermicomposting"],
+                                    context: "Converts kitchen scraps and yard waste into valuable soil amendment while reducing landfill contributions.",
+                                    materials: ["Organic 'Greens' (kitchen scraps)", "Organic 'Browns' (dry leaves, paper)", "Compost Bin", "Water Source", "Turning Tool"],
+                                    processSteps: ["1. Choose composting method and location", "2. Collect and prepare materials", "3. Layer greens and browns in proper ratio", "4. Maintain proper moisture levels", "5. Turn regularly for aeration", "6. Harvest finished compost"],
                                     videos: [
-                                        { youtubeId: "JehP4xlF4gI", title: "Making Compost: Homemade Worm Farm Compost System | Vermicompost", icon_tag_fa: "fas fa-seedling", color_tag: "#84cc16" },
-                                        { youtubeId: "gNqkEGpv0vg", title: "Urban Balcony Composting With Worms", icon_tag_fa: "fas fa-worm", color_tag: "#a16207" },
-                                        { youtubeId: "HWypVv1dzJQ", title: "Hot Composting Technique for Fast Results", icon_tag_fa: "fas fa-temperature-high", color_tag: "#f97316" }
-                                    ],
-                                    created_at: new Date().toISOString(),
-                                    updated_at: new Date().toISOString()
-                                },
-                                {
-                                    id: "waste-1",
-                                    area_id: 'area_waste_01',
-                                    name: "Recycling",
-                                    description: "Set up community or household recycling systems to effectively sort and process recyclable materials, reducing waste and promoting a circular economy. Learn about different material types and best practices.",
-                                    tags: ["recycling", "waste sorting", "materials recovery", "circular economy", "community action", "plastic recycling", "paper recycling", "metal recycling", "glass recycling", "waste management"],
-                                    context: "Organizes the collection and separation of materials like paper, plastic, glass, and metal for reprocessing into new products.",
-                                    materials: ["Designated Bins/Containers (for different material types)", "Signage/Labels (clear instructions for sorting)", "Collection Bags/Carts", "Basic Cleaning Supplies (for rinsing containers)", "(Community: Central collection point, baler, transport)"],
-                                    processSteps: ["1. Identify Accepted Materials: Check local guidelines for what's recyclable in your area.", "2. Set Up Sorting Stations: Provide clearly labeled bins for each material type at home or in the community.", "3. Rinse/Clean Recyclables: Remove food residue from containers to prevent contamination.", "4. Store Sorted Materials: Keep sorted materials separate and dry until collection or drop-off.", "5. Coordinate Collection/Drop-off: Understand local schedules or find nearby recycling centers.", "6. Educate Participants: Ensure everyone involved knows how to sort correctly and the importance of recycling."],
-                                    videos: [
-                                         { youtubeId: "IsTnQ9U5wN8", title: "Setting Up a Community Recycling Station", icon_tag_fa: "fas fa-users", color_tag: "#6366f1" },
-                                         { youtubeId: "kUR6_bQLU-E", title: "DIY Plastic Processing for Reuse", icon_tag_fa: "fas fa-cogs", color_tag: "#6b7280" },
-                                         { youtubeId: "Gq7L9-0XdVw", title: "Paper Recycling and Homemade Paper Making", icon_tag_fa: "fas fa-newspaper", color_tag: "#a8a29e" }
+                                        { 
+                                            youtubeId: "JehP4xlF4gI", 
+                                            title: "Vermicomposting Setup Guide", 
+                                            icon_tag_fa: "fas fa-seedling", 
+                                            color_tag: "#84cc16" 
+                                        }
                                     ],
                                     created_at: new Date().toISOString(),
                                     updated_at: new Date().toISOString()
                                 }
-                                // ... (Add other subcategories from your JSON here if needed)
                             ]
                         }
-                        // ... (Add other areas from your JSON here if needed)
                     ];
                     localStorage.setItem('areas_cache', JSON.stringify(seedData));
-                    // Subcategories are now embedded in areas for this local cache example.
-                    // If you had a separate subcategories_cache, you might clear or update it.
-                    // localStorage.removeItem('subcategories_cache');
                 }
             }
 
             async getAreas() {
-                // This method will primarily rely on the enriched local storage for demo purposes.
-                // Fetching and stitching this rich data from Parse would require careful schema design
-                // (e.g., using Relations or Pointers and including them in queries).
                 try {
                     const AreaClass = Parse.Object.extend("Area");
                     const query = new Parse.Query(AreaClass);
                     query.ascending("name");
-                    // Example if subcategories were a Relation named 'subcategoriesRelation':
-                    // query.include("subcategoriesRelation");
-
                     const results = await query.find();
 
                     if (results.length > 0) {
-                        const areas = results.map(area => {
-                            const areaData = {
-                                id: area.id,
-                                name: area.get('name'),
-                                icon_fa: area.get('icon_fa'),       // Ensure these fields exist in your Parse 'Area' class
-                                featherIcon: area.get('featherIcon'),
-                                svgString: area.get('svgString'),
-                                created_at: area.createdAt ? area.createdAt.toISOString() : new Date().toISOString(),
-                                updated_at: area.updatedAt ? area.updatedAt.toISOString() : new Date().toISOString(),
-                                subcategories: [] // This would be populated from the relation or a separate query
-                            };
-                            // Example for populating from a relation:
-                            // const relatedSubs = area.get('subcategoriesRelation');
-                            // if (relatedSubs) {
-                            //   areaData.subcategories = relatedSubs.map(sub => ({ id: sub.id, name: sub.get('name'), ... }));
-                            // }
-                            return areaData;
-                        });
-                        // Update cache with fresh data from Parse, but ensure it matches the rich structure
-                        // For this demo, we'll assume the fetched data isn't as rich as seed, so we might not overwrite
-                        // or we'd need a merge strategy.
-                        // localStorage.setItem('areas_cache', JSON.stringify(areas));
-                        return areas; // Return Parse data if available
+                        const areas = results.map(area => ({
+                            id: area.id,
+                            name: area.get('name'),
+                            icon_fa: area.get('icon_fa'),
+                            featherIcon: area.get('featherIcon'),
+                            svgString: area.get('svgString'),
+                            created_at: area.createdAt ? area.createdAt.toISOString() : new Date().toISOString(),
+                            updated_at: area.updatedAt ? area.updatedAt.toISOString() : new Date().toISOString(),
+                            subcategories: []
+                        }));
+                        return areas;
                     } else {
-                        // If Parse is empty or query returns no results, fall back to local cache (which has seed data)
                         console.warn('No areas found in Parse, using local cache.');
                         const cached = localStorage.getItem('areas_cache');
                         return cached ? JSON.parse(cached) : [];
@@ -393,21 +903,18 @@
             }
 
             async createArea(name) {
-                // This simplified version only saves the name.
-                // To save rich data, you'd pass more parameters and set more fields.
                 try {
                     const AreaClass = Parse.Object.extend("Area");
                     const area = new AreaClass();
-                    area.set("name", name);
-                    // area.set("svgString", defaultSvg); // etc.
-
+                    area.set("name", sanitizeInput(name));
                     const result = await area.save();
+                    
                     const newArea = {
                         id: result.id,
                         name: result.get('name'),
                         created_at: result.createdAt.toISOString(),
                         updated_at: result.updatedAt.toISOString(),
-                        subcategories: [] // New areas start with no subcategories
+                        subcategories: []
                     };
 
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
@@ -418,7 +925,7 @@
                     console.warn('Parse save for Area failed, attempting local cache update:', error);
                     const newArea = {
                         id: 'area_local_' + Date.now(),
-                        name: name,
+                        name: sanitizeInput(name),
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
                         subcategories: []
@@ -431,16 +938,14 @@
             }
 
             async updateArea(id, name) {
-                // This simplified version only updates the name.
                 try {
                     const AreaClass = Parse.Object.extend("Area");
                     const query = new Parse.Query(AreaClass);
                     const area = await query.get(id);
-                    area.set("name", name);
-                    // area.set("svgString", newSvg); // etc.
-
+                    area.set("name", sanitizeInput(name));
                     const result = await area.save();
-                    const updatedAreaPartial = { // We only get back what was saved from Parse
+                    
+                    const updatedAreaPartial = {
                         id: result.id,
                         name: result.get('name'),
                         updated_at: result.updatedAt.toISOString()
@@ -449,18 +954,17 @@
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                     const index = cachedAreas.findIndex(a => a.id === id);
                     if (index !== -1) {
-                        // Merge updated fields with existing cached object to preserve subcategories etc.
-                        cachedAreas[index] = { ...cachedAreas[index], ...updatedAreaPartial, name: name };
+                        cachedAreas[index] = { ...cachedAreas[index], ...updatedAreaPartial, name: sanitizeInput(name) };
                         localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
                         return cachedAreas[index];
                     }
-                    return updatedAreaPartial; // Should ideally not happen if ID was valid
+                    return updatedAreaPartial;
                 } catch (error) {
                     console.warn('Parse update for Area failed, attempting local cache update:', error);
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                     const index = cachedAreas.findIndex(a => a.id === id);
                     if (index !== -1) {
-                        cachedAreas[index].name = name;
+                        cachedAreas[index].name = sanitizeInput(name);
                         cachedAreas[index].updated_at = new Date().toISOString();
                         localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
                         return cachedAreas[index];
@@ -485,19 +989,13 @@
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                     const filtered = cachedAreas.filter(a => a.id !== id);
                     if (cachedAreas.length !== filtered.length) {
-                         localStorage.setItem('areas_cache', JSON.stringify(filtered));
-                         return true;
+                        localStorage.setItem('areas_cache', JSON.stringify(filtered));
+                        return true;
                     }
-                    // If Parse failed AND it wasn't in cache, it's an issue.
-                    // For robustness, we might still say true if the intent is removal.
-                    console.error('Area not found for deletion in Parse and not removed from cache.');
-                    return false; // Or true if we want to ensure UI updates regardless
+                    return false;
                 }
             }
 
-
-            // This method now primarily pulls subcategories from the cached area object.
-            // Fetching directly from Parse would require its own query and schema alignment.
             async getSubcategories(areaId) {
                 const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                 const area = cachedAreas.find(a => a.id === areaId);
@@ -505,29 +1003,20 @@
             }
 
             async createSubcategory(areaId, name) {
-                // This simplified version only saves the name and area_id.
-                // To save rich data, you'd pass more parameters.
                 try {
                     const SubcategoryClass = Parse.Object.extend("Subcategory");
                     const subcategory = new SubcategoryClass();
-                    subcategory.set("name", name);
-
-                    // Link to parent Area in Parse:
-                    // 1. If area_id is a string field storing the Area's objectId:
-                    subcategory.set("area_id_string_ref", areaId); // Adjust field name
-                    // 2. If using a Pointer:
-                    // const areaPointer = Parse.Object.extend("Area").createWithoutData(areaId);
-                    // subcategory.set("areaParent", areaPointer); // Adjust field name
-
+                    subcategory.set("name", sanitizeInput(name));
+                    subcategory.set("area_id_string_ref", areaId);
                     const result = await subcategory.save();
+                    
                     const newSub = {
                         id: result.id,
-                        area_id: areaId, // or result.get('areaParent')?.id
+                        area_id: areaId,
                         name: result.get('name'),
                         created_at: result.createdAt.toISOString(),
                         updated_at: result.updatedAt.toISOString(),
-                        // Initialize other rich fields as empty or default
-                        description: "", tags: [], videos: []
+                        description: "", tags: [], videos: [], materials: [], processSteps: [], context: ""
                     };
 
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
@@ -545,15 +1034,15 @@
                     const newSub = {
                         id: 'sub_local_' + Date.now(),
                         area_id: areaId,
-                        name: name,
+                        name: sanitizeInput(name),
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
-                        description: "", tags: [], videos: []
+                        description: "", tags: [], videos: [], materials: [], processSteps: [], context: ""
                     };
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                     const areaIndex = cachedAreas.findIndex(a => a.id === areaId);
                     if (areaIndex !== -1) {
-                         if (!cachedAreas[areaIndex].subcategories) {
+                        if (!cachedAreas[areaIndex].subcategories) {
                             cachedAreas[areaIndex].subcategories = [];
                         }
                         cachedAreas[areaIndex].subcategories.push(newSub);
@@ -563,42 +1052,39 @@
                 }
             }
 
-            async updateSubcategory(subcategoryId, name) {
-                 // This simplified version only updates the name.
+            async updateSubcategory(subcategoryId, updates) {
                 try {
                     const SubcategoryClass = Parse.Object.extend("Subcategory");
                     const query = new Parse.Query(SubcategoryClass);
                     const subcategory = await query.get(subcategoryId);
-                    subcategory.set("name", name);
-                    // subcategory.set("description", newDescription); // etc.
-
+                    
+                    Object.keys(updates).forEach(key => {
+                        subcategory.set(key, updates[key]);
+                    });
+                    
                     const result = await subcategory.save();
-                    const updatedSubPartial = {
-                        id: result.id,
-                        name: result.get('name'),
-                        updated_at: result.updatedAt.toISOString()
-                    };
-
+                    
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
                     for (let area of cachedAreas) {
                         if (area.subcategories) {
                             const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
                             if (subIndex !== -1) {
-                                area.subcategories[subIndex] = { ...area.subcategories[subIndex], ...updatedSubPartial, name: name };
+                                area.subcategories[subIndex] = { ...area.subcategories[subIndex], ...updates };
+                                area.subcategories[subIndex].updated_at = new Date().toISOString();
                                 localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
                                 return area.subcategories[subIndex];
                             }
                         }
                     }
-                    return updatedSubPartial; // Should ideally not happen
+                    return updates;
                 } catch (error) {
                     console.warn('Parse update for Subcategory failed, attempting local cache update:', error);
                     const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
-                     for (let area of cachedAreas) {
+                    for (let area of cachedAreas) {
                         if (area.subcategories) {
                             const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
                             if (subIndex !== -1) {
-                                area.subcategories[subIndex].name = name;
+                                area.subcategories[subIndex] = { ...area.subcategories[subIndex], ...updates };
                                 area.subcategories[subIndex].updated_at = new Date().toISOString();
                                 localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
                                 return area.subcategories[subIndex];
@@ -637,7 +1123,7 @@
                     let modified = false;
                     for (let area of cachedAreas) {
                         if (area.subcategories) {
-                             const originalLength = area.subcategories.length;
+                            const originalLength = area.subcategories.length;
                             area.subcategories = area.subcategories.filter(s => s.id !== subcategoryId);
                             if (area.subcategories.length !== originalLength) {
                                 modified = true;
@@ -648,36 +1134,223 @@
                         localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
                         return true;
                     }
-                    console.error('Subcategory not found for deletion in Parse and not removed from cache.');
                     return false;
                 }
+            }
+
+            async addVideoToSubcategory(subcategoryId, videoData) {
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                for (let area of cachedAreas) {
+                    if (area.subcategories) {
+                        const subIndex = area.subcategories.findIndex(s => s.id === subcategoryId);
+                        if (subIndex !== -1) {
+                            if (!area.subcategories[subIndex].videos) {
+                                area.subcategories[subIndex].videos = [];
+                            }
+                            area.subcategories[subIndex].videos.push(videoData);
+                            localStorage.setItem('areas_cache', JSON.stringify(cachedAreas));
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            // Bulk import functionality
+            async importAreas(areasData) {
+                try {
+                    localStorage.setItem('areas_cache', JSON.stringify(areasData));
+                    return true;
+                } catch (error) {
+                    console.error('Failed to import areas:', error);
+                    return false;
+                }
+            }
+
+            // Search functionality
+            searchContent(query) {
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                const results = [];
+                const searchTerm = query.toLowerCase();
+
+                cachedAreas.forEach(area => {
+                    // Search in area names
+                    if (area.name.toLowerCase().includes(searchTerm)) {
+                        results.push({ type: 'area', data: area });
+                    }
+
+                    // Search in subcategories
+                    if (area.subcategories) {
+                        area.subcategories.forEach(sub => {
+                            let matches = false;
+                            if (sub.name.toLowerCase().includes(searchTerm)) matches = true;
+                            if (sub.description && sub.description.toLowerCase().includes(searchTerm)) matches = true;
+                            if (sub.tags && sub.tags.some(tag => tag.toLowerCase().includes(searchTerm))) matches = true;
+                            if (sub.context && sub.context.toLowerCase().includes(searchTerm)) matches = true;
+
+                            // Search in videos
+                            if (sub.videos) {
+                                sub.videos.forEach(video => {
+                                    if (video.title.toLowerCase().includes(searchTerm)) {
+                                        results.push({ type: 'video', data: video, parent: { area: area.name, subcategory: sub.name } });
+                                    }
+                                });
+                            }
+
+                            if (matches) {
+                                results.push({ type: 'subcategory', data: sub, parent: area.name });
+                            }
+                        });
+                    }
+                });
+
+                return results;
             }
         }
 
         class TaxonomyApp {
             constructor() {
                 this.dataLayer = new ParseDataLayer();
+                this.currentEditingSubcategory = null;
+                this.currentAddVideoSubcategory = null;
+                this.searchTimeout = null;
                 this.init();
             }
 
             async init() {
                 this.setupEventListeners();
                 await this.loadAreas();
+                this.updateQuickStats();
             }
 
             setupEventListeners() {
+                // Main action buttons
                 document.getElementById('add-area-btn').addEventListener('click', () => {
                     this.createNewArea();
+                });
+
+                document.getElementById('exportBtn').addEventListener('click', () => {
+                    this.exportData();
+                });
+
+                document.getElementById('importBtn').addEventListener('click', () => {
+                    document.getElementById('importModal').classList.add('active');
+                });
+
+                // Search functionality
+                document.getElementById('globalSearch').addEventListener('input', (e) => {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.performSearch(e.target.value);
+                    }, 300);
+                });
+
+                // Modal event listeners
+                this.setupModalEventListeners();
+                this.setupImportEventListeners();
+            }
+
+            setupModalEventListeners() {
+                // Video modal
+                document.getElementById('closeVideoModal').addEventListener('click', () => {
+                    this.closeVideoModal();
+                });
+
+                // Content edit modal
+                document.getElementById('closeContentModal').addEventListener('click', () => {
+                    this.closeContentModal();
+                });
+
+                document.getElementById('cancelContentEdit').addEventListener('click', () => {
+                    this.closeContentModal();
+                });
+
+                document.getElementById('contentForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveContentChanges();
+                });
+
+                // Video add modal
+                document.getElementById('closeVideoAddModal').addEventListener('click', () => {
+                    this.closeVideoAddModal();
+                });
+
+                document.getElementById('cancelVideoAdd').addEventListener('click', () => {
+                    this.closeVideoAddModal();
+                });
+
+                document.getElementById('videoForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addVideo();
+                });
+
+                // YouTube URL preview
+                document.getElementById('videoUrl').addEventListener('input', (e) => {
+                    this.updateVideoUrlPreview(e.target.value);
+                });
+
+                // Close modals on backdrop click
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            setupImportEventListeners() {
+                const importModal = document.getElementById('importModal');
+                const importArea = document.getElementById('importArea');
+                const fileInput = document.getElementById('fileInput');
+
+                document.getElementById('closeImportModal').addEventListener('click', () => {
+                    importModal.classList.remove('active');
+                    this.resetImportModal();
+                });
+
+                document.getElementById('cancelImport').addEventListener('click', () => {
+                    this.resetImportModal();
+                });
+
+                document.getElementById('confirmImport').addEventListener('click', () => {
+                    this.confirmImport();
+                });
+
+                // Drag and drop
+                importArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    importArea.classList.add('dragover');
+                });
+
+                importArea.addEventListener('dragleave', () => {
+                    importArea.classList.remove('dragover');
+                });
+
+                importArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    importArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.handleFileSelect(files[0]);
+                    }
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.handleFileSelect(e.target.files[0]);
+                    }
                 });
             }
 
             async loadAreas() {
                 const container = document.getElementById('areas-container');
-                container.innerHTML = '<div class="loading">Loading areas...</div>';
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading areas...</div>';
 
                 try {
                     const areas = await this.dataLayer.getAreas();
-                    await this.renderAreas(areas); // renderAreas is now async due to getSubcategories
+                    await this.renderAreas(areas);
+                    this.updateQuickStats();
                 } catch (error) {
                     console.error("Error loading areas:", error);
                     container.innerHTML = `<div class="error-message">Error loading areas: ${error.message}</div>`;
@@ -689,13 +1362,13 @@
                 if (!areas || areas.length === 0) {
                     container.innerHTML = `
                         <div class="text-center py-8">
-                            <p class="text-gray-500">No areas yet. Click "Add Area" to create your first one.</p>
+                            <i class="fas fa-folder-open" style="font-size: 4rem; color: #d1d5db; margin-bottom: 1rem;"></i>
+                            <p class="text-gray-500 text-lg">No areas yet. Click "Add Area" to create your first one.</p>
                         </div>`;
                     return;
                 }
 
                 let htmlPromises = areas.map(async (area) => {
-                    // Subcategories are now expected to be part of the area object from getAreas (from cache)
                     const subcategories = area.subcategories || await this.dataLayer.getSubcategories(area.id);
                     return this.renderAreaItem(area, subcategories);
                 });
@@ -708,32 +1381,43 @@
             renderAreaItem(area, subcategories) {
                 const subcategoriesHtml = subcategories && subcategories.length > 0
                     ? subcategories.map(sub => this.renderSubcategoryItem(sub)).join('')
-                    : `<div class="text-center py-4 text-gray-500">No subcategories yet for this area.</div>`;
+                    : `<div class="text-center py-6 text-gray-500">
+                         <i class="fas fa-plus-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                         <p>No subcategories yet. Click "Add Sub" to create one.</p>
+                       </div>`;
 
                 let iconHtml = '';
                 if (area.svgString) {
                     iconHtml = `<div class="area-icon">${area.svgString}</div>`;
                 } else if (area.icon_fa) {
                     iconHtml = `<div class="area-icon"><i class="fas ${area.icon_fa}"></i></div>`;
-                } else if (area.featherIcon) {
-                    // Placeholder for Feather icons; requires Feather Icons library and rendering logic
-                    iconHtml = `<div class="area-icon"><span title="${area.featherIcon}">Fe</span></div>`;
+                } else {
+                    iconHtml = `<div class="area-icon"><i class="fas fa-folder"></i></div>`;
                 }
 
+                const totalVideos = subcategories.reduce((total, sub) => total + (sub.videos ? sub.videos.length : 0), 0);
+                const totalMaterials = subcategories.reduce((total, sub) => total + (sub.materials ? sub.materials.length : 0), 0);
 
                 return `
                     <div class="area-item" data-area-id="${area.id}">
-                        <div class="flex justify-between items-center mb-4">
-                            <div class="area-header">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="area-header flex-grow">
                                 ${iconHtml}
-                                <h3 class="text-lg font-semibold area-name" data-editable="true">${this.escapeHtml(area.name)}</h3>
+                                <div>
+                                    <h3 class="text-xl font-semibold area-name" data-editable="true">${this.escapeHtml(area.name)}</h3>
+                                    <div class="flex gap-4 mt-2">
+                                        <span class="stat-badge">${subcategories.length} subcategories</span>
+                                        <span class="stat-badge">${totalVideos} videos</span>
+                                        <span class="stat-badge">${totalMaterials} materials</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="flex space-x-2">
-                                <button class="btn btn-blue btn-sm btn-add-subcategory" data-area-id="${area.id}">
-                                   <i class="fas fa-plus" style="margin-right: 0.4em;"></i> Add Sub
+                                <button class="btn btn-blue btn-add-subcategory" data-area-id="${area.id}" title="Add Subcategory">
+                                   <i class="fas fa-plus"></i> Add Sub
                                 </button>
-                                <button class="btn btn-red btn-sm btn-delete-area" data-area-id="${area.id}">
-                                   <i class="fas fa-trash-alt" style="margin-right: 0.4em;"></i> Delete Area
+                                <button class="btn btn-red btn-delete-area" data-area-id="${area.id}" title="Delete Area">
+                                   <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </div>
@@ -745,50 +1429,208 @@
             }
 
             renderSubcategoryItem(subcategory) {
-                let detailsHtml = '<div class="subcategory-details">';
-                if (subcategory.description) {
-                    detailsHtml += `<p><strong>Description:</strong> ${this.escapeHtml(subcategory.description)}</p>`;
+                const videoCount = subcategory.videos ? subcategory.videos.length : 0;
+                const materialCount = subcategory.materials ? subcategory.materials.length : 0;
+                const stepCount = subcategory.processSteps ? subcategory.processSteps.length : 0;
+
+                let detailsHtml = '';
+                let hasDetails = false;
+
+                if (subcategory.description || subcategory.context || subcategory.tags?.length || 
+                    subcategory.materials?.length || subcategory.processSteps?.length || subcategory.videos?.length) {
+                    hasDetails = true;
+                    detailsHtml = `
+                        <div class="collapsible-content" id="details-${subcategory.id}">
+                            <div class="subcategory-details">
+                                ${this.renderSubcategoryDetails(subcategory)}
+                            </div>
+                        </div>
+                    `;
                 }
-                if (subcategory.tags && subcategory.tags.length > 0) {
-                    detailsHtml += `<p><strong>Tags:</strong> <ul class="tags-list">${subcategory.tags.map(tag => `<li>${this.escapeHtml(tag)}</li>`).join('')}</ul></p>`;
-                }
-                if (subcategory.context) {
-                    detailsHtml += `<p><strong>Context:</strong> ${this.escapeHtml(subcategory.context)}</p>`;
-                }
-                if (subcategory.materials && subcategory.materials.length > 0) {
-                    detailsHtml += `<p><strong>Materials:</strong> ${this.escapeHtml(subcategory.materials.join('; '))}</p>`;
-                }
-                if (subcategory.processSteps && subcategory.processSteps.length > 0) {
-                    detailsHtml += `<p><strong>Process:</strong><br/>${subcategory.processSteps.map(step => `<span>${this.escapeHtml(step)}</span>`).join('<br/>')}</p>`;
-                }
-                if (subcategory.videos && subcategory.videos.length > 0) {
-                    detailsHtml += `<p><strong>Videos:</strong></p><ul class="videos-list">`;
-                    subcategory.videos.forEach(video => {
-                        const videoIcon = video.icon_tag_fa ? `<span class="video-icon"><i class="${video.icon_tag_fa}" ${video.color_tag ? `style="color:${video.color_tag}"` : ''}></i></span>` : '';
-                        detailsHtml += `<li>${videoIcon}${this.escapeHtml(video.title)} ${video.youtubeId ? `(YouTube ID: ${video.youtubeId})` : ''}</li>`;
-                    });
-                    detailsHtml += `</ul>`;
-                }
-                detailsHtml += '</div>';
 
                 return `
                     <div class="subcategory-item" data-subcategory-id="${subcategory.id}" data-area-id-ref="${subcategory.area_id}">
-                        <div class="flex justify-between items-center">
-                            <span class="subcategory-name text-md font-semibold" data-editable="true">${this.escapeHtml(subcategory.name)}</span>
+                        <div class="subcategory-header">
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="subcategory-name text-lg font-semibold" data-editable="true">${this.escapeHtml(subcategory.name)}</span>
+                                    ${hasDetails ? `
+                                        <button class="collapsible-header btn btn-icon btn-secondary" onclick="window.app.toggleDetails('${subcategory.id}')" title="Toggle Details">
+                                            <i class="fas fa-chevron-down chevron" id="chevron-${subcategory.id}"></i>
+                                        </button>
+                                    ` : ''}
+                                </div>
+                                <div class="subcategory-stats">
+                                    <span class="stat-badge">${videoCount} videos</span>
+                                    <span class="stat-badge">${materialCount} materials</span>
+                                    <span class="stat-badge">${stepCount} steps</span>
+                                </div>
+                            </div>
                             <div class="flex space-x-2">
-                                <button class="btn btn-green btn-sm btn-add-content" data-area-id="${subcategory.area_id}" data-subcategory-id="${subcategory.id}">
-                                    <i class="fas fa-edit" style="margin-right: 0.4em;"></i> Edit Content
+                                <button class="btn btn-green btn-sm btn-add-video" data-subcategory-id="${subcategory.id}" title="Add Video">
+                                    <i class="fas fa-video"></i> Add Video
                                 </button>
-                                <button class="btn btn-red btn-sm btn-delete-subcategory" data-subcategory-id="${subcategory.id}">
-                                    <i class="fas fa-trash-alt" style="margin-right: 0.4em;"></i> Delete Sub
+                                <button class="btn btn-blue btn-sm btn-edit-content" data-area-id="${subcategory.area_id}" data-subcategory-id="${subcategory.id}" title="Edit Content">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-red btn-sm btn-delete-subcategory" data-subcategory-id="${subcategory.id}" title="Delete Subcategory">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </div>
-                        ${subcategory.description || (subcategory.tags && subcategory.tags.length > 0) ? detailsHtml : ''}
+                        ${detailsHtml}
                     </div>
                 `;
             }
 
+            renderSubcategoryDetails(subcategory) {
+                let html = '';
+
+                if (subcategory.description) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-info-circle"></i>
+                                Description
+                            </div>
+                            <p>${this.escapeHtml(subcategory.description)}</p>
+                        </div>
+                    `;
+                }
+
+                if (subcategory.context) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-lightbulb"></i>
+                                Context
+                            </div>
+                            <p>${this.escapeHtml(subcategory.context)}</p>
+                        </div>
+                    `;
+                }
+
+                if (subcategory.tags && subcategory.tags.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-tags"></i>
+                                Tags
+                            </div>
+                            <ul class="tags-list">
+                                ${subcategory.tags.map(tag => `<li>${this.escapeHtml(tag)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (subcategory.materials && subcategory.materials.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-tools"></i>
+                                Materials
+                            </div>
+                            <div class="materials-list">
+                                <ul>
+                                    ${subcategory.materials.map(material => `<li>${this.escapeHtml(material)}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (subcategory.processSteps && subcategory.processSteps.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-list-ol"></i>
+                                Process Steps
+                            </div>
+                            <div class="steps-list">
+                                <ol>
+                                    ${subcategory.processSteps.map(step => `<li>${this.escapeHtml(step)}</li>`).join('')}
+                                </ol>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (subcategory.videos && subcategory.videos.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="detail-title">
+                                <i class="fas fa-play-circle"></i>
+                                Videos (${subcategory.videos.length})
+                            </div>
+                            <div class="videos-grid">
+                                ${subcategory.videos.map(video => this.renderVideoCard(video)).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return html;
+            }
+
+            renderVideoCard(video) {
+                const thumbnailUrl = video.youtubeId ? 
+                    `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg` : '';
+                
+                const iconHtml = video.icon_tag_fa ? 
+                    `<i class="${video.icon_tag_fa}" style="color: ${video.color_tag || '#3b82f6'}; margin-right: 0.5rem;"></i>` : 
+                    '<i class="fas fa-play" style="margin-right: 0.5rem;"></i>';
+
+                return `
+                    <div class="video-card" onclick="window.app.playVideo('${video.youtubeId}', '${this.escapeHtml(video.title)}')">
+                        <div class="video-thumbnail" ${thumbnailUrl ? `style="background-image: url('${thumbnailUrl}')"` : ''}></div>
+                        <div class="video-title">
+                            ${iconHtml}
+                            ${this.escapeHtml(video.title)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            toggleDetails(subcategoryId) {
+                const content = document.getElementById(`details-${subcategoryId}`);
+                const chevron = document.getElementById(`chevron-${subcategoryId}`);
+                
+                if (content.classList.contains('open')) {
+                    content.classList.remove('open');
+                    chevron.classList.remove('rotated');
+                } else {
+                    content.classList.add('open');
+                    chevron.classList.add('rotated');
+                }
+            }
+
+            playVideo(youtubeId, title) {
+                if (!youtubeId) return;
+                
+                const modal = document.getElementById('videoModal');
+                const titleEl = document.getElementById('videoModalTitle');
+                const container = document.getElementById('videoPlayerContainer');
+                
+                titleEl.textContent = title;
+                container.innerHTML = `
+                    <iframe class="video-player" 
+                            src="https://www.youtube.com/embed/${youtubeId}?autoplay=1" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                `;
+                
+                modal.classList.add('active');
+            }
+
+            closeVideoModal() {
+                const modal = document.getElementById('videoModal');
+                const container = document.getElementById('videoPlayerContainer');
+                modal.classList.remove('active');
+                container.innerHTML = ''; // Stop video playback
+            }
 
             attachAreaEventListeners() {
                 document.querySelectorAll('.btn-add-subcategory').forEach(btn => {
@@ -814,53 +1656,59 @@
                     });
                 });
 
-                document.querySelectorAll('.btn-add-content').forEach(btn => {
+                document.querySelectorAll('.btn-edit-content').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const areaId = e.currentTarget.dataset.areaId;
                         const subcategoryId = e.currentTarget.dataset.subcategoryId;
-                        // This is where you would open a modal or form to edit the rich content
-                        this.showNotification(`Editing content for Subcategory ID: ${subcategoryId} (Area ID: ${areaId}). Feature to be implemented.`, 'info');
+                        this.openContentEditor(subcategoryId);
                     });
                 });
 
+                document.querySelectorAll('.btn-add-video').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const subcategoryId = e.currentTarget.dataset.subcategoryId;
+                        this.openVideoAddModal(subcategoryId);
+                    });
+                });
+
+                // Inline editing
                 document.querySelectorAll('.area-name[data-editable="true"]').forEach(element => {
                     this.makeInlineEditable(element, async (newValue, originalValue) => {
                         if (newValue.trim() === '') {
                             this.showNotification('Area name cannot be empty.', 'error');
-                            return originalValue; // Revert to original
+                            return originalValue;
                         }
-                        if (newValue === originalValue) return originalValue; // No change
+                        if (newValue === originalValue) return originalValue;
 
-                        // Custom confirmation dialog would be better than window.confirm
                         if (window.confirm(`Rename area "${originalValue}" to "${newValue}"?`)) {
                             const areaId = element.closest('[data-area-id]').dataset.areaId;
                             try {
                                 await this.dataLayer.updateArea(areaId, newValue.trim());
                                 this.showNotification('Area renamed successfully!', 'success');
+                                this.updateQuickStats();
                                 return newValue.trim();
                             } catch (error) {
                                 this.showNotification(`Failed to rename area: ${error.message}`, 'error');
-                                return originalValue; // Revert on error
+                                return originalValue;
                             }
                         }
-                        return originalValue; // User cancelled
+                        return originalValue;
                     });
                 });
 
                 document.querySelectorAll('.subcategory-name[data-editable="true"]').forEach(element => {
-                     this.makeInlineEditable(element, async (newValue, originalValue) => {
+                    this.makeInlineEditable(element, async (newValue, originalValue) => {
                         if (newValue.trim() === '') {
                             this.showNotification('Subcategory name cannot be empty.', 'error');
                             return originalValue;
                         }
                         if (newValue === originalValue) return originalValue;
 
-                        // Custom confirmation dialog would be better
                         if (window.confirm(`Rename subcategory "${originalValue}" to "${newValue}"?`)) {
                             const subcategoryId = element.closest('[data-subcategory-id]').dataset.subcategoryId;
                             try {
-                                await this.dataLayer.updateSubcategory(subcategoryId, newValue.trim());
+                                await this.dataLayer.updateSubcategory(subcategoryId, { name: newValue.trim() });
                                 this.showNotification('Subcategory renamed successfully!', 'success');
+                                this.updateQuickStats();
                                 return newValue.trim();
                             } catch (error) {
                                 this.showNotification(`Failed to rename subcategory: ${error.message}`, 'error');
@@ -875,7 +1723,7 @@
             makeInlineEditable(element, onSave) {
                 let isEditing = false;
 
-                element.addEventListener('dblclick', () => { // Changed to dblclick to avoid accidental edits
+                element.addEventListener('dblclick', () => {
                     if (isEditing || !element.dataset.editable) return;
                     isEditing = true;
 
@@ -885,9 +1733,8 @@
                     input.value = originalValue;
                     input.className = 'inline-edit-field';
 
-                    // Store original display style
                     const originalDisplay = element.style.display;
-                    element.style.display = 'inline-block'; // Or 'block' if it was block
+                    element.style.display = 'inline-block';
                     element.innerHTML = '';
                     element.appendChild(input);
                     element.classList.add('is-editing');
@@ -904,27 +1751,25 @@
                             finalValue = await onSave(newValue, originalValue);
                         }
 
-                        element.innerHTML = this.escapeHtml(finalValue); // Ensure it's escaped
+                        element.innerHTML = this.escapeHtml(finalValue);
                         element.classList.remove('is-editing');
-                        element.style.display = originalDisplay; // Restore original display
-                        // Re-enable editing capability if needed, or re-attach listener if it was one-time
+                        element.style.display = originalDisplay;
                     };
 
-                    input.addEventListener('blur', () => finishEditing(true)); // Save on blur
+                    input.addEventListener('blur', () => finishEditing(true));
                     input.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter') {
-                            e.preventDefault(); // Prevent form submission if inside one
+                            e.preventDefault();
                             finishEditing(true);
                         } else if (e.key === 'Escape') {
-                            finishEditing(false); // Cancel on Escape
+                            finishEditing(false);
                         }
                     });
                 });
             }
 
-
             async createNewArea() {
-                const name = prompt('Enter new area name:'); // Replace with a custom modal/form
+                const name = prompt('Enter new area name:');
                 if (!name || name.trim() === '') {
                     this.showNotification('Area name cannot be empty.', 'warning');
                     return;
@@ -932,7 +1777,7 @@
                 try {
                     this.showNotification('Creating area...', 'info');
                     await this.dataLayer.createArea(name.trim());
-                    await this.loadAreas(); // Reload all areas to show the new one
+                    await this.loadAreas();
                     this.showNotification('Area created successfully!', 'success');
                 } catch (error) {
                     this.showNotification(`Failed to create area: ${error.message}`, 'error');
@@ -940,7 +1785,7 @@
             }
 
             async createNewSubcategory(areaId) {
-                const name = prompt('Enter new subcategory name:'); // Replace with a custom modal/form
+                const name = prompt('Enter new subcategory name:');
                 if (!name || name.trim() === '') {
                     this.showNotification('Subcategory name cannot be empty.', 'warning');
                     return;
@@ -948,7 +1793,7 @@
                 try {
                     this.showNotification('Creating subcategory...', 'info');
                     await this.dataLayer.createSubcategory(areaId, name.trim());
-                    await this.loadAreas(); // Reload all areas to show the new subcategory
+                    await this.loadAreas();
                     this.showNotification('Subcategory created successfully!', 'success');
                 } catch (error) {
                     this.showNotification(`Failed to create subcategory: ${error.message}`, 'error');
@@ -962,7 +1807,6 @@
                     return;
                 }
 
-                // Replace with a custom confirmation modal
                 if (window.confirm(`Are you sure you want to delete the area "${areaName}"? This action cannot be undone.`)) {
                     try {
                         this.showNotification('Deleting area...', 'info');
@@ -976,12 +1820,11 @@
             }
 
             async deleteSubcategory(subcategoryId, subcategoryName) {
-                 // Replace with a custom confirmation modal
                 if (window.confirm(`Are you sure you want to delete the subcategory "${subcategoryName}"? This action cannot be undone.`)) {
                     try {
                         this.showNotification('Deleting subcategory...', 'info');
                         await this.dataLayer.deleteSubcategory(subcategoryId);
-                        await this.loadAreas(); // Reload to reflect deletion
+                        await this.loadAreas();
                         this.showNotification(`Subcategory "${subcategoryName}" deleted successfully.`, 'success');
                     } catch (error) {
                         this.showNotification(`Failed to delete subcategory: ${error.message}`, 'error');
@@ -989,43 +1832,483 @@
                 }
             }
 
+            openContentEditor(subcategoryId) {
+                this.currentEditingSubcategory = subcategoryId;
+                
+                // Find the subcategory data
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                let subcategory = null;
+                for (let area of cachedAreas) {
+                    if (area.subcategories) {
+                        subcategory = area.subcategories.find(s => s.id === subcategoryId);
+                        if (subcategory) break;
+                    }
+                }
+
+                if (!subcategory) {
+                    this.showNotification('Subcategory not found.', 'error');
+                    return;
+                }
+
+                // Populate the form
+                document.getElementById('editName').value = subcategory.name || '';
+                document.getElementById('editDescription').value = subcategory.description || '';
+                document.getElementById('editTags').value = subcategory.tags ? subcategory.tags.join(', ') : '';
+                document.getElementById('editContext').value = subcategory.context || '';
+                document.getElementById('editMaterials').value = subcategory.materials ? subcategory.materials.join('\n') : '';
+                document.getElementById('editSteps').value = subcategory.processSteps ? subcategory.processSteps.join('\n') : '';
+
+                // Show modal
+                document.getElementById('contentModal').classList.add('active');
+            }
+
+            closeContentModal() {
+                document.getElementById('contentModal').classList.remove('active');
+                this.currentEditingSubcategory = null;
+                document.getElementById('contentForm').reset();
+            }
+
+            async saveContentChanges() {
+                if (!this.currentEditingSubcategory) return;
+
+                const updates = {
+                    name: sanitizeInput(document.getElementById('editName').value.trim()),
+                    description: sanitizeInput(document.getElementById('editDescription').value.trim()),
+                    tags: document.getElementById('editTags').value.split(',').map(tag => sanitizeInput(tag.trim())).filter(tag => tag),
+                    context: sanitizeInput(document.getElementById('editContext').value.trim()),
+                    materials: document.getElementById('editMaterials').value.split('\n').map(material => sanitizeInput(material.trim())).filter(material => material),
+                    processSteps: document.getElementById('editSteps').value.split('\n').map(step => sanitizeInput(step.trim())).filter(step => step)
+                };
+
+                try {
+                    await this.dataLayer.updateSubcategory(this.currentEditingSubcategory, updates);
+                    this.closeContentModal();
+                    await this.loadAreas();
+                    this.showNotification('Content updated successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(`Failed to update content: ${error.message}`, 'error');
+                }
+            }
+
+            openVideoAddModal(subcategoryId) {
+                this.currentAddVideoSubcategory = subcategoryId;
+                document.getElementById('videoAddModal').classList.add('active');
+                document.getElementById('videoForm').reset();
+                document.getElementById('urlPreview').textContent = '';
+            }
+
+            closeVideoAddModal() {
+                document.getElementById('videoAddModal').classList.remove('active');
+                this.currentAddVideoSubcategory = null;
+                document.getElementById('videoForm').reset();
+            }
+
+            updateVideoUrlPreview(url) {
+                const preview = document.getElementById('urlPreview');
+                const youtubeId = extractYouTubeId(url);
+                
+                if (youtubeId) {
+                    preview.innerHTML = `<span style="color: green;">✓ Valid YouTube ID: ${youtubeId}</span>`;
+                } else if (url) {
+                    preview.innerHTML = `<span style="color: red;">✗ Invalid YouTube URL</span>`;
+                } else {
+                    preview.textContent = '';
+                }
+            }
+
+            async addVideo() {
+                if (!this.currentAddVideoSubcategory) return;
+
+                const title = sanitizeInput(document.getElementById('videoTitle').value.trim());
+                const url = document.getElementById('videoUrl').value.trim();
+                const icon = sanitizeInput(document.getElementById('videoIcon').value.trim());
+                const color = document.getElementById('videoColor').value;
+
+                const youtubeId = extractYouTubeId(url);
+                if (!youtubeId) {
+                    this.showNotification('Please enter a valid YouTube URL.', 'error');
+                    return;
+                }
+
+                const videoData = {
+                    title: title,
+                    youtubeId: youtubeId,
+                    icon_tag_fa: icon || 'fas fa-play',
+                    color_tag: color
+                };
+
+                try {
+                    await this.dataLayer.addVideoToSubcategory(this.currentAddVideoSubcategory, videoData);
+                    this.closeVideoAddModal();
+                    await this.loadAreas();
+                    this.showNotification('Video added successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(`Failed to add video: ${error.message}`, 'error');
+                }
+            }
+
+            updateQuickStats() {
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                let totalSubcategories = 0;
+                let totalVideos = 0;
+                let totalMaterials = 0;
+
+                cachedAreas.forEach(area => {
+                    if (area.subcategories) {
+                        totalSubcategories += area.subcategories.length;
+                        area.subcategories.forEach(sub => {
+                            totalVideos += sub.videos ? sub.videos.length : 0;
+                            totalMaterials += sub.materials ? sub.materials.length : 0;
+                        });
+                    }
+                });
+
+                const statsContainer = document.getElementById('quickStats');
+                statsContainer.innerHTML = `
+                    <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">${cachedAreas.length}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Areas</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #10b981, #047857); color: white; padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">${totalSubcategories}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Subcategories</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">${totalVideos}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Videos</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 1.5rem; border-radius: 1rem; text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold;">${totalMaterials}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Materials</div>
+                    </div>
+                `;
+            }
+
+            performSearch(query) {
+                if (!query.trim()) {
+                    this.loadAreas();
+                    return;
+                }
+
+                const results = this.dataLayer.searchContent(query);
+                this.renderSearchResults(results, query);
+            }
+
+            renderSearchResults(results, query) {
+                const container = document.getElementById('areas-container');
+                
+                if (results.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-search" style="font-size: 4rem; color: #d1d5db; margin-bottom: 1rem;"></i>
+                            <p class="text-gray-500 text-lg">No results found for "${query}"</p>
+                            <button class="btn btn-blue mt-4" onclick="window.app.clearSearch()">Clear Search</button>
+                        </div>`;
+                    return;
+                }
+
+                let html = `
+                    <div style="background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <strong>Search Results:</strong> ${results.length} items found for "${query}"
+                            </div>
+                            <button class="btn btn-secondary" onclick="window.app.clearSearch()">Clear Search</button>
+                        </div>
+                    </div>
+                `;
+
+                results.forEach(result => {
+                    if (result.type === 'area') {
+                        html += `<div class="area-item">${this.renderAreaItem(result.data, result.data.subcategories || [])}</div>`;
+                    } else if (result.type === 'subcategory') {
+                        html += `
+                            <div class="area-item">
+                                <h4 class="text-lg font-semibold mb-2">From Area: ${result.parent}</h4>
+                                ${this.renderSubcategoryItem(result.data)}
+                            </div>
+                        `;
+                    } else if (result.type === 'video') {
+                        html += `
+                            <div class="area-item">
+                                <h4 class="text-sm text-gray-600 mb-2">From: ${result.parent.area} > ${result.parent.subcategory}</h4>
+                                <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                                    <i class="fas fa-video text-blue-500 text-xl"></i>
+                                    <div class="flex-grow">
+                                        <h5 class="font-semibold">${this.escapeHtml(result.data.title)}</h5>
+                                        <p class="text-sm text-gray-600">YouTube ID: ${result.data.youtubeId}</p>
+                                    </div>
+                                    <button class="btn btn-blue" onclick="window.app.playVideo('${result.data.youtubeId}', '${this.escapeHtml(result.data.title)}')">
+                                        <i class="fas fa-play"></i> Play
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+
+                container.innerHTML = html;
+                this.attachAreaEventListeners();
+            }
+
+            clearSearch() {
+                document.getElementById('globalSearch').value = '';
+                this.loadAreas();
+            }
+
+            exportData() {
+                const cachedAreas = JSON.parse(localStorage.getItem('areas_cache') || '[]');
+                const dataStr = JSON.stringify(cachedAreas, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `appro-taxonomy-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                this.showNotification('Data exported successfully!', 'success');
+            }
+
+            handleFileSelect(file) {
+                if (file.type !== 'application/json') {
+                    this.showNotification('Please select a valid JSON file.', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importData = JSON.parse(e.target.result);
+                        this.previewImport(importData);
+                    } catch (error) {
+                        this.showNotification('Invalid JSON file format.', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            previewImport(data) {
+                if (!Array.isArray(data)) {
+                    this.showNotification('Invalid data format. Expected an array of areas.', 'error');
+                    return;
+                }
+
+                let totalSubcategories = 0;
+                let totalVideos = 0;
+                data.forEach(area => {
+                    if (area.subcategories) {
+                        totalSubcategories += area.subcategories.length;
+                        area.subcategories.forEach(sub => {
+                            totalVideos += sub.videos ? sub.videos.length : 0;
+                        });
+                    }
+                });
+
+                const summary = document.getElementById('importSummary');
+                summary.innerHTML = `
+                    <h4 style="margin-bottom: 1rem;">Import Summary:</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; background: white; padding: 1rem; border-radius: 0.5rem;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">${data.length}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Areas</div>
+                        </div>
+                        <div style="text-align: center; background: white; padding: 1rem; border-radius: 0.5rem;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${totalSubcategories}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Subcategories</div>
+                        </div>
+                        <div style="text-align: center; background: white; padding: 1rem; border-radius: 0.5rem;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #f59e0b;">${totalVideos}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Videos</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <h5>Areas to import:</h5>
+                        <ul style="max-height: 200px; overflow-y: auto; background: white; padding: 1rem; border-radius: 0.5rem;">
+                            ${data.map(area => `<li><strong>${this.escapeHtml(area.name || area.area)}</strong> - ${area.subcategories ? area.subcategories.length : 0} subcategories</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                this.pendingImportData = data;
+                document.getElementById('importPreview').classList.remove('hidden');
+            }
+
+            async confirmImport() {
+                if (!this.pendingImportData) return;
+
+                try {
+                    await this.dataLayer.importAreas(this.pendingImportData);
+                    document.getElementById('importModal').classList.remove('active');
+                    this.resetImportModal();
+                    await this.loadAreas();
+                    this.showNotification('Data imported successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(`Import failed: ${error.message}`, 'error');
+                }
+            }
+
+            resetImportModal() {
+                document.getElementById('importPreview').classList.add('hidden');
+                document.getElementById('fileInput').value = '';
+                this.pendingImportData = null;
+            }
+
             showNotification(message, type = 'info') {
-                document.querySelectorAll('.notification').forEach(n => n.remove()); // Remove old notifications
+                document.querySelectorAll('.notification').forEach(n => n.remove());
 
                 const notification = document.createElement('div');
                 notification.className = `notification ${type}`;
-                notification.textContent = message;
+                
+                // Add icon based on type
+                let icon = '';
+                switch (type) {
+                    case 'success': icon = '<i class="fas fa-check-circle"></i> '; break;
+                    case 'error': icon = '<i class="fas fa-exclamation-circle"></i> '; break;
+                    case 'warning': icon = '<i class="fas fa-exclamation-triangle"></i> '; break;
+                    case 'info': icon = '<i class="fas fa-info-circle"></i> '; break;
+                }
+                
+                notification.innerHTML = icon + this.escapeHtml(message);
                 document.body.appendChild(notification);
 
                 setTimeout(() => {
                     if (notification.parentNode) {
                         notification.remove();
                     }
-                }, 3500); // Slightly longer display time
+                }, 4000);
             }
 
             escapeHtml(text) {
                 if (text === null || typeof text === 'undefined') return '';
                 const div = document.createElement('div');
-                div.textContent = String(text); // Ensure text is a string
+                div.textContent = String(text);
                 return div.innerHTML;
             }
         }
 
+        // Global app instance
+        window.app = null;
+
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 window.app = new TaxonomyApp();
+                
+                // Add keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + K for search focus
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        document.getElementById('globalSearch').focus();
+                    }
+                    
+                    // Escape to close modals
+                    if (e.key === 'Escape') {
+                        document.querySelectorAll('.modal.active').forEach(modal => {
+                            modal.classList.remove('active');
+                        });
+                    }
+                });
+
+                // Add auto-save for forms (optional enhancement)
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    const inputs = form.querySelectorAll('input, textarea, select');
+                    inputs.forEach(input => {
+                        input.addEventListener('input', () => {
+                            // Auto-save functionality could be added here
+                            // For now, just visual feedback
+                            input.style.borderColor = '#f59e0b';
+                            setTimeout(() => {
+                                input.style.borderColor = '';
+                            }, 1000);
+                        });
+                    });
+                });
+
+                console.log('Enhanced Taxonomy App initialized successfully');
+                
             } catch (error) {
                 console.error('Failed to initialize application:', error);
                 const container = document.querySelector('.container') || document.body;
                 container.innerHTML = `
-                    <div class="notification error" style="position: static; margin: 2rem auto; animation: none;">
-                        <strong>Critical Error:</strong> Cannot initialize application. ${error.message}
-                        <br><br>Please check the console for more details.
-                        <br><button onclick="location.reload()" class="btn btn-blue" style="margin-top:1rem;">Reload Page</button>
+                    <div class="notification error" style="position: static; margin: 2rem auto; animation: none; max-width: 600px;">
+                        <strong><i class="fas fa-exclamation-circle"></i> Critical Error:</strong> Cannot initialize application.
+                        <br><br>
+                        <details style="margin-top: 1rem;">
+                            <summary style="cursor: pointer; font-weight: 600;">Error Details</summary>
+                            <pre style="background: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin-top: 0.5rem; font-size: 0.8rem; overflow: auto;">${error.message}\n\n${error.stack}</pre>
+                        </details>
+                        <br>
+                        <button onclick="location.reload()" class="btn btn-blue" style="margin-top:1rem;">
+                            <i class="fas fa-redo"></i> Reload Page
+                        </button>
                     </div>`;
             }
         });
+
+        // Service Worker for offline functionality (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Service worker registration could be added here for offline support
+                console.log('Service Worker support detected');
+            });
+        }
+
+        // Progressive Web App features
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install banner (could be customized)
+            const installBanner = document.createElement('div');
+            installBanner.className = 'notification info';
+            installBanner.innerHTML = `
+                <i class="fas fa-mobile-alt"></i> Install this app for better experience!
+                <button class="btn btn-sm btn-blue" style="margin-left: 1rem;" onclick="window.installApp()">
+                    Install
+                </button>
+                <button class="btn btn-sm btn-secondary" style="margin-left: 0.5rem;" onclick="this.parentElement.remove()">
+                    Later
+                </button>
+            `;
+            document.body.appendChild(installBanner);
+        });
+
+        window.installApp = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+            }
+        };
+
+        // Analytics and performance monitoring (placeholder)
+        window.addEventListener('load', () => {
+            console.log('App loaded successfully');
+            // Performance metrics could be collected here
+            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+            console.log(`Load time: ${loadTime}ms`);
+        });
+
+        // Error boundary for unhandled errors
+        window.addEventListener('error', (event) => {
+            console.error('Unhandled error:', event.error);
+            if (window.app) {
+                window.app.showNotification('An unexpected error occurred. Please refresh the page if issues persist.', 'error');
+            }
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            if (window.app) {
+                window.app.showNotification('A network or data error occurred. Please check your connection.', 'warning');
+            }
+        });
+
     </script>
 </body>
 </html>
