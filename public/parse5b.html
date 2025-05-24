@@ -1,0 +1,2775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager - Enhanced</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hub.approvideo.org; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob: img.youtube.com placehold.co; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" 
+            xintegrity="sha384-sfH01RemNLfukNwJacKhKH/Kqavspt9iZSMwhKcsUMH4bZ7CkkJsOfFQ6qsuHCl8" 
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" 
+          xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+          crossorigin="anonymous">
+    
+    <style>
+        /* Enhanced Tailwind-like CSS Framework */
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --success: #22c55e;
+            --success-dark: #16a34a;
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --warning: #f59e0b;
+            --warning-dark: #d97706;
+            --purple: #8b5cf6;
+            --purple-dark: #7c3aed;
+            --orange: #f97316;
+            --orange-dark: #ea580c;
+            
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            
+            --border-radius: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Layout Components */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-200);
+            background: white;
+        }
+
+        .connection-status.connected { color: var(--success); border-color: var(--success); }
+        .connection-status.loading { color: var(--warning); border-color: var(--warning); }
+        .connection-status.error { color: var(--danger); border-color: var(--danger); }
+
+        /* Navigation */
+        .tab-navigation {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            overflow-x: auto;
+        }
+
+        .tab-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 1.5rem;
+        }
+
+        .tab-button {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--gray-600);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+            background-color: var(--gray-50);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: var(--gray-50);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--gray-50);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover:not(:disabled) { background: var(--success-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover:not(:disabled) { background: var(--danger-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-warning:hover:not(:disabled) { background: var(--warning-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-purple { background: var(--purple); color: white; }
+        .btn-purple:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-orange { background: var(--orange); color: white; }
+        .btn-orange:hover:not(:disabled) { background: var(--orange-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+        .btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-300); }
+        .btn-secondary:hover:not(:disabled) { background: var(--gray-200); }
+
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.75rem; }
+        .btn-xs { padding: 0.25rem 0.5rem; font-size: 0.625rem; }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Grid Layouts */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Content Items */
+        .content-list {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+        }
+
+        .content-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .content-item:last-child {
+            border-bottom: none;
+        }
+
+        .content-item:hover {
+            background-color: var(--gray-50);
+        }
+
+        .content-item.active {
+            background-color: #eff6ff; /* blue-50 */
+            border-left: 4px solid var(--primary);
+        }
+
+        .content-item-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-item-meta {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Editor */
+        .editor-container {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .editor-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            overflow-x: auto;
+        }
+
+        .editor-tab {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .editor-tab:hover {
+            color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        .editor-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
+
+        .editor-section {
+            display: none;
+            padding: 2rem;
+        }
+
+        .editor-section.active {
+            display: block;
+        }
+
+        /* Video Cards */
+        .video-card {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .video-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-thumbnail .placeholder-icon {
+            font-size: 3rem;
+            color: var(--gray-400);
+        }
+
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+            font-size: 1rem;
+        }
+
+        .video-meta {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* List Management */
+        .list-manager {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .list-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover {
+            background-color: var(--gray-50);
+        }
+
+        .list-item-content {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        .list-item-details {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-item-form {
+            padding: 1rem;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Utilities */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray-500);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--gray-400);
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--gray-500);
+        }
+
+        .loading-spinner {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            animation: slideInNotification 0.3s ease;
+            max-width: 400px;
+        }
+
+        .notification.success { background: var(--success); }
+        .notification.error { background: var(--danger); }
+        .notification.warning { background: var(--warning); }
+        .notification.info { background: var(--primary); }
+
+        @keyframes slideInNotification {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+
+        .status-badge.success { background: #dcfce7; color: #166534; } /* green-100, green-800 */
+        .status-badge.warning { background: #fef3c7; color: #92400e; } /* amber-100, amber-800 */
+        .status-badge.error { background: #fee2e2; color: #991b1b; } /* red-100, red-800 */
+
+        /* Security warning styles */
+        .security-warning {
+            background-color: #fef2f2; /* red-50 */
+            border: 1px solid #fecaca; /* red-200 */
+            color: #dc2626; /* red-600 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: none; /* Initially hidden */
+        }
+
+        /* Inline editing */
+        .is-editing {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .inline-edit-field {
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        .inline-edit-field:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 0;
+            border-color: var(--primary);
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 42rem; /* Tailwind's md breakpoint */
+            width: 100%;
+            margin: 0 1rem; /* Spacing for smaller screens */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) { /* lg */
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) { /* md */
+            .main-container {
+                padding: 1rem;
+            }
+            .header-container {
+                padding: 1rem;
+            }
+            .tab-navigation { /* Changed from .tab-container to .tab-navigation for padding */
+                padding: 0 1rem;
+            }
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+
+        /* Security Indicator */
+        .security-indicator {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: var(--success);
+            color: white;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="security-status" class="security-warning">
+        <strong>Security Alert:</strong> <span id="security-message"></span>
+    </div>
+
+    <div class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                Appro Content Manager
+                <span style="font-size: 0.75rem; background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 9999px;">v2.2</span>
+            </div>
+            <div class="header-controls">
+                <div id="connection-status" class="connection-status connected">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Parse Connected</span>
+                </div>
+                <button id="sync-btn" class="btn btn-primary btn-sm">
+                    <i class="fas fa-sync-alt"></i>
+                    Sync Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-navigation">
+        <div class="tab-container">
+            <button class="tab-button active" data-tab="taxonomy">
+                <i class="fas fa-sitemap"></i>
+                Areas & Categories
+            </button>
+            <button class="tab-button" data-tab="content">
+                <i class="fas fa-edit"></i>
+                Content Manager
+            </button>
+            <button class="tab-button" data-tab="videos">
+                <i class="fas fa-video"></i>
+                Video Library
+            </button>
+            <button class="tab-button" data-tab="tags">
+                <i class="fas fa-tags"></i>
+                Tag Management
+            </button>
+            <button class="tab-button" data-tab="languages"> <i class="fas fa-language"></i>
+                Languages
+            </button>
+            <button class="tab-button" data-tab="analytics">
+                <i class="fas fa-chart-bar"></i>
+                Analytics
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div id="taxonomy-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-sitemap"></i>
+                        Knowledge Areas & Subcategories
+                    </h2>
+                    <button class="btn btn-success" id="add-area-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Knowledge Area
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="taxonomy-container">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading areas and subcategories...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-tab" class="tab-content">
+            <div class="content-grid">
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-folder-open"></i>
+                                Content Library
+                            </h3>
+                            <button class="btn btn-success btn-sm" id="add-content-btn"> <i class="fas fa-plus"></i>
+                                Add Video
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label class="form-label">Filter by Area</label>
+                                <select class="form-select" id="content-filter">
+                                    <option value="">All Areas</option>
+                                </select>
+                            </div>
+                            <div class="content-list" id="content-list">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    Loading content library...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="editor-container" id="content-editor">
+                        <div class="empty-state">
+                            <i class="fas fa-edit"></i>
+                            <h3>Select Content to Edit</h3>
+                            <p>Choose a subcategory from the library to manage its content and videos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="videos-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-video"></i>
+                        Video Library
+                    </h2>
+                    <button class="btn btn-success" id="add-video-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Video
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="form-group">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label class="form-label">Filter by Area</label>
+                                <select class="form-select" id="video-area-filter">
+                                    <option value="">All Areas</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">Filter by Category</label>
+                                <select class="form-select" id="video-category-filter">
+                                    <option value="">All Categories</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-grid" id="video-grid">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading video library...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tags-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-tags"></i>
+                        Tag Management
+                    </h2>
+                    <button class="btn btn-success" id="add-tag-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Tag
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="tags-container">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading tag library...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="languages-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-language"></i>
+                        Language Management
+                    </h2>
+                    <button class="btn btn-success" id="add-language-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Language
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="languages-container">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading languages...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="analytics-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Content Analytics
+                    </h2>
+                    <button class="btn btn-primary btn-sm" id="refresh-analytics-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="analytics-container">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading analytics data...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-video-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; align-items: center; justify-content: center; z-index: 50;" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <div class="flex items-start justify-between border-b p-4" style="display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--gray-200); padding: 1rem;">
+                <h3 class="text-xl font-semibold text-gray-900" style="font-size: 1.25rem; font-weight: 600; color: var(--gray-900);">
+                    Add New Video
+                </h3>
+                <button type="button" id="modal-close-btn" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6" style="padding: 1.5rem;">
+                <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md" style="margin-bottom: 1rem; padding: 0.75rem; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.375rem;">
+                    <p class="text-sm font-medium text-gray-700" style="font-size: 0.875rem; font-weight: 500; color: var(--gray-700);">Adding to:</p>
+                    <p class="text-lg font-semibold text-blue-800" style="font-size: 1.125rem; font-weight: 600; color: #1e40af;">
+                        <span id="modal-category-context">Select an area and subcategory...</span>
+                    </p>
+                </div>
+
+                <form id="videoForm" class="space-y-4" novalidate>
+                    <input type="hidden" name="csrf_token" id="csrf_token">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Area *</label>
+                        <select class="form-select" id="video-area-select" required>
+                            <option value="">Select Area</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Subcategory *</label>
+                        <select class="form-select" id="video-subcategory-select" required disabled>
+                            <option value="">Select Subcategory</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Video Title *</label>
+                        <input type="text" class="form-input" id="video-title" placeholder="Enter video title" required maxlength="200">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">YouTube URL *</label>
+                        <input type="url" class="form-input" id="video-youtube-url" placeholder="e.g., https://www.youtube.com/watch?v=VIDEO_ID" required>
+                        <div id="youtube-id-preview" class="text-sm mt-1" style="font-size: 0.875rem; margin-top: 0.25rem;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea class="form-textarea" id="video-description" placeholder="Describe the video content..." required maxlength="1000"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tags (comma-separated)</label>
+                        <input type="text" class="form-input" id="video-tags" placeholder="e.g., DIY, Solar, Water">
+                        <div id="tag-suggestions" class="absolute z-20 w-full bg-white border rounded-b-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg" style="position: absolute; z-index: 20; width: 100%; background-color: white; border: 1px solid var(--gray-300); border-bottom-left-radius: var(--border-radius); border-bottom-right-radius: var(--border-radius); margin-top: 0.25rem; max-height: 10rem; overflow-y: auto; display: none; box-shadow: var(--shadow-lg);"></div>
+                    </div>
+
+                    <div class="flex justify-end pt-4 border-t mt-4 space-x-4" style="display: flex; justify-content: flex-end; padding-top: 1rem; border-top: 1px solid var(--gray-200); margin-top: 1rem; gap: 1rem;"> 
+                        <button type="button" class="btn btn-secondary" id="cancel-video-btn">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="submit-video-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Video
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="security-indicator">
+        <i class="fas fa-lock"></i>
+        Lattice Security Active
+    </div>
+
+    <script type="module">
+        'use strict';
+
+        // Configuration for Parse
+        const CONFIG = {
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw', // Replace with your actual App ID
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD', // Replace with your actual JS Key
+            parseServerURL: 'https://parseapi.back4app.com/',
+            latticeEncryption: true, // Placeholder for future encryption features
+            version: '2.2.0', // Updated version
+            maxRetries: 3,
+            rateLimit: {
+                requests: 100, // per minute
+                loginAttempts: 5,
+                lockoutDuration: 300000 // 5 minutes
+            }
+        };
+
+        // Parse Schema-aligned Seed Data
+        const SEED_DATA = {
+            areas: [
+                {
+                    id: 'area_1', // This would be Parse objectId in a real scenario
+                    area: 'Water Systems',
+                    icon: 'fas fa-tint',
+                    featherIcon: 'droplet',
+                    svgString: '<svg>...</svg>', // Placeholder
+                    createdAt: new Date('2024-01-01'),
+                    updatedAt: new Date()
+                },
+                // ... other seed areas
+            ],
+            subcategories: [
+                {
+                    id: 'sub_1', // This would be Parse objectId
+                    uniqueId: 'water_purification_001',
+                    title: 'Water Purification',
+                    description: 'Methods and technologies for cleaning contaminated water sources',
+                    areaId: 'area_1' // Refers to the 'id' above for seed linking
+                    // ... other seed subcategories
+                },
+            ],
+            videos: [
+                {
+                    id: 'video_1_custom', // Custom ID as used in original code
+                    title: 'Building a Sand Filter',
+                    youtubeId: 'dQw4w9WgXcQ', // Example ID
+                    categories: ['area_1'], // Corresponds to Area ID
+                    // ... other seed videos
+                },
+            ],
+            tags: [
+                { id: 'tag_1', name: 'Water', definition: 'Content related to water systems' },
+                // ... other seed tags
+            ],
+            languages: [ // New seed data for languages
+                { id: 'lang_1', name: 'English', code: 'en', nativeName: 'English', createdAt: new Date(), updatedAt: new Date() },
+                { id: 'lang_2', name: 'Español', code: 'es', nativeName: 'Español', createdAt: new Date(), updatedAt: new Date() },
+                { id: 'lang_3', name: 'Français', code: 'fr', nativeName: 'Français', createdAt: new Date(), updatedAt: new Date() },
+            ]
+        };
+
+        // Enhanced Security Manager (remains largely the same, ensure sanitizeInput is robust)
+        class SecurityManager {
+            constructor() {
+                this.rateLimiter = new Map();
+                this.failedAttempts = new Map();
+                this.csrfToken = this.generateCSRFToken();
+                this.sessionStartTime = Date.now();
+                this.encryptionKey = null; // For future Lattice Encryption
+                this.init();
+            }
+
+            init() {
+                this.setupCSRFProtection();
+                this.setupSessionTimeout();
+                this.monitorSecurityEvents();
+            }
+
+            generateCSRFToken() {
+                const array = new Uint8Array(32);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            setupCSRFProtection() {
+                document.querySelectorAll('form').forEach(form => {
+                    // Check if a CSRF token input already exists
+                    if (!form.querySelector('input[name="csrf_token"]')) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'csrf_token';
+                        input.value = this.csrfToken;
+                        form.appendChild(input);
+                    } else {
+                        form.querySelector('input[name="csrf_token"]').value = this.csrfToken;
+                    }
+                });
+                
+                // Specifically update the modal's CSRF token if it exists
+                const csrfInputModal = document.getElementById('csrf_token');
+                if (csrfInputModal) {
+                    csrfInputModal.value = this.csrfToken;
+                }
+            }
+
+
+            validateCSRFToken(token) {
+                return token === this.csrfToken;
+            }
+
+            checkRateLimit(identifier, limit = CONFIG.rateLimit.requests) {
+                const now = Date.now();
+                const windowStart = now - 60000; // 1 minute window
+
+                if (!this.rateLimiter.has(identifier)) {
+                    this.rateLimiter.set(identifier, []);
+                }
+
+                const requests = this.rateLimiter.get(identifier);
+                const recentRequests = requests.filter(time => time > windowStart);
+                
+                if (recentRequests.length >= limit) {
+                    this.showSecurityAlert(`Rate limit exceeded for ${identifier}. Please try again later.`);
+                    return false;
+                }
+
+                recentRequests.push(now);
+                this.rateLimiter.set(identifier, recentRequests);
+                return true;
+            }
+
+            setupSessionTimeout(timeout = 1800000) { // Default 30 minutes
+                setInterval(() => {
+                    if (Date.now() - this.sessionStartTime > timeout) {
+                        this.handleSessionTimeout();
+                    }
+                }, 60000); // Check every minute
+            }
+
+            handleSessionTimeout() {
+                this.showSecurityAlert('Session expired for security reasons. Please refresh the page.');
+                // Disable all interactive elements
+                document.querySelectorAll('button, input, textarea, select').forEach(el => {
+                    el.disabled = true;
+                });
+            }
+
+            sanitizeInput(input) {
+                if (typeof input !== 'string') return input;
+                // Basic sanitization, consider a more robust library for production
+                return input
+                    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+                    .replace(/javascript:/gi, '')
+                    .replace(/on\w+\s*=/gi, '') // Remove on<event> attributes
+                    .replace(/data:(?!image\/(png|jpeg|gif|webp);base64,)/gi, '') // Allow data URIs for images only
+                    .trim();
+            }
+            
+            monitorSecurityEvents() {
+                // Example: Detect rapid clicks (simple bot detection)
+                let rapidClicks = 0;
+                let lastClickTime = 0;
+                document.addEventListener('click', (e) => {
+                    const now = Date.now();
+                    if (now - lastClickTime < 50) { // 50ms threshold for rapid clicks
+                        rapidClicks++;
+                        if (rapidClicks > 20) { // If more than 20 rapid clicks
+                            this.showSecurityAlert('Suspicious rapid clicking detected. Activity logged.');
+                            // Potentially block further actions or log more detailed info
+                            rapidClicks = 0; // Reset counter
+                        }
+                    } else {
+                        rapidClicks = 0; // Reset if time between clicks is normal
+                    }
+                    lastClickTime = now;
+                });
+            }
+
+
+            showSecurityAlert(message) {
+                const alertDiv = document.getElementById('security-status');
+                const messageSpan = document.getElementById('security-message');
+                
+                if (alertDiv && messageSpan) {
+                    messageSpan.textContent = message;
+                    alertDiv.style.display = 'block';
+                    
+                    // Hide after 10 seconds
+                    setTimeout(() => {
+                        alertDiv.style.display = 'none';
+                    }, 10000);
+                }
+                console.warn('Security Alert:', message);
+            }
+
+            // Placeholder for Lattice Encryption methods
+            async generateEncryptionKey() { /* ... */ }
+        }
+
+        // Enhanced Lattice Encryption (Placeholder)
+        class LatticeEncryption {
+            static async encrypt(data) { /* ... */ return data; } // Pass-through for now
+            static async decrypt(encryptedData) { /* ... */ return encryptedData; } // Pass-through for now
+        }
+
+        // Parse Store with Schema Alignment
+        class ParseStore {
+            constructor(security) {
+                this.security = security;
+                this.areas = [];
+                this.subcategories = [];
+                this.videos = [];
+                this.tags = [];
+                this.languages = []; // New store for languages
+                this.isLoading = false;
+                this.error = null;
+                this.eventListeners = {};
+            }
+
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(callback => {
+                        try {
+                            callback(data);
+                        } catch (error) {
+                            console.error(`Error in event listener for ${event}:`, error);
+                        }
+                    });
+                }
+            }
+            
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async executeQuery(queryFunc, retryCount = 0) {
+                try {
+                    const result = await queryFunc();
+                    return result;
+                } catch (error) {
+                    console.error('Parse query failed:', error.code, error.message);
+                    if (error.code === Parse.Error.INVALID_SESSION_TOKEN) {
+                        // Handle invalid session token, e.g., by logging out the user
+                        this.emit('error', { message: 'Session expired. Please refresh and log in again.' });
+                        // Potentially trigger a logout function here
+                        throw error; // Re-throw to stop retries for session errors
+                    }
+                    if (retryCount < CONFIG.maxRetries) {
+                        const delayTime = Math.pow(2, retryCount) * 1000; // Exponential backoff
+                        console.log(`Retrying query in ${delayTime / 1000}s... (Attempt ${retryCount + 1})`);
+                        await this.delay(delayTime);
+                        return this.executeQuery(queryFunc, retryCount + 1);
+                    }
+                    this.emit('error', { message: `Failed after ${CONFIG.maxRetries} retries: ${error.message}` });
+                    throw error;
+                }
+            }
+
+
+            async loadInitialData() {
+                if (!this.security.checkRateLimit('load-data', 10)) {
+                    throw new Error('Rate limit exceeded for data loading');
+                }
+
+                this.isLoading = true;
+                this.error = null;
+                this.emit('loading', true);
+
+                try {
+                    // Load Areas
+                    const Area = Parse.Object.extend("Area");
+                    const areaQuery = new Parse.Query(Area);
+                    areaQuery.ascending("area");
+                    areaQuery.limit(100);
+                    const areas = await this.executeQuery(() => areaQuery.find());
+
+                    // Load Subcategories with Area pointers
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subcategoryQuery = new Parse.Query(Subcategory);
+                    subcategoryQuery.include("area"); // Assuming 'area' is a Pointer to Area class
+                    subcategoryQuery.ascending("title");
+                    subcategoryQuery.limit(500);
+                    const subcategories = await this.executeQuery(() => subcategoryQuery.find());
+
+                    // Load Videos
+                    const Video = Parse.Object.extend("Video"); // Ensure "Video" matches your Parse class name
+                    const videoQuery = new Parse.Query(Video);
+                    videoQuery.descending("date"); // Assuming 'date' field exists
+                    videoQuery.limit(200);
+                    const videos = await this.executeQuery(() => videoQuery.find());
+                    
+                    // Load Tags
+                    const Tag = Parse.Object.extend("Tag");
+                    const tagQuery = new Parse.Query(Tag);
+                    tagQuery.ascending("name");
+                    tagQuery.limit(100);
+                    const tags = await this.executeQuery(() => tagQuery.find());
+
+                    // Load Languages
+                    const Language = Parse.Object.extend("Language");
+                    const languageQuery = new Parse.Query(Language);
+                    languageQuery.ascending("name");
+                    languageQuery.limit(50);
+                    const languages = await this.executeQuery(() => languageQuery.find());
+
+
+                    // Process and sanitize Areas
+                    this.areas = areas.map(areaObj => ({
+                        id: areaObj.id, // Parse objectId
+                        area: this.security.sanitizeInput(areaObj.get('area') || ''),
+                        icon: this.security.sanitizeInput(areaObj.get('icon') || 'fas fa-folder'),
+                        featherIcon: this.security.sanitizeInput(areaObj.get('featherIcon') || ''),
+                        svgString: this.security.sanitizeInput(areaObj.get('svgString') || ''),
+                        createdAt: areaObj.createdAt,
+                        updatedAt: areaObj.updatedAt,
+                        subcategories: [] // Will be populated next
+                    }));
+
+                    // Process and sanitize Subcategories
+                    this.subcategories = subcategories.map(subObj => {
+                        const areaPointer = subObj.get('area');
+                        return {
+                            id: subObj.id, // Parse objectId
+                            uniqueId: this.security.sanitizeInput(subObj.get('uniqueId') || ''),
+                            title: this.security.sanitizeInput(subObj.get('title') || ''),
+                            description: this.security.sanitizeInput(subObj.get('description') || ''),
+                            subtitle: this.security.sanitizeInput(subObj.get('subtitle') || ''),
+                            tags: Array.isArray(subObj.get('tags')) ? subObj.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                            context: this.security.sanitizeInput(subObj.get('context') || ''),
+                            materials: Array.isArray(subObj.get('materials')) ? subObj.get('materials').map(m => this.security.sanitizeInput(m)) : [],
+                            processSteps: Array.isArray(subObj.get('processSteps')) ? subObj.get('processSteps').map(s => this.security.sanitizeInput(s)) : [],
+                            areaId: areaPointer ? areaPointer.id : null, // Get id from Pointer
+                            createdAt: subObj.createdAt,
+                            updatedAt: subObj.updatedAt
+                        };
+                    });
+                    
+                    // Process and sanitize Videos
+                    this.videos = videos.map(videoObj => ({
+                        id: videoObj.id, // This is the Parse objectId
+                        customId: this.security.sanitizeInput(videoObj.get('id') || ''), // The custom 'id' field from original code
+                        title: this.security.sanitizeInput(videoObj.get('title') || ''),
+                        description: this.security.sanitizeInput(videoObj.get('description') || ''),
+                        youtubeId: this.security.sanitizeInput(videoObj.get('youtubeId') || ''),
+                        tags: Array.isArray(videoObj.get('tags')) ? videoObj.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                        categories: Array.isArray(videoObj.get('categories')) ? videoObj.get('categories').map(cat => this.security.sanitizeInput(cat)) : [], // Assuming categories might store Area IDs
+                        rating: videoObj.get('rating') || 0,
+                        date: videoObj.get('date'), // Ensure this is a Date object or string that can be parsed
+                        transcript: this.security.sanitizeInput(videoObj.get('transcript') || ''),
+                        materials: Array.isArray(videoObj.get('materials')) ? videoObj.get('materials').map(m => this.security.sanitizeInput(m)) : [],
+                        steps: Array.isArray(videoObj.get('steps')) ? videoObj.get('steps').map(s => this.security.sanitizeInput(s)) : [],
+                        panels: Array.isArray(videoObj.get('panels')) ? videoObj.get('panels').map(p => this.security.sanitizeInput(p)) : [],
+                        creator: this.security.sanitizeInput(videoObj.get('creator') || ''),
+                        createdAt: videoObj.createdAt,
+                        updatedAt: videoObj.updatedAt
+                    }));
+
+                    // Process and sanitize Tags
+                    this.tags = tags.map(tagObj => ({
+                        id: tagObj.id, // Parse objectId
+                        name: this.security.sanitizeInput(tagObj.get('name') || ''),
+                        definition: this.security.sanitizeInput(tagObj.get('definition') || ''),
+                        createdAt: tagObj.createdAt,
+                        updatedAt: tagObj.updatedAt
+                    }));
+
+                    // Process and sanitize Languages
+                    this.languages = languages.map(langObj => ({
+                        id: langObj.id, // Parse objectId
+                        name: this.security.sanitizeInput(langObj.get('name') || ''),
+                        code: this.security.sanitizeInput(langObj.get('code') || ''),
+                        nativeName: this.security.sanitizeInput(langObj.get('nativeName') || ''),
+                        createdAt: langObj.createdAt,
+                        updatedAt: langObj.updatedAt
+                    }));
+
+
+                    // Link subcategories to areas
+                    this.areas.forEach(area => {
+                        area.subcategories = this.subcategories.filter(sub => sub.areaId === area.id)
+                                                .sort((a,b) => (a.title || '').localeCompare(b.title || ''));
+                    });
+
+                    this.emit('dataLoaded', { 
+                        areas: this.areas, 
+                        subcategories: this.subcategories,
+                        videos: this.videos,
+                        tags: this.tags,
+                        languages: this.languages,
+                        source: 'parse' 
+                    });
+
+                } catch (error) {
+                    console.error("Parse data loading failed:", error);
+                    
+                    // Fallback to seed data
+                    this.areas = SEED_DATA.areas.map(a => ({...a, subcategories: []})); // Ensure subcategories array exists
+                    this.subcategories = SEED_DATA.subcategories;
+                    this.videos = SEED_DATA.videos;
+                    this.tags = SEED_DATA.tags;
+                    this.languages = SEED_DATA.languages;
+                    
+                    // Link relationships in seed data
+                    this.areas.forEach(area => {
+                        area.subcategories = this.subcategories.filter(sub => sub.areaId === area.id)
+                                                .sort((a,b) => (a.title || '').localeCompare(b.title || ''));
+                    });
+                    
+                    this.error = this.security.sanitizeInput(error.message || 'Failed to load data from Parse, using offline data');
+                    this.emit('error', { message: this.error });
+                    this.emit('dataLoaded', { 
+                        areas: this.areas, 
+                        subcategories: this.subcategories,
+                        videos: this.videos,
+                        tags: this.tags,
+                        languages: this.languages,
+                        source: 'seed' 
+                    });
+                } finally {
+                    this.isLoading = false;
+                    this.emit('loading', false);
+                }
+            }
+
+            // CRUD for Area
+            async addArea(areaData) {
+                if (!this.security.checkRateLimit('add-area', 5)) {
+                    throw new Error('Rate limit exceeded for adding areas');
+                }
+                try {
+                    const sanitizedData = {
+                        area: this.security.sanitizeInput(areaData.area || ''),
+                        icon: this.security.sanitizeInput(areaData.icon || 'fas fa-folder'),
+                        featherIcon: this.security.sanitizeInput(areaData.featherIcon || ''),
+                        svgString: this.security.sanitizeInput(areaData.svgString || '')
+                    };
+
+                    const Area = Parse.Object.extend("Area");
+                    const area = new Area();
+                    area.set("area", sanitizedData.area);
+                    area.set("icon", sanitizedData.icon);
+                    area.set("featherIcon", sanitizedData.featherIcon);
+                    area.set("svgString", sanitizedData.svgString);
+                    
+                    const result = await this.executeQuery(() => area.save());
+                    
+                    const newArea = {
+                        id: result.id,
+                        area: this.security.sanitizeInput(result.get('area')),
+                        icon: this.security.sanitizeInput(result.get('icon')),
+                        featherIcon: this.security.sanitizeInput(result.get('featherIcon')),
+                        svgString: this.security.sanitizeInput(result.get('svgString')),
+                        createdAt: result.createdAt,
+                        updatedAt: result.updatedAt,
+                        subcategories: []
+                    };
+
+                    this.areas.push(newArea);
+                    this.areas.sort((a, b) => (a.area || '').localeCompare(b.area || ''));
+                    this.emit('dataLoaded', { areas: this.areas }); // Notify UI to re-render
+                    return newArea;
+
+                } catch (error) {
+                    console.error("Add area failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add area') });
+                    throw error;
+                }
+            }
+
+            async deleteArea(areaId) {
+                if (!this.security.checkRateLimit('delete-area', 5)) {
+                    throw new Error('Rate limit exceeded for deleting areas');
+                }
+                try {
+                    const Area = Parse.Object.extend("Area");
+                    const areaQuery = new Parse.Query(Area);
+                    const areaToDelete = await this.executeQuery(() => areaQuery.get(areaId));
+                    
+                    // TODO: Implement cascading delete for subcategories and associated content
+                    // For now, just deleting the area.
+                    await this.executeQuery(() => areaToDelete.destroy());
+
+                    this.areas = this.areas.filter(a => a.id !== areaId);
+                    // Also remove subcategories associated with this area from the local store
+                    this.subcategories = this.subcategories.filter(sc => sc.areaId !== areaId);
+
+                    this.emit('dataLoaded', { areas: this.areas, subcategories: this.subcategories });
+                    return areaId;
+                } catch (error) {
+                    console.error("Delete area failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to delete area') });
+                    throw error;
+                }
+            }
+
+
+            // CRUD for Subcategory
+            async addSubcategory(areaId, subcategoryData) {
+                if (!this.security.checkRateLimit('add-subcategory', 10)) {
+                    throw new Error('Rate limit exceeded for adding subcategories');
+                }
+                try {
+                    const sanitizedData = {
+                        title: this.security.sanitizeInput(subcategoryData.title || ''),
+                        description: this.security.sanitizeInput(subcategoryData.description || ''),
+                        subtitle: this.security.sanitizeInput(subcategoryData.subtitle || ''),
+                        context: this.security.sanitizeInput(subcategoryData.context || ''),
+                        uniqueId: this.security.sanitizeInput(subcategoryData.uniqueId || Date.now().toString())
+                    };
+
+                    const Area = Parse.Object.extend("Area");
+                    const areaPointer = Area.createWithoutData(areaId); // Create a pointer
+
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subcategory = new Subcategory();
+                    subcategory.set("title", sanitizedData.title);
+                    subcategory.set("description", sanitizedData.description);
+                    subcategory.set("subtitle", sanitizedData.subtitle);
+                    subcategory.set("context", sanitizedData.context);
+                    subcategory.set("uniqueId", sanitizedData.uniqueId);
+                    subcategory.set("area", areaPointer); // Set the pointer
+                    subcategory.set("tags", []); 
+                    subcategory.set("materials", []);
+                    subcategory.set("processSteps", []);
+                    
+                    const result = await this.executeQuery(() => subcategory.save());
+                    
+                    const newSubcategory = {
+                        id: result.id,
+                        uniqueId: this.security.sanitizeInput(result.get('uniqueId')),
+                        title: this.security.sanitizeInput(result.get('title')),
+                        description: this.security.sanitizeInput(result.get('description')),
+                        subtitle: this.security.sanitizeInput(result.get('subtitle')),
+                        context: this.security.sanitizeInput(result.get('context')),
+                        tags: [], materials: [], processSteps: [],
+                        areaId: areaId,
+                        createdAt: result.createdAt,
+                        updatedAt: result.updatedAt
+                    };
+
+                    this.subcategories.push(newSubcategory);
+                    const area = this.areas.find(a => a.id === areaId);
+                    if (area) {
+                        if (!Array.isArray(area.subcategories)) area.subcategories = [];
+                        area.subcategories.push(newSubcategory);
+                        area.subcategories.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                    }
+                    this.emit('dataLoaded', { areas: this.areas, subcategories: this.subcategories });
+                    return newSubcategory;
+
+                } catch (error) {
+                    console.error("Add subcategory failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add subcategory') });
+                    throw error;
+                }
+            }
+
+            async deleteSubcategory(subcategoryId) {
+                if (!this.security.checkRateLimit('delete-subcategory', 10)) {
+                    throw new Error('Rate limit exceeded for deleting subcategories');
+                }
+                try {
+                    const Subcategory = Parse.Object.extend("Subcategory");
+                    const subcategoryQuery = new Parse.Query(Subcategory);
+                    const subcategoryToDelete = await this.executeQuery(() => subcategoryQuery.get(subcategoryId));
+                    
+                    // TODO: Handle associated videos or other content
+                    await this.executeQuery(() => subcategoryToDelete.destroy());
+
+                    const deletedSubcategoryAreaId = this.subcategories.find(sc => sc.id === subcategoryId)?.areaId;
+                    this.subcategories = this.subcategories.filter(sc => sc.id !== subcategoryId);
+
+                    if (deletedSubcategoryAreaId) {
+                        const area = this.areas.find(a => a.id === deletedSubcategoryAreaId);
+                        if (area) {
+                            area.subcategories = area.subcategories.filter(sc => sc.id !== subcategoryId);
+                        }
+                    }
+                    
+                    this.emit('dataLoaded', { areas: this.areas, subcategories: this.subcategories });
+                    return subcategoryId;
+                } catch (error) {
+                    console.error("Delete subcategory failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to delete subcategory') });
+                    throw error;
+                }
+            }
+
+            // CRUD for Video
+            async addVideo(videoData) {
+                if (!this.security.checkRateLimit('add-video', 5)) {
+                    throw new Error('Rate limit exceeded for adding videos');
+                }
+                try {
+                    const sanitizedData = {
+                        title: this.security.sanitizeInput(videoData.title || ''),
+                        description: this.security.sanitizeInput(videoData.description || ''),
+                        youtubeId: this.security.sanitizeInput(videoData.youtubeId || ''),
+                        tags: Array.isArray(videoData.tags) ? videoData.tags.map(tag => this.security.sanitizeInput(tag)) : [],
+                        // Assuming videoData.categories will contain an array with areaId and/or subcategoryId
+                        categories: Array.isArray(videoData.categories) ? videoData.categories.map(c => this.security.sanitizeInput(c)) : [],
+                        creator: this.security.sanitizeInput(videoData.creator || 'Unknown'),
+                        customId: Date.now().toString() // Keep the custom ID logic from original code
+                    };
+
+                    const Video = Parse.Object.extend("Video");
+                    const video = new Video();
+                    
+                    video.set("title", sanitizedData.title);
+                    video.set("description", sanitizedData.description);
+                    video.set("youtubeId", sanitizedData.youtubeId);
+                    video.set("tags", sanitizedData.tags);
+                    video.set("categories", sanitizedData.categories); // Store area/subcategory IDs
+                    video.set("rating", 0);
+                    video.set("date", new Date());
+                    video.set("materials", []);
+                    video.set("steps", []);
+                    video.set("panels", []);
+                    video.set("creator", sanitizedData.creator);
+                    video.set("transcript", "");
+                    video.set("id", sanitizedData.customId); // Set the custom 'id' field
+
+                    const result = await this.executeQuery(() => video.save());
+                    
+                    const newVideo = {
+                        id: result.id, // Parse objectId
+                        customId: this.security.sanitizeInput(result.get('id')), // The custom 'id' field
+                        title: this.security.sanitizeInput(result.get('title')),
+                        description: this.security.sanitizeInput(result.get('description')),
+                        youtubeId: this.security.sanitizeInput(result.get('youtubeId')),
+                        tags: Array.isArray(result.get('tags')) ? result.get('tags').map(tag => this.security.sanitizeInput(tag)) : [],
+                        categories: Array.isArray(result.get('categories')) ? result.get('categories').map(cat => this.security.sanitizeInput(cat)) : [],
+                        rating: result.get('rating') || 0,
+                        date: result.get('date'),
+                        transcript: this.security.sanitizeInput(result.get('transcript')),
+                        materials: [], steps: [], panels: [],
+                        creator: this.security.sanitizeInput(result.get('creator')),
+                        createdAt: result.createdAt,
+                        updatedAt: result.updatedAt
+                    };
+
+                    this.videos.unshift(newVideo); // Add to the beginning of the list
+                    this.emit('dataLoaded', { videos: this.videos });
+                    return newVideo;
+
+                } catch (error) {
+                    console.error("Add video failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add video') });
+                    throw error;
+                }
+            }
+            
+            // CRUD for Language
+            async addLanguage(langData) {
+                if (!this.security.checkRateLimit('add-language', 5)) {
+                    throw new Error('Rate limit exceeded for adding languages');
+                }
+                try {
+                    const sanitizedData = {
+                        name: this.security.sanitizeInput(langData.name || ''),
+                        code: this.security.sanitizeInput(langData.code || ''),
+                        nativeName: this.security.sanitizeInput(langData.nativeName || ''),
+                    };
+
+                    const Language = Parse.Object.extend("Language");
+                    const language = new Language();
+                    language.set("name", sanitizedData.name);
+                    language.set("code", sanitizedData.code);
+                    language.set("nativeName", sanitizedData.nativeName);
+                    
+                    const result = await this.executeQuery(() => language.save());
+                    
+                    const newLanguage = {
+                        id: result.id,
+                        name: this.security.sanitizeInput(result.get('name')),
+                        code: this.security.sanitizeInput(result.get('code')),
+                        nativeName: this.security.sanitizeInput(result.get('nativeName')),
+                        createdAt: result.createdAt,
+                        updatedAt: result.updatedAt,
+                    };
+
+                    this.languages.push(newLanguage);
+                    this.languages.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                    this.emit('dataLoaded', { languages: this.languages });
+                    return newLanguage;
+
+                } catch (error) {
+                    console.error("Add language failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to add language') });
+                    throw error;
+                }
+            }
+
+            async deleteLanguage(languageId) {
+                if (!this.security.checkRateLimit('delete-language', 5)) {
+                    throw new Error('Rate limit exceeded for deleting languages');
+                }
+                try {
+                    const Language = Parse.Object.extend("Language");
+                    const languageQuery = new Parse.Query(Language);
+                    const languageToDelete = await this.executeQuery(() => languageQuery.get(languageId));
+                    
+                    // TODO: Consider implications for content already translated in this language.
+                    await this.executeQuery(() => languageToDelete.destroy());
+
+                    this.languages = this.languages.filter(l => l.id !== languageId);
+                    this.emit('dataLoaded', { languages: this.languages });
+                    return languageId;
+                } catch (error) {
+                    console.error("Delete language failed:", error);
+                    this.emit('error', { message: this.security.sanitizeInput(error.message || 'Failed to delete language') });
+                    throw error;
+                }
+            }
+        }
+
+        // Enhanced Content Management System
+        class EnhancedContentManager {
+            constructor() {
+                this.security = new SecurityManager();
+                this.store = new ParseStore(this.security);
+                this.currentTab = 'taxonomy'; // Default tab
+                this.currentContent = null; // For editing content
+                // ... (editingState can be added later for inline edits)
+                this.init();
+            }
+
+            async init() {
+                // await this.security.generateEncryptionKey(); // If using client-side key generation
+                this.setupEventListeners();
+                this.setupTabNavigation();
+                this.bindStoreEvents();
+                await this.loadData(); // This will also call renderCurrentTab via dataLoaded event
+                this.updateConnectionStatus('connected'); // Initial status
+            }
+
+            setupEventListeners() {
+                document.getElementById('sync-btn')?.addEventListener('click', () => this.syncData());
+                document.getElementById('add-area-btn')?.addEventListener('click', () => this.createNewArea());
+                document.getElementById('add-content-btn')?.addEventListener('click', () => this.showVideoModal()); // Assuming this adds a video
+                document.getElementById('add-video-btn')?.addEventListener('click', () => this.showVideoModal());
+                document.getElementById('add-tag-btn')?.addEventListener('click', () => this.showNotification('Tag management not yet fully implemented', 'info'));
+                document.getElementById('add-language-btn')?.addEventListener('click', () => this.createNewLanguage());
+                document.getElementById('refresh-analytics-btn')?.addEventListener('click', () => this.renderAnalytics());
+
+
+                this.setupModalEvents();
+
+                const taxonomyContainer = document.getElementById('taxonomy-container');
+                taxonomyContainer?.addEventListener('click', (e) => this.handleTaxonomyClick(e));
+
+                const languagesContainer = document.getElementById('languages-container');
+                languagesContainer?.addEventListener('click', (e) => this.handleLanguageClick(e));
+
+                // Filter listeners
+                document.getElementById('video-area-filter')?.addEventListener('change', (e) => this.filterVideos());
+                document.getElementById('video-category-filter')?.addEventListener('change', (e) => this.filterVideos());
+                document.getElementById('content-filter')?.addEventListener('change', (e) => this.filterContentList());
+
+            }
+            
+            filterContentList() {
+                // This function will re-render the content list based on the selected area.
+                // For now, it's a placeholder as renderContent() needs full implementation.
+                this.renderContent(); 
+                this.showNotification('Content list filtering coming soon.', 'info');
+            }
+
+            filterVideos() {
+                this.renderVideos(); // Re-render videos with current filter values
+            }
+
+
+            setupModalEvents() {
+                const modal = document.getElementById('add-video-modal');
+                const closeBtn = document.getElementById('modal-close-btn');
+                const cancelBtn = document.getElementById('cancel-video-btn');
+                const form = document.getElementById('videoForm');
+                const areaSelect = document.getElementById('video-area-select');
+                
+                [closeBtn, cancelBtn].forEach(btn => {
+                    btn?.addEventListener('click', () => this.closeVideoModal());
+                });
+
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) this.closeVideoModal();
+                });
+
+                areaSelect?.addEventListener('change', (e) => {
+                    this.populateSubcategorySelect(e.target.value, 'video-subcategory-select', 'modal-category-context');
+                });
+
+                form?.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleVideoSubmission();
+                });
+
+                // YouTube URL input listener for ID extraction
+                const youtubeUrlInput = document.getElementById('video-youtube-url');
+                const youtubeIdPreview = document.getElementById('youtube-id-preview');
+                youtubeUrlInput?.addEventListener('input', (e) => {
+                    const id = this.extractYoutubeId(e.target.value);
+                    if (id) {
+                        youtubeIdPreview.textContent = `YouTube ID: ${id}`;
+                    } else {
+                        youtubeIdPreview.textContent = '';
+                    }
+                });
+            }
+
+
+            setupTabNavigation() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const tabContents = document.querySelectorAll('.tab-content');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.dataset.tab;
+                        
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        document.getElementById(`${tabId}-tab`)?.classList.add('active');
+                        
+                        this.currentTab = tabId;
+                        this.renderCurrentTab();
+                    });
+                });
+            }
+
+            bindStoreEvents() {
+                this.store.on('loading', (isLoading) => {
+                    if (isLoading) {
+                        this.updateConnectionStatus('loading');
+                    }
+                    // Re-render the current tab, which will show its own loading state
+                    this.renderCurrentTab(); 
+                });
+
+                this.store.on('error', (errorData) => {
+                    const message = this.security.sanitizeInput(errorData.message || 'An error occurred');
+                    this.showNotification(message, 'error');
+                    this.updateConnectionStatus('error');
+                });
+
+                this.store.on('dataLoaded', (payload) => {
+                    this.updateConnectionStatus(payload.source === 'parse' ? 'connected' : 'warning'); // Warning if from seed
+                    if (payload.source === 'seed') {
+                        this.showNotification('Loaded offline data. Sync to get the latest.', 'warning');
+                    }
+                    this.renderCurrentTab();
+                    this.populateFilters(); // Populate all relevant filters
+                });
+            }
+
+            async loadData() {
+                try {
+                    Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+                    Parse.serverURL = CONFIG.parseServerURL;
+                    await this.store.loadInitialData();
+                } catch (error) {
+                    console.error('Failed to initialize Parse or load data:', error);
+                    this.showNotification(`Initialization Error: ${this.security.sanitizeInput(error.message)}`, 'error');
+                    this.updateConnectionStatus('error');
+                    // Attempt to render with seed data if store.loadInitialData handles it
+                    this.renderCurrentTab(); 
+                }
+            }
+
+            renderCurrentTab() {
+                switch (this.currentTab) {
+                    case 'taxonomy': this.renderTaxonomy(); break;
+                    case 'content': this.renderContent(); break;
+                    case 'videos': this.renderVideos(); break;
+                    case 'tags': this.renderTags(); break;
+                    case 'languages': this.renderLanguages(); break; // Render new tab
+                    case 'analytics': this.renderAnalytics(); break;
+                }
+            }
+
+            renderTaxonomy() {
+                const container = document.getElementById('taxonomy-container');
+                if (!container) return;
+
+                if (this.store.isLoading && this.store.areas.length === 0) { // Show loading only if no data yet
+                    container.innerHTML = this.renderLoading('Loading areas and subcategories...');
+                    return;
+                }
+
+                if (this.store.areas.length === 0 && !this.store.isLoading) {
+                    container.innerHTML = this.renderEmptyState('fas fa-sitemap', 'No Knowledge Areas', 'Create your first knowledge area.');
+                    return;
+                }
+
+                const html = this.store.areas.map(area => {
+                    const subcategoriesHtml = area.subcategories?.map(sub => `
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="content-item-title">
+                                    <i class="fas fa-folder-open" style="color: var(--gray-500)"></i>
+                                    <span class="subcategory-name" data-subcategory-id="${sub.id}">${this.escapeHtml(sub.title)}</span>
+                                </div>
+                                <div class="content-item-meta">
+                                    ${sub.description ? this.escapeHtml(sub.description.substring(0, 70)) + (sub.description.length > 70 ? '...' : '') : 'No description'}
+                                </div>
+                            </div>
+                            <div class="list-item-actions">
+                                <button class="btn btn-primary btn-xs edit-subcategory-btn" data-subcategory-id="${sub.id}" data-area-id="${area.id}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-xs delete-subcategory-btn" data-subcategory-id="${sub.id}" data-area-id="${area.id}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `).join('') || '<div class="empty-state" style="padding:1rem;"><p>No subcategories yet.</p></div>';
+
+                    return `
+                        <div class="card area-item" data-area-id="${area.id}" style="margin-bottom: 1rem;">
+                            <div class="card-header" style="padding: 1rem 1.5rem;">
+                                <h3 class="card-title" style="font-size: 1.1rem;">
+                                    <i class="${area.icon || 'fas fa-folder'}" style="color: var(--primary)"></i>
+                                    <span class="area-name" data-area-id="${area.id}">${this.escapeHtml(area.area)}</span>
+                                </h3>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="btn btn-success btn-sm add-subcategory-btn" data-area-id="${area.id}">
+                                        <i class="fas fa-plus"></i> Add Subcategory
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm edit-area-btn" data-area-id="${area.id}">
+                                        <i class="fas fa-edit"></i> Edit Area
+                                    </button>
+                                    <button class="btn btn-danger btn-sm delete-area-btn" data-area-id="${area.id}">
+                                        <i class="fas fa-trash"></i> Delete Area
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-content" style="padding: 1.5rem;">
+                                <div class="list-manager">
+                                    ${subcategoriesHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                container.innerHTML = html;
+            }
+            
+            renderVideos() {
+                const container = document.getElementById('video-grid');
+                if (!container) return;
+
+                if (this.store.isLoading && this.store.videos.length === 0) {
+                    container.innerHTML = this.renderLoading('Loading video library...');
+                    return;
+                }
+                
+                const areaFilter = document.getElementById('video-area-filter')?.value;
+                const categoryFilter = document.getElementById('video-category-filter')?.value; // Assuming this filters by subcategory ID
+
+                let filteredVideos = this.store.videos;
+
+                if (areaFilter) {
+                    filteredVideos = filteredVideos.filter(video => video.categories && video.categories.includes(areaFilter));
+                }
+                if (categoryFilter) { // This logic might need refinement based on how categories are stored for videos
+                    filteredVideos = filteredVideos.filter(video => video.categories && video.categories.includes(categoryFilter));
+                }
+
+
+                if (filteredVideos.length === 0 && !this.store.isLoading) {
+                    container.innerHTML = this.renderEmptyState('fas fa-video-slash', 'No Videos Found', 'Try adjusting filters or add new videos.');
+                    return;
+                }
+
+                const html = filteredVideos.map(video => `
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            ${video.youtubeId ? 
+                                `<img src="https://img.youtube.com/vi/${this.escapeHtml(video.youtubeId)}/mqdefault.jpg" alt="Video Thumbnail" onerror="this.onerror=null;this.src='https://placehold.co/320x180/e2e8f0/64748b?text=No+Preview';">` :
+                                '<i class="fas fa-play placeholder-icon"></i>'
+                            }
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${this.escapeHtml(video.title)}</div>
+                            <div class="video-meta">
+                                ${video.youtubeId ? 'YouTube' : 'Local'} • 
+                                Rating: ${video.rating || 0}/5 • 
+                                ${this.formatDate(video.date)} <br>
+                                Tags: ${video.tags && video.tags.length > 0 ? video.tags.map(t => this.escapeHtml(t)).join(', ') : 'None'}
+                            </div>
+                            <div class="video-actions">
+                                <button class="btn btn-primary btn-xs edit-video-btn" data-video-id="${video.id}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-xs delete-video-btn" data-video-id="${video.id}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                container.innerHTML = html;
+                 // Add event listeners for new buttons
+                document.querySelectorAll('.edit-video-btn').forEach(btn => btn.addEventListener('click', (e) => this.editVideo(e.currentTarget.dataset.videoId)));
+                document.querySelectorAll('.delete-video-btn').forEach(btn => btn.addEventListener('click', (e) => this.deleteVideo(e.currentTarget.dataset.videoId)));
+            }
+
+            editVideo(videoId) {
+                this.showNotification(`Editing video ${videoId} - coming soon!`, 'info');
+                // TODO: Implement modal or inline editing for videos
+            }
+
+            async deleteVideo(videoId) {
+                const video = this.store.videos.find(v => v.id === videoId);
+                if (video && confirm(`Are you sure you want to delete "${this.escapeHtml(video.title)}"? This action cannot be undone.`)) {
+                    try {
+                        const Video = Parse.Object.extend("Video");
+                        const videoQuery = new Parse.Query(Video);
+                        const videoToDelete = await this.store.executeQuery(() => videoQuery.get(videoId));
+                        await this.store.executeQuery(() => videoToDelete.destroy());
+                        
+                        this.store.videos = this.store.videos.filter(v => v.id !== videoId);
+                        this.renderVideos(); // Re-render the video list
+                        this.showNotification('Video deleted successfully!', 'success');
+                    } catch (error) {
+                        console.error("Delete video failed:", error);
+                        this.showNotification(this.security.sanitizeInput(error.message || 'Failed to delete video'), 'error');
+                    }
+                }
+            }
+
+
+            renderTags() {
+                const container = document.getElementById('tags-container');
+                if (!container) return;
+
+                if (this.store.isLoading && this.store.tags.length === 0) {
+                    container.innerHTML = this.renderLoading('Loading tag library...');
+                    return;
+                }
+                if (this.store.tags.length === 0 && !this.store.isLoading) {
+                    container.innerHTML = this.renderEmptyState('fas fa-tags', 'No Tags Yet', 'Create tags to organize your content.');
+                    return;
+                }
+                const html = `
+                    <div class="list-manager">
+                        ${this.store.tags.map(tag => `
+                            <div class="list-item">
+                                <div class="list-item-content">
+                                    <div class="content-item-title">
+                                        <i class="fas fa-tag" style="color: var(--purple)"></i>
+                                        ${this.escapeHtml(tag.name)}
+                                    </div>
+                                    <div class="content-item-meta">
+                                        ${tag.definition ? this.escapeHtml(tag.definition) : 'No definition provided'}
+                                    </div>
+                                </div>
+                                <div class="list-item-actions">
+                                    <button class="btn btn-primary btn-xs edit-tag-btn" data-tag-id="${tag.id}"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn btn-danger btn-xs delete-tag-btn" data-tag-id="${tag.id}"><i class="fas fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`;
+                container.innerHTML = html;
+                // Add event listeners for new buttons
+                // document.querySelectorAll('.edit-tag-btn').forEach(btn => ...);
+                // document.querySelectorAll('.delete-tag-btn').forEach(btn => ...);
+            }
+
+            renderLanguages() {
+                const container = document.getElementById('languages-container');
+                if (!container) return;
+
+                if (this.store.isLoading && this.store.languages.length === 0) {
+                    container.innerHTML = this.renderLoading('Loading languages...');
+                    return;
+                }
+                if (this.store.languages.length === 0 && !this.store.isLoading) {
+                    container.innerHTML = this.renderEmptyState('fas fa-language', 'No Languages Yet', 'Add languages to enable translation features.');
+                    return;
+                }
+
+                const html = `
+                    <div class="list-manager">
+                        ${this.store.languages.map(lang => `
+                            <div class="list-item">
+                                <div class="list-item-content">
+                                    <div class="content-item-title">
+                                        <i class="fas fa-flag" style="color: var(--orange)"></i>
+                                        ${this.escapeHtml(lang.name)} (${this.escapeHtml(lang.code)})
+                                    </div>
+                                    <div class="content-item-meta">
+                                        Native Name: ${this.escapeHtml(lang.nativeName || 'N/A')}
+                                    </div>
+                                </div>
+                                <div class="list-item-actions">
+                                    <button class="btn btn-primary btn-xs edit-language-btn" data-lang-id="${lang.id}"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn btn-danger btn-xs delete-language-btn" data-lang-id="${lang.id}"><i class="fas fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`;
+                container.innerHTML = html;
+                 // Add event listeners for new buttons
+                document.querySelectorAll('.edit-language-btn').forEach(btn => btn.addEventListener('click', (e) => this.editLanguage(e.currentTarget.dataset.langId)));
+                document.querySelectorAll('.delete-language-btn').forEach(btn => btn.addEventListener('click', (e) => this.deleteLanguage(e.currentTarget.dataset.langId)));
+            }
+            
+            editLanguage(langId) {
+                this.showNotification(`Editing language ${langId} - coming soon!`, 'info');
+                // TODO: Implement modal or inline editing for languages
+            }
+
+
+            renderContent() {
+                // This tab is intended to show subcategories and allow detailed editing.
+                const container = document.getElementById('content-list');
+                const editorContainer = document.getElementById('content-editor');
+                if (!container || !editorContainer) return;
+
+                if (this.store.isLoading && this.store.subcategories.length === 0) {
+                    container.innerHTML = this.renderLoading('Loading content library...');
+                    editorContainer.innerHTML = this.renderEmptyState('fas fa-edit', 'Select Content to Edit', 'Choose a subcategory from the library.');
+                    return;
+                }
+                
+                const areaFilterId = document.getElementById('content-filter')?.value;
+                const subcategoriesToList = areaFilterId 
+                    ? this.store.subcategories.filter(sc => sc.areaId === areaFilterId)
+                    : this.store.subcategories;
+
+
+                if (subcategoriesToList.length === 0 && !this.store.isLoading) {
+                    container.innerHTML = this.renderEmptyState('fas fa-folder-open', 'No Content Found', 'Select an area or add subcategories.');
+                    editorContainer.innerHTML = this.renderEmptyState('fas fa-edit', 'Select Content to Edit', 'Choose a subcategory from the library.');
+                    return;
+                }
+
+                container.innerHTML = subcategoriesToList.map(sub => `
+                    <div class="content-item ${this.currentContent?.id === sub.id ? 'active' : ''}" data-subcategory-id="${sub.id}">
+                        <div class="content-item-title">
+                            <i class="fas fa-file-alt"></i>
+                            ${this.escapeHtml(sub.title)}
+                        </div>
+                        <div class="content-item-meta">
+                            Area: ${this.store.areas.find(a => a.id === sub.areaId)?.area || 'Unknown'}
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add click listeners to content items
+                container.querySelectorAll('.content-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const subcategoryId = item.dataset.subcategoryId;
+                        this.loadSubcategoryForEditing(subcategoryId);
+                        // Highlight selected item
+                        container.querySelectorAll('.content-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    });
+                });
+
+                // If content is selected, render editor, otherwise show empty state
+                if (this.currentContent) {
+                    this.renderSubcategoryEditor(this.currentContent);
+                } else {
+                    editorContainer.innerHTML = this.renderEmptyState('fas fa-edit', 'Select Content to Edit', 'Choose a subcategory from the library.');
+                }
+            }
+            
+            loadSubcategoryForEditing(subcategoryId) {
+                this.currentContent = this.store.subcategories.find(sc => sc.id === subcategoryId);
+                this.renderSubcategoryEditor(this.currentContent);
+            }
+
+            renderSubcategoryEditor(subcategory) {
+                const editorContainer = document.getElementById('content-editor');
+                if (!editorContainer || !subcategory) {
+                    editorContainer.innerHTML = this.renderEmptyState('fas fa-exclamation-circle', 'Error', 'Could not load subcategory details.');
+                    return;
+                }
+
+                // Placeholder for a more complex editor
+                editorContainer.innerHTML = `
+                    <div class="editor-tabs">
+                        <button class="editor-tab active" data-editor-section="details">Details</button>
+                        <button class="editor-tab" data-editor-section="videos">Videos</button>
+                        <button class="editor-tab" data-editor-section="translations">Translations</button>
+                    </div>
+                    <div id="editor-section-details" class="editor-section active">
+                        <h3>${this.escapeHtml(subcategory.title)}</h3>
+                        <p><strong>Description:</strong> ${this.escapeHtml(subcategory.description || 'N/A')}</p>
+                        <p><strong>Area:</strong> ${this.store.areas.find(a => a.id === subcategory.areaId)?.area || 'Unknown'}</p>
+                        <button class="btn btn-primary btn-sm mt-2">Edit Details (Coming Soon)</button>
+                    </div>
+                    <div id="editor-section-videos" class="editor-section">
+                        <h4>Associated Videos (Coming Soon)</h4>
+                        </div>
+                     <div id="editor-section-translations" class="editor-section">
+                        <h4>Translations (Coming Soon)</h4>
+                        </div>
+                `;
+                // Add event listeners for editor tabs
+                editorContainer.querySelectorAll('.editor-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        editorContainer.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        editorContainer.querySelectorAll('.editor-section').forEach(s => s.classList.remove('active'));
+                        document.getElementById(`editor-section-${tab.dataset.editorSection}`)?.classList.add('active');
+                    });
+                });
+            }
+
+
+            renderAnalytics() {
+                // ... (Analytics rendering remains the same)
+                const container = document.getElementById('analytics-container');
+                if (!container) return;
+                
+                const analytics = {
+                    totalAreas: this.store.areas.length,
+                    totalSubcategories: this.store.subcategories.length,
+                    totalVideos: this.store.videos.length,
+                    totalTags: this.store.tags.length,
+                    totalLanguages: this.store.languages.length,
+                    averageRating: this.store.videos.length > 0 ? 
+                        this.store.videos.reduce((sum, video) => sum + (video.rating || 0), 0) / this.store.videos.length : 0
+                };
+
+                const html = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-sitemap" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.totalAreas}</div>
+                            <div style="color: var(--gray-600);">Areas</div>
+                        </div></div>
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-folder-open" style="font-size: 2rem; color: var(--success); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.totalSubcategories}</div>
+                            <div style="color: var(--gray-600);">Subcategories</div>
+                        </div></div>
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-video" style="font-size: 2rem; color: var(--purple); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.totalVideos}</div>
+                            <div style="color: var(--gray-600);">Videos</div>
+                        </div></div>
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-tags" style="font-size: 2rem; color: var(--warning); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.totalTags}</div>
+                            <div style="color: var(--gray-600);">Tags</div>
+                        </div></div>
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-language" style="font-size: 2rem; color: var(--orange); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.totalLanguages}</div>
+                            <div style="color: var(--gray-600);">Languages</div>
+                        </div></div>
+                        <div class="card"><div class="card-content" style="text-align: center;">
+                            <i class="fas fa-star" style="font-size: 2rem; color: var(--orange); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 1.8rem; font-weight: 700;">${analytics.averageRating.toFixed(1)}</div>
+                            <div style="color: var(--gray-600);">Avg. Rating</div>
+                        </div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title"><i class="fas fa-chart-line"></i> Recent Activity</h3></div>
+                        <div class="card-content">
+                            <p>Analytics dashboard is being enhanced. More detailed metrics coming soon!</p>
+                            <div style="margin-top: 1rem;">
+                                <p><strong>Data Source:</strong> ${this.store.error && this.store.source === 'seed' ? 'Offline (Seed Data)' : 'Parse Server'}</p>
+                                <p><strong>Last Updated:</strong> ${new Date().toLocaleString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = html;
+            }
+
+            handleTaxonomyClick(e) {
+                if (!this.security.checkRateLimit('taxonomy-click', 20)) return; // Adjust rate limit as needed
+
+                const addSubcategoryBtn = e.target.closest('.add-subcategory-btn');
+                const deleteAreaBtn = e.target.closest('.delete-area-btn');
+                const deleteSubcategoryBtn = e.target.closest('.delete-subcategory-btn');
+                const editAreaBtn = e.target.closest('.edit-area-btn');
+                const editSubcategoryBtn = e.target.closest('.edit-subcategory-btn');
+
+
+                if (addSubcategoryBtn) {
+                    const areaId = addSubcategoryBtn.dataset.areaId;
+                    this.createNewSubcategory(areaId);
+                } else if (deleteAreaBtn) {
+                    const areaId = deleteAreaBtn.dataset.areaId;
+                    this.deleteArea(areaId);
+                } else if (deleteSubcategoryBtn) {
+                    const subcategoryId = deleteSubcategoryBtn.dataset.subcategoryId;
+                    // const areaId = deleteSubcategoryBtn.dataset.areaId; // areaId might not be needed if subcategoryId is globally unique
+                    this.deleteSubcategory(subcategoryId);
+                } else if (editAreaBtn) {
+                    const areaId = editAreaBtn.dataset.areaId;
+                    this.showNotification(`Editing area ${areaId} - coming soon!`, 'info');
+                } else if (editSubcategoryBtn) {
+                    const subcategoryId = editSubcategoryBtn.dataset.subcategoryId;
+                    this.showNotification(`Editing subcategory ${subcategoryId} - coming soon!`, 'info');
+                }
+            }
+            
+            handleLanguageClick(e) {
+                if (!this.security.checkRateLimit('language-click', 10)) return;
+
+                const deleteLanguageBtn = e.target.closest('.delete-language-btn');
+                const editLanguageBtn = e.target.closest('.edit-language-btn');
+
+                if (deleteLanguageBtn) {
+                    const languageId = deleteLanguageBtn.dataset.langId;
+                    this.deleteLanguage(languageId);
+                } else if (editLanguageBtn) {
+                    const languageId = editLanguageBtn.dataset.langId;
+                    this.showNotification(`Editing language ${languageId} - coming soon!`, 'info');
+                }
+            }
+
+
+            async createNewArea() {
+                const areaName = prompt('Enter the name for the new knowledge area:');
+                if (areaName && areaName.trim()) {
+                    try {
+                        await this.store.addArea({ area: areaName.trim(), icon: 'fas fa-folder' });
+                        this.showNotification('Knowledge Area added successfully!', 'success');
+                        // The store's 'dataLoaded' event will trigger re-render
+                    } catch (error) {
+                        this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to add area', 'error');
+                    }
+                }
+            }
+
+            async createNewSubcategory(areaId) {
+                const subcategoryName = prompt('Enter the name for the new subcategory:');
+                if (subcategoryName && subcategoryName.trim()) {
+                     try {
+                        await this.store.addSubcategory(areaId, { title: subcategoryName.trim(), description: '' });
+                        this.showNotification('Subcategory added successfully!', 'success');
+                    } catch (error) {
+                        this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to add subcategory', 'error');
+                    }
+                }
+            }
+            
+            async createNewLanguage() {
+                const name = prompt('Enter language name (e.g., English):');
+                if (!name || !name.trim()) return;
+                const code = prompt(`Enter language code (e.g., en for ${name.trim()}):`);
+                if (!code || !code.trim()) return;
+                const nativeName = prompt(`Enter native name (e.g., English for ${name.trim()}):`);
+                if (!nativeName || !nativeName.trim()) return;
+
+                try {
+                    await this.store.addLanguage({ name: name.trim(), code: code.trim().toLowerCase(), nativeName: nativeName.trim() });
+                    this.showNotification('Language added successfully!', 'success');
+                } catch (error) {
+                    this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to add language', 'error');
+                }
+            }
+
+
+            async deleteArea(areaId) {
+                const area = this.store.areas.find(a => a.id === areaId);
+                if (area && confirm(`Are you sure you want to delete "${this.escapeHtml(area.area)}"? This will also delete all its subcategories and associated content. This action cannot be undone.`)) {
+                    try {
+                        // First, delete all subcategories associated with this area
+                        const subcategoriesToDelete = this.store.subcategories.filter(sc => sc.areaId === areaId);
+                        for (const subcategory of subcategoriesToDelete) {
+                            // Optionally, delete videos associated with each subcategory first
+                            // For now, just deleting subcategory
+                            await this.store.deleteSubcategory(subcategory.id);
+                        }
+                        // Then, delete the area itself
+                        await this.store.deleteArea(areaId);
+                        this.showNotification('Area and its content deleted successfully!', 'success');
+                    } catch (error) {
+                         this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to delete area', 'error');
+                    }
+                }
+            }
+
+            async deleteSubcategory(subcategoryId) {
+                const subcategory = this.store.subcategories.find(s => s.id === subcategoryId);
+                if (subcategory && confirm(`Are you sure you want to delete "${this.escapeHtml(subcategory.title)}"? Associated videos might need to be re-categorized. This action cannot be undone.`)) {
+                     try {
+                        await this.store.deleteSubcategory(subcategoryId);
+                        this.showNotification('Subcategory deleted successfully!', 'success');
+                    } catch (error) {
+                         this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to delete subcategory', 'error');
+                    }
+                }
+            }
+            
+            async deleteLanguage(languageId) {
+                const language = this.store.languages.find(l => l.id === languageId);
+                if (language && confirm(`Are you sure you want to delete "${this.escapeHtml(language.name)}"? This might affect existing translations. This action cannot be undone.`)) {
+                    try {
+                        await this.store.deleteLanguage(languageId);
+                        this.showNotification('Language deleted successfully!', 'success');
+                    } catch (error) {
+                        this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to delete language', 'error');
+                    }
+                }
+            }
+
+
+            showVideoModal() {
+                const modal = document.getElementById('add-video-modal');
+                if (!modal) return;
+                this.populateAreaSelect('video-area-select'); // Populate areas in modal
+                // Reset subcategory select and modal context
+                const subcategorySelect = document.getElementById('video-subcategory-select');
+                const modalContext = document.getElementById('modal-category-context');
+                if (subcategorySelect) {
+                    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+                    subcategorySelect.disabled = true;
+                }
+                if (modalContext) {
+                    modalContext.textContent = 'Select an area and subcategory...';
+                }
+                modal.style.display = 'flex'; // Use style.display as it's managed by it
+            }
+
+            closeVideoModal() {
+                const modal = document.getElementById('add-video-modal');
+                if (!modal) return;
+                modal.style.display = 'none';
+                const form = document.getElementById('videoForm');
+                form?.reset(); // Reset the form fields
+                document.getElementById('youtube-id-preview').textContent = ''; // Clear preview
+                // Reset subcategory select specifically
+                const subcategorySelect = document.getElementById('video-subcategory-select');
+                if (subcategorySelect) {
+                    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+                    subcategorySelect.disabled = true;
+                }
+                 document.getElementById('modal-category-context').textContent = 'Select an area and subcategory...';
+            }
+
+            populateAreaSelect(selectElementId) {
+                const areaSelect = document.getElementById(selectElementId);
+                if (!areaSelect) return;
+
+                const options = this.store.areas.map(area => 
+                    `<option value="${area.id}">${this.escapeHtml(area.area)}</option>`
+                ).join('');
+                areaSelect.innerHTML = '<option value="">Select Area</option>' + options;
+            }
+
+            populateSubcategorySelect(areaId, subcategorySelectId, contextElementId) {
+                const subcategorySelect = document.getElementById(subcategorySelectId);
+                const contextElement = contextElementId ? document.getElementById(contextElementId) : null;
+                if (!subcategorySelect) return;
+
+                const selectedArea = this.store.areas.find(a => a.id === areaId);
+
+                if (!areaId || !selectedArea) {
+                    subcategorySelect.disabled = true;
+                    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+                    if (contextElement) contextElement.textContent = 'Select an area first...';
+                    return;
+                }
+                
+                if (contextElement) {
+                     contextElement.textContent = `Area: ${this.escapeHtml(selectedArea.area)}`;
+                }
+
+                if (selectedArea.subcategories && selectedArea.subcategories.length > 0) {
+                    const options = selectedArea.subcategories.map(sub => 
+                        `<option value="${sub.id}">${this.escapeHtml(sub.title)}</option>`
+                    ).join('');
+                    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>' + options;
+                    subcategorySelect.disabled = false;
+                } else {
+                    subcategorySelect.innerHTML = '<option value="">No subcategories available</option>';
+                    subcategorySelect.disabled = true;
+                    if (contextElement) {
+                         contextElement.textContent += ' (No subcategories)';
+                    }
+                }
+            }
+            
+            populateFilters() {
+                this.populateAreaSelect('content-filter');
+                this.populateAreaSelect('video-area-filter');
+                
+                // Populate video category filter based on selected video area filter
+                const videoAreaFilter = document.getElementById('video-area-filter');
+                if (videoAreaFilter) {
+                    this.populateSubcategorySelect(videoAreaFilter.value, 'video-category-filter');
+                    videoAreaFilter.addEventListener('change', (e) => {
+                         this.populateSubcategorySelect(e.target.value, 'video-category-filter');
+                         this.filterVideos(); // Re-filter videos when area changes
+                    });
+                }
+                document.getElementById('video-category-filter')?.addEventListener('change', () => this.filterVideos());
+            }
+
+
+            async handleVideoSubmission() {
+                const form = document.getElementById('videoForm');
+                // const formData = new FormData(form); // Not directly used as we get values by ID
+
+                const csrfToken = document.getElementById('csrf_token')?.value;
+                if (!this.security.validateCSRFToken(csrfToken)) {
+                    this.showNotification('Security validation failed. Please refresh and try again.', 'error');
+                    return;
+                }
+
+                const areaId = document.getElementById('video-area-select').value;
+                const subcategoryId = document.getElementById('video-subcategory-select').value;
+                const title = document.getElementById('video-title').value;
+                const youtubeUrl = document.getElementById('video-youtube-url').value;
+                const description = document.getElementById('video-description').value;
+                const tags = document.getElementById('video-tags').value;
+
+                if (!areaId || !title || !youtubeUrl || !description) { // Subcategory is optional at video level for now
+                    this.showNotification('Please fill in all required fields (Area, Title, YouTube URL, Description)', 'error');
+                    return;
+                }
+
+                const youtubeId = this.extractYoutubeId(youtubeUrl);
+                if (!youtubeId) {
+                    this.showNotification('Invalid YouTube URL. Please use a valid watch or short URL.', 'error');
+                    return;
+                }
+
+                const tagList = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+                
+                // Categories for the video can include both Area and Subcategory if selected
+                const videoCategories = [areaId];
+                if (subcategoryId) {
+                    videoCategories.push(subcategoryId);
+                }
+
+                const submitBtn = document.getElementById('submit-video-btn');
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+
+                    const videoData = {
+                        title, description, youtubeId, 
+                        categories: videoCategories, // This now stores areaId and optionally subcategoryId
+                        tags: tagList, 
+                        creator: 'Content Manager User' // Placeholder for user system
+                    };
+
+                    await this.store.addVideo(videoData);
+                    this.showNotification('Video added successfully!', 'success');
+                    this.closeVideoModal();
+                    if (this.currentTab === 'videos') this.renderVideos(); // Refresh video list if on that tab
+
+                } catch (error) {
+                    console.error('Error adding video:', error);
+                    this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to add video.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Video';
+                }
+            }
+
+            extractYoutubeId(url) {
+                if (!url || typeof url !== 'string') return null;
+                const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                const match = url.match(regex);
+                return match ? match[1] : null;
+            }
+
+            async syncData() {
+                if (!this.security.checkRateLimit('sync-data', 3)) return; // Limit sync frequency
+                this.updateConnectionStatus('loading');
+                await this.loadData(); // This reloads all data and triggers re-render
+                // Status will be updated by dataLoaded event
+                this.showNotification('Data synchronized successfully', 'success');
+            }
+
+            renderEmptyState(icon, title, description) {
+                return `<div class="empty-state"><i class="${icon}"></i><h3>${title}</h3><p>${description}</p></div>`;
+            }
+            renderLoading(message) {
+                return `<div class="loading"><div class="loading-spinner"></div> ${message}</div>`;
+            }
+            escapeHtml(text) {
+                if (text === null || typeof text === 'undefined') return '';
+                return String(text).replace(/[&<>"']/g, function (match) {
+                    return {
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                    }[match];
+                });
+            }
+            formatDate(dateStringOrObject) {
+                if (!dateStringOrObject) return 'Unknown';
+                try {
+                    const date = new Date(dateStringOrObject);
+                    // Check if date is valid
+                    if (isNaN(date.getTime())) {
+                        return 'Invalid Date';
+                    }
+                    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                } catch (e) {
+                    return 'Invalid Date';
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notificationArea = document.body; // Or a dedicated notification container
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                
+                let iconClass = 'fas fa-info-circle'; // Default for info
+                if (type === 'success') iconClass = 'fas fa-check-circle';
+                else if (type === 'error') iconClass = 'fas fa-exclamation-circle';
+                else if (type === 'warning') iconClass = 'fas fa-exclamation-triangle';
+
+                notification.innerHTML = `<i class="${iconClass}" style="margin-right: 0.5rem;"></i> ${this.security.sanitizeInput(message)}`;
+                
+                notificationArea.appendChild(notification);
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOutNotification 0.5s ease forwards';
+                    setTimeout(() => notification.remove(), 500);
+                }, 4000);
+            }
+             // Add CSS for fadeOutNotification if not already present
+            // @keyframes fadeOutNotification { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100%); } }
+
+
+            updateConnectionStatus(status) {
+                const indicator = document.getElementById('connection-status');
+                const statusConfig = {
+                    'connected': { text: 'Parse Connected', icon: 'shield-alt', class: 'connected' },
+                    'loading': { text: 'Syncing Data...', icon: 'sync-alt fa-spin', class: 'loading' },
+                    'error': { text: 'Connection Error', icon: 'exclamation-triangle', class: 'error' },
+                    'warning': { text: 'Offline Data', icon: 'wifi-slash', class: 'warning' } // For seed data
+                };
+                const config = statusConfig[status];
+                if (config && indicator) {
+                    indicator.innerHTML = `<i class="fas fa-${config.icon}"></i> <span>${config.text}</span>`;
+                    indicator.className = `connection-status ${config.class}`;
+                }
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.appInitialized) return;
+            window.appInitialized = true;
+
+            try {
+                console.log(`Initializing Enhanced Content Manager v${CONFIG.version}...`);
+                window.contentManager = new EnhancedContentManager();
+                
+                // Global keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        switch (e.key.toLowerCase()) {
+                            case 's':
+                                e.preventDefault();
+                                window.contentManager.syncData();
+                                break;
+                            case 'n':
+                                if (e.shiftKey) { // Ctrl/Cmd + Shift + N
+                                    e.preventDefault();
+                                    window.contentManager.showVideoModal();
+                                }
+                                break;
+                        }
+                    }
+                    if (e.key === "Escape") { // Escape key to close modal
+                        const modal = document.getElementById('add-video-modal');
+                        if (modal && modal.style.display === 'flex') {
+                            window.contentManager.closeVideoModal();
+                        }
+                    }
+                });
+
+                // Offline/Online detection
+                window.addEventListener('online', () => {
+                    window.contentManager.updateConnectionStatus('connected');
+                    window.contentManager.showNotification('Connection restored. Syncing data...', 'success');
+                    window.contentManager.syncData(); // Attempt to sync when back online
+                });
+                window.addEventListener('offline', () => {
+                    window.contentManager.updateConnectionStatus('warning'); // Use warning for offline
+                    window.contentManager.showNotification('You are offline. Some features may be limited.', 'warning');
+                });
+                
+                // Page visibility
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        console.log('Page hidden - security monitoring active');
+                    } else {
+                        console.log('Page visible - welcome back');
+                        // Optionally re-validate session or refresh data if significant time passed
+                    }
+                });
+
+                console.log(`✅ Enhanced Content Manager v${CONFIG.version} initialized successfully`);
+
+            } catch (error) {
+                console.error('❌ Critical error during initialization:', error);
+                document.body.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--gray-50); padding: 1rem; text-align: center;">
+                        <div>
+                            <div style="color: var(--danger); font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i></div>
+                            <h1 style="color: var(--gray-900); margin-bottom: 1rem;">Initialization Failed</h1>
+                            <p style="color: var(--gray-600); margin-bottom: 2rem;">The content manager could not load. Please check your internet connection or browser console for errors.</p>
+                            <button onclick="window.location.reload()" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--border-radius); cursor: pointer; font-weight: 500;"><i class="fas fa-sync-alt"></i> Reload Page</button>
+                            <details style="margin-top: 2rem; text-align: left; font-size: 0.8rem;"><summary style="cursor: pointer; color: var(--gray-600);">Technical Details</summary><pre style="background: var(--gray-100); padding: 1rem; margin-top: 0.5rem; border-radius: var(--border-radius); white-space: pre-wrap; word-break: break-all;">${error.message || String(error)}</pre></details>
+                        </div>
+                    </div>`;
+            }
+        });
+
+        // Global error handling
+        window.addEventListener('error', function(event) {
+            console.error('Global error:', event.error || event.message);
+            if (window.contentManager && window.contentManager.security) {
+                window.contentManager.security.showSecurityAlert(`Application error: ${event.error?.message || event.message || 'Unknown error'}`);
+            }
+        });
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled Promise Rejection:', event.reason);
+            if (window.contentManager && window.contentManager.security) {
+                const errorMsg = event.reason?.message || String(event.reason);
+                window.contentManager.security.showSecurityAlert(`Unhandled promise: ${errorMsg}`);
+            }
+        });
+
+        // Prevent common security vulnerabilities (Self-invoking function)
+        (function() {
+            'use strict';
+            // Prevent eval and Function constructor if possible (though CSP is better)
+            // window.eval = () => { throw new Error('eval() is disabled.'); };
+            // window.Function = () => { throw new Error('Function constructor is disabled.'); };
+
+            // Monitor for script injection attempts (basic)
+            // CSP is the primary defense here. This is a fallback.
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+                            const src = node.src || '';
+                            // Allow scripts from known CDNs and self.
+                            const allowedSources = [
+                                'https://cdn.jsdelivr.net',
+                                'https://cdnjs.cloudflare.com',
+                                'https://unpkg.com',
+                                window.location.origin // Allow self
+                            ];
+                            const isAllowed = src ? allowedSources.some(allowedSrc => src.startsWith(allowedSrc)) : (node.type === 'module'); // Allow inline module scripts
+
+                            if (!isAllowed && src) { // Only block external, non-whitelisted scripts
+                                console.warn('Suspicious script detected and blocked:', src);
+                                node.remove();
+                                if (window.contentManager && window.contentManager.security) {
+                                    window.contentManager.security.showSecurityAlert('Blocked unauthorized script.');
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+
+
+            // Console security warning
+            console.log('%c🔒 SECURITY WARNING', 'color: red; font-size: 20px; font-weight: bold;');
+            console.log('%cDo not paste any code here unless you understand what it does. Malicious code can steal your data or compromise your account.', 'color: red; font-size: 14px;');
+        })();
+
+        // Debug tools for development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            window.debug = {
+                config: CONFIG,
+                seedData: SEED_DATA,
+                getManager: () => window.contentManager,
+                getStore: () => window.contentManager?.store,
+                getSecurity: () => window.contentManager?.security
+            };
+            console.log('🐛 Debug tools available at window.debug');
+        }
+
+    </script>
+</body>
+</html>
