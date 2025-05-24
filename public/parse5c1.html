@@ -68,6 +68,13 @@
             font-size: 14px;
         }
 
+        #language-select {
+          padding: 0.25rem;
+          margin: 0.5rem;
+          border-radius: 5px;
+        }
+
+        
         /* Layout Components */
         .header {
             background: white;
@@ -698,6 +705,16 @@
                     <i class="fas fa-sync-alt"></i>
                     Sync Data
                 </button>
+
+                <select id="language-select">
+                  <option value="en">English</option>
+                  <option value="sw">Swahili</option>
+                  <option value="so">Somali</option>
+                  <option value="ar">Arabic</option>
+                  <option value="uk">Ukrainian</option>
+                </select>
+
+                
             </div>
         </div>
     </div>
@@ -1079,6 +1096,54 @@
                 lockoutDuration: 300000 
             }
         };
+
+
+        const translations = {
+          en: {
+            addVideo: "Add Video",
+            editSubcategory: "Edit Subcategory",
+            title: "Title",
+            description: "Description",
+            save: "Save",
+            cancel: "Cancel"
+          },
+          sw: {
+            addVideo: "Ongeza Video",
+            editSubcategory: "Hariri Jamii Ndogo",
+            title: "Kichwa",
+            description: "Maelezo",
+            save: "Hifadhi",
+            cancel: "Ghairi"
+          },
+          so: {
+            addVideo: "Ku darso Muuqaal",
+            editSubcategory: "Tafatir Qeyb-hoosaad",
+            title: "Cinwaan",
+            description: "Sharaxaad",
+            save: "Keydi",
+            cancel: "Jooji"
+          },
+          ar: {
+            addVideo: "أضف فيديو",
+            editSubcategory: "تعديل الفئة الفرعية",
+            title: "العنوان",
+            description: "الوصف",
+            save: "حفظ",
+            cancel: "إلغاء"
+          },
+          uk: {
+            addVideo: "Додати відео",
+            editSubcategory: "Редагувати підкатегорію",
+            title: "Заголовок",
+            description: "Опис",
+            save: "Зберегти",
+            cancel: "Скасувати"
+          }
+        };
+        
+
+
+        
 
         // Parse Schema-aligned Seed Data (remains the same)
         const SEED_DATA = {
@@ -2194,68 +2259,153 @@
                 document.getElementById('video-category-filter')?.addEventListener('change', () => this.filterVideos());
             }
 
-
+            
             async handleVideoSubmission() {
-                const form = document.getElementById('videoForm');
-                // const formData = new FormData(form); // Not directly used as we get values by ID
-
-                const csrfToken = document.getElementById('csrf_token')?.value;
-                if (!this.security.validateCSRFToken(csrfToken)) {
-                    this.showNotification('Security validation failed. Please refresh and try again.', 'error');
-                    return;
+                console.log('[DEBUG] handleVideoSubmission started.');
+            
+                // Get the form element
+                const form = document.getElementById('videoForm'); // Not directly used for FormData, but good to have if needed
+            
+                // Get the CSRF token input element and its value
+                const csrfTokenInput = document.getElementById('csrf_token_video_form'); // Ensure this ID matches your HTML
+                const csrfToken = csrfTokenInput ? csrfTokenInput.value : null;
+                console.log('[DEBUG] CSRF Token from form (csrf_token_video_form):', csrfToken);
+            
+                // Log the security object itself for inspection
+                console.log('[DEBUG] this.security object:', this.security);
+            
+                // --- CSRF Token Validation Block ---
+                if (this.security && typeof this.security.validateCSRFToken === 'function') {
+                    console.log('[DEBUG] this.security.validateCSRFToken IS a function. Calling it.');
+                    let validationResult;
+                    try {
+                        validationResult = this.security.validateCSRFToken(csrfToken);
+                        console.log('[DEBUG] Result of this.security.validateCSRFToken(csrfToken):', validationResult);
+                    } catch (e) {
+                        console.error('[DEBUG] Error calling this.security.validateCSRFToken:', e);
+                        this.showNotification('Error during security validation. Check console.', 'error');
+                        return; // Exit early
+                    }
+            
+                    if (!validationResult) {
+                        console.log('[DEBUG] CSRF validation failed (result was falsey). Showing notification from THE USUAL SPOT.');
+                        this.showNotification('Security validation failed. Please refresh and try again.', 'error');
+                        return; // Exit early
+                    } else {
+                        console.log('[DEBUG] CSRF validation passed.');
+                    }
+                } else {
+                    console.warn('[DEBUG] this.security.validateCSRFToken is NOT a function or this.security is undefined.');
+                    console.log('[DEBUG] Type of this.security.validateCSRFToken:', typeof (this.security ? this.security.validateCSRFToken : 'this.security is undefined'));
+                    // Decide how to proceed if it's not defined.
+                    // For now, let's log that we're proceeding without it.
+                    console.log('[DEBUG] Proceeding WITHOUT CSRF check as validateCSRFToken is not defined as a function.');
+                    // If CSRF is mandatory and this path is unexpected, you might want to uncomment the following:
+                    // this.showNotification('CRITICAL: Security component (validateCSRFToken) not found. Aborting.', 'error');
+                    // return;
                 }
-
+                // --- End CSRF Token Validation Block ---
+            
+                console.log('[DEBUG] Proceeding with form data processing...');
+            
+                // Get form field values
                 const areaId = document.getElementById('video-area-select').value;
                 const subcategoryId = document.getElementById('video-subcategory-select').value;
                 const title = document.getElementById('video-title').value;
                 const youtubeUrl = document.getElementById('video-youtube-url').value;
                 const description = document.getElementById('video-description').value;
                 const tags = document.getElementById('video-tags').value;
-
+            
+                console.log('[DEBUG] Form data retrieved:');
+                console.log({ areaId, subcategoryId, title, youtubeUrl, description, tags });
+            
+                // Get the submit button (define it early if used in multiple exit paths for disabling/enabling)
+                const submitBtn = document.getElementById('submit-video-btn');
+            
+                // Validate required fields
                 if (!areaId || !title || !youtubeUrl || !description) { // Subcategory is optional at video level for now
+                    console.error('[DEBUG] Missing required fields.');
                     this.showNotification('Please fill in all required fields (Area, Title, YouTube URL, Description)', 'error');
+                    // No need to manipulate submitBtn here if it's only handled in the main try/finally
                     return;
                 }
-
-                const youtubeId = this.extractYoutubeId(youtubeUrl);
+                console.log('[DEBUG] Required fields validation passed.');
+            
+                // Extract YouTube ID
+                const youtubeId = this.extractYoutubeId(youtubeUrl); // Assuming this.extractYoutubeId is part of the same class/object
                 if (!youtubeId) {
+                    console.error('[DEBUG] Invalid YouTube URL, extractYoutubeId returned null/falsey.');
                     this.showNotification('Invalid YouTube URL. Please use a valid watch or short URL.', 'error');
                     return;
                 }
-
+                console.log('[DEBUG] YouTube ID extracted:', youtubeId);
+            
+                // Process tags
                 const tagList = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
-                
-                // Categories for the video can include both Area and Subcategory if selected
+                console.log('[DEBUG] Parsed tag list:', tagList);
+            
+                // Prepare categories
                 const videoCategories = [areaId];
                 if (subcategoryId) {
                     videoCategories.push(subcategoryId);
                 }
-
-                const submitBtn = document.getElementById('submit-video-btn');
+                console.log('[DEBUG] Video categories prepared:', videoCategories);
+            
+                // --- Main Submission Logic ---
                 try {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-
+                    console.log('[DEBUG] Entering main try block for video submission.');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                    } else {
+                        console.warn('[DEBUG] Submit button not found when trying to disable it.');
+                    }
+            
                     const videoData = {
-                        title, description, youtubeId, 
+                        title,
+                        description,
+                        youtubeId,
                         categories: videoCategories, // This now stores areaId and optionally subcategoryId
-                        tags: tagList, 
+                        tags: tagList,
                         creator: 'Content Manager User' // Placeholder for user system
                     };
-
-                    await this.store.addVideo(videoData);
+                    console.log('[DEBUG] Video data object to be sent to store.addVideo:', videoData);
+            
+                    await this.store.addVideo(videoData); // API call
+                    console.log('[DEBUG] store.addVideo call successful.');
+            
                     this.showNotification('Video added successfully!', 'success');
-                    this.closeVideoModal();
-                    if (this.currentTab === 'videos') this.renderVideos(); // Refresh video list if on that tab
-
+                    this.closeVideoModal(); // Assuming this function exists
+                    if (this.currentTab === 'videos') {
+                        console.log('[DEBUG] Current tab is videos, calling renderVideos.');
+                        this.renderVideos(); // Assuming this function exists
+                    }
+            
                 } catch (error) {
-                    console.error('Error adding video:', error);
-                    this.showNotification(this.security.sanitizeInput(error.message) || 'Failed to add video.', 'error');
+                    console.error('[DEBUG] Error during store.addVideo call or subsequent UI updates:', error);
+                    let errorMessage = 'Failed to add video.';
+                    // Try to use sanitizeInput if available on a defined security object
+                    if (this.security && typeof this.security.sanitizeInput === 'function') {
+                        errorMessage = this.security.sanitizeInput(error.message) || 'Failed to add video.';
+                    } else if (error && error.message) {
+                        errorMessage = error.message;
+                    } else if (error && error.code) { // For Parse-like errors
+                        errorMessage = `Error ${error.code}: Failed to add video.`;
+                    }
+                    this.showNotification(errorMessage, 'error');
+            
                 } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Video';
+                    console.log('[DEBUG] Entering finally block.');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Video';
+                    } else {
+                        console.warn('[DEBUG] Submit button not found in finally block.');
+                    }
+                    console.log('[DEBUG] handleVideoSubmission finished.');
                 }
             }
+
 
             extractYoutubeId(url) {
                 if (!url || typeof url !== 'string') return null;
