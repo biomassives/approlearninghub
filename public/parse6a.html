@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager v3.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            background: #f9fafb;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn { 
+            background: #8b5cf6; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn:hover { background: #7c3aed; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        
+        .language-selector { 
+            position: relative; 
+            display: inline-block; 
+            margin-right: 1rem;
+        }
+        
+        .language-dropdown { 
+            position: absolute; 
+            top: 100%;
+            right: 0;
+            background: white; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            display: none;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+        
+        .language-option { 
+            padding: 10px 15px; 
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .language-option:last-child { border-bottom: none; }
+        .language-option:hover { background: #f0f0f0; }
+        .language-option.active { background: #8b5cf6; color: white; }
+        
+        .nav-tabs {
+            background: white;
+            padding: 0 2rem;
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tab {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover {
+            color: #8b5cf6;
+            background: #f9fafb;
+        }
+        
+        .nav-tab.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+        }
+        
+        .content { 
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .card { 
+            background: white; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .modal.show { display: flex; }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af;
+            padding: 0;
+        }
+        
+        .close-btn:hover { color: #6b7280; }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: 0.75rem center;
+            background-size: 1rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-video"></i> Appro Content Manager v3.0</h1>
+        <div style="display: flex; align-items: center;">
+            <div class="language-selector">
+                <button class="btn btn-secondary" id="language-toggle">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-language">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div class="language-option" data-code="en">
+                        <span><strong>EN</strong> English</span>
+                    </div>
+                    <div class="language-option" data-code="es">
+                        <span><strong>ES</strong> Español</span>
+                    </div>
+                    <div class="language-option" data-code="fr">
+                        <span><strong>FR</strong> Français</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="syncData()">
+                <i class="fas fa-sync-alt"></i>
+                <span data-translate="action.sync">Sync</span>
+            </button>
+            <span id="status">Connected</span>
+        </div>
+    </div>
+    
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="areas">
+            <i class="fas fa-sitemap"></i>
+            <span data-translate="nav.areas">Areas</span>
+        </button>
+        <button class="nav-tab" data-tab="videos">
+            <i class="fas fa-play-circle"></i>
+            <span data-translate="nav.videos">Videos</span>
+        </button>
+        <button class="nav-tab" data-tab="tags">
+            <i class="fas fa-tags"></i>
+            <span data-translate="nav.tags">Tags</span>
+        </button>
+        <button class="nav-tab" data-tab="languages">
+            <i class="fas fa-language"></i>
+            <span data-translate="nav.languages">Languages</span>
+        </button>
+        <button class="nav-tab" data-tab="translations">
+            <i class="fas fa-exchange-alt"></i>
+            <span data-translate="nav.translations">Translations</span>
+        </button>
+        <button class="nav-tab" data-tab="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span data-translate="nav.analytics">Analytics</span>
+        </button>
+    </nav>
+    
+    <div id="content" class="content">
+                <div id="areas-tab" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-sitemap"></i> <span data-translate="area.title">Knowledge Areas</span></h2>
+                <button class="btn" onclick="showAddAreaModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="area.add">Add Area</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search areas..." onkeyup="filterAreas(this.value)">
+            </div>
+            <div id="areas-list" class="grid">
+                            </div>
+        </div>
+
+                <div id="videos-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-play-circle"></i> <span data-translate="video.title">Video Library</span></h2>
+                <button class="btn" onclick="showAddVideoModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="video.add">Add Video</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search videos..." onkeyup="filterVideos(this.value)">
+            </div>
+            <div id="videos-list" class="grid">
+                            </div>
+        </div>
+
+                <div id="tags-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-tags"></i> <span data-translate="nav.tags">Tag Management</span></h2>
+                <button class="btn" onclick="showAddTagModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="action.add">Add Tag</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search tags..." onkeyup="filterTags(this.value)">
+            </div>
+            <div id="tags-list" class="grid">
+                            </div>
+        </div>
+
+                <div id="languages-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-language"></i> <span data-translate="nav.languages">Language Management</span></h2>
+                <button class="btn" onclick="showAddLanguageModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="action.add">Add Language</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search languages..." onkeyup="filterLanguages(this.value)">
+            </div>
+            <div id="languages-list" class="grid">
+                            </div>
+        </div>
+
+                <div id="translations-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-exchange-alt"></i> <span data-translate="nav.translations">Translation Management</span></h2>
+            </div>
+            <div id="translations-content">
+                            </div>
+        </div>
+
+                <div id="analytics-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> <span data-translate="nav.analytics">Analytics Dashboard</span></h2>
+            </div>
+            <div id="analytics-content">
+                            </div>
+        </div>
+    </div>
+
+        <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Modal Title</h3>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div id="modal-body">
+                            </div>
+            <div class="modal-footer" id="modal-footer">
+                            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        var CONFIG = {
+            version: '3.0.0',
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/',
+            maxRetries: 3,
+            retryDelay: 1000
+        };
+
+        // Translation Parse Object
+        function Translation() {
+            Parse.Object.call(this, "Translation");
+        }
+        Translation.prototype = Object.create(Parse.Object.prototype);
+
+        // Data Store
+        function DataStore() {
+            this.data = {
+                areas: [],
+                subcategories: [],
+                videos: [],
+                tags: [],
+                languages: []
+            };
+            this.isLoading = false;
+            this.isOnline = navigator.onLine;
+            this.cache = new Map();
+        }
+
+        // Execute Parse queries with retry logic
+        DataStore.prototype.executeQuery = function(queryFunc, retryCount) {
+            if (typeof retryCount === 'undefined') retryCount = 0;
+            
+            var self = this;
+            return queryFunc().catch(function(error) {
+                console.error('Parse query error:', error);
+                
+                if (!self.isOnline) {
+                    throw new Error('Offline: Operation queued for sync');
+                }
+                
+                if (retryCount < CONFIG.maxRetries) {
+                    return new Promise(function(resolve) {
+                        setTimeout(function() {
+                            resolve(self.executeQuery(queryFunc, retryCount + 1));
+                        }, CONFIG.retryDelay * Math.pow(2, retryCount));
+                    });
+                }
+                
+                throw error;
+            });
+        };
+
+        // Load initial data from Parse
+        DataStore.prototype.loadData = function() {
+            var self = this;
+            this.isLoading = true;
+            updateStatus('Loading data...');
+            
+            return Promise.all([
+                this.loadAreas(),
+                this.loadVideos(),
+                this.loadTags(),
+                this.loadLanguages()
+            ]).then(function() {
+                self.isLoading = false;
+                updateStatus('Connected');
+                console.log('✅ Data loaded from Parse successfully');
+                renderCurrentTab();
+            }).catch(function(error) {
+                console.error('Failed to load from Parse:', error);
+                self.loadSeedData();
+                self.isLoading = false;
+                updateStatus('Using offline data');
+            });
+        };
+
+        // Load Areas from Parse
+        DataStore.prototype.loadAreas = function() {
+            var self = this;
+            var query = new Parse.Query("Area");
+            query.ascending("area");
+            query.limit(100);
+            
+            return this.executeQuery(function() {
+                return query.find();
+            }).then(function(results) {
+                self.data.areas = results.map(function(obj) {
+                    return {
+                        id: obj.id,
+                        name: obj.get('area'),
+                        icon: obj.get('icon') || 'fas fa-folder',
+                        description: obj.get('description')
+                    };
+                });
+            });
+        };
+
+        // Load Videos from Parse
+        DataStore.prototype.loadVideos = function() {
+            var self = this;
+            var query = new Parse.Query("Video");
+            query.descending("date");
+            query.limit(200);
+            
+            return this.executeQuery(function() {
+                return query.find();
+            }).then(function(results) {
+                self.data.videos = results.map(function(obj) {
+                    return {
+                        id: obj.id,
+                        title: obj.get('title'),
+                        youtubeId: obj.get('youtubeId'),
+                        description: obj.get('description'),
+                        tags: obj.get('tags') || [],
+                        creator: obj.get('creator'),
+                        views: obj.get('views') || 0,
+                        rating: obj.get('rating') || 0,
+                        duration: obj.get('duration'),
+                        date: obj.get('date') || obj.createdAt
+                    };
+                });
+            });
+        };
+
+        // Load Tags from Parse
+        DataStore.prototype.loadTags = function() {
+            var self = this;
+            var query = new Parse.Query("Tag");
+            query.ascending("name");
+            query.limit(100);
+            
+            return this.executeQuery(function() {
+                return query.find();
+            }).then(function(results) {
+                self.data.tags = results.map(function(obj) {
+                    return {
+                        id: obj.id,
+                        name: obj.get('name'),
+                        definition: obj.get('definition'),
+                        color: obj.get('color') || '#8b5cf6'
+                    };
+                });
+            });
+        };
+
+        // Load Languages from Parse
+        DataStore.prototype.loadLanguages = function() {
+            var self = this;
+            var query = new Parse.Query("Language");
+            query.ascending("name");
+            query.limit(50);
+            
+            return this.executeQuery(function() {
+                return query.find();
+            }).then(function(results) {
+                self.data.languages = results.map(function(obj) {
+                    return {
+                        id: obj.id,
+                        name: obj.get('name'),
+                        code: obj.get('code'),
+                        nativeName: obj.get('nativeName'),
+                        direction: obj.get('direction') || 'ltr'
+                    };
+                });
+            });
+        };
+
+        // Load seed data if Parse fails
+        DataStore.prototype.loadSeedData = function() {
+            this.data = {
+                areas: [
+                    {
+                        id: 'area_1',
+                        name: 'Water Systems',
+                        icon: 'fas fa-tint',
+                        description: 'Water purification and management systems'
+                    },
+                    {
+                        id: 'area_2',
+                        name: 'Energy Solutions',
+                        icon: 'fas fa-bolt',
+                        description: 'Renewable energy and power generation'
+                    },
+                    {
+                        id: 'area_3',
+                        name: 'Agriculture',
+                        icon: 'fas fa-seedling',
+                        description: 'Sustainable farming techniques'
+                    }
+                ],
+                videos: [
+                    {
+                        id: 'video_1',
+                        title: 'DIY Water Filter Construction',
+                        youtubeId: 'dQw4w9WgXcQ',
+                        description: 'Learn to build an effective water filter using common materials',
+                        tags: ['water', 'DIY', 'purification'],
+                        creator: 'Water Solutions Team',
+                        views: 1250,
+                        rating: 4.5,
+                        duration: '10:30',
+                        date: new Date()
+                    },
+                    {
+                        id: 'video_2',
+                        title: 'Solar Panel Installation Guide',
+                        youtubeId: 'dQw4w9WgXcQ',
+                        description: 'Complete guide to installing solar panels safely',
+                        tags: ['solar', 'energy', 'installation'],
+                        creator: 'Green Energy Co.',
+                        views: 2100,
+                        rating: 4.8,
+                        duration: '15:45',
+                        date: new Date()
+                    }
+                ],
+                tags: [
+                    {
+                        id: 'tag_1',
+                        name: 'water',
+                        definition: 'Water-related content',
+                        color: '#0ea5e9'
+                    },
+                    {
+                        id: 'tag_2',
+                        name: 'DIY',
+                        definition: 'Do It Yourself projects',
+                        color: '#f59e0b'
+                    },
+                    {
+                        id: 'tag_3',
+                        name: 'solar',
+                        definition: 'Solar energy systems',
+                        color: '#eab308'
+                    },
+                    {
+                        id: 'tag_4',
+                        name: 'energy',
+                        definition: 'Energy generation and storage',
+                        color: '#10b981'
+                    }
+                ],
+                languages: [
+                    {
+                        id: 'lang_1',
+                        name: 'English',
+                        code: 'en',
+                        nativeName: 'English',
+                        direction: 'ltr'
+                    },
+                    {
+                        id: 'lang_2',
+                        name: 'Spanish',
+                        code: 'es',
+                        nativeName: 'Español',
+                        direction: 'ltr'
+                    },
+                    {
+                        id: 'lang_3',
+                        name: 'French',
+                        code: 'fr',
+                        nativeName: 'Français',
+                        direction: 'ltr'
+                    },
+                    {
+                        id: 'lang_4',
+                        name: 'German',
+                        code: 'de',
+                        nativeName: 'Deutsch',
+                        direction: 'ltr'
+                    }
+                ]
+            };
+            
+            console.log('✅ Seed data loaded as fallback');
+            renderCurrentTab();
+        };
+
+        // Create new Area in Parse
+        DataStore.prototype.createArea = function(data) {
+            var self = this;
+            var obj = new (Parse.Object.extend("Area"))();
+            
+            Object.keys(data).forEach(function(key) {
+                if (data[key] !== undefined) {
+                    obj.set(key, data[key]);
+                }
+            });
+            
+            return this.executeQuery(function() {
+                return obj.save();
+            }).then(function(result) {
+                var newArea = {
+                    id: result.id,
+                    name: result.get('area'),
+                    icon: result.get('icon'),
+                    description: result.get('description')
+                };
+                self.data.areas.push(newArea);
+                self.data.areas.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                
+                // Create translation records
+                self.createTranslationRecords(result.id, "Area", data);
+                
+                return result;
+            });
+        };
+
+        // Create new Video in Parse
+        DataStore.prototype.createVideo = function(data) {
+            var self = this;
+            var obj = new (Parse.Object.extend("Video"))();
+            
+            var videoData = Object.assign({}, data, {
+                date: data.date || new Date(),
+                views: 0,
+                rating: 0
+            });
+            
+            Object.keys(videoData).forEach(function(key) {
+                if (videoData[key] !== undefined) {
+                    obj.set(key, videoData[key]);
+                }
+            });
+            
+            return this.executeQuery(function() {
+                return obj.save();
+            }).then(function(result) {
+                var newVideo = Object.assign({ id: result.id }, videoData);
+                self.data.videos.unshift(newVideo);
+                
+                // Create translation records
+                self.createTranslationRecords(result.id, "Video", videoData);
+                
+                return result;
+            });
+        };
+
+        // Create new Tag in Parse
+        DataStore.prototype.createTag = function(data) {
+            var self = this;
+            var obj = new (Parse.Object.extend("Tag"))();
+            
+            Object.keys(data).forEach(function(key) {
+                if (data[key] !== undefined) {
+                    obj.set(key, data[key]);
+                }
+            });
+            
+            return this.executeQuery(function() {
+                return obj.save();
+            }).then(function(result) {
+                var newTag = {
+                    id: result.id,
+                    name: result.get('name'),
+                    definition: result.get('definition'),
+                    color: result.get('color') || '#8b5cf6'
+                };
+                self.data.tags.push(newTag);
+                self.data.tags.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                
+                // Create translation records
+                self.createTranslationRecords(result.id, "Tag", data);
+                
+                return result;
+            });
+        };
+
+        // Create new Language in Parse
+        DataStore.prototype.createLanguage = function(data) {
+            var self = this;
+            var obj = new (Parse.Object.extend("Language"))();
+            
+            Object.keys(data).forEach(function(key) {
+                if (data[key] !== undefined) {
+                    obj.set(key, data[key]);
+                }
+            });
+            
+            return this.executeQuery(function() {
+                return obj.save();
+            }).then(function(result) {
+                var newLanguage = {
+                    id: result.id,
+                    name: result.get('name'),
+                    code: result.get('code'),
+                    nativeName: result.get('nativeName'),
+                    direction: result.get('direction') || 'ltr'
+                };
+                self.data.languages.push(newLanguage);
+                self.data.languages.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                
+                return result;
+            });
+        };
+
+        // Update Area in Parse
+        DataStore.prototype.updateArea = function(id, updates) {
+            var self = this;
+            var query = new Parse.Query("Area");
+            
+            return this.executeQuery(function() {
+                return query.get(id);
+            }).then(function(obj) {
+                Object.keys(updates).forEach(function(key) {
+                    if (updates[key] !== undefined) {
+                        obj.set(key, updates[key]);
+                    }
+                });
+                
+                return self.executeQuery(function() {
+                    return obj.save();
+                });
+            }).then(function(result) {
+                var index = self.data.areas.findIndex(function(a) { return a.id === id; });
+                if (index > -1) {
+                    Object.assign(self.data.areas[index], updates);
+                    self.data.areas.sort(function(a, b) {
+                        return a.name.localeCompare(b.name);
+                    });
+                }
+                
+                // Update translation records
+                self.createTranslationRecords(id, "Area", updates);
+                
+                return result;
+            });
+        };
+
+        // Delete Area from Parse
+        DataStore.prototype.deleteArea = function(id) {
+            var self = this;
+            
+            return this.executeQuery(function() {
+                return Parse.Object.extend("Area").createWithoutData(id).destroy();
+            }).then(function() {
+                self.data.areas = self.data.areas.filter(function(a) { return a.id !== id; });
+            });
+        };
+
+        // Delete Video from Parse
+        DataStore.prototype.deleteVideo = function(id) {
+            var self = this;
+            
+            return this.executeQuery(function() {
+                return Parse.Object.extend("Video").createWithoutData(id).destroy();
+            }).then(function() {
+                self.data.videos = self.data.videos.filter(function(v) { return v.id !== id; });
+            });
+        };
+
+        // Delete Tag from Parse
+        DataStore.prototype.deleteTag = function(id) {
+            var self = this;
+            
+            return this.executeQuery(function() {
+                return Parse.Object.extend("Tag").createWithoutData(id).destroy();
+            }).then(function() {
+                self.data.tags = self.data.tags.filter(function(t) { return t.id !== id; });
+            });
+        };
+
+        // Delete Language from Parse
+        DataStore.prototype.deleteLanguage = function(id) {
+            var self = this;
+            
+            return this.executeQuery(function() {
+                return Parse.Object.extend("Language").createWithoutData(id).destroy();
+            }).then(function() {
+                self.data.languages = self.data.languages.filter(function(l) { return l.id !== id; });
+            });
+        };
+
+        // Create translation records
+        DataStore.prototype.createTranslationRecords = function(objectId, className, data) {
+            var translatableFields = this.getTranslatableFields(className);
+            var targetLanguages = ['es', 'fr', 'de']; // Languages that need translations
+            
+            var self = this;
+            translatableFields.forEach(function(field) {
+                if (data[field]) {
+                    targetLanguages.forEach(function(targetLang) {
+                        // Check if translation record already exists
+                        var query = new Parse.Query(Translation);
+                        query.equalTo("sourceObjectId", objectId);
+                        query.equalTo("sourceClassName", className);
+                        query.equalTo("sourceField", field);
+                        query.equalTo("targetLanguage", targetLang);
+                        
+                        query.first().then(function(existing) {
+                            if (!existing) {
+                                var translation = new Translation();
+                                translation.set("sourceObjectId", objectId);
+                                translation.set("sourceClassName", className);
+                                translation.set("sourceField", field);
+                                translation.set("sourceText", data[field]);
+                                translation.set("targetLanguage", targetLang);
+                                translation.set("status", "missing");
+                                
+                                return translation.save();
+                            }
+                        }).catch(function(error) {
+                            console.warn('Failed to create translation record:', error);
+                        });
+                    });
+                }
+            });
+        };
+
+        // Get translatable fields for each class
+        DataStore.prototype.getTranslatableFields = function(className) {
+            var fieldMap = {
+                'Area': ['area', 'description'],
+                'Video': ['title', 'description'],
+                'Tag': ['name', 'definition']
+            };
+            return fieldMap[className] || [];
+        };
+
+        // Search functionality
+        DataStore.prototype.search = function(query) {
+            var searchTerm = query.toLowerCase();
+            var results = {
+                areas: [],
+                videos: [],
+                tags: []
+            };
+
+            results.areas = this.data.areas.filter(function(area) {
+                return area.name.toLowerCase().includes(searchTerm) ||
+                       (area.description && area.description.toLowerCase().includes(searchTerm));
+            });
+
+            results.videos = this.data.videos.filter(function(video) {
+                return video.title.toLowerCase().includes(searchTerm) ||
+                       (video.description && video.description.toLowerCase().includes(searchTerm)) ||
+                       video.tags.some(function(tag) { return tag.toLowerCase().includes(searchTerm); });
+            });
+
+            results.tags = this.data.tags.filter(function(tag) {
+                return tag.name.toLowerCase().includes(searchTerm) ||
+                       (tag.definition && tag.definition.toLowerCase().includes(searchTerm));
+            });
+
+            return results;
+        };
+
+        // Analytics
+        DataStore.prototype.getAnalytics = function() {
+            var analytics = {
+                totalAreas: this.data.areas.length,
+                totalVideos: this.data.videos.length,
+                totalTags: this.data.tags.length,
+                totalLanguages: this.data.languages.length,
+                averageRating: 0,
+                totalViews: 0
+            };
+
+            if (this.data.videos.length > 0) {
+                var totalRating = this.data.videos.reduce(function(sum, video) {
+                    return sum + (video.rating || 0);
+                }, 0);
+                analytics.averageRating = totalRating / this.data.videos.length;
+                
+                analytics.totalViews = this.data.videos.reduce(function(sum, video) {
+                    return sum + (video.views || 0);
+                }, 0);
+            }
+
+            return analytics;
+        };
+
+        // Translation Manager
+        function TranslationManager() {
+            this.currentLanguage = this.getStoredLanguage();
+            this.translations = {
+                en: {
+                    'nav.areas': 'Areas',
+                    'nav.videos': 'Videos',
+                    'nav.tags': 'Tags',
+                    'nav.languages': 'Languages',
+                    'nav.translations': 'Translations',
+                    'nav.analytics': 'Analytics',
+                    'action.add': 'Add',
+                    'action.edit': 'Edit',
+                    'action.delete': 'Delete',
+                    'action.save': 'Save',
+                    'action.cancel': 'Cancel',
+                    'action.sync': 'Sync',
+                    'area.title': 'Knowledge Areas',
+                    'area.add': 'Add Area',
+                    'area.name': 'Area Name',
+                    'area.description': 'Description',
+                    'video.title': 'Video Library',
+                    'video.add': 'Add Video',
+                    'video.name': 'Title',
+                    'video.youtube': 'YouTube ID',
+                    'video.description': 'Description',
+                    'status.connected': 'Connected',
+                    'status.loading': 'Loading...',
+                    'status.offline': 'Offline'
+                },
+                es: {
+                    'nav.areas': 'Áreas',
+                    'nav.videos': 'Videos',
+                    'nav.tags': 'Etiquetas',
+                    'nav.languages': 'Idiomas',
+                    'nav.translations': 'Traducciones',
+                    'nav.analytics': 'Analíticas',
+                    'action.add': 'Agregar',
+                    'action.edit': 'Editar',
+                    'action.delete': 'Eliminar',
+                    'action.save': 'Guardar',
+                    'action.cancel': 'Cancelar',
+                    'action.sync': 'Sincronizar',
+                    'area.title': 'Áreas de Conocimiento',
+                    'area.add': 'Agregar Área',
+                    'area.name': 'Nombre del Área',
+                    'area.description': 'Descripción',
+                    'video.title': 'Biblioteca de Videos',
+                    'video.add': 'Agregar Video',
+                    'video.name': 'Título',
+                    'video.youtube': 'ID de YouTube',
+                    'video.description': 'Descripción',
+                    'status.connected': 'Conectado',
+                    'status.loading': 'Cargando...',
+                    'status.offline': 'Sin conexión'
+                },
+                fr: {
+                    'nav.areas': 'Domaines',
+                    'nav.videos': 'Vidéos',
+                    'nav.tags': 'Étiquettes',
+                    'nav.languages': 'Langues',
+                    'nav.translations': 'Traductions',
+                    'nav.analytics': 'Analytiques',
+                    'action.add': 'Ajouter',
+                    'action.edit': 'Modifier',
+                    'action.delete': 'Supprimer',
+                    'action.save': 'Sauvegarder',
+                    'action.cancel': 'Annuler',
+                    'action.sync': 'Synchroniser',
+                    'area.title': 'Domaines de Connaissance',
+                    'area.add': 'Ajouter un Domaine',
+                    'area.name': 'Nom du Domaine',
+                    'area.description': 'Description',
+                    'video.title': 'Bibliothèque Vidéo',
+                    'video.add': 'Ajouter une Vidéo',
+                    'video.name': 'Titre',
+                    'video.youtube': 'ID YouTube',
+                    'video.description': 'Description',
+                    'status.connected': 'Connecté',
+                    'status.loading': 'Chargement...',
+                    'status.offline': 'Hors ligne'
+                }
+            };
+        }
+
+        TranslationManager.prototype.getStoredLanguage = function() {
+            try {
+                return localStorage.getItem('appro_language') || 'en';
+            } catch (error) {
+                return 'en';
+            }
+        };
+
+        TranslationManager.prototype.setStoredLanguage = function(languageCode) {
+            try {
+                localStorage.setItem('appro_language', languageCode);
+            } catch (error) {
+                console.warn('Could not store language preference');
+            }
+        };
+
+        TranslationManager.prototype.t = function(key) {
+            var translations = this.translations[this.currentLanguage] || this.translations['en'];
+            return translations[key] || key;
+        };
+
+        TranslationManager.prototype.switchLanguage = function(languageCode) {
+            this.currentLanguage = languageCode;
+            this.setStoredLanguage(languageCode);
+            updateLanguageUI();
+            updateTranslatableElements();
+        };
+
+        // Global variables
+        var translationManager = new TranslationManager();
+        var dataStore = new DataStore();
+        var currentTab = 'areas';
+
+        // Initialize Parse
+        function initParse() {
+            Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+            Parse.serverURL = CONFIG.parseServerURL;
+            Parse.Object.registerSubclass('Translation', Translation);
+        }
+
+        // Update status display
+        function updateStatus(message) {
+            var statusElement = document.getElementById('status');
+            if (statusElement) {
+                statusElement.textContent = translationManager.t('status.' + message.toLowerCase()) || message;
+            }
+        }
+
+        // Tab Management
+        function switchTab(tabName) {
+            // Hide all tab contents
+            var tabContents = document.querySelectorAll('.tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            // Remove active class from all nav tabs
+            var navTabs = document.querySelectorAll('.nav-tab');
+            for (var i = 0; i < navTabs.length; i++) {
+                navTabs[i].classList.remove('active');
+            }
+
+            // Show selected tab
+            var selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to selected nav tab
+            var selectedNavTab = document.querySelector('[data-tab="' + tabName + '"]');
+            if (selectedNavTab) {
+                selectedNavTab.classList.add('active');
+            }
+
+            currentTab = tabName;
+            renderCurrentTab();
+        }
+
+        // Render current tab content
+        function renderCurrentTab() {
+            switch (currentTab) {
+                case 'areas':
+                    renderAreas();
+                    break;
+                case 'videos':
+                    renderVideos();
+                    break;
+                case 'tags':
+                    renderTags();
+                    break;
+                case 'languages':
+                    renderLanguages();
+                    break;
+                case 'translations':
+                    renderTranslations();
+                    break;
+                case 'analytics':
+                    renderAnalytics();
+                    break;
+            }
+        }
+
+        // Render Areas
+        function renderAreas() {
+            var container = document.getElementById('areas-list');
+            var html = '';
+            
+            for (var i = 0; i < dataStore.data.areas.length; i++) {
+                var area = dataStore.data.areas[i];
+                html += '<div class="card" data-area-id="' + area.id + '">' +
+                    '<h3><i class="' + area.icon + '"></i> ' + area.name + '</h3>' +
+                    '<p>' + (area.description || 'No description provided') + '</p>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editArea(\'' + area.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteArea(\'' + area.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            if (html === '') {
+                html = '<div class="card"><p>No areas found. Click "Add Area" to create your first area.</p></div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Videos
+        function renderVideos() {
+            var container = document.getElementById('videos-list');
+            var html = '';
+            
+            for (var i = 0; i < dataStore.data.videos.length; i++) {
+                var video = dataStore.data.videos[i];
+                html += '<div class="card" data-video-id="' + video.id + '">' +
+                    '<div style="display: flex; align-items: center; margin-bottom: 1rem;">';
+                
+                if (video.youtubeId) {
+                    html += '<img src="https://img.youtube.com/vi/' + video.youtubeId + '/mqdefault.jpg" ' +
+                           'alt="' + video.title + '" style="width: 120px; height: 68px; object-fit: cover; border-radius: 4px; margin-right: 1rem;">';
+                } else {
+                    html += '<div style="width: 120px; height: 68px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 1rem;">' +
+                           '<i class="fas fa-play" style="font-size: 2rem; color: #9ca3af;"></i></div>';
+                }
+                
+                html += '<div style="flex: 1;">' +
+                        '<h3>' + video.title + '</h3>' +
+                        '<p>' + (video.description || 'No description') + '</p>' +
+                        '<div style="color: #6b7280; font-size: 0.875rem;">' +
+                            'By: ' + (video.creator || 'Unknown') + ' | ' +
+                            'Views: ' + (video.views || 0) + ' | ' +
+                            'Rating: ' + (video.rating || 0) + '/5' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="margin: 0.5rem 0;">';
+                
+                for (var j = 0; j < video.tags.length; j++) {
+                    html += '<span style="background: #e5e7eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; margin-right: 0.25rem; font-size: 0.75rem;">' + video.tags[j] + '</span>';
+                }
+                
+                html += '</div>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editVideo(\'' + video.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteVideo(\'' + video.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            if (html === '') {
+                html = '<div class="card"><p>No videos found. Click "Add Video" to upload your first video.</p></div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Tags
+        function renderTags() {
+            var container = document.getElementById('tags-list');
+            var html = '';
+            
+            for (var i = 0; i < dataStore.data.tags.length; i++) {
+                var tag = dataStore.data.tags[i];
+                var videosUsingTag = dataStore.data.videos.filter(function(v) {
+                    return v.tags.includes(tag.name);
+                }).length;
+                
+                html += '<div class="card" data-tag-id="' + tag.id + '">' +
+                    '<h3><span style="background-color: ' + tag.color + '; color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">' + tag.name + '</span></h3>' +
+                    '<p>' + (tag.definition || 'No definition provided') + '</p>' +
+                    '<div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 1rem;">Used in ' + videosUsingTag + ' videos</div>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editTag(\'' + tag.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteTag(\'' + tag.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            if (html === '') {
+                html = '<div class="card"><p>No tags found. Click "Add Tag" to create your first tag.</p></div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Languages
+        function renderLanguages() {
+            var container = document.getElementById('languages-list');
+            var html = '';
+            
+            for (var i = 0; i < dataStore.data.languages.length; i++) {
+                var lang = dataStore.data.languages[i];
+                html += '<div class="card" data-language-id="' + lang.id + '">' +
+                    '<h3>' + lang.name + ' (' + lang.code.toUpperCase() + ')</h3>' +
+                    '<p><strong>' + lang.nativeName + '</strong></p>' +
+                    '<div>Direction: ' + lang.direction.toUpperCase() + '</div>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editLanguage(\'' + lang.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="confirmDeleteLanguage(\'' + lang.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            if (html === '') {
+                html = '<div class="card"><p>No languages found. Click "Add Language" to add your first language.</p></div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Translations
+        function renderTranslations() {
+            var container = document.getElementById('translations-content');
+            var analytics = dataStore.getAnalytics();
+            
+            container.innerHTML = '<div class="grid">' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-globe"></i> Translation System Status</h3>' +
+                    '<p><strong>Current Language:</strong> ' + translationManager.currentLanguage.toUpperCase() + '</p>' +
+                    '<p><strong>UI Translation:</strong> ✅ Active</p>' +
+                    '<p><strong>Auto-Record Creation:</strong> ✅ Enabled</p>' +
+                    '<p>Translation records are automatically created when you add or edit content.</p>' +
+                '</div>' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-chart-line"></i> Translation Statistics</h3>' +
+                    '<p><strong>Areas to Translate:</strong> ' + analytics.totalAreas + '</p>' +
+                    '<p><strong>Videos to Translate:</strong> ' + analytics.totalVideos + '</p>' +
+                    '<p><strong>Tags to Translate:</strong> ' + analytics.totalTags + '</p>' +
+                    '<p><strong>Available Languages:</strong> ' + analytics.totalLanguages + '</p>' +
+                '</div>' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-cog"></i> Translation Features</h3>' +
+                    '<ul>' +
+                        '<li>✅ UI language switching</li>' +
+                        '<li>✅ Auto-creation of translation records</li>' +
+                        '<li>✅ Parse backend integration</li>' +
+                        '<li>✅ Language preference persistence</li>' +
+                        '<li>🔄 Direct translation editing (Phase 2)</li>' +
+                        '<li>🔄 Translation status tracking (Phase 2)</li>' +
+                    '</ul>' +
+                '</div>' +
+            '</div>';
+        }
+
+        // Render Analytics
+        function renderAnalytics() {
+            var container = document.getElementById('analytics-content');
+            var analytics = dataStore.getAnalytics();
+            
+            container.innerHTML = '<div class="grid">' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-database"></i> Content Statistics</h3>' +
+                    '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">' +
+                        '<div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">' +
+                            '<div style="font-size: 2rem; font-weight: bold; color: #8b5cf6;">' + analytics.totalAreas + '</div>' +
+                            '<div style="font-size: 0.875rem; color: #6b7280;">Areas</div>' +
+                        '</div>' +
+                        '<div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">' +
+                            '<div style="font-size: 2rem; font-weight: bold; color: #0ea5e9;">' + analytics.totalVideos + '</div>' +
+                            '<div style="font-size: 0.875rem; color: #6b7280;">Videos</div>' +
+                        '</div>' +
+                        '<div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">' +
+                            '<div style="font-size: 2rem; font-weight: bold; color: #10b981;">' + analytics.totalTags + '</div>' +
+                            '<div style="font-size: 0.875rem; color: #6b7280;">Tags</div>' +
+                        '</div>' +
+                        '<div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">' +
+                            '<div style="font-size: 2rem; font-weight: bold; color: #f59e0b;">' + analytics.totalLanguages + '</div>' +
+                            '<div style="font-size: 0.875rem; color: #6b7280;">Languages</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-video"></i> Video Metrics</h3>' +
+                    '<p><strong>Total Views:</strong> ' + analytics.totalViews.toLocaleString() + '</p>' +
+                    '<p><strong>Average Rating:</strong> ' + analytics.averageRating.toFixed(1) + '/5</p>' +
+                    '<p><strong>Latest Video:</strong> ' + (dataStore.data.videos.length > 0 ? dataStore.data.videos[0].title : 'None') + '</p>' +
+                '</div>' +
+                '<div class="card">' +
+                    '<h3><i class="fas fa-server"></i> System Status</h3>' +
+                    '<p><strong>Parse Backend:</strong> ' + (dataStore.isOnline ? '✅ Connected' : '❌ Offline') + '</p>' +
+                    '<p><strong>Translation System:</strong> ✅ Active</p>' +
+                    '<p><strong>Data Source:</strong> ' + (dataStore.data.areas.length > 3 ? 'Parse Server' : 'Seed Data') + '</p>' +
+                    '<p><strong>Version:</strong> ' + CONFIG.version + '</p>' +
+                '</div>' +
+            '</div>';
+        }
+
+        // Modal functions
+        function showModal(title, content, footer) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('modal-footer').innerHTML = footer || '';
+            document.getElementById('modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        // Show success/error messages
+        function showMessage(message, type) {
+            var alertClass = type === 'success' ? 'background: #10b981; color: white;' : 'background: #ef4444; color: white;';
+            var messageDiv = document.createElement('div');
+            messageDiv.style.cssText = alertClass + ' padding: 1rem; border-radius: 8px; margin: 1rem; position: fixed; top: 20px; right: 20px; z-index: 3000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(function() {
+                if (messageDiv.parentElement) {
+                    messageDiv.remove();
+                }
+            }, 3000);
+        }
+
+        // CRUD Modal Functions
+        function showAddAreaModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('area.name') + ' *</label>' +
+                '<input type="text" id="area-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Icon (Font Awesome class)</label>' +
+                '<input type="text" id="area-icon" class="form-input" placeholder="fas fa-folder">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('area.description') + '</label>' +
+                '<textarea id="area-description" class="form-textarea"></textarea>' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveArea()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal(translationManager.t('area.add'), content, footer);
+        }
+
+        function showAddVideoModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.name') + ' *</label>' +
+                '<input type="text" id="video-title" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.youtube') + '</label>' +
+                '<input type="text" id="video-youtube" class="form-input" placeholder="dQw4w9WgXcQ">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.description') + '</label>' +
+                '<textarea id="video-description" class="form-textarea"></textarea>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Tags (comma-separated)</label>' +
+                '<input type="text" id="video-tags" class="form-input" placeholder="water, DIY, purification">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Creator</label>' +
+                '<input type="text" id="video-creator" class="form-input">' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveVideo()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal(translationManager.t('video.add'), content, footer);
+        }
+
+        function showAddTagModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">Tag Name *</label>' +
+                '<input type="text" id="tag-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Definition</label>' +
+                '<textarea id="tag-definition" class="form-textarea"></textarea>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Color</label>' +
+                '<input type="color" id="tag-color" class="form-input" value="#8b5cf6">' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveTag()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal('Add Tag', content, footer);
+        }
+
+        function showAddLanguageModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">Language Name *</label>' +
+                '<input type="text" id="language-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Language Code *</label>' +
+                '<input type="text" id="language-code" class="form-input" placeholder="en" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Native Name</label>' +
+                '<input type="text" id="language-native" class="form-input">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Text Direction</label>' +
+                '<select id="language-direction" class="form-select">' +
+                    '<option value="ltr">Left to Right (LTR)</option>' +
+                    '<option value="rtl">Right to Left (RTL)</option>' +
+                '</select>' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveLanguage()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal('Add Language', content, footer);
+        }
+
+        // Save functions with Parse integration
+        function saveArea() {
+            var name = document.getElementById('area-name').value.trim();
+            var icon = document.getElementById('area-icon').value.trim() || 'fas fa-folder';
+            var description = document.getElementById('area-description').value.trim();
+            
+            if (!name) {
+                showMessage('Area name is required', 'error');
+                return;
+            }
+            
+            var data = {
+                area: name,
+                icon: icon,
+                description: description
+            };
+            
+            dataStore.createArea(data).then(function() {
+                renderAreas();
+                closeModal();
+                showMessage('Area created successfully!', 'success');
+            }).catch(function(error) {
+                console.error('Error creating area:', error);
+                showMessage('Failed to create area: ' + error.message, 'error');
+            });
+        }
+
+        function saveVideo() {
+            var title = document.getElementById('video-title').value.trim();
+            var youtubeId = document.getElementById('video-youtube').value.trim();
+            var description = document.getElementById('video-description').value.trim();
+            var tagsInput = document.getElementById('video-tags').value.trim();
+            var creator = document.getElementById('video-creator').value.trim();
+            
+            if (!title) {
+                showMessage('Video title is required', 'error');
+                return;
+            }
+            
+            var tags = tagsInput ? tagsInput.split(',').map(function(tag) { return tag.trim(); }).filter(function(tag) { return tag; }) : [];
+            
+            var data = {
+                title: title,
+                youtubeId: youtubeId,
+                description: description,
+                tags: tags,
+                creator: creator || 'Unknown'
+            };
+            
+            dataStore.createVideo(data).then(function() {
+                renderVideos();
+                closeModal();
+                showMessage('Video created successfully!', 'success');
+            }).catch(function(error) {
+                console.error('Error creating video:', error);
+                showMessage('Failed to create video: ' + error.message, 'error');
+            });
+        }
+
+        function saveTag() {
+            var name = document.getElementById('tag-name').value.trim().toLowerCase();
+            var definition = document.getElementById('tag-definition').value.trim();
+            var color = document.getElementById('tag-color').value;
+            
+            if (!name) {
+                showMessage('Tag name is required', 'error');
+                return;
+            }
+            
+            // Check for duplicate tag names
+            var existingTag = dataStore.data.tags.find(function(tag) { return tag.name === name; });
+            if (existingTag) {
+                showMessage('A tag with this name already exists', 'error');
+                return;
+            }
+            
+            var data = {
+                name: name,
+                definition: definition,
+                color: color
+            };
+            
+            dataStore.createTag(data).then(function() {
+                renderTags();
+                closeModal();
+                showMessage('Tag created successfully!', 'success');
+            }).catch(function(error) {
+                console.error('Error creating tag:', error);
+                showMessage('Failed to create tag: ' + error.message, 'error');
+            });
+        }
+
+        function saveLanguage() {
+            var name = document.getElementById('language-name').value.trim();
+            var code = document.getElementById('language-code').value.trim().toLowerCase();
+            var nativeName = document.getElementById('language-native').value.trim() || name;
+            var direction = document.getElementById('language-direction').value;
+            
+            if (!name || !code) {
+                showMessage('Language name and code are required', 'error');
+                return;
+            }
+            
+            // Check for duplicate language codes
+            var existingLang = dataStore.data.languages.find(function(lang) { return lang.code === code; });
+            if (existingLang) {
+                showMessage('A language with this code already exists', 'error');
+                return;
+            }
+            
+            var data = {
+                name: name,
+                code: code,
+                nativeName: nativeName,
+                direction: direction
+            };
+            
+            dataStore.createLanguage(data).then(function() {
+                renderLanguages();
+                closeModal();
+                showMessage('Language created successfully!', 'success');
+            }).catch(function(error) {
+                console.error('Error creating language:', error);
+                showMessage('Failed to create language: ' + error.message, 'error');
+            });
+        }
+
+        // Edit functions (placeholder for now)
+        function editArea(id) { 
+            showMessage('Edit functionality coming in next update', 'info'); 
+        }
+        function editVideo(id) { 
+            showMessage('Edit functionality coming in next update', 'info'); 
+        }
+        function editTag(id) { 
+            showMessage('Edit functionality coming in next update', 'info'); 
+        }
+        function editLanguage(id) { 
+            showMessage('Edit functionality coming in next update', 'info'); 
+        }
+
+        // Delete functions with confirmation
+        function confirmDeleteArea(id) {
+            var area = dataStore.data.areas.find(function(a) { return a.id === id; });
+            if (!area) return;
+            
+            if (confirm('Are you sure you want to delete "' + area.name + '"?')) {
+                dataStore.deleteArea(id).then(function() {
+                    renderAreas();
+                    showMessage('Area deleted successfully!', 'success');
+                }).catch(function(error) {
+                    console.error('Error deleting area:', error);
+                    showMessage('Failed to delete area: ' + error.message, 'error');
+                });
+            }
+        }
+
+        function confirmDeleteVideo(id) {
+            var video = dataStore.data.videos.find(function(v) { return v.id === id; });
+            if (!video) return;
+            
+            if (confirm('Are you sure you want to delete "' + video.title + '"?')) {
+                dataStore.deleteVideo(id).then(function() {
+                    renderVideos();
+                    showMessage('Video deleted successfully!', 'success');
+                }).catch(function(error) {
+                    console.error('Error deleting video:', error);
+                    showMessage('Failed to delete video: ' + error.message, 'error');
+                });
+            }
+        }
+
+        function confirmDeleteTag(id) {
+            var tag = dataStore.data.tags.find(function(t) { return t.id === id; });
+            if (!tag) return;
+            
+            var videosUsingTag = dataStore.data.videos.filter(function(v) {
+                return v.tags.includes(tag.name);
+            });
+            
+            var confirmMessage = 'Are you sure you want to delete the tag "' + tag.name + '"?';
+            if (videosUsingTag.length > 0) {
+                confirmMessage += '\n\nThis tag is used in ' + videosUsingTag.length + ' video(s).';
+            }
+            
+            if (confirm(confirmMessage)) {
+                dataStore.deleteTag(id).then(function() {
+                    renderTags();
+                    showMessage('Tag deleted successfully!', 'success');
+                }).catch(function(error) {
+                    console.error('Error deleting tag:', error);
+                    showMessage('Failed to delete tag: ' + error.message, 'error');
+                });
+            }
+        }
+
+        function confirmDeleteLanguage(id) {
+            var language = dataStore.data.languages.find(function(l) { return l.id === id; });
+            if (!language) return;
+            
+            if (confirm('Are you sure you want to delete the language "' + language.name + '"?')) {
+                dataStore.deleteLanguage(id).then(function() {
+                    renderLanguages();
+                    showMessage('Language deleted successfully!', 'success');
+                }).catch(function(error) {
+                    console.error('Error deleting language:', error);
+                    showMessage('Failed to delete language: ' + error.message, 'error');
+                });
+            }
+        }
+
+        // Filter functions with live search
+        function filterAreas(searchTerm) {
+            var cards = document.querySelectorAll('#areas-list .card[data-area-id]');
+            var term = searchTerm.toLowerCase();
+            
+            cards.forEach(function(card) {
+                var areaId = card.getAttribute('data-area-id');
+                var area = dataStore.data.areas.find(function(a) { return a.id === areaId; });
+                
+                if (area) {
+                    var matches = area.name.toLowerCase().includes(term) ||
+                                 (area.description && area.description.toLowerCase().includes(term));
+                    card.style.display = matches ? 'block' : 'none';
+                }
+            });
+        }
+
+        function filterVideos(searchTerm) {
+            var cards = document.querySelectorAll('#videos-list .card[data-video-id]');
+            var term = searchTerm.toLowerCase();
+            
+            cards.forEach(function(card) {
+                var videoId = card.getAttribute('data-video-id');
+                var video = dataStore.data.videos.find(function(v) { return v.id === videoId; });
+                
+                if (video) {
+                    var matches = video.title.toLowerCase().includes(term) ||
+                                 (video.description && video.description.toLowerCase().includes(term)) ||
+                                 video.tags.some(function(tag) { return tag.toLowerCase().includes(term); }) ||
+                                 (video.creator && video.creator.toLowerCase().includes(term));
+                    card.style.display = matches ? 'block' : 'none';
+                }
+            });
+        }
+
+        function filterTags(searchTerm) {
+            var cards = document.querySelectorAll('#tags-list .card[data-tag-id]');
+            var term = searchTerm.toLowerCase();
+            
+            cards.forEach(function(card) {
+                var tagId = card.getAttribute('data-tag-id');
+                var tag = dataStore.data.tags.find(function(t) { return t.id === tagId; });
+                
+                if (tag) {
+                    var matches = tag.name.toLowerCase().includes(term) ||
+                                 (tag.definition && tag.definition.toLowerCase().includes(term));
+                    card.style.display = matches ? 'block' : 'none';
+                }
+            });
+        }
+
+      
+            filterLanguages(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const languagesGrid = document.getElementById('languages-grid');
+                const languageCards = languagesGrid.querySelectorAll('.language-card');
+
+                languageCards.forEach(card => {
+                    const languageId = card.dataset.languageId;
+                    const language = this.store.data.languages.find(l => l.id === languageId);
+                    
+                    const matches = language.name.toLowerCase().includes(this.searchTerm) ||
+                                   language.code.toLowerCase().includes(this.searchTerm) ||
+                                   (language.nativeName && language.nativeName.toLowerCase().includes(this.searchTerm));
+
+                    card.style.display = matches ? 'block' : 'none';
+                });
+            }
+
+            // Utility Functions
+            showError(message) {
+                this.showAlert(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showAlert(message, 'success');
+            }
+
+            showWarning(message) {
+                this.showAlert(message, 'warning');
+            }
+
+            showAlert(message, type = 'error') {
+                const alertContainer = document.createElement('div');
+                alertContainer.className = `alert alert-${type}`;
+                alertContainer.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                const contentArea = document.getElementById('content-area');
+                contentArea.insertBefore(alertContainer, contentArea.firstChild);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (alertContainer.parentElement) {
+                        alertContainer.remove();
+                    }
+                }, 5000);
+            }
+
+            showGlobalSearch() {
+                const content = `
+                    <div class="form-group">
+                        <input type="text" id="global-search-input" class="form-input" 
+                               placeholder="Search across all content..." autofocus>
+                    </div>
+                    <div id="search-results" style="max-height: 400px; overflow-y: auto;">
+                        <p style="color: var(--gray-500); text-align: center;">Start typing to search...</p>
+                    </div>
+                `;
+
+                this.showModal('Global Search', content);
+
+                const searchInput = document.getElementById('global-search-input');
+                const resultsContainer = document.getElementById('search-results');
+
+                searchInput.addEventListener('input', async (e) => {
+                    const query = e.target.value.trim();
+                    
+                    if (query.length < 2) {
+                        resultsContainer.innerHTML = '<p style="color: var(--gray-500); text-align: center;">Start typing to search...</p>';
+                        return;
+                    }
+
+                    const results = await this.store.search(query);
+                    this.renderSearchResults(results, resultsContainer);
+                });
+            }
+
+            renderSearchResults(results, container) {
+                const { areas, subcategories, videos, tags } = results;
+                const totalResults = areas.length + subcategories.length + videos.length + tags.length;
+
+                if (totalResults === 0) {
+                    container.innerHTML = '<p style="color: var(--gray-500); text-align: center;">No results found</p>';
+                    return;
+                }
+
+                let html = `<div style="margin-bottom: 1rem; color: var(--gray-600);">Found ${totalResults} results</div>`;
+
+                if (areas.length > 0) {
+                    html += '<h4>Areas</h4>';
+                    areas.forEach(area => {
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong><i class="${area.icon}"></i> ${area.area}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${area.description || 'No description'}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (subcategories.length > 0) {
+                    html += '<h4>Subcategories</h4>';
+                    subcategories.forEach(sub => {
+                        const area = this.store.data.areas.find(a => a.id === sub.areaId);
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong>${sub.title}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${area?.area || 'Unknown Area'} • ${sub.videos.length} videos
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (videos.length > 0) {
+                    html += '<h4>Videos</h4>';
+                    videos.forEach(video => {
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong>${video.title}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${video.creator || 'Unknown'} • ${video.views || 0} views
+                                </div>
+                                <div style="margin-top: 0.25rem;">
+                                    ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (tags.length > 0) {
+                    html += '<h4>Tags</h4>';
+                    tags.forEach(tag => {
+                        const videoCount = this.store.data.videos.filter(v => v.tags.includes(tag.name)).length;
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <span class="tag tag-colored" style="background-color: ${tag.color};">
+                                    ${tag.name}
+                                </span>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${tag.definition || 'No definition'} • Used in ${videoCount} videos
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                container.innerHTML = html;
+            }
+
+            // YouTube ID extraction helper
+            extractYouTubeId(url) {
+                const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                const match = url.match(regex);
+                return match ? match[1] : null;
+            }
+
+            // Format duration helper
+            formatDuration(seconds) {
+                if (!seconds) return 'N/A';
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+
+            // Validate YouTube URL
+            validateYouTubeUrl(url) {
+                return this.security.isValidYoutubeUrl(url);
+            }
+
+            // Export data
+            exportData() {
+                const data = {
+                    version: CONFIG.version,
+                    exported: new Date().toISOString(),
+                    areas: this.store.data.areas,
+                    subcategories: this.store.data.subcategories,
+                    videos: this.store.data.videos,
+                    tags: this.store.data.tags,
+                    languages: this.store.data.languages
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `appro-content-backup-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                this.showSuccess('Data exported successfully');
+            }
+
+            // Import data
+            importData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.addEventListener('change', async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    try {
+                        const text = await file.text();
+                        const data = JSON.parse(text);
+                        
+                        // Validate data structure
+                        if (!data.areas || !data.subcategories || !data.videos) {
+                            throw new Error('Invalid backup file format');
+                        }
+
+                        // Confirm import
+                        if (confirm('This will replace all current data. Are you sure?')) {
+                            this.store.data = {
+                                areas: data.areas || [],
+                                subcategories: data.subcategories || [],
+                                videos: data.videos || [],
+                                tags: data.tags || [],
+                                languages: data.languages || []
+                            };
+
+                            this.store.buildRelationships();
+                            this.renderCurrentTab();
+                            this.showSuccess('Data imported successfully');
+                        }
+                    } catch (error) {
+                        this.showError('Failed to import data: ' + error.message);
+                    }
+                });
+                input.click();
+            }
+        }
+
+        // Main Application Class
+        class ContentManager {
+            constructor() {
+                this.security = new LatticeSecurityManager();
+                this.store = new EnhancedParseStore(this.security);
+                this.ui = new UIManager(this, this.store, this.security);
+                this.init();
+            }
+
+            async init() {
+                try {
+                    Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+                    Parse.serverURL = CONFIG.parseServerURL;
+                    
+                    await this.store.loadInitialData();
+                    this.ui.init();
+                    
+                    // Make available globally for onclick handlers
+                    window.contentManager = this;
+                    
+                    console.log(`✅ Content Manager v${CONFIG.version} initialized`);
+                } catch (error) {
+                    console.error('Initialization failed:', error);
+                    this.ui.showError('Failed to initialize application');
+                }
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new ContentManager();
+        });
+
+        // Service Worker Registration for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Handle online/offline status
+        window.addEventListener('online', () => {
+            document.getElementById('connection-status').textContent = 'Connected';
+            document.getElementById('connection-status').className = 'connection-status status-connected';
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('connection-status').textContent = 'Offline';
+            document.getElementById('connection-status').className = 'connection-status status-error';
+        });
+
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            if (window.contentManager && window.contentManager.ui) {
+                window.contentManager.ui.showError('An unexpected error occurred');
+            }
+        });
+
+        // Unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            if (window.contentManager && window.contentManager.ui) {
+                window.contentManager.ui.showError('An unexpected error occurred');
+            }
+        });
+
+    </script>
+</body>
+</html>
