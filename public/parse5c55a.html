@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager - Debug v3.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .btn { background: #8b5cf6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #7c3aed; }
+        .language-selector { position: relative; display: inline-block; }
+        .language-dropdown { position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; display: none; }
+        .language-option { padding: 10px; cursor: pointer; }
+        .language-option:hover { background: #f0f0f0; }
+        .content { margin: 20px 0; }
+        .card { background: white; border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Appro Content Manager - Debug Version</h1>
+    
+    <div class="language-selector">
+        <button class="btn" id="language-toggle">🌐 EN</button>
+        <div class="language-dropdown" id="language-dropdown">
+            <div class="language-option" data-code="en">English</div>
+            <div class="language-option" data-code="es">Español</div>
+            <div class="language-option" data-code="fr">Français</div>
+        </div>
+    </div>
+    
+    <button class="btn" onclick="loadData()">Load Data</button>
+    <button class="btn" onclick="testTranslations()">Test Translations</button>
+    
+    <div id="content" class="content">
+        <p>Application loading...</p>
+    </div>
+
+    <script>
+        // Simple configuration
+        var CONFIG = {
+            version: '3.0.0',
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/'
+        };
+
+        // Simple Translation Parse Object
+        function Translation() {
+            Parse.Object.call(this, "Translation");
+        }
+        Translation.prototype = Object.create(Parse.Object.prototype);
+
+        // Simple Translation Manager
+        function TranslationManager() {
+            this.currentLanguage = this.getStoredLanguage();
+            this.translations = {
+                en: {
+                    'test': 'Test',
+                    'hello': 'Hello',
+                    'areas': 'Areas'
+                },
+                es: {
+                    'test': 'Prueba',
+                    'hello': 'Hola',
+                    'areas': 'Áreas'
+                },
+                fr: {
+                    'test': 'Test',
+                    'hello': 'Bonjour',
+                    'areas': 'Domaines'
+                }
+            };
+        }
+
+        TranslationManager.prototype.getStoredLanguage = function() {
+            try {
+                return localStorage.getItem('appro_language') || 'en';
+            } catch (error) {
+                return 'en';
+            }
+        };
+
+        TranslationManager.prototype.setStoredLanguage = function(languageCode) {
+            try {
+                localStorage.setItem('appro_language', languageCode);
+            } catch (error) {
+                console.warn('Could not store language preference');
+            }
+        };
+
+        TranslationManager.prototype.t = function(key) {
+            var translations = this.translations[this.currentLanguage] || this.translations['en'];
+            return translations[key] || key;
+        };
+
+        TranslationManager.prototype.switchLanguage = function(languageCode) {
+            this.currentLanguage = languageCode;
+            this.setStoredLanguage(languageCode);
+            updateUI();
+        };
+
+        // Global variables
+        var translationManager = new TranslationManager();
+
+        // Initialize Parse
+        function initParse() {
+            Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+            Parse.serverURL = CONFIG.parseServerURL;
+            Parse.Object.registerSubclass('Translation', Translation);
+        }
+
+        // Load data function
+        function loadData() {
+            var content = document.getElementById('content');
+            content.innerHTML = '<div class="card"><h3>' + translationManager.t('areas') + '</h3><p>Sample area content here</p></div>';
+        }
+
+        // Test translations
+        function testTranslations() {
+            var content = document.getElementById('content');
+            content.innerHTML = 
+                '<div class="card">' +
+                '<h3>' + translationManager.t('test') + '</h3>' +
+                '<p>' + translationManager.t('hello') + ' - Current language: ' + translationManager.currentLanguage + '</p>' +
+                '</div>';
+        }
+
+        // Update UI
+        function updateUI() {
+            var toggleBtn = document.getElementById('language-toggle');
+            toggleBtn.textContent = '🌐 ' + translationManager.currentLanguage.toUpperCase();
+            
+            // Update any existing content
+            var content = document.getElementById('content');
+            if (content.innerHTML.includes('card')) {
+                loadData(); // Refresh content with new language
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            var toggleBtn = document.getElementById('language-toggle');
+            var dropdown = document.getElementById('language-dropdown');
+            
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            dropdown.addEventListener('click', function(e) {
+                if (e.target.classList.contains('language-option')) {
+                    var languageCode = e.target.getAttribute('data-code');
+                    translationManager.switchLanguage(languageCode);
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.language-selector')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initParse();
+            setupEventListeners();
+            updateUI();
+            loadData();
+            console.log('✅ Debug version initialized successfully');
+        });
+    </script>
+</body>
+</html>
