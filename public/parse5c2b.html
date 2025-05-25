@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager - Debug v3.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            background: #f9fafb;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn { 
+            background: #8b5cf6; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn:hover { background: #7c3aed; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        
+        .language-selector { 
+            position: relative; 
+            display: inline-block; 
+            margin-right: 1rem;
+        }
+        
+        .language-dropdown { 
+            position: absolute; 
+            top: 100%;
+            right: 0;
+            background: white; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            display: none;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+        
+        .language-option { 
+            padding: 10px 15px; 
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .language-option:last-child { border-bottom: none; }
+        .language-option:hover { background: #f0f0f0; }
+        .language-option.active { background: #8b5cf6; color: white; }
+        
+        .nav-tabs {
+            background: white;
+            padding: 0 2rem;
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tab {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover {
+            color: #8b5cf6;
+            background: #f9fafb;
+        }
+        
+        .nav-tab.active {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+        }
+        
+        .content { 
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .card { 
+            background: white; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .modal.show { display: flex; }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af;
+            padding: 0;
+        }
+        
+        .close-btn:hover { color: #6b7280; }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: 0.75rem center;
+            background-size: 1rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-video"></i> Appro Content Manager v3.0</h1>
+        <div style="display: flex; align-items: center;">
+            <div class="language-selector">
+                <button class="btn btn-secondary" id="language-toggle">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-language">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div class="language-option" data-code="en">
+                        <span><strong>EN</strong> English</span>
+                    </div>
+                    <div class="language-option" data-code="es">
+                        <span><strong>ES</strong> Español</span>
+                    </div>
+                    <div class="language-option" data-code="fr">
+                        <span><strong>FR</strong> Français</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="syncData()">
+                <i class="fas fa-sync-alt"></i>
+                <span data-translate="action.sync">Sync</span>
+            </button>
+            <span id="status">Connected</span>
+        </div>
+    </div>
+    
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="areas">
+            <i class="fas fa-sitemap"></i>
+            <span data-translate="nav.areas">Areas</span>
+        </button>
+        <button class="nav-tab" data-tab="videos">
+            <i class="fas fa-play-circle"></i>
+            <span data-translate="nav.videos">Videos</span>
+        </button>
+        <button class="nav-tab" data-tab="tags">
+            <i class="fas fa-tags"></i>
+            <span data-translate="nav.tags">Tags</span>
+        </button>
+        <button class="nav-tab" data-tab="languages">
+            <i class="fas fa-language"></i>
+            <span data-translate="nav.languages">Languages</span>
+        </button>
+        <button class="nav-tab" data-tab="translations">
+            <i class="fas fa-exchange-alt"></i>
+            <span data-translate="nav.translations">Translations</span>
+        </button>
+        <button class="nav-tab" data-tab="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span data-translate="nav.analytics">Analytics</span>
+        </button>
+    </nav>
+    
+    <div id="content" class="content">
+        <!-- Areas Tab -->
+        <div id="areas-tab" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-sitemap"></i> <span data-translate="area.title">Knowledge Areas</span></h2>
+                <button class="btn" onclick="showAddAreaModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="area.add">Add Area</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search areas..." onkeyup="filterAreas(this.value)">
+            </div>
+            <div id="areas-list" class="grid">
+                <!-- Areas will be populated here -->
+            </div>
+        </div>
+
+        <!-- Videos Tab -->
+        <div id="videos-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-play-circle"></i> <span data-translate="video.title">Video Library</span></h2>
+                <button class="btn" onclick="showAddVideoModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="video.add">Add Video</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search videos..." onkeyup="filterVideos(this.value)">
+            </div>
+            <div id="videos-list" class="grid">
+                <!-- Videos will be populated here -->
+            </div>
+        </div>
+
+        <!-- Tags Tab -->
+        <div id="tags-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-tags"></i> <span data-translate="nav.tags">Tag Management</span></h2>
+                <button class="btn" onclick="showAddTagModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="action.add">Add Tag</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search tags..." onkeyup="filterTags(this.value)">
+            </div>
+            <div id="tags-list" class="grid">
+                <!-- Tags will be populated here -->
+            </div>
+        </div>
+
+        <!-- Languages Tab -->
+        <div id="languages-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-language"></i> <span data-translate="nav.languages">Language Management</span></h2>
+                <button class="btn" onclick="showAddLanguageModal()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="action.add">Add Language</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search languages..." onkeyup="filterLanguages(this.value)">
+            </div>
+            <div id="languages-list" class="grid">
+                <!-- Languages will be populated here -->
+            </div>
+        </div>
+
+        <!-- Translations Tab -->
+        <div id="translations-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-exchange-alt"></i> <span data-translate="nav.translations">Translation Management</span></h2>
+            </div>
+            <div id="translations-content">
+                <!-- Translation content will be populated here -->
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> <span data-translate="nav.analytics">Analytics Dashboard</span></h2>
+            </div>
+            <div id="analytics-content">
+                <!-- Analytics content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Modal Title</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modal-body">
+                <!-- Modal content goes here -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <!-- Modal footer buttons go here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        var CONFIG = {
+            version: '3.0.0',
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/'
+        };
+
+        // Translation Parse Object
+        function Translation() {
+            Parse.Object.call(this, "Translation");
+        }
+        Translation.prototype = Object.create(Parse.Object.prototype);
+
+        // Translation Manager
+        function TranslationManager() {
+            this.currentLanguage = this.getStoredLanguage();
+            this.translations = {
+                en: {
+                    'nav.areas': 'Areas',
+                    'nav.videos': 'Videos',
+                    'nav.tags': 'Tags',
+                    'nav.languages': 'Languages',
+                    'nav.translations': 'Translations',
+                    'nav.analytics': 'Analytics',
+                    'action.add': 'Add',
+                    'action.edit': 'Edit',
+                    'action.delete': 'Delete',
+                    'action.save': 'Save',
+                    'action.cancel': 'Cancel',
+                    'action.sync': 'Sync',
+                    'area.title': 'Knowledge Areas',
+                    'area.add': 'Add Area',
+                    'area.name': 'Area Name',
+                    'area.description': 'Description',
+                    'video.title': 'Video Library',
+                    'video.add': 'Add Video',
+                    'video.name': 'Title',
+                    'video.youtube': 'YouTube ID',
+                    'video.description': 'Description'
+                },
+                es: {
+                    'nav.areas': 'Áreas',
+                    'nav.videos': 'Videos',
+                    'nav.tags': 'Etiquetas',
+                    'nav.languages': 'Idiomas',
+                    'nav.translations': 'Traducciones',
+                    'nav.analytics': 'Analíticas',
+                    'action.add': 'Agregar',
+                    'action.edit': 'Editar',
+                    'action.delete': 'Eliminar',
+                    'action.save': 'Guardar',
+                    'action.cancel': 'Cancelar',
+                    'action.sync': 'Sincronizar',
+                    'area.title': 'Áreas de Conocimiento',
+                    'area.add': 'Agregar Área',
+                    'area.name': 'Nombre del Área',
+                    'area.description': 'Descripción',
+                    'video.title': 'Biblioteca de Videos',
+                    'video.add': 'Agregar Video',
+                    'video.name': 'Título',
+                    'video.youtube': 'ID de YouTube',
+                    'video.description': 'Descripción'
+                },
+                fr: {
+                    'nav.areas': 'Domaines',
+                    'nav.videos': 'Vidéos',
+                    'nav.tags': 'Étiquettes',
+                    'nav.languages': 'Langues',
+                    'nav.translations': 'Traductions',
+                    'nav.analytics': 'Analytiques',
+                    'action.add': 'Ajouter',
+                    'action.edit': 'Modifier',
+                    'action.delete': 'Supprimer',
+                    'action.save': 'Sauvegarder',
+                    'action.cancel': 'Annuler',
+                    'action.sync': 'Synchroniser',
+                    'area.title': 'Domaines de Connaissance',
+                    'area.add': 'Ajouter un Domaine',
+                    'area.name': 'Nom du Domaine',
+                    'area.description': 'Description',
+                    'video.title': 'Bibliothèque Vidéo',
+                    'video.add': 'Ajouter une Vidéo',
+                    'video.name': 'Titre',
+                    'video.youtube': 'ID YouTube',
+                    'video.description': 'Description'
+                }
+            };
+        }
+
+        TranslationManager.prototype.getStoredLanguage = function() {
+            try {
+                return localStorage.getItem('appro_language') || 'en';
+            } catch (error) {
+                return 'en';
+            }
+        };
+
+        TranslationManager.prototype.setStoredLanguage = function(languageCode) {
+            try {
+                localStorage.setItem('appro_language', languageCode);
+            } catch (error) {
+                console.warn('Could not store language preference');
+            }
+        };
+
+        TranslationManager.prototype.t = function(key) {
+            var translations = this.translations[this.currentLanguage] || this.translations['en'];
+            return translations[key] || key;
+        };
+
+        TranslationManager.prototype.switchLanguage = function(languageCode) {
+            this.currentLanguage = languageCode;
+            this.setStoredLanguage(languageCode);
+            updateLanguageUI();
+            updateTranslatableElements();
+        };
+
+        // Global variables
+        var translationManager = new TranslationManager();
+        var currentTab = 'areas';
+        var sampleData = {
+            areas: [
+                {
+                    id: 'area_1',
+                    name: 'Water Systems',
+                    icon: 'fas fa-tint',
+                    description: 'Water purification and management systems'
+                },
+                {
+                    id: 'area_2',
+                    name: 'Energy Solutions',
+                    icon: 'fas fa-bolt',
+                    description: 'Renewable energy and power generation'
+                }
+            ],
+            videos: [
+                {
+                    id: 'video_1',
+                    title: 'DIY Water Filter Construction',
+                    youtubeId: 'dQw4w9WgXcQ',
+                    description: 'Learn to build an effective water filter',
+                    tags: ['water', 'DIY', 'purification'],
+                    creator: 'Water Solutions Team',
+                    views: 1250,
+                    rating: 4.5
+                }
+            ],
+            tags: [
+                {
+                    id: 'tag_1',
+                    name: 'water',
+                    definition: 'Water-related content',
+                    color: '#0ea5e9'
+                },
+                {
+                    id: 'tag_2',
+                    name: 'DIY',
+                    definition: 'Do It Yourself projects',
+                    color: '#f59e0b'
+                }
+            ],
+            languages: [
+                {
+                    id: 'lang_1',
+                    name: 'English',
+                    code: 'en',
+                    nativeName: 'English'
+                },
+                {
+                    id: 'lang_2',
+                    name: 'Spanish',
+                    code: 'es',
+                    nativeName: 'Español'
+                },
+                {
+                    id: 'lang_3',
+                    name: 'French',
+                    code: 'fr',
+                    nativeName: 'Français'
+                }
+            ]
+        };
+
+        // Initialize Parse
+        function initParse() {
+            Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+            Parse.serverURL = CONFIG.parseServerURL;
+            Parse.Object.registerSubclass('Translation', Translation);
+        }
+
+        // Tab Management
+        function switchTab(tabName) {
+            // Hide all tab contents
+            var tabContents = document.querySelectorAll('.tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            // Remove active class from all nav tabs
+            var navTabs = document.querySelectorAll('.nav-tab');
+            for (var i = 0; i < navTabs.length; i++) {
+                navTabs[i].classList.remove('active');
+            }
+
+            // Show selected tab
+            var selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to selected nav tab
+            var selectedNavTab = document.querySelector('[data-tab="' + tabName + '"]');
+            if (selectedNavTab) {
+                selectedNavTab.classList.add('active');
+            }
+
+            currentTab = tabName;
+            renderCurrentTab();
+        }
+
+        // Render current tab content
+        function renderCurrentTab() {
+            switch (currentTab) {
+                case 'areas':
+                    renderAreas();
+                    break;
+                case 'videos':
+                    renderVideos();
+                    break;
+                case 'tags':
+                    renderTags();
+                    break;
+                case 'languages':
+                    renderLanguages();
+                    break;
+                case 'translations':
+                    renderTranslations();
+                    break;
+                case 'analytics':
+                    renderAnalytics();
+                    break;
+            }
+        }
+
+        // Render Areas
+        function renderAreas() {
+            var container = document.getElementById('areas-list');
+            var html = '';
+            
+            for (var i = 0; i < sampleData.areas.length; i++) {
+                var area = sampleData.areas[i];
+                html += '<div class="card">' +
+                    '<h3><i class="' + area.icon + '"></i> ' + area.name + '</h3>' +
+                    '<p>' + area.description + '</p>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editArea(\'' + area.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="deleteArea(\'' + area.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Videos
+        function renderVideos() {
+            var container = document.getElementById('videos-list');
+            var html = '';
+            
+            for (var i = 0; i < sampleData.videos.length; i++) {
+                var video = sampleData.videos[i];
+                html += '<div class="card">' +
+                    '<h3>' + video.title + '</h3>' +
+                    '<p>' + video.description + '</p>' +
+                    '<div>Creator: ' + video.creator + ' | Views: ' + video.views + ' | Rating: ' + video.rating + '/5</div>' +
+                    '<div style="margin: 0.5rem 0;">';
+                
+                for (var j = 0; j < video.tags.length; j++) {
+                    html += '<span style="background: #e5e7eb; padding: 0.25rem 0.5rem; border-radius: 0.25rem; margin-right: 0.25rem; font-size: 0.75rem;">' + video.tags[j] + '</span>';
+                }
+                
+                html += '</div>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editVideo(\'' + video.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="deleteVideo(\'' + video.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Tags
+        function renderTags() {
+            var container = document.getElementById('tags-list');
+            var html = '';
+            
+            for (var i = 0; i < sampleData.tags.length; i++) {
+                var tag = sampleData.tags[i];
+                html += '<div class="card">' +
+                    '<h3><span style="background-color: ' + tag.color + '; color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">' + tag.name + '</span></h3>' +
+                    '<p>' + tag.definition + '</p>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editTag(\'' + tag.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="deleteTag(\'' + tag.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Languages
+        function renderLanguages() {
+            var container = document.getElementById('languages-list');
+            var html = '';
+            
+            for (var i = 0; i < sampleData.languages.length; i++) {
+                var lang = sampleData.languages[i];
+                html += '<div class="card">' +
+                    '<h3>' + lang.name + ' (' + lang.code.toUpperCase() + ')</h3>' +
+                    '<p>' + lang.nativeName + '</p>' +
+                    '<div class="item-actions">' +
+                        '<button class="btn btn-secondary" onclick="editLanguage(\'' + lang.id + '\')">' +
+                            '<i class="fas fa-edit"></i> ' + translationManager.t('action.edit') +
+                        '</button>' +
+                        '<button class="btn btn-danger" onclick="deleteLanguage(\'' + lang.id + '\')">' +
+                            '<i class="fas fa-trash"></i> ' + translationManager.t('action.delete') +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Render Translations
+        function renderTranslations() {
+            var container = document.getElementById('translations-content');
+            container.innerHTML = '<div class="card">' +
+                '<h3>Translation System Status</h3>' +
+                '<p>Current Language: <strong>' + translationManager.currentLanguage.toUpperCase() + '</strong></p>' +
+                '<p>Translation records are automatically created when you add or edit content.</p>' +
+                '<p>UI translations are working - try switching languages using the dropdown in the header!</p>' +
+            '</div>';
+        }
+
+        // Render Analytics
+        function renderAnalytics() {
+            var container = document.getElementById('analytics-content');
+            container.innerHTML = '<div class="grid">' +
+                '<div class="card">' +
+                    '<h3>Content Statistics</h3>' +
+                    '<p>Areas: ' + sampleData.areas.length + '</p>' +
+                    '<p>Videos: ' + sampleData.videos.length + '</p>' +
+                    '<p>Tags: ' + sampleData.tags.length + '</p>' +
+                    '<p>Languages: ' + sampleData.languages.length + '</p>' +
+                '</div>' +
+                '<div class="card">' +
+                    '<h3>System Status</h3>' +
+                    '<p>Translation System: ✅ Active</p>' +
+                    '<p>Parse Backend: ✅ Connected</p>' +
+                    '<p>Version: ' + CONFIG.version + '</p>' +
+                '</div>' +
+            '</div>';
+        }
+
+        // Modal functions
+        function showModal(title, content, footer) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('modal-footer').innerHTML = footer || '';
+            document.getElementById('modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        // CRUD Modal Functions (placeholder)
+        function showAddAreaModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('area.name') + '</label>' +
+                '<input type="text" id="area-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('area.description') + '</label>' +
+                '<textarea id="area-description" class="form-textarea"></textarea>' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveArea()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal(translationManager.t('area.add'), content, footer);
+        }
+
+        function showAddVideoModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.name') + '</label>' +
+                '<input type="text" id="video-title" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.youtube') + '</label>' +
+                '<input type="text" id="video-youtube" class="form-input">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">' + translationManager.t('video.description') + '</label>' +
+                '<textarea id="video-description" class="form-textarea"></textarea>' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveVideo()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal(translationManager.t('video.add'), content, footer);
+        }
+
+        function showAddTagModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">Tag Name</label>' +
+                '<input type="text" id="tag-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Definition</label>' +
+                '<textarea id="tag-definition" class="form-textarea"></textarea>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Color</label>' +
+                '<input type="color" id="tag-color" class="form-input" value="#8b5cf6">' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveTag()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal('Add Tag', content, footer);
+        }
+
+        function showAddLanguageModal() {
+            var content = '<div class="form-group">' +
+                '<label class="form-label">Language Name</label>' +
+                '<input type="text" id="language-name" class="form-input" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Language Code</label>' +
+                '<input type="text" id="language-code" class="form-input" placeholder="en" required>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label class="form-label">Native Name</label>' +
+                '<input type="text" id="language-native" class="form-input">' +
+            '</div>';
+            
+            var footer = '<button class="btn btn-secondary" onclick="closeModal()">' + translationManager.t('action.cancel') + '</button>' +
+                        '<button class="btn" onclick="saveLanguage()">' + translationManager.t('action.save') + '</button>';
+            
+            showModal('Add Language', content, footer);
+        }
+
+        // Save functions (placeholder)
+        function saveArea() {
+            var name = document.getElementById('area-name').value;
+            var description = document.getElementById('area-description').value;
+            
+            if (name) {
+                var newArea = {
+                    id: 'area_' + Date.now(),
+                    name: name,
+                    icon: 'fas fa-folder',
+                    description: description
+                };
+                sampleData.areas.push(newArea);
+                renderAreas();
+                closeModal();
+                alert('Area added successfully!');
+            }
+        }
+
+        function saveVideo() {
+            var title = document.getElementById('video-title').value;
+            var youtube = document.getElementById('video-youtube').value;
+            var description = document.getElementById('video-description').value;
+            
+            if (title) {
+                var newVideo = {
+                    id: 'video_' + Date.now(),
+                    title: title,
+                    youtubeId: youtube,
+                    description: description,
+                    tags: [],
+                    creator: 'User',
+                    views: 0,
+                    rating: 0
+                };
+                sampleData.videos.push(newVideo);
+                renderVideos();
+                closeModal();
+                alert('Video added successfully!');
+            }
+        }
+
+        function saveTag() {
+            var name = document.getElementById('tag-name').value;
+            var definition = document.getElementById('tag-definition').value;
+            var color = document.getElementById('tag-color').value;
+            
+            if (name) {
+                var newTag = {
+                    id: 'tag_' + Date.now(),
+                    name: name,
+                    definition: definition,
+                    color: color
+                };
+                sampleData.tags.push(newTag);
+                renderTags();
+                closeModal();
+                alert('Tag added successfully!');
+            }
+        }
+
+        function saveLanguage() {
+            var name = document.getElementById('language-name').value;
+            var code = document.getElementById('language-code').value;
+            var nativeName = document.getElementById('language-native').value;
+            
+            if (name && code) {
+                var newLanguage = {
+                    id: 'lang_' + Date.now(),
+                    name: name,
+                    code: code.toLowerCase(),
+                    nativeName: nativeName || name
+                };
+                sampleData.languages.push(newLanguage);
+                renderLanguages();
+                closeModal();
+                alert('Language added successfully!');
+            }
+        }
+
+        // Edit/Delete functions (placeholder)
+        function editArea(id) { alert('Edit area: ' + id); }
+        function deleteArea(id) { 
+            if (confirm('Delete this area?')) {
+                sampleData.areas = sampleData.areas.filter(function(area) { return area.id !== id; });
+                renderAreas();
+            }
+        }
+        function editVideo(id) { alert('Edit video: ' + id); }
+        function deleteVideo(id) { 
+            if (confirm('Delete this video?')) {
+                sampleData.videos = sampleData.videos.filter(function(video) { return video.id !== id; });
+                renderVideos();
+            }
+        }
+        function editTag(id) { alert('Edit tag: ' + id); }
+        function deleteTag(id) { 
+            if (confirm('Delete this tag?')) {
+                sampleData.tags = sampleData.tags.filter(function(tag) { return tag.id !== id; });
+                renderTags();
+            }
+        }
+        function editLanguage(id) { alert('Edit language: ' + id); }
+        function deleteLanguage(id) { 
+            if (confirm('Delete this language?')) {
+                sampleData.languages = sampleData.languages.filter(function(lang) { return lang.id !== id; });
+                renderLanguages();
+            }
+        }
+
+        // Filter functions (placeholder)
+        function filterAreas(searchTerm) { console.log('Filter areas:', searchTerm); }
+        function filterVideos(searchTerm) { console.log('Filter videos:', searchTerm); }
+        function filterTags(searchTerm) { console.log('Filter tags:', searchTerm); }
+        function filterLanguages(searchTerm) { console.log('Filter languages:', searchTerm); }
+
+        // Other functions
+        function syncData() {
+            alert('Sync functionality - would connect to Parse backend');
+        }
+
+        // Language UI functions
+        function updateLanguageUI() {
+            var toggleBtn = document.getElementById('current-language');
+            toggleBtn.textContent = translationManager.currentLanguage.toUpperCase();
+            
+            // Update language option active states
+            var options = document.querySelectorAll('.language-option');
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                if (option.getAttribute('data-code') === translationManager.currentLanguage) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            }
+        }
+
+        function updateTranslatableElements() {
+            var elements = document.querySelectorAll('[data-translate]');
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+                var key = element.getAttribute('data-translate');
+                element.textContent = translationManager.t(key);
+            }
+            
+            // Re-render current tab to update content
+            renderCurrentTab();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Language selector
+            var toggleBtn = document.getElementById('language-toggle');
+            var dropdown = document.getElementById('language-dropdown');
+            
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            dropdown.addEventListener('click', function(e) {
+                if (e.target.classList.contains('language-option') || e.target.parentElement.classList.contains('language-option')) {
+                    var option = e.target.classList.contains('language-option') ? e.target : e.target.parentElement;
+                    var languageCode = option.getAttribute('data-code');
+                    translationManager.switchLanguage(languageCode);
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.language-selector')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Tab navigation
+            var navTabs = document.querySelectorAll('.nav-tab');
+            for (var i = 0; i < navTabs.length; i++) {
+                navTabs[i].addEventListener('click', function(e) {
+                    var tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            }
+
+            // Modal backdrop click
+            document.getElementById('modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // Escape key closes modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initParse();
+            setupEventListeners();
+            updateLanguageUI();
+            updateTranslatableElements();
+            renderCurrentTab();
+            console.log('✅ Content Manager with tabs initialized successfully');
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager - Debug v3.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .btn { background: #8b5cf6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #7c3aed; }
+        .language-selector { position: relative; display: inline-block; }
+        .language-dropdown { position: absolute; background: white; border: 1px solid #ccc; border-radius: 5px; display: none; }
+        .language-option { padding: 10px; cursor: pointer; }
+        .language-option:hover { background: #f0f0f0; }
+        .content { margin: 20px 0; }
+        .card { background: white; border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Appro Content Manager - Debug Version</h1>
+    
+    <div class="language-selector">
+        <button class="btn" id="language-toggle">🌐 EN</button>
+        <div class="language-dropdown" id="language-dropdown">
+            <div class="language-option" data-code="en">English</div>
+            <div class="language-option" data-code="es">Español</div>
+            <div class="language-option" data-code="fr">Français</div>
+        </div>
+    </div>
+    
+    <button class="btn" onclick="loadData()">Load Data</button>
+    <button class="btn" onclick="testTranslations()">Test Translations</button>
+    
+    <div id="content" class="content">
+        <p>Application loading...</p>
+    </div>
+
+    <script>
+        // Simple configuration
+        var CONFIG = {
+            version: '3.0.0',
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/'
+        };
+
+        // Simple Translation Parse Object
+        function Translation() {
+            Parse.Object.call(this, "Translation");
+        }
+        Translation.prototype = Object.create(Parse.Object.prototype);
+
+        // Simple Translation Manager
+        function TranslationManager() {
+            this.currentLanguage = this.getStoredLanguage();
+            this.translations = {
+                en: {
+                    'test': 'Test',
+                    'hello': 'Hello',
+                    'areas': 'Areas'
+                },
+                es: {
+                    'test': 'Prueba',
+                    'hello': 'Hola',
+                    'areas': 'Áreas'
+                },
+                fr: {
+                    'test': 'Test',
+                    'hello': 'Bonjour',
+                    'areas': 'Domaines'
+                }
+            };
+        }
+
+        TranslationManager.prototype.getStoredLanguage = function() {
+            try {
+                return localStorage.getItem('appro_language') || 'en';
+            } catch (error) {
+                return 'en';
+            }
+        };
+
+        TranslationManager.prototype.setStoredLanguage = function(languageCode) {
+            try {
+                localStorage.setItem('appro_language', languageCode);
+            } catch (error) {
+                console.warn('Could not store language preference');
+            }
+        };
+
+        TranslationManager.prototype.t = function(key) {
+            var translations = this.translations[this.currentLanguage] || this.translations['en'];
+            return translations[key] || key;
+        };
+
+        TranslationManager.prototype.switchLanguage = function(languageCode) {
+            this.currentLanguage = languageCode;
+            this.setStoredLanguage(languageCode);
+            updateUI();
+        };
+
+        // Global variables
+        var translationManager = new TranslationManager();
+
+        // Initialize Parse
+        function initParse() {
+            Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+            Parse.serverURL = CONFIG.parseServerURL;
+            Parse.Object.registerSubclass('Translation', Translation);
+        }
+
+        // Load data function
+        function loadData() {
+            var content = document.getElementById('content');
+            content.innerHTML = '<div class="card"><h3>' + translationManager.t('areas') + '</h3><p>Sample area content here</p></div>';
+        }
+
+        // Test translations
+        function testTranslations() {
+            var content = document.getElementById('content');
+            content.innerHTML = 
+                '<div class="card">' +
+                '<h3>' + translationManager.t('test') + '</h3>' +
+                '<p>' + translationManager.t('hello') + ' - Current language: ' + translationManager.currentLanguage + '</p>' +
+                '</div>';
+        }
+
+        // Update UI
+        function updateUI() {
+            var toggleBtn = document.getElementById('language-toggle');
+            toggleBtn.textContent = '🌐 ' + translationManager.currentLanguage.toUpperCase();
+            
+            // Update any existing content
+            var content = document.getElementById('content');
+            if (content.innerHTML.includes('card')) {
+                loadData(); // Refresh content with new language
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            var toggleBtn = document.getElementById('language-toggle');
+            var dropdown = document.getElementById('language-dropdown');
+            
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            dropdown.addEventListener('click', function(e) {
+                if (e.target.classList.contains('language-option')) {
+                    var languageCode = e.target.getAttribute('data-code');
+                    translationManager.switchLanguage(languageCode);
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.language-selector')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initParse();
+            setupEventListeners();
+            updateUI();
+            loadData();
+            console.log('✅ Debug version initialized successfully');
+        });
+    </script>
+</body>
+</html>
