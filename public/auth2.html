@@ -1,0 +1,3172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Tech Clinic - Join the Community</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hub.approvideo.org; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com https://*.supabase.co;">
+    
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+    
+    <style>
+        /* Professional Business Theme CSS */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --accent: #059669;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #dc2626;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--blue-50) 0%, var(--gray-100) 50%, var(--blue-100) 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(45deg, var(--gray-400) 1px, transparent 1px),
+                linear-gradient(-45deg, var(--gray-400) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: subtle-move 30s ease-in-out infinite;
+        }
+
+        @keyframes subtle-move {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(10px) translateY(-10px); }
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            padding: 2.5rem;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-200);
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .clinic-card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            padding: 2.5rem;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-200);
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .logo-subtitle {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 20;
+        }
+
+        .language-toggle {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .language-toggle:hover {
+            background: var(--white);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 100;
+            min-width: 200px;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .language-option:hover {
+            background: var(--blue-50);
+            color: var(--primary);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .language-flag {
+            font-size: 1.25rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 0.875rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray-600);
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .auth-tab.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            background: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-input.success {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 0.875rem;
+        }
+
+        .input-group .form-input {
+            padding-left: 2.75rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-600) 0%, var(--gray-700) 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error) 0%, #b91c1c 100%);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+            background: var(--white);
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            padding: 0.875rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: var(--blue-50);
+            color: var(--primary);
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+            border-left: 4px solid var(--error);
+        }
+
+        .success-message {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+            border-left: 4px solid var(--success);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .strength-meter {
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .clinic-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .clinic-title {
+            color: var(--gray-900);
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .clinic-title-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .clinic-subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .clinic-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--gray-900);
+            font-size: 1.125rem;
+        }
+
+        .feature-description {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .invite-section {
+            background: var(--gray-50);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .invite-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .invite-input {
+            padding: 0.875rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            background: var(--white);
+        }
+
+        .invite-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .invitee-list {
+            margin-top: 1rem;
+        }
+
+        .invitee-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .invitee-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .invitee-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #fef2f2;
+        }
+
+        .clinic-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .verification-code {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .code-input {
+            width: 3.5rem;
+            height: 3.5rem;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: var(--white);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .back-to-auth {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .back-to-auth:hover {
+            background: var(--blue-50);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .auth-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .clinic-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .clinic-title {
+                font-size: 1.875rem;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .clinic-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+            
+            .invite-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verification-code {
+                gap: 0.5rem;
+            }
+
+            .code-input {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1.125rem;
+            }
+
+            .language-selector {
+                position: relative;
+                margin-bottom: 1rem;
+                top: auto;
+                right: auto;
+            }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: float-subtle 20s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 7s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 40%;
+            right: 25%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float-subtle {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px);
+                opacity: 0.05;
+            }
+            50% { 
+                transform: translateY(-15px) translateX(10px);
+                opacity: 0.02;
+            }
+        }
+
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* Professional polish touches */
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+
+        .clinic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <div class="background-pattern"></div>
+    
+    <div class="app-container" id="app-container">
+        <!-- Authentication Card -->
+        <div class="auth-card" id="auth-card">
+            <div class="language-selector">
+                <button class="language-toggle" id="language-toggle">
+                    <span id="current-flag">🇺🇸</span>
+                    <span id="current-lang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <div class="language-option active" data-code="en" data-flag="🇺🇸">
+                        <span class="language-flag">🇺🇸</span>
+                        <div>
+                            <div style="font-weight: 600;">English</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">United States</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="es" data-flag="🇪🇸">
+                        <span class="language-flag">🇪🇸</span>
+                        <div>
+                            <div style="font-weight: 600;">Español</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">España</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="fr" data-flag="🇫🇷">
+                        <span class="language-flag">🇫🇷</span>
+                        <div>
+                            <div style="font-weight: 600;">Français</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">France</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="de" data-flag="🇩🇪">
+                        <span class="language-flag">🇩🇪</span>
+                        <div>
+                            <div style="font-weight: 600;">Deutsch</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">Deutschland</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="pt" data-flag="🇵🇹">
+                        <span class="language-flag">🇵🇹</span>
+                        <div>
+                            <div style="font-weight: 600;">Português</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">Portugal</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="zh" data-flag="🇨🇳">
+                        <span class="language-flag">🇨🇳</span>
+                        <div>
+                            <div style="font-weight: 600;">中文</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">中国</div>
+                        </div>
+                    </div>
+                    <div class="language-option" data-code="ar" data-flag="🇸🇦">
+                        <span class="language-flag">🇸🇦</span>
+                        <div>
+                            <div style="font-weight: 600;">العربية</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">السعودية</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <span data-i18n="app.title">Appro Tech Clinic</span>
+                </div>
+                <p class="logo-subtitle" data-i18n="app.subtitle">Building Tomorrow's Solutions Today</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">
+                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="auth.signin">Sign In</span>
+                </button>
+                <button class="auth-tab" data-tab="signup">
+                    <i class="fas fa-user-plus"></i> <span data-i18n="auth.signup">Sign Up</span>
+                </button>
+                <button class="auth-tab" data-tab="recover">
+                    <i class="fas fa-key"></i> <span data-i18n="auth.recover">Recover</span>
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-section active" id="login-section">
+                <div class="error-message" id="login-error"></div>
+                <div class="success-message" id="login-success"></div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.email">Email Address</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-envelope"></i>
+                            <input type="email" class="form-input" id="login-email" data-i18n-placeholder="auth.email_placeholder" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.password">Password</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-lock"></i>
+                            <input type="password" class="form-input" id="login-password" data-i18n-placeholder="auth.password_placeholder" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('login-password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn">
+                            <span class="loading-spinner" id="login-spinner"></span>
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span data-i18n="auth.signin_button">Sign In to Tech Clinic</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="divider">
+                    <span data-i18n="auth.or_continue">or continue with</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialLogin('google')">
+                        <i class="fab fa-google"></i> <span data-i18n="auth.google">Google</span>
+                    </button>
+                    <button class="social-btn" onclick="socialLogin('github')">
+                        <i class="fab fa-github"></i> <span data-i18n="auth.github">GitHub</span>
+                    </button>
+                </div>
+
+                <div class="form-footer">
+                    <p><span data-i18n="auth.new_to_clinic">New to Tech Clinic?</span> <a href="#" onclick="switchTab('signup')" data-i18n="auth.create_account">Create an account</a></p>
+                    <p><a href="#" onclick="switchTab('recover')" data-i18n="auth.forgot_password">Forgot your password?</a></p>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="form-section" id="signup-section">
+                <div class="error-message" id="signup-error"></div>
+                <div class="success-message" id="signup-success"></div>
+
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.full_name">Full Name</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-user"></i>
+                            <input type="text" class="form-input" id="signup-name" data-i18n-placeholder="auth.name_placeholder" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.email">Email Address</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-envelope"></i>
+                            <input type="email" class="form-input" id="signup-email" data-i18n-placeholder="auth.email_placeholder" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.password">Password</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-lock"></i>
+                            <input type="password" class="form-input" id="signup-password" data-i18n-placeholder="auth.password_create_placeholder" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('signup-password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="strength-meter" id="strength-meter">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strength-fill"></div>
+                            </div>
+                            <div class="strength-text" id="strength-text"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.confirm_password">Confirm Password</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-lock"></i>
+                            <input type="password" class="form-input" id="signup-confirm" data-i18n-placeholder="auth.confirm_password_placeholder" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="auth.role">Role/Expertise</label>
+                        <div class="input-group">
+                            <i class="input-icon fas fa-briefcase"></i>
+                            <select class="form-input" id="signup-role" required>
+                                <option value="" data-i18n="auth.select_role">Select your primary role</option>
+                                <option value="student" data-i18n="role.student">Student/Learner</option>
+                                <option value="educator" data-i18n="role.educator">Educator/Teacher</option>
+                                <option value="engineer" data-i18n="role.engineer">Engineer/Technician</option>
+                                <option value="researcher" data-i18n="role.researcher">Researcher/Scientist</option>
+                                <option value="maker" data-i18n="role.maker">Maker/DIY Enthusiast</option>
+                                <option value="social_worker" data-i18n="role.social_worker">Social Worker/NGO</option>
+                                <option value="entrepreneur" data-i18n="role.entrepreneur">Entrepreneur/Business</option>
+                                <option value="other" data-i18n="role.other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn">
+                            <span class="loading-spinner" id="signup-spinner"></span>
+                            <i class="fas fa-rocket"></i>
+                            <span data-i18n="auth.signup_button">Join Tech Clinic Community</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="form-footer">
+                    <p><span data-i18n="auth.have_account">Already have an account?</span> <a href="#" onclick="switchTab('login')" data-i18n="auth.signin_here">Sign in here</a></p>
+                    <p style="font-size: 0.75rem; margin-top: 1rem; color: var(--gray-500);" data-i18n="auth.terms_agreement">
+                        By signing up, you agree to our Terms of Service and Privacy Policy
+                    </p>
+                </div>
+            </div>
+
+            <!-- Password Recovery Form -->
+            <div class="form-section" id="recover-section">
+                <div class="error-message" id="recover-error"></div>
+                <div class="success-message" id="recover-success"></div>
+
+                <div id="recover-email-step">
+                    <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);" data-i18n="recover.instructions">
+                        Enter your email address and we'll send you a verification code to reset your password.
+                    </p>
+
+                    <form id="recover-form">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="auth.email">Email Address</label>
+                            <div class="input-group">
+                                <i class="input-icon fas fa-envelope"></i>
+                                <input type="email" class="form-input" id="recover-email" data-i18n-placeholder="auth.email_placeholder" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn">
+                                <span class="loading-spinner" id="recover-spinner"></span>
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-i18n="auth.send_code">Send Recovery Code</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="recover-code-step" style="display: none;">
+                    <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);" data-i18n="recover.code_instructions">
+                        Enter the 6-digit verification code sent to your email address.
+                    </p>
+
+                    <form id="verify-form">
+                        <div class="verification-code">
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                            <input type="text" class="code-input" maxlength="1" pattern="\d" required>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn">
+                                <i class="fas fa-check"></i>
+                                <span data-i18n="auth.verify_code">Verify Code</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="#" onclick="resendCode()" style="color: var(--primary); font-size: 0.875rem;" data-i18n="recover.resend_code">
+                            Didn't receive the code? Resend
+                        </a>
+                    </div>
+                </div>
+
+                <div id="recover-reset-step" style="display: none;">
+                    <p style="text-align: center; margin-bottom: 2rem; color: var(--gray-600);" data-i18n="recover.new_password_instructions">
+                        Create a new password for your account.
+                    </p>
+
+                    <form id="reset-form">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="auth.new_password">New Password</label>
+                            <div class="input-group">
+                                <i class="input-icon fas fa-lock"></i>
+                                <input type="password" class="form-input" id="reset-password" data-i18n-placeholder="auth.new_password_placeholder" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('reset-password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="auth.confirm_new_password">Confirm New Password</label>
+                            <div class="input-group">
+                                <i class="input-icon fas fa-lock"></i>
+                                <input type="password" class="form-input" id="reset-confirm" data-i18n-placeholder="auth.confirm_new_password_placeholder" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn">
+                                <i class="fas fa-key"></i>
+                                <span data-i18n="auth.reset_password">Reset Password</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-footer">
+                    <p><a href="#" onclick="switchTab('login')" data-i18n="auth.back_to_signin">Back to Sign In</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Clinic Invitation Card -->
+        <div class="clinic-card" id="clinic-card" style="display: none;">
+            <a href="#" class="back-to-auth" onclick="showAuth()">
+                <i class="fas fa-arrow-left"></i> <span data-i18n="clinic.back_to_auth">Back to Auth</span>
+            </a>
+
+            <div class="clinic-hero">
+                <h1 class="clinic-title">
+                    <div class="clinic-title-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <span data-i18n="clinic.title">Technology for Good</span>
+                </h1>
+                <p class="clinic-subtitle" data-i18n="clinic.subtitle">
+                    Join our global community of innovators building practical solutions for real-world challenges. 
+                    Connect with makers, engineers, and changemakers who are transforming communities through technology.
+                </p>
+            </div>
+
+            <div class="clinic-stats">
+                <div class="stat-card">
+                    <span class="stat-number">2,847</span>
+                    <span class="stat-label" data-i18n="clinic.stat_members">Active Members</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label" data-i18n="clinic.stat_projects">Projects Built</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">89</span>
+                    <span class="stat-label" data-i18n="clinic.stat_countries">Countries</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label" data-i18n="clinic.stat_clinics">Active Clinics</span>
+                </div>
+            </div>
+
+            <div class="clinic-features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="clinic.learn_build_title">Learn & Build</h3>
+                    <p class="feature-description" data-i18n="clinic.learn_build_desc">
+                        Access step-by-step guides for building water filters, solar panels, communication systems, and more practical solutions.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="clinic.collaborate_title">Collaborate</h3>
+                    <p class="feature-description" data-i18n="clinic.collaborate_desc">
+                        Connect with like-minded innovators, share knowledge, and work together on projects that matter to your community.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="feature-title" data-i18n="clinic.impact_title">Make Impact</h3>
+                    <p class="feature-description" data-i18n="clinic.impact_desc">
+                        Deploy tested solutions in your community, measure impact, and help others replicate successful projects worldwide.
+                    </p>
+                </div>
+            </div>
+
+            <div class="invite-section">
+                <h3 style="margin-bottom: 1rem; color: var(--gray-800);">
+                    <i class="fas fa-user-friends"></i> <span data-i18n="clinic.invite_friends_title">Invite Friends to Your Tech Clinic</span>
+                </h3>
+                <p style="margin-bottom: 2rem; color: var(--gray-600);" data-i18n="clinic.invite_friends_desc">
+                    Building better communities starts with building better teams. Invite friends, colleagues, and community members to join your local tech clinic.
+                </p>
+
+                <form id="invite-form">
+                    <div class="invite-grid">
+                        <input type="text" class="invite-input" id="invite-name" data-i18n-placeholder="clinic.friend_name">
+                        <input type="email" class="invite-input" id="invite-email" data-i18n-placeholder="clinic.friend_email">
+                        <input type="text" class="invite-input" id="invite-role" data-i18n-placeholder="clinic.friend_role">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-plus"></i> <span data-i18n="clinic.add">Add</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="invitee-list" id="invitee-list">
+                    <!-- Invitees will be added here dynamically -->
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button class="btn" onclick="sendInvitations()" id="send-invites-btn" disabled>
+                        <i class="fas fa-rocket"></i> <span data-i18n="clinic.send_invitations">Send Invitations</span>
+                    </button>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 0.5rem; border: 1px solid var(--gray-200);">
+                    <h4 style="margin-bottom: 1rem; color: var(--gray-800);">
+                        <i class="fas fa-share-alt"></i> <span data-i18n="clinic.share_clinic">Share Your Clinic</span>
+                    </h4>
+                    <p style="margin-bottom: 1rem; color: var(--gray-600); font-size: 0.875rem;" data-i18n="clinic.share_instructions">
+                        Share this link with anyone you'd like to invite to your tech clinic:
+                    </p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" class="form-input" id="invite-link" value="https://hub.approvideo.org/clinic/join/abc123" readonly>
+                        <button class="btn btn-secondary" onclick="copyInviteLink()" style="white-space: nowrap;">
+                            <i class="fas fa-copy"></i> <span data-i18n="clinic.copy">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn" onclick="showAuth()">
+                    <i class="fas fa-arrow-right"></i> <span data-i18n="clinic.continue_platform">Continue to Platform</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        'use strict';
+
+        // Enhanced Configuration with Supabase Integration
+        const CONFIG = {
+            version: '1.0.0',
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/',
+            supabaseUrl: 'YOUR_SUPABASE_URL',
+            supabaseKey: 'YOUR_SUPABASE_ANON_KEY',
+            latticeEncryption: true,
+            domain: 'hub.approvideo.org',
+            clinic: {
+                maxInvites: 50,
+                defaultExpiry: 7 * 24 * 60 * 60 * 1000, // 7 days
+            }
+        };
+
+        // Enhanced Lattice Security Manager for Authentication
+        class LatticeAuthSecurity {
+            constructor() {
+                this.csrfToken = this.generateCSRFToken();
+                this.sessionKey = null;
+                this.initializeLattice();
+            }
+
+            async initializeLattice() {
+                if (CONFIG.latticeEncryption) {
+                    this.sessionKey = await this.generateSessionKey();
+                }
+                this.setupSecurityHeaders();
+                this.monitorSecurity();
+            }
+
+            async generateSessionKey() {
+                const keyData = await crypto.subtle.generateKey(
+                    { name: 'AES-GCM', length: 256 },
+                    true,
+                    ['encrypt', 'decrypt']
+                );
+                return keyData;
+            }
+
+            async encryptCredentials(credentials) {
+                if (!this.sessionKey || !CONFIG.latticeEncryption) return credentials;
+                
+                try {
+                    const encoder = new TextEncoder();
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    const encrypted = await crypto.subtle.encrypt(
+                        { name: 'AES-GCM', iv },
+                        this.sessionKey,
+                        encoder.encode(JSON.stringify(credentials))
+                    );
+                    
+                    return {
+                        encrypted: true,
+                        iv: Array.from(iv),
+                        data: Array.from(new Uint8Array(encrypted))
+                    };
+                } catch (error) {
+                    console.error('Credential encryption failed:', error);
+                    return credentials;
+                }
+            }
+
+            generateCSRFToken() {
+                const array = new Uint8Array(32);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            validateEmail(email) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regex.test(email);
+            }
+
+            validatePassword(password) {
+                const checks = {
+                    length: password.length >= 8,
+                    lowercase: /[a-z]/.test(password),
+                    uppercase: /[A-Z]/.test(password),
+                    number: /\d/.test(password),
+                    special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                };
+                
+                const score = Object.values(checks).filter(Boolean).length;
+                return {
+                    valid: score >= 3,
+                    score,
+                    checks,
+                    strength: score <= 2 ? 'weak' : score <= 3 ? 'medium' : score <= 4 ? 'strong' : 'excellent'
+                };
+            }
+
+            sanitizeInput(input) {
+                if (typeof input !== 'string') return input;
+                return input
+                    .replace(/[<>]/g, '')
+                    .replace(/javascript:/gi, '')
+                    .replace(/on\w+\s*=/gi, '')
+                    .trim();
+            }
+
+            generateSecureCode() {
+                return Math.random().toString().substr(2, 6);
+            }
+
+            setupSecurityHeaders() {
+                // Add additional security monitoring
+                if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+                    console.warn('Authentication should only be used over HTTPS');
+                }
+            }
+
+            monitorSecurity() {
+                // Monitor for suspicious activities
+                let failedAttempts = 0;
+                const maxAttempts = 5;
+                
+                window.addEventListener('authFailure', () => {
+                    failedAttempts++;
+                    if (failedAttempts >= maxAttempts) {
+                        this.lockoutUser();
+                    }
+                });
+            }
+
+            lockoutUser() {
+                console.warn('Account temporarily locked due to suspicious activity');
+                // Implement lockout logic
+            }
+        }
+
+        // Enhanced Translation Manager with Browser Detection
+        class AuthTranslationManager {
+            constructor() {
+                this.currentLanguage = this.detectBrowserLanguage();
+                this.supportedLanguages = ['en', 'es', 'fr', 'de', 'pt', 'zh', 'ar'];
+                this.translations = this.loadTranslations();
+                this.flagMap = {
+                    'en': '🇺🇸',
+                    'es': '🇪🇸', 
+                    'fr': '🇫🇷',
+                    'de': '🇩🇪',
+                    'pt': '🇵🇹',
+                    'zh': '🇨🇳',
+                    'ar': '🇸🇦'
+                };
+                this.eventListeners = {};
+                this.initializeI18n();
+            }
+
+            detectBrowserLanguage() {
+                try {
+                    // Get stored preference first
+                    const stored = localStorage.getItem('tech_clinic_language');
+                    if (stored && this.supportedLanguages.includes(stored)) {
+                        return stored;
+                    }
+
+                    // Detect from browser
+                    const browserLang = navigator.language || navigator.userLanguage || 'en';
+                    const langCode = browserLang.toLowerCase().substr(0, 2);
+                    
+                    // Check if we support this language
+                    return this.supportedLanguages.includes(langCode) ? langCode : 'en';
+                } catch (error) {
+                    console.warn('Language detection failed:', error);
+                    return 'en';
+                }
+            }
+
+            initializeI18n() {
+                // Set document language and direction
+                document.documentElement.lang = this.currentLanguage;
+                document.documentElement.dir = this.getLanguageDirection();
+                
+                // Update language selector
+                this.updateLanguageSelector();
+                
+                // Apply initial translations
+                this.updatePageTranslations();
+            }
+
+            getLanguageDirection() {
+                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                return rtlLanguages.includes(this.currentLanguage) ? 'rtl' : 'ltr';
+            }
+
+            loadTranslations() {
+                return new Map([
+                    ['en', {
+                        // App
+                        'app.title': 'Appro Tech Clinic',
+                        'app.subtitle': 'Building Tomorrow\'s Solutions Today',
+                        
+                        // Authentication
+                        'auth.signin': 'Sign In',
+                        'auth.signup': 'Sign Up',
+                        'auth.recover': 'Recover',
+                        'auth.email': 'Email Address',
+                        'auth.password': 'Password',
+                        'auth.full_name': 'Full Name',
+                        'auth.confirm_password': 'Confirm Password',
+                        'auth.new_password': 'New Password',
+                        'auth.confirm_new_password': 'Confirm New Password',
+                        'auth.role': 'Role/Expertise',
+                        'auth.signin_button': 'Sign In to Tech Clinic',
+                        'auth.signup_button': 'Join Tech Clinic Community',
+                        'auth.send_code': 'Send Recovery Code',
+                        'auth.verify_code': 'Verify Code',
+                        'auth.reset_password': 'Reset Password',
+                        'auth.or_continue': 'or continue with',
+                        'auth.google': 'Google',
+                        'auth.github': 'GitHub',
+                        'auth.new_to_clinic': 'New to Tech Clinic?',
+                        'auth.create_account': 'Create an account',
+                        'auth.have_account': 'Already have an account?',
+                        'auth.signin_here': 'Sign in here',
+                        'auth.forgot_password': 'Forgot your password?',
+                        'auth.back_to_signin': 'Back to Sign In',
+                        'auth.terms_agreement': 'By signing up, you agree to our Terms of Service and Privacy Policy',
+                        
+                        // Placeholders
+                        'auth.email_placeholder': 'Enter your email address',
+                        'auth.password_placeholder': 'Enter your password',
+                        'auth.password_create_placeholder': 'Create a strong password',
+                        'auth.confirm_password_placeholder': 'Confirm your password',
+                        'auth.name_placeholder': 'Enter your full name',
+                        'auth.new_password_placeholder': 'Enter new password',
+                        'auth.confirm_new_password_placeholder': 'Confirm new password',
+                        'auth.select_role': 'Select your primary role',
+                        
+                        // Roles
+                        'role.student': 'Student/Learner',
+                        'role.educator': 'Educator/Teacher',
+                        'role.engineer': 'Engineer/Technician',
+                        'role.researcher': 'Researcher/Scientist',
+                        'role.maker': 'Maker/DIY Enthusiast',
+                        'role.social_worker': 'Social Worker/NGO',
+                        'role.entrepreneur': 'Entrepreneur/Business',
+                        'role.other': 'Other',
+                        
+                        // Recovery
+                        'recover.instructions': 'Enter your email address and we\'ll send you a verification code to reset your password.',
+                        'recover.code_instructions': 'Enter the 6-digit verification code sent to your email address.',
+                        'recover.new_password_instructions': 'Create a new password for your account.',
+                        'recover.resend_code': 'Didn\'t receive the code? Resend',
+                        
+                        // Clinic
+                        'clinic.title': 'Technology for Good',
+                        'clinic.subtitle': 'Join our global community of innovators building practical solutions for real-world challenges. Connect with makers, engineers, and changemakers who are transforming communities through technology.',
+                        'clinic.back_to_auth': 'Back to Auth',
+                        'clinic.continue_platform': 'Continue to Platform',
+                        'clinic.stat_members': 'Active Members',
+                        'clinic.stat_projects': 'Projects Built',
+                        'clinic.stat_countries': 'Countries',
+                        'clinic.stat_clinics': 'Active Clinics',
+                        'clinic.learn_build_title': 'Learn & Build',
+                        'clinic.learn_build_desc': 'Access step-by-step guides for building water filters, solar panels, communication systems, and more practical solutions.',
+                        'clinic.collaborate_title': 'Collaborate',
+                        'clinic.collaborate_desc': 'Connect with like-minded innovators, share knowledge, and work together on projects that matter to your community.',
+                        'clinic.impact_title': 'Make Impact',
+                        'clinic.impact_desc': 'Deploy tested solutions in your community, measure impact, and help others replicate successful projects worldwide.',
+                        'clinic.invite_friends_title': 'Invite Friends to Your Tech Clinic',
+                        'clinic.invite_friends_desc': 'Building better communities starts with building better teams. Invite friends, colleagues, and community members to join your local tech clinic.',
+                        'clinic.friend_name': 'Friend\'s name',
+                        'clinic.friend_email': 'Friend\'s email',
+                        'clinic.friend_role': 'Their expertise/role',
+                        'clinic.add': 'Add',
+                        'clinic.send_invitations': 'Send Invitations',
+                        'clinic.share_clinic': 'Share Your Clinic',
+                        'clinic.share_instructions': 'Share this link with anyone you\'d like to invite to your tech clinic:',
+                        'clinic.copy': 'Copy',
+                        
+                        // Messages
+                        'message.welcome_back': 'Welcome back! Redirecting to your clinic...',
+                        'message.account_created': 'Account created! Welcome to the Tech Clinic community!',
+                        'message.code_sent': 'Recovery code sent to your email!',
+                        'message.code_verified': 'Code verified! Create your new password.',
+                        'message.password_reset': 'Password reset successfully! You can now sign in.',
+                        'message.invitations_sent': 'Successfully sent {count} invitation(s)!',
+                        'message.link_copied': 'Link copied to clipboard!',
+                        
+                        // Errors
+                        'error.invalid_email': 'Please enter a valid email address',
+                        'error.weak_password': 'Password is too weak. Use at least 8 characters with mixed case, numbers, and symbols.',
+                        'error.password_mismatch': 'Passwords do not match',
+                        'error.invalid_code': 'Invalid code. Please check and try again.',
+                        'error.fill_all_fields': 'Please fill in all fields',
+                        'error.already_invited': 'This person is already invited',
+                        'error.enter_name': 'Please enter your full name',
+                        'error.select_role': 'Please select your role/expertise',
+                        'error.complete_code': 'Please enter the complete 6-digit code'
+                    }],
+                    
+                    ['es', {
+                        // App
+                        'app.title': 'Clínica Tecnológica Appro',
+                        'app.subtitle': 'Construyendo las Soluciones del Mañana Hoy',
+                        
+                        // Authentication
+                        'auth.signin': 'Iniciar Sesión',
+                        'auth.signup': 'Registrarse',
+                        'auth.recover': 'Recuperar',
+                        'auth.email': 'Correo Electrónico',
+                        'auth.password': 'Contraseña',
+                        'auth.full_name': 'Nombre Completo',
+                        'auth.confirm_password': 'Confirmar Contraseña',
+                        'auth.new_password': 'Nueva Contraseña',
+                        'auth.confirm_new_password': 'Confirmar Nueva Contraseña',
+                        'auth.role': 'Rol/Especialidad',
+                        'auth.signin_button': 'Acceder a Clínica Tecnológica',
+                        'auth.signup_button': 'Unirse a la Comunidad',
+                        'auth.send_code': 'Enviar Código de Recuperación',
+                        'auth.verify_code': 'Verificar Código',
+                        'auth.reset_password': 'Restablecer Contraseña',
+                        'auth.or_continue': 'o continuar con',
+                        'auth.google': 'Google',
+                        'auth.github': 'GitHub',
+                        'auth.new_to_clinic': '¿Nuevo en la Clínica Tecnológica?',
+                        'auth.create_account': 'Crear una cuenta',
+                        'auth.have_account': '¿Ya tienes una cuenta?',
+                        'auth.signin_here': 'Iniciar sesión aquí',
+                        'auth.forgot_password': '¿Olvidaste tu contraseña?',
+                        'auth.back_to_signin': 'Volver al Inicio de Sesión',
+                        'auth.terms_agreement': 'Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad',
+                        
+                        // Placeholders
+                        'auth.email_placeholder': 'Ingresa tu correo electrónico',
+                        'auth.password_placeholder': 'Ingresa tu contraseña',
+                        'auth.password_create_placeholder': 'Crea una contraseña segura',
+                        'auth.confirm_password_placeholder': 'Confirma tu contraseña',
+                        'auth.name_placeholder': 'Ingresa tu nombre completo',
+                        'auth.new_password_placeholder': 'Ingresa nueva contraseña',
+                        'auth.confirm_new_password_placeholder': 'Confirma nueva contraseña',
+                        'auth.select_role': 'Selecciona tu rol principal',
+                        
+                        // Roles
+                        'role.student': 'Estudiante/Aprendiz',
+                        'role.educator': 'Educador/Maestro',
+                        'role.engineer': 'Ingeniero/Técnico',
+                        'role.researcher': 'Investigador/Científico',
+                        'role.maker': 'Maker/Entusiasta DIY',
+                        'role.social_worker': 'Trabajador Social/ONG',
+                        'role.entrepreneur': 'Emprendedor/Negocio',
+                        'role.other': 'Otro',
+                        
+                        // Clinic
+                        'clinic.title': 'Tecnología para el Bien',
+                        'clinic.subtitle': 'Únete a nuestra comunidad global de innovadores que construyen soluciones prácticas para desafíos del mundo real. Conéctate con makers, ingenieros y agentes de cambio que transforman comunidades a través de la tecnología.',
+                        'clinic.back_to_auth': 'Volver a Autenticación',
+                        'clinic.continue_platform': 'Continuar a la Plataforma',
+                        'clinic.stat_members': 'Miembros Activos',
+                        'clinic.stat_projects': 'Proyectos Construidos',
+                        'clinic.stat_countries': 'Países',
+                        'clinic.stat_clinics': 'Clínicas Activas',
+                        'clinic.learn_build_title': 'Aprender y Construir',
+                        'clinic.learn_build_desc': 'Accede a guías paso a paso para construir filtros de agua, paneles solares, sistemas de comunicación y más soluciones prácticas.',
+                        'clinic.collaborate_title': 'Colaborar',
+                        'clinic.collaborate_desc': 'Conéctate con innovadores afines, comparte conocimiento y trabaja en proyectos importantes para tu comunidad.',
+                        'clinic.impact_title': 'Generar Impacto',
+                        'clinic.impact_desc': 'Implementa soluciones probadas en tu comunidad, mide el impacto y ayuda a otros a replicar proyectos exitosos en todo el mundo.',
+                        'clinic.invite_friends_title': 'Invitar Amigos a tu Clínica Tecnológica',
+                        'clinic.invite_friends_desc': 'Construir mejores comunidades comienza con construir mejores equipos. Invita amigos, colegas y miembros de la comunidad a unirse a tu clínica tecnológica local.',
+                        'clinic.friend_name': 'Nombre del amigo',
+                        'clinic.friend_email': 'Correo del amigo',
+                        'clinic.friend_role': 'Su especialidad/rol',
+                        'clinic.add': 'Agregar',
+                        'clinic.send_invitations': 'Enviar Invitaciones',
+                        'clinic.share_clinic': 'Compartir tu Clínica',
+                        'clinic.share_instructions': 'Comparte este enlace con cualquiera que quieras invitar a tu clínica tecnológica:',
+                        'clinic.copy': 'Copiar'
+                    }],
+                    
+                    ['fr', {
+                        // App
+                        'app.title': 'Clinique Technologique Appro',
+                        'app.subtitle': 'Construire les Solutions de Demain Aujourd\'hui',
+                        
+                        // Authentication
+                        'auth.signin': 'Se Connecter',
+                        'auth.signup': 'S\'inscrire',
+                        'auth.recover': 'Récupérer',
+                        'auth.email': 'Adresse Email',
+                        'auth.password': 'Mot de Passe',
+                        'auth.full_name': 'Nom Complet',
+                        'auth.confirm_password': 'Confirmer le Mot de Passe',
+                        'auth.new_password': 'Nouveau Mot de Passe',
+                        'auth.confirm_new_password': 'Confirmer le Nouveau Mot de Passe',
+                        'auth.role': 'Rôle/Expertise',
+                        'auth.signin_button': 'Accéder à la Clinique Tech',
+                        'auth.signup_button': 'Rejoindre la Communauté',
+                        'auth.send_code': 'Envoyer le Code de Récupération',
+                        'auth.verify_code': 'Vérifier le Code',
+                        'auth.reset_password': 'Réinitialiser le Mot de Passe',
+                        'auth.or_continue': 'ou continuer avec',
+                        'auth.google': 'Google',
+                        'auth.github': 'GitHub',
+                        'auth.new_to_clinic': 'Nouveau à la Clinique Tech?',
+                        'auth.create_account': 'Créer un compte',
+                        'auth.have_account': 'Vous avez déjà un compte?',
+                        'auth.signin_here': 'Se connecter ici',
+                        'auth.forgot_password': 'Mot de passe oublié?',
+                        'auth.back_to_signin': 'Retour à la Connexion',
+                        'auth.terms_agreement': 'En vous inscrivant, vous acceptez nos Conditions de Service et notre Politique de Confidentialité',
+                        
+                        // Clinic
+                        'clinic.title': 'Technologie pour le Bien',
+                        'clinic.subtitle': 'Rejoignez notre communauté mondiale d\'innovateurs construisant des solutions pratiques aux défis du monde réel. Connectez-vous avec des makers, ingénieurs et agents de changement qui transforment les communautés grâce à la technologie.',
+                        'clinic.back_to_auth': 'Retour à l\'Authentification',
+                        'clinic.continue_platform': 'Continuer vers la Plateforme'
+                    }],
+                    
+                    ['de', {
+                        // App
+                        'app.title': 'Appro Tech Klinik',
+                        'app.subtitle': 'Die Lösungen von Morgen Heute Bauen',
+                        
+                        // Authentication
+                        'auth.signin': 'Anmelden',
+                        'auth.signup': 'Registrieren',
+                        'auth.recover': 'Wiederherstellen',
+                        'auth.email': 'E-Mail-Adresse',
+                        'auth.password': 'Passwort',
+                        'auth.full_name': 'Vollständiger Name',
+                        'auth.confirm_password': 'Passwort Bestätigen',
+                        'auth.role': 'Rolle/Expertise',
+                        'auth.signin_button': 'Bei Tech Klinik Anmelden',
+                        'auth.signup_button': 'Der Gemeinschaft Beitreten',
+                        
+                        // Clinic
+                        'clinic.title': 'Technologie für das Gute',
+                        'clinic.subtitle': 'Treten Sie unserer globalen Gemeinschaft von Innovatoren bei, die praktische Lösungen für reale Herausforderungen entwickeln.',
+                        'clinic.back_to_auth': 'Zurück zur Authentifizierung',
+                        'clinic.continue_platform': 'Zur Plattform Fortfahren'
+                    }],
+                    
+                    ['pt', {
+                        // App
+                        'app.title': 'Clínica Tecnológica Appro',
+                        'app.subtitle': 'Construindo as Soluções de Amanhã Hoje',
+                        
+                        // Authentication
+                        'auth.signin': 'Entrar',
+                        'auth.signup': 'Registrar',
+                        'auth.recover': 'Recuperar',
+                        'auth.email': 'Endereço de Email',
+                        'auth.password': 'Senha',
+                        'auth.full_name': 'Nome Completo',
+                        'auth.confirm_password': 'Confirmar Senha',
+                        'auth.role': 'Função/Especialidade',
+                        'auth.signin_button': 'Entrar na Clínica Tech',
+                        'auth.signup_button': 'Juntar-se à Comunidade',
+                        
+                        // Clinic
+                        'clinic.title': 'Tecnologia para o Bem',
+                        'clinic.subtitle': 'Junte-se à nossa comunidade global de inovadores construindo soluções práticas para desafios do mundo real.',
+                        'clinic.back_to_auth': 'Voltar à Autenticação',
+                        'clinic.continue_platform': 'Continuar para a Plataforma'
+                    }],
+                    
+                    ['zh', {
+                        // App
+                        'app.title': 'Appro 技术诊所',
+                        'app.subtitle': '今天构建明天的解决方案',
+                        
+                        // Authentication
+                        'auth.signin': '登录',
+                        'auth.signup': '注册',
+                        'auth.recover': '恢复',
+                        'auth.email': '邮箱地址',
+                        'auth.password': '密码',
+                        'auth.full_name': '姓名',
+                        'auth.confirm_password': '确认密码',
+                        'auth.role': '角色/专长',
+                        'auth.signin_button': '登录技术诊所',
+                        'auth.signup_button': '加入技术社区',
+                        
+                        // Clinic
+                        'clinic.title': '技术向善',
+                        'clinic.subtitle': '加入我们的全球创新者社区，为现实世界的挑战构建实用解决方案。',
+                        'clinic.back_to_auth': '返回认证',
+                        'clinic.continue_platform': '继续到平台'
+                    }],
+                    
+                    ['ar', {
+                        // App
+                        'app.title': 'عيادة أبرو التقنية',
+                        'app.subtitle': 'بناء حلول الغد اليوم',
+                        
+                        // Authentication
+                        'auth.signin': 'تسجيل الدخول',
+                        'auth.signup': 'إنشاء حساب',
+                        'auth.recover': 'استرداد',
+                        'auth.email': 'عنوان البريد الإلكتروني',
+                        'auth.password': 'كلمة المرور',
+                        'auth.full_name': 'الاسم الكامل',
+                        'auth.confirm_password': 'تأكيد كلمة المرور',
+                        'auth.role': 'الدور/التخصص',
+                        'auth.signin_button': 'دخول العيادة التقنية',
+                        'auth.signup_button': 'انضمام للمجتمع',
+                        
+                        // Clinic
+                        'clinic.title': 'التكنولوجيا من أجل الخير',
+                        'clinic.subtitle': 'انضم إلى مجتمعنا العالمي من المبتكرين الذين يبنون حلولاً عملية للتحديات الحقيقية.',
+                        'clinic.back_to_auth': 'العودة للمصادقة',
+                        'clinic.continue_platform': 'متابعة إلى المنصة'
+                    }]
+                ]);
+            }
+
+            t(key, params = {}) {
+                const translations = this.translations.get(this.currentLanguage) || 
+                                   this.translations.get('en') || 
+                                   new Map();
+                
+                let translation = translations[key] || key;
+                
+                // Simple parameter substitution
+                Object.keys(params).forEach(param => {
+                    translation = translation.replace(`{${param}}`, params[param]);
+                });
+                
+                return translation;
+            }
+
+            switchLanguage(languageCode) {
+                if (this.supportedLanguages.includes(languageCode) && languageCode !== this.currentLanguage) {
+                    this.currentLanguage = languageCode;
+                    
+                    // Store preference
+                    try {
+                        localStorage.setItem('tech_clinic_language', languageCode);
+                    } catch (error) {
+                        console.warn('Could not store language preference:', error);
+                    }
+                    
+                    // Update document
+                    document.documentElement.lang = languageCode;
+                    document.documentElement.dir = this.getLanguageDirection();
+                    
+                    // Update UI
+                    this.updateLanguageSelector();
+                    this.updatePageTranslations();
+                    
+                    // Emit event
+                    this.emit('languageChanged', { 
+                        language: languageCode,
+                        direction: this.getLanguageDirection()
+                    });
+                }
+            }
+
+            updateLanguageSelector() {
+                const currentFlag = document.getElementById('current-flag');
+                const currentLang = document.getElementById('current-lang');
+                const dropdown = document.getElementById('language-dropdown');
+                
+                if (currentFlag && currentLang) {
+                    currentFlag.textContent = this.flagMap[this.currentLanguage] || '🌐';
+                    currentLang.textContent = this.currentLanguage.toUpperCase();
+                }
+                
+                if (dropdown) {
+                    // Update active state
+                    dropdown.querySelectorAll('.language-option').forEach(option => {
+                        const code = option.getAttribute('data-code');
+                        if (code === this.currentLanguage) {
+                            option.classList.add('active');
+                        } else {
+                            option.classList.remove('active');
+                        }
+                    });
+                }
+            }
+
+            updatePageTranslations() {
+                // Update elements with data-i18n attribute
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.t(key);
+                    
+                    if (element.tagName === 'INPUT' && element.type === 'submit') {
+                        element.value = translation;
+                    } else if (element.tagName === 'OPTION') {
+                        element.textContent = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                });
+                
+                // Update elements with data-i18n-placeholder attribute
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    element.placeholder = this.t(key);
+                });
+                
+                // Update title and meta description
+                document.title = this.t('app.title') + ' - ' + this.t('app.subtitle');
+            }
+
+            getAvailableLanguages() {
+                return this.supportedLanguages.map(code => ({
+                    code,
+                    name: this.getLanguageName(code),
+                    nativeName: this.getNativeLanguageName(code),
+                    flag: this.flagMap[code]
+                }));
+            }
+
+            getLanguageName(code) {
+                const names = {
+                    'en': 'English',
+                    'es': 'Spanish',
+                    'fr': 'French',
+                    'de': 'German',
+                    'pt': 'Portuguese',
+                    'zh': 'Chinese',
+                    'ar': 'Arabic'
+                };
+                return names[code] || code;
+            }
+
+            getNativeLanguageName(code) {
+                const nativeNames = {
+                    'en': 'English',
+                    'es': 'Español',
+                    'fr': 'Français',
+                    'de': 'Deutsch',
+                    'pt': 'Português',
+                    'zh': '中文',
+                    'ar': 'العربية'
+                };
+                return nativeNames[code] || code;
+            }
+
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(cb => cb(data));
+                }
+            }
+        }
+
+        // Authentication Manager
+        class AuthManager {
+            constructor() {
+                this.security = new LatticeAuthSecurity();
+                this.translator = new AuthTranslationManager();
+                this.currentUser = null;
+                this.invitees = [];
+                this.init();
+            }
+
+            async init() {
+                try {
+                    Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+                    Parse.serverURL = CONFIG.parseServerURL;
+                    
+                    this.setupEventListeners();
+                    this.checkExistingSession();
+                    
+                    console.log('✅ Auth system initialized');
+                } catch (error) {
+                    console.error('Auth initialization failed:', error);
+                }
+            }
+
+            setupEventListeners() {
+                // Tab switching
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        this.switchTab(e.target.dataset.tab);
+                    });
+                });
+
+                // Language selector
+                const languageToggle = document.getElementById('language-toggle');
+                const languageDropdown = document.getElementById('language-dropdown');
+                
+                if (languageToggle && languageDropdown) {
+                    languageToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        languageDropdown.classList.toggle('show');
+                    });
+
+                    languageDropdown.addEventListener('click', (e) => {
+                        if (e.target.closest('.language-option')) {
+                            const option = e.target.closest('.language-option');
+                            const languageCode = option.getAttribute('data-code');
+                            this.translator.switchLanguage(languageCode);
+                            languageDropdown.classList.remove('show');
+                        }
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.language-selector')) {
+                            languageDropdown.classList.remove('show');
+                        }
+                    });
+                }
+
+                // Form submissions
+                document.getElementById('login-form').addEventListener('submit', (e) => this.handleLogin(e));
+                document.getElementById('signup-form').addEventListener('submit', (e) => this.handleSignup(e));
+                document.getElementById('recover-form').addEventListener('submit', (e) => this.handleRecover(e));
+                document.getElementById('verify-form').addEventListener('submit', (e) => this.handleVerify(e));
+                document.getElementById('reset-form').addEventListener('submit', (e) => this.handleReset(e));
+                document.getElementById('invite-form').addEventListener('submit', (e) => this.handleAddInvitee(e));
+
+                // Password strength meter
+                document.getElementById('signup-password').addEventListener('input', (e) => {
+                    this.updatePasswordStrength(e.target.value);
+                });
+
+                // Verification code inputs
+                this.setupVerificationInputs();
+
+                // Translation events
+                this.translator.on('languageChanged', (data) => {
+                    console.log(`Language changed to: ${data.language} (${data.direction})`);
+                    // Re-apply any dynamic content that needs translation
+                    this.updateDynamicTranslations();
+                });
+
+                // Global error handler
+                window.addEventListener('error', (e) => {
+                    console.error('Global auth error:', e.error);
+                });
+            }
+
+            updateDynamicTranslations() {
+                // Update any dynamically generated content
+                const strengthText = document.getElementById('strength-text');
+                if (strengthText && strengthText.textContent) {
+                    // Re-evaluate password strength with new language
+                    const passwordInput = document.getElementById('signup-password');
+                    if (passwordInput && passwordInput.value) {
+                        this.updatePasswordStrength(passwordInput.value);
+                    }
+                }
+
+                // Update invitee list if it exists
+                if (this.invitees.length > 0) {
+                    this.renderInvitees();
+                }
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                this.setLoading('login', true);
+
+                const email = this.security.sanitizeInput(document.getElementById('login-email').value);
+                const password = document.getElementById('login-password').value;
+
+                // Validate inputs
+                if (!this.security.validateEmail(email)) {
+                    this.showError('login', this.translator.t('error.invalid_email'));
+                    this.setLoading('login', false);
+                    return;
+                }
+
+                try {
+                    // Encrypt credentials
+                    const encryptedCredentials = await this.security.encryptCredentials({ email, password });
+                    
+                    // Authenticate with Parse
+                    const user = await Parse.User.logIn(email, password);
+                    
+                    this.currentUser = user;
+                    this.showSuccess('login', this.translator.t('message.welcome_back'));
+                    
+                    setTimeout(() => {
+                        this.redirectToClinic();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Login failed:', error);
+                    this.showError('login', this.getErrorMessage(error));
+                    window.dispatchEvent(new CustomEvent('authFailure'));
+                } finally {
+                    this.setLoading('login', false);
+                }
+            }
+
+            async handleSignup(e) {
+                e.preventDefault();
+                this.setLoading('signup', true);
+
+                const name = this.security.sanitizeInput(document.getElementById('signup-name').value);
+                const email = this.security.sanitizeInput(document.getElementById('signup-email').value);
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm').value;
+                const role = document.getElementById('signup-role').value;
+
+                // Validate inputs
+                const validation = this.validateSignupForm(name, email, password, confirmPassword, role);
+                if (!validation.valid) {
+                    this.showError('signup', validation.message);
+                    this.setLoading('signup', false);
+                    return;
+                }
+
+                try {
+                    // Create new user
+                    const user = new Parse.User();
+                    user.set('username', email);
+                    user.set('email', email);
+                    user.set('password', password);
+                    user.set('name', name);
+                    user.set('role', role);
+                    user.set('language', this.translator.currentLanguage);
+                    user.set('isVerified', false);
+                    user.set('joinedAt', new Date());
+
+                    await user.signUp();
+                    
+                    this.currentUser = user;
+                    this.showSuccess('signup', this.translator.t('message.account_created'));
+                    
+                    setTimeout(() => {
+                        this.showClinicInvite();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Signup failed:', error);
+                    this.showError('signup', this.getErrorMessage(error));
+                } finally {
+                    this.setLoading('signup', false);
+                }
+            }
+
+            async handleRecover(e) {
+                e.preventDefault();
+                this.setLoading('recover', true);
+
+                const email = this.security.sanitizeInput(document.getElementById('recover-email').value);
+
+                if (!this.security.validateEmail(email)) {
+                    this.showError('recover', this.translator.t('error.invalid_email'));
+                    this.setLoading('recover', false);
+                    return;
+                }
+
+                try {
+                    // Generate and store recovery code
+                    const code = this.security.generateSecureCode();
+                    this.storeRecoveryCode(email, code);
+                    
+                    // In production, send email here
+                    console.log('Recovery code:', code); // For testing
+                    
+                    this.showSuccess('recover', this.translator.t('message.code_sent'));
+                    
+                    setTimeout(() => {
+                        document.getElementById('recover-email-step').style.display = 'none';
+                        document.getElementById('recover-code-step').style.display = 'block';
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Recovery failed:', error);
+                    this.showError('recover', 'Failed to send recovery code. Please try again.');
+                } finally {
+                    this.setLoading('recover', false);
+                }
+            }
+
+            async handleVerify(e) {
+                e.preventDefault();
+                
+                const inputs = document.querySelectorAll('.code-input');
+                const code = Array.from(inputs).map(input => input.value).join('');
+                
+                if (code.length !== 6) {
+                    this.showError('recover', this.translator.t('error.complete_code'));
+                    return;
+                }
+
+                // Verify code
+                if (this.verifyRecoveryCode(code)) {
+                    this.showSuccess('recover', this.translator.t('message.code_verified'));
+                    setTimeout(() => {
+                        document.getElementById('recover-code-step').style.display = 'none';
+                        document.getElementById('recover-reset-step').style.display = 'block';
+                    }, 1000);
+                } else {
+                    this.showError('recover', this.translator.t('error.invalid_code'));
+                }
+            }
+
+            async handleReset(e) {
+                e.preventDefault();
+                
+                const password = document.getElementById('reset-password').value;
+                const confirmPassword = document.getElementById('reset-confirm').value;
+
+                if (password !== confirmPassword) {
+                    this.showError('recover', this.translator.t('error.password_mismatch'));
+                    return;
+                }
+
+                const passwordValidation = this.security.validatePassword(password);
+                if (!passwordValidation.valid) {
+                    this.showError('recover', this.translator.t('error.weak_password'));
+                    return;
+                }
+
+                try {
+                    // In production, update password here
+                    this.showSuccess('recover', this.translator.t('message.password_reset'));
+                    
+                    setTimeout(() => {
+                        this.resetRecoveryForm();
+                        this.switchTab('login');
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Password reset failed:', error);
+                    this.showError('recover', 'Failed to reset password. Please try again.');
+                }
+            }
+
+            handleAddInvitee(e) {
+                e.preventDefault();
+                
+                const name = this.security.sanitizeInput(document.getElementById('invite-name').value);
+                const email = this.security.sanitizeInput(document.getElementById('invite-email').value);
+                const role = this.security.sanitizeInput(document.getElementById('invite-role').value);
+
+                if (!name || !email || !role) {
+                    alert(this.translator.t('error.fill_all_fields'));
+                    return;
+                }
+
+                if (!this.security.validateEmail(email)) {
+                    alert(this.translator.t('error.invalid_email'));
+                    return;
+                }
+
+                // Check for duplicates
+                if (this.invitees.some(invitee => invitee.email === email)) {
+                    alert(this.translator.t('error.already_invited'));
+                    return;
+                }
+
+                // Add invitee
+                const invitee = {
+                    id: Date.now().toString(),
+                    name,
+                    email,
+                    role,
+                    invitedAt: new Date()
+                };
+
+                this.invitees.push(invitee);
+                this.renderInvitees();
+                this.clearInviteForm();
+                
+                // Enable send button
+                document.getElementById('send-invites-btn').disabled = false;
+            }
+
+            validateSignupForm(name, email, password, confirmPassword, role) {
+                if (!name || name.length < 2) {
+                    return { valid: false, message: this.translator.t('error.enter_name') };
+                }
+
+                if (!this.security.validateEmail(email)) {
+                    return { valid: false, message: this.translator.t('error.invalid_email') };
+                }
+
+                const passwordValidation = this.security.validatePassword(password);
+                if (!passwordValidation.valid) {
+                    return { valid: false, message: this.translator.t('error.weak_password') };
+                }
+
+                if (password !== confirmPassword) {
+                    return { valid: false, message: this.translator.t('error.password_mismatch') };
+                }
+
+                if (!role) {
+                    return { valid: false, message: this.translator.t('error.select_role') };
+                }
+
+                return { valid: true };
+            }
+
+            updatePasswordStrength(password) {
+                const meter = document.getElementById('strength-meter');
+                const fill = document.getElementById('strength-fill');
+                const text = document.getElementById('strength-text');
+
+                if (!password) {
+                    meter.style.display = 'none';
+                    return;
+                }
+
+                meter.style.display = 'block';
+                const validation = this.security.validatePassword(password);
+                
+                const colors = {
+                    weak: '#dc2626',
+                    medium: '#f59e0b',
+                    strong: '#10b981',
+                    excellent: '#059669'
+                };
+
+                const widths = {
+                    weak: '25%',
+                    medium: '50%',
+                    strong: '75%',
+                    excellent: '100%'
+                };
+
+                const strengthLabels = {
+                    weak: this.translator.t('password.weak') || 'Weak',
+                    medium: this.translator.t('password.medium') || 'Medium',
+                    strong: this.translator.t('password.strong') || 'Strong',
+                    excellent: this.translator.t('password.excellent') || 'Excellent'
+                };
+
+                fill.style.width = widths[validation.strength];
+                fill.style.backgroundColor = colors[validation.strength];
+                text.textContent = `Password strength: ${strengthLabels[validation.strength]}`;
+                text.style.color = colors[validation.strength];
+            }
+
+            async sendInvitations() {
+                if (this.invitees.length === 0) return;
+
+                try {
+                    // In production, send invitations via email service
+                    console.log('Sending invitations to:', this.invitees);
+                    
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    const message = this.translator.t('message.invitations_sent', { count: this.invitees.length });
+                    alert(message);
+                    this.invitees = [];
+                    this.renderInvitees();
+                    document.getElementById('send-invites-btn').disabled = true;
+
+                } catch (error) {
+                    console.error('Failed to send invitations:', error);
+                    alert('Failed to send invitations. Please try again.');
+                }
+            }
+
+            copyInviteLink() {
+                const link = document.getElementById('invite-link');
+                link.select();
+                document.execCommand('copy');
+                
+                const btn = event.target.closest('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> ' + this.translator.t('clinic.copy');
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            }
+
+            setupVerificationInputs() {
+                const inputs = document.querySelectorAll('.code-input');
+                inputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length === 1 && index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    });
+                    
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    });
+                });
+            }
+
+            switchTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+                // Update form sections
+                document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+                document.getElementById(`${tabName}-section`).classList.add('active');
+
+                // Clear previous messages
+                this.clearMessages();
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                this.setLoading('login', true);
+
+                const email = this.security.sanitizeInput(document.getElementById('login-email').value);
+                const password = document.getElementById('login-password').value;
+
+                // Validate inputs
+                if (!this.security.validateEmail(email)) {
+                    this.showError('login', 'Please enter a valid email address');
+                    this.setLoading('login', false);
+                    return;
+                }
+
+                try {
+                    // Encrypt credentials
+                    const encryptedCredentials = await this.security.encryptCredentials({ email, password });
+                    
+                    // Authenticate with Parse
+                    const user = await Parse.User.logIn(email, password);
+                    
+                    this.currentUser = user;
+                    this.showSuccess('login', '🎉 Welcome back! Redirecting to your clinic...');
+                    
+                    setTimeout(() => {
+                        this.redirectToClinic();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Login failed:', error);
+                    this.showError('login', this.getErrorMessage(error));
+                    window.dispatchEvent(new CustomEvent('authFailure'));
+                } finally {
+                    this.setLoading('login', false);
+                }
+            }
+
+            async handleSignup(e) {
+                e.preventDefault();
+                this.setLoading('signup', true);
+
+                const name = this.security.sanitizeInput(document.getElementById('signup-name').value);
+                const email = this.security.sanitizeInput(document.getElementById('signup-email').value);
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm').value;
+                const role = document.getElementById('signup-role').value;
+
+                // Validate inputs
+                const validation = this.validateSignupForm(name, email, password, confirmPassword, role);
+                if (!validation.valid) {
+                    this.showError('signup', validation.message);
+                    this.setLoading('signup', false);
+                    return;
+                }
+
+                try {
+                    // Create new user
+                    const user = new Parse.User();
+                    user.set('username', email);
+                    user.set('email', email);
+                    user.set('password', password);
+                    user.set('name', name);
+                    user.set('role', role);
+                    user.set('isVerified', false);
+                    user.set('joinedAt', new Date());
+
+                    await user.signUp();
+                    
+                    this.currentUser = user;
+                    this.showSuccess('signup', '🎉 Account created! Welcome to the Tech Clinic community!');
+                    
+                    setTimeout(() => {
+                        this.showClinicInvite();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Signup failed:', error);
+                    this.showError('signup', this.getErrorMessage(error));
+                } finally {
+                    this.setLoading('signup', false);
+                }
+            }
+
+            async handleRecover(e) {
+                e.preventDefault();
+                this.setLoading('recover', true);
+
+                const email = this.security.sanitizeInput(document.getElementById('recover-email').value);
+
+                if (!this.security.validateEmail(email)) {
+                    this.showError('recover', 'Please enter a valid email address');
+                    this.setLoading('recover', false);
+                    return;
+                }
+
+                try {
+                    // Generate and store recovery code
+                    const code = this.security.generateSecureCode();
+                    this.storeRecoveryCode(email, code);
+                    
+                    // In production, send email here
+                    console.log('Recovery code:', code); // For testing
+                    
+                    this.showSuccess('recover', '📧 Recovery code sent to your email!');
+                    
+                    setTimeout(() => {
+                        document.getElementById('recover-email-step').style.display = 'none';
+                        document.getElementById('recover-code-step').style.display = 'block';
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Recovery failed:', error);
+                    this.showError('recover', 'Failed to send recovery code. Please try again.');
+                } finally {
+                    this.setLoading('recover', false);
+                }
+            }
+
+            async handleVerify(e) {
+                e.preventDefault();
+                
+                const inputs = document.querySelectorAll('.code-input');
+                const code = Array.from(inputs).map(input => input.value).join('');
+                
+                if (code.length !== 6) {
+                    this.showError('recover', 'Please enter the complete 6-digit code');
+                    return;
+                }
+
+                // Verify code
+                if (this.verifyRecoveryCode(code)) {
+                    this.showSuccess('recover', '✅ Code verified! Create your new password.');
+                    setTimeout(() => {
+                        document.getElementById('recover-code-step').style.display = 'none';
+                        document.getElementById('recover-reset-step').style.display = 'block';
+                    }, 1000);
+                } else {
+                    this.showError('recover', 'Invalid code. Please check and try again.');
+                }
+            }
+
+            async handleReset(e) {
+                e.preventDefault();
+                
+                const password = document.getElementById('reset-password').value;
+                const confirmPassword = document.getElementById('reset-confirm').value;
+
+                if (password !== confirmPassword) {
+                    this.showError('recover', 'Passwords do not match');
+                    return;
+                }
+
+                const passwordValidation = this.security.validatePassword(password);
+                if (!passwordValidation.valid) {
+                    this.showError('recover', 'Password is too weak. Please choose a stronger password.');
+                    return;
+                }
+
+                try {
+                    // In production, update password here
+                    this.showSuccess('recover', '🎉 Password reset successfully! You can now sign in.');
+                    
+                    setTimeout(() => {
+                        this.resetRecoveryForm();
+                        this.switchTab('login');
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Password reset failed:', error);
+                    this.showError('recover', 'Failed to reset password. Please try again.');
+                }
+            }
+
+            handleAddInvitee(e) {
+                e.preventDefault();
+                
+                const name = this.security.sanitizeInput(document.getElementById('invite-name').value);
+                const email = this.security.sanitizeInput(document.getElementById('invite-email').value);
+                const role = this.security.sanitizeInput(document.getElementById('invite-role').value);
+
+                if (!name || !email || !role) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                if (!this.security.validateEmail(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+
+                // Check for duplicates
+                if (this.invitees.some(invitee => invitee.email === email)) {
+                    alert('This person is already invited');
+                    return;
+                }
+
+                // Add invitee
+                const invitee = {
+                    id: Date.now().toString(),
+                    name,
+                    email,
+                    role,
+                    invitedAt: new Date()
+                };
+
+                this.invitees.push(invitee);
+                this.renderInvitees();
+                this.clearInviteForm();
+                
+                // Enable send button
+                document.getElementById('send-invites-btn').disabled = false;
+            }
+
+            validateSignupForm(name, email, password, confirmPassword, role) {
+                if (!name || name.length < 2) {
+                    return { valid: false, message: 'Please enter your full name' };
+                }
+
+                if (!this.security.validateEmail(email)) {
+                    return { valid: false, message: 'Please enter a valid email address' };
+                }
+
+                const passwordValidation = this.security.validatePassword(password);
+                if (!passwordValidation.valid) {
+                    return { valid: false, message: 'Password is too weak. Use at least 8 characters with mixed case, numbers, and symbols.' };
+                }
+
+                if (password !== confirmPassword) {
+                    return { valid: false, message: 'Passwords do not match' };
+                }
+
+                if (!role) {
+                    return { valid: false, message: 'Please select your role/expertise' };
+                }
+
+                return { valid: true };
+            }
+
+            updatePasswordStrength(password) {
+                const meter = document.getElementById('strength-meter');
+                const fill = document.getElementById('strength-fill');
+                const text = document.getElementById('strength-text');
+
+                if (!password) {
+                    meter.style.display = 'none';
+                    return;
+                }
+
+                meter.style.display = 'block';
+                const validation = this.security.validatePassword(password);
+                
+                const colors = {
+                    weak: '#ef4444',
+                    medium: '#f59e0b',
+                    strong: '#10b981',
+                    excellent: '#059669'
+                };
+
+                const widths = {
+                    weak: '25%',
+                    medium: '50%',
+                    strong: '75%',
+                    excellent: '100%'
+                };
+
+                fill.style.width = widths[validation.strength];
+                fill.style.backgroundColor = colors[validation.strength];
+                text.textContent = `Password strength: ${validation.strength}`;
+                text.style.color = colors[validation.strength];
+            }
+
+            renderInvitees() {
+                const container = document.getElementById('invitee-list');
+                
+                if (this.invitees.length === 0) {
+                    container.innerHTML = '<p style="color: var(--gray-500); text-align: center; font-style: italic;">No invitations added yet</p>';
+                    return;
+                }
+
+                container.innerHTML = this.invitees.map(invitee => `
+                    <div class="invitee-item">
+                        <div class="invitee-info">
+                            <div class="invitee-avatar">${invitee.name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div style="font-weight: 500;">${invitee.name}</div>
+                                <div style="font-size: 0.875rem; color: var(--gray-600);">${invitee.email} • ${invitee.role}</div>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="window.authManager.removeInvitee('${invitee.id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            removeInvitee(id) {
+                this.invitees = this.invitees.filter(invitee => invitee.id !== id);
+                this.renderInvitees();
+                
+                if (this.invitees.length === 0) {
+                    document.getElementById('send-invites-btn').disabled = true;
+                }
+            }
+
+            clearInviteForm() {
+                document.getElementById('invite-name').value = '';
+                document.getElementById('invite-email').value = '';
+                document.getElementById('invite-role').value = '';
+            }
+
+            async sendInvitations() {
+                if (this.invitees.length === 0) return;
+
+                try {
+                    // In production, send invitations via email service
+                    console.log('Sending invitations to:', this.invitees);
+                    
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    alert(`🎉 Successfully sent ${this.invitees.length} invitation(s)!`);
+                    this.invitees = [];
+                    this.renderInvitees();
+                    document.getElementById('send-invites-btn').disabled = true;
+
+                } catch (error) {
+                    console.error('Failed to send invitations:', error);
+                    alert('Failed to send invitations. Please try again.');
+                }
+            }
+
+            copyInviteLink() {
+                const link = document.getElementById('invite-link');
+                link.select();
+                document.execCommand('copy');
+                
+                const btn = event.target.closest('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            }
+
+            async socialLogin(provider) {
+                try {
+                    console.log(`Social login with ${provider}`);
+                    // Implement social login logic here
+                    alert(`${provider} login not yet implemented`);
+                } catch (error) {
+                    console.error('Social login failed:', error);
+                }
+            }
+
+            showClinicInvite() {
+                document.getElementById('auth-card').style.display = 'none';
+                document.getElementById('clinic-card').style.display = 'block';
+            }
+
+            showAuth() {
+                document.getElementById('clinic-card').style.display = 'none';
+                document.getElementById('auth-card').style.display = 'block';
+            }
+
+            redirectToClinic() {
+                // Redirect to main content manager
+                window.location.href = '/content-manager.html';
+            }
+
+            checkExistingSession() {
+                const currentUser = Parse.User.current();
+                if (currentUser) {
+                    this.currentUser = currentUser;
+                    this.redirectToClinic();
+                }
+            }
+
+            storeRecoveryCode(email, code) {
+                // In production, store securely on server
+                sessionStorage.setItem('recovery_email', email);
+                sessionStorage.setItem('recovery_code', code);
+                sessionStorage.setItem('recovery_expires', Date.now() + 600000); // 10 minutes
+            }
+
+            verifyRecoveryCode(code) {
+                const storedCode = sessionStorage.getItem('recovery_code');
+                const expires = sessionStorage.getItem('recovery_expires');
+                
+                if (!storedCode || !expires || Date.now() > parseInt(expires)) {
+                    return false;
+                }
+                
+                return code === storedCode;
+            }
+
+            resetRecoveryForm() {
+                document.getElementById('recover-email-step').style.display = 'block';
+                document.getElementById('recover-code-step').style.display = 'none';
+                document.getElementById('recover-reset-step').style.display = 'none';
+                
+                // Clear form data
+                document.getElementById('recover-email').value = '';
+                document.querySelectorAll('.code-input').forEach(input => input.value = '');
+                document.getElementById('reset-password').value = '';
+                document.getElementById('reset-confirm').value = '';
+                
+                // Clear stored recovery data
+                sessionStorage.removeItem('recovery_email');
+                sessionStorage.removeItem('recovery_code');
+                sessionStorage.removeItem('recovery_expires');
+            }
+
+            getErrorMessage(error) {
+                const errorMap = {
+                    101: 'Invalid email or password',
+                    202: 'Username already taken',
+                    203: 'Email already taken',
+                    125: 'Invalid email address',
+                    default: 'An error occurred. Please try again.'
+                };
+                
+                return errorMap[error.code] || errorMap.default;
+            }
+
+            setLoading(section, loading) {
+                const spinner = document.getElementById(`${section}-spinner`);
+                const button = document.querySelector(`#${section}-section .btn[type="submit"]`);
+                
+                if (loading) {
+                    spinner.style.display = 'inline-block';
+                    button.disabled = true;
+                } else {
+                    spinner.style.display = 'none';
+                    button.disabled = false;
+                }
+            }
+
+            showError(section, message) {
+                this.clearMessages();
+                const errorDiv = document.getElementById(`${section}-error`);
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+
+            showSuccess(section, message) {
+                this.clearMessages();
+                const successDiv = document.getElementById(`${section}-success`);
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+
+            clearMessages() {
+                document.querySelectorAll('.error-message, .success-message').forEach(msg => {
+                    msg.style.display = 'none';
+                });
+            }
+        }
+
+        // Global functions for onclick handlers with i18n support
+        window.togglePassword = function(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.parentElement.querySelector('.password-toggle');
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        };
+
+        window.switchTab = function(tab) {
+            window.authManager.switchTab(tab);
+        };
+
+        window.socialLogin = function(provider) {
+            window.authManager.socialLogin(provider);
+        };
+
+        window.resendCode = function() {
+            // Resend verification code logic
+            console.log('Resending verification code...');
+            const t = window.authManager.translator.t.bind(window.authManager.translator);
+            window.authManager.showSuccess('recover', t('message.code_sent'));
+        };
+
+        window.sendInvitations = function() {
+            window.authManager.sendInvitations();
+        };
+
+        window.copyInviteLink = function() {
+            window.authManager.copyInviteLink();
+        };
+
+        window.showAuth = function() {
+            window.authManager.showAuth();
+        };
+
+        // Initialize the authentication system with enhanced i18n
+        document.addEventListener('DOMContentLoaded', () => {
+            window.authManager = new AuthManager();
+            console.log('🚀 Tech Clinic Auth System Ready with Internationalization');
+            
+            // Log detected language
+            const detectedLang = window.authManager.translator.currentLanguage;
+            const direction = window.authManager.translator.getLanguageDirection();
+            console.log(`🌐 Language: ${detectedLang.toUpperCase()} (${direction})`);
+        });
+
+        // Enhanced online/offline status with i18n
+        window.addEventListener('online', () => {
+            console.log('🌐 Connection restored');
+            if (window.authManager && window.authManager.translator) {
+                // Could show a translated "back online" message
+            }
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('📴 Connection lost - some features may be limited');
+            if (window.authManager && window.authManager.translator) {
+                // Could show a translated "offline" message
+            }
+        });
+
+        // Enhanced error handling with browser information
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            console.log('Browser info:', {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                languages: navigator.languages,
+                platform: navigator.platform,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine
+            });
+        });
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            if ('performance' in window) {
+                const loadTime = performance.now();
+                console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
+                
+                // Log performance metrics
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    if (perfData) {
+                        console.log('📊 Performance metrics:', {
+                            domContentLoaded: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
+                            loadComplete: Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                            totalLoadTime: Math.round(perfData.loadEventEnd - perfData.fetchStart)
+                        });
+                    }
+                }, 1000);
+            }
+        });
+
+        // Security monitoring
+        document.addEventListener('securitypolicyviolation', (e) => {
+            console.warn('🛡️ CSP Violation:', {
+                directive: e.violatedDirective,
+                blockedURI: e.blockedURI,
+                documentURI: e.documentURI
+            });
+        });
+
+        // Accessibility enhancements
+        document.addEventListener('keydown', (e) => {
+            // Enhanced keyboard navigation
+            if (e.key === 'Tab') {
+                // Add visual focus indicators for keyboard users
+                document.body.classList.add('keyboard-navigation');
+            }
+            
+            // Escape key handling
+            if (e.key === 'Escape') {
+                // Close any open dropdowns
+                document.querySelectorAll('.language-dropdown.show').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+                
+                // Close modals if any are open
+                if (window.authManager && window.authManager.currentModal) {
+                    window.authManager.closeModal();
+                }
+            }
+        });
+
+        // Remove keyboard navigation class on mouse use
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-navigation');
+        });
+
+        // Enhanced form validation feedback
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('form-input')) {
+                // Real-time validation feedback
+                const input = e.target;
+                const value = input.value.trim();
+                
+                // Remove existing validation classes
+                input.classList.remove('error', 'success');
+                
+                // Email validation
+                if (input.type === 'email' && value) {
+                    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    input.classList.add(isValid ? 'success' : 'error');
+                }
+                
+                // Password validation
+                if (input.type === 'password' && value && input.id.includes('password') && !input.id.includes('confirm')) {
+                    const validation = window.authManager?.security?.validatePassword(value);
+                    if (validation) {
+                        input.classList.add(validation.valid ? 'success' : 'error');
+                    }
+                }
+                
+                // Confirm password validation
+                if (input.id.includes('confirm') && value) {
+                    const passwordInput = document.querySelector('[id*="password"]:not([id*="confirm"])');
+                    if (passwordInput) {
+                        const matches = value === passwordInput.value;
+                        input.classList.add(matches ? 'success' : 'error');
+                    }
+                }
+            }
+        });
+
+        // Auto-save language preference on change
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.language-option')) {
+                const option = e.target.closest('.language-option');
+                const langCode = option.getAttribute('data-code');
+                console.log(`🔄 Language changed to: ${langCode}`);
+            }
+        });
+
+        // Progressive Web App enhancements
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('✅ Service Worker registered:', registration.scope);
+                } catch (error) {
+                    console.log('❌ Service Worker registration failed:', error);
+                }
+            });
+        }
+
+        // Theme detection and preference
+        if (window.matchMedia) {
+            const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            const handleThemeChange = (e) => {
+                console.log(`🎨 System theme: ${e.matches ? 'dark' : 'light'}`);
+                // Could implement dark mode support here
+            };
+            
+            darkModeQuery.addListener(handleThemeChange);
+            handleThemeChange(darkModeQuery);
+        }
+
+        // Enhanced accessibility announcements
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.style.position = 'absolute';
+            announcement.style.left = '-10000px';
+            announcement.style.width = '1px';
+            announcement.style.height = '1px';
+            announcement.style.overflow = 'hidden';
+            announcement.textContent = message;
+            
+            document.body.appendChild(announcement);
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+
+        // Announce language changes to screen readers
+        document.addEventListener('languageChanged', (e) => {
+            if (window.authManager && window.authManager.translator) {
+                const langName = window.authManager.translator.getLanguageName(e.detail.language);
+                announceToScreenReader(`Language changed to ${langName}`);
+            }
+        });
+
+        // Development helpers (only in development)
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // Add translation debugging
+            window.debugTranslations = function() {
+                if (window.authManager && window.authManager.translator) {
+                    console.table(Array.from(window.authManager.translator.translations.get('en')));
+                }
+            };
+            
+            // Add quick language switcher for testing
+            window.quickLang = function(code) {
+                if (window.authManager && window.authManager.translator) {
+                    window.authManager.translator.switchLanguage(code);
+                }
+            };
+            
+            console.log('🔧 Development helpers available: debugTranslations(), quickLang(code)');
+        }
+
+    </script>
+</body>
+</html>
