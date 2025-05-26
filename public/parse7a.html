@@ -1,0 +1,3313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro Content Manager - Enhanced v3.1</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://hub.approvideo.org; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob: img.youtube.com placehold.co; connect-src 'self' https://hub.approvideo.org https://parseapi.back4app.com;">
+    
+    <script src="https://cdn.jsdelivr.net/npm/parse@4.2.0/dist/parse.min.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+    
+    <style>
+        /* Enhanced Tailwind-inspired CSS */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.375rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+            min-width: 200px;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-option:hover {
+            background: var(--gray-50);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .app-nav {
+            background: white;
+            padding: 0 2rem;
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray-600);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .app-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-600);
+        }
+
+        .btn-danger {
+            background: var(--error);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.2s;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-400);
+            padding: 0;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: var(--gray-600);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: 0.75rem center;
+            background-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            margin: 0.125rem;
+        }
+
+        .tag-colored {
+            color: white;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            border-left-color: var(--success);
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border-left-color: var(--error);
+            color: #991b1b;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            border-left-color: var(--warning);
+            color: #92400e;
+        }
+
+        .video-thumbnail {
+            width: 120px;
+            height: 68px;
+            background: var(--gray-200);
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .video-info {
+            flex: 1;
+        }
+
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-meta {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .connection-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-connected {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-loading {
+            background: var(--warning);
+            color: white;
+        }
+
+        .status-error {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Language-specific styling */
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .translation-section {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--gray-50);
+        }
+
+        .translation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .language-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app-root"></div>
+
+    <script type="module">
+        'use strict';
+
+        // Enhanced Configuration
+        const CONFIG = {
+            parseAppId: 'JfMeozLs8UZFxaZibAiZhlpDl5OZkyjVwzdxLfqw',
+            parseJSKey: 'fi6LWURzRGmTg7neZfI79MJaB2QHjWhiZ4nVFvKD',
+            parseServerURL: 'https://parseapi.back4app.com/',
+            latticeEncryption: true,
+            version: '3.1.0',
+            maxRetries: 3,
+            retryDelay: 1000,
+            rateLimit: {
+                requests: 100,
+                loginAttempts: 5,
+                lockoutDuration: 300000
+            },
+            pagination: {
+                defaultLimit: 20,
+                maxLimit: 100
+            },
+            cache: {
+                ttl: 300000, // 5 minutes
+                enabled: true
+            }
+        };
+
+        // Enhanced Translation Manager
+        class TranslationManager {
+            constructor() {
+                this.currentLanguage = this.getStoredLanguage();
+                this.fallbackLanguage = 'en';
+                this.translations = new Map();
+                this.loadDefaultTranslations();
+                this.eventListeners = {};
+            }
+
+            getStoredLanguage() {
+                try {
+                    return localStorage.getItem('appro_language') || 'en';
+                } catch (error) {
+                    console.warn('Could not access localStorage:', error);
+                    return 'en';
+                }
+            }
+
+            setStoredLanguage(languageCode) {
+                try {
+                    localStorage.setItem('appro_language', languageCode);
+                } catch (error) {
+                    console.warn('Could not store language preference:', error);
+                }
+            }
+
+            loadDefaultTranslations() {
+                // English translations (base)
+                this.translations.set('en', {
+                    // Navigation
+                    'nav.areas': 'Areas',
+                    'nav.videos': 'Videos', 
+                    'nav.tags': 'Tags',
+                    'nav.languages': 'Languages',
+                    'nav.analytics': 'Analytics',
+                    
+                    // Common actions
+                    'action.add': 'Add',
+                    'action.edit': 'Edit',
+                    'action.delete': 'Delete',
+                    'action.save': 'Save',
+                    'action.cancel': 'Cancel',
+                    'action.update': 'Update',
+                    'action.search': 'Search',
+                    'action.sync': 'Sync',
+                    'action.export': 'Export',
+                    'action.import': 'Import',
+                    
+                    // Areas
+                    'areas.title': 'Knowledge Areas',
+                    'areas.add': 'Add Area',
+                    'areas.search': 'Search areas and subcategories...',
+                    'areas.no_description': 'No description provided',
+                    'areas.subcategories': 'Subcategories',
+                    'areas.no_subcategories': 'No subcategories yet',
+                    
+                    // Videos
+                    'videos.title': 'Video Library',
+                    'videos.add': 'Add Video',
+                    'videos.search': 'Search videos by title, description, or tags...',
+                    'videos.views': 'views',
+                    'videos.duration': 'Duration',
+                    'videos.creator': 'Creator',
+                    'videos.no_videos': 'No videos yet',
+                    
+                    // Tags
+                    'tags.title': 'Tag Management',
+                    'tags.add': 'Add Tag',
+                    'tags.search': 'Search tags...',
+                    'tags.no_definition': 'No definition provided',
+                    'tags.used_in': 'Used in',
+                    
+                    // Languages
+                    'languages.title': 'Language Management',
+                    'languages.add': 'Add Language',
+                    'languages.search': 'Search languages...',
+                    'languages.code': 'Code',
+                    'languages.native_name': 'Native Name',
+                    'languages.direction': 'Text Direction',
+                    
+                    // Analytics
+                    'analytics.title': 'Analytics Dashboard',
+                    'analytics.total_areas': 'Knowledge Areas',
+                    'analytics.total_subcategories': 'Subcategories',
+                    'analytics.total_videos': 'Total Videos',
+                    'analytics.total_views': 'Total Views',
+                    'analytics.average_rating': 'Average Rating',
+                    'analytics.total_tags': 'Active Tags',
+                    'analytics.videos_by_area': 'Videos by Area',
+                    'analytics.popular_tags': 'Popular Tags',
+                    'analytics.recent_videos': 'Recent Videos',
+                    
+                    // Forms
+                    'form.required': 'This field is required',
+                    'form.name': 'Name',
+                    'form.title': 'Title',
+                    'form.description': 'Description',
+                    'form.youtube_id': 'YouTube ID',
+                    'form.categories': 'Categories',
+                    'form.tags': 'Tags',
+                    'form.icon': 'Icon',
+                    'form.color': 'Color',
+                    'form.definition': 'Definition',
+                    
+                    // Messages
+                    'message.success.area_added': 'Area added successfully',
+                    'message.success.area_updated': 'Area updated successfully',
+                    'message.success.area_deleted': 'Area deleted successfully',
+                    'message.success.video_added': 'Video added successfully',
+                    'message.success.video_updated': 'Video updated successfully',
+                    'message.success.video_deleted': 'Video deleted successfully',
+                    'message.success.tag_added': 'Tag added successfully',
+                    'message.success.tag_updated': 'Tag updated successfully',
+                    'message.success.tag_deleted': 'Tag deleted successfully',
+                    'message.success.language_added': 'Language added successfully',
+                    'message.success.language_updated': 'Language updated successfully',
+                    'message.success.language_deleted': 'Language deleted successfully',
+                    'message.success.data_exported': 'Data exported successfully',
+                    'message.success.data_imported': 'Data imported successfully',
+                    
+                    // Status
+                    'status.connected': 'Connected',
+                    'status.loading': 'Loading...',
+                    'status.offline': 'Offline',
+                    'status.error': 'Error',
+                    
+                    // Global
+                    'app.title': 'Appro Content Manager',
+                    'search.global': 'Global Search',
+                    'search.start_typing': 'Start typing to search...',
+                    'search.no_results': 'No results found',
+                    'search.results_found': 'results found'
+                });
+
+                // Spanish translations
+                this.translations.set('es', {
+                    // Navigation
+                    'nav.areas': 'Áreas',
+                    'nav.videos': 'Videos',
+                    'nav.tags': 'Etiquetas',
+                    'nav.languages': 'Idiomas',
+                    'nav.analytics': 'Analíticas',
+                    
+                    // Common actions
+                    'action.add': 'Agregar',
+                    'action.edit': 'Editar',
+                    'action.delete': 'Eliminar',
+                    'action.save': 'Guardar',
+                    'action.cancel': 'Cancelar',
+                    'action.update': 'Actualizar',
+                    'action.search': 'Buscar',
+                    'action.sync': 'Sincronizar',
+                    'action.export': 'Exportar',
+                    'action.import': 'Importar',
+                    
+                    // Areas
+                    'areas.title': 'Áreas de Conocimiento',
+                    'areas.add': 'Agregar Área',
+                    'areas.search': 'Buscar áreas y subcategorías...',
+                    'areas.no_description': 'Sin descripción',
+                    'areas.subcategories': 'Subcategorías',
+                    'areas.no_subcategories': 'Sin subcategorías aún',
+                    
+                    // Videos
+                    'videos.title': 'Biblioteca de Videos',
+                    'videos.add': 'Agregar Video',
+                    'videos.search': 'Buscar videos por título, descripción o etiquetas...',
+                    'videos.views': 'vistas',
+                    'videos.duration': 'Duración',
+                    'videos.creator': 'Creador',
+                    'videos.no_videos': 'Sin videos aún',
+                    
+                    // Status
+                    'status.connected': 'Conectado',
+                    'status.loading': 'Cargando...',
+                    'status.offline': 'Sin conexión',
+                    'status.error': 'Error',
+                    
+                    // Global
+                    'app.title': 'Gestor de Contenido Appro',
+                    'search.global': 'Búsqueda Global',
+                    'search.start_typing': 'Comienza a escribir para buscar...',
+                    'search.no_results': 'No se encontraron resultados',
+                    'search.results_found': 'resultados encontrados'
+                });
+
+                // French translations
+                this.translations.set('fr', {
+                    // Navigation
+                    'nav.areas': 'Domaines',
+                    'nav.videos': 'Vidéos',
+                    'nav.tags': 'Étiquettes',
+                    'nav.languages': 'Langues',
+                    'nav.analytics': 'Analytiques',
+                    
+                    // Common actions
+                    'action.add': 'Ajouter',
+                    'action.edit': 'Modifier',
+                    'action.delete': 'Supprimer',
+                    'action.save': 'Enregistrer',
+                    'action.cancel': 'Annuler',
+                    'action.update': 'Mettre à jour',
+                    'action.search': 'Rechercher',
+                    'action.sync': 'Synchroniser',
+                    'action.export': 'Exporter',
+                    'action.import': 'Importer',
+                    
+                    // Areas
+                    'areas.title': 'Domaines de Connaissance',
+                    'areas.add': 'Ajouter un Domaine',
+                    'areas.search': 'Rechercher des domaines et sous-catégories...',
+                    'areas.no_description': 'Aucune description fournie',
+                    'areas.subcategories': 'Sous-catégories',
+                    'areas.no_subcategories': 'Aucune sous-catégorie encore',
+                    
+                    // Status
+                    'status.connected': 'Connecté',
+                    'status.loading': 'Chargement...',
+                    'status.offline': 'Hors ligne',
+                    'status.error': 'Erreur',
+                    
+                    // Global
+                    'app.title': 'Gestionnaire de Contenu Appro',
+                    'search.global': 'Recherche Globale',
+                    'search.start_typing': 'Commencez à taper pour rechercher...',
+                    'search.no_results': 'Aucun résultat trouvé',
+                    'search.results_found': 'résultats trouvés'
+                });
+            }
+
+            t(key, params = {}) {
+                const translations = this.translations.get(this.currentLanguage) || 
+                                   this.translations.get(this.fallbackLanguage) || 
+                                   new Map();
+                
+                let translation = translations[key] || key;
+                
+                // Simple parameter substitution
+                Object.keys(params).forEach(param => {
+                    translation = translation.replace(`{${param}}`, params[param]);
+                });
+                
+                return translation;
+            }
+
+            switchLanguage(languageCode) {
+                if (this.currentLanguage !== languageCode) {
+                    this.currentLanguage = languageCode;
+                    this.setStoredLanguage(languageCode);
+                    this.emit('languageChanged', { 
+                        language: languageCode,
+                        oldLanguage: this.currentLanguage 
+                    });
+                }
+            }
+
+            getCurrentLanguage() {
+                return this.currentLanguage;
+            }
+
+            getAvailableLanguages() {
+                return Array.from(this.translations.keys());
+            }
+
+            addTranslations(languageCode, translations) {
+                const existing = this.translations.get(languageCode) || {};
+                this.translations.set(languageCode, { ...existing, ...translations });
+            }
+
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(cb => cb(data));
+                }
+            }
+
+            getLanguageDirection(languageCode = null) {
+                const lang = languageCode || this.currentLanguage;
+                // RTL languages
+                const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+                return rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+            }
+        }
+
+        // Enhanced Lattice Security Manager
+        class LatticeSecurityManager {
+            constructor() {
+                this.rateLimiter = new Map();
+                this.csrfToken = this.generateCSRFToken();
+                this.sessionStartTime = Date.now();
+                this.encryptionKey = null;
+                this.initializeLattice();
+            }
+
+            async initializeLattice() {
+                if (CONFIG.latticeEncryption) {
+                    this.encryptionKey = await this.generateLatticeKey();
+                }
+                this.setupSecurityHeaders();
+                this.monitorSecurity();
+            }
+
+            async generateLatticeKey() {
+                const keyData = await crypto.subtle.generateKey(
+                    { name: 'AES-GCM', length: 256 },
+                    true,
+                    ['encrypt', 'decrypt']
+                );
+                return keyData;
+            }
+
+            async encryptData(data) {
+                if (!this.encryptionKey || !CONFIG.latticeEncryption) return data;
+                
+                try {
+                    const encoder = new TextEncoder();
+                    const iv = crypto.getRandomValues(new Uint8Array(12));
+                    const encrypted = await crypto.subtle.encrypt(
+                        { name: 'AES-GCM', iv },
+                        this.encryptionKey,
+                        encoder.encode(JSON.stringify(data))
+                    );
+                    
+                    return {
+                        encrypted: true,
+                        iv: Array.from(iv),
+                        data: Array.from(new Uint8Array(encrypted))
+                    };
+                } catch (error) {
+                    console.error('Encryption failed:', error);
+                    return data;
+                }
+            }
+
+            async decryptData(encryptedData) {
+                if (!encryptedData.encrypted || !this.encryptionKey) return encryptedData;
+                
+                try {
+                    const decrypted = await crypto.subtle.decrypt(
+                        { name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) },
+                        this.encryptionKey,
+                        new Uint8Array(encryptedData.data)
+                    );
+                    
+                    const decoder = new TextDecoder();
+                    return JSON.parse(decoder.decode(decrypted));
+                } catch (error) {
+                    console.error('Decryption failed:', error);
+                    return null;
+                }
+            }
+
+            generateCSRFToken() {
+                const array = new Uint8Array(32);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            validateCSRFToken(token) {
+                return token === this.csrfToken;
+            }
+
+            checkRateLimit(identifier, limit = CONFIG.rateLimit.requests) {
+                const now = Date.now();
+                const key = `rate_${identifier}`;
+                const attempts = this.rateLimiter.get(key) || [];
+                
+                const validAttempts = attempts.filter(timestamp => now - timestamp < 60000);
+                
+                if (validAttempts.length >= limit) {
+                    return false;
+                }
+                
+                validAttempts.push(now);
+                this.rateLimiter.set(key, validAttempts);
+                return true;
+            }
+
+            sanitizeInput(input) {
+                if (input === null || input === undefined) return '';
+                if (typeof input !== 'string') return String(input);
+                
+                return input
+                    .replace(/[<>]/g, '')
+                    .replace(/javascript:/gi, '')
+                    .replace(/on\w+\s*=/gi, '')
+                    .trim();
+            }
+
+            validateInput(input, rules) {
+                const errors = [];
+                
+                if (rules.required && !input) {
+                    errors.push('This field is required');
+                }
+                
+                if (rules.minLength && input.length < rules.minLength) {
+                    errors.push(`Minimum length is ${rules.minLength} characters`);
+                }
+                
+                if (rules.maxLength && input.length > rules.maxLength) {
+                    errors.push(`Maximum length is ${rules.maxLength} characters`);
+                }
+                
+                if (rules.pattern && !rules.pattern.test(input)) {
+                    errors.push('Invalid format');
+                }
+                
+                if (rules.email && !this.isValidEmail(input)) {
+                    errors.push('Invalid email address');
+                }
+                
+                if (rules.url && !this.isValidUrl(input)) {
+                    errors.push('Invalid URL');
+                }
+                
+                return errors;
+            }
+
+            isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            isValidUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+
+            isValidYoutubeUrl(url) {
+                const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/)[\w-]+$/;
+                return regex.test(url);
+            }
+
+            setupSecurityHeaders() {
+                if ('PerformanceObserver' in window) {
+                    const observer = new PerformanceObserver((list) => {
+                        for (const entry of list.getEntries()) {
+                            if (entry.entryType === 'resource' && entry.name.includes('eval')) {
+                                console.warn('Potential security risk detected:', entry.name);
+                            }
+                        }
+                    });
+                    observer.observe({ entryTypes: ['resource'] });
+                }
+            }
+
+            monitorSecurity() {
+                const suspiciousPatterns = [
+                    /<script/i,
+                    /javascript:/i,
+                    /on\w+\s*=/i,
+                    /eval\(/i,
+                    /expression\(/i
+                ];
+
+                const originalSetAttribute = Element.prototype.setAttribute;
+                Element.prototype.setAttribute = function(name, value) {
+                    if (suspiciousPatterns.some(pattern => pattern.test(value))) {
+                        console.warn('Blocked suspicious attribute:', name, value);
+                        return;
+                    }
+                    originalSetAttribute.call(this, name, value);
+                };
+            }
+        }
+
+        // Enhanced Data Cache Manager
+        class CacheManager {
+            constructor() {
+                this.cache = new Map();
+                this.timestamps = new Map();
+            }
+
+            set(key, data, ttl = CONFIG.cache.ttl) {
+                if (!CONFIG.cache.enabled) return;
+                
+                this.cache.set(key, data);
+                this.timestamps.set(key, Date.now() + ttl);
+                this.cleanup();
+            }
+
+            get(key) {
+                if (!CONFIG.cache.enabled) return null;
+                
+                const timestamp = this.timestamps.get(key);
+                if (!timestamp || Date.now() > timestamp) {
+                    this.delete(key);
+                    return null;
+                }
+                
+                return this.cache.get(key);
+            }
+
+            delete(key) {
+                this.cache.delete(key);
+                this.timestamps.delete(key);
+            }
+
+            clear() {
+                this.cache.clear();
+                this.timestamps.clear();
+            }
+
+            cleanup() {
+                const now = Date.now();
+                for (const [key, timestamp] of this.timestamps) {
+                    if (now > timestamp) {
+                        this.delete(key);
+                    }
+                }
+            }
+        }
+
+        // Enhanced Parse Store with Full CRUD Operations
+        class EnhancedParseStore {
+            constructor(security) {
+                this.security = security;
+                this.cache = new CacheManager();
+                this.data = {
+                    areas: [],
+                    subcategories: [],
+                    videos: [],
+                    tags: [],
+                    languages: [],
+                    translations: []
+                };
+                this.isLoading = false;
+                this.error = null;
+                this.eventListeners = {};
+                this.syncQueue = [];
+                this.isOnline = navigator.onLine;
+                
+                this.setupOfflineSync();
+            }
+
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(cb => cb(data));
+                }
+            }
+
+            setupOfflineSync() {
+                window.addEventListener('online', () => {
+                    this.isOnline = true;
+                    this.processSyncQueue();
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.isOnline = false;
+                });
+            }
+
+            async processSyncQueue() {
+                if (!this.isOnline || this.syncQueue.length === 0) return;
+                
+                const queue = [...this.syncQueue];
+                this.syncQueue = [];
+                
+                for (const operation of queue) {
+                    try {
+                        await this.executeOperation(operation);
+                    } catch (error) {
+                        console.error('Sync operation failed:', error);
+                        this.syncQueue.push(operation);
+                    }
+                }
+            }
+
+            async executeOperation(operation) {
+                const { type, className, method, data } = operation;
+                
+                switch (type) {
+                    case 'create':
+                        return await this.createObject(className, data);
+                    case 'update':
+                        return await this.updateObject(className, data.id, data.updates);
+                    case 'delete':
+                        return await this.deleteObject(className, data.id);
+                }
+            }
+
+            async executeQuery(queryFunc, retryCount = 0) {
+                try {
+                    return await queryFunc();
+                } catch (error) {
+                    console.error('Parse query error:', error);
+                    
+                    if (!this.isOnline) {
+                        throw new Error('Offline: Operation queued for sync');
+                    }
+                    
+                    if (retryCount < CONFIG.maxRetries) {
+                        await new Promise(resolve => 
+                            setTimeout(resolve, CONFIG.retryDelay * Math.pow(2, retryCount))
+                        );
+                        return this.executeQuery(queryFunc, retryCount + 1);
+                    }
+                    
+                    throw error;
+                }
+            }
+
+            async createObject(className, data) {
+                const obj = new (Parse.Object.extend(className))();
+                
+                const encryptedData = await this.security.encryptData(data);
+                
+                Object.keys(data).forEach(key => {
+                    if (data[key] !== undefined) {
+                        obj.set(key, data[key]);
+                    }
+                });
+                
+                try {
+                    const result = await this.executeQuery(() => obj.save());
+                    this.cache.delete(`${className}_list`);
+                    return result;
+                } catch (error) {
+                    if (!this.isOnline) {
+                        this.syncQueue.push({
+                            type: 'create',
+                            className,
+                            data
+                        });
+                    }
+                    throw error;
+                }
+            }
+
+            async updateObject(className, id, updates) {
+                const query = new Parse.Query(className);
+                const obj = await this.executeQuery(() => query.get(id));
+                
+                Object.keys(updates).forEach(key => {
+                    if (updates[key] !== undefined) {
+                        obj.set(key, updates[key]);
+                    }
+                });
+                
+                try {
+                    const result = await this.executeQuery(() => obj.save());
+                    this.cache.delete(`${className}_list`);
+                    this.cache.delete(`${className}_${id}`);
+                    return result;
+                } catch (error) {
+                    if (!this.isOnline) {
+                        this.syncQueue.push({
+                            type: 'update',
+                            className,
+                            data: { id, updates }
+                        });
+                    }
+                    throw error;
+                }
+            }
+
+            async deleteObject(className, id) {
+                try {
+                    await this.executeQuery(() => 
+                        Parse.Object.extend(className).createWithoutData(id).destroy()
+                    );
+                    this.cache.delete(`${className}_list`);
+                    this.cache.delete(`${className}_${id}`);
+                } catch (error) {
+                    if (!this.isOnline) {
+                        this.syncQueue.push({
+                            type: 'delete',
+                            className,
+                            data: { id }
+                        });
+                    }
+                    throw error;
+                }
+            }
+
+            async findObjects(className, queryBuilder) {
+                const cacheKey = `${className}_list`;
+                const cached = this.cache.get(cacheKey);
+                
+                if (cached) {
+                    return cached;
+                }
+                
+                const query = new Parse.Query(className);
+                if (queryBuilder) {
+                    queryBuilder(query);
+                }
+                
+                const results = await this.executeQuery(() => query.find());
+                this.cache.set(cacheKey, results);
+                
+                return results;
+            }
+
+            async loadInitialData() {
+                this.isLoading = true;
+                this.emit('loading', true);
+                
+                try {
+                    const [areas, subcategories, videos, tags, languages] = await Promise.all([
+                        this.findObjects("Area", q => q.ascending("area").limit(100)),
+                        this.findObjects("Subcategory", q => q.include("area").ascending("title").limit(500)),
+                        this.findObjects("Video", q => q.descending("date").limit(200)),
+                        this.findObjects("Tag", q => q.ascending("name").limit(100)),
+                        this.findObjects("Language", q => q.ascending("name").limit(50))
+                    ]);
+
+                    this.data.areas = areas.map(obj => ({
+                        id: obj.id,
+                        area: obj.get('area'),
+                        icon: obj.get('icon') || 'fas fa-folder',
+                        description: obj.get('description'),
+                        subcategories: []
+                    }));
+
+                    this.data.subcategories = subcategories.map(obj => ({
+                        id: obj.id,
+                        title: obj.get('title'),
+                        description: obj.get('description'),
+                        areaId: obj.get('area')?.id,
+                        subtitle: obj.get('subtitle'),
+                        context: obj.get('context'),
+                        videos: []
+                    }));
+
+                    this.data.videos = videos.map(obj => ({
+                        id: obj.id,
+                        title: obj.get('title'),
+                        youtubeId: obj.get('youtubeId'),
+                        description: obj.get('description'),
+                        categories: obj.get('categories') || [],
+                        tags: obj.get('tags') || [],
+                        rating: obj.get('rating') || 0,
+                        views: obj.get('views') || 0,
+                        duration: obj.get('duration'),
+                        creator: obj.get('creator'),
+                        date: obj.get('date') || obj.createdAt
+                    }));
+
+                    this.data.tags = tags.map(obj => ({
+                        id: obj.id,
+                        name: obj.get('name'),
+                        definition: obj.get('definition'),
+                        color: obj.get('color') || '#8b5cf6'
+                    }));
+
+                    this.data.languages = languages.map(obj => ({
+                        id: obj.id,
+                        name: obj.get('name'),
+                        code: obj.get('code'),
+                        nativeName: obj.get('nativeName'),
+                        direction: obj.get('direction') || 'ltr'
+                    }));
+
+                    this.buildRelationships();
+                    this.emit('dataLoaded', { source: 'parse' });
+                } catch (error) {
+                    console.error("Parse load failed:", error);
+                    this.loadSeedData();
+                } finally {
+                    this.isLoading = false;
+                    this.emit('loading', false);
+                }
+            }
+
+            buildRelationships() {
+                this.data.areas.forEach(area => {
+                    area.subcategories = this.data.subcategories
+                        .filter(sub => sub.areaId === area.id)
+                        .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                });
+
+                this.data.subcategories.forEach(subcategory => {
+                    subcategory.videos = this.data.videos
+                        .filter(video => video.categories.includes(subcategory.id))
+                        .sort((a, b) => (b.date || 0) - (a.date || 0));
+                });
+            }
+
+            loadSeedData() {
+                this.data.areas = [
+                    { id: 'area_1', area: 'Water Systems', icon: 'fas fa-tint', subcategories: [] },
+                    { id: 'area_2', area: 'Energy Solutions', icon: 'fas fa-bolt', subcategories: [] },
+                    { id: 'area_3', area: 'Agriculture', icon: 'fas fa-seedling', subcategories: [] },
+                    { id: 'area_4', area: 'Health & Medicine', icon: 'fas fa-heartbeat', subcategories: [] }
+                ];
+                
+                this.data.subcategories = [
+                    { id: 'sub_1', title: 'Water Purification', areaId: 'area_1', videos: [] },
+                    { id: 'sub_2', title: 'Solar Power', areaId: 'area_2', videos: [] },
+                    { id: 'sub_3', title: 'Hydroponics', areaId: 'area_3', videos: [] },
+                    { id: 'sub_4', title: 'First Aid', areaId: 'area_4', videos: [] }
+                ];
+                
+                this.data.videos = [
+                    { 
+                        id: 'video_1', 
+                        title: 'DIY Water Filter Construction', 
+                        youtubeId: 'dQw4w9WgXcQ',
+                        categories: ['sub_1'],
+                        tags: ['water', 'DIY', 'purification'],
+                        date: new Date(),
+                        description: 'Learn to build an effective water filter using common materials.',
+                        duration: '10:30',
+                        creator: 'Water Solutions Team',
+                        views: 1250,
+                        rating: 4.5
+                    },
+                    { 
+                        id: 'video_2', 
+                        title: 'Solar Panel Installation Guide', 
+                        youtubeId: 'dQw4w9WgXcQ',
+                        categories: ['sub_2'],
+                        tags: ['solar', 'energy', 'installation'],
+                        date: new Date(),
+                        description: 'Complete guide to installing solar panels safely.',
+                        duration: '15:45',
+                        creator: 'Green Energy Co.',
+                        views: 2100,
+                        rating: 4.8
+                    }
+                ];
+                
+                this.data.tags = [
+                    { id: 'tag_1', name: 'water', definition: 'Water-related content', color: '#0ea5e9' },
+                    { id: 'tag_2', name: 'DIY', definition: 'Do It Yourself projects', color: '#f59e0b' },
+                    { id: 'tag_3', name: 'solar', definition: 'Solar energy systems', color: '#eab308' },
+                    { id: 'tag_4', name: 'energy', definition: 'Energy generation and storage', color: '#10b981' }
+                ];
+                
+                this.data.languages = [
+                    { id: 'lang_1', name: 'English', code: 'en', nativeName: 'English', direction: 'ltr' },
+                    { id: 'lang_2', name: 'Spanish', code: 'es', nativeName: 'Español', direction: 'ltr' },
+                    { id: 'lang_3', name: 'French', code: 'fr', nativeName: 'Français', direction: 'ltr' },
+                    { id: 'lang_4', name: 'Arabic', code: 'ar', nativeName: 'العربية', direction: 'rtl' }
+                ];
+                
+                this.buildRelationships();
+                this.emit('dataLoaded', { source: 'seed' });
+            }
+
+            // Area operations
+            async addArea(data) {
+                const result = await this.createObject("Area", data);
+                const newArea = {
+                    id: result.id,
+                    area: result.get('area'),
+                    icon: result.get('icon'),
+                    description: result.get('description'),
+                    subcategories: []
+                };
+                this.data.areas.push(newArea);
+                this.data.areas.sort((a, b) => a.area.localeCompare(b.area));
+                this.emit('dataUpdated', { areas: this.data.areas });
+                return result;
+            }
+
+            async updateArea(id, updates) {
+                const result = await this.updateObject("Area", id, updates);
+                const index = this.data.areas.findIndex(a => a.id === id);
+                if (index > -1) {
+                    this.data.areas[index] = {
+                        ...this.data.areas[index],
+                        ...updates
+                    };
+                    this.data.areas.sort((a, b) => a.area.localeCompare(b.area));
+                }
+                this.emit('dataUpdated', { areas: this.data.areas });
+                return result;
+            }
+
+            async deleteArea(id) {
+                const subcategories = this.data.subcategories.filter(sc => sc.areaId === id);
+                for (const sub of subcategories) {
+                    await this.deleteSubcategory(sub.id);
+                }
+                
+                await this.deleteObject("Area", id);
+                this.data.areas = this.data.areas.filter(a => a.id !== id);
+                this.emit('dataUpdated', { areas: this.data.areas });
+            }
+
+            // Subcategory operations
+            async addSubcategory(areaId, data) {
+                const subcategoryData = {
+                    ...data,
+                    area: Parse.Object.extend("Area").createWithoutData(areaId)
+                };
+                
+                const result = await this.createObject("Subcategory", subcategoryData);
+                const newSubcategory = {
+                    id: result.id,
+                    title: result.get('title'),
+                    description: result.get('description'),
+                    subtitle: result.get('subtitle'),
+                    context: result.get('context'),
+                    areaId,
+                    videos: []
+                };
+                
+                this.data.subcategories.push(newSubcategory);
+                
+                const area = this.data.areas.find(a => a.id === areaId);
+                if (area) {
+                    area.subcategories.push(newSubcategory);
+                    area.subcategories.sort((a, b) => a.title.localeCompare(b.title));
+                }
+                
+                this.emit('dataUpdated', { subcategories: this.data.subcategories });
+                return result;
+            }
+
+            async updateSubcategory(id, updates) {
+                const result = await this.updateObject("Subcategory", id, updates);
+                const index = this.data.subcategories.findIndex(sc => sc.id === id);
+                
+                if (index > -1) {
+                    this.data.subcategories[index] = {
+                        ...this.data.subcategories[index],
+                        ...updates
+                    };
+                    
+                    // Update in area's subcategories array
+                    const area = this.data.areas.find(a => a.id === this.data.subcategories[index].areaId);
+                    if (area) {
+                        const areaSubIndex = area.subcategories.findIndex(sc => sc.id === id);
+                        if (areaSubIndex > -1) {
+                            area.subcategories[areaSubIndex] = this.data.subcategories[index];
+                            area.subcategories.sort((a, b) => a.title.localeCompare(b.title));
+                        }
+                    }
+                }
+                
+                this.emit('dataUpdated', { subcategories: this.data.subcategories });
+                return result;
+            }
+
+            async deleteSubcategory(id) {
+                await this.deleteObject("Subcategory", id);
+                
+                const subcategory = this.data.subcategories.find(sc => sc.id === id);
+                if (subcategory) {
+                    const area = this.data.areas.find(a => a.id === subcategory.areaId);
+                    if (area) {
+                        area.subcategories = area.subcategories.filter(sc => sc.id !== id);
+                    }
+                }
+                
+                this.data.subcategories = this.data.subcategories.filter(sc => sc.id !== id);
+                this.emit('dataUpdated', { subcategories: this.data.subcategories });
+            }
+
+            // Video operations
+            async addVideo(data) {
+                const videoData = {
+                    ...data,
+                    date: data.date || new Date(),
+                    views: 0,
+                    rating: 0
+                };
+                
+                const result = await this.createObject("Video", videoData);
+                const newVideo = {
+                    id: result.id,
+                    ...videoData
+                };
+                
+                this.data.videos.unshift(newVideo);
+                
+                // Update subcategory video lists
+                if (data.categories) {
+                    data.categories.forEach(categoryId => {
+                        const subcategory = this.data.subcategories.find(sc => sc.id === categoryId);
+                        if (subcategory) {
+                            subcategory.videos.unshift(newVideo);
+                        }
+                    });
+                }
+                
+                this.emit('dataUpdated', { videos: this.data.videos });
+                return result;
+            }
+
+            async updateVideo(id, updates) {
+                const result = await this.updateObject("Video", id, updates);
+                const index = this.data.videos.findIndex(v => v.id === id);
+                
+                if (index > -1) {
+                    const oldVideo = this.data.videos[index];
+                    this.data.videos[index] = {
+                        ...oldVideo,
+                        ...updates
+                    };
+                    
+                    // Update subcategory relationships if categories changed
+                    if (updates.categories) {
+                        // Remove from old categories
+                        oldVideo.categories.forEach(categoryId => {
+                            const subcategory = this.data.subcategories.find(sc => sc.id === categoryId);
+                            if (subcategory) {
+                                subcategory.videos = subcategory.videos.filter(v => v.id !== id);
+                            }
+                        });
+                        
+                        // Add to new categories
+                        updates.categories.forEach(categoryId => {
+                            const subcategory = this.data.subcategories.find(sc => sc.id === categoryId);
+                            if (subcategory) {
+                                subcategory.videos.push(this.data.videos[index]);
+                                subcategory.videos.sort((a, b) => (b.date || 0) - (a.date || 0));
+                            }
+                        });
+                    }
+                }
+                
+                this.emit('dataUpdated', { videos: this.data.videos });
+                return result;
+            }
+
+            async deleteVideo(id) {
+                await this.deleteObject("Video", id);
+                
+                const video = this.data.videos.find(v => v.id === id);
+                if (video) {
+                    // Remove from subcategory video lists
+                    video.categories.forEach(categoryId => {
+                        const subcategory = this.data.subcategories.find(sc => sc.id === categoryId);
+                        if (subcategory) {
+                            subcategory.videos = subcategory.videos.filter(v => v.id !== id);
+                        }
+                    });
+                }
+                
+                this.data.videos = this.data.videos.filter(v => v.id !== id);
+                this.emit('dataUpdated', { videos: this.data.videos });
+            }
+
+            // Tag operations
+            async addTag(data) {
+                const result = await this.createObject("Tag", data);
+                const newTag = {
+                    id: result.id,
+                    name: result.get('name'),
+                    definition: result.get('definition'),
+                    color: result.get('color') || '#8b5cf6'
+                };
+                
+                this.data.tags.push(newTag);
+                this.data.tags.sort((a, b) => a.name.localeCompare(b.name));
+                this.emit('dataUpdated', { tags: this.data.tags });
+                return result;
+            }
+
+            async updateTag(id, updates) {
+                const result = await this.updateObject("Tag", id, updates);
+                const index = this.data.tags.findIndex(t => t.id === id);
+                
+                if (index > -1) {
+                    this.data.tags[index] = {
+                        ...this.data.tags[index],
+                        ...updates
+                    };
+                    this.data.tags.sort((a, b) => a.name.localeCompare(b.name));
+                }
+                
+                this.emit('dataUpdated', { tags: this.data.tags });
+                return result;
+            }
+
+            async deleteTag(id) {
+                await this.deleteObject("Tag", id);
+                this.data.tags = this.data.tags.filter(t => t.id !== id);
+                this.emit('dataUpdated', { tags: this.data.tags });
+            }
+
+            // Language operations
+            async addLanguage(data) {
+                const result = await this.createObject("Language", data);
+                const newLanguage = {
+                    id: result.id,
+                    name: result.get('name'),
+                    code: result.get('code'),
+                    nativeName: result.get('nativeName'),
+                    direction: result.get('direction') || 'ltr'
+                };
+                
+                this.data.languages.push(newLanguage);
+                this.data.languages.sort((a, b) => a.name.localeCompare(b.name));
+                this.emit('dataUpdated', { languages: this.data.languages });
+                return result;
+            }
+
+            async updateLanguage(id, updates) {
+                const result = await this.updateObject("Language", id, updates);
+                const index = this.data.languages.findIndex(l => l.id === id);
+                
+                if (index > -1) {
+                    this.data.languages[index] = {
+                        ...this.data.languages[index],
+                        ...updates
+                    };
+                    this.data.languages.sort((a, b) => a.name.localeCompare(b.name));
+                }
+                
+                this.emit('dataUpdated', { languages: this.data.languages });
+                return result;
+            }
+
+            async deleteLanguage(id) {
+                await this.deleteObject("Language", id);
+                this.data.languages = this.data.languages.filter(l => l.id !== id);
+                this.emit('dataUpdated', { languages: this.data.languages });
+            }
+
+            getAnalytics() {
+                const analytics = {
+                    totalAreas: this.data.areas.length,
+                    totalSubcategories: this.data.subcategories.length,
+                    totalVideos: this.data.videos.length,
+                    totalTags: this.data.tags.length,
+                    totalLanguages: this.data.languages.length,
+                    averageRating: 0,
+                    totalViews: 0,
+                    videosByArea: {},
+                    videosByTag: {},
+                    recentVideos: []
+                };
+
+                if (this.data.videos.length > 0) {
+                    const totalRating = this.data.videos.reduce((sum, video) => sum + (video.rating || 0), 0);
+                    analytics.averageRating = totalRating / this.data.videos.length;
+                    analytics.totalViews = this.data.videos.reduce((sum, video) => sum + (video.views || 0), 0);
+                }
+
+                this.data.areas.forEach(area => {
+                    const videoCount = area.subcategories.reduce((sum, sub) => sum + sub.videos.length, 0);
+                    analytics.videosByArea[area.area] = videoCount;
+                });
+
+                this.data.videos.forEach(video => {
+                    video.tags.forEach(tag => {
+                        analytics.videosByTag[tag] = (analytics.videosByTag[tag] || 0) + 1;
+                    });
+                });
+
+                analytics.recentVideos = this.data.videos
+                    .slice(0, 10)
+                    .map(video => ({
+                        id: video.id,
+                        title: video.title,
+                        date: video.date,
+                        views: video.views
+                    }));
+
+                return analytics;
+            }
+
+            async search(query, options = {}) {
+                const searchTerm = query.toLowerCase();
+                const results = {
+                    areas: [],
+                    subcategories: [],
+                    videos: [],
+                    tags: []
+                };
+
+                if (options.areas !== false) {
+                    results.areas = this.data.areas.filter(area => 
+                        area.area.toLowerCase().includes(searchTerm) ||
+                        (area.description && area.description.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (options.subcategories !== false) {
+                    results.subcategories = this.data.subcategories.filter(sub => 
+                        sub.title.toLowerCase().includes(searchTerm) ||
+                        (sub.description && sub.description.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (options.videos !== false) {
+                    results.videos = this.data.videos.filter(video => 
+                        video.title.toLowerCase().includes(searchTerm) ||
+                        (video.description && video.description.toLowerCase().includes(searchTerm)) ||
+                        video.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (options.tags !== false) {
+                    results.tags = this.data.tags.filter(tag => 
+                        tag.name.toLowerCase().includes(searchTerm) ||
+                        (tag.definition && tag.definition.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                return results;
+            }
+        }
+
+        // UI Manager Class with Translation Support
+        class UIManager {
+            constructor(app, store, security, translationManager) {
+                this.app = app;
+                this.store = store;
+                this.security = security;
+                this.translationManager = translationManager;
+                this.currentTab = 'taxonomy';
+                this.searchTerm = '';
+                this.currentModal = null;
+            }
+
+            init() {
+                this.render();
+                this.setupEventListeners();
+                this.bindStoreEvents();
+                this.bindTranslationEvents();
+            }
+
+            bindTranslationEvents() {
+                this.translationManager.on('languageChanged', (data) => {
+                    document.documentElement.lang = data.language;
+                    document.documentElement.dir = this.translationManager.getLanguageDirection(data.language);
+                    this.render(); // Re-render with new language
+                });
+            }
+
+            render() {
+                const root = document.getElementById('app-root');
+                const t = this.translationManager.t.bind(this.translationManager);
+                
+                root.innerHTML = `
+                    <div class="app-container fade-in">
+                        <header class="app-header">
+                            <h1><i class="fas fa-video"></i> ${t('app.title')} v${CONFIG.version}</h1>
+                            <div class="header-actions">
+                                ${this.renderLanguageSelector()}
+                                <button id="sync-btn" class="btn btn-secondary">
+                                    <i class="fas fa-sync-alt"></i> ${t('action.sync')}
+                                </button>
+                                <span id="connection-status" class="connection-status status-connected">${t('status.connected')}</span>
+                            </div>
+                        </header>
+                        
+                        <nav class="app-nav">
+                            <button class="nav-btn active" data-tab="taxonomy">
+                                <i class="fas fa-sitemap"></i> ${t('nav.areas')}
+                            </button>
+                            <button class="nav-btn" data-tab="videos">
+                                <i class="fas fa-play-circle"></i> ${t('nav.videos')}
+                            </button>
+                            <button class="nav-btn" data-tab="tags">
+                                <i class="fas fa-tags"></i> ${t('nav.tags')}
+                            </button>
+                            <button class="nav-btn" data-tab="languages">
+                                <i class="fas fa-language"></i> ${t('nav.languages')}
+                            </button>
+                            <button class="nav-btn" data-tab="analytics">
+                                <i class="fas fa-chart-bar"></i> ${t('nav.analytics')}
+                            </button>
+                        </nav>
+                        
+                        <main class="app-content">
+                            <div id="content-area"></div>
+                        </main>
+                    </div>
+                    
+                    <div id="modal-container"></div>
+                `;
+                
+                this.renderCurrentTab();
+            }
+
+            renderLanguageSelector() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const currentLang = this.translationManager.getCurrentLanguage();
+                const availableLanguages = this.store.data.languages;
+                
+                return `
+                    <div class="language-selector">
+                        <button class="language-toggle" id="language-toggle">
+                            <i class="fas fa-globe"></i>
+                            ${currentLang.toUpperCase()}
+                        </button>
+                        <div class="language-dropdown" id="language-dropdown">
+                            ${availableLanguages.map(lang => `
+                                <div class="language-option ${lang.code === currentLang ? 'active' : ''}" data-code="${lang.code}">
+                                    <span class="language-badge">${lang.code.toUpperCase()}</span>
+                                    <div>
+                                        <div style="font-weight: 500;">${lang.name}</div>
+                                        <div style="font-size: 0.875rem; opacity: 0.7;">${lang.nativeName}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            setupEventListeners() {
+                // Navigation
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.currentTab = e.target.dataset.tab;
+                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.renderCurrentTab();
+                    });
+                });
+
+                // Language selector
+                const toggleBtn = document.getElementById('language-toggle');
+                const dropdown = document.getElementById('language-dropdown');
+                
+                if (toggleBtn && dropdown) {
+                    toggleBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        dropdown.classList.toggle('show');
+                    });
+
+                    dropdown.addEventListener('click', (e) => {
+                        if (e.target.closest('.language-option')) {
+                            const option = e.target.closest('.language-option');
+                            const languageCode = option.getAttribute('data-code');
+                            this.translationManager.switchLanguage(languageCode);
+                            dropdown.classList.remove('show');
+                        }
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.language-selector')) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                }
+
+                // Sync button
+                document.getElementById('sync-btn')?.addEventListener('click', () => {
+                    this.store.loadInitialData();
+                });
+
+                // Global search
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'k') {
+                        e.preventDefault();
+                        this.showGlobalSearch();
+                    }
+                });
+
+                // Modal close on backdrop click
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        this.closeModal();
+                    }
+                });
+
+                // Escape key closes modal
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.currentModal) {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            bindStoreEvents() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                
+                this.store.on('loading', (isLoading) => {
+                    const status = document.getElementById('connection-status');
+                    if (status) {
+                        status.textContent = isLoading ? t('status.loading') : t('status.connected');
+                        status.className = `connection-status ${isLoading ? 'status-loading' : 'status-connected'}`;
+                    }
+                });
+
+                this.store.on('dataUpdated', () => {
+                    this.renderCurrentTab();
+                });
+
+                this.store.on('error', (error) => {
+                    this.showError(error.message);
+                });
+
+                this.store.on('dataLoaded', (data) => {
+                    this.showSuccess(`Data loaded from ${data.source}`);
+                });
+            }
+
+            renderCurrentTab() {
+                const contentArea = document.getElementById('content-area');
+                contentArea.className = 'slide-up';
+                
+                switch (this.currentTab) {
+                    case 'taxonomy':
+                        contentArea.innerHTML = this.renderTaxonomy();
+                        break;
+                    case 'videos':
+                        contentArea.innerHTML = this.renderVideos();
+                        break;
+                    case 'tags':
+                        contentArea.innerHTML = this.renderTags();
+                        break;
+                    case 'languages':
+                        contentArea.innerHTML = this.renderLanguages();
+                        break;
+                    case 'analytics':
+                        contentArea.innerHTML = this.renderAnalytics();
+                        break;
+                }
+            }
+
+            renderTaxonomy() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const areas = this.store.data.areas;
+                
+                return `
+                    <div class="taxonomy-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2><i class="fas fa-sitemap"></i> ${t('areas.title')}</h2>
+                            <button onclick="window.contentManager.ui.addArea()" class="btn">
+                                <i class="fas fa-plus"></i> ${t('areas.add')}
+                            </button>
+                        </div>
+
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="${t('areas.search')}" 
+                                   onkeyup="window.contentManager.ui.filterAreas(this.value)">
+                        </div>
+
+                        <div class="grid grid-2" id="areas-grid">
+                            ${areas.map(area => `
+                                <div class="card area-card" data-area-id="${area.id}">
+                                    <div style="display: flex; justify-content: between; align-items: flex-start; margin-bottom: 1rem;">
+                                        <div style="flex: 1;">
+                                            <h3 style="margin-bottom: 0.5rem;">
+                                                <i class="${area.icon}" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                                                ${area.area}
+                                            </h3>
+                                            <p style="color: var(--gray-600); margin-bottom: 1rem;">
+                                                ${area.description || t('areas.no_description')}
+                                            </p>
+                                        </div>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <button onclick="window.contentManager.ui.editArea('${area.id}')" 
+                                                    class="btn btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="window.contentManager.ui.deleteArea('${area.id}')" 
+                                                    class="btn btn-danger" style="padding: 0.25rem 0.5rem;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                            <strong>${t('areas.subcategories')} (${area.subcategories.length})</strong>
+                                            <button onclick="window.contentManager.ui.addSubcategory('${area.id}')" 
+                                                    class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                                                <i class="fas fa-plus"></i> ${t('action.add')}
+                                            </button>
+                                        </div>
+                                        
+                                        ${area.subcategories.length > 0 ? `
+                                            <div class="subcategories-list">
+                                                ${area.subcategories.map(sub => `
+                                                    <div class="subcategory-item" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--gray-50); border-radius: 0.25rem; margin-bottom: 0.5rem;">
+                                                        <div>
+                                                            <strong>${sub.title}</strong>
+                                                            <div style="color: var(--gray-500); font-size: 0.75rem;">
+                                                                ${sub.videos.length} ${t('nav.videos').toLowerCase()}
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: flex; gap: 0.25rem;">
+                                                            <button onclick="window.contentManager.ui.editSubcategory('${sub.id}')" 
+                                                                    class="btn btn-secondary" style="padding: 0.25rem; font-size: 0.75rem;">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button onclick="window.contentManager.ui.deleteSubcategory('${sub.id}')" 
+                                                                    class="btn btn-danger" style="padding: 0.25rem; font-size: 0.75rem;">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        ` : `
+                                            <p style="color: var(--gray-500); font-style: italic;">${t('areas.no_subcategories')}</p>
+                                        `}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderVideos() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const videos = this.store.data.videos;
+                
+                return `
+                    <div class="videos-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2><i class="fas fa-play-circle"></i> ${t('videos.title')}</h2>
+                            <button onclick="window.contentManager.ui.addVideo()" class="btn">
+                                <i class="fas fa-plus"></i> ${t('videos.add')}
+                            </button>
+                        </div>
+
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="${t('videos.search')}" 
+                                   onkeyup="window.contentManager.ui.filterVideos(this.value)">
+                        </div>
+
+                        <div class="videos-grid" id="videos-grid">
+                            ${videos.map(video => `
+                                <div class="card video-card" data-video-id="${video.id}" style="display: flex; align-items: center;">
+                                    <div class="video-thumbnail">
+                                        ${video.youtubeId ? `
+                                            <img src="https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg" 
+                                                 alt="${video.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0.25rem;">
+                                        ` : `
+                                            <i class="fas fa-play" style="font-size: 2rem; color: var(--gray-400);"></i>
+                                        `}
+                                    </div>
+                                    <div class="video-info">
+                                        <div class="video-title">${video.title}</div>
+                                        <div class="video-meta">
+                                            <span><i class="fas fa-eye"></i> ${video.views || 0} ${t('videos.views')}</span>
+                                            <span><i class="fas fa-star"></i> ${video.rating || 0}/5</span>
+                                            <span><i class="fas fa-clock"></i> ${video.duration || 'N/A'}</span>
+                                        </div>
+                                        <div style="margin-top: 0.5rem;">
+                                            ${video.tags.map(tag => `
+                                                <span class="tag">${tag}</span>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: auto; display: flex; gap: 0.5rem;">
+                                        <button onclick="window.contentManager.ui.editVideo('${video.id}')" 
+                                                class="btn btn-secondary" style="padding: 0.5rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="window.contentManager.ui.deleteVideo('${video.id}')" 
+                                                class="btn btn-danger" style="padding: 0.5rem;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderTags() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const tags = this.store.data.tags;
+                
+                return `
+                    <div class="tags-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2><i class="fas fa-tags"></i> ${t('tags.title')}</h2>
+                            <button onclick="window.contentManager.ui.addTag()" class="btn">
+                                <i class="fas fa-plus"></i> ${t('tags.add')}
+                            </button>
+                        </div>
+
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="${t('tags.search')}" 
+                                   onkeyup="window.contentManager.ui.filterTags(this.value)">
+                        </div>
+
+                        <div class="grid grid-3" id="tags-grid">
+                            ${tags.map(tag => `
+                                <div class="card tag-card" data-tag-id="${tag.id}">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                        <div style="flex: 1;">
+                                            <h4 style="margin-bottom: 0.5rem;">
+                                                <span class="tag tag-colored" style="background-color: ${tag.color};">
+                                                    ${tag.name}
+                                                </span>
+                                            </h4>
+                                            <p style="color: var(--gray-600); font-size: 0.875rem;">
+                                                ${tag.definition || t('tags.no_definition')}
+                                            </p>
+                                        </div>
+                                        <div style="display: flex; gap: 0.25rem;">
+                                            <button onclick="window.contentManager.ui.editTag('${tag.id}')" 
+                                                    class="btn btn-secondary" style="padding: 0.25rem;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="window.contentManager.ui.deleteTag('${tag.id}')" 
+                                                    class="btn btn-danger" style="padding: 0.25rem;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--gray-500);">
+                                        ${t('tags.used_in')} ${this.store.data.videos.filter(v => v.tags.includes(tag.name)).length} ${t('nav.videos').toLowerCase()}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderLanguages() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const languages = this.store.data.languages;
+                
+                return `
+                    <div class="languages-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h2><i class="fas fa-language"></i> ${t('languages.title')}</h2>
+                            <button onclick="window.contentManager.ui.addLanguage()" class="btn">
+                                <i class="fas fa-plus"></i> ${t('languages.add')}
+                            </button>
+                        </div>
+
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="${t('languages.search')}" 
+                                   onkeyup="window.contentManager.ui.filterLanguages(this.value)">
+                        </div>
+
+                        <div class="grid grid-2" id="languages-grid">
+                            ${languages.map(lang => `
+                                <div class="card language-card" data-language-id="${lang.id}">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <h4 style="margin-bottom: 0.25rem;">${lang.name}</h4>
+                                            <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                                <span style="font-weight: 500;">${lang.nativeName}</span> (${lang.code})
+                                            </div>
+                                            <div style="margin-top: 0.5rem;">
+                                                <span class="tag">
+                                                    <i class="fas fa-${lang.direction === 'rtl' ? 'align-right' : 'align-left'}"></i>
+                                                    ${lang.direction.toUpperCase()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <button onclick="window.contentManager.ui.editLanguage('${lang.id}')" 
+                                                    class="btn btn-secondary" style="padding: 0.5rem;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="window.contentManager.ui.deleteLanguage('${lang.id}')" 
+                                                    class="btn btn-danger" style="padding: 0.5rem;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderAnalytics() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const analytics = this.store.getAnalytics();
+                
+                return `
+                    <div class="analytics-container">
+                        <h2 style="margin-bottom: 2rem;"><i class="fas fa-chart-bar"></i> ${t('analytics.title')}</h2>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.totalAreas}</span>
+                                <span class="stat-label">${t('analytics.total_areas')}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.totalSubcategories}</span>
+                                <span class="stat-label">${t('analytics.total_subcategories')}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.totalVideos}</span>
+                                <span class="stat-label">${t('analytics.total_videos')}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.totalViews.toLocaleString()}</span>
+                                <span class="stat-label">${t('analytics.total_views')}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.averageRating.toFixed(1)}</span>
+                                <span class="stat-label">${t('analytics.average_rating')}</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">${analytics.totalTags}</span>
+                                <span class="stat-label">${t('analytics.total_tags')}</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2">
+                            <div class="card">
+                                <h3 style="margin-bottom: 1rem;">${t('analytics.videos_by_area')}</h3>
+                                ${Object.entries(analytics.videosByArea).map(([area, count]) => `
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>${area}</span>
+                                        <strong>${count}</strong>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div class="card">
+                                <h3 style="margin-bottom: 1rem;">${t('analytics.popular_tags')}</h3>
+                                ${Object.entries(analytics.videosByTag)
+                                    .sort(([,a], [,b]) => b - a)
+                                    .slice(0, 10)
+                                    .map(([tag, count]) => `
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span class="tag">${tag}</span>
+                                        <strong>${count}</strong>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">${t('analytics.recent_videos')}</h3>
+                            <div class="grid">
+                                ${analytics.recentVideos.map(video => `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                        <div>
+                                            <strong>${video.title}</strong>
+                                            <div style="color: var(--gray-500); font-size: 0.875rem;">
+                                                ${new Date(video.date).toLocaleDateString()}
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div><i class="fas fa-eye"></i> ${video.views}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Modal Management
+            showModal(title, content, footer = '') {
+                const modalContainer = document.getElementById('modal-container');
+                modalContainer.innerHTML = `
+                    <div class="modal" id="current-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">${title}</h3>
+                                <button class="close-btn" onclick="window.contentManager.ui.closeModal()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ${content}
+                            </div>
+                            ${footer ? `<div class="modal-footer">${footer}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                this.currentModal = document.getElementById('current-modal');
+                setTimeout(() => this.currentModal.classList.add('show'), 10);
+            }
+
+            closeModal() {
+                if (this.currentModal) {
+                    this.currentModal.classList.remove('show');
+                    setTimeout(() => {
+                        const modalContainer = document.getElementById('modal-container');
+                        modalContainer.innerHTML = '';
+                        this.currentModal = null;
+                    }, 200);
+                }
+            }
+
+            // CRUD Operations
+            addArea() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const content = `
+                    <form id="area-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="area-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.icon')} (Font Awesome class)</label>
+                            <input type="text" id="area-icon" class="form-input" placeholder="fas fa-folder">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="area-description" class="form-textarea"></textarea>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveArea()">${t('action.save')} ${t('nav.areas')}</button>
+                `;
+
+                this.showModal(t('areas.add'), content, footer);
+            }
+
+            async saveArea(id = null) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                
+                const data = {
+                    area: document.getElementById('area-name').value,
+                    icon: document.getElementById('area-icon').value || 'fas fa-folder',
+                    description: document.getElementById('area-description').value
+                };
+
+                // Validate
+                const errors = this.security.validateInput(data.area, { required: true, minLength: 2, maxLength: 100 });
+                if (errors.length > 0) {
+                    this.showError(errors.join(', '));
+                    return;
+                }
+
+                try {
+                    if (id) {
+                        await this.store.updateArea(id, data);
+                        this.showSuccess(t('message.success.area_updated'));
+                    } else {
+                        await this.store.addArea(data);
+                        this.showSuccess(t('message.success.area_added'));
+                    }
+                    this.closeModal();
+                } catch (error) {
+                    this.showError('Failed to save area: ' + error.message);
+                }
+            }
+
+            editArea(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const area = this.store.data.areas.find(a => a.id === id);
+                if (!area) return;
+
+                const content = `
+                    <form id="area-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="area-name" class="form-input" value="${area.area}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.icon')} (Font Awesome class)</label>
+                            <input type="text" id="area-icon" class="form-input" value="${area.icon}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="area-description" class="form-textarea">${area.description || ''}</textarea>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveArea('${id}')">${t('action.update')} ${t('nav.areas')}</button>
+                `;
+
+                this.showModal(`${t('action.edit')} ${t('nav.areas')}`, content, footer);
+            }
+
+            async deleteArea(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const area = this.store.data.areas.find(a => a.id === id);
+                if (!area) return;
+
+                if (confirm(`Are you sure you want to delete "${area.area}" and all its subcategories?`)) {
+                    try {
+                        await this.store.deleteArea(id);
+                        this.showSuccess(t('message.success.area_deleted'));
+                    } catch (error) {
+                        this.showError('Failed to delete area: ' + error.message);
+                    }
+                }
+            }
+
+            addSubcategory(areaId) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const area = this.store.data.areas.find(a => a.id === areaId);
+                if (!area) return;
+
+                const content = `
+                    <form id="subcategory-form">
+                        <div class="form-group">
+                            <label class="form-label">Parent Area</label>
+                            <input type="text" class="form-input" value="${area.area}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.title')} *</label>
+                            <input type="text" id="subcategory-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subtitle</label>
+                            <input type="text" id="subcategory-subtitle" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="subcategory-description" class="form-textarea"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Context</label>
+                            <textarea id="subcategory-context" class="form-textarea"></textarea>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveSubcategory('${areaId}')">${t('action.save')} Subcategory</button>
+                `;
+
+                this.showModal('Add Subcategory', content, footer);
+            }
+
+            async saveSubcategory(areaId, id = null) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const data = {
+                    title: document.getElementById('subcategory-title').value,
+                    subtitle: document.getElementById('subcategory-subtitle').value,
+                    description: document.getElementById('subcategory-description').value,
+                    context: document.getElementById('subcategory-context').value
+                };
+
+                // Validate
+                const errors = this.security.validateInput(data.title, { required: true, minLength: 2, maxLength: 100 });
+                if (errors.length > 0) {
+                    this.showError(errors.join(', '));
+                    return;
+                }
+
+                try {
+                    if (id) {
+                        await this.store.updateSubcategory(id, data);
+                        this.showSuccess('Subcategory updated successfully');
+                    } else {
+                        await this.store.addSubcategory(areaId, data);
+                        this.showSuccess('Subcategory added successfully');
+                    }
+                    this.closeModal();
+                } catch (error) {
+                    this.showError('Failed to save subcategory: ' + error.message);
+                }
+            }
+
+            editSubcategory(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const subcategory = this.store.data.subcategories.find(sc => sc.id === id);
+                if (!subcategory) return;
+
+                const area = this.store.data.areas.find(a => a.id === subcategory.areaId);
+
+                const content = `
+                    <form id="subcategory-form">
+                        <div class="form-group">
+                            <label class="form-label">Parent Area</label>
+                            <input type="text" class="form-input" value="${area?.area || 'Unknown'}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.title')} *</label>
+                            <input type="text" id="subcategory-title" class="form-input" value="${subcategory.title}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subtitle</label>
+                            <input type="text" id="subcategory-subtitle" class="form-input" value="${subcategory.subtitle || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="subcategory-description" class="form-textarea">${subcategory.description || ''}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Context</label>
+                            <textarea id="subcategory-context" class="form-textarea">${subcategory.context || ''}</textarea>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveSubcategory('${subcategory.areaId}', '${id}')">${t('action.update')} Subcategory</button>
+                `;
+
+                this.showModal('Edit Subcategory', content, footer);
+            }
+
+            async deleteSubcategory(id) {
+                const subcategory = this.store.data.subcategories.find(sc => sc.id === id);
+                if (!subcategory) return;
+
+                if (confirm(`Are you sure you want to delete "${subcategory.title}"?`)) {
+                    try {
+                        await this.store.deleteSubcategory(id);
+                        this.showSuccess('Subcategory deleted successfully');
+                    } catch (error) {
+                        this.showError('Failed to delete subcategory: ' + error.message);
+                    }
+                }
+            }
+
+            addVideo() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const content = `
+                    <form id="video-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.title')} *</label>
+                            <input type="text" id="video-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.youtube_id')}</label>
+                            <input type="text" id="video-youtube-id" class="form-input" placeholder="dQw4w9WgXcQ">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="video-description" class="form-textarea"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.categories')}</label>
+                            <select multiple id="video-categories" class="form-select" style="height: 120px;">
+                                ${this.store.data.subcategories.map(sub => `
+                                    <option value="${sub.id}">${sub.title} (${this.store.data.areas.find(a => a.id === sub.areaId)?.area})</option>
+                                `).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.tags')} (comma-separated)</label>
+                            <input type="text" id="video-tags" class="form-input" placeholder="water, DIY, purification">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('videos.duration')}</label>
+                            <input type="text" id="video-duration" class="form-input" placeholder="10:30">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('videos.creator')}</label>
+                            <input type="text" id="video-creator" class="form-input">
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveVideo()">${t('action.save')} Video</button>
+                `;
+
+                this.showModal(t('videos.add'), content, footer);
+            }
+
+            async saveVideo(id = null) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const categoriesSelect = document.getElementById('video-categories');
+                const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(option => option.value);
+                
+                const data = {
+                    title: document.getElementById('video-title').value,
+                    youtubeId: document.getElementById('video-youtube-id').value,
+                    description: document.getElementById('video-description').value,
+                    categories: selectedCategories,
+                    tags: document.getElementById('video-tags').value.split(',').map(tag => tag.trim()).filter(tag => tag),
+                    duration: document.getElementById('video-duration').value,
+                    creator: document.getElementById('video-creator').value
+                };
+
+                // Validate
+                const errors = this.security.validateInput(data.title, { required: true, minLength: 2, maxLength: 200 });
+                if (errors.length > 0) {
+                    this.showError(errors.join(', '));
+                    return;
+                }
+
+                if (data.youtubeId && !this.security.isValidYoutubeUrl(`https://youtube.com/watch?v=${data.youtubeId}`)) {
+                    this.showError('Invalid YouTube ID format');
+                    return;
+                }
+
+                try {
+                    if (id) {
+                        await this.store.updateVideo(id, data);
+                        this.showSuccess(t('message.success.video_updated'));
+                    } else {
+                        await this.store.addVideo(data);
+                        this.showSuccess(t('message.success.video_added'));
+                    }
+                    this.closeModal();
+                } catch (error) {
+                    this.showError('Failed to save video: ' + error.message);
+                }
+            }
+
+            editVideo(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const video = this.store.data.videos.find(v => v.id === id);
+                if (!video) return;
+
+                const content = `
+                    <form id="video-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.title')} *</label>
+                            <input type="text" id="video-title" class="form-input" value="${video.title}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.youtube_id')}</label>
+                            <input type="text" id="video-youtube-id" class="form-input" value="${video.youtubeId || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.description')}</label>
+                            <textarea id="video-description" class="form-textarea">${video.description || ''}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.categories')}</label>
+                            <select multiple id="video-categories" class="form-select" style="height: 120px;">
+                                ${this.store.data.subcategories.map(sub => `
+                                    <option value="${sub.id}" ${video.categories.includes(sub.id) ? 'selected' : ''}>${sub.title} (${this.store.data.areas.find(a => a.id === sub.areaId)?.area})</option>
+                                `).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.tags')} (comma-separated)</label>
+                            <input type="text" id="video-tags" class="form-input" value="${video.tags.join(', ')}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('videos.duration')}</label>
+                            <input type="text" id="video-duration" class="form-input" value="${video.duration || ''}" placeholder="10:30">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('videos.creator')}</label>
+                            <input type="text" id="video-creator" class="form-input" value="${video.creator || ''}">
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveVideo('${id}')">${t('action.update')} Video</button>
+                `;
+
+                this.showModal('Edit Video', content, footer);
+            }
+
+            async deleteVideo(id) {
+                const video = this.store.data.videos.find(v => v.id === id);
+                if (!video) return;
+
+                if (confirm(`Are you sure you want to delete "${video.title}"?`)) {
+                    try {
+                        await this.store.deleteVideo(id);
+                        this.showSuccess('Video deleted successfully');
+                    } catch (error) {
+                        this.showError('Failed to delete video: ' + error.message);
+                    }
+                }
+            }
+
+            // Tag CRUD Operations
+            addTag() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const content = `
+                    <form id="tag-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="tag-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.definition')}</label>
+                            <textarea id="tag-definition" class="form-textarea"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.color')}</label>
+                            <input type="color" id="tag-color" class="form-input" value="#8b5cf6">
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveTag()">${t('action.save')} Tag</button>
+                `;
+
+                this.showModal(t('tags.add'), content, footer);
+            }
+
+            async saveTag(id = null) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const data = {
+                    name: document.getElementById('tag-name').value.toLowerCase().trim(),
+                    definition: document.getElementById('tag-definition').value,
+                    color: document.getElementById('tag-color').value
+                };
+
+                // Validate
+                const errors = this.security.validateInput(data.name, { required: true, minLength: 1, maxLength: 50 });
+                if (errors.length > 0) {
+                    this.showError(errors.join(', '));
+                    return;
+                }
+
+                // Check for duplicate tag names
+                const existingTag = this.store.data.tags.find(tag => tag.name === data.name && tag.id !== id);
+                if (existingTag) {
+                    this.showError('A tag with this name already exists');
+                    return;
+                }
+
+                try {
+                    if (id) {
+                        await this.store.updateTag(id, data);
+                        this.showSuccess(t('message.success.tag_updated'));
+                    } else {
+                        await this.store.addTag(data);
+                        this.showSuccess(t('message.success.tag_added'));
+                    }
+                    this.closeModal();
+                } catch (error) {
+                    this.showError('Failed to save tag: ' + error.message);
+                }
+            }
+
+            editTag(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const tag = this.store.data.tags.find(t => t.id === id);
+                if (!tag) return;
+
+                const content = `
+                    <form id="tag-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="tag-name" class="form-input" value="${tag.name}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.definition')}</label>
+                            <textarea id="tag-definition" class="form-textarea">${tag.definition || ''}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('form.color')}</label>
+                            <input type="color" id="tag-color" class="form-input" value="${tag.color}">
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveTag('${id}')">${t('action.update')} Tag</button>
+                `;
+
+                this.showModal('Edit Tag', content, footer);
+            }
+
+            async deleteTag(id) {
+                const tag = this.store.data.tags.find(t => t.id === id);
+                if (!tag) return;
+
+                const videosUsingTag = this.store.data.videos.filter(v => v.tags.includes(tag.name));
+                let confirmMessage = `Are you sure you want to delete the tag "${tag.name}"?`;
+                
+                if (videosUsingTag.length > 0) {
+                    confirmMessage += `\n\nThis tag is used in ${videosUsingTag.length} video(s) and will be removed from them.`;
+                }
+
+                if (confirm(confirmMessage)) {
+                    try {
+                        // Remove tag from videos first
+                        for (const video of videosUsingTag) {
+                            const updatedTags = video.tags.filter(t => t !== tag.name);
+                            await this.store.updateVideo(video.id, { tags: updatedTags });
+                        }
+
+                        await this.store.deleteTag(id);
+                        this.showSuccess('Tag deleted successfully');
+                    } catch (error) {
+                        this.showError('Failed to delete tag: ' + error.message);
+                    }
+                }
+            }
+
+            // Language CRUD Operations
+            addLanguage() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const content = `
+                    <form id="language-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="language-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.code')} *</label>
+                            <input type="text" id="language-code" class="form-input" placeholder="en" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.native_name')}</label>
+                            <input type="text" id="language-native" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.direction')}</label>
+                            <select id="language-direction" class="form-select">
+                                <option value="ltr">Left to Right (LTR)</option>
+                                <option value="rtl">Right to Left (RTL)</option>
+                            </select>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveLanguage()">${t('action.save')} Language</button>
+                `;
+
+                this.showModal(t('languages.add'), content, footer);
+            }
+
+            async saveLanguage(id = null) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const data = {
+                    name: document.getElementById('language-name').value,
+                    code: document.getElementById('language-code').value.toLowerCase(),
+                    nativeName: document.getElementById('language-native').value,
+                    direction: document.getElementById('language-direction').value
+                };
+
+                // Validate
+                const nameErrors = this.security.validateInput(data.name, { required: true, minLength: 2, maxLength: 50 });
+                const codeErrors = this.security.validateInput(data.code, { required: true, minLength: 2, maxLength: 5 });
+                
+                if (nameErrors.length > 0 || codeErrors.length > 0) {
+                    this.showError([...nameErrors, ...codeErrors].join(', '));
+                    return;
+                }
+
+                // Check for duplicate codes
+                const existingLang = this.store.data.languages.find(lang => lang.code === data.code && lang.id !== id);
+                if (existingLang) {
+                    this.showError('A language with this code already exists');
+                    return;
+                }
+
+                try {
+                    if (id) {
+                        await this.store.updateLanguage(id, data);
+                        this.showSuccess(t('message.success.language_updated'));
+                    } else {
+                        await this.store.addLanguage(data);
+                        this.showSuccess(t('message.success.language_added'));
+                    }
+                    this.closeModal();
+                } catch (error) {
+                    this.showError('Failed to save language: ' + error.message);
+                }
+            }
+
+            editLanguage(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const language = this.store.data.languages.find(l => l.id === id);
+                if (!language) return;
+
+                const content = `
+                    <form id="language-form">
+                        <div class="form-group">
+                            <label class="form-label">${t('form.name')} *</label>
+                            <input type="text" id="language-name" class="form-input" value="${language.name}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.code')} *</label>
+                            <input type="text" id="language-code" class="form-input" value="${language.code}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.native_name')}</label>
+                            <input type="text" id="language-native" class="form-input" value="${language.nativeName || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t('languages.direction')}</label>
+                            <select id="language-direction" class="form-select">
+                                <option value="ltr" ${language.direction === 'ltr' ? 'selected' : ''}>Left to Right (LTR)</option>
+                                <option value="rtl" ${language.direction === 'rtl' ? 'selected' : ''}>Right to Left (RTL)</option>
+                            </select>
+                        </div>
+                    </form>
+                `;
+
+                const footer = `
+                    <button class="btn btn-secondary" onclick="window.contentManager.ui.closeModal()">${t('action.cancel')}</button>
+                    <button class="btn" onclick="window.contentManager.ui.saveLanguage('${id}')">${t('action.update')} Language</button>
+                `;
+
+                this.showModal('Edit Language', content, footer);
+            }
+
+            async deleteLanguage(id) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const language = this.store.data.languages.find(l => l.id === id);
+                if (!language) return;
+
+                if (confirm(`Are you sure you want to delete the language "${language.name}"?`)) {
+                    try {
+                        await this.store.deleteLanguage(id);
+                        this.showSuccess(t('message.success.language_deleted'));
+                    } catch (error) {
+                        this.showError('Failed to delete language: ' + error.message);
+                    }
+                }
+            }
+
+            // Filter methods
+            filterAreas(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const areasGrid = document.getElementById('areas-grid');
+                const areaCards = areasGrid.querySelectorAll('.area-card');
+
+                areaCards.forEach(card => {
+                    const areaId = card.dataset.areaId;
+                    const area = this.store.data.areas.find(a => a.id === areaId);
+                    
+                    const matchesArea = area.area.toLowerCase().includes(this.searchTerm) ||
+                                       (area.description && area.description.toLowerCase().includes(this.searchTerm));
+                    
+                    const matchesSubcategory = area.subcategories.some(sub => 
+                        sub.title.toLowerCase().includes(this.searchTerm) ||
+                        (sub.description && sub.description.toLowerCase().includes(this.searchTerm))
+                    );
+
+                    card.style.display = (matchesArea || matchesSubcategory) ? 'block' : 'none';
+                });
+            }
+
+            filterVideos(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const videosGrid = document.getElementById('videos-grid');
+                const videoCards = videosGrid.querySelectorAll('.video-card');
+
+                videoCards.forEach(card => {
+                    const videoId = card.dataset.videoId;
+                    const video = this.store.data.videos.find(v => v.id === videoId);
+                    
+                    const matches = video.title.toLowerCase().includes(this.searchTerm) ||
+                                   (video.description && video.description.toLowerCase().includes(this.searchTerm)) ||
+                                   video.tags.some(tag => tag.toLowerCase().includes(this.searchTerm)) ||
+                                   (video.creator && video.creator.toLowerCase().includes(this.searchTerm));
+
+                    card.style.display = matches ? 'flex' : 'none';
+                });
+            }
+
+            filterTags(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const tagsGrid = document.getElementById('tags-grid');
+                const tagCards = tagsGrid.querySelectorAll('.tag-card');
+
+                tagCards.forEach(card => {
+                    const tagId = card.dataset.tagId;
+                    const tag = this.store.data.tags.find(t => t.id === tagId);
+                    
+                    const matches = tag.name.toLowerCase().includes(this.searchTerm) ||
+                                   (tag.definition && tag.definition.toLowerCase().includes(this.searchTerm));
+
+                    card.style.display = matches ? 'block' : 'none';
+                });
+            }
+
+            filterLanguages(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const languagesGrid = document.getElementById('languages-grid');
+                const languageCards = languagesGrid.querySelectorAll('.language-card');
+
+                languageCards.forEach(card => {
+                    const languageId = card.dataset.languageId;
+                    const language = this.store.data.languages.find(l => l.id === languageId);
+                    
+                    const matches = language.name.toLowerCase().includes(this.searchTerm) ||
+                                   language.code.toLowerCase().includes(this.searchTerm) ||
+                                   (language.nativeName && language.nativeName.toLowerCase().includes(this.searchTerm));
+
+                    card.style.display = matches ? 'block' : 'none';
+                });
+            }
+
+            // Utility Functions
+            showError(message) {
+                this.showAlert(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showAlert(message, 'success');
+            }
+
+            showWarning(message) {
+                this.showAlert(message, 'warning');
+            }
+
+            showAlert(message, type = 'error') {
+                const alertContainer = document.createElement('div');
+                alertContainer.className = `alert alert-${type}`;
+                alertContainer.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                const contentArea = document.getElementById('content-area');
+                contentArea.insertBefore(alertContainer, contentArea.firstChild);
+
+                setTimeout(() => {
+                    if (alertContainer.parentElement) {
+                        alertContainer.remove();
+                    }
+                }, 5000);
+            }
+
+            showGlobalSearch() {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const content = `
+                    <div class="form-group">
+                        <input type="text" id="global-search-input" class="form-input" 
+                               placeholder="${t('search.start_typing')}" autofocus>
+                    </div>
+                    <div id="search-results" style="max-height: 400px; overflow-y: auto;">
+                        <p style="color: var(--gray-500); text-align: center;">${t('search.start_typing')}</p>
+                    </div>
+                `;
+
+                this.showModal(t('search.global'), content);
+
+                const searchInput = document.getElementById('global-search-input');
+                const resultsContainer = document.getElementById('search-results');
+
+                searchInput.addEventListener('input', async (e) => {
+                    const query = e.target.value.trim();
+                    
+                    if (query.length < 2) {
+                        resultsContainer.innerHTML = `<p style="color: var(--gray-500); text-align: center;">${t('search.start_typing')}</p>`;
+                        return;
+                    }
+
+                    const results = await this.store.search(query);
+                    this.renderSearchResults(results, resultsContainer);
+                });
+            }
+
+            renderSearchResults(results, container) {
+                const t = this.translationManager.t.bind(this.translationManager);
+                const { areas, subcategories, videos, tags } = results;
+                const totalResults = areas.length + subcategories.length + videos.length + tags.length;
+
+                if (totalResults === 0) {
+                    container.innerHTML = `<p style="color: var(--gray-500); text-align: center;">${t('search.no_results')}</p>`;
+                    return;
+                }
+
+                let html = `<div style="margin-bottom: 1rem; color: var(--gray-600);">${totalResults} ${t('search.results_found')}</div>`;
+
+                if (areas.length > 0) {
+                    html += `<h4>${t('nav.areas')}</h4>`;
+                    areas.forEach(area => {
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong><i class="${area.icon}"></i> ${area.area}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${area.description || t('areas.no_description')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (subcategories.length > 0) {
+                    html += `<h4>${t('areas.subcategories')}</h4>`;
+                    subcategories.forEach(sub => {
+                        const area = this.store.data.areas.find(a => a.id === sub.areaId);
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong>${sub.title}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${area?.area || 'Unknown Area'} • ${sub.videos.length} ${t('nav.videos').toLowerCase()}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (videos.length > 0) {
+                    html += `<h4>${t('nav.videos')}</h4>`;
+                    videos.forEach(video => {
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <strong>${video.title}</strong>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${video.creator || 'Unknown'} • ${video.views || 0} ${t('videos.views')}
+                                </div>
+                                <div style="margin-top: 0.25rem;">
+                                    ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                if (tags.length > 0) {
+                    html += `<h4>${t('nav.tags')}</h4>`;
+                    tags.forEach(tag => {
+                        const videoCount = this.store.data.videos.filter(v => v.tags.includes(tag.name)).length;
+                        html += `
+                            <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                <span class="tag tag-colored" style="background-color: ${tag.color};">
+                                    ${tag.name}
+                                </span>
+                                <div style="color: var(--gray-600); font-size: 0.875rem;">
+                                    ${tag.definition || t('tags.no_definition')} • ${t('tags.used_in')} ${videoCount} ${t('nav.videos').toLowerCase()}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                container.innerHTML = html;
+            }
+        }
+
+        // Main Application Class
+        class ContentManager {
+            constructor() {
+                this.translationManager = new TranslationManager();
+                this.security = new LatticeSecurityManager();
+                this.store = new EnhancedParseStore(this.security);
+                this.ui = new UIManager(this, this.store, this.security, this.translationManager);
+                this.init();
+            }
+
+            async init() {
+                try {
+                    Parse.initialize(CONFIG.parseAppId, CONFIG.parseJSKey);
+                    Parse.serverURL = CONFIG.parseServerURL;
+                    
+                    await this.store.loadInitialData();
+                    this.ui.init();
+                    
+                    // Make available globally for onclick handlers
+                    window.contentManager = this;
+                    
+                    console.log(`✅ Content Manager v${CONFIG.version} initialized with language support`);
+                } catch (error) {
+                    console.error('Initialization failed:', error);
+                    this.ui.showError('Failed to initialize application');
+                }
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new ContentManager();
+        });
+
+        // Service Worker Registration for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Handle online/offline status
+        window.addEventListener('online', () => {
+            const statusElement = document.getElementById('connection-status');
+            if (statusElement && window.contentManager) {
+                const t = window.contentManager.translationManager.t.bind(window.contentManager.translationManager);
+                statusElement.textContent = t('status.connected');
+                statusElement.className = 'connection-status status-connected';
+            }
+        });
+
+        window.addEventListener('offline', () => {
+            const statusElement = document.getElementById('connection-status');
+            if (statusElement && window.contentManager) {
+                const t = window.contentManager.translationManager.t.bind(window.contentManager.translationManager);
+                statusElement.textContent = t('status.offline');
+                statusElement.className = 'connection-status status-error';
+            }
+        });
+
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            if (window.contentManager && window.contentManager.ui) {
+                window.contentManager.ui.showError('An unexpected error occurred');
+            }
+        });
+
+        // Unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            if (window.contentManager && window.contentManager.ui) {
+                window.contentManager.ui.showError('An unexpected error occurred');
+            }
+        });
+
+    </script>
+</body>
+</html>
