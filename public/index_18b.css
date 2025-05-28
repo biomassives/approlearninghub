@@ -204,10 +204,167 @@
             border: 1px solid #FDE68A; /* Tailwind yellow-200 */
             margin-bottom: 1.25rem !important; /* Ensure spacing */
         }
-
-
-
-        
+		
+		
+		/* ================================
+		   TECH CAROUSEL STYLES
+		   ================================ */
+		
+		.tech-carousel {
+		  position: relative;
+		  width: 100%;
+		  height: 100vh;
+		  overflow: hidden;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  border-bottom: 8px solid black;
+		}
+		
+		/* Slide container */
+		.tech-carousel .carousel {
+		  position: relative;
+		  width: 100%;
+		  height: 100%;
+		}
+		
+		/* Each individual slide */
+		.tech-carousel .slide {
+		  position: absolute;
+		  top: 0; left: 0;
+		  width: 100%; height: 100%;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  padding: 2rem;
+		  background: white;
+		  opacity: 0;
+		  transition: opacity 1s ease, transform 0.5s ease;
+		  transform: translateX(20px);
+		}
+		
+		.tech-carousel .slide.active {
+		  opacity: 1;
+		  transform: translateX(0);
+		  z-index: 1;
+		}
+		
+		/* Slide content layout */
+		.tech-carousel .slide-content {
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		  gap: 2rem;
+		  width: 90%;
+		  max-width: 900px;
+		  padding: 2rem;
+		  border: 4px solid black;
+		  border-radius: 12px;
+		  background: white;
+		}
+		
+		/* Image inside content */
+		.tech-carousel .slide-content img {
+		  width: 256px;
+		  height: 256px;
+		  object-fit: contain;
+		  border: 4px solid black;
+		  border-radius: 8px;
+		  flex-shrink: 0;
+		}
+		
+		/* Text block */
+		.tech-carousel .text-content {
+		  flex: 1;
+		}
+		
+		.tech-carousel .text-content h2 {
+		  font-size: 1.8rem;
+		  margin-bottom: 1rem;
+		  border-bottom: 2px solid black;
+		  display: inline-block;
+		  padding-bottom: 0.3rem;
+		}
+		
+		.tech-carousel .text-content p {
+		  font-size: 1.05rem;
+		  margin-bottom: 1.25rem;
+		}
+		
+		.tech-carousel .text-content a,
+		.tech-carousel .text-content button {
+		  display: inline-block;
+		  margin: 0.5rem 0.5rem 0 0;
+		  padding: 0.75rem 1.25rem;
+		  border: 2px solid black;
+		  background: white;
+		  color: black;
+		  text-decoration: none;
+		  font-weight: bold;
+		  border-radius: 5px;
+		  cursor: pointer;
+		}
+		
+		.tech-carousel .text-content a:hover,
+		.tech-carousel .text-content button:hover {
+		  background: black;
+		  color: white;
+		}
+		
+		/* Arrows */
+		.tech-carousel .nav-arrow {
+		  position: absolute;
+		  top: 50%;
+		  transform: translateY(-50%);
+		  font-size: 2.5rem;
+		  background: white;
+		  color: black;
+		  border: 4px solid black;
+		  border-radius: 50%;
+		  width: 60px;
+		  height: 60px;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  cursor: pointer;
+		  z-index: 20;
+		  line-height: 0.9; /* aligns triangle vertically */
+		}
+		
+		.tech-carousel .nav-arrow.left {
+		  left: calc(50% - 470px);
+		}
+		
+		.tech-carousel .nav-arrow.right {
+		  right: calc(50% - 470px);
+		}
+		
+		.tech-carousel .nav-arrow:hover {
+		  background: black;
+		  color: white;
+		}
+		
+		/* ================================
+		   Responsive Behavior
+		   ================================ */
+		@media (max-width: 1000px) {
+		  .tech-carousel .nav-arrow.left {
+		    left: 20px;
+		  }
+		  .tech-carousel .nav-arrow.right {
+		    right: 20px;
+		  }
+		}
+		
+		@media (max-width: 768px) {
+		  .tech-carousel .slide-content {
+		    flex-direction: column;
+		    align-items: center;
+		    text-align: center;
+		    gap: 1.5rem;
+		  }
+		}
+ 
         /* --- Floating Search Menu (ensure it floats correctly) --- */
         .floating-search-menu {
             position: fixed;
