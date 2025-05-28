@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Approvideo Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="index_18b.css" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100"> 
+
+
+    <header class="site-header">
+        <div class="site-header-left">
+            <div class="logo">🌱</div>
+            <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
+        </div>
+        <div class="site-header-right">
+            <button id="browseTopicsBtn" class="site-header-button browse-topics-button">
+                Browse Topics
+            </button>
+
+            <div id="areaNavIconsMinimized" class="area-nav-icons minimized">
+            </div>
+            <button id="openSearchHeaderButton" title="Open Search">
+                <i class="fas fa-search"></i>
+            </button>
+
+        </div>
+    </header>
+    
+    <div id="megaMenuPanel" class="mega-menu-panel">
+        <div class="mega-menu-content-wrapper">
+            </div>
+    </div>
+
+    <div class="floating-search-menu" id="floatingSearchMenu">
+        <div class="search-menu-header-bar">
+            <div class="header-controls-right">
+                <button id="toggleSearchDisplayBtn" title="Collapse/Expand Search">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+        <div class="search-main-content" id="searchMainContent">
+            <div id="areaNavIconsExpanded" class="hidden area-nav-icons expanded-view">
+                </div>
+            <h4 id="searchContentTitle">Search Content</h4>
+            <input type="text" id="searchInput" placeholder="Search videos & modules...">
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div id="modules-grid-container">
+
+
+
+        <main class="modules-grid">
+        </main>
+
+
+        <div id="subcategory-preview"></div>
+
+        <div id="featured-content-container" class="mt-6 mx-auto max-w-6xl px-4">
+        <section class="welcome-statement-section">
+        <div class="welcome-content-wrapper flex flex-col md:flex-row md:items-start md:gap-6 lg:gap-8 shadow-md border border-gray-200 flex">
+            
+            <div class="w-full md:w-1/3 lg:w-1/4 flex-shrink-0 mb-6 md:mb-0">
+                <img src="/img/approvideo0_fullh.gif" 
+                     alt="approvideo welcome may 2025"
+                     class="w-full h-auto object-cover rounded-lg shadow-md"> 
+            </div>
+
+            <div class="w-full md:w-2/3 lg:w-3/4 text-center md:text-left">
+                <h2 class="welcome-title text-2xl font-semibold text-gray-800 mb-2">Welcome</h2>
+                <div class="welcome-message space-y-4"> 
+                    <p>
+
+Approvideo Learning Hub is dedicated to facilitating informed technical support intervention 'clinics' in public health, water security, wastewater management, solid waste management, renewable energy in global contexts based on adherence to the principles outlined in the <a href="https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf" title="Universal Declaration of Human Rights">Universal Declaration of Human Rights</a>.
+
+Our method is to support critical needs of vulnerable populations ( think water borne disease prevention, other envir. pollution, technology use...) while supporting the careers and vision of scientists & engineers in exile, while building a credible public domain planning, engineering and vocational reference for appropriate technology in poverty alleviation contexts.  
+                    </p>
+                    <p class="mt-2"> 
+                        Approvideo Community - May 11 2025
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+<div class="tech-carousel">
+  <div class="carousel" id="carousel">
+    <div class="slide active">
+      <div class="slide-content">
+        <img src="img/rocket_stove.webp" alt="Rocket Stove">
+        <div class="text-content">
+          <h2>Rocket Stove</h2>
+          <p>Burns small sticks cleanly thanks to high combustion temperature—great for emergencies.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/evaporative_water_desalinator.webp" alt="Evaporative Distiller">
+        <div class="text-content">
+          <h2>Evaporative Distiller</h2>
+          <p>Converts dirty water to clean water using heat and condensation—zero moving parts.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/briquette_press.webp" alt="Fuel Briquette Press">
+        <div class="text-content">
+          <h2>Fuel Briquette Press</h2>
+          <p>Transforms organic waste into clean fuel using low-tech molds and pressure methods.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/water_filter.webp" alt="Water Purifier">
+        <div class="text-content">
+          <h2>Water Purifier</h2>
+          <p>Layered sand and gravel filters remove contaminants—ideal for household use.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/solar_oven.webp" alt="Solar Oven">
+        <div class="text-content">
+          <h2>Solar Oven</h2>
+          <p>Sun-powered cooker heats up to 150°C—perfect for off-grid meals and drying herbs.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <div class="nav-arrow left" onclick="showPrevSlide()">&#x25C0;</div>
+  <div class="nav-arrow right" onclick="showNextSlide()">&#x25B6;</div>
+</div>
+
+
+  <!-- Navigation Arrows -->
+  <div class="nav-arrow left" onclick="showPrevSlide()">&#x25C0;</div>
+  <div class="nav-arrow right" onclick="showNextSlide()">&#x25B6;</div>
+
+          
+
+
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Featured Item 1: Water Distillation -->
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <!-- Video thumbnail with play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+
+
+                    
+                    <img src="/assets/video/thumbnails/water_distillation_diy.jpg" 
+                         alt="DIY Water Distillation System" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='/assets/video/thumbnails/water_distillation_diy.jpg'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+                             <a href="/assets/video/WATER DESALINATION notes - DHAKA.mp4" aria-label="Play Video"><i class="fas fa-play text-white text-xl"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">Water</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>1:01</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">DIY Water Distillation System</h3>
+                <p class="text-gray-600 text-sm mb-3">Learn how to build an efficient water distillation system using common household materials. Perfect for emergency preparedness or off-grid living.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">purification</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">desalination</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">DIY</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800"><a href="/assets/video/WATER_DESALINATION_EN.mp4">English Audio</a></div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800"><a href="/assets/video/WATER_DESALINATION_AR.mp4">Arabic Audio</a></div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="/assets/video/WATER DESALINATION notes - DHAKA.mp4" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+            </div>
+            <div class="p-4 flex-grow">
+        
+        <!-- Featured Item 2: Rocket Stove -->
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <!-- Video thumbnail with play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <img src="/assets/video/thumbnails/rocket_stove_diy.jpg" 
+                         alt="How to Build a Rocket Stove" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://ia801301.us.archive.org/6/items/SuperStove-English/__ia_thumb.jpg'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+                            <a href="https://archive.org/download/SuperStove-English/SuperStove-English.mp4" aria-label="Play Video"><i class="fas fa-play text-white text-xl"></i></a>
+                        </div>
+                    </div>
+                </div>
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="https://archive.org/download/SuperStove-English/SuperStove-English.mp4" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+        </div>
+
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>7:14</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">How to Build a Rocket Stove</h3>
+                <p class="text-gray-600 text-sm mb-3">Create a highly efficient cooking stove using minimal materials. This design burns cleanly, uses less fuel, and can be built in under an hour with common materials.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">fuel efficiency</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">sustainable</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2"><a href="/assets/SUPER_STOVE_AR.mp4">audio arabic</a></div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2"><a href="/assets/SUPER_STOVE_EN.mp4">audio english</a></div>
+
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <a href="https://ia801301.us.archive.org/6/items/SuperStove-English/SuperStove-English.mp4" class="text-amber-600 hover:text-amber-800 text-sm font-medium flex items-center transition">
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Watch Video
+                    <i class="fas fa-arrow-right ml-auto"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
+            <div class="relative pt-[56.25%] bg-gray-100">
+                <div class="absolute inset-0">
+                    <div class="featured-slideshow w-full h-full">
+                        <div class="slideshow-container relative bg-gray-100 rounded-lg overflow-hidden w-full h-full">
+                            <div class="slideshow-slide active">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-1.jpg" data-src="/assets/images/solar-cookers/parabolic-cooker.jpg" 
+                                         alt="Parabolic Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Parabolic+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Parabolic Solar Cooker</h3>
+                                        <p class="text-sm">High temperature cooking with focused sunlight. Ideal for boiling and frying.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-2.jpg" data-src="/assets/images/solar-cookers/box-cooker.jpg" 
+                                         alt="Solar Box Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='/assets/images/solar-cookers/box-cooker.jpg'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Solar Box Cooker</h3>
+                                        <p class="text-sm">Simple and effective design using common materials. Great for slow cooking and baking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-3.jpg" data-src="/assets/images/solar-cookers/panel-cooker.jpg" 
+                                         alt="Panel Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='/assets/images/solar-cookers/panel-cooker.jpg'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Panel Solar Cooker</h3>
+                                        <p class="text-sm">Lightweight, portable design with reflective panels. Easy to build and transport.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slideshow-slide">
+                                <div class="relative pt-[56.25%]">
+                                    <img src="placeholder-solar-cooker-4.jpg" data-src="/assets/images/solar-cookers/evacuated-tube-cooker.jpg" 
+                                         alt="Evacuated Tube Solar Cooker" class="absolute inset-0 w-full h-full object-cover transition-opacity"
+                                         onerror="this.src='https://placehold.co/800x450/FEF9C3/713F12?text=Evacuated+Tube+Solar+Cooker'; this.onerror=null;">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                                        <h3 class="text-lg font-medium">Evacuated Tube Solar Cooker</h3>
+                                        <p class="text-sm">Modern design using vacuum-sealed glass tubes. Efficient cooking even in moderate sunlight.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Arrows -->
+                            <button class="slideshow-prev absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="slideshow-next absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full w-10 h-10 flex items-center justify-center z-10 transition-colors">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            
+                            <!-- Dots Navigation -->
+                            <div class="slideshow-dots absolute bottom-16 left-0 right-0 flex justify-center space-x-2 z-10">
+                                <button class="slideshow-dot active w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="0"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="1"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="2"></button>
+                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-colors" data-index="3"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>12:48</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Simple Solar Cooker Setup</h3>
+                <p class="text-gray-600 text-sm mb-3">Learn how to harness the sun's energy for cooking with this easy-to-build solar cooker. Perfect for fuel-free cooking during daylight hours in sunny regions.</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">solar</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">zero-fuel</div>
+                </div>
+            </div>
+            
+        </div>
+            
+            <div class="p-4 flex-grow">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Energy</span>
+                    <span class="text-gray-500 text-sm"><i class="far fa-clock mr-1"></i>12:48</span>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">3 Types of Solar Cookers</h3>
+                <p class="text-gray-600 text-sm mb-3">Insulated box.</p>
+                <p class="text-gray-600 text-sm mb-3">Parabolic concentrator</p>
+                <p class="text-gray-600 text-sm mb-3">Black jar/pot w/ reflective concentrator</p>
+                
+                <div class="flex items-center mt-auto">
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">solar</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800 mr-2">cooking</div>
+                    <div class="bg-gray-200 px-3 py-1 rounded-full text-xs font-medium text-gray-800">zero-fuel</div>
+                </div>
+            </div>
+            
+
+        </div>
+        
+    </div>
+    </div>
+
+    <div id="category-content-container">
+        <button id="back-to-modules-button">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path> </svg>
+             Back to Modules
+            </button>
+
+           
+
+            <div id="category-title-display"></div>
+        <div id="glossary-panel">
+            <p class="text-center text-gray-400">Click a tag to see its definition.</p>
+        </div>
+        <div id="megamenu-content">
+            <div id="megamenu-columns" class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8">
+                </div>
+            <div id="megamenu-details-area" class="border-t border-gray-200">
+                </div>
+        </div>
+    </div>
+
+    <div id="video-info-panel">
+        <div class="local-video-row" id="local-video-row">
+             <a href="#" target="_blank" class="local-video-link" id="local-video-link">
+                 <img src="https://placehold.co/40x40/fef9c3/713f12?text=MP4" alt="Local Video Thumbnail" class="local-video-thumb" id="local-video-thumb" onerror="this.src='https://placehold.co/40x40/fef9c3/713f12?text=MP4'; this.onerror=null;">
+                 <span class="local-video-text">Watch local version: <span id="local-video-filename-display"></span></span>
+             </a>
+        </div>
+        <div class="youtube-info-row">
+            <div class="info-icon"><i class="fab fa-youtube"></i></div>
+            <div class="info-text">
+                <p class="info-url" id="info-url"><span class="placeholder-text">Hover over a video square...</span></p>
+                <p class="info-title" id="info-title"></p>
+                <p class="info-description" id="info-description"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="termsModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="termsModalTitle">Terms of Service</h2>
+            <div class="modal-content">
+                
+                <p>Welcome to Approvideo Learning Hub! These terms and conditions outline the rules and regulations for the use of Approvideo Learning Hub's Website, accessible from hub.approvideo.org and www.approvideo.org</p>
+                <p>By accessing this website, we assume you accept these terms and conditions in full. Do not continue to use Approvideo Learning Hub if you do not accept all of the terms and conditions stated on this page.</p>
+                
+                <h3>1. Definitions</h3>
+                <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves.</p>
+    
+                <h3>2. License</h3>
+                <p>Unless otherwise stated, Approvideo Learning Hub and/or its licensors own the intellectual property rights for all material on Approvideo Learning Hub. All intellectual property rights are reserved. You may access this from Approvideo Learning Hub for your own personal use subjected to restrictions set in these terms and conditions.</p>
+                <p>You are free to:</p>
+                <ul>
+                    <li>Republish material from Approvideo Learning Hub</li>
+                    <li>Sub-license material from Approvideo Learning Hub</li>
+                    <li>Reproduce, duplicate or copy material from Approvideo Learning Hub as longg as CC agreements to credit authors are honored.</li>
+                    <li>Redistribute content from Approvideo Learning Hub</li>
+                    <li>Host your own copies of Approvideo Learning Hub</li>
+                    <li>Continue to develop mechanisms that foster the free flow of ideas and innovation supporting collaborative achievement and shared ownership</li>
+
+                </ul>
+    
+                <h3>3. User Content</h3>
+                <p>In these Website Standard Terms and Conditions, “Your Content” shall mean any audio, video text, images or other material you choose to display on this Website. By displaying Your Content, you grant Approvideo Learning Hub a non-exclusive, worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.</p>
+                <p>Your Content must be your own and must not be invading any third-party’s rights. Approvideo Learning Hub reserves the right to remove any of Your Content from this Website at any time without notice.</p>
+                
+                <h3>4. Disclaimer</h3>
+                <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
+                <p><strong>Again, this is template text. Please seek professional legal counsel.</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="conditionsModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="conditionsModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="conditionsModalTitle">Conditions of Use</h2>
+            <div class="modal-content">
+                <p>Please read these Conditions of Use carefully. By using Approvideo Learning Hub, you signify your agreement to these Conditions.</p>
+                <h3>1. Community Guidelines</h3>
+                <p>Users are expected to interact respectfully and constructively. Harassment, spam, or anmy harmful content is strictly prohibited.</p>
+                <h3>2. Content Accuracy</h3>
+                <p>While we strive for accuracy, content on Approvideo Learning Hub is provided for educational and informational purposes. We do not guarantee the completeness or accuracy of any information presented.</p>
+                <p><strong>Please tailor these to your platform's specific operational conditions and user interactions.</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="privacyModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="privacyModalTitle">Privacy Policy</h2>
+            <div class="modal-content">
+                <p>Your privacy is important to us. It is Approvideo Learning Hub's policy to respect your privacy regarding any information we may collect from you across our website, [Your Website URL Here], and other sites we own and operate.</p>
+                <h3>1. Information We Collect</h3>
+                <p>Log data: When you visit our website, our servers may automatically log the standard data provided by your web browser. It may include your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
+                <p>Personal information: We may ask for personal information, such as your name, email, social media profiles, phone/mobile number, home/mailing address, payment information.</p>
+                <h3>2. Use of Information</h3>
+                <p>We may use a combination of personally identifiable and non-personally identifiable information to understand how our visitors use our website, how we may improve their experience of our website in future, and to communicate with them.</p>
+                <h3>3. Data Security</h3>
+                <p>We take security seriously and take precautions to protect your information.</p>
+                <p><strong>This section needs to be significantly detailed based on your actual data practices.</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="visionModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="visionModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="visionModalTitle">Our Vision at Approvideo Learning Hub</h2>
+            <div class="modal-content">
+                <p>At Approvideo Learning Hub, we envision a world where accessible, practical knowledge empowers individuals and communities to build resilient, sustainable, and self-sufficient futures.</p>
+                <h3>Our Mission:</h3>
+                <ul>
+                    <li>To curate and create high-quality, easy-to-understand learning modules focused on essential life skills, sustainable practices, and appropriate technologies.</li>
+                    <li>To foster a collaborative platform where knowledge seekers and sharers can connect and grow.</li>
+                    <li>To leverage technology to break down barriers to education, making learning available to anyone, anywhere.</li>
+                    <li>To inspire innovation and resourcefulness, helping people to thrive with what is locally available.</li>
+                </ul>
+                <p>We believe that by sharing knowledge openly and effectively, we can collectively contribute to a more equitable and thriving planet for all.</p>
+                <p><em>(Please refine this starter text to perfectly match your unique vision!)</em></p>
+            </div>
+        </div>
+    </div>
+    <div id="gplCcModal" class="modal-overlay">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="gplCcModalTitle">
+            <button class="modal-close-button" aria-label="Close modal">&times;</button>
+            <h2 class="modal-title" id="gplCcModalTitle">Content Licensing</h2>
+            <div class="modal-content">
+                
+                <p>Approvideo Learning Hub is committed to open access and knowledge sharing. The content provided on this platform may be subject to one or more of the following types of licenses, or a specific license detailed by the content creator or Approvideo Learning Hub.</p>
+                
+                <h3>Open Source Software Licenses (e.g., GPL)</h3>
+                <p>If any software components or code shared on this platform are licensed under an open-source license like the GNU General Public License (GPL), it generally means you are free to use, study, share, and modify that software under the terms of the specified GPL version. Such licenses are designed to protect these freedoms for all users.</p>
+                <p><em>Example: "Software component X is licensed under the GPLv3."</em></p>
+    
+                <h3>Creative Commons (CC) Licenses for Content</h3>
+                <p>Creative Commons licenses provide a standard way for creators to grant public permission to share and use their creative works (like text, images, videos) on conditions of their choice. Some common CC licenses include:</p>
+                <ul>
+                    <li><strong>CC BY (Attribution):</strong> Allows others to distribute, remix, adapt, and build upon the work, even commercially, as long as they give credit to the original creator.</li>
+                    <li><strong>CC BY-SA (Attribution-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work even for commercial purposes, as long as they give credit and license their new creations under identical terms.</li>
+                    <li><strong>CC BY-NC (Attribution-NonCommercial):</strong> Allows others to remix, adapt, and build upon the work non-commercially. Their new works must also acknowledge the original creator and be non-commercial, but they don’t have to license their derivative works on the same terms.</li>
+                    <li><strong>CC BY-NC-SA (Attribution-NonCommercial-ShareAlike):</strong> Allows others to remix, adapt, and build upon the work non-commercially, as long as they credit the original creator and license their new creations under the identical terms.</li>
+                    <li><strong>CC0 (Public Domain Dedication):</strong> The creator waives all copyright and related rights to their work to the extent possible under law, allowing others to copy, modify, distribute, and perform the work, even for commercial purposes, all without asking permission.</li>
+                </ul>
+                <p><em>Example: "Learning modules on Approvideo Learning Hub are licensed under CC BY-NC-SA 4.0 unless otherwise specified on the material itself."</em></p>
+                
+                <p><strong>Please check individual content items or site-wide policies for specific licensing information. If no specific license is mentioned for particular content created by Approvideo Learning Hub, you should assume [Specify Your Default License Here - e.g., "All Rights Reserved" or a chosen CC license like "CC BY-NC-SA 4.0"]. Clearly defining your licensing is crucial.</strong></p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <footer class="site-footer-main">
+        <div class="footer-container bg-slate-600">
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Approvideo Learning Hub. All Rights Reserved. <a href="#" id="termsLinkFooter">Terms</a> <a href="#" id="conditionsLinkFooter">Free access</a> <a href="#" id="privacyLinkFooter">Privacy</a> <a href="#" id="visionLinkFooter">Vision</a> <a href="#" id="gplCcLinkFooter">(GPL/CC)</a></p>
+        </div>
+
+
+        <div id="subcategory-pills-container" class=" hidden flex flex-wrap justify-center gap-3">
+        </div>
+
+    </footer>
+
+
+
+    <script>
+
+        // --- Updated Glossary ---
+        const tagGlossary = {
+            // Shelter
+            "construction": "The process, art, or business of building structures.",
+            "low-cost": "Achievable with minimal financial resources or expenditure.",
+            "durable": "Able to withstand wear, pressure, or damage over time; long-lasting.",
+            "building": "A structure with walls and a roof, such as a house, school, or factory.",
+            "DIY": "Do It Yourself; projects undertaken without direct professional help.",
+            "resilience": "The capacity to withstand or recover quickly from difficulties; toughness.",
+            "earthbag": "A construction technique using bags filled primarily with soil or earth.",
+            "bamboo": "A tall, fast-growing grass often used as a strong, sustainable building material.",
+            "superadobe": "A form of earthbag construction using long fabric tubes and barbed wire, developed by Nader Khalili.",
+            "materials": "The matter from which a thing is or can be made.",
+            "local": "Relating or restricted to a particular area or neighbourhood.",
+            "sustainability": "Meeting present needs without compromising the ability of future generations to meet theirs, often focusing on environmental, social, and economic balance.",
+            "earthship": "A type of passive solar house made of natural and recycled materials (like tires and bottles).",
+            "vernacular architecture": "Architecture concerned with domestic and functional rather than public or monumental buildings, often using local materials and traditional methods.",
+            "resourcefulness": "The ability to find quick and clever ways to overcome difficulties, especially with limited resources.",
+            "clay": "A stiff, sticky fine-grained earth, typically yellow, red, or bluish-gray, often used in building (adobe, cob, plaster).",
+            "stone": "Hard solid nonmetallic mineral matter of which rock is made, used for building.",
+            "salvaged": "Retrieved or saved from potential waste or loss for reuse.",
+            "natural building": "Building methods emphasizing sustainability and the use of minimally processed, natural materials.",
+            "climate resilience": "The ability of a structure or system to absorb stresses and maintain function in the face of climate change impacts.",
+            "insulation": "Material used to prevent heat, sound, or electricity from passing through something.",
+            "foundation": "The lowest load-bearing part of a building, typically below ground level.",
+            "roofing": "The material forming the roof of a building, or the process of constructing a roof.",
+            "pallet wood": "Wood reclaimed from shipping pallets, often used in low-cost construction.",
+
+            // Water
+            "clean water": "Water that is safe to drink (potable) and for other domestic uses, free from harmful contaminants.",
+            "filtration": "The process of removing solid particles from a liquid or gas using a filter medium.",
+            "health": "The state of being free from illness or injury; relates to practices promoting well-being.",
+            "SODIS": "Solar Water Disinfection: A simple method using sunlight and clear PET bottles to kill harmful microbes in water.",
+            "potable water": "Water that is safe to drink.",
+            "waterborne disease": "Illnesses caused by pathogenic microorganisms transmitted through contaminated water.",
+            "DIY filter": "A water filter constructed using readily available or improvised materials.",
+            "boiling": "Purifying water by heating it to its boiling point to kill most pathogens.",
+            "disinfection": "The process of cleaning something, especially with a chemical, in order to destroy bacteria and other microorganisms.",
+            "desalination": "The process of removing salt and other minerals from seawater or brackish water.",
+            "salt removal": "Synonym for desalination.",
+            "ocean": "A very large expanse of saltwater.",
+            "irrigation": "The supply of water to land or crops to help growth, typically by means of channels or pipes.",
+            "solar still": "A device using solar energy to evaporate and condense water for purification/desalination.",
+            "distillation": "The action of purifying a liquid by a process of heating and cooling.",
+            "coastal living": "Relating to life near the coast.",
+            "arid regions": "Areas characterized by severe lack of available water, hindering plant and animal life.",
+            "pipes": "Tubes used to convey water, gas, oil, or other fluid substances.",
+            "delivery": "The action of transporting something to a destination.",
+            "infrastructure": "The basic physical structures and facilities (e.g., pipes, tanks) needed for water systems.",
+            "gravity feed": "A system where liquid flows due to gravity from a higher to lower point without pumping.",
+            "water storage": "Holding water in tanks, reservoirs, or cisterns for later use.",
+            "pump": "A mechanical device using suction or pressure to raise or move liquids.",
+            "conservation": "The careful preservation and protection of something, especially water resources.",
+            "ram pump": "A cyclic water pump powered by hydropower, using the water hammer effect.",
+            "water pressure": "The force exerted by water per unit area.",
+            "water testing": "Analyzing water samples to determine quality and safety.",
+            "water acquisition": "Methods of obtaining water from various sources.",
+            "atmospheric water": "Water present in the atmosphere, collectable as dew or fog.",
+            "fog harvesting": "Collecting water from fog using nets or other surfaces.",
+            "plumbing": "The system of pipes, tanks, fittings, and other apparatus required for the water supply, heating, and sanitation in a building.",
+            "solar thermal": "Technology using sunlight to generate thermal energy (heat).",
+
+
+            // Waste
+            "composting": "The process of decomposing organic matter into a nutrient-rich soil amendment.",
+            "organic waste": "Biodegradable waste from plant or animal sources (e.g., food scraps, yard trimmings).",
+            "soil improvement": "Enhancing soil structure, fertility, and water retention.",
+            "fertilizer": "A chemical or natural substance added to soil or land to increase its fertility.",
+            "vermicomposting": "Composting using various species of worms (e.g., red wigglers).",
+            "hot composting": "A method managing C:N ratio, moisture, and aeration to achieve high temperatures (130-160°F / 55-70°C) for fast decomposition.",
+            "cold composting": "A passive composting method involving less management and slower decomposition at ambient temperatures.",
+            "bokashi": "An anaerobic fermentation process, often for kitchen scraps, using specific microbes.",
+            "nutrient cycling": "The movement and exchange of organic and inorganic matter back into the production of living matter.",
+            "recycling": "Converting waste materials into new materials and objects.",
+            "waste sorting": "Separating different types of waste for proper disposal or recycling.",
+            "materials recovery": "Retrieving useful materials from the waste stream.",
+            "circular economy": "An economic system aimed at eliminating waste and the continual use of resources.",
+            "community action": "Activities undertaken by people in a geographic locality to improve their community.",
+            "plastic recycling": "Reprocessing waste plastic into new products.",
+            "paper recycling": "Reprocessing waste paper into new paper products.",
+            "metal recycling": "Reprocessing scrap metal into new metal.",
+            "glass recycling": "Reprocessing waste glass into new glass products.",
+            "waste management": "The collection, transport, processing, recycling or disposal of waste materials.",
+            "upcycling": "Reusing discarded objects or material to create a product of higher quality or value.",
+            "creative reuse": "Synonym for upcycling, emphasizing the imaginative transformation.",
+            "waste reduction": "Minimizing the amount of waste produced.",
+            // "DIY": (Defined under Shelter)
+            "crafts": "Activities involving skill in making things by hand.",
+            "zero waste": "A philosophy encouraging redesign of resource life cycles so all products are reused; goal is no trash sent to landfills/incinerators.",
+            "repurposing": "Adapting an item for use in a different way.",
+            "wastewater": "Water that has been used in homes, businesses, or industrial processes.",
+            "greywater": "Wastewater from baths, sinks, washing machines, etc. (excluding toilet waste).",
+            "blackwater": "Wastewater containing fecal matter and urine (from toilets).",
+            "sanitation": "Conditions relating to public health, especially the provision of clean drinking water and adequate sewage disposal.",
+            "treatment": "Application of methods to improve the quality or condition of something (e.g., wastewater).",
+            "constructed wetland": "An artificial wetland engineered to treat wastewater using natural processes.",
+            "reed bed": "A type of constructed wetland specifically using reeds.",
+            "hygiene": "Conditions or practices conducive to maintaining health and preventing disease, especially through cleanliness.",
+            "bioremediation": "Using living organisms (microbes, plants) to remove pollutants from soil or water.",
+            "water reuse": "Using treated wastewater for beneficial purposes like irrigation or industrial processes.",
+            "anaerobic digestion": "Breakdown of organic matter by microorganisms in the absence of oxygen.",
+            "resource recovery": "Extracting useful materials or energy from waste.",
+
+            // Energy
+            "solar cooker": "An appliance using direct sunlight for heating or cooking.",
+            "cooking technology": "Methods and equipment used for preparing food with heat.",
+            "off-grid": "Not connected to public utilities, especially the main electrical grid.",
+            "passive solar": "Building design or technology that uses sunlight for heating/cooling without active mechanical systems.",
+            "appropriate technology": "Technology suited to the social, economic, and environmental context it is intended for.",
+            "fuel efficiency": "Measure of how effectively a device converts energy in a fuel source into useful output.",
+            "biogas": "Gaseous fuel, especially methane, produced by the fermentation of organic matter.",
+            "waste": "Unwanted or unusable material, substances, or by-products.", // Added specific definition for this context
+            "energy": "Power derived from the utilization of physical or chemical resources.", // Added specific definition
+            "renewable": "Energy from a source that is not depleted when used (e.g., wind, solar).",
+            "cooking fuel": "Material burned to produce heat for cooking.",
+            "waste to energy": "Process of generating energy (electricity/heat) from waste.",
+            "methane": "A colorless, odorless flammable gas (CH4), the main constituent of natural gas and biogas.",
+            "digestate": "The nutrient-rich material remaining after anaerobic digestion.",
+
+            "microgrid": "A localized group of electricity sources and loads that normally operates connected to and synchronous with the traditional wide area grid, but can disconnect and function autonomously.",
+
+            "renewable energy": "Energy from naturally replenished resources (solar, wind, hydro, geothermal, biomass).",
+            "off-grid power": "Electricity generation independent of the public utility grid.",
+            "community power": "Energy projects owned or controlled by local community members.",
+            "solar": "Relating to or derived from the sun's rays.", // Added specific definition
+            "wind power": "Energy generated from wind using wind turbines.",
+            "battery storage": "Storing electrical energy chemically in batteries for later use.",
+            "energy access": "Availability of modern energy services.",
+            // "resilience": (Defined under Shelter)
+            // "upcycling": (Defined under Waste)
+            "home heating": "Systems used to heat domestic dwellings.",
+            "biomass": "Organic matter from plants and animals used as a fuel source.",
+            "briquettes": "Compressed blocks of combustible biomass material used as fuel.",
+            "electricity generation": "The process of producing electric energy from other forms of energy.",
+            "fuel": "Material such as coal, gas, or oil that is burned to produce heat or power.",
+
+
+            // Health
+            "EMT": "Emergency Medical Technician; trained to provide out-of-hospital emergency care.",
+            "emergency": "A serious, unexpected, and often dangerous situation requiring immediate action.",
+            "first response": "The initial care provided by first responders at the scene of an emergency.",
+            "CPR": "Cardiopulmonary Resuscitation: an emergency procedure involving chest compressions and artificial ventilation.",
+            "basic life support": "Level of medical care for victims of life-threatening illnesses/injuries until full medical care can be given.",
+            "patient assessment": "Systematic collection of information about a patient's condition.",
+            "wound care": "Treating wounds to promote healing and prevent infection.",
+            "trauma care": "Medical care for patients suffering from major traumatic injuries.",
+            "splinting": "Using a rigid support to immobilize a fractured or injured limb.",
+            "bleeding control": "Methods used to stop or slow down severe bleeding.",
+            // "health": (Defined under Water)
+            "telemedicine": "Remote diagnosis and treatment of patients by means of telecommunications technology.",
+            "remote care": "Healthcare services provided when the patient and provider are not physically present together.",
+            "digital health": "Use of information and communication technologies for health.",
+            "remote diagnosis": "Identifying the nature of an illness remotely.",
+            "mHealth": "Mobile Health; practice of medicine and public health supported by mobile devices.",
+            "communication": "The imparting or exchanging of information.",
+            "health access": "The timely use of personal health services to achieve the best health outcomes.",
+            "first aid": "Help given to a sick or injured person until full medical treatment is available.",
+            "injury": "Physical harm or damage to someone's body.",
+            // "emergency": (Defined above)
+            "home care": "Medical or personal care provided in a patient's home.",
+            // "wound care": (Defined above)
+            "burns": "Injuries caused by exposure to heat, flame, chemicals, radiation, or electricity.",
+            "bites & stings": "Injuries caused by insects, animals, or marine life.",
+            "common ailments": "Frequently occurring minor illnesses or disorders.",
+            // "hygiene": (Defined under Waste)
+            // "DIY": (Defined under Shelter)
+            "self-reliance": "Reliance on one's own powers and resources rather than those of others.",
+            "herbal medicine": "Using plants or plant extracts for medicinal purposes.",
+            "community health": "Field concerned with studying and improving the health characteristics of communities.",
+            "preventive health": "Measures taken to prevent diseases rather than curing them or treating symptoms.",
+            "traditional medicine": "Health practices, knowledge, and beliefs incorporating plant, animal, and mineral based medicines, spiritual therapies, etc., used in maintenance of health.",
+            "ORS": "Oral Rehydration Solution: A mixture of water, salt, and sugar used to treat dehydration.",
+            "preparedness": "A state of readiness, especially for emergencies.",
+            // "sanitation": (Defined under Waste)
+            "diagnosis": "The identification of the nature of an illness or other problem by examination of the symptoms.",
+            "treatment": "Medical care given to a patient for an illness or injury.",
+
+
+            // Food
+            "urban farming": "Practice of cultivating, processing, and distributing food in or around urban areas.",
+            "gardening": "The activity of tending and cultivating a garden.",
+            "food security": "State of having reliable access to a sufficient quantity of affordable, nutritious food.",
+            "container gardening": "Growing plants exclusively in containers instead of planting them in the ground.",
+            "small space gardening": "Techniques for growing plants in limited areas like balconies or patios.",
+            "rooftop garden": "A garden cultivated on the roof of a building.",
+            "balcony garden": "A garden cultivated on a balcony.",
+            // "composting": (Defined under Waste)
+            "vertical farming": "Practice of growing crops in vertically stacked layers, often indoors.",
+            "local food": "Food that is produced, processed, and consumed within a certain geographic region.",
+            "hydroponics": "Method of growing plants without soil, using mineral nutrient solutions in aqueous solvents.",
+            "water-efficient": "Using water resources in the most effective manner possible.",
+            "urban food": "Food grown or produced within city limits.",
+            "aquaponics": "System combining aquaculture (raising fish) and hydroponics (soilless plant culture) symbiotically.",
+            "aeroponics": "Growing plants in an air or mist environment without soil or an aggregate medium.",
+            "soilless culture": "Growing plants without soil (includes hydroponics, aeroponics).",
+            // "vertical farming": (Defined above)
+            "nutrient solution": "Water containing dissolved inorganic nutrients, used in hydroponics.",
+            "pH management": "Controlling the acidity or alkalinity of water or soil.",
+            "closed-loop system": "System where outputs (like waste) are reused as inputs, minimizing waste (e.g., aquaponics).",
+            "agriculture": "The science or practice of farming, including cultivation of the soil for growing crops and rearing animals.",
+            // "sustainable": (Defined under Shelter)
+            "soil health": "The continued capacity of soil to function as a vital living ecosystem.",
+            "permaculture": "Development of agricultural ecosystems intended to be sustainable and self-sufficient.",
+            "organic farming": "Farming system avoiding the use of synthetic fertilizers, pesticides, and GMOs.",
+            "agroecology": "Study of ecological processes applied to agricultural production systems.",
+            "cover cropping": "Planting crops to cover the soil rather than for harvest, improving soil health.",
+            "crop rotation": "Growing different crops in succession on the same land to preserve soil fertility.",
+            "integrated pest management": "Ecosystem-based strategy focusing on long-term prevention of pests through biological control, habitat manipulation, etc.",
+            "conservation agriculture": "Farming system promoting minimum soil disturbance, permanent soil cover, and crop species diversification.",
+            "biodiversity": "The variety of plant and animal life in the world or in a particular habitat.",
+            "seed saving": "Practice of saving seeds from open-pollinated plants for use from year to year.",
+            "alternative protein": "Proteins sourced from plants, insects, algae, fungi, or cell culture rather than traditional animal agriculture.",
+            "future food": "Foods expected to become more common due to sustainability, nutrition, or technology.",
+            "mycology": "The scientific study of fungi.",
+            "entomophagy": "The practice of eating insects.",
+            "algae": "Simple non-flowering aquatic plants including seaweeds and many single-celled forms.",
+            "spirulina": "A biomass of cyanobacteria (blue-green algae) consumable by humans and animals.",
+            "BSFL": "Black Soldier Fly Larvae; insects used for composting waste and as animal feed.",
+            "insect farming": "Raising insects for human consumption, animal feed, or other products.",
+            "mushroom cultivation": "The process of growing mushrooms.",
+            "food technology": "Application of food science to the selection, preservation, processing, packaging, distribution, and use of safe food.",
+            "fermentation": "Chemical breakdown of a substance by bacteria, yeasts, or other microorganisms, often involving effervescence and heat.",
+            "nutrition": "Process of providing or obtaining the food necessary for health and growth.",
+            "mycoprotein": "Protein derived from fungi, often produced through fermentation.",
+            "food sovereignty": "Right of peoples to healthy and culturally appropriate food produced through ecologically sound methods, and their right to define their own food/agriculture systems.",
+            "soil science": "Study of soil as a natural resource, including formation, classification, and mapping.",
+            "pest management": "Controlling pests (insects, diseases, weeds) that interfere with human activities.",
+            "harvesting": "The process or period of gathering in crops.",
+            "food preservation": "Techniques to prevent food spoilage (drying, canning, freezing, fermenting).",
+
+        };
+
+
+
+let searchableItems = []; // For search functionality
+
+// Debounce function
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+function createAccordionItem(title, contentHtml, parentElement, defaultOpen = false) {
+    if (!contentHtml || (Array.isArray(contentHtml) && contentHtml.length === 0) || (typeof contentHtml === 'string' && contentHtml.trim() === '')) {
+        return; // Don't create accordion for empty content
+    }
+
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'accordion-item';
+
+    const button = document.createElement('button');
+    button.className = 'accordion-button';
+    button.textContent = title;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'accordion-content';
+
+    if (Array.isArray(contentHtml)) {
+        const ul = document.createElement('ul');
+        contentHtml.forEach(itemText => {
+            const li = document.createElement('li');
+            li.textContent = itemText;
+            ul.appendChild(li);
+        });
+        contentDiv.appendChild(ul);
+    } else {
+        contentDiv.innerHTML = `<p>${contentHtml}</p>`; // Use innerHTML if content might have simple HTML
+    }
+    
+    itemDiv.appendChild(button);
+    itemDiv.appendChild(contentDiv);
+    parentElement.appendChild(itemDiv);
+
+    if (defaultOpen) {
+        button.classList.add('active');
+        contentDiv.style.maxHeight = contentDiv.scrollHeight + "px";
+        contentDiv.classList.add('open');
+    }
+
+    button.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+            content.style.maxHeight = null;
+            content.classList.remove('open');
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.classList.add('open');
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+// --- Global Variables & DOM Elements ---
+        let categoryData = []; // holds the data fetched from the JSON file
+        const modulesGridContainer = document.getElementById('modules-grid-container'); // Get homepage grid container
+        const modulesGrid = modulesGridContainer.querySelector('.modules-grid'); // Get the grid itself
+        const categoryContentContainer = document.getElementById('category-content-container'); // Get the container for detailed view
+        const backToModulesButton = document.getElementById('back-to-modules-button'); // Get the back button
+        const backToHomeLogoButton = document.getElementById('back-to-home-logo-button'); // Get the back button
+        const categoryTitleDisplay = document.getElementById('category-title-display');
+        const glossaryPanel = document.getElementById('glossary-panel');
+        const megamenuContent = document.getElementById('megamenu-content'); // Container within category view
+        const megamenuColumnsContainer = document.getElementById('megamenu-columns');
+        const megamenuDetailsArea = document.getElementById('megamenu-details-area');
+        const bodyElement = document.body;
+
+        // Video Panel Elements
+        const videoInfoPanel = document.getElementById('video-info-panel');
+        const infoUrlEl = document.getElementById('info-url');
+        const infoTitleEl = document.getElementById('info-title');
+        const infoDescriptionEl = document.getElementById('info-description');
+        const placeholderText = '<span class="placeholder-text">Hover over a video square...</span>';
+
+        // Local Video Elements
+        const localVideoRow = document.getElementById('local-video-row');
+        const localVideoLink = document.getElementById('local-video-link');
+        const localVideoThumb = document.getElementById('local-video-thumb');
+        const localVideoFilenameDisplay = document.getElementById('local-video-filename-display');
+        let activeSubcategoryToggle = null;
+        let activeGlossaryTrigger = null;
+        let allVideosFlat = []; // For flattened video data
+        let currentArea = null; // Track the currently displayed area
+
+
+// --- Modal Interaction Functions (ensure these are defined in your script) ---
+let lastFocusedElement = null; 
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal && !modal.classList.contains('visible')) {
+        lastFocusedElement = document.activeElement; 
+        modal.classList.add('visible');
+        document.body.style.overflow = 'hidden'; 
+        const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        const firstFocusableElement = modal.querySelector(focusableElements);
+        if (firstFocusableElement) {
+            firstFocusableElement.focus();
+        } else {
+            const modalBox = modal.querySelector('.modal-box');
+            if (modalBox) {
+                modalBox.setAttribute('tabindex', '-1'); 
+                modalBox.focus();
+            }
+        }
+        console.log(`Modal ${modalId} opened.`);
+    } else if (!modal) {
+        console.error(`Modal with ID ${modalId} not found.`);
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal && modal.classList.contains('visible')) {
+        modal.classList.remove('visible');
+        document.body.style.overflow = ''; 
+        if (lastFocusedElement) {
+            lastFocusedElement.focus(); 
+            lastFocusedElement = null;
+        }
+        console.log(`Modal ${modalId} closed.`);
+    }
+}
+
+function setupModalEventListeners(modalId, triggerId) {
+    const triggerButton = document.getElementById(triggerId);
+    const modal = document.getElementById(modalId);
+
+    if (!triggerButton) {
+        // console.warn(`Trigger button with ID ${triggerId} not found for modal ${modalId}.`);
+        return; 
+    }
+    if (!modal) {
+        console.error(`Modal with ID ${modalId} not found for trigger ${triggerId}.`);
+        return;
+    }
+
+    const closeButton = modal.querySelector('.modal-close-button');
+
+    triggerButton.addEventListener('click', (event) => {
+        event.preventDefault(); 
+        openModal(modalId);
+    });
+
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            closeModal(modalId);
+        });
+    }
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) { 
+            closeModal(modalId);
+        }
+    });
+}
+
+// Updated Function to initialize all modals
+function initializeAllModals() {
+    setupModalEventListeners('termsModal', 'termsLinkFooter');
+    setupModalEventListeners('conditionsModal', 'conditionsLinkFooter');
+    setupModalEventListeners('privacyModal', 'privacyLinkFooter');
+    setupModalEventListeners('visionModal', 'visionLinkFooter');
+    setupModalEventListeners('gplCcModal', 'gplCcLinkFooter'); // Added new GPL/CC Modal
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            const visibleModal = document.querySelector('.modal-overlay.visible');
+            if (visibleModal) {
+                closeModal(visibleModal.id);
+            }
+        }
+    });
+    console.log("All modals event listeners initialized.");
+}
+
+
+
+
+
+// --- Video Panel Functions ---
+function flattenVideoData(originalData) {
+    let flatIndex = 0;
+    allVideosFlat = []; // Reset
+    originalData.forEach(area => {
+        if (area.subcategories && Array.isArray(area.subcategories)) {
+            area.subcategories.forEach((subcat) => {
+                if (subcat.videos && Array.isArray(subcat.videos)) {
+                    subcat.videos.forEach((video) => {
+                        if (video && video.youtubeId) {
+                            video.icon_tag_fa = video.icon_tag_fa || 'fas fa-video';
+                            video.color_tag = video.color_tag || '#6c757d';
+                            video.authors = video.authors || "";
+                            video.researchReviewItems = video.researchReviewItems || [];
+                            video.contentCreatorArchive = video.contentCreatorArchive || "";
+                            video.licence = video.licence || "Standard YouTube License";
+                            video.patreon = video.patreon || "";
+                            video.socials = video.socials || {};
+                            video.fundraiser = video.fundraiser || "";
+                            video.sponsorPages = video.sponsorPages || [];
+                            video.localVideoFilename = video.localVideoFilename || "";
+                            video.flat_index = flatIndex++;
+                            allVideosFlat.push(video);
+                        } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
+                    });
+                }
+            });
+        } else { console.warn(`Area "${area.area}" missing subcategories.`); }
+    });
+    console.log(`Flattened ${allVideosFlat.length} videos.`);
+}
+
+
+function populateSubcategoryPills(categories) { // Changed from categoryData to categories to avoid conflict if global categoryData is used
+    const container = document.getElementById('subcategory-pills-container');
+    if (!container) {
+        console.error("Subcategory pills container not found!");
+        return;
+    }
+    container.innerHTML = ''; // Clear any existing pills
+
+    categories.forEach(category => {
+        if (category.subcategories && Array.isArray(category.subcategories)) {
+            category.subcategories.forEach((subcat, index) => {
+                // Ensure uniqueId is present (your existing code has logic for this elsewhere, ensure it's consistent)
+                // The uniqueId should ideally be part of your JSON data for each subcategory.
+                // If not, you might need to generate it reliably, e.g., based on area and title or index.
+                // The provided snippet shows `subcat.uniqueId = subcat.uniqueId || `<span class="math-inline">\{area\}\-</span>{index}`;` in populateMegamenuColumns.
+                // Let's assume `subcat.uniqueId` exists or is generated before this point if necessary.
+                // For safety, let's use a similar pattern if needed:
+                const uniqueId = subcat.uniqueId || `${category.area.toLowerCase().replace(/\s+/g, '-')}-${index}`;
+
+
+                const pillButton = document.createElement('button');
+                pillButton.className = 'subcategory-pill';
+
+                
+                let iconElementHtml = '';
+                if (category.svgString && category.svgString.trim().startsWith('<svg')) { // Assuming you might use svgString here too
+                    iconElementHtml = category.svgString; // This SVG itself should get class 'pill-icon' or be styled
+                } else if (category.icon) {
+                    iconElementHtml = `<i class="fas ${category.icon} pill-icon mr-0"></i>`; // Added pill-icon, removed mr-2
+                } else if (typeof feather !== 'undefined' && category.featherIcon && feather.icons[category.featherIcon]) {
+                    iconElementHtml = feather.icons[category.featherIcon].toSvg({ class: 'pill-icon inline-block w-4 h-4' });
+                } else {
+                    iconElementHtml = `<i class="fas fa-tag pill-icon mr-0"></i>`;
+                }
+                pillButton.innerHTML = '<span class="math-inline">'+iconElementHtml+'<span class="pill-text"></span>'+subcat.title+'</span>';
+
+
+
+                pillButton.dataset.area = category.area.toLowerCase();
+                pillButton.dataset.uniqueid = uniqueId;
+
+                pillButton.addEventListener('click', () => {
+                    const area = pillButton.dataset.area;
+                    const subId = pillButton.dataset.uniqueid;
+
+                    // 1. Show the main category view (which also populates its subcategory columns)
+                    showCategoryView(area);
+
+                    // 2. Display the specific subcategory details in the megamenu details area
+                    //    And ensure the page scrolls to it smoothly.
+                    //    The `displaySubcategoryDetails` function should handle updating the hash.
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            displaySubcategoryDetails(area, subId, true); // true to update hash
+                            const detailsArea = document.getElementById('megamenu-details-area');
+                            if (detailsArea && detailsArea.classList.contains('visible')) {
+                                detailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else {
+                                // If detailsArea is not immediately visible, scroll to category container
+                                const categoryContainer = document.getElementById('category-content-container');
+                                if (categoryContainer) {
+                                     categoryContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }
+                        }, 100); // Delay to allow DOM updates from showCategoryView
+                    });
+                });
+                container.appendChild(pillButton);
+            });
+        }
+    });
+}
+
+
+
+function showInfoPanel(video) {
+     if (!video || !video.youtubeId) { hideInfoPanel(); return; } // Hide if invalid video
+
+     // Local Video Row
+     if (video.localVideoFilename && localVideoRow && localVideoLink && localVideoThumb && localVideoFilenameDisplay) {
+         const videoPath = `/assets/video/${video.localVideoFilename}`;
+         const thumbPath = `/assets/video/thumbnails/${video.localVideoFilename.replace(/\.[^/.]+$/, "")}.jpg`;
+         localVideoLink.href = videoPath;
+         localVideoThumb.src = thumbPath;
+         localVideoThumb.alt = `Thumbnail for ${video.title}`;
+         localVideoFilenameDisplay.textContent = video.localVideoFilename;
+         localVideoRow.classList.add('visible');
+     } else if(localVideoRow) {
+         localVideoRow.classList.remove('visible');
+     }
+
+     // YouTube Info Row - FIX: Correct the URL format
+     const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
+     infoUrlEl.textContent = youtubeWatchUrl;
+     infoUrlEl.href = youtubeWatchUrl; // Make clickable
+     infoUrlEl.classList.remove('placeholder-text');
+     infoTitleEl.textContent = video.title || 'No Title';
+     infoDescriptionEl.textContent = video.description || 'No Description';
+
+     videoInfoPanel.classList.add('visible');
+}
+
+function hideInfoPanel() {
+    infoUrlEl.innerHTML = placeholderText; infoUrlEl.removeAttribute('href');
+    infoTitleEl.textContent = ''; infoDescriptionEl.textContent = '';
+    if (localVideoRow) { localVideoRow.classList.remove('visible'); }
+    if (localVideoLink) { localVideoLink.href = '#'; }
+    if (localVideoThumb) { localVideoThumb.src = 'https://placehold.co/40x40/fef9c3/713f12?text=MP4'; localVideoThumb.alt = 'Local Video Thumbnail'; }
+    if (localVideoFilenameDisplay) { localVideoFilenameDisplay.textContent = ''; }
+    videoInfoPanel.classList.remove('visible');
+}
+
+function generateHomepageModules() {
+    // Assuming 'modulesGrid' is already defined in your scope
+    if (!modulesGrid) {
+        console.error('Error: modulesGrid element not found.');
+        return;
+    }
+    modulesGrid.innerHTML = ''; // Clear previous content
+
+    if (!categoryData || !Array.isArray(categoryData)) {
+        console.error('Error: categoryData is not available or not an array.');
+        return;
+    }
+
+    categoryData.forEach(category => {
+        const moduleDiv = document.createElement('div');
+        const categorySlug = category.area ? category.area.toLowerCase().replace(/\s+/g, '-') : 'unknown-area';
+        moduleDiv.className = `module homepage-module-item ${categorySlug}`;
+        
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'icon';
+
+        let iconSet = false;
+
+        // 1. Prioritize svgString
+        if (category.svgString && typeof category.svgString === 'string' && category.svgString.trim().startsWith('<svg')) {
+            iconContainer.innerHTML = category.svgString;
+            const svgElement = iconContainer.querySelector('svg');
+            if (svgElement) {
+                svgElement.classList.add('custom-svg-icon');
+            }
+            iconSet = true;
+        }
+        
+        // 2. Fallback to Feather Icons
+        if (!iconSet && typeof feather !== 'undefined' && feather.icons && category.featherIcon && feather.icons[category.featherIcon]) {
+            try {
+                iconContainer.innerHTML = feather.icons[category.featherIcon].toSvg();
+                const svgElement = iconContainer.querySelector('svg');
+                if (svgElement) {
+                     svgElement.classList.add('feather-svg-icon');
+                }
+                iconSet = true;
+            } catch (e) {
+                console.error(`Error rendering Feather icon "${category.featherIcon}" for ${category.area || 'Unknown Area'}:`, e);
+            }
+        }
+
+        // 3. Fallback to Font Awesome
+        if (!iconSet && category.icon) {
+            iconContainer.innerHTML = `<i class="fas ${category.icon}"></i>`;
+            iconSet = true;
+        }
+
+        // 4. Generic Fallback
+        if (!iconSet) {
+            console.warn(`No icon specified for category: ${category.area || 'Unknown Area'}. Using default.`);
+            iconContainer.innerHTML = `<i class="fas fa-shapes"></i>`;
+        }
+
+        const titleH2 = document.createElement('h2');
+        titleH2.textContent = category.area || "Untitled Area";
+
+        moduleDiv.appendChild(iconContainer);
+        moduleDiv.appendChild(titleH2);
+
+        // ***** ADD PREVIEW DIV PLACEHOLDER *****
+        const subcategoryPreviewDiv = document.createElement('div');
+        // Assign a class or ID that toggleSubcategoryPreview will use to find it.
+        // Option 1: Using a class name (recommended if multiple previews)
+        subcategoryPreviewDiv.className = 'subcategory-preview-content'; 
+        // Option 2: Using a unique ID (if toggleSubcategoryPreview uses getElementById)
+        // subcategoryPreviewDiv.id = `preview-${categorySlug}`;
+        
+        subcategoryPreviewDiv.style.display = 'none'; // Initially hidden
+        moduleDiv.appendChild(subcategoryPreviewDiv);
+        // *****************************************
+
+        modulesGrid.appendChild(moduleDiv);
+
+        moduleDiv.addEventListener('click', (event) => {
+            if (event.target.closest('.subcategory-preview-link')) {
+                return; 
+            }
+            if (typeof toggleSubcategoryPreview === 'function') {
+                // Pass the moduleDiv (which now contains the preview placeholder)
+                // and the category or its slug.
+                toggleSubcategoryPreview(moduleDiv, category); // Pass the whole category object or just the slug
+            } else {
+                console.warn('toggleSubcategoryPreview function not found, but module was clicked.');
+                if (typeof showCategoryView === 'function' && category.area) {
+                    showCategoryView(category.area.toLowerCase());
+                }
+            }
+        });
+    });
+}
+
+function toggleSubcategoryPreview(moduleElement, areaName) {
+
+
+    const previewDiv = moduleElement.querySelector('.subcategory-preview-content');
+    const isActive = moduleElement.classList.contains('preview-active');
+
+    // Hide any other open previews
+    document.querySelectorAll('.homepage-module.preview-active').forEach(activeModule => {
+        if (activeModule !== moduleElement) {
+            activeModule.classList.remove('preview-active');
+
+            activeModule.querySelector('.subcategory-preview-content').innerHTML = '';
+            activeModule.querySelector('.subcategory-preview-content').classList.remove('visible');
+
+        }
+    });
+
+    if (isActive) {
+        previewDiv.innerHTML = ''; // Clear content
+        previewDiv.classList.remove('visible');
+        moduleElement.classList.remove('preview-active');
+    } else {
+        const category = categoryData.find(cat => cat.area.toLowerCase() === areaName);
+        if (category && category.subcategories && category.subcategories.length > 0) {
+            const ul = document.createElement('ul');
+            ul.className = 'subcategory-preview-list';
+            category.subcategories.forEach(subcat => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `#${areaName}@${subcat.uniqueId}`; // For hash navigation
+                link.textContent = subcat.title;
+                link.className = 'subcategory-preview-link';
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent immediate jump
+                    showCategoryView(areaName); // Show the main category view
+                    // Use rAF and setTimeout to ensure DOM is ready for scrolling to detail
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            displaySubcategoryDetails(areaName, subcat.uniqueId, true);
+                            const detailsArea = document.getElementById('megamenu-details-area');
+                            if (detailsArea) {
+                                detailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 100);
+                    });
+                });
+                li.appendChild(link);
+                ul.appendChild(li);
+            });
+            previewDiv.appendChild(ul);
+            previewDiv.classList.add('visible');
+            moduleElement.classList.add('preview-active');
+        } else {
+            previewDiv.innerHTML = '<p class="no-subcategories-text">No subcategories available.</p>';
+            previewDiv.classList.add('visible');
+            moduleElement.classList.add('preview-active');
+        }
+    }
+}
+
+function initializeSlideshows() {
+    document.querySelectorAll('.featured-slideshow').forEach(slideshow => {
+        const slides = slideshow.querySelectorAll('.slideshow-slide');
+        const prevBtn = slideshow.querySelector('.slideshow-prev');
+        const nextBtn = slideshow.querySelector('.slideshow-next');
+        const dots = slideshow.querySelectorAll('.slideshow-dot');
+        
+        // Skip initialization if no slides found
+        if (!slides.length) {
+            console.warn('No slides found in slideshow:', slideshow);
+            return;
+        }
+        
+        let currentIndex = 0;
+        let intervalId = null;
+        
+        // Function to show a specific slide
+        function showSlide(index) {
+            // Handle index bounds
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            
+            // Update current index
+            currentIndex = index;
+            
+            // Update slides
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentIndex);
+            });
+            
+            // Update dots - make sure we only update as many dots as slides
+            dots.forEach((dot, i) => {
+                if (i < slides.length) {
+                    dot.classList.toggle('active', i === currentIndex);
+                }
+            });
+            
+            // Load the image if it hasn't been loaded yet (lazy loading)
+            const currentSlide = slides[currentIndex];
+            const img = currentSlide.querySelector('img');
+            if (img) {
+                const dataSrc = img.getAttribute('data-src');
+                if (dataSrc && img.src !== dataSrc) {
+                    img.src = dataSrc;
+                }
+            }
+            
+            // Reset the auto-advance timer
+            resetAutoAdvance();
+        }
+        
+        // Function to advance to the next slide
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+        
+        // Function to go back to the previous slide
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+        
+        // Function to start auto-advancing slides
+        function startAutoAdvance() {
+            intervalId = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+        
+        // Function to reset auto-advance timer
+        function resetAutoAdvance() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                startAutoAdvance();
+            }
+        }
+        
+        // Set up click handlers for controls
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        
+        // Set up click handlers for dots
+        dots.forEach((dot, i) => {
+            if (i < slides.length) { // Only add handlers for valid slides
+                dot.addEventListener('click', () => showSlide(i));
+            }
+        });
+        
+        // Set up keyboard navigation
+        slideshow.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            else if (e.key === 'ArrowRight') nextSlide();
+        });
+        
+        // Make slideshow focusable for keyboard navigation
+        slideshow.setAttribute('tabindex', '0');
+        
+        // Start auto-advance
+        startAutoAdvance();
+        
+        // Pause auto-advance when user hovers over the slideshow
+        slideshow.addEventListener('mouseenter', () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        });
+        
+        // Resume auto-advance when user leaves the slideshow
+        slideshow.addEventListener('mouseleave', () => {
+            if (!intervalId) {
+                startAutoAdvance();
+            }
+        });
+        
+        // Load the first image immediately
+        const firstImg = slides[0]?.querySelector('img');
+        if (firstImg) {
+            const firstDataSrc = firstImg.getAttribute('data-src');
+            if (firstDataSrc) {
+                firstImg.src = firstDataSrc;
+            }
+        }
+        
+        // Show the first slide
+        showSlide(0);
+
+        console.log(`Initialized slideshow with ${slides.length} slides`);
+    });
+}
+
+// --- Hash Navigation Functions ---
+// IMPORTANT: Define handleHashChange FIRST to avoid reference errors
+function handleHashChange() {
+    // Get the hash without the # prefix
+    let hash = window.location.hash.substring(1);
+    
+    if (!hash) {
+        showHomepageView(); // Show grid if no hash
+        return;
+    }
+
+    // Normalize hash to lowercase and trim any spaces
+    hash = hash.toLowerCase().trim();
+    console.log(`Processing hash: ${hash}`);
+
+    // Split the hash by @ to check for subcategory requests
+    const parts = hash.split('@');
+    const categoryArea = parts[0]; 
+    const subcategoryId = parts.length > 1 ? parts[1] : null;
+
+    // Find if this category exists in our data
+    const categoryMatch = categoryData.find(cat => 
+        cat.area.toLowerCase() === categoryArea
+    );
+
+    if (categoryMatch) {
+        console.log(`Found category match for hash: #${hash}`);
+        
+        // Show the category view for the requested area
+        showCategoryView(categoryArea);
+
+        // If there's also a subcategory ID specified
+        if (subcategoryId) {
+            // Use requestAnimationFrame + setTimeout to ensure DOM is updated
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    console.log(`Looking for subcategory: ${subcategoryId}`);
+                    
+                    // Try to find the subcategory in the data first
+                    const subcategoryExists = categoryMatch.subcategories.some(
+                        subcat => subcat.uniqueId === subcategoryId
+                    );
+                    
+                    if (subcategoryExists) {
+                        // Display details for the requested subcategory
+                        displaySubcategoryDetails(categoryArea, subcategoryId, false);
+                        
+                        // Scroll to details area after a short delay
+                        setTimeout(() => {
+                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    } else {
+                        console.warn(`Subcategory not found for hash: ${hash}. Showing category view.`);
+                        // Ensure we reset the hash to just the category
+                        history.pushState(null, null, '#' + categoryArea);
+                    }
+                }, 100);
+            });
+        } else {
+            // Just show the category columns view (no specific subcategory)
+            hideSubcategoryDetails(false);
+        }
+    } else {
+        console.warn(`Category not found for hash: ${hash}. Showing homepage.`);
+        showHomepageView(); // Fallback to homepage if invalid category
+    }
+}
+
+// --- Show/Hide Views ---
+function showCategoryView(area) {
+    console.log("Showing category:", area);
+    
+    // Normalize area to lowercase
+    area = area.toLowerCase();
+    
+    // Store current area
+    currentArea = area; 
+    
+    // Find the category object
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    
+    if (category) {
+        // Show the category title
+        showCategoryTitle(category);
+        
+        // Populate the content columns for this area
+        populateMegamenuColumns(area);
+        
+        // Hide the homepage modules grid
+        modulesGridContainer.style.display = 'none'; 
+        
+        // Show the category content container
+        categoryContentContainer.classList.add('visible');
+        
+        // Update hash if it's not already set correctly
+        if (window.location.hash.substring(1).toLowerCase() !== area) {
+            // Use pushState for visible URL change
+            history.pushState(null, null, '#' + area);
+        }
+        
+        // Scroll to top for better user experience
+        window.scrollTo(0, 0);
+    } else {
+        console.error(`Category not found: ${area}`);
+    }
+}
+
+function showHomepageView() {
+    console.log("Showing homepage grid");
+    currentArea = null; // Reset current area
+    hideSubcategoryDetails(false); // Ensure details are hidden
+    hideGlossaryPanel();
+    hideCategoryTitle();
+    modulesGridContainer.style.display = 'block'; // Show module grid
+    categoryContentContainer.classList.remove('visible'); // Hide category content
+    
+    // Use pushState for visible URL change - remove hash
+    if (window.location.hash) {
+        history.pushState(null, document.title, window.location.pathname + window.location.search);
+    }
+}
+
+function populateMegamenuColumns(area) {
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    if (!category) {
+        megamenuColumnsContainer.innerHTML = '<div class="text-center text-gray-500 col-span-1 md:col-span-3">Category data not found.</div>';
+        return;
+    }
+    megamenuColumnsContainer.innerHTML = ''; // Clear previous columns
+    megamenuColumnsContainer.classList.remove('columns-hidden'); // Ensure columns are potentially visible
+    hideSubcategoryDetails(false); // Ensure details area is hidden when showing columns
+
+    const columns = [[], [], []];
+    category.subcategories.forEach((subcat, index) => {
+         subcat.uniqueId = subcat.uniqueId || `${area}-${index}`;
+         columns[index % 3].push(subcat);
+    });
+
+    columns.forEach((columnSubcats) => {
+        const columnDiv = document.createElement('div');
+        columnDiv.className = 'space-y-6';
+        if (columnSubcats.length > 0) {
+            columnSubcats.forEach((subcat) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'subcategory-item';
+                let tagsHtml = '';
+                if (subcat.tags && subcat.tags.length > 0) {
+                    tagsHtml = '<div class="mt-2 flex flex-wrap gap-1">' +
+                        subcat.tags.map(tag =>
+                            `<button class="tag-pill-button glossary-trigger" data-tag="${tag.toLowerCase()}">${tag}</button>`
+                        ).join('') + '</div>';
+                }
+                itemDiv.innerHTML = `
+                    <h4 class="text-md font-semibold text-gray-800 mb-1">${subcat.title}</h4>
+                    <p class="text-sm text-gray-600">${subcat.description}</p>
+                    ${tagsHtml}
+                    <button class="subcategory-toggle text-sm text-blue-600 hover:text-blue-800 hover:underline mt-3" data-area="${area}" data-uniqueid="${subcat.uniqueId}">
+                        Show More Info
+                    </button>`;
+                columnDiv.appendChild(itemDiv);
+            });
+        }
+        megamenuColumnsContainer.appendChild(columnDiv);
+    });
+}
+
+// --- Glossary Functions ---
+function displayGlossaryEntry(tag) {
+    const definition = tagGlossary[tag] || "Definition not found for this tag.";
+    const term = tag.charAt(0).toUpperCase() + tag.slice(1);
+    glossaryPanel.innerHTML = `
+        <button class="glossary-close-button" aria-label="Close glossary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg>
+        </button>
+        <h4 class="font-semibold text-lg text-white mb-1 pr-8">${term}</h4>
+        <p class="text-sm text-gray-300">${definition}</p>
+    `;
+    glossaryPanel.querySelector('.glossary-close-button').addEventListener('click', hideGlossaryPanel);
+    glossaryPanel.classList.add('visible');
+    bodyElement.classList.add('glossary-visible'); // Keep this class for potential styling needs
+}
+
+function hideGlossaryPanel() {
+    glossaryPanel.classList.remove('visible');
+    bodyElement.classList.remove('glossary-visible');
+    if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); activeGlossaryTrigger = null; }
+    setTimeout(() => { if (!glossaryPanel.classList.contains('visible')) { glossaryPanel.innerHTML = '<p class="text-center text-gray-400">Click a tag to see its definition.</p>'; } }, 400);
+}
+
+function handleGlossaryTriggerClick(event) {
+    event.stopPropagation();
+    const currentButton = event.target;
+    const tag = currentButton.dataset.tag;
+    if (activeGlossaryTrigger === currentButton) { hideGlossaryPanel(); }
+    else { if (activeGlossaryTrigger) { activeGlossaryTrigger.classList.remove('active'); } displayGlossaryEntry(tag); currentButton.classList.add('active'); activeGlossaryTrigger = currentButton; }
+}
+
+// --- Subcategory Details Functions ---
+function displaySubcategoryDetails(area, uniqueId, updateHash = true) {
+    console.log(`Displaying subcategory details: ${area}/${uniqueId}`);
+    
+    const category = categoryData.find(cat => cat.area.toLowerCase() === area);
+    if (!category) {
+        console.error(`Category not found: ${area}`);
+        megamenuDetailsArea.innerHTML = '<p>Category not found.</p>'; 
+        megamenuDetailsArea.classList.add('visible');
+        return;
+    }
+    
+    const currentSubcategory = category.subcategories.find(sub => sub.uniqueId === uniqueId);
+    if (!currentSubcategory) {
+        console.error(`Subcategory not found: ${uniqueId}`);
+        megamenuDetailsArea.innerHTML = '<p>Subcategory details not found.</p>'; 
+        megamenuDetailsArea.classList.add('visible');
+        return;
+    }
+    
+    console.log("Found subcategory:", currentSubcategory.title);
+
+    // Generate sibling links for navigation between subcategories
+    let siblingLinksHtml = '';
+    if (category.subcategories && category.subcategories.length > 1) {
+        siblingLinksHtml = '<div class="sibling-links-container"><span>See also: </span>';
+        category.subcategories.forEach(subcat => {
+            if (!subcat.uniqueId) { 
+                console.warn("Missing uniqueId:", subcat.title); 
+                return; 
+            }
+            const isCurrent = subcat.uniqueId === uniqueId;
+            siblingLinksHtml += `<button class="sibling-link-pill ${isCurrent ? 'current' : ''}" 
+                                data-area="${area}" data-uniqueid="${subcat.uniqueId}" 
+                                ${isCurrent ? 'disabled' : ''}>${subcat.title}</button>`;
+        });
+        siblingLinksHtml += '</div>';
+    }
+
+    // Start building the detailed content HTML
+    let detailsHtml = `
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">${currentSubcategory.title}</h3>
+        ${siblingLinksHtml}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Context</h5>
+                <p class="text-sm text-gray-600">${currentSubcategory.context || 'No context information available.'}</p>
+            </div>
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Materials</h5>
+                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                    ${currentSubcategory.materials && currentSubcategory.materials.length > 0 
+                        ? currentSubcategory.materials.map(m => `<li>${m}</li>`).join('') 
+                        : '<li>No materials information available.</li>'}
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold text-md text-gray-700 mb-2 border-b pb-1">Process Steps</h5>
+                <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                    ${currentSubcategory.processSteps && currentSubcategory.processSteps.length > 0
+                        ? currentSubcategory.processSteps.map(s => `<li>${s}</li>`).join('') 
+                        : '<li>No process steps information available.</li>'}
+                </ol>
+            </div>
+        </div>`;
+
+    // Add videos section if available
+    if (currentSubcategory.videos && currentSubcategory.videos.length > 0) {
+        detailsHtml += `
+            <h4 class="text-lg font-semibold text-gray-700 mb-3 pt-4 border-t">Related Videos</h4>
+            <div class="video-linker-container">`;
+        
+        currentSubcategory.videos.forEach(video => {
+            // Skip invalid videos
+            if (!video.youtubeId) {
+                console.warn("Skipping video with missing youtubeId:", video);
+                return;
+            }
+            
+            // Ensure flat_index exists (create one if needed)
+            const flatIndex = video.flat_index !== undefined ? video.flat_index : 0;
+            
+            // Build video link
+            const youtubeWatchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
+            const bgColor = video.color_tag || '#6c757d';
+            const iconClass = video.icon_tag_fa || 'fas fa-video';
+            const useNoIconFallback = !iconClass || iconClass === 'fas fa-video';
+            
+            detailsHtml += `
+                <a href="${youtubeWatchUrl}" target="_blank" 
+                   class="video-linker ${useNoIconFallback ? 'no-icon' : ''}" 
+                   style="background-color: ${bgColor};" data-flat-index="${flatIndex}" 
+                   title="Open video: ${video.title || 'Watch Video'}">`;
+            
+            if (!useNoIconFallback) { 
+                detailsHtml += `<i class="${iconClass}"></i>`; 
+            } else { 
+                detailsHtml += (video.title || 'Video').substring(0, 15) + 
+                    ((video.title && video.title.length > 15) ? '...' : ''); 
+            }
+            
+            detailsHtml += `</a>`;
+        });
+        
+        detailsHtml += `</div>`;
+    }
+
+    // Add share and back buttons
+    detailsHtml += `
+        <div class="mt-8 flex justify-between items-center"  style="height: 100px;">
+            <div>
+                <button class="bg-blue-600 text-white py-1 px-3 rounded text-sm share-subcategory-link" 
+                        data-area="${area}" data-uniqueid="${uniqueId}">
+                    <i class="fas fa-link mr-1"></i> Share Link
+                </button>
+            </div>
+            <div>
+                <button class="details-back-button">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Subcategories
+                </button>
+            </div>
+        </div>`;
+
+    // Update the DOM
+    megamenuDetailsArea.innerHTML = detailsHtml;
+    megamenuColumnsContainer.classList.add('columns-hidden'); // Hide columns
+    megamenuDetailsArea.classList.add('visible'); // Show details
+
+    // Update URL hash for deep linking
+    if (updateHash) {
+        const newHash = `${area}@${uniqueId}`;
+        history.pushState(null, null, '#' + newHash);
+    }
+
+    // Update the active state of the toggle button in the columns view
+    const correspondingToggle = megamenuColumnsContainer.querySelector(
+        `.subcategory-toggle[data-area="${area}"][data-uniqueid="${uniqueId}"]`
+    );
+    
+    if (correspondingToggle) {
+        if (activeSubcategoryToggle && activeSubcategoryToggle !== correspondingToggle) {
+            activeSubcategoryToggle.classList.remove('active');
+            activeSubcategoryToggle.textContent = 'Show More Info';
+        }
+        
+        correspondingToggle.classList.add('active');
+        correspondingToggle.textContent = 'Hide Info';
+        activeSubcategoryToggle = correspondingToggle;
+    }
+    
+    // Set up share button functionality
+    setupShareButton(area, uniqueId);
+}
+
+function hideSubcategoryDetails(updateHash = true) {
+    const detailsWereVisible = megamenuDetailsArea.classList.contains('visible');
+    megamenuDetailsArea.classList.remove('visible');
+    megamenuColumnsContainer.classList.remove('columns-hidden'); // Show columns again
+    
+    // Reset toggle button states
+    if (activeSubcategoryToggle) {
+        activeSubcategoryToggle.classList.remove('active');
+        activeSubcategoryToggle.textContent = 'Show More Info';
+        activeSubcategoryToggle = null;
+    }
+    
+    // Update URL
+    if (detailsWereVisible && updateHash && currentArea) {
+        history.pushState(null, null, '#' + currentArea);
+    }
+    
+    hideInfoPanel(); // Hide video panel
+    
+    setTimeout(() => { 
+        if (!megamenuDetailsArea.classList.contains('visible')) { 
+            megamenuDetailsArea.innerHTML = ''; 
+        } 
+    }, 400);
+}
+
+function handleSubcategoryToggle(event) {
+    event.stopPropagation();
+    const currentButton = event.target;
+    const area = currentButton.dataset.area;
+    const uniqueId = currentButton.dataset.uniqueid;
+    
+    if (activeSubcategoryToggle === currentButton) {
+        // If the same toggle is clicked, hide details
+        hideSubcategoryDetails(true);
+    } else {
+        // Display the subcategory details
+        displaySubcategoryDetails(area, uniqueId, true);
+        
+        // Scroll to details area
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+    }
+}
+
+// --- Category Title Display Functions ---
+function showCategoryTitle(category) {
+    const displayName = category.area || 'Category'; // Use Area name
+    categoryTitleDisplay.textContent = displayName;
+    categoryTitleDisplay.classList.add('visible');
+}
+
+function hideCategoryTitle() {
+    categoryTitleDisplay.classList.remove('visible');
+    setTimeout(() => { if (!categoryTitleDisplay.classList.contains('visible')) { categoryTitleDisplay.textContent = ''; } }, 400);
+}
+
+// --- Sharing Functions ---
+function setupShareButton(area, uniqueId) {
+    const shareButton = megamenuDetailsArea.querySelector('.share-subcategory-link');
+    if (shareButton) {
+        shareButton.addEventListener('click', function() {
+            const shareableLink = getShareableLink(area, uniqueId);
+            
+            // Copy the link to clipboard
+            navigator.clipboard.writeText(shareableLink)
+                .then(() => {
+                    // Provide visual feedback
+                    const originalText = shareButton.innerHTML;
+                    shareButton.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+                    setTimeout(() => {
+                        shareButton.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback method
+                    prompt('Copy this link to share:', shareableLink);
+                });
+        });
+    }
+}
+
+function getShareableLink(area, uniqueId) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}#${area.toLowerCase()}@${uniqueId}`;
+}
+
+
+function populateAreaNavIcons(categoriesInfo) { // Expects array like [{ name: "Area Name", svgString: "<svg...", slug: "area-slug", icon: "fa-fallback" }]
+    const expandedNavContainer = document.getElementById('areaNavIconsExpanded');
+    const minimizedNavContainer = document.getElementById('areaNavIconsMinimized');
+
+    if (!expandedNavContainer || !minimizedNavContainer) {
+        console.error("Area navigation icon containers ('areaNavIconsExpanded' or 'areaNavIconsMinimized') not found in the DOM. Ensure these IDs exist in your floating search menu HTML.");
+        return;
+    }
+
+    expandedNavContainer.innerHTML = ''; // Clear previous icons
+    minimizedNavContainer.innerHTML = ''; // Clear previous icons
+
+    if (!categoriesInfo || categoriesInfo.length === 0) {
+        console.warn("No category information provided to populateAreaNavIcons.");
+        return;
+    }
+
+    categoriesInfo.forEach(areaInfo => {
+        const areaSlug = areaInfo.slug; // Expecting slug like 'water', 'shelter'
+        const areaDisplayName = areaInfo.name;
+
+        if (!areaSlug || !areaDisplayName) {
+            console.error("Missing slug or name in areaInfo for navigation icons:", areaInfo);
+            return; // Skip this icon if essential info is missing
+        }
+
+        // Helper function to create each icon element (since we need two identical ones)
+        const createIconElement = () => {
+            const iconWrapper = document.createElement('div');
+            iconWrapper.className = 'nav-area-icon-wrapper'; // For styling the clickable area & SVG container
+            iconWrapper.title = `Go to ${areaDisplayName}`;
+
+            if (areaInfo.svgString && typeof areaInfo.svgString === 'string' && areaInfo.svgString.trim().startsWith('<svg')) {
+                iconWrapper.innerHTML = areaInfo.svgString;
+                const svgElement = iconWrapper.querySelector('svg');
+                if (svgElement) {
+                    svgElement.classList.add('area-nav-svg'); // Add class for specific CSS targeting of the SVG
+                    // Ensure SVG scales by removing fixed dimensions if CSS is to control it
+                    svgElement.removeAttribute('width');
+                    svgElement.removeAttribute('height');
+                }
+            } else {
+                // Fallback if no svgString (e.g., use Font Awesome)
+                const fallbackIcon = document.createElement('i');
+                fallbackIcon.className = `fas ${areaInfo.icon || 'fa-folder-open'} nav-area-fallback-icon`;
+                iconWrapper.appendChild(fallbackIcon);
+                console.warn(`SVG string missing for area "${areaDisplayName}", using fallback icon.`);
+            }
+
+            iconWrapper.addEventListener('click', () => {
+                console.log(`Header icon clicked for area: '${areaDisplayName}'. Calling showCategoryView with slug: '${areaSlug}'`);
+                if (typeof showCategoryView === 'function') {
+                    showCategoryView(areaSlug); // This is the key call to change the view
+
+                    // Optionally, close/minimize the search menu after navigation
+                    const floatingMenu = document.getElementById('floatingSearchMenu');
+                    const toggleButton = document.getElementById('toggleSearchDisplayBtn');
+                    if (floatingMenu && toggleButton && !floatingMenu.classList.contains('minimized')) {
+                        toggleButton.click(); // Simulate click to trigger minimize logic
+                    }
+                } else {
+                    console.error(`showCategoryView function is not defined! Cannot navigate to area '${areaDisplayName}'.`);
+                }
+            });
+            return iconWrapper;
+        };
+
+        expandedNavContainer.appendChild(createIconElement());
+        minimizedNavContainer.appendChild(createIconElement());
+    });
+    console.log("Area navigation icons populated.");
+}
+
+// --- Function to build the searchableItems array for search autocomplete ---
+
+function buildSearchableItems(data) {
+    searchableItems = []; // Reset before building
+    if (!data || !Array.isArray(data)) {
+        console.error("Invalid data provided to buildSearchableItems");
+        return;
+    }
+    data.forEach(area => {
+        if (!area || !area.area) return; // Skip if area or area.area is undefined
+
+        // Add Area itself as a searchable module (if you want to search for main areas)
+        // searchableItems.push({
+        //     id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`, // ID for the area section
+        //     title: area.area,
+        //     type: 'module', // or 'area'
+        //     icon: area.icon || 'fa-cubes',
+        //     areaName: area.area, // For navigation
+        //     slug: area.area.toLowerCase().replace(/\s+/g, '-')
+        // });
+
+        if (area.subcategories && Array.isArray(area.subcategories)) {
+            area.subcategories.forEach((subcategory, subcatIndex) => {
+                if (!subcategory || !subcategory.title) return; // Skip if subcategory or title is undefined
+
+                const subcategorySlugBase = area.area.toLowerCase().replace(/\s+/g, '-');
+                const subcategoryUniqueId = subcategory.uniqueId || `${subcategorySlugBase}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
+                
+                // Add Subcategory to searchable items
+                searchableItems.push({
+                    id: `subcategory-${subcategoryUniqueId}`, // An ID for a potential element representing the subcategory
+                    title: subcategory.title,
+                    type: 'module', // Or 'subcategory'
+                    icon: subcategory.icon || area.icon || 'fa-cube',
+                    areaName: area.area,
+                    areaSlug: subcategorySlugBase,
+                    uniqueId: subcategoryUniqueId // Used by displaySubcategoryDetails
+                });
+
+                if (subcategory.videos && Array.isArray(subcategory.videos)) {
+                    subcategory.videos.forEach((video, videoIndex) => {
+                        if (video && video.youtubeId && video.title) {
+                            const videoSearchableId = `video-search-${subcategoryUniqueId}-${videoIndex}`;
+                            searchableItems.push({
+                                id: videoSearchableId, // This ID needs to be on the video element if you want to scroll to it
+                                title: video.title,
+                                description: video.description || '',
+                                type: 'video',
+                                icon: video.icon_tag_fa || 'fa-play-circle',
+                                areaName: area.area,
+                                areaSlug: subcategorySlugBase,
+                                subcatUniqueId: subcategoryUniqueId,
+                                flat_index: video.flat_index // Useful for showInfoPanel
+                                // Add youtubeId if search result click should play video directly
+                                // youtubeId: video.youtubeId 
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+    console.log(`Built ${searchableItems.length} searchable items.`);
+}
+
+// --- Function to set up interactions for the floating search menu ---
+function setupSearchMenuInteractions() {
+    const openSearchHeaderButton = document.getElementById('openSearchHeaderButton');
+    const floatingMenu = document.getElementById('floatingSearchMenu');
+    const internalToggleBtn = document.getElementById('toggleSearchDisplayBtn');
+    const searchInput = document.getElementById('searchInput');
+
+    if (!floatingMenu || !internalToggleBtn) {
+        console.error("Floating search menu (#floatingSearchMenu) or its toggle button (#toggleSearchDisplayBtn) not found.");
+        return;
+    }
+
+    // Initial state: hidden & minimized (CSS handles opacity/transform, JS adds 'visible' class)
+    floatingMenu.classList.add('minimized');
+    // floatingMenu.classList.remove('visible'); // Start fully hidden, or manage with CSS transitions
+
+    if (openSearchHeaderButton) {
+        openSearchHeaderButton.addEventListener('click', () => {
+            console.log("Open Search Header Button clicked");
+            floatingMenu.classList.add('visible'); // Make it appear
+
+            if (floatingMenu.classList.contains('minimized')) {
+                internalToggleBtn.click(); // Expands it and handles icon
+            } else {
+                 // If already visible and expanded, maybe just focus input
+                if (searchInput) setTimeout(() => searchInput.focus(), 50);
+            }
+        });
+    }
+
+    internalToggleBtn.addEventListener('click', () => {
+        const isNowMinimized = floatingMenu.classList.toggle('minimized');
+        const icon = internalToggleBtn.querySelector('i');
+        if (!icon) return;
+
+        if (isNowMinimized) {
+            icon.className = 'fas fa-search'; // Or your preferred "magnifying glass" icon
+            internalToggleBtn.title = 'Expand Search';
+            floatingMenu.classList.remove('visible'); // Hide completely when minimized by its own button
+        } else {
+            icon.className = 'fas fa-chevron-up';
+            internalToggleBtn.title = 'Collapse Search';
+            floatingMenu.classList.add('visible'); // Ensure it's visible when expanded
+            if (searchInput) setTimeout(() => searchInput.focus(), 50);
+        }
+    });
+
+    // Optional: Click outside to hide the floating search menu
+    document.addEventListener('click', function(event) {
+        if (floatingMenu.classList.contains('visible') &&
+            !floatingMenu.contains(event.target) &&
+            (!openSearchHeaderButton || !openSearchHeaderButton.contains(event.target))) {
+            
+            // If it's expanded, minimize it first (which also hides it via the logic above)
+            if (!floatingMenu.classList.contains('minimized')) {
+                 internalToggleBtn.click();
+            } else {
+                // If already minimized but still 'visible', just remove 'visible'
+                floatingMenu.classList.remove('visible');
+            }
+        }
+    }, true); // Use capture phase
+
+    console.log("Search menu interactions set up.");
+}
+
+
+// Ensure allVideosFlat is populated by flattenVideoData() and accessible globally
+// Ensure megamenuDetailsArea and megamenuColumnsContainer are accessible
+
+function displaySingleVideoInPane(videoItemFromSearch) {
+    if (!allVideosFlat || !megamenuDetailsArea || !megamenuColumnsContainer) {
+        console.error("Required elements or data for displaySingleVideoInPane are missing.");
+        return;
+    }
+
+    const fullVideoData = allVideosFlat.find(v => v.flat_index === videoItemFromSearch.flat_index);
+
+    if (!fullVideoData || !fullVideoData.youtubeId) {
+        console.error("Full video data not found or invalid for:", videoItemFromSearch);
+        megamenuDetailsArea.innerHTML = '<p class="p-4 text-red-600">Video details could not be loaded.</p>';
+        megamenuDetailsArea.classList.add('visible');
+        megamenuColumnsContainer.classList.add('columns-hidden'); // Hide subcategory columns
+        return;
+    }
+
+    console.log("Displaying single video in pane:", fullVideoData.title);
+    const youtubeEmbedUrl = `https://www.youtube.com/embed/${fullVideoData.youtubeId}?autoplay=1&rel=0`; // Added autoplay and removed related videos
+
+    let videoDetailsHtml = `
+        <div class="video-detail-pane-content p-4 md:p-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3">${fullVideoData.title}</h3>
+            
+            
+            <div class="aspect-w-16 aspect-h-9 mb-4 rounded-lg overflow-hidden shadow-lg">
+                <iframe 
+                    src="${youtubeEmbedUrl}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen
+                    title="YouTube video player for ${fullVideoData.title}"
+                ></iframe>
+            </div>
+
+            <div class="text-sm text-gray-700 space-y-2">
+                ${fullVideoData.description ? `<p><strong>Description:</strong><br>${fullVideoData.description}</p>` : ''}
+                ${fullVideoData.authors ? `<p><strong>Author(s):</strong> ${fullVideoData.authors}</p>` : ''}
+                ${fullVideoData.licence ? `<p><strong>License:</strong> ${fullVideoData.licence}</p>` : ''}
+                ${fullVideoData.contentCreatorArchive ? `<p><strong>Creator Archive:</strong> <a href="${fullVideoData.contentCreatorArchive}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.contentCreatorArchive}</a></p>` : ''}
+                ${fullVideoData.patreon ? `<p><strong>Patreon:</strong> <a href="${fullVideoData.patreon}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${fullVideoData.patreon}</a></p>` : ''}
+                
+            </div>
+
+            <div class="mt-8 flex justify-end">
+                <button class="details-back-button-video-pane bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md flex items-center transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Subcategory
+                </button>
+            </div>
+        </div>
+    `;
+
+    megamenuDetailsArea.innerHTML = videoDetailsHtml;
+    megamenuColumnsContainer.classList.add('columns-hidden'); // Ensure subcategory columns are hidden
+    megamenuDetailsArea.classList.add('visible');             // Ensure details area is visible
+
+    // Update URL hash if you want a specific hash for videos (e.g., #area@subcatId@videoId)
+    // For now, we can update it to the parent subcategory or just the area.
+    // Let's assume videoItemFromSearch has .areaSlug and .subcatUniqueId from buildSearchableItems
+    if (videoItemFromSearch.areaSlug && videoItemFromSearch.subcatUniqueId) {
+        const newHash = `${videoItemFromSearch.areaSlug}@${videoItemFromSearch.subcatUniqueId}`; // Points to parent subcategory
+        if (window.location.hash.substring(1) !== newHash) {
+            history.pushState(null, null, '#' + newHash);
+        }
+    }
+
+    // Event listener for the "Back to Subcategory" button in this specific view
+    const backButton = megamenuDetailsArea.querySelector('.details-back-button-video-pane');
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            if (typeof displaySubcategoryDetails === 'function' && videoItemFromSearch.areaSlug && videoItemFromSearch.subcatUniqueId) {
+                // Go back to the parent subcategory's detailed view
+                displaySubcategoryDetails(videoItemFromSearch.areaSlug, videoItemFromSearch.subcatUniqueId, true);
+            } else {
+                // Fallback: just hide details, which should show subcategory columns of the current area
+                hideSubcategoryDetails(true); 
+            }
+        });
+    }
+}
+
+
+/////////////////
+
+// --- Megamenu Functions ---
+let isMegaMenuOpen = false; // Track state
+
+function populateMegaMenu(sortedCategoryData) {
+    const megaMenuWrapper = document.querySelector('#megaMenuPanel .mega-menu-content-wrapper');
+    if (!megaMenuWrapper) {
+        console.error("Megamenu content wrapper not found.");
+        return;
+    }
+    megaMenuWrapper.innerHTML = ''; // Clear existing
+
+    if (!sortedCategoryData || sortedCategoryData.length === 0) {
+        megaMenuWrapper.innerHTML = '<p>No categories to display.</p>';
+        return;
+    }
+
+    sortedCategoryData.forEach(category => {
+        if (!category.area || !category.subcategories) return;
+
+        const columnDiv = document.createElement('div');
+        columnDiv.className = 'mega-menu-category-column';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'mega-menu-category-title';
+
+        // Icon for the main category title
+        if (category.svgString && typeof category.svgString === 'string' && category.svgString.trim().startsWith('<svg')) {
+            const iconWrapper = document.createElement('span');
+            iconWrapper.innerHTML = category.svgString;
+            const svgElement = iconWrapper.querySelector('svg');
+            if (svgElement) {
+                svgElement.classList.add('area-nav-svg'); // Use existing class for sizing
+                svgElement.removeAttribute('width');
+                svgElement.removeAttribute('height');
+            }
+            titleDiv.appendChild(iconWrapper);
+        } else if (category.icon) { // Fallback to Font Awesome
+            const iconElement = document.createElement('i');
+            iconElement.className = `fas ${category.icon} nav-area-fallback-icon`;
+            titleDiv.appendChild(iconElement);
+        }
+        
+        const titleText = document.createElement('span');
+        titleText.textContent = category.area;
+        titleDiv.appendChild(titleText);
+        // Make the main category title itself clickable to show its column view
+        titleDiv.style.cursor = 'pointer';
+        titleDiv.addEventListener('click', () => {
+            const areaSlug = category.area.toLowerCase().replace(/\s+/g, '-');
+            if (typeof showCategoryView === 'function') {
+                showCategoryView(areaSlug);
+                closeMegaMenu(); // Close megamenu after navigation
+            }
+        });
+
+
+        columnDiv.appendChild(titleDiv);
+
+        const subcatList = document.createElement('ul');
+        subcatList.className = 'mega-menu-subcategory-list';
+
+        category.subcategories.forEach(subcat => {
+            if (!subcat.title) return;
+            const areaSlug = category.area.toLowerCase().replace(/\s+/g, '-');
+            const subcatUniqueId = subcat.uniqueId || `${areaSlug}-${subcat.title.toLowerCase().replace(/\s+/g, '-')}`;
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${areaSlug}@${subcatUniqueId}`;
+            link.textContent = subcat.title;
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (typeof showCategoryView === 'function') {
+                    showCategoryView(areaSlug); // Show the main category context
+                    requestAnimationFrame(() => {
+                        setTimeout(() => { // Ensure category view is rendered
+                            if (typeof displaySubcategoryDetails === 'function') {
+                                displaySubcategoryDetails(areaSlug, subcatUniqueId, true); // true to update hash
+                                if (megamenuDetailsArea) {
+                                    megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }
+                        }, 50);
+                    });
+                }
+                closeMegaMenu(); // Close megamenu after navigation
+            });
+
+            listItem.appendChild(link);
+            subcatList.appendChild(listItem);
+        });
+
+        columnDiv.appendChild(subcatList);
+        megaMenuWrapper.appendChild(columnDiv);
+    });
+    console.log("Megamenu populated.");
+}
+
+function openMegaMenu() {
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    if (megaMenuPanel && browseBtn) {
+        megaMenuPanel.classList.add('visible');
+        browseBtn.classList.add('active');
+        browseBtn.setAttribute('aria-expanded', 'true');
+        isMegaMenuOpen = true;
+        console.log("Megamenu opened.");
+    }
+}
+
+function closeMegaMenu() {
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    if (megaMenuPanel && browseBtn) {
+        megaMenuPanel.classList.remove('visible');
+        browseBtn.classList.remove('active');
+        browseBtn.setAttribute('aria-expanded', 'false');
+        isMegaMenuOpen = false;
+        console.log("Megamenu closed.");
+    }
+}
+
+function toggleMegaMenu() {
+    if (isMegaMenuOpen) {
+        closeMegaMenu();
+    } else {
+        openMegaMenu();
+    }
+}
+
+function initializeMegaMenu(categoryDataForMenu) {
+    const browseBtn = document.getElementById('browseTopicsBtn');
+    const megaMenuPanel = document.getElementById('megaMenuPanel');
+
+    if (!browseBtn || !megaMenuPanel) {
+        console.error("Browse Topics button or Megamenu panel not found.");
+        return;
+    }
+
+    // Sort categoryData alphabetically by area name for the megamenu
+    const sortedCategoryData = [...categoryDataForMenu].sort((a, b) => {
+        if (a.area && b.area) {
+            return a.area.localeCompare(b.area);
+        }
+        return 0;
+    });
+
+    if (typeof populateMegaMenu === 'function') {
+        populateMegaMenu(sortedCategoryData);
+    } else {
+        console.error("populateMegaMenu function is not defined.");
+    }
+
+    browseBtn.setAttribute('aria-haspopup', 'true');
+    browseBtn.setAttribute('aria-expanded', 'false');
+
+    browseBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent click outside from immediately closing
+        toggleMegaMenu();
+    });
+
+    // Close megamenu if clicked outside
+    document.addEventListener('click', function(event) {
+        if (isMegaMenuOpen && !megaMenuPanel.contains(event.target) && event.target !== browseBtn && !browseBtn.contains(event.target)) {
+            closeMegaMenu();
+        }
+    });
+
+    // Close megamenu with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (isMegaMenuOpen && event.key === 'Escape') {
+            closeMegaMenu();
+            browseBtn.focus(); // Return focus to the trigger button
+        }
+    });
+    console.log("Megamenu initialized.");
+}
+
+
+
+
+
+
+
+
+function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+
+            if (searchTerm.length < 2) { // Only search if term is 2+ chars
+                return;
+            }
+
+            const filteredModules = searchableItems.filter(item =>
+                item.type === 'module' && item.title.toLowerCase().includes(searchTerm)
+            );
+
+            const filteredVideos = searchableItems.filter(item =>
+                item.type === 'video' &&
+                (item.title.toLowerCase().includes(searchTerm) || (item.description && item.description.toLowerCase().includes(searchTerm)))
+            );
+
+            if (filteredModules.length > 0) {
+                const moduleLabel = document.createElement('div');
+                moduleLabel.className = 'suggestion-category-label';
+                moduleLabel.textContent = 'Learning Modules';
+                resultsContainer.appendChild(moduleLabel);
+
+                filteredModules.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerHTML = `<i class="fas ${item.icon} module-icon"></i> <span>${item.title}</span>`;
+                    div.onclick = () => {
+                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        resultsContainer.innerHTML = ''; // Clear results after click
+                        document.getElementById('searchInput').value = ''; // Clear search input
+                    };
+                    resultsContainer.appendChild(div);
+                });
+            }
+
+            if (filteredVideos.length > 0) {
+                 const videoLabel = document.createElement('div');
+                videoLabel.className = 'suggestion-category-label';
+                videoLabel.textContent = 'Videos';
+                resultsContainer.appendChild(videoLabel);
+
+                filteredVideos.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    // Highlight search term in title - basic implementation
+                    let displayTitle = item.title;
+                    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    displayTitle = displayTitle.replace(regex, '<mark>$1</mark>');
+
+                    div.innerHTML = `<i class="fas ${item.icon} video-icon-search"></i> <span title="${item.description || ''}">${displayTitle}</span>`;
+
+                    div.onclick = () => {
+                        if (!item.areaSlug) { // item here is the video object from searchableItems
+                            console.error("Video item from search is missing areaSlug:", item);
+                            return;
+                        }
+
+                        if (typeof showCategoryView === 'function') {
+                            showCategoryView(item.areaSlug); // Show the general category view container (makes megamenuDetailsArea available)
+                            
+                            requestAnimationFrame(() => { // Ensure DOM is ready for content update
+                                setTimeout(() => {
+                                    if (typeof displaySingleVideoInPane === 'function') {
+                                        displaySingleVideoInPane(item); // 'item' is the video object from searchableItems
+                                        
+                                        if (megamenuDetailsArea) { // Scroll the details area into view
+                                            megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        }
+                                    } else {
+                                        console.error("displaySingleVideoInPane function not defined.");
+                                    }
+                                }, 50); // Small delay might be needed for showCategoryView to complete its DOM changes
+                            });
+                        } else {
+                            console.error("showCategoryView function not defined.");
+                        }
+
+                        // Clear search input and results, and close the search menu
+                        if (resultsContainer) resultsContainer.innerHTML = '';
+                        const searchInputEl = document.getElementById('searchInput');
+                        if (searchInputEl) searchInputEl.value = '';
+                        
+                        const floatingMenu = document.getElementById('floatingSearchMenu');
+                        const internalToggleBtn = document.getElementById('toggleSearchDisplayBtn');
+                        if (floatingMenu && internalToggleBtn && !floatingMenu.classList.contains('minimized') && floatingMenu.classList.contains('visible')) {
+                            internalToggleBtn.click(); // This should minimize and hide it
+                        }
+                    };    
+
+                    resultsContainer.appendChild(div);
+                });
+            }
+             if (filteredModules.length === 0 && filteredVideos.length === 0) {
+                resultsContainer.innerHTML = '<div class="suggestion-item" style="justify-content:center;">No results found.</div>';
+            }
+        }
+
+    document.addEventListener('DOMContentLoaded', async function() { 
+
+    console.log("Initializing Approvideo Learning Hub...");
+
+    try {
+        const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        categoryData = jsonData;
+        console.log("Successfully loaded categoryData from JSON file:", categoryData.length, "items");
+
+        if (!categoryData || categoryData.length === 0) {
+            console.error("Fetched JSON data is empty or invalid. Halting further app initialization.");
+            document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
+            return;
+        }
+    } catch (error) {
+        console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
+        document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
+        return;
+    }
+
+    console.log("Proceeding with page initialization using fetched categoryData.");
+
+    // 1. Initialize Core Data Structures
+    flattenVideoData(categoryData);     // Populates global 'allVideosFlat'
+    if (typeof buildSearchableItems === 'function') {
+        buildSearchableItems(categoryData); // Populates global 'searchableItems'
+    } else {
+        console.error("CRITICAL: buildSearchableItems function is NOT defined.");
+    }
+
+    // 2. Prepare Data for and Populate Area Navigation Icons (for header and search menu)
+    const categoryAreasForNav = categoryData.map(cat => ({
+        name: cat.area,
+        slug: cat.area ? cat.area.toLowerCase().replace(/\s+/g, '-') : `unknown-area-${Date.now()}`,
+        svgString: cat.svgString,
+        icon: cat.icon 
+    }));
+
+    if (typeof populateAreaNavIcons === 'function') {
+        populateAreaNavIcons(categoryAreasForNav);
+    } else {
+        console.error("CRITICAL: populateAreaNavIcons function is NOT defined.");
+    }
+
+    // Initialize Megamenu (depends on categoryData)
+    if (typeof initializeMegaMenu === 'function') {
+            initializeMegaMenu(categoryData); // Pass the original categoryData or categoryAreasForNav if it has all needed fields
+        } else {
+            console.error("CRITICAL: initializeMegaMenu function is NOT defined.");
+    }
+
+
+
+
+    // 3. Initialize UI Components & Main Interactions
+    generateHomepageModules();           // Renders homepage category cards
+    populateSubcategoryPills(categoryData); // Renders subcategory filter pills
+
+    if (typeof setupSearchMenuInteractions === 'function') {
+        setupSearchMenuInteractions();   // Handles floating search menu open/close logic
+    } else {
+        console.error("CRITICAL: setupSearchMenuInteractions function is NOT defined.");
+    }
+    
+    if (typeof setupEventListeners === 'function') { // This function should now include search input listeners
+        setupEventListeners();           
+    } else {
+        console.error("CRITICAL: setupEventListeners function is NOT defined.");
+    }
+    
+
+    console.log("Approvideo Learning Hub fully initialized including modals.");
+
+    setupHashNavigation();               // Handles URL hash changes for navigation
+    initializeSlideshows();              // Sets up any slideshows on the page
+    
+    // Call to function that renders main page sections (if different from generateHomepageModules)
+    // Ensure this function exists and creates elements with IDs if search results need to scroll to them.
+    if (typeof createLearningAreasAccordion === 'function') { 
+        createLearningAreasAccordion();
+    } else {
+        // If you don't have/need createLearningAreasAccordion, you can remove this.
+        // Or if its functionality is now part of generateHomepageModules, that's also fine.
+        console.warn("createLearningAreasAccordion function is not defined (optional).");
+    }
+
+    if (typeof initializeAllModals === 'function') {
+        initializeAllModals(); // This will now set up all 5 modals
+    } else {
+        console.error("CRITICAL: initializeAllModals function is NOT defined.");
+    }
+
+    // Update current year in footer
+    const yearSpan = document.getElementById('currentYear');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+
+
+
+
+    console.log("Approvideo Learning Hub initialized successfully.");
+});
+
+
+
+
+
+
+
+
+// --- Event Delegation Setup ---
+// Make sure these DOM element variables are defined in the global scope
+// or are accessible to this function. Based on your provided code, they are:
+// const categoryContentContainer = document.getElementById('category-content-container');
+// const backToModulesButton = document.getElementById('back-to-modules-button');
+// const videoInfoPanel = document.getElementById('video-info-panel');
+// let allVideosFlat = []; // Populated by flattenVideoData
+
+// --- Event Delegation Setup ---
+function setupEventListeners() {
+    console.log("Setting up event listeners...");
+
+    // --- Listeners for Category Content Area ---
+    if (categoryContentContainer) {
+        categoryContentContainer.addEventListener('click', function(event) {
+            const target = event.target;
+
+            // Glossary Triggers
+            if (target.classList.contains('glossary-trigger')) {
+                if (typeof handleGlossaryTriggerClick === 'function') {
+                    handleGlossaryTriggerClick(event);
+                } else { console.warn("handleGlossaryTriggerClick function not defined."); }
+            }
+            // Subcategory Toggles (in megamenu columns)
+            else if (target.classList.contains('subcategory-toggle')) {
+                if (typeof handleSubcategoryToggle === 'function') {
+                    handleSubcategoryToggle(event);
+                } else { console.warn("handleSubcategoryToggle function not defined."); }
+            }
+            // Back button within subcategory details view
+            else if (target.closest('.details-back-button')) {
+                event.preventDefault();
+                if (typeof hideSubcategoryDetails === 'function') {
+                    hideSubcategoryDetails(true);
+                } else { console.warn("hideSubcategoryDetails function not defined."); }
+            }
+            // Sibling subcategory navigation pills within details view
+            else if (target.classList.contains('sibling-link-pill') && !target.classList.contains('current')) {
+                event.preventDefault();
+                const area = target.dataset.area;
+                const uniqueId = target.dataset.uniqueid;
+                if (area && uniqueId) {
+                    if (typeof displaySubcategoryDetails === 'function') {
+                        displaySubcategoryDetails(area, uniqueId, true);
+                        requestAnimationFrame(() => {
+                            setTimeout(() => {
+                                if (megamenuDetailsArea) {
+                                    megamenuDetailsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                            }, 50);
+                        });
+                    } else { console.warn("displaySubcategoryDetails function not defined."); }
+                }
+            }
+        });
+    } else {
+        console.warn("#category-content-container not found for event delegation.");
+    }
+
+    // --- Back to Modules Button (main back button) ---
+    if (backToModulesButton) {
+        backToModulesButton.addEventListener('click', () => {
+            if (typeof showHomepageView === 'function') {
+                showHomepageView();
+            } else { console.warn("showHomepageView function not defined."); }
+        });
+    } else {
+        console.warn("#back-to-modules-button not found.");
+    }
+
+    // --- Video Hover Info Panel Listeners ---
+    // These listeners are on document.body, so they are always active if functions exist.
+    if (typeof showInfoPanel === 'function' && typeof hideInfoPanel === 'function' && allVideosFlat) {
+        document.body.addEventListener('mouseover', (event) => {
+            const linker = event.target.closest('.video-linker');
+            if (linker) {
+                const flatIndex = linker.getAttribute('data-flat-index');
+                if (flatIndex !== null && flatIndex < allVideosFlat.length) {
+                    const video = allVideosFlat[parseInt(flatIndex, 10)];
+                    if (video) { showInfoPanel(video); }
+                    else { console.warn("Video data not found for index:", flatIndex); }
+                } else if (flatIndex !== null) {
+                    console.warn("Invalid flat_index for video:", flatIndex);
+                }
+            }
+        });
+
+        document.body.addEventListener('mouseout', (event) => {
+            const leavingLinker = event.target.closest('.video-linker');
+            const enteringElement = event.relatedTarget;
+            // Hide only if mouse leaves a video linker AND does not enter another linker or the panel itself
+            if (leavingLinker && (!enteringElement || !enteringElement.closest('.video-linker, #video-info-panel'))) {
+                setTimeout(() => {
+                    // Double check nothing relevant is hovered before hiding
+                    const currentlyHovered = document.querySelector('.video-linker:hover, #video-info-panel:hover');
+                    if (!currentlyHovered) { hideInfoPanel(); }
+                }, 50); // Small delay to handle quick mouse movements between elements
+            }
+        });
+
+        if (videoInfoPanel) {
+            videoInfoPanel.addEventListener('mouseleave', () => {
+                // If mouse leaves the panel itself, hide it
+                // (This handles the case where mouse moves from linker to panel, then out of panel)
+                hideInfoPanel();
+            });
+        } else {
+            console.warn("#video-info-panel not found for mouseleave listener.");
+        }
+    } else {
+        console.warn("Video info panel functions or allVideosFlat data not fully available for hover listeners.");
+    }
+
+    // --- Search Input Listener (for autocomplete) ---
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        if (typeof debounce === 'function' && typeof handleSearch === 'function') {
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+            console.log("Search input listener attached.");
+        } else {
+            console.warn("debounce or handleSearch function not defined. Search input will not work.");
+        }
+    } else {
+        console.warn("#searchInput element not found for event listener setup.");
+    }
+
+    console.log("Event listeners setup complete.");
+}
+
+
+
+// Set up hash navigation
+function setupHashNavigation() {
+    // Handle browser back/forward buttons and direct links
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Process initial hash on page load
+    handleHashChange();
+}
+
+
+
+
+     
+    </script>
+    
+</body>
+</html>
