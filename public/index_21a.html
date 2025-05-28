@@ -54,18 +54,10 @@
         </div>
     </div>
 
-
-
-
-
-
     <div id="modules-grid-container">
-
-
 
         <main class="modules-grid">
         </main>
-
 
         <div id="subcategory-preview"></div>
 
@@ -158,19 +150,11 @@ Our method is to support critical needs of vulnerable populations ( think water 
     </div>
   </div>
 
-  <!-- Navigation Arrows -->
-  <div class="nav-arrow left" onclick="showPrevSlide()">&#x25C0;</div>
-  <div class="nav-arrow right" onclick="showNextSlide()">&#x25B6;</div>
+   <!-- Navigation Arrows -->
+   <div class="nav-arrow left" onclick="showPrevSlide()">&#x25C0;</div>
+   <div class="nav-arrow right" onclick="showNextSlide()">&#x25B6;</div>
+ 
 </div>
-
-
-  <!-- Navigation Arrows -->
-  <div class="nav-arrow left" onclick="showPrevSlide()">&#x25C0;</div>
-  <div class="nav-arrow right" onclick="showNextSlide()">&#x25B6;</div>
-
-          
-
-
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Featured Item 1: Water Distillation -->
@@ -2447,6 +2431,67 @@ function handleSearch() {
 
     console.log("Initializing Approvideo Learning Hub...");
 
+  const wrapper = document.querySelector('.tech-carousel');
+  const slides = wrapper.querySelectorAll('.slide');
+  const carousel = wrapper.querySelector('.carousel');
+  const leftArrow = wrapper.querySelector('.nav-arrow.left');
+  const rightArrow = wrapper.querySelector('.nav-arrow.right');
+  let current = 0;
+  let interval = setInterval(showNextSlide, 6000);
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+
+  function showNextSlide() {
+    showSlide(current + 1);
+  }
+
+  function showPrevSlide() {
+    showSlide(current - 1);
+  }
+
+  function resetInterval() {
+    clearInterval(interval);
+    interval = setInterval(showNextSlide, 6000);
+  }
+
+  // Arrow event listeners
+  leftArrow.addEventListener('click', () => {
+    showPrevSlide();
+    resetInterval();
+  });
+
+  rightArrow.addEventListener('click', () => {
+    showNextSlide();
+    resetInterval();
+  });
+
+  // Pause on hover
+  carousel.addEventListener('mouseenter', () => clearInterval(interval));
+  carousel.addEventListener('mouseleave', () => {
+    interval = setInterval(showNextSlide, 6000);
+  });
+
+  // Swipe support
+  let startX = 0;
+  let endX = 0;
+
+  carousel.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+
+  carousel.addEventListener('touchend', e => {
+    endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? showNextSlide() : showPrevSlide();
+      resetInterval();
+      }
+    });
+
     try {
         const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
         if (!response.ok) {
@@ -2545,17 +2590,9 @@ function handleSearch() {
         yearSpan.textContent = new Date().getFullYear();
     }
 
-
-
-
     console.log("Approvideo Learning Hub initialized successfully.");
+
 });
-
-
-
-
-
-
 
 
 // --- Event Delegation Setup ---
@@ -2698,12 +2735,10 @@ function setupHashNavigation() {
     handleHashChange();
 }
 
-
 window.showNextSlide = showNextSlide;
 window.showPrevSlide = showPrevSlide;
 
-     
-    </script>
-    
+</script>
+
 </body>
 </html>
