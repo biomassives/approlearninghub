@@ -68,6 +68,25 @@
             font-size: 1.1em;
             color: #4A5568;
         }
+	
+	    .featured-item {
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	    }
+	    
+	    .featured-item:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	    }
+	    
+	    .featured-item .play-button {
+		opacity: 0.9;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	    }
+	    
+	    .featured-item:hover .play-button {
+		opacity: 1;
+		transform: scale(1.1);
+	    }
 
 
         /* --- Modal Styles --- */
@@ -1096,9 +1115,71 @@
                 font-weight: bold; color: #555; padding: 8px 0px 5px 0px; font-size: 0.8em;
                 text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 5px;
             }
-
-
             .error-message {
                 color: #dc3545; font-weight: bold; padding: 15px; background-color: #f8d7da;
                 border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;
             }
+
+		:root {
+		--content-half-width: 450px;
+		--arrow-offset: 20px;
+		}
+		
+		.nav-arrow.left {
+		left: calc(50% - var(--content-half-width) - var(--arrow-offset));
+		}
+		
+		.nav-arrow.right {
+		right: calc(50% - var(--content-half-width) - var(--arrow-offset));
+		}
+		@media (max-width: 1000px) {
+		.nav-arrow.left {
+		  left: 20px;
+		}
+		.nav-arrow.right {
+		  right: 20px;
+		}
+		}
+		
+		.homepage-module-item { display:none; }
+		
+		/* --- Welcome Statement Section --- */
+		.welcome-statement-section {
+		  background-color: #F9FAFB; /* A very light, almost white-gray (Tailwind gray-50) */
+		  padding: 3rem 1.5rem;      /* Generous vertical padding, standard horizontal */
+		  text-align: center;
+		  margin-bottom: 2.5rem;     /* Space before the next content section */
+		  border-bottom: 1px solid #E5E7EB; /* Subtle separator line (Tailwind gray-200) */
+		}
+		
+		.welcome-content-wrapper {
+		  max-width: 800px;          /* Constrains the width for better readability */
+		  margin: 0 auto;            /* Centers the content block */
+		}
+		
+		.welcome-title {
+		  font-size: 2rem;        /* Tailwind text-3xl */
+		  font-weight: 700;          /* Bold */
+		  color: #1F2937;            /* Darker gray, near black (Tailwind gray-800) */
+		  margin-bottom: 1rem;
+		  line-height: 1.3;
+		}
+		
+		.welcome-message {
+		  font-size: 1.125rem;       /* Tailwind text-lg */
+		  color: #374151;            /* Medium-dark gray (Tailwind gray-700) */
+		  line-height: 1.75;
+		  max-width: 720px;          /* Slightly narrower for the paragraph text */
+		  margin: 0 auto 1.5rem auto; /* Center paragraph text and add space below */
+		}
+		
+		/* Optional: Styling for a thematic icon if you uncomment it in the HTML */
+		.welcome-icon-container {
+		  margin-top: 1.5rem;
+		}
+		.welcome-icon-container .fas { /* If using Font Awesome */
+		  font-size: 2.5rem;
+		  color: #60A5FA; /* Example: A calming blue (Tailwind blue-400) or your brand's accent color */
+		  opacity: 0.8;
+		}
+		
