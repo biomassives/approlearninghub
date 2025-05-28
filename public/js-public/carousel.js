@@ -1,5 +1,8 @@
-const slides = document.querySelectorAll('.slide');
-const carousel = document.querySelector('.carousel');
+const carouselWrapper = document.querySelector('.tech-carousel');
+const slides = carouselWrapper.querySelectorAll('.slide');
+const carousel = carouselWrapper.querySelector('.carousel');
+
+
 let current = 0;
 let interval = setInterval(showNextSlide, 6000);
 
@@ -26,8 +29,9 @@ document.querySelectorAll('.nav-arrow').forEach(arrow => {
   });
 });
 
-document.querySelector('.nav-arrow.left')?.addEventListener('click', showPrevSlide);
-document.querySelector('.nav-arrow.right')?.addEventListener('click', showNextSlide);
+carouselWrapper.querySelector('.nav-arrow.left').addEventListener('click', showPrevSlide);
+carouselWrapper.querySelector('.nav-arrow.right').addEventListener('click', showNextSlide);
+
 
 // === Pause on Hover ===
 carousel.addEventListener('mouseenter', () => clearInterval(interval));
