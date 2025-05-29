@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,70 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="index_18b.css" rel="stylesheet">
-
-    <style>
-            .homepage-module-item { display:none; }
-
-            /* --- Welcome Statement Section --- */
-            .welcome-statement-section {
-                background-color: #F9FAFB; /* A very light, almost white-gray (Tailwind gray-50) */
-                padding: 3rem 1.5rem;      /* Generous vertical padding, standard horizontal */
-                text-align: center;
-                margin-bottom: 2.5rem;     /* Space before the next content section */
-                border-bottom: 1px solid #E5E7EB; /* Subtle separator line (Tailwind gray-200) */
-            }
-
-            .welcome-content-wrapper {
-                max-width: 800px;          /* Constrains the width for better readability */
-                margin: 0 auto;            /* Centers the content block */
-            }
-
-            .welcome-title {
-                font-size: 2rem;        /* Tailwind text-3xl */
-                font-weight: 700;          /* Bold */
-                color: #1F2937;            /* Darker gray, near black (Tailwind gray-800) */
-                margin-bottom: 1rem;
-                line-height: 1.3;
-            }
-
-            .welcome-message {
-                font-size: 1.125rem;       /* Tailwind text-lg */
-                color: #374151;            /* Medium-dark gray (Tailwind gray-700) */
-                line-height: 1.75;
-                max-width: 720px;          /* Slightly narrower for the paragraph text */
-                margin: 0 auto 1.5rem auto; /* Center paragraph text and add space below */
-            }
-
-            /* Optional: Styling for a thematic icon if you uncomment it in the HTML */
-            .welcome-icon-container {
-                margin-top: 1.5rem;
-            }
-            .welcome-icon-container .fas { /* If using Font Awesome */
-                font-size: 2.5rem;
-                color: #60A5FA; /* Example: A calming blue (Tailwind blue-400) or your brand's accent color */
-                opacity: 0.8;
-            }
-
-
-
-    </style>
-
 </head>
+    
 <body class="bg-gray-100"> 
-
-
     <header class="site-header">
         <div class="site-header-left">
             <div class="logo">🌱</div>
             <h1><span class="green">Approvideo</span> <span class="blue">Learning Hub</span></h1>
         </div>
         <div class="site-header-right">
+            
             <button id="browseTopicsBtn" class="site-header-button browse-topics-button">
                 Browse Topics
             </button>
 
             <div id="areaNavIconsMinimized" class="area-nav-icons minimized">
             </div>
+            
             <button id="openSearchHeaderButton" title="Open Search">
                 <i class="fas fa-search"></i>
             </button>
@@ -80,8 +34,7 @@
     </header>
     
     <div id="megaMenuPanel" class="mega-menu-panel">
-        <div class="mega-menu-content-wrapper">
-            </div>
+        <div class="mega-menu-content-wrapper"></div>
     </div>
 
     <div class="floating-search-menu" id="floatingSearchMenu">
@@ -101,37 +54,88 @@
         </div>
     </div>
 
-
-
-
-
-
     <div id="modules-grid-container">
 
-
-
-        <main class="modules-grid">
-        </main>
-
+        <main class="modules-grid"></main>
 
         <div id="subcategory-preview"></div>
 
         <div id="featured-content-container" class="mt-6 mx-auto max-w-6xl px-4">
-        <section class="welcome-statement-section">
+      
+<div class="tech-carousel">
+  <div class="carousel" id="carousel">
+    <div class="slide active">
+      <div class="slide-content">
+        <img src="img/rocket_stove.webp" alt="Rocket Stove">
+        <div class="text-content">
+          <h2>Rocket Stove</h2>
+          <p>Burns small sticks cleanly thanks to high combustion temperature—great for emergencies.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/evaporative_water_desalinator.webp" alt="Evaporative Distiller">
+        <div class="text-content">
+          <h2>Evaporative Distiller</h2>
+          <p>Converts dirty water to clean water using heat and condensation—zero moving parts.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/briquette_press.webp" alt="Fuel Briquette Press">
+        <div class="text-content">
+          <h2>Fuel Briquette Press</h2>
+          <p>Transforms organic waste into clean fuel using low-tech molds and pressure methods.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/water_filter.webp" alt="Water Purifier">
+        <div class="text-content">
+          <h2>Water Purifier</h2>
+          <p>Layered sand and gravel filters remove contaminants—ideal for household use.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-content">
+        <img src="img/solar_oven.webp" alt="Solar Oven">
+        <div class="text-content">
+          <h2>Solar Oven</h2>
+          <p>Sun-powered cooker heats up to 150°C—perfect for off-grid meals and drying herbs.</p>
+          <a href="#">Learn More</a>
+          <button>Donate to this Effort</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Navigation Arrows -->
+   <div class="nav-arrow left">&#x25C0;</div>
+   <div class="nav-arrow right">&#x25B6;</div>
+</div>
+
+  <section class="welcome-statement-section">
         <div class="welcome-content-wrapper flex flex-col md:flex-row md:items-start md:gap-6 lg:gap-8 shadow-md border border-gray-200 flex">
             
-            <div class="w-full md:w-1/3 lg:w-1/4 flex-shrink-0 mb-6 md:mb-0">
-                <img src="/img/approvideo0_fullh.gif" 
-                     alt="approvideo welcome may 2025"
-                     class="w-full h-auto object-cover rounded-lg shadow-md"> 
-            </div>
 
-            <div class="w-full md:w-2/3 lg:w-3/4 text-center md:text-left">
+
+            <div class="w-full md:w-3/4 lg:w-7/8 text-center md:text-left">
                 <h2 class="welcome-title text-2xl font-semibold text-gray-800 mb-2">Welcome</h2>
                 <div class="welcome-message space-y-4"> 
                     <p>
-
-Approvideo Learning Hub is dedicated to facilitating informed technical support intervention 'clinics' in public health, water security, wastewater management, solid waste management, renewable energy in global contexts based on adherence to the principles outlined in the <a href="https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf" title="Universal Declaration of Human Rights">Universal Declaration of Human Rights</a>.
+Approvideo Learning Hub is dedicated to facilitating informed technical support intervention 'clinics' in public health, water security, wastewater management, solid waste management, renewable energy in global contexts based on adherence to the principles outlined in the <a href="https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/eng.pdf" title="Universal Declaration of Human Rights"><strong>Universal Declaration of Human Rights</strong></a>.
 
 Our method is to support critical needs of vulnerable populations ( think water borne disease prevention, other envir. pollution, technology use...) while supporting the careers and vision of scientists & engineers in exile, while building a credible public domain planning, engineering and vocational reference for appropriate technology in poverty alleviation contexts.  
                     </p>
@@ -144,19 +148,14 @@ Our method is to support critical needs of vulnerable populations ( think water 
         </div>
     </section>
 
-
-
-
+            
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Featured Item 1: Water Distillation -->
         <div class="featured-item bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 flex flex-col">
             <div class="relative pt-[56.25%] bg-gray-100">
                 <!-- Video thumbnail with play button overlay -->
-                <div class="absolute inset-0 flex items-center justify-center">
-
-
-                    
+                <div class="absolute inset-0 flex items-center justify-center">   
                     <img src="/assets/video/thumbnails/water_distillation_diy.jpg" 
                          alt="DIY Water Distillation System" 
                          class="w-full h-full object-cover"
@@ -359,32 +358,7 @@ Our method is to support critical needs of vulnerable populations ( think water 
 
         </div>
         
-</div>
-
-<!-- CSS styles for Featured Content -->
-<style>
-    .featured-item {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
-    .featured-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .featured-item .play-button {
-        opacity: 0.9;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-    
-    .featured-item:hover .play-button {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-</style>
-
-
-
+    </div>
     </div>
 
     <div id="category-content-container">
@@ -2448,6 +2422,67 @@ function handleSearch() {
 
     console.log("Initializing Approvideo Learning Hub...");
 
+  const wrapper = document.querySelector('.tech-carousel');
+  const slides = wrapper.querySelectorAll('.slide');
+  const carousel = wrapper.querySelector('.carousel');
+  const leftArrow = wrapper.querySelector('.nav-arrow.left');
+  const rightArrow = wrapper.querySelector('.nav-arrow.right');
+  let current = 0;
+  let interval = setInterval(showNextSlide, 6000);
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+
+  function showNextSlide() {
+    showSlide(current + 1);
+  }
+
+  function showPrevSlide() {
+    showSlide(current - 1);
+  }
+
+  function resetInterval() {
+    clearInterval(interval);
+    interval = setInterval(showNextSlide, 6000);
+  }
+
+  // Arrow event listeners
+  leftArrow.addEventListener('click', () => {
+    showPrevSlide();
+    resetInterval();
+  });
+
+  rightArrow.addEventListener('click', () => {
+    showNextSlide();
+    resetInterval();
+  });
+
+  // Pause on hover
+  carousel.addEventListener('mouseenter', () => clearInterval(interval));
+  carousel.addEventListener('mouseleave', () => {
+    interval = setInterval(showNextSlide, 6000);
+  });
+
+  // Swipe support
+  let startX = 0;
+  let endX = 0;
+
+  carousel.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+
+  carousel.addEventListener('touchend', e => {
+    endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? showNextSlide() : showPrevSlide();
+      resetInterval();
+      }
+    });
+
     try {
         const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
         if (!response.ok) {
@@ -2546,17 +2581,9 @@ function handleSearch() {
         yearSpan.textContent = new Date().getFullYear();
     }
 
-
-
-
     console.log("Approvideo Learning Hub initialized successfully.");
+
 });
-
-
-
-
-
-
 
 
 // --- Event Delegation Setup ---
@@ -2699,12 +2726,10 @@ function setupHashNavigation() {
     handleHashChange();
 }
 
+window.showNextSlide = showNextSlide;
+window.showPrevSlide = showPrevSlide;
 
+</script>
 
-
-     
-    </script>
-    
 </body>
 </html>
-
