@@ -742,49 +742,109 @@
         ]
       }
     ]
-  },
-  {
-    "area": "Energy",
-    "icon": "fa-solar-panel",
-    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M224,224H182.94l-6.3-44.12,3.24,1.91a16,16,0,0,0,21.91-5.67l12-20.34a16,16,0,0,0-5.67-21.91l-35-20.61,40.69-69.13a16,16,0,0,0-5.67-21.91l-20.34-12a16,16,0,0,0-21.91,5.67l-20.61,35L76.12,10.22a16,16,0,0,0-21.91,5.67l-12,20.33a16,16,0,0,0,5.67,21.92l35,20.61L42.21,147.88a16,16,0,0,0,5.67,21.91l20.34,12a15.57,15.57,0,0,0,10.58,2L73.06,224H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16Zm-24-76.34L188,168l-69.13-40.69,12-20.35ZM179.66,24,200,36l-40.69,69.14L139,93.17ZM56,44.35,68,24,137.14,64.7l-12,20.35ZM76.34,168,56,156,96.69,86.86l20.36,12Zm12.88,56L98,162.8l12.77-21.7L159,169.5l7.79,54.5Z\"></path></svg>",
-    "featherIcon": "zap",
-    "subcategories": [
+    },
+    {
+    "uniqueId": "energy-1",
+    "title": "Solar Cookers: Box, Panel, and Parabolic",
+    "description": "Three distinct designs for solar cookers — insulated box, uninsulated panel, and parabolic reflector — using common materials to cook food using the sun's energy.",
+    "tags": [
+      "solar energy",
+      "sustainable cooking",
+      "off-grid",
+      "renewable energy",
+      "DIY",
+      "solar oven",
+      "parabolic cooker"
+    ],
+    "context": "This module outlines three practical approaches to solar cooking. Each design serves a unique context — the box cooker for slow baking and minimal heat loss; the panel cooker for portability and simplicity; and the parabolic cooker for fast, high-heat applications. Best used in sunny, low-wind environments.",
+    "variants": [
       {
-        "uniqueId": "energy-0",
-        "title": "Solar Cookers",
-        "description": "Effective basic box cooker design...",
-        "tags": [
-          "solar cooker",
-          "DIY",
-          "cooking technology",
-          "off-grid",
-          "passive solar",
-          "solar thermal",
-          "appropriate technology",
-          "fuel efficiency"
-        ],
-        "context": "Utilizes direct sunlight for cooking...",
+        "type": "Insulated Box Cooker",
+        "optimalUse": "Slow cooking, baking, grains, stews; suitable for long exposure (1.5–4 hrs) under strong sun; low burn risk.",
         "materials": [
-          "Cardboard Boxes...",
-          "Insulation...",
-          "Reflective Material...",
-          "Glass/Oven Bag...",
-          "Black Paint...",
-          "Dark, Lidded Pot...",
-          "Glue/Tape"
+          "**1. Cooking Chamber & Insulation:**",
+          "   - Two cardboard boxes (one smaller, one larger)",
+          "   - Insulation (crumpled newspaper, straw, wool, or recycled fabric)",
+          "**2. Reflective & Heat Absorbing Surfaces:**",
+          "   - Aluminum foil or reflective mylar (for inside walls and flaps)",
+          "   - Black, heat-safe paint (non-toxic, for pot exterior)",
+          "**3. Transparent Window:**",
+          "   - Glass pane or clear oven bag (used to trap heat inside)",
+          "**4. Miscellaneous:**",
+          "   - Dark lidded cooking pot (thin black metal works best)",
+          "   - Tape, glue, box cutter, ruler"
         ],
         "processSteps": [
-          "1. Construct Insulated Box...",
-          "2. Line Inner Box...",
-          "3. Create Transparent Lid...",
-          "4. Paint Pot Black...",
-          "5. Position Cooker...",
-          "6. Place Pot Inside..."
-        ],
-        "videos": []
+          "1. Nest smaller box inside larger, insulating all gaps between with newspaper or straw.",
+          "2. Line the inside of the inner box with foil (shiny side up), glued flat.",
+          "3. Paint the pot black and allow to dry fully.",
+          "4. Create an angled reflector lid using a flap cut into the outer box top, lined with foil.",
+          "5. Tape or hinge the reflector flap to adjust for best sun angle.",
+          "6. Cover top opening with clear oven bag or glass to retain heat.",
+          "7. Place food in the black pot, seal the cooker, and orient toward the sun.",
+          "8. Cook time varies from 1.5–4 hours depending on sun strength and dish type."
+        ]
       },
       {
-        "uniqueId": "energy1",
+        "type": "Uninsulated Panel Cooker",
+        "optimalUse": "Portable and lightweight; great for light cooking (e.g., reheating, tea, grains); ideal for community demos, emergency kits.",
+        "materials": [
+          "**1. Structure:**",
+          "   - Cardboard sheets or corrugated plastic",
+          "**2. Reflective Surfaces:**",
+          "   - Aluminum foil or reflective tape",
+          "**3. Heat Retention:**",
+          "   - Clear oven bag or upside-down glass bowl",
+          "**4. Cooking Vessel:**",
+          "   - Thin black pot or jar with tight-fitting lid",
+          "**5. Fasteners:**",
+          "   - Binder clips, tape, string, or glue"
+        ],
+        "processSteps": [
+          "1. Cut reflective panels in 3–5 segments and hinge them at angles to form a reflector cone or C-shape.",
+          "2. Cover each panel with foil or reflective tape.",
+          "3. Place cooking pot inside a clear oven bag or under an inverted glass bowl.",
+          "4. Orient toward the sun, repositioning every 30–45 minutes for best results.",
+          "5. Monitor food through clear cover to prevent overheating or drying out."
+        ]
+      },
+      {
+        "type": "Parabolic Concentrating Cooker",
+        "optimalUse": "High heat applications (boiling water, frying, pressure cooking); great for short cook times; requires precise alignment and supervision.",
+        "materials": [
+          "**1. Reflective Dish:**",
+          "   - Old satellite dish lined with mylar, foil tape, or mirror pieces",
+          "   - Optional: large umbrella frame modified with reflective segments",
+          "**2. Support Frame:**",
+          "   - Sturdy stand or tripod to hold dish and align it with the sun",
+          "**3. Cooking Pot Holder:**",
+          "   - Metal frame or cage at focal point to hold pot safely",
+          "**4. Cooking Pot:**",
+          "   - Black pressure cooker or frying pot (must handle high heat)",
+          "**5. Safety Gear:**",
+          "   - Gloves, sunglasses, fire extinguisher (for safety)"
+        ],
+        "processSteps": [
+          "1. Line parabolic dish with reflective material, ensuring a clean, smooth curve.",
+          "2. Mark and test focal point using a piece of black paper (should burn in ~5 seconds under strong sun).",
+          "3. Mount pot holder securely at focal point using metal bars or cage.",
+          "4. Place black cooking pot with food or water inside the holder.",
+          "5. Align the parabola toward the sun and make periodic adjustments.",
+          "6. Supervise at all times — cook times may be as short as 10–30 minutes for boiling water or frying.",
+          "7. Remove food using heat-safe gloves and allow cooker to cool."
+        ]
+      }
+    ],
+    "videos": [],
+    "notes": [
+      "Solar cookers require direct, unobstructed sunlight — avoid shaded or cloudy periods for best results.",
+      "Use food-safe, non-toxic black paint for pot coating.",
+      "Never leave a parabolic cooker unattended; risk of ignition or burns is higher due to high temperatures.",
+      "For all types, reflective surfaces should be kept clean for maximum effectiveness."
+    ]
+  },
+      {
+        "uniqueId": "energy-2",
         "title": "Biogas",
         "description": "A comprehensive guide to the materials required and the step-by-step process for planning, building, and operating a biogas digester.",
         "tags": [
