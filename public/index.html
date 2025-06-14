@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2484,7 +2483,7 @@ function handleSearch() {
     });
 
     try {
-        const response = await fetch('/data/learning_modules-catsubcat-tags-featured.json');
+        const response = await fetch('/data/learning_modules-catsubcat-tags-featured_jun12.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
