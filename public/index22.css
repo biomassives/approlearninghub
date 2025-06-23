@@ -111,9 +111,9 @@
 
  The text overlay container */
 .featured-slideshow .absolute.bottom-0.left-0.right-0.bg-black.bg-opacity-60.text-white.p-4 {
-    /* Existing Tailwind classes are a good start:
+    
        `absolute`, `bottom-0`, `left-0`, `right-0`, `bg-black`, `bg-opacity-60`, `text-white`, `p-4`
-    */
+   
     display: flex; /* Use flexbox for internal layout */
     flex-direction: column; /* Stack title and description vertically */
     justify-content: flex-end; /* Align content to the bottom of the overlay */
@@ -121,7 +121,66 @@
     /* Ensure a min-height if desired, but let it grow if content requires */
     min-height: 80px; /* Example: minimum height to always show something */
     box-sizing: border-box; /* Include padding in height calculation */
+text-align: left; /* Ensure text aligns left within the overlay */
+
+    /* Let's try to ensure a minimum height if content is sparse, but adapt to text */
+    min-height: 25%; /* Minimum 25% of the image height for the overlay */
+    max-height: 70%; /* Max 70% of the image height to not obscure too much */
+    overflow: hidden; /* Important for hiding any overflow */
 }
+
+/* h3 title inside overlay */
+.featured-slideshow .text-lg.font-medium {
+    font-size: 1rem; /* **CRITICAL CHANGE**: Explicitly smaller title font */
+    margin-bottom: 0.25rem; /* Reduced margin */
+    line-height: 1.2;
+    white-space: nowrap; /* Prevent line breaks for single line title */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for overflowed title */
+}
+
+/* p description inside overlay */
+.featured-slideshow .text-sm {
+    font-size: 0.75rem; /* **CRITICAL CHANGE**: Even smaller description font */
+    line-height: 1.3;
+    margin-bottom: 0;
+    max-height: 3.9em; /* (0.75rem * 1.3 = ~0.975rem line-height). 4 lines * 0.975 = ~3.9em */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* **CRITICAL CHANGE**: Allow up to 4 lines for more content */
+    -webkit-box-orient: vertical;
+}
+
+/* Mobile-specific adjustments for the text overlay (Optional, if still issues after above) */
+@media (max-width: 640px) { /* Targeting screens smaller than 'sm' breakpoint */
+    .featured-slideshow .absolute.bottom-0.left-0.right-0.bg-black.bg-opacity-60.text-white.p-4 {
+        padding: 0.25rem 0.5rem; /* Even smaller padding on very small screens */
+        min-height: 30%; /* Could be slightly taller to accommodate text */
+    }
+
+    .featured-slideshow .text-lg.font-medium {
+        font-size: 0.9rem; /* Further reduction for very small screens */
+    }
+
+    .featured-slideshow .text-sm {
+        font-size: 0.7rem; /* Further reduction for very small screens */
+        max-height: 3.5em; /* Adjust max lines if needed */
+        -webkit-line-clamp: 5;
+    }
+}
+
+/* Slideshow Dots Navigation - Adjust bottom position to avoid overlaying text */
+.featured-slideshow .slideshow-dots {
+    bottom: 0.25rem; /* Move dots very close to the bottom edge */
+    padding-bottom: 0.1rem; /* Minimal padding */
+    padding-top: 0.1rem;
+    background: rgba(0, 0, 0, 0.4); /* Slightly more opaque background for dots for visibility */
+    border-radius: 4px; /* Slightly less rounded */
+    margin-left: 0.5rem; /* Closer to edges */
+    margin-right: 0.5rem;
+}
+
 
 .featured-slideshow .text-lg.font-medium { /* h3 title inside overlay */
     font-size: 1.125rem; /* text-lg */
