@@ -1,0 +1,1463 @@
+   body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8; /* Light gray background */
+            color: #222;
+            margin: 0 0 150px 0; /* Bottom margin for sticky panel */
+        }
+
+        /* --- Site Header (main bar) --- */
+        .site-header {
+            /* ... your existing styles (display: flex, padding, background, etc.) ... */
+            position: sticky; /* This is crucial for the child's absolute positioning context */
+            top: 0;
+	    background-color: #fff;
+            z-index: 1020; /* Ensure it's above page content, megamenu will be relative to this */
+            /* NO bottom padding on .site-header itself if top:100% is to align with content bottom */
+        }
+
+        .site-header-left {
+            display: flex;
+            align-items: center;
+        }
+        .site-header-left .logo {
+            font-size: 1.8rem; /* Adjust */
+            margin-right: 0.75rem;
+            color: #54B948;
+            line-height: 1;
+        }
+        .site-header-left h1 {
+            font-size: 1.3rem; /* Adjust */
+            margin: 0;
+            font-weight: 600;
+        }
+        .site-header-left h1 .green { color: #54B948; }
+        .site-header-left h1 .blue { color: #1E88E5; }
+
+        .site-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between main search icon and area icons */
+        }
+
+        #openSearchHeaderButton {
+            background: none;
+            border: none;
+            font-size: 1.25em; /* Adjust */
+            color: #4A5568; /* Tailwind gray-700 */
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #openSearchHeaderButton:hover {
+            color: #2D3748; /* Tailwind gray-800 */
+            background-color: #EDF2F7; /* Tailwind gray-200 */
+        }
+
+        /* #areaNavIconsMinimized is populated by JS. Ensure its icons are styled. */
+        #areaNavIconsMinimized.area-nav-icons.minimized-view {
+            display: flex; /* Should already have this */
+            gap: 6px; /* Spacing between the small area icons */
+        }
+        #areaNavIconsMinimized .nav-area-icon-wrapper svg.area-nav-svg {
+            width: 20px;
+            height: 20px;
+            /* fill: #4A5568; */ /* Or use currentColor and set color on wrapper */
+        }
+        #areaNavIconsMinimized .nav-area-icon-wrapper .nav-area-fallback-icon {
+            font-size: 1.1em;
+            color: #4A5568;
+        }
+	
+	    .featured-item {
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		        display: flex;  // adding this now, Rank!! -g
+  			flex-direction: column; /* Ensures content below image stacks */
+	    }
+	    
+	    .featured-item:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	    }
+	    
+	    .featured-item .play-button {
+		opacity: 0.9;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	    }
+	    
+	    .featured-item:hover .play-button {
+		opacity: 1;
+		transform: scale(1.1);
+	    }
+
+
+		.featured-item .relative.pt-\[56\.25\%\] {
+		    /* This creates the aspect ratio for the image area */
+		    position: relative;
+		    padding-top: 56.25%; /* 16:9 aspect ratio */
+		    overflow: hidden; /* Hide anything that goes outside this box */
+		}
+		
+		/* Styles for the image within the slideshow slide */
+		.featured-slideshow img {
+		    /* Your existing image styles */
+		    position: absolute;
+		    inset: 0;
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		    transition: opacity 0.5s ease-in-out;
+		}
+
+ The text overlay container */
+.featured-slideshow .absolute.bottom-0.left-0.right-0.bg-black.bg-opacity-60.text-white.p-4 {
+    /* Existing Tailwind classes are a good start:
+       `absolute`, `bottom-0`, `left-0`, `right-0`, `bg-black`, `bg-opacity-60`, `text-white`, `p-4`
+    */
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack title and description vertically */
+    justify-content: flex-end; /* Align content to the bottom of the overlay */
+    padding: 1rem; /* Adjust padding for better fit on small screens */
+    /* Ensure a min-height if desired, but let it grow if content requires */
+    min-height: 80px; /* Example: minimum height to always show something */
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.featured-slideshow .text-lg.font-medium { /* h3 title inside overlay */
+    font-size: 1.125rem; /* text-lg */
+    margin-bottom: 0.5rem; /* Reduced margin */
+    line-height: 1.3; /* Ensure good line spacing */
+}
+
+.featured-slideshow .text-sm { /* p description inside overlay */
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.4;
+    margin-bottom: 0; /* Remove bottom margin to prevent extra space before buttons/dots */
+    /* Add max-height and overflow if text can get very long */
+    max-height: 4.2em; /* Example: show up to 3 lines of text (1.4 * 3 = 4.2) */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    display: -webkit-box; /* For multi-line ellipsis in WebKit browsers */
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+}
+
+/* Mobile-specific adjustments for the text overlay */
+@media (max-width: 767px) { /* Targeting screens smaller than md breakpoint */
+    .featured-slideshow .absolute.bottom-0.left-0.right-0.bg-black.bg-opacity-60.text-white.p-4 {
+        padding: 0.75rem; /* Smaller padding on mobile */
+        min-height: auto; /* Let content define height more naturally */
+    }
+
+    .featured-slideshow .text-lg.font-medium {
+        font-size: 1rem; /* Even smaller title on mobile */
+    }
+
+    .featured-slideshow .text-sm {
+        font-size: 0.8rem; /* Even smaller description on mobile */
+        max-height: 3.2em; /* Adjust max lines if needed for smaller font (e.g., 4 lines) */
+        -webkit-line-clamp: 4;
+    }
+}
+
+
+/* Slideshow Navigation Arrows (inside the featured item) */
+/* Ensure these don't clash with the main carousel arrows */
+.featured-slideshow .slideshow-prev,
+.featured-slideshow .slideshow-next {
+    /* Your existing styles */
+    width: 32px; /* Smaller arrows for nested slideshow */
+    height: 32px;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background */
+    color: white;
+    border: none; /* No border for these smaller arrows */
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10; /* Ensure they are above the text overlay */
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.featured-slideshow .slideshow-prev:hover,
+.featured-slideshow .slideshow-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.05); /* Slight scale on hover */
+}
+
+/* Slideshow Dots Navigation */
+.featured-slideshow .slideshow-dots {
+    /* Your existing styles */
+    bottom: 0.5rem; /* Move dots closer to the bottom edge of the image area */
+    padding-bottom: 0.25rem; /* Add a little padding for the dots */
+    background: rgba(0, 0, 0, 0.2); /* Subtle background for visibility */
+    border-top-left-radius: 8px; /* Rounded corners for the background */
+    border-top-right-radius: 8px;
+    margin-left: 1rem; /* Pull in from edges slightly */
+    margin-right: 1rem;
+    padding-top: 0.5rem; /* Padding for dots */
+}
+
+.featured-slideshow .slideshow-dot {
+    /* Your existing styles */
+    width: 8px; /* Smaller dots */
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent */
+}
+
+.featured-slideshow .slideshow-dot.active {
+    background-color: white; /* Active dot is solid white */
+    transform: scale(1.3); /* Active dot slightly larger */
+}
+
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(42, 42, 52, 0.8); /* Darker, slightly bluish overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050; /* Ensure it's above other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1rem; /* Add padding for smaller screens so modal doesn't touch edges */
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            padding: 1.5rem 2rem 2rem; /* Adjust padding */
+            border-radius: 0.5rem; /* 8px */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Tailwind shadow-xl */
+            width: 100%;
+            max-width: 720px; /* Max width for readability, can be adjusted */
+            max-height: 90vh; /* Max height, allows for scrolling within the modal */
+            overflow-y: auto; /* Enable scroll for content that overflows */
+            position: relative; /* For absolute positioning of the close button */
+            transform: translateY(-20px) scale(0.98); /* Initial state for entry animation */
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.visible .modal-box {
+            transform: translateY(0) scale(1); /* Final state for entry animation */
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: transparent;
+            border: none;
+            font-size: 2.25rem; /* Larger close icon */
+            font-weight: 300; /* Lighter weight for '×' */
+            line-height: 1;
+            color: #6B7280; /* Tailwind gray-500 */
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s ease;
+        }
+        .modal-close-button:hover {
+            color: #1F2937; /* Tailwind gray-800 */
+        }
+
+        .modal-title {
+            font-size: 1.875rem; /* Tailwind text-2xl or 3xl based on preference */
+            font-weight: 700; /* Tailwind font-bold */
+            color: #1F2937; /* Tailwind gray-800 */
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #E5E7EB; /* Tailwind gray-200 */
+        }
+
+        .modal-content {
+            font-size: 1rem; /* Tailwind text-base */
+            line-height: 1.75;
+            color: #374151; /* Tailwind gray-700 */
+        }
+        .modal-content h3 {
+            font-size: 1.25rem; /* Tailwind text-xl */
+            font-weight: 600; /* Tailwind font-semibold */
+            color: #1F2937; /* Tailwind gray-800 */
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-content p, 
+        .modal-content ul, 
+        .modal-content ol {
+            margin-bottom: 1.25rem;
+        }
+        .modal-content ul, 
+        .modal-content ol {
+            padding-left: 1.5rem; /* For bullet/number indentation */
+        }
+        .modal-content ul li { margin-bottom: 0.5rem; }
+        .modal-content ol li { margin-bottom: 0.5rem; }
+
+        .modal-content strong {
+            color: #111827; /* Tailwind gray-900 */
+            font-weight: 600;
+        }
+        .modal-content a {
+            color: var(--primary-color, #0d6efd); /* Use your site's primary color */
+            text-decoration: underline;
+        }
+        .modal-content a:hover {
+            color: var(--primary-darker, #0a58ca);
+        }
+
+        /* Styling for the critical legal disclaimer */
+        .modal-content p strong:first-child { /* Targets the "IMPORTANT:" disclaimers */
+            display: block;
+            background-color: #FFFBEB; /* Tailwind yellow-50 */
+            color: #B45309; /* Tailwind amber-700 */
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid #FDE68A; /* Tailwind yellow-200 */
+            margin-bottom: 1.25rem !important; /* Ensure spacing */
+        }
+		
+		
+		/* ================================
+		   TECH CAROUSEL STYLES
+		   ================================ */
+		
+		.tech-carousel {
+		  position: relative;
+		  width: 100%;
+		  height: 100vh;
+		  overflow: hidden;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  border-bottom: 8px solid black;
+		}
+		
+		/* Slide container */
+		.tech-carousel .carousel {
+		  position: relative;
+		  width: 100%;
+		  height: 100%;
+		}
+		
+		/* Each individual slide */
+		.tech-carousel .slide {
+		  position: absolute;
+		  top: 0; left: 0;
+		  width: 100%; height: 100%;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  padding: 2rem;
+		  background: white;
+		  opacity: 0;
+		  transition: opacity 1s ease, transform 0.5s ease;
+		  transform: translateX(20px);
+		}
+		
+		.tech-carousel .slide.active {
+		  opacity: 1;
+		  transform: translateX(0);
+		  z-index: 1;
+		}
+		
+		/* Slide content layout */
+		.tech-carousel .slide-content {
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		  gap: 2rem;
+		  width: 90%;
+		  max-width: 900px;
+		  padding: 2rem;
+		  border: 4px solid black;
+		  border-radius: 12px;
+		  background: white;
+		}
+		
+		/* Image inside content */
+		.tech-carousel .slide-content img {
+		  width: 256px;
+		  height: 256px;
+		  object-fit: contain;
+		  border: 4px solid black;
+		  border-radius: 8px;
+		  flex-shrink: 0;
+		}
+		
+		/* Text block */
+		.tech-carousel .text-content {
+		  flex: 1;
+		}
+		
+		.tech-carousel .text-content h2 {
+		  font-size: 1.8rem;
+		  margin-bottom: 1rem;
+		  border-bottom: 2px solid black;
+		  display: inline-block;
+		  padding-bottom: 0.3rem;
+		}
+		
+		.tech-carousel .text-content p {
+		  font-size: 1.05rem;
+		  margin-bottom: 1.25rem;
+		}
+		
+		.tech-carousel .text-content a,
+		.tech-carousel .text-content button {
+		  display: inline-block;
+		  margin: 0.5rem 0.5rem 0 0;
+		  padding: 0.75rem 1.25rem;
+		  border: 2px solid black;
+		  background: white;
+		  color: black;
+		  text-decoration: none;
+		  font-weight: bold;
+		  border-radius: 5px;
+		  cursor: pointer;
+		}
+		
+		.tech-carousel .text-content a:hover,
+		.tech-carousel .text-content button:hover {
+		  background: black;
+		  color: white;
+		}
+		
+		/* Arrows */
+		.tech-carousel .nav-arrow {
+		  position: absolute;
+		  top: 50%;
+		  transform: translateY(-50%);
+		  font-size: 2.5rem;
+		  background: white;
+		  color: black;
+		  border: 4px solid black;
+		  border-radius: 50%;
+		  width: 60px;
+		  height: 60px;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  cursor: pointer;
+		  z-index: 20;
+		  line-height: 0.9; /* aligns triangle vertically */
+		}
+		
+		.tech-carousel .nav-arrow.left {
+		  left: calc(50% - 470px);
+		}
+		
+		.tech-carousel .nav-arrow.right {
+		  right: calc(50% - 470px);
+		}
+		
+		.tech-carousel .nav-arrow:hover {
+		  background: black;
+		  color: white;
+		}
+		
+		/* ================================
+		   Responsive Behavior
+		   ================================ */
+		@media (max-width: 1000px) {
+		  .tech-carousel .nav-arrow.left {
+		    left: 20px;
+		  }
+		  .tech-carousel .nav-arrow.right {
+		    right: 20px;
+		  }
+		}
+		
+		@media (max-width: 768px) {
+		  .tech-carousel .slide-content {
+		    flex-direction: column;
+		    align-items: center;
+		    text-align: center;
+		    gap: 1.5rem;
+		  }
+		}
+ 
+        /* --- Floating Search Menu (ensure it floats correctly) --- */
+        .floating-search-menu {
+            position: fixed;
+            top: 20px; /* Adjust as needed, or base it on header height */
+            right: 20px;
+            width: 320px; /* Or your preferred width */
+            background-color: #fff !important;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            z-index: 1030; /* Higher than site-header */
+            overflow: hidden;
+            transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            /* Start slightly off-screen or transparent if you want an "appear" animation */
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none; /* Initially not interactive */
+        }
+
+        .floating-search-menu.visible { /* Add this class with JS to show */
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .floating-search-menu.minimized .search-main-content {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+            /* visibility: hidden; /* Using opacity and max-height is usually smoother */
+        }
+
+        .floating-search-menu:not(.minimized) .search-main-content {
+            max-height: 500px; /* Or enough to show content */
+            opacity: 1;
+            padding: 10px 15px 15px;
+            /* visibility: visible; */
+        }
+
+        .floating-search-menu .search-menu-header-bar {
+            display: flex;
+            justify-content: space-between; /* EAF brand left, controls right */
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0; /* Tailwind gray-300 */
+        }
+        .floating-search-menu.minimized .search-menu-header-bar {
+            border-bottom: none;
+        }
+
+        .floating-search-menu .eaf-brand { /* Style for your EAF brand text */
+            font-weight: bold;
+            color: var(--primary-darker, #0056b3);
+        }
+
+        .floating-search-menu .header-controls-right {
+            /* This now only contains the toggleSearchDisplayBtn */
+        }
+
+        #toggleSearchDisplayBtn {
+            background: none; border: none; font-size: 1.2em;
+            color: var(--primary-color, #007bff); cursor: pointer; padding: 5px;
+        }
+
+        /* #areaNavIconsExpanded (inside floating menu's main content) */
+        #areaNavIconsExpanded.area-nav-icons.expanded-view {
+            display: flex;
+            gap: 8px;
+            padding: 10px 0; /* Adjust */
+            border-bottom: 1px dashed #e2e8f0;
+            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        #areaNavIconsExpanded .nav-area-icon-wrapper svg.area-nav-svg {
+            width: 22px;
+            height: 22px;
+            /* fill: var(--primary-color); */
+        }
+        #areaNavIconsExpanded .nav-area-icon-wrapper .nav-area-fallback-icon {
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+                
+
+
+/* --- New Footer Styling --- */
+.site-footer-main {
+    background-color: #1A202C; /* Your existing dark background (Tailwind gray-900) */
+    color: #A0AEC0;           /* Default light text (Tailwind gray-500) */
+    padding: 2.5rem 1rem 1.5rem; /* Top/LR/Bottom padding */
+    margin-top: 4rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-section-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600;
+    color: #E2E8F0; /* Tailwind gray-200 */
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Layer 1: Category Area Navigation */
+.footer-category-navigation {
+    max-width: 1200px;
+    margin: 0 auto 2.5rem auto; /* Center and add space below */
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #2D3748; /* Tailwind gray-800, subtle separator */
+}
+
+.area-nav-footer-icons {
+    display: flex;
+    flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
+    justify-content: center; /* Center the icons/links */
+    gap: 1rem 1.5rem; /* Row and column gap */
+}
+
+.area-nav-footer-link { /* Container for each category icon + name */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #CBD5E0; /* Tailwind gray-400 */
+    text-decoration: none;
+    transition: color 0.2s ease;
+    min-width: 80px; /* Ensure some space */
+    text-align: center;
+}
+
+.area-nav-footer-link:hover {
+    color: #FFFFFF;
+}
+
+.area-nav-footer-link .area-nav-svg, /* For the SVGs from categoryData.svgString */
+.area-nav-footer-link .nav-area-fallback-icon { /* For Font Awesome fallback */
+    width: 32px;  /* Adjust size as needed */
+    height: 32px;
+    /* For SVGs using fill="currentColor" or if you want to override: */
+    /* fill: currentColor;  */
+}
+.area-nav-footer-link .nav-area-fallback-icon { /* Specific for FA if needed */
+    font-size: 28px; /* Adjust if using FA */
+}
+
+.area-nav-footer-link .area-name-footer {
+    font-size: 0.8rem; /* Smaller text for names */
+    font-weight: 500;
+}
+
+
+/* Layer 2: Interactive Icon Links Bar */
+.footer-icon-link-bar {
+    display: flex;
+    justify-content: center; /* Center the row of icons */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Space between icon links */
+    padding: 1.5rem 0;
+    max-width: 800px; /* Constrain width if many icons */
+    margin: 0 auto 2rem auto; /* Center and add space below */
+}
+
+.footer-interactive-link {
+    display: inline-flex; /* Align icon and text span */
+    align-items: center;
+    padding: 0.6rem 0.8rem; /* Slightly smaller padding */
+    border: 2px solid transparent; /* Start with a transparent border */
+    border-radius: 25px; /* Pill shape or adjust for rounded rectangle */
+    color: #A0AEC0; /* Tailwind gray-500 */
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    overflow: hidden; /* Important for the text reveal */
+    position: relative;
+}
+
+.footer-interactive-link .footer-icon {
+    font-size: 1.1rem; /* Legible icon size */
+    transition: transform 0.3s ease;
+    /* margin-right will be handled by the text span's margin on hover */
+}
+
+.footer-interactive-link .link-text {
+    display: inline-block;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px); /* Start slightly to the left for slide-in */
+    transition: max-width 0.35s ease-out, opacity 0.25s ease-out 0.1s, transform 0.35s ease-out, margin-left 0.35s ease-out;
+    margin-left: 0;
+}
+
+.footer-interactive-link:hover {
+    background-color: #2D3748; /* Tailwind gray-800 - Slightly lighter than bg */
+    border-color: #4A5568;    /* Tailwind gray-700 - Lightened border */
+    color: #E2E8F0;           /* Tailwind gray-300 - Brighter text on hover */
+}
+
+.footer-interactive-link:hover .footer-icon {
+    /* Optional: slightly move icon to make space if needed */
+    /* transform: translateX(-2px); */
+}
+
+.footer-interactive-link:hover .link-text {
+    max-width: 150px; /* Adjust based on longest text */
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    margin-left: 0.6rem; /* Space between icon and text when text is visible */
+}
+
+/* Special styling for donate link if desired */
+.footer-interactive-link.donate-footer-link {
+    /* You can give it slightly different base styles or hover states */
+}
+.footer-interactive-link.donate-footer-link:hover {
+    border-color: #63B3ED; /* Tailwind blue-400 */
+    color: #fff;
+    background-color: #4299E1; /* Tailwind blue-500 */
+}
+.footer-interactive-link.donate-footer-link:hover .footer-icon,
+.footer-interactive-link.donate-footer-link:hover .link-text {
+    color: #fff;
+}
+
+
+/* Layer 3: Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    margin-top: 1rem; /* Reduced space if icon bar is substantial */
+    border-top: 1px solid #2D3748; /* Tailwind gray-800 */
+    font-size: 0.875rem;
+    color: #718096; /* Tailwind gray-600 */
+}
+
+
+/* --- Styling for "Browse Topics" button in header --- */
+.browse-topics-button {
+    background-color: transparent;
+    border: 1px solid transparent; /* Or a subtle border: 1px solid #E2E8F0; */
+    color: #374151; /* Tailwind gray-700 */
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem; /* Space before next icon */
+    border-radius: 0.375rem; /* 6px */
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.browse-topics-button:hover,
+.browse-topics-button.active { /* Added .active class for when menu is open */
+    background-color: #EDF2F7; /* Tailwind gray-200 */
+    color: #1A202C; /* Tailwind gray-900 */
+}
+
+.browse-topics-button .browse-topics-arrow {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.browse-topics-button.active .browse-topics-arrow {
+    transform: rotate(180deg);
+}
+
+
+.site-header-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    /* This wrapper's height will effectively be the header's content height */
+    /* Add any padding that defines your header's visual height here, e.g.: */
+    /* padding-top: 0.75rem; */
+    /* padding-bottom: 0.75rem; */
+}
+
+.mega-menu-panel {
+    position: absolute;   /* Positioned relative to the .site-header */
+    top: 80px;            /* Aligns the top of the megamenu with the bottom of .site-header */
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: 100;         /* Stacking context within the header */
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px); /* Start slightly up for dropdown effect */
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out, visibility 0s linear 0.25s;
+    pointer-events: none;
+}
+
+.mega-menu-panel.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0); /* End at its natural position */
+    transition-delay: 0s;
+    pointer-events: auto;
+}
+
+
+.mega-menu-content-wrapper {
+    max-width: 1200px; /* Or your preferred max-width */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
+    gap: 2rem; /* Gap between columns/categories */
+}
+
+.mega-menu-category-column {
+    /* Styling for each category column in the megamenu */
+}
+
+.mega-menu-category-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600; /* semibold */
+    color: #2D3748; /* Tailwind gray-800 */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color, #007bff); /* Accent color */
+}
+
+.mega-menu-category-title .area-nav-svg, /* For your SVG icons */
+.mega-menu-category-title .nav-area-fallback-icon { /* For Font Awesome fallback */
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+    /* fill: currentColor; */ /* If SVGs use currentColor */
+}
+
+.mega-menu-subcategory-list {
+    list-style: none;
+    padding-left: 0; /* Remove default padding if using custom layout */
+    margin: 0;
+}
+
+.mega-menu-subcategory-list li a {
+    display: block;
+    padding: 0.5rem 0.25rem; /* Padding for links */
+    color: #4A5568; /* Tailwind gray-700 */
+    text-decoration: none;
+    border-radius: 0.25rem; /* 4px */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.mega-menu-subcategory-list li a:hover {
+    background-color: #F7FAFC; /* Tailwind gray-100 */
+    color: var(--primary-color, #007bff);
+}
+
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-category-navigation {
+        margin-bottom: 2rem;
+    }
+    .area-nav-footer-icons {
+        gap: 0.8rem 1rem;
+    }
+    .area-nav-footer-link .area-nav-svg,
+    .area-nav-footer-link .nav-area-fallback-icon {
+        width: 28px;
+        height: 28px;
+    }
+    .area-nav-footer-link .area-name-footer {
+        font-size: 0.75rem;
+    }
+    .footer-icon-link-bar {
+        gap: 0.3rem; /* Tighter gap on mobile */
+        padding: 1rem 0;
+    }
+    .footer-interactive-link {
+        padding: 0.5rem 0.7rem;
+    }
+    .footer-interactive-link .footer-icon {
+        font-size: 1rem;
+    }
+}
+
+
+
+
+
+
+
+    /* Ensure the SVG icons within #areaNavIconsMinimized are styled as needed
+    (example from previous response, adjust sizes/colors for header context) */
+    .area-nav-icons.minimized-view .nav-area-icon-wrapper svg.area-nav-svg {
+        width: 20px;  /* Size for SVG icons in the main site header */
+        height: 20px;
+        /* fill: #555; */ /* If using fill with currentColor in SVG, or if it's monochrome and needs specific color */
+    }
+    .area-nav-icons.minimized-view .nav-area-icon-wrapper .nav-area-fallback-icon {
+        font-size: 1.1em; /* For Font Awesome fallback if SVG is missing */
+        color: #555;
+    }
+        .site-header .logo {
+            font-size: 2rem; margin-right: 1rem; color: #54B948; /* Green */
+        }
+        .site-header h1 { font-size: 1.5rem; margin: 0; }
+        .site-header h1 .green { color: #54B948; }
+        .site-header h1 .blue { color: #1E88E5; }
+
+        .nav-area-icon-wrapper {
+            cursor: pointer;
+            padding: 4px; /* Adjust spacing around the icon */
+            display: inline-flex; /* Helps with SVG alignment */
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px; /* Optional: if you want a slight background effect on hover */
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-area-icon-wrapper:hover {
+            background-color: rgba(0,0,0,0.05); /* Subtle hover effect */
+        }
+
+        /* Styling for the SVG element itself inside the wrapper */
+        .area-nav-icons.expanded-view .nav-area-icon-wrapper svg.area-nav-svg {
+            width: 22px;  /* Adjust size for icons in the expanded search menu */
+            height: 22px;
+            /* The fill will come from the SVG itself if it has one, or use CSS: */
+            /* fill: var(--primary-color); */ /* Uncomment if your SVGs use currentColor or need a theme color */
+        }
+
+        .area-nav-icons.minimized-view .nav-area-icon-wrapper svg.area-nav-svg {
+            width: 18px; /* Adjust size for icons in the minimized header bar */
+            height: 18px;
+            /* fill: #555; */ /* Different color for minimized state if needed and SVG allows */
+        }
+
+        /* Fallback Font Awesome icon styling if an SVG string is missing */
+        .nav-area-icon-wrapper .nav-area-fallback-icon {
+            color: var(--primary-color); /* Or another suitable color */
+        }
+        .area-nav-icons.expanded-view .nav-area-icon-wrapper .nav-area-fallback-icon {
+            font-size: 1.2em; 
+        }
+        .area-nav-icons.minimized-view .nav-area-icon-wrapper .nav-area-fallback-icon {
+            font-size: 1em;
+        }
+
+        /* Styles for the wrapper of pills inside the accordion panel */
+        .subcategory-pills-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem; /* Adjust gap between pills */
+            padding-top: 0.5rem; /* Add some padding if panel has padding:0 initially */
+        }
+
+        /* Base subcategory pill style (ensure this class is on your pills) */
+        .subcategory-pill {
+            /* text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium hover:opacity-80 transition-opacity shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 */
+            /* The classes above are from your JS - ensure they are applied */
+            /* Default/Fallback background if no category-specific color is matched or needed */
+            /* background-color: #555; */ /* Example fallback */
+            /* color: white; */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1; /* Helps with icon alignment */
+        }
+        .subcategory-pill .fas, 
+        .subcategory-pill .fab, 
+        .subcategory-pill svg { /* For feather icons */
+            font-size: 0.8em; /* Adjust icon size within pill if needed */
+        }
+
+
+    /* --- CATEGORY-SPECIFIC PILL COLORS --- */
+    /* You need to define these based on your categories from the JSON file */
+    /* The class names are generated as 'category-[areaname]' (e.g., category-shelter) */
+
+    .subcategory-pill.category-shelter {
+        background-color: #A0522D; /* Sienna - Example for Shelter */
+        /* border: 1px solid darken(#A0522D, 10%); */ /* Optional border */
+    }
+    .subcategory-pill.category-shelter:hover {
+        background-color: #8B4513; /* Darker Sienna on hover */
+    }
+    .subcategory-pill.category-shelter:focus { /* For accessibility */
+        ring-color: #CD853F; /* Lighter sienna for focus ring */
+    }
+
+
+    .subcategory-pill.category-water {
+        background-color: #1E90FF; /* DodgerBlue - Example for Water */
+    }
+    .subcategory-pill.category-water:hover {
+        background-color: #1C86EE; 
+    }
+    .subcategory-pill.category-water:focus {
+        ring-color: #6495ED; 
+    }
+
+    .subcategory-pill.category-food {
+        background-color: #228B22; /* ForestGreen - Example for Food */
+    }
+    .subcategory-pill.category-food:hover {
+        background-color: #207A20;
+    }
+    .subcategory-pill.category-food:focus {
+        ring-color: #3CB371;
+    }
+
+    .subcategory-pill.category-waste {
+        background-color: #696969; /* DimGray - Example for Waste */
+    }
+    .subcategory-pill.category-waste:hover {
+        background-color: #595959;
+    }
+    .subcategory-pill.category-waste:focus {
+        ring-color: #808080;
+    }
+
+    .subcategory-pill.category-energy {
+        background-color: #FF8C00; /* DarkOrange - Example for Energy */
+    }
+    .subcategory-pill.category-energy:hover {
+        background-color: #EE7600;
+    }
+    .subcategory-pill.category-energy:focus {
+        ring-color: #FFA500;
+    }
+
+    .subcategory-pill.category-health {
+        background-color: #DC143C; /* Crimson - Example for Health */
+    }
+    .subcategory-pill.category-health:hover {
+        background-color: #C71585;
+    }
+    .subcategory-pill.category-health:focus {
+        ring-color: #FF69B4;
+    }
+
+    /* Add more category color rules as needed based on your data's "area" names */
+
+
+    /* Ensure accordion panel can accommodate content for max-height transition */
+    .accordion-panel {
+        /* padding: 0; REMOVE THIS if you had it, or ensure .accordion-panel-pills-content has padding */
+        /* background-color: var(--bg-color, #2c3e50); */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease-out, padding 0.35s ease-out; /* Ensure padding transitions if used */
+        /* border-top: 1px solid var(--border-color, #4a5e70); */
+    }
+    .accordion-panel.open {
+        padding: 0.75rem 1rem; /* Add padding back when panel is open */
+    }
+    .accordion-panel-pills-content {
+        /* This div now holds the pills wrapper */
+    }
+
+    .accordion-panel .no-subcategories-text {
+        padding: 0.5rem 0; /* Padding for this text if pills wrapper has none */
+        font-style: italic;
+        color: var(--placeholder-color, #95a5a6);
+    }
+
+
+
+        /* --- Homepage Module Grid --- */
+       #modules-grid-container { /* Renamed container */
+            padding: 2rem 1rem; /* Add padding */
+        }
+        .modules-grid {
+            margin: 0 auto; /* Centered */
+            /* max-width: 900px; */ /* Original value - this might be too narrow for 6 modules */
+            max-width: 1400px;  /* Increased max-width to better accommodate 6 modules in a row. Adjust as needed. */
+                                /* Alternatively, you could use '100%' if you want it to fill its parent container's width */
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* This creates 6 equal-width columns */
+            gap: 1.5rem;
+        }
+        .module {
+            cursor: pointer; display: flex; align-items: center;
+            padding: 1.25rem 1.5rem; border-radius: 12px; border: 1px dashed;
+            font-size: 1.1rem; /* Slightly smaller */ font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative; overflow: hidden;
+            background-color: #2D3748; /* Dark background */ 
+            color: #1E88E5;
+            background-color: #fff; /* Dark background */ color: white;
+        }
+        .module:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .module::before { /* Subtle gradient overlay */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            z-index: 1; opacity: 0.8; transition: opacity 0.3s ease;
+        }
+        .module:hover::before { opacity: 0; }
+
+        .module .icon { width: 38px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-right: 1rem; z-index: 2; }
+
+
+
+
+        .module:hover .icon svg { transform: scale(1.1); stroke: #fff; }
+        .module:hover h2 { color: #fff; }
+        /* Module Colors */
+        .module.shelter { border-color: #1E88E5;} 
+        .module.shelter:hover { background-color: #3936cc; }
+        .module.shelter svg { color: #36B9CC; } 
+        .module.water { border-color: #1E88E5;} 
+        .module.water:hover { background-color: #1E88E5; }
+        .module.waste { border-color: #1E88E5;} 
+        .module.waste:hover { background-color: #6b420f; }
+        .module.energy { border-color: #1E88E5;} 
+        .module.energy:hover { background-color: #e9c65d; }
+        .module.health { border-color: #1E88E5;} 
+        .module.health:hover { background-color: #d41714; }
+        .module.food { border-color: #1E88E5;} 
+        .module.food:hover { background-color: #8BC34A; }
+        .module h2 { margin: 0; transition: color 0.2s ease; position: relative; z-index: 2; color: #1E88E5; }
+        .module .icon svg { width: 100%; height: 100%; stroke-width: 2; transition: transform 0.3s ease; stroke: #1E88E5; }
+
+
+        /* For screens smaller than 768px, make it 2 columns and let them auto-fit */
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Or repeat(2, 1fr) for exactly 2 columns */
+                max-width: 90%; /* Adjust max-width for smaller screens */
+            }
+        }
+        
+        /* Even smaller screens, 1 column */
+        @media (max-width: 480px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Category Content Area (Megamenu Logic Adapted) --- */
+        #category-content-container {
+            display: none; /* Hidden initially */
+            max-width: 1152px; /* max-w-6xl */
+            margin: 1.5rem auto 0 auto; /* mt-6 */
+            padding: 0 1rem; /* px-4 */
+        }
+        #category-content-container.visible { display: block; }
+
+        /* Back Button for Category View */
+        #back-to-modules-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 8px 16px; border-radius: 0.375rem;
+             font-size: 0.9rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none; margin-bottom: 1rem;
+        }
+        #back-to-modules-button:hover { background-color: #4b5563; }
+        #back-to-modules-button svg { width: 1.1rem; height: 1.1rem; margin-right: 0.5rem; }
+
+        /* Category Title Display */
+        #category-title-display {
+            transition: opacity 0.4s ease-out, max-height 0.4s ease-out;
+            overflow: hidden; max-height: 0; opacity: 0;
+            text-align: center; font-size: 1.75rem; /* Increased size */ font-weight: 600; letter-spacing: 0.05em; color: #374151; text-transform: uppercase;
+            margin-bottom: 1rem; /* Added margin */
+        }
+        #category-title-display.visible { max-height: 100px; opacity: 1; }
+
+        /* Megamenu Content Container (holds columns/details) */
+        #megamenu-content {
+             background-color: #ffffff; border-radius: 0.5rem; /* rounded-lg */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+             padding: 1.5rem; /* p-6 */
+             /* No transitions needed here as parent controls visibility */
+        }
+
+        /* Glossary Panel */
+        #glossary-panel {
+             transition: opacity 0.4s ease-out, max-height 0.4s ease-out, padding 0.4s ease-out, margin-bottom 0.4s ease-out, visibility 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; visibility: hidden;
+             background-color: #4b5563; /* gray-600 */ color: #f3f4f6; /* gray-100 */ border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+             padding: 1rem; margin-top: 1rem; position: relative; z-index: 20;
+        }
+        #glossary-panel.visible { max-height: 300px; opacity: 1; padding-top: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; visibility: visible; }
+        .glossary-close-button {
+             position: absolute; top: 0.5rem; right: 0.75rem; background: rgba(255, 255, 255, 0.1); color: #e5e7eb;
+             border: none; border-radius: 9999px; width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
+             transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .glossary-close-button:hover { background: rgba(255, 255, 255, 0.2); color: white; }
+
+        /* Columns & Details Area */
+        #megamenu-columns { transition: opacity 0.4s ease-out, max-height 0.5s ease-out; overflow: hidden; max-height: 2000px; opacity: 1; }
+        #megamenu-columns.columns-hidden { max-height: 0; opacity: 0; }
+        #megamenu-details-area {
+             transition: opacity 0.4s ease-out 0.1s, max-height 0.4s ease-out, margin-top 0.4s ease-out, padding-top 0.4s ease-out, visibility 0.4s ease-out, border-top-width 0.4s ease-out;
+             overflow: hidden; max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; visibility: hidden; border-top-width: 0;
+             border-color: #e5e7eb; /* gray-200 */
+        }
+        #megamenu-details-area.visible { max-height: 3500px; /* Increased */ opacity: 1; margin-top: 1.5rem; padding-top: 1.5rem; visibility: visible; border-top-width: 1px; }
+
+        /* Tag pills */
+        .tag-pill-button {
+             display: inline-block; background-color: #4b5563; color: white; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+             margin-right: 4px; margin-bottom: 4px; line-height: 1.2; cursor: pointer; border: none; transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .tag-pill-button:hover { background-color: #374151; transform: translateY(-1px); }
+        .tag-pill-button.active { background-color: #3b82f6; /* blue-600 */ font-weight: 600; }
+
+        /* Subcategory toggle */
+        .subcategory-toggle { transition: color 0.2s ease-in-out; }
+        .subcategory-toggle.active { font-weight: 600; color: #2563eb; /* blue-600 */ }
+
+        /* Details Back Button */
+        .details-back-button {
+             display: inline-flex; align-items: center; background-color: #6b7280; color: white; padding: 6px 16px; border-radius: 0.375rem;
+             font-size: 0.875rem; font-weight: 500; transition: background-color 0.2s ease-in-out; cursor: pointer; border: none;
+        }
+        .details-back-button:hover { background-color: #4b5563; }
+
+        /* Sibling Subcategory Link Styles */
+        .sibling-links-container { margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; line-height: 1.5; }
+        .sibling-links-container > span { font-size: 0.9rem; font-weight: 500; color: #6b7280; margin-right: 8px; }
+        .sibling-link-pill {
+            display: inline-block; padding: 4px 12px; border-radius: 9999px; margin: 3px 4px; font-weight: 600; color: white; background-color: #4f46e5; /* Indigo */
+            text-decoration: none; font-size: 0.8rem; transition: background-color 0.2s, transform 0.1s; cursor: pointer; border: none;
+        }
+        .sibling-link-pill:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .sibling-link-pill.current { background-color: #a5b4fc; color: #3730a3; cursor: default; pointer-events: none; }
+
+        /* Video Linker Styles */
+        .video-linker-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed #e5e7eb; }
+        .video-linker { display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 8px; text-decoration: none; color: white; font-size: 30px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 1px 1px 4px rgba(0,0,0,0.15); overflow: hidden; cursor: pointer; flex-shrink: 0; }
+        .video-linker:hover { transform: scale(1.05); box-shadow: 3px 3px 7px rgba(0,0,0,0.25); }
+        .video-linker.no-icon { font-size: 9px; line-height: 1.1; padding: 5px; text-align: center; word-wrap: break-word; color: #333; background-color: #e5e7eb !important; }
+
+        /* Shared Info Panel Styles */
+        #video-info-panel { display: none; flex-direction: column; background-color: #343a40; color: #f8f9fa; border-top: 3px solid #007bff; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); transition: opacity 0.3s ease; opacity: 0; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; }
+        #video-info-panel.visible { display: flex; opacity: 1; }
+        .local-video-row { display: none; align-items: center; background-color: #fef9c3; padding: 8px 15px; border-bottom: 1px solid #fde68a; }
+        .local-video-row.visible { display: flex; }
+        .local-video-link { display: flex; align-items: center; text-decoration: none; gap: 10px; width: 100%; }
+        .local-video-link:hover .local-video-text { text-decoration: underline; }
+        .local-video-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fcd34d; flex-shrink: 0; background-color: #fefce8; }
+        .local-video-text { font-size: 0.8rem; color: #713f12; font-weight: 500; transition: text-decoration 0.2s; }
+        .local-video-text span { font-family: monospace; font-weight: 600; }
+        .youtube-info-row { display: flex; align-items: flex-start; padding: 10px 15px; }
+        #video-info-panel .info-icon { font-size: 36px; color: #FF0000; margin-right: 15px; flex-shrink: 0; padding-top: 3px; }
+        #video-info-panel .info-text { display: flex; flex-direction: column; gap: 3px; overflow: hidden; flex-grow: 1; }
+        #video-info-panel .info-url, #video-info-panel .info-title, #video-info-panel .info-description { margin: 0; line-height: 1.4; white-space: normal; word-break: break-word; }
+        #video-info-panel .info-url { font-size: 0.75em; color: #adb5bd; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #video-info-panel .info-title { font-size: 1em; font-weight: bold; color: #ffffff; }
+        #video-info-panel .info-description { font-size: 0.85em; color: #ced4da; max-height: 4.0em; overflow-y: auto; }
+        #video-info-panel .placeholder-text { font-style: italic; color: #888; }
+
+       /* Slideshow Container */
+        .slideshow-container {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 1rem;
+        }
+        
+        /* Slides */
+        .slideshow-slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slideshow-slide.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Navigation Arrows */
+        .slideshow-prev, .slideshow-next {
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.2s;
+        }
+        
+        .slideshow-prev:hover, .slideshow-next:hover {
+            opacity: 1;
+        }
+        
+        .slideshow-prev:active, .slideshow-next:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        /* Dots */
+        .slideshow-dot {
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .slideshow-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+        
+        /* Dark mode adjustments */
+        .dark .slideshow-container {
+            background-color: #1f2937;
+        }
+        
+        .dark .featured-slideshow h2 {
+            color: #f3f4f6;
+        }
+            
+        /* Add to your style.css */
+
+        .module.homepage-module {
+            /* ... your existing .module styles ... */
+            position: relative; /* For positioning the preview if needed */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            /* cursor: pointer; /* Already there */
+        }
+
+        .subcategory-preview {
+            background-color: rgba(0, 0, 0, 0.1); /* Slightly different background for the preview area */
+            border-top: 1px solid var(--border-color, #4a5e70);
+            margin-top: 0.5rem; /* my-2 */
+            padding: 0.75rem; /* p-3 */
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out;
+            border-bottom-left-radius: 6px; /* If your module has rounded corners */
+            border-bottom-right-radius: 6px;
+        }
+
+        .subcategory-preview.visible {
+            max-height: 200px; /* Adjust as needed, make it large enough for content */
+            opacity: 1;
+            padding: 0.75rem; /* Restore padding */
+            overflow-y: auto; /* Add scroll if content exceeds max-height */
+        }
+
+        .subcategory-preview-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .subcategory-preview-list li {
+            margin-bottom: 0.35rem; /* mb-1.5 */
+        }
+
+        .subcategory-preview-link {
+            color: var(--text-color, #ecf0f1);
+            text-decoration: none;
+            display: block;
+            padding: 0.35rem 0.5rem; /* py-1.5 px-2 */
+            border-radius: 4px; /* rounded */
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .subcategory-preview-link:hover,
+        .subcategory-preview-link:focus {
+            background-color: var(--accent-color, #27ae60);
+            color: white; /* Or your chosen hover text color */
+        }
+
+        .no-subcategories-text {
+            font-size: 0.9rem;
+            color: var(--placeholder-color, #95a5a6);
+            text-align: center;
+        }
+
+        /* Optional: Style for the active module showing preview */
+        .module.homepage-module.preview-active {
+            /* background-color: #3a5064; /* Slightly different bg when active */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+
+
+        /* Floating Search Menu Styles */
+        .floating-search-menu {
+                position: fixed; top: 20px; right: 20px; width: 300px; background-color: var(--card-bg);
+                border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000;
+                padding: 15px;
+            }
+            .floating-search-menu h4 { margin-top: 0; margin-bottom: 10px; color: var(--dark-gray); font-size: 1.1em;}
+            #searchInput {
+                width: calc(100% - 20px); padding: 10px; border: 1px solid var(--medium-gray);
+                border-radius: 4px; margin-bottom: 10px; font-size: 1em;
+            }
+            #searchResults { max-height: 300px; overflow-y: auto; }
+            .suggestion-item {
+                padding: 10px; cursor: pointer; border-bottom: 1px solid var(--medium-gray);
+                display: flex; align-items: center; font-size: 0.9em;
+            }
+            .suggestion-item:last-child { border-bottom: none; }
+            .suggestion-item:hover { background-color: var(--light-gray); }
+            .suggestion-item i { margin-right: 10px; color: var(--primary-color); width: 20px; text-align: center;}
+            .suggestion-item .module-icon { color: #28a745; /* Green for modules */ }
+            .suggestion-item .video-icon-search { color: #dc3545; /* Red for videos */ }
+            .suggestion-item span { flex-grow: 1; }
+            .suggestion-category-label {
+                font-weight: bold; color: #555; padding: 8px 0px 5px 0px; font-size: 0.8em;
+                text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 5px;
+            }
+            .error-message {
+                color: #dc3545; font-weight: bold; padding: 15px; background-color: #f8d7da;
+                border: 1px solid #f5c6cb; border-radius: 5px; text-align: center;
+            }
+
+		:root {
+		--content-half-width: 450px;
+		--arrow-offset: 20px;
+		}
+		
+		.nav-arrow.left {
+		left: calc(50% - var(--content-half-width) - var(--arrow-offset));
+		}
+		
+		.nav-arrow.right {
+		right: calc(50% - var(--content-half-width) - var(--arrow-offset));
+		}
+		@media (max-width: 1000px) {
+		.nav-arrow.left {
+		  left: 20px;
+		}
+		.nav-arrow.right {
+		  right: 20px;
+		}
+		}
+		
+		.homepage-module-item { display:none; }
+		
+		/* --- Welcome Statement Section --- */
+		.welcome-statement-section {
+		  background-color: #F9FAFB; /* A very light, almost white-gray (Tailwind gray-50) */
+		  padding: 3rem 1.5rem;      /* Generous vertical padding, standard horizontal */
+		  text-align: center;
+		  margin-bottom: 2.5rem;     /* Space before the next content section */
+		  border-bottom: 1px solid #E5E7EB; /* Subtle separator line (Tailwind gray-200) */
+		}
+		
+		.welcome-content-wrapper {
+		  max-width: 800px;          /* Constrains the width for better readability */
+		  margin: 0 auto;            /* Centers the content block */
+		}
+		
+		.welcome-title {
+		  font-size: 2rem;        /* Tailwind text-3xl */
+		  font-weight: 700;          /* Bold */
+		  color: #1F2937;            /* Darker gray, near black (Tailwind gray-800) */
+		  margin-bottom: 1rem;
+		  line-height: 1.3;
+		}
+		
+		.welcome-message {
+		  font-size: 1.125rem;       /* Tailwind text-lg */
+		  color: #374151;            /* Medium-dark gray (Tailwind gray-700) */
+		  line-height: 1.75;
+		  max-width: 720px;          /* Slightly narrower for the paragraph text */
+		  margin: 0 auto 1.5rem auto; /* Center paragraph text and add space below */
+		}
+		
+		/* Optional: Styling for a thematic icon if you uncomment it in the HTML */
+		.welcome-icon-container {
+		  margin-top: 1.5rem;
+		}
+		.welcome-icon-container .fas { /* If using Font Awesome */
+		  font-size: 2.5rem;
+		  color: #60A5FA; /* Example: A calming blue (Tailwind blue-400) or your brand's accent color */
+		  opacity: 0.8;
+		}
+		
