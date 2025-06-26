@@ -1,0 +1,3019 @@
+[
+  {
+    "area": "Shelter",
+    "icon": "fa-home",
+    "featherIcon": "home",
+    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z\"></path></svg>",
+    "subcategories": [
+      {
+        "uniqueId": "shelter-0",
+        "title": "Methods",
+        "subtitle": "Low-cost, Durable Construction Methods",
+        "description": "Learn how to build safe, long-lasting structures using simple tools and affordable materials. Ideal for creating strong shelters in resource-limited areas.",
+        "tags": [
+          "construction",
+          "low-cost",
+          "durable",
+          "building",
+          "DIY",
+          "resilience",
+          "earthbag",
+          "bamboo",
+          "superadobe",
+          "natural building"
+        ],
+        "context": "Focuses on creating robust shelters that withstand local environmental conditions (weather, pests, minor seismic activity) using affordable, accessible techniques and minimal specialized tools, ensuring longevity with reasonable maintenance.",
+        "materials": [
+          "Earthbags / Superadobe tubes",
+          "Barbed Wire",
+          "Soil (appropriate mix)",
+          "Bamboo (treated)",
+          "Recycled Tires",
+          "Pallet Wood",
+          "Basic Fasteners",
+          "Natural Plasters/Sealers"
+        ],
+        "processSteps": [
+          "1. Site Assessment & Clearing",
+          "2. Foundation Laying (rubble trench, earthbag, tire)",
+          "3. Wall Construction (stacking, tamping, curing)",
+          "4. Lintels & Openings (doors, windows)",
+          "5. Roofing Structure & Covering",
+          "6. Plastering & Finishing (protection & aesthetics)"
+        ],
+        "videos": [
+          {
+            "title": "Building The Perfect Gabion Retaining Wall (2024)!",
+            "youtubeId": "vHfN4gYFgu8",
+            "description": "Stone in a mesh cage solution for retaining walls, gabion bases and fences",
+            "icon_tag_fa": "fas fa-layer-group",
+            "color_tag": "#78716c",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Aircrete building material explained",
+            "youtubeId": "EDNpgqOwlJM",
+            "description": "..",
+            "tags": "cellular concrete, lightweight concrete, foamcrete, low density concrete",
+            "icon_tag_fa": "fas fa-house-user",
+            "color_tag": "#a16207",
+            "localVideoFilename": "",
+            "authors": "Domegaia",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/@domegaia",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": [
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "uniqueId": "shelter-1",
+        "title": "Materials",
+        "subtitle": "Locally Available Materials",
+        "description": "Find out how to identify and use materials from your immediate surroundings—like earth, bamboo, or recycled materials—to lower costs and support sustainability.",
+        "tags": [
+          "materials",
+          "local",
+          "sustainability",
+          "earthship",
+          "vernacular architecture",
+          "resourcefulness",
+          "clay",
+          "stone",
+          "salvaged",
+          "bamboo",
+          "natural building"
+        ],
+        "context": "Emphasizes using resources found nearby (soil, stone, timber, bamboo, waste streams) to minimize transport costs, reduce environmental impact, often resulting in structures well-suited to the local climate and culture.",
+        "materials": [
+          "Local Soil (clay, sand, silt testing)",
+          "Stones/Rocks",
+          "Timber/Bamboo (sustainably harvested)",
+          "Grasses/Straw (for binder/insulation)",
+          "Recycled Materials (bottles, cans, tires)",
+          "Natural Binders (lime, clay slip)"
+        ],
+        "processSteps": [
+          "1. Site & Resource Mapping",
+          "2. Material Identification & Field Testing (soil jar test, etc.)",
+          "3. Sustainable Harvesting Practices",
+          "4. Material Processing (drying, treating, shaping)",
+          "5. Construction Integration Techniques",
+          "6. Assessing Long-term Availability"
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-paint-roller",
+            "color_tag": "#a16207",
+            "title": "How to Identify and Process Local Clay for Construction",
+            "youtubeId": "eOOYrY4zxpw",
+            "description": "Testing and preparing natural clay for building projects",
+            "localVideoFilename": "shelter_local_clay.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-tree",
+            "color_tag": "#16a34a",
+            "title": "Bamboo Harvesting and Treatment for Construction",
+            "youtubeId": "9-Ka4YcyOFo",
+            "description": "How to select, harvest, and treat bamboo for long-lasting building materials",
+            "localVideoFilename": "shelter_bamboo_harvest.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-recycle",
+            "color_tag": "#059669",
+            "title": "Creative Reuse: Building With Glass Bottles",
+            "youtubeId": "M7P8YAIhBkY",
+            "description": "How to incorporate waste glass bottles into walls for beauty and function",
+            "localVideoFilename": "shelter_glass_bottles.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+
+      {
+        "uniqueId": "shelter-2",
+        "title": "Healthy & Non-Toxic Building",
+        "subtitle": "Identifying, Mitigating, and Building with Safe Materials",
+        "description": "Learn to identify common toxic chemicals and hazards in building materials, understand their short- and long-term human health impacts, and discover safer alternatives and practical mitigation strategies for creating healthier living and working spaces. Emphasizes minimizing exposure during construction and occupancy.",
+        "tags": [
+          "non-toxic materials",
+          "healthy building",
+          "indoor air quality",
+          "material safety",
+          "lead paint",
+          "asbestos",
+          "mold",
+          "VOCs",
+          "formaldehyde",
+          "PVC",
+          "flame retardants",
+          "natural materials",
+          "ventilation",
+          "exposure minimization",
+          "personal protective equipment",
+          "green building",
+          "sick building syndrome"
+        ],
+        "context": "Many conventional building materials contain chemicals (e.g., VOCs, heavy metals, synthetic polymers) that can negatively impact human health through off-gassing, dust, or direct contact. This module provides essential knowledge for minimizing exposure to harmful substances, selecting safer alternatives, and designing environments that promote well-being. It's especially crucial for DIY and low-resource contexts where material sourcing might be less regulated. **Support PDF documentation tailored for specific regional contexts regarding local material hazards and regulations will also be provided.**",
+        "materials": [
+          "Safety gear: **Proper PPE** including N95/P100 respirators, chemical-resistant gloves, eye protection, disposable coveralls",
+          "Lead test kits (DIY or professional referral for comprehensive testing)",
+          "Moisture meters (for mold prevention and assessment)",
+          "HEPA vacuum cleaner (for fine dust cleanup, essential for lead/asbestos work)",
+          "Natural sealants (e.g., shellac flakes, milk paint, natural waxes)",
+          "Low-VOC or zero-VOC paints, adhesives, and finishes (check certifications)",
+          "Natural insulation materials (e.g., cellulose, mineral wool, cotton, straw bale, sheep's wool)",
+          "Non-toxic cleaning agents (vinegar, baking soda, borax)"
+        ],
+        "processSteps": [
+          "1. **Hazard Identification & Research:** Thoroughly research common toxic materials relevant to your building context (e.g., lead paint in pre-1978 homes, asbestos in older construction, VOCs in new synthetic materials). Understand their potential health impacts (respiratory, neurological, carcinogenic).",
+          "2. **Exposure Minimization Strategies:** Implement strategies like isolating work areas, ensuring high ventilation during and after construction, utilizing wet methods for dust suppression, and curing materials outdoors if possible.",
+          "3. **Material Selection for Health:** Prioritize materials with transparent ingredient lists. Opt for natural, inert materials (e.g., solid wood, natural stone, clay, lime plaster, natural fiber insulation). Choose certified low-emission products when synthetics are unavoidable.",
+          "4. **Moisture Control & Mold Prevention:** Design and build to prevent water intrusion. Ensure proper drainage, flashing, and vapor barriers. Maintain indoor humidity levels below 60% to inhibit mold growth. Address leaks immediately.",
+          "5. **Ventilation & Airflow Design:** Incorporate effective natural ventilation (cross-ventilation, stack effect) or mechanical ventilation systems to ensure constant air changes and dilute indoor pollutants.",
+          "6. **Proper Personal Protective Equipment (PPE) & Training:** Always use appropriate PPE (respirators for dust/fumes, gloves for chemicals, eye protection). Ensure users are properly trained in fitting and using PPE and understand its limitations. **Emphasize that improvised solutions are temporary and should be replaced by certified PPE where possible.**",
+          "7. **Safe Handling & Disposal of Hazardous Materials:** Follow strict protocols for handling identified toxic materials. This often involves containment, proper disposal in designated hazardous waste facilities, and in many cases, professional abatement for lead and asbestos.",
+          "8. **Post-Construction Airing & Testing:** Allow newly constructed or renovated spaces to air out for an extended period. Consider air quality testing (e.g., for VOCs, formaldehyde) before full occupancy, especially for vulnerable individuals."
+        ],
+        "videos": [
+          {
+            "title": "Toxic Chemicals in the Built Environment: Environmental Health Disparities & Equity-Driven Solutions",
+            "youtubeId": "b1o465y2wYc",
+            "description": "A comprehensive discussion on common toxic chemicals in building materials and their far-reaching health implications, including disparities in exposure.",
+            "icon_tag_fa": "fas fa-exclamation-triangle",
+            "color_tag": "#ef4444",
+            "authors": "UC Berkeley Public Health",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/watch?v=x9a9WgXBn9c",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "A guide to lead-safe painting, repair, and home improvement for do-it-yourselfers",
+            "youtubeId": "h-91vH1rN_I",
+            "description": "The US EPA provides guidelines for DIYers on safely dealing with lead paint during home renovations, focusing on containment and cleaning.",
+            "icon_tag_fa": "fas fa-shield-alt",
+            "color_tag": "#f97316",
+            "authors": "US Environmental Protection Agency",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/watch?v=0lggp_NsbjY",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Understanding Asbestos Safety | Ask This Old House",
+            "youtubeId": "z_PLACEHOLDER_ASBESTOS_SAFETY_VIDEO_ID_z",
+            "description": "Experts from This Old House discuss identifying asbestos, safely containing it, and when professional remediation is absolutely necessary.",
+            "icon_tag_fa": "fas fa-mask",
+            "color_tag": "#6b7280",
+            "authors": "This Old House",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/watch?v=pe8mqGuyMr8",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "How To Prevent and Remove Mold at Home",
+            "youtubeId": "z_PLACEHOLDER_MOLD_PREVENTION_VIDEO_ID_z",
+            "description": "Tips for preventing mold growth, reducing humidity, and safely removing small mold infestations using natural, non-toxic methods.",
+            "icon_tag_fa": "fas fa-house-damage",
+            "color_tag": "#a16207",
+            "authors": "Brightly",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://m.youtube.com/watch?v=T6oqje7dUdI&t=151s",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      }
+
+
+    ]
+  },
+  {
+    "area": "Water",
+    "icon": "fa-tint",
+    "featherIcon": "droplet",
+    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM200,144a70.57,70.57,0,0,1-.46,8H136V136h63.64Q200,140,200,144ZM183.39,88H136V72h36.89A175.85,175.85,0,0,1,183.39,88ZM136,200h37.19A71.67,71.67,0,0,1,136,215.54Zm0-16V168h59.87a72,72,0,0,1-8,16Zm0-64V104h55.39a116.84,116.84,0,0,1,5.45,16Zm23.89-64H136V32.6A257.22,257.22,0,0,1,159.89,56ZM56,144c0-50,42.26-92.71,64-111.4V215.54A72.08,72.08,0,0,1,56,144Z\"></path></svg>",
+    "subcategories": [
+      {
+        "uniqueId": "water-0",
+        "title": "Purification",
+        "description": "Use household items or low-cost filters to make water safe for drinking...",
+        "tags": [
+          "clean water",
+          "filtration",
+          "health",
+          "SODIS",
+          "potable water",
+          "waterborne disease",
+          "DIY filter",
+          "boiling",
+          "disinfection",
+          "resourcefulness",
+          "water testing"
+        ],
+        "context": "Access to safe drinking water is fundamental for health...",
+        "materials": [
+          "Clean Containers...",
+          "Heat Source...",
+          "Clear PET Bottles...",
+          "Cloth...",
+          "Sand...",
+          "Gravel...",
+          "Activated Charcoal...",
+          "Simple Chlorine/Iodine Solution..."
+        ],
+        "processSteps": [
+          "Pre-filtration...",
+          "Boiling...",
+          "Solar Disinfection...",
+          "Building Layered Filter...",
+          "Chemical Disinfection...",
+          "Safe Storage..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-filter",
+            "color_tag": "#4b5563",
+            "title": "DIY Water Filter Build (Microbial Safety Focus)",
+            "youtubeId": "31",
+            "description": "Detailed guide (City Prepping)...",
+            "localVideoFilename": "water_diy_filter_safety.mp4",
+            "authors": "City Prepping",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/@CityPrepping",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-flask-vial",
+            "color_tag": "#ef4444",
+            "title": "Understanding Water Safety & Contamination",
+            "youtubeId": "32",
+            "description": "Explains (TED-Ed) different types...",
+            "localVideoFilename": "water_safety_teded.mp4",
+            "authors": "TED-Ed / Mia Nacamulli",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/@TEDEd",
+            "licence": "Standard YouTube License",
+            "patreon": "https://www.patreon.com/teded",
+            "socials": {
+              "twitter": "https://twitter.com/TED_ED"
+            },
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-flask",
+            "color_tag": "#22c55e",
+            "title": "Simple DIY Water Filter Experiment (Layer Demo)",
+            "youtubeId": "25",
+            "description": "Demonstrates (Hungry SciANNtist)...",
+            "localVideoFilename": "water_filter_experiment.mp4",
+            "authors": "Hungry SciANNtist",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "https://www.youtube.com/@HungrySciANNtist",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "water-1",
+        "title": "Desalination",
+        "description": "Build small-scale systems to turn salty or brackish water into fresh water...",
+        "tags": [
+          "desalination",
+          "salt removal",
+          "ocean",
+          "irrigation",
+          "solar still",
+          "distillation",
+          "potable water",
+          "coastal living",
+          "arid regions",
+          "solar thermal"
+        ],
+        "context": "Provides a vital source of freshwater in coastal or arid regions...",
+        "materials": [
+          "Dark Basin/Container...",
+          "Clear Cover...",
+          "Collection Trough/Channel...",
+          "Freshwater Container...",
+          "Sealant...",
+          "Insulation..."
+        ],
+        "processSteps": [
+          "1. Constructing Basin & Cover...",
+          "2. Positioning for Maximum Sun...",
+          "3. Setting up Collection Channel...",
+          "4. Filling Basin...",
+          "5. Monitoring Condensation...",
+          "6. Periodic Cleaning..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-sun",
+            "color_tag": "#f97316",
+            "title": "Build a Simple Solar Still",
+            "youtubeId": "bJ9r8RFp4gE",
+            "description": "Step-by-step construction...",
+            "localVideoFilename": "water_solar_still.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-tint-slash",
+            "color_tag": "#3b82f6",
+            "title": "Improving Solar Still Efficiency",
+            "youtubeId": "d5bjI9jgCxk",
+            "description": "Tips and tricks...",
+            "localVideoFilename": "water_solar_still_efficiency.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "water-2",
+        "title": "Distribution",
+        "description": "Design and improve gravity-fed or pump-based systems...",
+        "tags": [
+          "pipes",
+          "delivery",
+          "infrastructure",
+          "gravity feed",
+          "water storage",
+          "pump",
+          "conservation",
+          "ram pump",
+          "water pressure",
+          "plumbing"
+        ],
+        "context": "Ensuring collected or purified water reaches points of use reliably...",
+        "materials": [
+          "Piping...",
+          "Fittings...",
+          "Storage Tanks...",
+          "Pump...",
+          "Basic Surveying Tools...",
+          "Sealants/Tape"
+        ],
+        "processSteps": [
+          "1. Mapping Source...",
+          "2. System Design...",
+          "3. Trenching & Pipe Laying...",
+          "4. Tank Installation...",
+          "5. Pump Setup...",
+          "6. Testing, Leak Detection..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-chart-line",
+            "color_tag": "#06b6d4",
+            "title": "Setting Up a Gravity Feed Water System",
+            "youtubeId": "9ICi3rFj28M",
+            "description": "How to use elevation...",
+            "localVideoFilename": "water_gravity_feed.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-cogs",
+            "color_tag": "#475569",
+            "title": "Building and Installing a Ram Pump",
+            "youtubeId": "Jl5TodxqQpc",
+            "description": "Construct a pump that works...",
+            "localVideoFilename": "water_ram_pump.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "area": "Waste",
+    "icon": "fa-recycle",
+    "featherIcon": "trash-2",
+    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M76,120a12,12,0,1,1-12-12A12,12,0,0,1,76,120Zm164,0v88a16,16,0,0,1-16,16H112a16,16,0,0,1-16-16V186.35C87.37,200.37,76.18,208,64,208c-13.87,0-26.46-9.89-35.44-27.85C20.46,164,16,142.59,16,120s4.46-43.95,12.56-60.15C37.54,41.89,50.13,32,64,32H192c13.87,0,26.46,9.89,35.44,27.85C235.54,76.05,240,97.41,240,120ZM96,120c0-42.43-16.86-72-32-72S32,77.57,32,120s16.86,72,32,72S96,162.43,96,120Zm128,88V128H208a8,8,0,0,1,0-16h15.79C221.84,73.9,206.16,48,192,48H92.12a73.6,73.6,0,0,1,7.32,11.85c7.14,14.28,11.44,32.56,12.37,52.15H128a8,8,0,0,1,0,16H112v80Zm-48-96H160a8,8,0,0,0,0,16h16a8,8,0,0,0,0-16Z\"></path></svg>",
+    "subcategories": [
+      {
+        "uniqueId": "waste-0",
+        "title": "Composting",
+        "description": "Learn how to convert organic waste into nutrient-rich soil...",
+        "tags": [
+          "composting",
+          "organic waste",
+          "soil improvement",
+          "sustainability",
+          "fertilizer",
+          "vermicomposting",
+          "hot composting",
+          "cold composting",
+          "bokashi",
+          "mycelium",
+          "nutrient cycling"
+        ],
+        "context": "Transforms kitchen scraps and yard waste...",
+        "materials": [
+          "Organic 'Greens'...",
+          "Organic 'Browns'...",
+          "Compost Bin/Container...",
+          "Water Source...",
+          "Turning Tool...",
+          "(Optional: worms...)"
+        ],
+        "processSteps": [
+          "1. Choose Method...",
+          "2. Collect & Chop...",
+          "3. Layer Greens & Browns...",
+          "4. Maintain Moisture...",
+          "5. Aerate/Turn...",
+          "6. Harvest & Use..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-seedling",
+            "color_tag": "#84cc16",
+            "title": "Making Compost: Homemade Worm Farm Compost System | Vermicompost",
+            "youtubeId": "JehP4xlF4gI",
+            "youtubeType": "short",
+            "description": "Creating an efficient composting setup...",
+            "localVideoFilename": "waste_3bin_compost.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-worm",
+            "color_tag": "#a16207",
+            "title": "Urban Balcony Composting With Worms",
+            "youtubeId": "gNqkEGpv0vg",
+            "description": "Guide to small-scale vermicomposting...",
+            "localVideoFilename": "waste_vermicompost.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-temperature-high",
+            "color_tag": "#f97316",
+            "title": "Hot Composting Technique for Fast Results",
+            "youtubeId": "HWypVv1dzJQ",
+            "description": "Learn the accelerated composting method...",
+            "localVideoFilename": "waste_hot_compost.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "waste-1",
+        "title": "Recycling",
+        "description": "Set up community or household recycling systems...",
+        "tags": [
+          "recycling",
+          "waste sorting",
+          "materials recovery",
+          "circular economy",
+          "community action",
+          "plastic recycling",
+          "paper recycling",
+          "metal recycling",
+          "glass recycling",
+          "waste management"
+        ],
+        "context": "Organizes the collection and separation...",
+        "materials": [
+          "Designated Bins/Containers...",
+          "Signage/Labels...",
+          "Collection Bags/Carts...",
+          "Basic Cleaning Supplies...",
+          "(Community: Central collection point...)"
+        ],
+        "processSteps": [
+          "1. Identify Accepted Materials...",
+          "2. Set Up Sorting Stations...",
+          "3. Rinse/Clean Recyclables...",
+          "4. Store Sorted Materials...",
+          "5. Coordinate Collection/Drop-off...",
+          "6. Educate Participants..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-users",
+            "color_tag": "#6366f1",
+            "title": "Setting Up a Community Recycling Station",
+            "youtubeId": "IsTnQ9U5wN8",
+            "description": "Organizing an effective central collection point...",
+            "localVideoFilename": "waste_community_recycling.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-cogs",
+            "color_tag": "#6b7280",
+            "title": "DIY Plastic Processing for Reuse",
+            "youtubeId": "kUR6_bQLU-E",
+            "description": "Introduction to small-scale methods...",
+            "localVideoFilename": "waste_plastic_processing.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-newspaper",
+            "color_tag": "#a8a29e",
+            "title": "Paper Recycling and Homemade Paper Making",
+            "youtubeId": "Gq7L9-0XdVw",
+            "description": "How to create new paper products...",
+            "localVideoFilename": "waste_paper_recycling.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "waste-2",
+        "title": "Upcycling",
+        "description": "Transform discarded items into useful products...",
+        "tags": [
+          "upcycling",
+          "creative reuse",
+          "waste reduction",
+          "DIY",
+          "crafts",
+          "resourcefulness",
+          "zero waste",
+          "repurposing"
+        ],
+        "context": "Goes beyond basic recycling by creatively transforming waste...",
+        "materials": [
+          "Discarded Items...",
+          "Basic Tools...",
+          "Cleaning Supplies...",
+          "Finishing Materials..."
+        ],
+        "processSteps": [
+          "1. Collect & Select...",
+          "2. Clean & Prepare...",
+          "3. Brainstorm/Design...",
+          "4. Cut, Shape, Assemble...",
+          "5. Finish & Decorate...",
+          "6. Share Ideas..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-couch",
+            "color_tag": "#78350f",
+            "title": "Making Furniture From Wooden Pallets",
+            "youtubeId": "zIcDVPkHVmI",
+            "description": "Constructing chairs, tables, beds...",
+            "localVideoFilename": "waste_pallet_furniture.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-bottle-water",
+            "color_tag": "#0ea5e9",
+            "title": "Plastic Bottle Building Blocks and Construction",
+            "youtubeId": "lnT1qY0a4KA",
+            "description": "Using plastic bottles filled with sand...",
+            "localVideoFilename": "waste_bottle_bricks.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-recycle",
+            "color_tag": "#52525b",
+            "title": "Tire Upcycling for Garden Projects",
+            "youtubeId": "AxiI17y0fNk",
+            "description": "Transforming old tires into planters...",
+            "localVideoFilename": "waste_tire_garden.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "waste-3",
+        "title": "Wastewater",
+        "description": "Build simple systems to treat and safely dispose of greywater and blackwater...",
+        "tags": [
+          "wastewater",
+          "greywater",
+          "blackwater",
+          "sanitation",
+          "treatment",
+          "constructed wetland",
+          "reed bed",
+          "filtration",
+          "hygiene",
+          "bioremediation",
+          "water reuse"
+        ],
+        "context": "Safely treats water from sinks, showers (greywater) or toilets (blackwater)...",
+        "materials": [
+          "Pipes/Plumbing...",
+          "Gravel...",
+          "Sand...",
+          "Water-loving Plants...",
+          "Waterproof Liner...",
+          "Settling Tank/Container...",
+          "Distribution Pipes..."
+        ],
+        "processSteps": [
+          "1. Identify Source...",
+          "2. Site Selection...",
+          "3. System Design...",
+          "4. Excavation & Liner...",
+          "5. Layering Filter Media...",
+          "6. Planting...",
+          "7. Connecting Inflow/Outflow...",
+          "8. Monitoring & Maintenance..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-shower",
+            "color_tag": "#9ca3af",
+            "title": "DIY Greywater System for Garden Irrigation",
+            "youtubeId": "v3KGpnRrQ_I",
+            "description": "Simple methods for reusing household water...",
+            "localVideoFilename": "waste_greywater_garden.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-leaf",
+            "color_tag": "#16a34a",
+            "title": "Constructing a Basic Wetland Filtration System",
+            "youtubeId": "6gGKKnD-Z4Q",
+            "description": "Building a natural water treatment system...",
+            "localVideoFilename": "waste_constructed_wetland.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-toilet",
+            "color_tag": "#a16207",
+            "title": "Simple Septic System Installation Overview",
+            "youtubeId": "QYyZdJc2RhY",
+            "description": "Understanding the components and setup...",
+            "localVideoFilename": "waste_septic_overview.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "uniqueId": "energy-1",
+    "title": "Solar Cookers: Box, Panel, and Parabolic",
+    "description": "Three distinct designs for solar cookers — insulated box, uninsulated panel, and parabolic reflector — using common materials to cook food using the sun's energy.",
+    "tags": [
+      "solar energy",
+      "sustainable cooking",
+      "off-grid",
+      "renewable energy",
+      "DIY",
+      "solar oven",
+      "parabolic cooker"
+    ],
+    "context": "This module outlines three practical approaches to solar cooking. Each design serves a unique context — the box cooker for slow baking and minimal heat loss; the panel cooker for portability and simplicity; and the parabolic cooker for fast, high-heat applications. Best used in sunny, low-wind environments.",
+    "variants": [
+      {
+        "type": "Insulated Box Cooker",
+        "optimalUse": "Slow cooking, baking, grains, stews; suitable for long exposure (1.5–4 hrs) under strong sun; low burn risk.",
+        "materials": [
+          "**1. Cooking Chamber & Insulation:**",
+          "   - Two cardboard boxes (one smaller, one larger)",
+          "   - Insulation (crumpled newspaper, straw, wool, or recycled fabric)",
+          "**2. Reflective & Heat Absorbing Surfaces:**",
+          "   - Aluminum foil or reflective mylar (for inside walls and flaps)",
+          "   - Black, heat-safe paint (non-toxic, for pot exterior)",
+          "**3. Transparent Window:**",
+          "   - Glass pane or clear oven bag (used to trap heat inside)",
+          "**4. Miscellaneous:**",
+          "   - Dark lidded cooking pot (thin black metal works best)",
+          "   - Tape, glue, box cutter, ruler"
+        ],
+        "processSteps": [
+          "1. Nest smaller box inside larger, insulating all gaps between with newspaper or straw.",
+          "2. Line the inside of the inner box with foil (shiny side up), glued flat.",
+          "3. Paint the pot black and allow to dry fully.",
+          "4. Create an angled reflector lid using a flap cut into the outer box top, lined with foil.",
+          "5. Tape or hinge the reflector flap to adjust for best sun angle.",
+          "6. Cover top opening with clear oven bag or glass to retain heat.",
+          "7. Place food in the black pot, seal the cooker, and orient toward the sun.",
+          "8. Cook time varies from 1.5–4 hours depending on sun strength and dish type."
+        ]
+      },
+      {
+        "type": "Uninsulated Panel Cooker",
+        "optimalUse": "Portable and lightweight; great for light cooking (e.g., reheating, tea, grains); ideal for community demos, emergency kits.",
+        "materials": [
+          "**1. Structure:**",
+          "   - Cardboard sheets or corrugated plastic",
+          "**2. Reflective Surfaces:**",
+          "   - Aluminum foil or reflective tape",
+          "**3. Heat Retention:**",
+          "   - Clear oven bag or upside-down glass bowl",
+          "**4. Cooking Vessel:**",
+          "   - Thin black pot or jar with tight-fitting lid",
+          "**5. Fasteners:**",
+          "   - Binder clips, tape, string, or glue"
+        ],
+        "processSteps": [
+          "1. Cut reflective panels in 3–5 segments and hinge them at angles to form a reflector cone or C-shape.",
+          "2. Cover each panel with foil or reflective tape.",
+          "3. Place cooking pot inside a clear oven bag or under an inverted glass bowl.",
+          "4. Orient toward the sun, repositioning every 30–45 minutes for best results.",
+          "5. Monitor food through clear cover to prevent overheating or drying out."
+        ]
+      },
+      {
+        "type": "Parabolic Concentrating Cooker",
+        "optimalUse": "High heat applications (boiling water, frying, pressure cooking); great for short cook times; requires precise alignment and supervision.",
+        "materials": [
+          "**1. Reflective Dish:**",
+          "   - Old satellite dish lined with mylar, foil tape, or mirror pieces",
+          "   - Optional: large umbrella frame modified with reflective segments",
+          "**2. Support Frame:**",
+          "   - Sturdy stand or tripod to hold dish and align it with the sun",
+          "**3. Cooking Pot Holder:**",
+          "   - Metal frame or cage at focal point to hold pot safely",
+          "**4. Cooking Pot:**",
+          "   - Black pressure cooker or frying pot (must handle high heat)",
+          "**5. Safety Gear:**",
+          "   - Gloves, sunglasses, fire extinguisher (for safety)"
+        ],
+        "processSteps": [
+          "1. Line parabolic dish with reflective material, ensuring a clean, smooth curve.",
+          "2. Mark and test focal point using a piece of black paper (should burn in ~5 seconds under strong sun).",
+          "3. Mount pot holder securely at focal point using metal bars or cage.",
+          "4. Place black cooking pot with food or water inside the holder.",
+          "5. Align the parabola toward the sun and make periodic adjustments.",
+          "6. Supervise at all times — cook times may be as short as 10–30 minutes for boiling water or frying.",
+          "7. Remove food using heat-safe gloves and allow cooker to cool."
+        ]
+      }
+    ],
+    "videos": [],
+    "notes": [
+      "Solar cookers require direct, unobstructed sunlight — avoid shaded or cloudy periods for best results.",
+      "Use food-safe, non-toxic black paint for pot coating.",
+      "Never leave a parabolic cooker unattended; risk of ignition or burns is higher due to high temperatures.",
+      "For all types, reflective surfaces should be kept clean for maximum effectiveness."
+    ]
+  },
+  {
+    "uniqueId": "energy-2",
+    "title": "Biogas",
+    "description": "A comprehensive guide to the materials required and the step-by-step process for planning, building, and operating a biogas digester.",
+    "tags": [
+      "biogas",
+      "anaerobic digestion",
+      "renewable energy",
+      "waste to energy",
+      "methane",
+      "digester construction",
+      "DIY energy"
+    ],
+    "context": "This module provides in-depth information on constructing and managing a biogas system. It covers necessary materials for various common digester types and outlines a multi-phase process from planning to safe operation and maintenance. The advice and cautions section (to be filled with your content) will complement this technical information.",
+    "materials": [
+      "**1. Digester Tank Components:**",
+      "   - Main digester vessel (e.g., 1000L-2000L IBC tote, multiple HDPE plastic drums, pre-fabricated tank, or materials for constructed digesters like bricks, cement, sand, and waterproofing agent for fixed-dome; or geomembrane for Puxin-type)",
+      "   - Insulation materials (e.g., straw, styrofoam, agricultural plastic sheeting - especially for colder climates)",
+      "**2. Inlet & Outlet Systems:**",
+      "   - PVC pipes (various diameters: e.g., 100-150mm for inlet, 50-100mm for outlet, 15-25mm for gas line)",
+      "   - PVC fittings (elbows, T-joints, reducers, end caps, unions, tank connectors/bulkhead fittings)",
+      "   - Ball valves or gate valves (for inlet, outlet, and gas line control)",
+      "   - Sealants (e.g., PVC primer and cement, silicone sealant, rubber gaskets, Teflon tape) for watertight and airtight seals",
+      "**3. Gas Collection, Storage & Purification:**",
+      "   - Gas holder/storage (e.g., inner tube of a truck tire, dedicated biogas storage bag with UV protection, or materials for a floating drum gasholder like a smaller drum and guide frame)",
+      "   - Transparent flexible hose (for visual checks and connections)",
+      "   - Condensate/Water trap (PVC components to build a U-trap or T-junction drain)",
+      "   - H2S Scrubber (optional but recommended: PVC pipe section, end caps with fittings, iron filings/steel wool)",
+      "**4. Pressure Management & Safety Devices:**",
+      "   - Manometer (DIY U-tube with clear plastic tubing and colored water, or a low-pressure gauge)",
+      "   - Pressure relief valve (set to a safe low pressure, e.g., 2-5 kPa)",
+      "   - Flame arrestor (install on the gas line near the point of use)",
+      "**5. Feedstock Preparation & Handling:**",
+      "   - Buckets or containers for collecting and mixing feedstock",
+      "   - Chopper, shredder, or machete (for reducing particle size of fibrous materials - optional)",
+      "   - Water source and watering can/hose",
+      "**6. Tools for Construction & Maintenance:**",
+      "   - Basic hand tools (saw for PVC, drill, screwdrivers, wrenches, spirit level, measuring tape)",
+      "   - Shovels, trowels (for excavation or concrete work if applicable)",
+      "   - Safety gear (gloves, safety glasses, masks)",
+      "**7. Utilization Appliances (examples):**",
+      "   - Biogas stove or burner (specifically designed for biogas or modified)",
+      "   - Biogas lamp",
+      "   - Flexible gas piping for connecting to appliances"
+    ],
+    "processSteps": [
+      "**Phase 1: Planning and Design**",
+      "   - Step 1: Assess Feedstock Availability & Type (quantify daily organic waste like manure, kitchen scraps; analyze C/N ratio if possible)",
+      "   - Step 2: Determine Energy Needs & System Sizing (calculate required gas volume, which dictates digester volume - typical retention times are 20-60 days)",
+      "   - Step 3: Select Digester Design (e.g., floating drum, fixed dome, IBC tote, Puxin; consider climate, cost, available skills, and materials)",
+      "   - Step 4: Detailed Site Selection (ensure level ground, sunlight (for some designs), proximity to feedstock and use-point, away from dwellings, consider effluent drainage)",
+      "   - Step 5: Create a Detailed Construction Plan & Material List (sketch design, list all components, estimate costs)",
+      "   - Step 6: Review Safety Regulations & Obtain Permits (if required locally)",
+      "**Phase 2: Construction and Assembly**",
+      "   - Step 7: Prepare the Site (clear vegetation, level ground, excavate if necessary for underground designs)",
+      "   - Step 8: Construct or Place the Digester Tank (follow design plans meticulously; ensure structural integrity)",
+      "   - Step 9: Install Inlet (for feeding) and Outlet (for digestate removal) Pipes (ensure correct height difference for gravity flow, airtight and watertight seals)",
+      "   - Step 10: Assemble and Install Gas Holder/Dome and Gas Outlet Pipe (ensure gasholder can move freely if floating type, or dome is gas-tight)",
+      "   - Step 11: Connect Gas Line with Valves, Manometer, H2S Scrubber, Water Trap, and Safety Devices (pressure relief valve, flame arrestor)",
+      "   - Step 12: Perform Thorough Leak Testing (use soapy water on all gas joints and seals; for water seals, check levels. Pressurize slightly if possible to check tank integrity before filling with slurry)",
+      "**Phase 3: Commissioning (Startup)**",
+      "   - Step 13: Prepare Inoculum/Starter Culture (use slurry from an active digester, fresh cow dung, or septic tank sludge – about 10-30% of digester volume)",
+      "   - Step 14: Prepare Initial Feedstock Slurry (mix organic waste with water to a suitable consistency, typically 1:1 to 1:4 solids to water ratio by weight, targeting 6-10% total solids)",
+      "   - Step 15: Load the Digester (first add inoculum, then gradually fill with prepared feedstock slurry, leaving recommended headspace)",
+      "   - Step 16: Seal the Digester and Monitor (allow 1-4 weeks for anaerobic conditions to establish and methane production to begin; initial gas will be mainly CO2 and should be vented safely)",
+      "   - Step 17: Test First Biogas for Flammability (collect a sample in a small bag or balloon and test carefully away from the digester; if it burns with a blue flame, it's methane-rich)",
+      "**Phase 4: Regular Operation**",
+      "   - Step 18: Establish a Regular Feeding Schedule (daily or every few days, add a consistent amount of fresh slurry – e.g., 1/20th to 1/60th of the digester volume, matching the hydraulic retention time)",
+      "   - Step 19: Simultaneous Digestate Removal (remove an equivalent volume of digestate as you feed to maintain liquid level)",
+      "   - Step 20: Monitor Gas Production & Quality (check manometer, observe flame color when in use)",
+      "   - Step 21: Utilize Biogas Safely (connect to appliances, ensure good ventilation where gas is used)",
+      "   - Step 22: Process and Utilize Digestate (use as organic fertilizer after composting or dilution; handle with care)",
+      "**Phase 5: Maintenance and Troubleshooting**",
+      "   - Step 23: Regular Checks (inspect for gas leaks, water seal levels, pipe blockages, structural integrity of the digester and gasholder)",
+      "   - Step 24: Scum and Sludge Management (periodically check for and remove excessive scum buildup or sediment if design allows and performance degrades)",
+      "   - Step 25: Maintain H2S Scrubber Material (replace iron filings/steel wool when saturated – color change or H2S smell indicates saturation)",
+      "   - Step 26: Troubleshoot Common Issues (e.g., low/no gas, acidic conditions (low pH), foaming, rotten egg smell, refer to specific troubleshooting guides)",
+      "   - Step 27: Follow Safety Protocols Continuously (no smoking, ensure flame arrestors are functional, handle digestate hygienically)"
+    ],
+    "videos": []
+  },
+  {
+    "uniqueId": "energy-2",
+    "title": "Power Microgrids",
+    "description": "Build small, local power systems...",
+    "tags": [
+      "microgrid",
+      "sustainability",
+      "infrastructure",
+      "renewable energy",
+      "off-grid power",
+      "community power",
+      "solar",
+      "wind power",
+      "battery storage",
+      "energy access",
+      "resilience"
+    ],
+    "context": "Creates localized, independent energy networks...",
+    "materials": [
+      "ration Source(s)...",
+      "Charge Controllers...",
+      "Battery Bank...",
+      "Inverter(s)...",
+      "Distribution Wiring...",
+      "Load Management System...",
+      "Monitoring Equipment"
+    ],
+    "processSteps": [
+      "1. Energy Audit...",
+      "2. System Design...",
+      "3. Installation...",
+      "4. Wiring & Safety...",
+      "5. Distribution Network...",
+      "6. Commissioning...",
+      "7. Community Governance..."
+    ],
+    "videos": []
+  },
+  {
+    "uniqueId": "energy-3",
+    "title": "DIY Biochar Retort (Soda Keg + Cast Iron Pan)",
+    "description": "A step-by-step guide for making biochar at home using a repurposed soda keg sealed with a cast iron pan and secured with stainless cable. The vessel is heated inside a wood stove to achieve pyrolysis.",
+    "tags": [
+      "biochar",
+      "pyrolysis",
+      "charcoal production",
+      "carbon sequestration",
+      "DIY energy",
+      "regenerative systems",
+      "wood stove",
+      "sustainable fuel"
+    ],
+    "context": "This module details the design, materials, and step-by-step process for building and operating a home-scale biochar retort using an improvised pressure vessel. It supports experimentation with different biomass types, carbon yields, and environmental impact (e.g., odor, residue, gas output). This system is well-suited for sustainable homesteads and regenerative agriculture enthusiasts.",
+    "materials": [
+      "**1. Retort Body:**",
+      "   - Stainless steel soda keg (top removed to create a chamber)",
+      "   - Cast iron pan (used as heavy lid)",
+      "**2. Retort Sealing System:**",
+      "   - Stainless steel cable (7x woven over-under stitching to hold the lid down under thermal expansion)",
+      "   - Optional: Furnace cement, clay, or fire rope gasket to improve the seal",
+      "**3. Biomass Feedstock:**",
+      "   - Dry wood chunks, nutshells, dried crop waste, or small sticks (low-moisture for optimal char quality)",
+      "**4. Heating Source:**",
+      "   - Wood stove or masonry heater with a well-established coal bed",
+      "**5. Monitoring & Safety:**",
+      "   - IR thermometer or thermocouple for vessel surface temp",
+      "   - Gloves, eye protection, long tongs",
+      "   - Ventilation (if indoors, use stove with chimney draw)"
+    ],
+    "processSteps": [
+      "**Phase 1: Vessel Preparation**",
+      "   - Step 1: Cut the soda keg and deburr edges",
+      "   - Step 2: Select a cast iron pan that tightly fits the keg’s top",
+      "   - Step 3: Prepare the stainless steel cable; test-fit the weave to hold the lid tight",
+      "**Phase 2: Biomass Loading**",
+      "   - Step 4: Fill the keg with dry, uniform biomass (avoid green or wet material)",
+      "   - Step 5: Place the lid and secure with cable (tighten using pliers or turnbuckle)",
+      "   - Step 6: Optionally apply clay or ash at the seam",
+      "**Phase 3: Pyrolysis Cycle**",
+      "   - Step 7: Prepare a bed of red-hot coals in the wood stove",
+      "   - Step 8: Insert the sealed vessel into the coals",
+      "   - Step 9: Let cook for 1.5–3 hours, depending on stove heat and biomass",
+      "   - Step 10: Optionally add coals around the vessel for uniform heat",
+      "**Phase 4: Cooling & Recovery**",
+      "   - Step 11: Allow the retort to cool fully (ideally overnight)",
+      "   - Step 12: Open the vessel only when cold to avoid oxygen flash",
+      "   - Step 13: Remove the biochar and inspect quality (black, glossy or dull, lightweight)",
+      "**Phase 5: Application or Storage**",
+      "   - Step 14: Store in airtight container or soak in compost tea before soil application",
+      "   - Step 15: Optionally log temperature, biomass weight in/out, odor, texture for experiments"
+    ],
+    "videos": [],
+    "notes": [
+      "Do not open the vessel hot—risk of flash combustion!",
+      "This is a low-pressure system; never fully seal without a pressure vent.",
+      "Char yield will vary by biomass type, particle size, and cook time.",
+      "If syngas flames appear, they should be short-lived and low volume in this design."
+    ]
+  },
+  {
+    "uniqueId": "energy-3",
+    "title": "Briquettes",
+    "subtitle": "Hand Pressed Heat & Cooking Fuel Briquettes",
+    "description": "DIY cook stove Fuel produced...",
+    "tags": [
+      "cooking fuel",
+      "upcycling",
+      "home heating",
+      "biomass",
+      "briquettes",
+      "waste to energy",
+      "appropriate technology",
+      "DIY",
+      "fuel efficiency"
+    ],
+    "context": "Compresses loose biomass waste...",
+    "materials": [
+      "Dry Biomass Waste...",
+      "Water...",
+      "Binder...",
+      "Briquette Press...",
+      "Drying Rack/Area"
+    ],
+    "processSteps": [
+      "1. Collect & Shred...",
+      "2. Mix with Water...",
+      "3. Load Slurry...",
+      "4. Compress Firmly...",
+      "5. Eject Wet Briquette...",
+      "6. Dry Thoroughly..."
+    ],
+    "videos": [
+      {
+        "icon_tag_fa": "fas fa-fire-alt",
+        "color_tag": "#d97706",
+        "title": "Simple Biomass Briquette Press Construction",
+        "youtubeId": "1LD7BhR3jTI",
+        "description": "Building a manual press...",
+        "localVideoFilename": "energy_briquette_press.mp4",
+        "authors": "",
+        "researchReviewItems": [],
+        "contentCreatorArchive": "",
+        "licence": "Standard YouTube License",
+        "patreon": "",
+        "socials": {},
+        "fundraiser": "",
+        "sponsorPages": []
+      }
+    ]
+  },
+  {
+    "area": "Health",
+    "icon": "fa-heartbeat",
+    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M72,144H32a8,8,0,0,1,0-16H67.72l13.62-20.44a8,8,0,0,1,13.32,0l25.34,38,9.34-14A8,8,0,0,1,136,128h24a8,8,0,0,1,0,16H140.28l-13.62,20.44a8,8,0,0,1-13.32,0L88,126.42l-9.34,14A8,8,0,0,1,72,144ZM178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,.75,0,1.5,0,2.25a8,8,0,1,0,16-.5c0-.58,0-1.17,0-1.75A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46c0,53.61-77.76,102.15-96,112.8-10.83-6.31-42.63-26-66.68-52.21a8,8,0,1,0-11.8,10.82c31.17,34,72.93,56.68,74.69,57.63a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40Z\"></path></svg>",
+    "featherIcon": "heart",
+    "subcategories": [
+      {
+        "uniqueId": "health-0",
+        "title": "EMT",
+        "description": "Learn lifesaving basics...",
+        "tags": [
+          "EMT",
+          "emergency",
+          "first response",
+          "CPR",
+          "basic life support",
+          "patient assessment",
+          "wound care",
+          "trauma care",
+          "splinting",
+          "bleeding control"
+        ],
+        "context": "Provides foundational knowledge and skills...",
+        "materials": [
+          "First Aid Kit Supplies...",
+          "Gloves...",
+          "CPR Mask/Barrier...",
+          "Splinting Materials...",
+          "(Training: Mannequin)"
+        ],
+        "processSteps": [
+          "1. Ensure Scene Safety...",
+          "2. Primary Assessment...",
+          "3. Call for Help...",
+          "4. Critical Interventions...",
+          "5. Secondary Assessment...",
+          "6. Splinting/Wound Dressing...",
+          "7. Ongoing Monitoring..."
+        ],
+        "videos": []
+      },
+      {
+        "uniqueId": "health-1",
+        "title": "Telemedicine",
+        "description": "Use phones and simple apps...",
+        "tags": [
+          "health",
+          "telemedicine",
+          "remote care",
+          "digital health",
+          "remote diagnosis",
+          "mHealth",
+          "communication",
+          "health access"
+        ],
+        "context": "Leverages communication technology...",
+        "materials": [
+          "Device...",
+          "Internet/Phone Connectivity...",
+          "Camera...",
+          "Basic Measurement Tools...",
+          "Relevant Health Apps/Platforms"
+        ],
+        "processSteps": [
+          "1. Identify Provider...",
+          "2. Ensure Connectivity...",
+          "3. Prepare for Consultation...",
+          "4. Communicate Symptoms...",
+          "5. Follow Medical Advice...",
+          "6. Plan Follow-up..."
+        ],
+        "videos": []
+      },
+      {
+        "uniqueId": "health-2",
+        "title": "First Aid",
+        "description": "Master everyday skills...",
+        "tags": [
+          "first aid",
+          "injury",
+          "emergency",
+          "home care",
+          "wound care",
+          "burns",
+          "bites & stings",
+          "common ailments",
+          "hygiene"
+        ],
+        "context": "Focuses on immediate care for common injuries...",
+        "materials": [
+          "Well-stocked First Aid Kit...",
+          "Clean Water...",
+          "Cool Compresses...",
+          "Soap"
+        ],
+        "processSteps": [
+          "1. Assess the Situation...",
+          "2. Clean Wounds...",
+          "3. Apply Dressing...",
+          "4. Manage Minor Burns...",
+          "5. Treat Bites/Stings...",
+          "6. Manage Fever...",
+          "7. Recognize When to Seek Help..."
+        ],
+        "videos": []
+      },
+      {
+        "uniqueId": "health-3",
+        "title": "Self-sufficient Healthcare 1",
+        "description": "Set up a basic first aid station...",
+        "tags": [
+          "health",
+          "DIY",
+          "self-reliance",
+          "herbal medicine",
+          "community health",
+          "preventive health",
+          "traditional medicine",
+          "ORS",
+          "preparedness",
+          "hygiene",
+          "sanitation"
+        ],
+        "context": "Empowers individuals and communities...",
+        "materials": [
+          "Organized Storage...",
+          "Basic First Aid Supplies...",
+          "Medicinal Herbs...",
+          "Salt, Sugar, Bicarbonate...",
+          "Clean Water & Containers...",
+          "Notebook & Pen..."
+        ],
+        "processSteps": [
+          "1. Assess Local Health Issues...",
+          "2. Create Checklist & Stock...",
+          "3. Learn Plant Identification...",
+          "4. Prepare ORS...",
+          "5. Practice Hygiene...",
+          "6. Record Keeping...",
+          "7. Know Limitations..."
+        ],
+        "videos": []
+      },
+      {
+        "area": "Self-Sufficient Health Care 2",
+        "icon": "fa-medkit",
+        "featherIcon": "briefcase-medical",
+        "svgString": "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' fill='#000000' viewBox='0 0 256 256'><path d='M216,56H176V48a24,24,0,0,0-24-24H104A24,24,0,0,0,80,48v8H40A16,16,0,0,0,24,72V208a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56ZM96,48a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96ZM208,208H48V80H208V208ZM152,120v16h-16v16a8,8,0,0,1-16,0V136H104a8,8,0,0,1,0-16h16V104a8,8,0,0,1,16,0v16h16A8,8,0,0,1,152,120Z'/></svg>",
+        "subcategories": [
+          {
+            "uniqueId": "herbal-conflict-0",
+            "title": "Emergency Herbal Medicine Cabinet",
+            "subtitle": "Herbal First Aid in Crisis & Conflict Zones",
+            "description": "Learn how to create and maintain a small, effective herbal medicine cabinet for use in resource-scarce or disrupted settings such as refugee camps, mobile clinics, or conflict zones.",
+            "tags": [
+              "herbal medicine",
+              "crisis care",
+              "emergency first aid",
+              "natural remedies",
+              "conflict resilience",
+              "botanical"
+            ],
+            "context": "In conflict zones or natural disasters, supply chains for pharmaceuticals may collapse. This module introduces field-adaptable herbal remedies with proven safety and traditional use for managing wounds, infections, digestion, pain, and stress.",
+            "materials": [
+              "Dried herbs: Yarrow, Calendula, Chamomile, Plantain, Ginger, Thyme, Garlic",
+              "Carrier oils (olive or coconut) for infusions",
+              "Alcohol or vinegar for tincture base",
+              "Sterile jars, gauze, dropper bottles, cheesecloth",
+              "Clean water, mortar and pestle, boiling pot"
+            ],
+            "processSteps": [
+              "1. Identify core health issues: wounds, infection, diarrhea, respiratory distress, anxiety",
+              "2. Assemble base herbs: antiseptics (yarrow, garlic), calming agents (chamomile, lemon balm), GI remedies (plantain, ginger)",
+              "3. Prepare tinctures and infusions for long-term use",
+              "4. Make salves or poultices with oils and dried herbs for topical use",
+              "5. Label and date everything clearly; store cool and dark",
+              "6. Create instruction sheet for untrained users with safe dosages and emergency use"
+            ],
+            "videos": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "area": "Food",
+    "icon": "fa-utensils",
+    "featherIcon": "coffee",
+    "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M88,48V16a8,8,0,0,1,16,0V48a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,128,56Zm32,0a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,160,56Zm92.8,46.4L224,124v60a32,32,0,0,1-32,32H64a32,32,0,0,1-32-32V124L3.2,102.4a8,8,0,0,1,9.6-12.8L32,104V80a8,8,0,0,1,8-8H216a8,8,0,0,1,8,8v24l19.2-14.4a8,8,0,0,1,9.6,12.8ZM208,88H48v96a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16Z\"></path></svg>",
+    "subcategories": [
+      {
+        "uniqueId": "food-0",
+          "title": "Urban Gardening",
+          "description": "Grow healthy vegetables in small spaces using biodynamic principles, container gardening, and organic methods that work with natural cycles and cosmic rhythms for enhanced plant vitality.",
+          "tags": [
+            "urban farming",
+            "gardening",
+            "food security",
+            "container gardening",
+            "small space gardening",
+            "rooftop garden",
+            "balcony garden",
+            "composting",
+            "vertical farming",
+            "local food",
+            "biodynamic",
+            "organic farming",
+            "lunar cycles",
+            "soil health",
+            "natural pest control"
+          ],
+          "context": "Enables food production in densely populated areas using biodynamic principles that treat the growing space as a living organism. Integrates cosmic rhythms, natural pest management, and organic soil building to create thriving urban food systems that support both plant health and human nutrition.",
+          "materials": [
+            "Containers (5+ gallons for vegetables, 1-3 gallons for herbs)",
+            "Potting Mix/Compost/Worm Castings (organic, living soil)",
+            "Seeds or Seedlings (heirloom varieties preferred)",
+            "Watering Can/Drip System (rainwater collection ideal)",
+            "Organic Fertilizer/Compost Tea (biodynamic preparations)",
+            "Sunlight/Grow Lights (6-8 hours daily minimum)",
+            "Biodynamic Calendar (for optimal planting times)",
+            "pH Testing Kit and Natural Amendments",
+            "Beneficial Insect Habitat Materials"
+          ],
+          "processSteps": [
+            "1. Site Assessment: Evaluate sunlight, wind, water access, and space constraints",
+            "2. Container Selection: Choose appropriate sizes with drainage holes",
+            "3. Soil Preparation: Create living soil mix with compost and beneficial microorganisms",
+            "4. Lunar Timing: Plan planting according to biodynamic calendar and moon phases",
+            "5. Companion Planting: Design polyculture systems for pest control and nutrient cycling",
+            "6. Watering Systems: Establish consistent, deep watering that mimics natural patterns",
+            "7. Natural Pest/Disease Management: Use beneficial insects, companion plants, and organic sprays",
+            "8. Seasonal Harvesting: Time harvests for peak nutrition and proper seed saving"
+          ],
+        "videos": [
+          {
+            "title": "Organic/Biodynamic Farming in the City",
+            "youtubeId": "QJcACw_--Nk",
+          "description": "Explores the realities of implementing biodynamic principles in urban settings, covering soil health, cosmic rhythms, and natural pest management for container gardening.",            "icon_tag_fa": "fas fa-city",
+            "color_tag": "#6B7280",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Community Gardens as health and vitality nodes",
+            "youtubeId": "QZQpIHIr7s0",
+          "description": "Growing Together: How urban gardening creates community health benefits and food security through biodynamic practices and shared growing spaces.",            "icon_tag_fa": "fas fa-sprout",
+            "color_tag": "#6B7280",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "food-1",
+        "title": "Hydro/Aero/Aquaponics",
+        "description": "Use water-based growing systems...",
+        "tags": [
+          "hydroponics",
+          "water-efficient",
+          "urban food",
+          "aquaponics",
+          "aeroponics",
+          "soilless culture",
+          "vertical farming",
+          "nutrient solution",
+          "pH management",
+          "closed-loop system"
+        ],
+        "context": "Cultivates plants without soil...",
+        "materials": [
+          "Growing System Components...",
+          "Growing Medium...",
+          "Nutrient Solution...",
+          "pH Testing Kit...",
+          "EC/TDS Meter...",
+          "(Aquaponics: fish tank...)"
+        ],
+        "processSteps": [
+          "1. Assemble System...",
+          "2. Prepare Nutrient Solution...",
+          "3. Germinate Seeds...",
+          "4. Transplant...",
+          "5. Monitor & Maintain...",
+          "6. (Aquaponics: Manage fish...)",
+          "7. Harvesting..."
+        ],
+        "videos": [
+          {
+            "title": "Feed the World – Aquaponics",
+            "youtubeId": "ofS9MFXFIBE",
+            "description": "Introduces aquaponics...",
+            "icon_tag_fa": "fas fa-fish",
+            "color_tag": "#3B82F6",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Aquaponics Simplified: A Guide...",
+            "youtubeId": "4DMylpQqVKI",
+            "description": "Features 'Aqua Annie'...",
+            "icon_tag_fa": "fas fa-seedling",
+            "color_tag": "#10B981",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Designing a Sustainable Aquaponics System: An Inventor’s Touch",
+            "youtubeId": "x6buXYuvXWg",
+            "description": "Showcases inventor...",
+            "icon_tag_fa": "fas fa-cogs",
+            "color_tag": "#57534e",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "food-2",
+        "title": "Sustainable Agriculture Techniques",
+        "description": "Practice crop rotation, natural pest control...",
+        "tags": [
+          "agriculture",
+          "sustainable",
+          "soil health",
+          "permaculture",
+          "organic farming",
+          "agroecology",
+          "cover cropping",
+          "crop rotation",
+          "integrated pest management",
+          "conservation agriculture",
+          "biodiversity",
+          "seed saving"
+        ],
+        "context": "Employs ecological principles to farming...",
+        "materials": [
+          "Compost/Manure...",
+          "Cover Crop Seeds...",
+          "Mulch Materials...",
+          "Natural Pest Control Agents...",
+          "Diverse Crop Seeds...",
+          "Soil Testing Kit..."
+        ],
+        "processSteps": [
+          "1. Soil Health Assessment...",
+          "2. Implement Crop Rotation...",
+          "3. Utilize Cover Cropping...",
+          "4. Practice IPM...",
+          "5. Enhance Biodiversity...",
+          "6. Water Conservation...",
+          "7. Nutrient Management..."
+        ],
+        "videos": [
+          {
+            "icon_tag_fa": "fas fa-sync-alt",
+            "color_tag": "#ca8a04",
+            "title": "Crop Rotation Explained: Benefits & Planning",
+            "youtubeId": "QhH-YsDr8D4",
+            "description": "Understanding how rotating crops...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-shield-alt",
+            "color_tag": "#dc2626",
+            "title": "Natural Pest Control Methods for Gardens",
+            "youtubeId": "tgQ1L7TcDjQ",
+            "description": "Using companion planting...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-leaf",
+            "color_tag": "#16a34a",
+            "title": "Cover Cropping for Beginners: Building Soil",
+            "youtubeId": "NbvDEAomVlk",
+            "description": "How to choose, plant, and manage...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-tractor",
+            "color_tag": "#78350f",
+            "title": " How to Start a No-Till Garden from Scratch ",
+            "youtubeId": "sdmqbhQo-yw",
+            "description": "how to start a garden...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-tractor",
+            "color_tag": "#78350f",
+            "title": "Introduction to No-Till Farming Techniques",
+            "youtubeId": "0xvp8sWY6Fk",
+            "description": "Minimizing soil disturbance...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "icon_tag_fa": "fas fa-seedling",
+            "color_tag": "#fbbf24",
+            "title": "Seed Saving Basics for Common Vegetables",
+            "youtubeId": "wB8Z4LnHJ8I",
+            "description": "How to collect, process, and store seeds...",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+        "uniqueId": "food-3",
+        "title": "Fungi, Algae, Insects, & Tech",
+        "description": "Inventory and evaluation of modern...",
+        "tags": [
+          "alternative protein",
+          "future food",
+          "mycology",
+          "entomophagy",
+          "algae",
+          "spirulina",
+          "BSFL",
+          "insect farming",
+          "mushroom cultivation",
+          "food technology",
+          "fermentation",
+          "nutrition",
+          "mycoprotein"
+        ],
+        "context": "Explores less conventional but potentially highly sustainable...",
+        "materials": [
+          "Mushroom Spawn/Substrate...",
+          "Algae Culture...",
+          "Insect Starter Colony...",
+          "Containers/Enclosures...",
+          "Harvesting Tools...",
+          "Processing Equipment..."
+        ],
+        "processSteps": [
+          "1. Select Organism...",
+          "2. Set Up Environment...",
+          "3. Inoculation/Starting...",
+          "4. Feeding & Maintenance...",
+          "5. Harvesting...",
+          "6. Processing..."
+        ],
+        "videos": [
+          {
+            "title": "Fungi",
+            "youtubeId": "QJcACw_--Nk",
+            "description": "Explores the realities...",
+            "icon_tag_fa": "fas fa-city",
+            "color_tag": "#6B7280",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Fungi as Edible Mycelium",
+            "youtubeId": "ofS9MFXFIBE",
+            "description": "Mycelial cake can be dried...",
+            "icon_tag_fa": "fas fa-utensils",
+            "color_tag": "#3B82F6",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Fungi in soil and ecosystem health",
+            "youtubeId": "4DMylpQqVKI",
+            "description": "Explores the role of fungal networks...",
+            "icon_tag_fa": "fas fa-seedling",
+            "color_tag": "#10B981",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Fungi for creating structural compoments",
+            "youtubeId": "x6buXYuvXWg",
+            "description": "Using mycelium (fungal roots)...",
+            "icon_tag_fa": "fas fa-cogs",
+            "color_tag": "#57534e",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Fungi Algae (Lichens)",
+            "youtubeId": "mD5jnxhne7o",
+            "description": "Introduction to lichens...",
+            "icon_tag_fa": "fas fa-tree",
+            "color_tag": "#ca8a04",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Fungi eating insects so people can eat it (Entomopathogenic Fungi)",
+            "youtubeId": "5eibeYxRt5w",
+            "description": "Explores fungi that naturally control...",
+            "icon_tag_fa": "fas fa-bug-slash",
+            "color_tag": "#7c2d12",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Is Microalgae the Sustainable Food of the Future?",
+            "youtubeId": "VFNS7Is6Td0",
+            "description": "Investigates microalgae...",
+            "icon_tag_fa": "fas fa-bacteria",
+            "color_tag": "#0d9488",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Mushroom Farming Basics",
+            "youtubeId": "9IFTMnftLgU",
+            "description": "Growing edible mushrooms...",
+            "icon_tag_fa": "fas fa-cloud",
+            "color_tag": "#a1a1aa",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Spirulina Micro-Farming at Home",
+            "youtubeId": "SMUf_pbxkcU",
+            "description": "Small-scale production...",
+            "icon_tag_fa": "fas fa-vial",
+            "color_tag": "#2dd4bf",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Insect Farming: Cricket Rearing Systems",
+            "youtubeId": "jp6OgNyTxA0",
+            "description": "Setting up efficient cricket production...",
+            "icon_tag_fa": "fas fa-bug",
+            "color_tag": "#3f3f46",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Black Soldier Fly Larvae Composting",
+            "youtubeId": "5j0YCyg0vpE",
+            "description": "Converting organic waste...",
+            "icon_tag_fa": "fas fa-recycle",
+            "color_tag": "#166534",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Ancient Grain Recovery and Cultivation",
+            "youtubeId": "Xqn490UuVQU",
+            "description": "Growing forgotten but nutritious...",
+            "icon_tag_fa": "fas fa-wheat-awn",
+            "color_tag": "#f59e0b",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          },
+          {
+            "title": "Simple Automation for Small-Scale Agriculture",
+            "youtubeId": "eHMpkXiGEag",
+            "description": "Low-tech solutions...",
+            "icon_tag_fa": "fas fa-robot",
+            "color_tag": "#78716c",
+            "localVideoFilename": "",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      {
+            "uniqueId": "food-4",
+            "title": "Watercress & Mayfly Water Garden",
+            "description": "Create a moving water system that grows nutritious watercress while supporting wild mayfly populations, combining food production with critical aquatic biodiversity in small-scale container or garden systems.",
+            "tags": [
+              "watercress",
+              "mayfly habitat",
+              "aquatic ecosystem",
+              "water garden",
+              "moving water",
+              "aquaculture",
+              "bioindicators",
+              "sustainable food",
+              "biodiversity",
+              "container growing",
+              "water quality",
+              "permaculture"
+            ],
+            "context": "This integrated system leverages the shared requirements of watercress and mayflies for clean, moving water to create productive aquatic ecosystems. Mayflies serve as water quality indicators while watercress provides natural filtration, creating a self-sustaining system that produces food and supports wildlife even in urban environments.",
+            "materials": [
+              "Food-grade Containers (nested system: 18x12x6\" upper, 24x18x8\" lower)",
+              "Submersible Water Pump (120-300 GPH with adjustable flow)",
+              "Food-grade Silicone Tubing (½\" to ¾\" diameter)",
+              "Soilless Potting Mix (vermiculite/perlite with peat moss)",
+              "Mixed Substrates (fine sand, gravel, organic debris for mayfly habitat)",
+              "Air Stone or Venturi Valve for Oxygenation",
+              "Watercress Seeds or Cuttings (Nasturtium officinale)",
+              "pH Testing Kit and Natural Amendments",
+              "Timer for Pump Control and Flow Regulation",
+              "Beneficial Bacteria Starter Culture"
+            ],
+            "processSteps": [
+              "1. Design Tiered Container System with Upper Growing Zone and Lower Habitat",
+              "2. Install Water Circulation with Pump, Tubing, and Aeration System",
+              "3. Prepare Growing Medium and Fill Upper Container with Soilless Mix",
+              "4. Create Diverse Substrate Zones in Lower Container for Mayfly Nymphs",
+              "5. Establish Water Flow Pattern with 2-3 Inches Depth Over Growing Medium",
+              "6. Plant Watercress Seeds or Root Cuttings in Saturated Growing Medium",
+              "7. Balance Water Chemistry to pH 6.5-7.5 and Monitor Temperature",
+              "8. Allow 2-4 Weeks for System Establishment and Mayfly Colonization",
+              "9. Begin Regular Harvesting of Watercress While Maintaining Water Quality"
+            ],
+            "videos": [
+              {
+                "title": "Building a Container Watercress & Mayfly System",
+                "youtubeId": "w2K8-9fvX3L",
+                "description": "Complete setup guide for integrated aquatic ecosystem in containers, from pump installation to watercress planting",
+                "icon_tag_fa": "fas fa-water",
+                "color_tag": "#0891b2",
+                "localVideoFilename": "water_garden_container_build.mp4",
+                "authors": "",
+                "researchReviewItems": [],
+                "contentCreatorArchive": "",
+                "licence": "Standard YouTube License",
+                "patreon": "",
+                "socials": {},
+                "fundraiser": "",
+                "sponsorPages": []
+              },
+              {
+                "title": "Watercress Growing Techniques in Moving Water",
+                "youtubeId": "M7g-4fvH2pL",
+                "description": "How to propagate, plant, and harvest watercress in aquatic systems for maximum nutrition and continuous production",
+                "icon_tag_fa": "fas fa-seedling",
+                "color_tag": "#16a34a",
+                "localVideoFilename": "water_garden_watercress.mp4",
+                "authors": "",
+                "researchReviewItems": [],
+                "contentCreatorArchive": "",
+                "licence": "Standard YouTube License",
+                "patreon": "",
+                "socials": {},
+                "fundraiser": "",
+                "sponsorPages": []
+              },
+              {
+                "title": "Creating Mayfly Habitat for Water Quality Monitoring",
+                "youtubeId": "Q8k-7fvR_tM",
+                "description": "Understanding mayfly biology and designing substrate zones that support healthy populations as ecosystem indicators",
+                "icon_tag_fa": "fas fa-bug",
+                "color_tag": "#7c3aed",
+                "localVideoFilename": "water_garden_mayfly_habitat.mp4",
+                "authors": "",
+                "researchReviewItems": [],
+                "contentCreatorArchive": "",
+                "licence": "Standard YouTube License",
+                "patreon": "",
+                "socials": {},
+                "fundraiser": "",
+                "sponsorPages": []
+              },
+              {
+                "title": "Water Garden Troubleshooting: Quality, Flow & Balance",
+                "youtubeId": "N5m-8fvY4pK",
+                "description": "Diagnosing and fixing common issues including algae blooms, low oxygen, temperature problems, and ecosystem imbalances",
+                "icon_tag_fa": "fas fa-tools",
+                "color_tag": "#dc2626",
+                "localVideoFilename": "water_garden_troubleshooting.mp4",
+                "authors": "",
+                "researchReviewItems": [],
+                "contentCreatorArchive": "",
+                "licence": "Standard YouTube License",
+                "patreon": "",
+                "socials": {},
+                "fundraiser": "",
+                "sponsorPages": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uniqueId": "food-5",
+        "title": "Growing Your Own Mushroom Spawn",
+        "subtitle": "Learn to propagate mushrooms using grain spawn for home cultivation",
+        "description": "This foundational workshop teaches participants how to prepare grain spawn for gourmet mushrooms using a homemade sterilizer setup. Focused on Oyster, Lion’s Mane, and Pioppini species.",
+        "tags": [
+          "mushroom spawn",
+          "mycology",
+          "oyster mushroom",
+          "lion's mane",
+          "pioppini",
+          "grain spawn",
+          "pressure sterilization"
+        ],
+        "context": "Participants will learn how to prepare grain jars, sterilize them using a DIY keg + smart pot system, and inoculate them with mushroom cultures. Ideal for home cultivators beginning their journey into fungi.",
+        "materials": [
+          "Whole grains (oats, millet, rye)",
+          "Glass jars or spawn bags",
+          "Mushroom cultures (store-bought or cloned)",
+          "Pressure sterilizer (keg + smart pot)",
+          "Still Air Box (SAB) or flow hood",
+          "Alcohol lamp or butane torch",
+          "Gloves, alcohol spray, masks",
+          "Tyvek or synthetic filter disks (optional)"
+        ],
+        "processSteps": [
+          "Soak and simmer grains, then dry to surface dry",
+          "Load jars/bags with grains and seal with filters",
+          "Sterilize for 90–120 minutes at 15 PSI",
+          "Cool, then inoculate with culture using sterile technique",
+          "Store at 22–26°C and monitor for colonization",
+          "Shake jars at 30–50% colonization to spread mycelium",
+          "Watch for contamination and separate clean jars"
+        ],
+        "partSubstitutions": [
+          "Use oats or bird seed mix if rye is unavailable",
+          "Recycle pickle jars with modified lids for gas exchange",
+          "Use spore syringes or agar wedges for inoculation"
+        ],
+        "maintenancePlan": [
+          "Label all jars with strain, date, and batch",
+          "Check daily for contamination",
+          "Shake halfway through colonization if needed",
+          "Dispose of contaminated jars safely"
+        ],
+        "videos": []
+      },
+      {
+        "uniqueId": "food-7",
+        "title": "Advanced Mushroom Spawn: Reishi, Crimini & Lion’s Mane",
+        "subtitle": "Cloning, culture expansion, and spawn multiplication",
+        "description": "Take your spawn production to the next level by cloning from mushroom tissue to agar and expanding to multiple jars. Focused on Reishi, Crimini, and Lion’s Mane.",
+        "tags": [
+          "agar work",
+          "mycelium",
+          "cloning mushrooms",
+          "reishi",
+          "crimini",
+          "lion's mane",
+          "spawn expansion"
+        ],
+        "context": "Participants learn how to work with agar plates to clone mushroom tissue, transfer clean growth, and scale into larger spawn production with sterile tools.",
+        "materials": [
+          "Petri dishes or agar plates",
+          "MEA or PDA agar mix",
+          "Scalpels, tweezers",
+          "Alcohol lamp or torch",
+          "Sterile mushroom tissue",
+          "Gloves, SAB or flow hood",
+          "Grain jars for expansion",
+          "Agar slants for long-term storage (optional)"
+        ],
+        "processSteps": [
+          "Prepare agar plates and sterilize",
+          "Clone tissue from fruiting body using sterile scalpel",
+          "Place tissue on agar and incubate (5–14 days depending on species)",
+          "Monitor for clean rhizomorphic growth",
+          "Transfer wedge to new agar or grain jar",
+          "Repeat isolation if needed for clean culture"
+        ],
+        "partSubstitutions": [
+          "Use jelly jars with agar if petri dishes are unavailable",
+          "Use instant potato or malt as agar base",
+          "Cut agar plates into quarters to extend use"
+        ],
+        "maintenancePlan": [
+          "Keep agar plates sealed and dated",
+          "Discard contaminated cultures promptly",
+          "Flame tools before each transfer",
+          "Store plates at consistent temp to avoid drying out"
+        ],
+        "videos": []
+      },
+      {
+        "uniqueId": "food-6",
+        "title": "Clean Cultures from Agar Plates",
+        "subtitle": "How to Identify, Select, and Transfer Healthy Mycelium",
+        "description": "Learn to evaluate agar plates for clean mycelium, avoid contamination, and transfer viable samples to new agar or spawn jars. This is essential for building a strong culture library.",
+        "tags": [
+          "agar transfer",
+          "clean culture",
+          "mycology basics",
+          "mycelium",
+          "contamination"
+        ],
+        "context": "After cloning or receiving agar cultures, selecting the best sections to transfer ensures healthy mushroom growth. This workshop develops sterile technique and diagnostic skills.",
+        "materials": [
+          "Colonized agar plates",
+          "Fresh sterile agar dishes",
+          "Sterile scalpel or loop",
+          "Flame source",
+          "SAB or flow hood",
+          "Grain jars (optional)",
+          "Labeling tape, marker",
+          "Contamination photo reference (optional)",
+          "Pre-marked agar grids (optional)"
+        ],
+        "processSteps": [
+          "Inspect agar for rhizomorphic (clean) growth",
+          "Use grid markings (optional) to locate transfer zones",
+          "Flame sterilize scalpel",
+          "Cut wedge from clean edge, avoiding center or suspect areas",
+          "Transfer to new plate or grain jar",
+          "Seal and label with strain, source, and date",
+          "Incubate and monitor for growth"
+        ],
+        "partSubstitutions": [
+          "Use cloning cup method if plates are scarce",
+          "Transfer with sterile tweezers if scalpel unavailable",
+          "Pre-pour agar into small containers or baby food jars"
+        ],
+        "maintenancePlan": [
+          "Review plates every 48 hours for contamination",
+          "Keep transfer tools sterile and flame frequently",
+          "Log transfers in a culture journal",
+          "Avoid touching or tilting plates unnecessarily"
+        ],
+        "videos": [
+          {
+            "title": "How to Transfer Mushroom Cultures from Agar Plates",
+            "youtubeId": "fE4PpByhVxI",
+            "description": "Step-by-step guide to selecting clean mycelium and transferring it to new agar or grain jars using sterile technique.",
+            "icon_tag_fa": "fas fa-microscope",
+            "color_tag": "#4b5563",
+            "localVideoFilename": "agar_plate_transfer.mp4",
+            "authors": "",
+            "researchReviewItems": [],
+            "contentCreatorArchive": "",
+            "licence": "Standard YouTube License",
+            "patreon": "",
+            "socials": {},
+            "fundraiser": "",
+            "sponsorPages": []
+          }
+        ]
+      },
+      [
+        {
+          "area": "Renewable Energy",
+          "icon": "fa-solar-panel",
+          "featherIcon": "zap",
+          "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z\"></path></svg>",
+          "subcategories": [
+            {
+              "uniqueId": "renewable-0",
+              "title": "Solar Electric",
+              "subtitle": "Photovoltaic Basics for Off-Grid Use",
+              "description": "How to size, source, and wire solar panels, charge controllers, and batteries for powering lights, devices, and small appliances.",
+              "tags": [
+                "solar PV",
+                "electricity",
+                "off-grid",
+                "renewable energy",
+                "DIY solar",
+                "photovoltaic",
+                "rural electrification"
+              ],
+              "context": "Solar PV systems offer clean, modular, and increasingly affordable energy for remote or underserved areas. This section covers small to medium-scale systems using simple, maintainable components.",
+              "materials": [
+                "Solar Panels (10–300W each)",
+                "Charge Controller (PWM or MPPT)",
+                "Deep Cycle Battery (AGM, Gel, or LiFePO4)",
+                "Inverter (for AC loads)",
+                "Wires, Breakers, MC4 Connectors, Mounts"
+              ],
+              "processSteps": [
+                "1. Estimate Daily Energy Use (Watt-hours)",
+                "2. Size Solar Array and Battery Bank",
+                "3. Wire Solar Panels to Controller (with protection)",
+                "4. Connect Battery to Controller",
+                "5. Connect Inverter (if AC loads are needed)",
+                "6. Mount, Align, and Maintain Panels"
+              ],
+              "videos": [
+                {
+                  "icon_tag_fa": "fas fa-sun",
+                  "color_tag": "#facc15",
+                  "title": "DIY Solar Power for Beginners",
+                  "youtubeId": "3Bfr1WVVvUE",
+                  "description": "Clear walkthrough of panel, controller, battery, inverter setup",
+                  "localVideoFilename": "renewable_solar_basics.mp4",
+                  "authors": "Tech Ingredients",
+                  "licence": "Standard YouTube License"
+                },
+                {
+                  "icon_tag_fa": "fas fa-battery-full",
+                  "color_tag": "#84cc16",
+                  "title": "How to Size a Solar Battery Bank",
+                  "youtubeId": "N2esdF7NL5Y",
+                  "description": "Explains how to match batteries to your power needs and sunlight levels",
+                  "localVideoFilename": "renewable_battery_sizing.mp4",
+                  "authors": "",
+                  "licence": "Standard YouTube License"
+                }
+              ]
+            },
+            {
+              "uniqueId": "renewable-1",
+              "title": "Micro Hydro",
+              "subtitle": "Generating Electricity from Flowing Water",
+              "description": "Design and install small hydroelectric systems using gravity-fed water sources, turbines, and battery banks.",
+              "tags": [
+                "micro hydro",
+                "water power",
+                "gravity system",
+                "turbine",
+                "off-grid electricity",
+                "renewable",
+                "small-scale"
+              ],
+              "context": "For locations with steady flowing streams or canals, micro hydro offers constant power. This module focuses on low-head and medium-head systems for small villages or homesteads.",
+              "materials": [
+                "Pipeline (PVC or HDPE penstock)",
+                "Intake Filter / Head Tank",
+                "Micro Turbine (Pelton, crossflow, or impulse)",
+                "Rectifier or Charge Controller",
+                "Battery Bank and/or Grid-Tie Inverter",
+                "Valves, Fittings, and Surge Protection"
+              ],
+              "processSteps": [
+                "Assess Site Head and Flow Rate",
+                "Calculate Potential Power (Watts)",
+                "Install Intake and Penstock",
+                "Mount and Align Turbine",
+                "Connect Electrical Output to Charge System",
+                "Monitor Output and Maintain Filters"
+              ],
+              "partSubstitutions": [
+                "PVC penstock can be replaced with HDPE for better UV resistance",
+                "Pelton wheels can be 3D printed or cast from aluminum for prototyping",
+                "Car alternators work as generators with proper rectification",
+                "Gravity tanks substitute for electric pumps in intake systems"
+              ],
+              "maintenancePlan": [
+                "Weekly: Check intake screen for debris and clean if blocked",
+                "Monthly: Inspect penstock joints for leaks and tighten connections",
+                "Quarterly: Lubricate turbine bearings and check electrical connections",
+                "Annually: Replace intake filters and inspect structural mounting"
+              ],
+              "videos": [
+                {
+                  "title": "How a Micro Hydro System Works",
+                  "youtubeId": "ilfZlpiBfyE",
+                  "description": "Simple visual explanation of water-to-electricity conversion",
+                  "icon_tag_fa": "fas fa-water",
+                  "color_tag": "#0ea5e9",
+                  "localVideoFilename": "renewable_microhydro_overview.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "DIY Micro Hydro Build in the Mountains",
+                  "youtubeId": "dnU0OPUGnXk",
+                  "description": "Step-by-step system build in a rural setting",
+                  "icon_tag_fa": "fas fa-tools",
+                  "color_tag": "#3b82f6",
+                  "localVideoFilename": "renewable_microhydro_build.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                }
+              ]
+            },
+            {
+              "uniqueId": "renewable-2",
+              "title": "Biogas",
+              "subtitle": "Anaerobic Digestion for Cooking Gas",
+              "description": "Design and maintain a self-contained biogas system that produces cooking gas from organic waste. Emphasis on odor-free operation, safety, and clean, safe reuse of effluent through natural filtration systems.",
+              "tags": [
+                "biogas",
+                "digester",
+                "methane",
+                "organic waste",
+                "cooking fuel",
+                "anaerobic digestion",
+                "closed-loop",
+                "effluent safety",
+                "waste to energy",
+                "slurry management"
+              ],
+              "context": "Biogas systems convert kitchen waste, animal manure, and other organic material into methane-rich gas for cooking. This module focuses on designing a sustainable and odor-free system that is safe, easy to maintain, and responsibly uses the leftover slurry through natural filtration and reuse practices.",
+              "materials": [
+                "Airtight Digester Tank (HDPE, ferrocement, or IBC)",
+                "Inlet and Outlet Pipes with Seals",
+                "Flexible Biogas Storage Bag or Hard Gas Cylinder",
+                "Low-Pressure Gas Stove or Burner",
+                "Effluent Drain Pipe",
+                "Constructed Wetland Materials (gravel, sand, vetiver, reeds)",
+                "One-way Valves and Pressure Regulator",
+                "Water Trap and Flame Arrestor",
+                "Protective Net or Housing",
+                "Personal Protective Equipment (PPE)"
+              ],
+              "processSteps": [
+                "Select an appropriate site with drainage, distance from water sources, and shade",
+                "Construct or install a sealed digester with inlet and outlet",
+                "Connect gas outlet with valves and storage bag or tank",
+                "Build a planted gravel bed to treat liquid effluent",
+                "Feed digester daily with diluted organic slurry (avoid grease or meat)",
+                "Monitor gas production and pressure regularly",
+                "Use biogas for cooking with a low-pressure stove",
+                "Inspect and clean digester inlet and gas lines monthly",
+                "Safely reuse filtered effluent on non-edible crops, trees, or compost"
+              ],
+              "partSubstitutions": [
+                "Ferrocement tanks as low-cost alternative to HDPE",
+                "Old truck tarp as biogas bag material",
+                "Reused PVC piping for inlet/outlet",
+                "Reeds, papyrus, or lemongrass as local filtration plants",
+                "Car tire inner tubes as flexible gas storage (small systems)",
+                "Used IBC totes for mini digesters"
+              ],
+              "maintenancePlan": [
+                "Weekly: Check gas connections for leaks (soap bubble test)",
+                "Biweekly: Clean inlet and prevent solid buildup",
+                "Monthly: Trim plants in effluent bed and check water flow",
+                "Quarterly: Check pH of slurry, clean water trap",
+                "Annually: Inspect tank for cracks or signs of wear",
+                "Replace parts: Swap worn hoses and valves as needed",
+                "Keep a usage and feeding log to track performance and detect issues early"
+              ],
+              "videos": [
+                {
+                  "title": "How to Build a Simple Biogas Digester",
+                  "youtubeId": "vbiogas01",
+                  "description": "Learn how to construct a home-scale digester from simple materials.",
+                  "icon_tag_fa": "fas fa-seedling",
+                  "color_tag": "#34d399",
+                  "localVideoFilename": "biogas_build_basics.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Safe Effluent Use with Gravel Beds",
+                  "youtubeId": "vbiogas02",
+                  "description": "How to build a small planted gravel bed for filtering digester slurry.",
+                  "icon_tag_fa": "fas fa-water",
+                  "color_tag": "#3b82f6",
+                  "localVideoFilename": "biogas_effluent_safety.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                }
+              ]
+            },
+            {
+              "uniqueId": "renewable-3",
+              "title": "Fuel Briquettes",
+              "subtitle": "Biomass-Based Solid Fuel Production",
+              "description": "Transform agricultural waste, sawdust, and organic materials into compressed fuel briquettes for cooking and heating using simple hand presses or mechanical systems.",
+              "tags": [
+                "briquettes",
+                "solid fuel",
+                "agriculture waste",
+                "biomass compression",
+                "cooking fuel",
+                "waste-to-energy",
+                "DIY",
+                "sustainable fuel"
+              ],
+              "context": "Fuel briquettes provide an eco-friendly alternative to charcoal and firewood by converting agricultural residues into high-energy density fuel blocks. Perfect for areas with abundant crop waste like rice husks, corn stalks, or sawmill byproducts.",
+              "materials": [
+                "Biomass Material (sawdust, rice husks, corn stalks, paper waste)",
+                "Natural Binder (starch paste, clay, molasses, or cassava flour)",
+                "Briquette Press (manual lever press or screw-type)",
+                "Mixing Container and Paddle",
+                "Drying Racks or Solar Dryer",
+                "Moisture Meter (optional)",
+                "Protective Equipment (gloves, dust mask)"
+              ],
+              "processSteps": [
+                "Collect and Prepare Raw Biomass Materials",
+                "Dry Materials to 10-15% Moisture Content",
+                "Grind or Chop into Consistent Small Pieces",
+                "Mix with Natural Binder (5-10% by weight)",
+                "Add Water to Achieve Proper Consistency",
+                "Compress in Press to Form Dense Briquettes",
+                "Sun Dry for 2-7 Days Until Fully Cured",
+                "Store in Dry Location for Future Use"
+              ],
+              "partSubstitutions": [
+                "Car jack can substitute for hydraulic press mechanism",
+                "Clay soil works as natural binder instead of commercial starch",
+                "Cassava or potato starch replaces expensive binding agents",
+                "Pipe clamps create simple manual compression systems",
+                "Old newspaper substitutes for cardboard in biomass mix",
+                "Molasses or corn syrup works as organic binder alternative"
+              ],
+              "maintenancePlan": [
+                "Daily: Clean press surfaces and lubricate moving parts",
+                "Weekly: Check moisture content of stored materials",
+                "Monthly: Inspect press frame for wear and tighten bolts",
+                "Seasonally: Replace worn press plates and calibrate pressure",
+                "Before storage: Treat metal parts with rust preventive oil"
+              ],
+              "videos": [
+                {
+                  "title": "Making Fuel Briquettes from Farm Waste",
+                  "youtubeId": "K8-7fvmV_FE",
+                  "description": "Complete process from waste collection to finished briquettes",
+                  "icon_tag_fa": "fas fa-fire",
+                  "color_tag": "#dc2626",
+                  "localVideoFilename": "renewable_briquettes_making.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "DIY Briquette Press Construction",
+                  "youtubeId": "Fm3-P8FsT7Y",
+                  "description": "Build your own manual briquette press from scrap materials",
+                  "icon_tag_fa": "fas fa-cogs",
+                  "color_tag": "#059669",
+                  "localVideoFilename": "renewable_briquettes_press.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Testing Briquette Quality and Heat Output",
+                  "youtubeId": "nBf8qY8VhEo",
+                  "description": "How to evaluate burn rate, heat output, and smoke production",
+                  "icon_tag_fa": "fas fa-leaf",
+                  "color_tag": "#16a34a",
+                  "localVideoFilename": "renewable_briquettes_testing.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                }
+              ]
+            },
+            {
+              "uniqueId": "renewable-4",
+              "title": "Gasifier Combustion Systems",
+              "subtitle": "Converting Biomass to Combustible Gas",
+              "description": "Build wood and biomass gasification systems that produce synthetic gas (syngas) for cooking, heating, or powering internal combustion engines through controlled pyrolysis.",
+              "tags": [
+                "gasifier",
+                "gasification",
+                "syngas",
+                "pyrolysis",
+                "biomass combustion",
+                "wood gas",
+                "alternative fuel",
+                "DIY",
+                "internal combustion engine",
+                "clean burning"
+              ],
+              "context": "Gasification systems convert solid biomass into a clean-burning gas through controlled thermal decomposition. These systems can power generators, vehicles, or provide high-efficiency cooking fuel with minimal smoke and particulate emissions.",
+              "materials": [
+                "Primary Combustion Chamber (steel drum or thick-wall pipe)",
+                "Secondary Air Injection System",
+                "Insulation Material (fire brick, ceramic wool)",
+                "Air Blower or Natural Draft Design",
+                "Gas Cooling and Filtering System",
+                "Temperature Gauges and Monitoring Equipment",
+                "Biomass Feed Hopper",
+                "Ash Collection Chamber",
+                "Gas Outlet Manifold and Piping"
+              ],
+              "processSteps": [
+                "Design Chamber Based on Fuel Type and Output Needs",
+                "Construct Primary Pyrolysis Chamber with Air Controls",
+                "Install Secondary Air Injection for Complete Combustion",
+                "Add Insulation and Temperature Monitoring",
+                "Connect Gas Cooling and Particulate Filtering",
+                "Test with Small Batch of Dry Biomass",
+                "Adjust Air Flow Ratios for Optimal Gas Production",
+                "Connect to End-Use Application (stove, engine, etc.)"
+              ],
+              "partSubstitutions": [
+                "Propane tanks work as combustion chambers with proper modification",
+                "Computer fans provide forced air draft instead of expensive blowers",
+                "Fire bricks substitute for expensive refractory lining",
+                "Automotive exhaust pipe replaces custom gas distribution manifolds",
+                "Pool sand filters adapt well for gas particulate removal",
+                "Washing machine drums create excellent biomass feed hoppers"
+              ],
+              "maintenancePlan": [
+                "After each use: Clean ash chamber and check air passages",
+                "Weekly: Inspect insulation integrity and repair cracks",
+                "Monthly: Clean gas filters and check temperature sensors",
+                "Quarterly: Lubricate blower mechanisms and check electrical connections",
+                "Annually: Replace worn gaskets and recalibrate air flow controls",
+                "Before storage: Clean all surfaces and apply rust protection"
+              ],
+              "videos": [
+                {
+                  "title": "How Gasification Works - Science Explained",
+                  "youtubeId": "26wWHhV8mzU",
+                  "description": "Understanding the chemistry and physics of biomass gasification",
+                  "icon_tag_fa": "fas fa-industry",
+                  "color_tag": "#7c3aed",
+                  "localVideoFilename": "renewable_gasifier_science.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Building a Simple Wood Gasifier Stove",
+                  "youtubeId": "SwumzKNtJqA",
+                  "description": "Step-by-step construction of a top-lit updraft gasifier",
+                  "icon_tag_fa": "fas fa-hammer",
+                  "color_tag": "#ea580c",
+                  "localVideoFilename": "renewable_gasifier_build.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Wood Gas Generator for Vehicle Engine",
+                  "youtubeId": "lbJLcRHDFAM",
+                  "description": "Converting syngas to power internal combustion engines",
+                  "icon_tag_fa": "fas fa-car",
+                  "color_tag": "#1f2937",
+                  "localVideoFilename": "renewable_gasifier_engine.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                }
+              ]
+            },
+            {
+              "uniqueId": "renewable-5",
+              "title": "Battery Storage Systems",
+              "subtitle": "Energy Storage for Off-Grid Applications",
+              "description": "Design and install battery banks for storing renewable energy from solar, wind, or hydro systems, including charge controllers, inverters, and safety systems.",
+              "tags": [
+                "battery storage",
+                "energy storage",
+                "off-grid",
+                "battery bank",
+                "charge controller",
+                "inverter",
+                "lithium",
+                "lead acid",
+                "solar battery",
+                "backup power"
+              ],
+              "context": "Battery storage systems enable reliable off-grid power by storing excess energy from renewable sources. This module covers system sizing, battery chemistry selection, charging algorithms, and safety considerations for residential and small commercial applications.",
+              "materials": [
+                "Deep Cycle Batteries (LiFePO4, AGM, or Gel Cell)",
+                "Charge Controller (PWM or MPPT)",
+                "Battery Monitor with Shunt",
+                "DC-AC Inverter (Pure Sine Wave)",
+                "Battery Interconnect Cables (appropriate gauge)",
+                "Fuses, Breakers, and Disconnect Switches",
+                "Battery Enclosure with Ventilation",
+                "Temperature Sensors and Compensation",
+                "Grounding Equipment and Surge Protection"
+              ],
+              "processSteps": [
+                "Calculate Daily Energy Consumption Requirements",
+                "Size Battery Bank for Desired Autonomy Days",
+                "Select Battery Chemistry Based on Budget and Performance",
+                "Design Wiring Configuration (Series/Parallel)",
+                "Install Charge Controller and Programming",
+                "Connect Battery Monitor and Shunt",
+                "Install Inverter with Proper DC Disconnect",
+                "Test System Operation and Set Safety Parameters"
+              ],
+              "partSubstitutions": [
+                "Golf cart batteries substitute for expensive deep cycle units",
+                "Car alternators work as basic charge controllers with modification",
+                "Modified sine wave inverters reduce costs for non-sensitive loads",
+                "Automotive fuses replace expensive DC breakers for smaller systems",
+                "Laptop power supplies adapt as DC-DC converters",
+                "Marine battery boxes provide weatherproof enclosures"
+              ],
+              "maintenancePlan": [
+                "Monthly: Check battery voltages and clean terminals",
+                "Quarterly: Inspect all connections and tighten loose bolts",
+                "Semi-annually: Test capacity and perform equalization (if applicable)",
+                "Annually: Check ventilation systems and replace air filters",
+                "Replace batteries: Monitor for 80% capacity threshold",
+                "Keep maintenance log: Track performance trends and replacement schedules"
+              ],
+              "videos": [
+                {
+                  "title": "Battery Bank Sizing and Design Basics",
+                  "youtubeId": "3yAFFvSfOE0",
+                  "description": "How to calculate battery capacity for your energy needs",
+                  "icon_tag_fa": "fas fa-battery-full",
+                  "color_tag": "#10b981",
+                  "localVideoFilename": "renewable_battery_sizing.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Wiring Battery Banks - Series vs Parallel",
+                  "youtubeId": "b7Pz4AO4-lQ",
+                  "description": "Safe wiring practices for different voltage configurations",
+                  "icon_tag_fa": "fas fa-plug",
+                  "color_tag": "#f59e0b",
+                  "localVideoFilename": "renewable_battery_wiring.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "Battery Safety and Fire Prevention",
+                  "youtubeId": "Zty2p6nSs0w",
+                  "description": "Critical safety considerations for DIY battery installations",
+                  "icon_tag_fa": "fas fa-shield-alt",
+                  "color_tag": "#dc2626",
+                  "localVideoFilename": "renewable_battery_safety.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                },
+                {
+                  "title": "DIY LiFePO4 Battery Bank Build",
+                  "youtubeId": "JBs8QbL2QIQ",
+                  "description": "Complete build process for lithium iron phosphate system",
+                  "icon_tag_fa": "fas fa-tools",
+                  "color_tag": "#6366f1",
+                  "localVideoFilename": "renewable_battery_build.mp4",
+                  "authors": "",
+                  "researchReviewItems": [],
+                  "contentCreatorArchive": "",
+                  "licence": "Standard YouTube License",
+                  "patreon": "",
+                  "socials": {},
+                  "fundraiser": "",
+                  "sponsorPages": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "area": "Data Security",
+          "icon": "fa-lock",
+          "featherIcon": "lock",
+          "svgString": "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' fill='#000000' viewBox='0 0 256 256'><path d='M208,96H184V72a56,56,0,0,0-112,0V96H48A16,16,0,0,0,32,112V216a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A16,16,0,0,0,208,96ZM88,72a40,40,0,0,1,80,0V96H88ZM208,216H48V112H208V216Zm-80-56a16,16,0,1,0-16,16A16,16,0,0,0,128,160Z'/></svg>",
+          "subcategories": [
+            {
+              "uniqueId": "data-security-0",
+              "title": "Digital Privacy Basics",
+              "description": "Learn how to protect your personal information and communications in an increasingly digital world.",
+              "tags": [
+                "privacy",
+                "encryption",
+                "digital security",
+                "online safety",
+                "identity protection",
+                "data hygiene"
+              ],
+              "context": "Introduces essential concepts like password hygiene, 2FA, secure messaging, and browsing habits. Designed for individuals in low-resource or at-risk environments.",
+              "materials": [
+                "Smartphone or Computer",
+                "Password Manager (Bitwarden, KeePass)",
+                "Secure Messaging Apps (Signal, Element)",
+                "VPN Access (optional)",
+                "Up-to-date Browser with Privacy Extensions"
+              ],
+              "processSteps": [
+                "1. Install a Password Manager and update weak passwords",
+                "2. Enable Two-Factor Authentication (2FA) wherever possible",
+                "3. Use encrypted messaging apps for sensitive communication",
+                "4. Avoid public Wi-Fi for critical tasks or use a VPN",
+                "5. Clear browser data regularly and use privacy extensions",
+                "6. Learn to recognize phishing and scams"
+              ],
+              "videos": []
+            },
+            {
+              "uniqueId": "data-security-1",
+              "title": "Secure File Sharing",
+              "description": "Explore safe ways to share files online, especially in community, educational, or activist settings.",
+              "tags": [
+                "file encryption",
+                "sharing",
+                "tools",
+                "data security",
+                "USB hygiene",
+                "cloud alternatives"
+              ],
+              "context": "Helps users adopt tools and habits for encrypted sharing via USB, cloud, or peer-to-peer tools. Useful for both collaborative and confidential purposes.",
+              "materials": [
+                "File Encryption Tools (Veracrypt, Cryptomator)",
+                "Offline Sharing Tools (USB drives, LAN, Bluetooth)",
+                "Secure Cloud Tools (Nextcloud, Tresorit)",
+                "Checksum Tools for Integrity Checks"
+              ],
+              "processSteps": [
+                "1. Choose sharing method (online/offline)",
+                "2. Encrypt file using appropriate tool",
+                "3. Transfer using USB or secure channel",
+                "4. Verify integrity using checksums (optional)",
+                "5. Delete sensitive data after transfer if needed",
+                "6. Educate recipients on secure practices"
+              ],
+              "videos": []
+            }
+          ]
+        },
+        {
+          "area": "Logistics",
+          "icon": "fa-truck",
+          "featherIcon": "truck",
+          "svgString": "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' fill='#000000' viewBox='0 0 256 256'><path d='M248,152H232V128a16,16,0,0,0-16-16H180.69l-28.57-42.86A16,16,0,0,0,139.43,64H40A16,16,0,0,0,24,80V192a16,16,0,0,0,16,16h8a32,32,0,0,0,64,0h56a32,32,0,0,0,64,0h16a8,8,0,0,0,8-8V160A8,8,0,0,0,248,152ZM152,80l28.57,42.86A16,16,0,0,0,196.57,128H216v24H152ZM56,208a16,16,0,1,1,16,16A16,16,0,0,1,56,208Zm120,0a16,16,0,1,1,16,16A16,16,0,0,1,176,208Z'/></svg>",
+          "subcategories": [
+            {
+              "uniqueId": "logistics-0",
+              "title": "Last-Mile Delivery Systems",
+              "description": "Design community-level delivery networks for goods, medicine, or tools using low-cost transport.",
+              "tags": [
+                "delivery",
+                "transport",
+                "logistics",
+                "community networks",
+                "bicycles",
+                "drones",
+                "foot delivery"
+              ],
+              "context": "Ideal for rural, low-resource, or disrupted areas. Explores bicycle couriers, walking routes, local hubs, and creative solutions to ensure delivery of critical goods.",
+              "materials": [
+                "Delivery Bicycles or Carts",
+                "Route Maps",
+                "Scheduling Tools (paper or digital)",
+                "Containers or Bags",
+                "Log Sheets or Apps"
+              ],
+              "processSteps": [
+                "1. Identify critical goods and delivery points",
+                "2. Map routes and calculate distance/timing",
+                "3. Assign carriers and schedules",
+                "4. Track deliveries and maintain logs",
+                "5. Troubleshoot common delivery issues",
+                "6. Collect feedback and improve service"
+              ],
+              "videos": []
+            },
+            {
+              "uniqueId": "logistics-1",
+              "title": "Emergency Supply Chains",
+              "description": "Set up rapid response systems for distributing aid or essential goods in disaster or conflict zones.",
+              "tags": [
+                "emergency",
+                "supply chain",
+                "disaster relief",
+                "crisis response",
+                "resource allocation"
+              ],
+              "context": "Guides teams on pre-positioning supplies, coordinating drops, and using technology and community to move resources fast and fairly during emergencies.",
+              "materials": [
+                "Supply Inventory",
+                "Storage Facilities (temporary or permanent)",
+                "Distribution Plan",
+                "Transportation Methods (trucks, carts, boats)",
+                "Team Roster and Communication Channels"
+              ],
+              "processSteps": [
+                "1. Conduct Needs Assessment",
+                "2. Create Supply Plan and Inventory System",
+                "3. Identify and train distribution teams",
+                "4. Setup centralized storage or local caches",
+                "5. Execute distribution based on priority",
+                "6. Monitor, document, and adjust logistics flow"
+              ],
+              "videos": []
+            }
+          ]
+        },
+        {
+          "area": "Open Data & Digital Tools",
+          "icon": "fa-database",
+          "featherIcon": "database",
+          "svgString": "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' fill='#000000' viewBox='0 0 256 256'><path d='M128,24C74.98,24,32,46.33,32,72v112c0,25.67,42.98,48,96,48s96-22.33,96-48V72C224,46.33,181.02,24,128,24Zm0,16c47.13,0,80,20.79,80,32s-32.87,32-80,32S48,83.21,48,72,80.87,40,128,40ZM48,94.14C64.26,106.29,94.27,112,128,112s63.74-5.71,80-17.86V128c0,11.21-32.87,32-80,32s-80-20.79-80-32ZM48,150.14C64.26,162.29,94.27,168,128,168s63.74-5.71,80-17.86V184c0,11.21-32.87,32-80,32s-80-20.79-80-32Z'/></svg>",
+          "subcategories": [
+            {
+              "uniqueId": "open-data-0",
+              "title": "Open Source Tools for Resilience",
+              "description": "Explore free, community-driven tools that empower local projects — from design to documentation.",
+              "tags": [
+                "open source",
+                "DIY",
+                "digital tools",
+                "free software",
+                "accessibility",
+                "community tech"
+              ],
+              "context": "Showcases offline-friendly, open source apps and platforms useful for documentation, design, communication, and organization — key for low-resource or resilience-focused projects.",
+              "materials": [
+                "Smartphone or Computer",
+                "Preloaded USB/DVD or Offline Installer",
+                "LibreOffice, Inkscape, Kiwix, Mesh Networking Tools",
+                "Documentation or Tutorials"
+              ],
+              "processSteps": [
+                "1. Identify project needs (design, docs, maps, messaging)",
+                "2. Choose suitable open source tools",
+                "3. Download or copy offline installer (if needed)",
+                "4. Install and explore core functions",
+                "5. Train local users or facilitators",
+                "6. Share documentation and improvements"
+              ],
+              "videos": []
+            },
+            {
+              "uniqueId": "open-data-1",
+              "title": "Community Mapping & Open GIS",
+              "description": "Learn to create maps with open tools like OpenStreetMap and QGIS to support local planning and resilience.",
+              "tags": [
+                "mapping",
+                "GIS",
+                "community",
+                "QGIS",
+                "OpenStreetMap",
+                "data collection",
+                "participatory"
+              ],
+              "context": "Empowers communities to map their own infrastructure, resources, and needs — ideal for planning, disaster prep, and advocacy.",
+              "materials": [
+                "GPS-enabled Device or Phone",
+                "OpenStreetMap Account",
+                "QGIS or uMap",
+                "Printable Base Maps (optional)",
+                "Survey Forms or Apps (e.g., KoboToolbox)"
+              ],
+              "processSteps": [
+                "1. Define mapping goals (water access, paths, hazards)",
+                "2. Collect local data (GPS points, notes, photos)",
+                "3. Edit or upload to OpenStreetMap or QGIS",
+                "4. Visualize maps with custom layers",
+                "5. Print/share offline or embed in plans",
+                "6. Keep maps updated collaboratively"
+              ],
+              "videos": []
+            },
+            {
+              "uniqueId": "open-data-2",
+              "title": "Citizen Science & Participatory Data",
+              "description": "Learn how to collect and share community-driven scientific data for local issues like air, water, and biodiversity.",
+              "tags": [
+                "citizen science",
+                "crowdsourcing",
+                "community research",
+                "environmental monitoring",
+                "public data"
+              ],
+              "context": "Enables people to gather credible data using simple tools, contributing to open databases and advocacy. Perfect for environmental health, land use, and justice-oriented mapping.",
+              "materials": [
+                "Notebook or Digital Form (e.g., KoboCollect)",
+                "Sensors (air, water, soil – DIY or low-cost)",
+                "GPS-enabled phone",
+                "Access to platforms like iNaturalist, OpenDataKit"
+              ],
+              "processSteps": [
+                "1. Define your local issue or research question",
+                "2. Design a simple data collection method",
+                "3. Train participants on tool use and ethics",
+                "4. Collect data and document conditions",
+                "5. Upload to open platforms (if desired)",
+                "6. Analyze and visualize for impact or policy"
+              ],
+              "videos": []
+            },
+            {
+              "uniqueId": "open-data-3",
+              "title": "Licensing Your Work (Creative Commons & GPL)",
+              "description": "How to release your creations — code, media, tools — under open licenses that protect freedom and encourage sharing.",
+              "tags": [
+                "licensing",
+                "Creative Commons",
+                "GPL",
+                "free culture",
+                "open source",
+                "legal",
+                "knowledge sharing"
+              ],
+              "context": "Helps learners and creators confidently share their work while protecting against misuse. Covers major licenses like CC-BY, CC0, and GPLv3/v4 with practical tools.",
+              "materials": [
+                "Internet or Offline Guides",
+                "License Chooser (e.g., choosealicense.com)",
+                "Creative Commons Tools (license picker, badges)",
+                "GPL Notice Template"
+              ],
+              "processSteps": [
+                "1. Decide what you're licensing (content, code, data)",
+                "2. Choose the appropriate license type (CC, GPL, etc.)",
+                "3. Add license notice to your files or project",
+                "4. Use standard headers or README tags",
+                "5. Share with proper attribution formats",
+                "6. Understand how others can reuse, remix, or credit"
+              ],
+              "videos": []
+            }
+          ]
+        },
+
+
+        
+      ]
+    ]
+  }
+]
