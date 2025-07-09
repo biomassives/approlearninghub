@@ -2464,28 +2464,38 @@ function handleSearch() {
     document.addEventListener('DOMContentLoaded', async function() { 
 
     console.log("Initializing Approvideo Learning Hub...");
-
-  const wrapper = document.querySelector('.tech-carousel');
-  const slides = wrapper.querySelectorAll('.slide');
-  const carousel = wrapper.querySelector('.carousel');
-  const leftArrow = wrapper.querySelector('.nav-arrow.left');
-  const rightArrow = wrapper.querySelector('.nav-arrow.right');
-  let current = 0;
-  let interval = setInterval(showNextSlide, 6000);
-
-  function showSlide(index) {
-    slides[current].classList.remove('active');
-    current = (index + slides.length) % slides.length;
-    slides[current].classList.add('active');
-  }
-
-  function showNextSlide() {
-    showSlide(current + 1);
-  }
-
-  function showPrevSlide() {
-    showSlide(current - 1);
-  }
+    
+      const wrapper = document.querySelector('.tech-carousel');
+      const slides = wrapper.querySelectorAll('.slide');
+      const carousel = wrapper.querySelector('.carousel');
+      const leftArrow = wrapper.querySelector('.nav-arrow.left');
+      const rightArrow = wrapper.querySelector('.nav-arrow.right');
+      let current = 0;
+      let interval = setInterval(showNextSlide, 6000);
+    
+     ;(function(){
+      // 1) Function declarations are hoisted within this IIFE...
+      function showSlide(idx) {
+        slides[current].classList.remove('active');
+        current = (idx + slides.length) % slides.length;
+        slides[current].classList.add('active');
+      }
+    
+      function showNextSlide() {
+        showSlide(current + 1);
+      }
+    
+      function showPrevSlide() {
+        showSlide(current - 1);
+      }
+    
+      // 2) …and *then* we stick them on window in one go:
+      Object.assign(window, {
+        showSlide,
+        showNextSlide,
+        showPrevSlide
+      });
+    })();
 
   function resetInterval() {
     clearInterval(interval);
