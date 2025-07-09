@@ -1283,6 +1283,29 @@ function toggleSubcategoryPreview(moduleElement, areaName) {
     }
 }
 
+// instead of nextSlide()
+function showNextSlide() {
+  showSlide(currentIndex + 1);
+}
+
+// instead of prevSlide()
+function showPrevSlide() {
+  showSlide(currentIndex - 1);
+}
+
+// startAutoAdvance becomes
+function startAutoAdvance() {
+  intervalId = setInterval(showNextSlide, 5000);
+}
+
+// resetAutoAdvance can stay as-is
+function resetAutoAdvance() {
+  clearInterval(intervalId);
+  startAutoAdvance();
+}
+
+
+
 function initializeSlideshows() {
     document.querySelectorAll('.featured-slideshow').forEach(slideshow => {
         const slides = slideshow.querySelectorAll('.slideshow-slide');
