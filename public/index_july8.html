@@ -1939,69 +1939,72 @@ function populateAreaNavIcons(categoriesInfo) { // Expects array like [{ name: "
 }
 
 // --- Function to build the searchableItems array for search autocomplete ---
-
 function buildSearchableItems(data) {
-    searchableItems = []; // Reset before building
-    if (!data || !Array.isArray(data)) {
-        console.error("Invalid data provided to buildSearchableItems");
-        return;
-    }
-    data.forEach(area => {
-        if (!area || !area.area) return; // Skip if area or area.area is undefined
+  const searchableItems = []; // Reset before building
 
-        // Add Area itself as a searchable module (if you want to search for main areas)
+  if (!data || !Array.isArray(data)) {
+    console.error("Invalid data provided to buildSearchableItems");
+    return;
+  }
+
+  data.forEach(area => {
+    if (!area || !area.area) return; // Skip bad entries
+
+    // 1) Add the area itself
+    searchableItems.push({
+      id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`,
+      title: area.area,
+      type: 'module',
+      icon: area.icon || 'fa-cubes',
+      areaName: area.area,
+      slug: area.area.toLowerCase().replace(/\s+/g, '-')
+    });
+
+    // 2) Subcategories
+    if (Array.isArray(area.subcategories)) {
+      area.subcategories.forEach((subcategory, subcatIndex) => {
+        if (!subcategory || !subcategory.title) return;
+
+        const areaSlug = area.area.toLowerCase().replace(/\s+/g, '-');
+        const uniqueId = subcategory.uniqueId
+          ? subcategory.uniqueId
+          : `${areaSlug}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
+
         searchableItems.push({
+          id: `subcategory-${uniqueId}`,
+          title: subcategory.title,
+          type: 'module',
+          icon: subcategory.icon || area.icon || 'fa-cube',
+          areaName: area.area,
+          areaSlug: areaSlug,
+          uniqueId: uniqueId
+        });
 
-              id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`, // ID for the area section
-              title: area.area,
-              type: 'module',
-              icon: area.icon || 'fa-cubes',
-              areaName: area.area, // For navigation
-              slug: area.area.toLowerCase().replace(/\s+/g, '-')
-         });
+        // 3) Videos
+        if (Array.isArray(subcategory.videos)) {
+          subcategory.videos.forEach((video, videoIndex) => {
+            if (!video || !video.youtubeId || !video.title) return;
 
-        if (area.subcategories && Array.isArray(area.subcategories)) {
-            area.subcategories.forEach((subcategory, subcatIndex) => {
-                if (!subcategory || !subcategory.title) return;
-                
-                const subcategorySlugBase = area.area.toLowerCase().replace(/\s+/g, '-');
-                const subcategoryUniqueId = subcategory.uniqueId || `${subcategorySlugBase}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
-                
-                // Add Subcategory to searchable items
-                searchableItems.push({
-                    id: `subcategory-${subcategoryUniqueId}`, // An ID for a potential element representing the subcategory
-                    title: subcategory.title,
-                    type: 'module', // Or 'subcategory'
-                    icon: subcategory.icon || area.icon || 'fa-cube',
-                    areaName: area.area,
-                    areaSlug: subcategorySlugBase,
-                    uniqueId: subcategoryUniqueId // Used by displaySubcategoryDetails
-                });
+            const videoId = `video-search-${uniqueId}-${videoIndex}`;
+            searchableItems.push({
+              id: videoId,
+              title: video.title,
+              description: video.description || '',
+              type: 'video',
+              icon: video.icon_tag_fa || '',
+              areaName: area.area,
+              areaSlug: areaSlug,
+              subcatUniqueId: uniqueId,
+              flat_index: video.flat_index
+            });
+          });
+        } // ← closes subcategory.videos if
+      });  // ← closes area.subcategories.forEach
+    }     // ← closes area.subcategories if
+  });      // ← closes data.forEach
 
-                if (subcategory.videos && Array.isArray(subcategory.videos)) {
-                    subcategory.videos.forEach((video, videoIndex) => {
-                        if (!video || !video.youtubeId || !video.title) return;
-                            const videoSearchableId = `video-search-${subcategoryUniqueId}-${videoIndex}`;
-                            searchableItems.push({
-                                id: videoSearchableId, // This ID needs to be on the video element if you want to scroll to it
-                                title: video.title,
-                                description: video.description || '',
-                                type: 'video',
-                                icon: video.icon_tag_fa || '',    // blank for local files - gw - july 8 '25
-                                areaName: area.area,
-                                areaSlug: subcategorySlugBase,
-                                subcatUniqueId: subcategoryUniqueId,
-                                flat_index: video.flat_index // Useful for showInfoPanel
-                                // Add youtubeId if search result click should play video directly
-                                // youtubeId: video.youtubeId 
-                            });
-                        });
-                    }
-                });
-            }
-         });
-    
-    console.log(`Built ${searchableItems.length} searchable items.`);
+  console.log(`Built ${searchableItems.length} searchable items.`);
+  return searchableItems;
 }
 
 // --- Function to set up interactions for the floating search menu ---
