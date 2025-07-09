@@ -1126,12 +1126,27 @@ function generateHomepageModules() {
         return;
     }
 
-    categoryData.forEach(category => {
-        const moduleDiv = document.createElement('div');
-        const categorySlug = category.area ? category.area.toLowerCase().replace(/\s+/g, '-') : 'unknown-area';
-        moduleDiv.className = `module homepage-module-item ${categorySlug}`;
-        //moduleDiv.id = `module-${categorySlug}`; - gw july 8 '25
-        moduleDiv.id = `module-${category.area.toLowerCase().replace(/\s+/g, '-')}`;
+      const invalidCats = [];
+      // 1) only keep things with a real `area` string
+      const validCats = categoryData.filter(cat => typeof cat.area === 'string');
+      const validCats = categoryData.filter(
+          cat => typeof cat.area === 'string' && cat.area.trim().length > 0
+      );
+      const validCats = categoryData.filter(cat => {
+      const ok = cat && typeof cat.area === 'string' && cat.area.trim();
+      if (!ok) invalidCats.push(cat);
+            return ok;
+      });
+
+      if (invalidCats.length) console.warn("Skipping categories with no area:", invalidCats);
+
+    validCats.forEach(category => {
+      // safe now, because we filtered for typeof string
+      const rawName    = category.area.trim();
+      const slug       = rawName.toLowerCase().replace(/\s+/g, '-');
+      const moduleDiv  = document.createElement('div');
+      moduleDiv.className = `module homepage-module-item ${slug}`;
+      moduleDiv.id        = `module-${slug}`;
 
         
         const iconContainer = document.createElement('div');
