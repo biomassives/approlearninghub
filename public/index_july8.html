@@ -1128,8 +1128,7 @@ function generateHomepageModules() {
 
       const invalidCats = [];
       // 1) only keep things with a real `area` string
-      const validCats = categoryData.filter(cat => typeof cat.area === 'string');
-      const validCats = categoryData.filter(
+          const validCats = categoryData.filter(
           cat => typeof cat.area === 'string' && cat.area.trim().length > 0
       );
       const validCats = categoryData.filter(cat => {
