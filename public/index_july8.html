@@ -2044,7 +2044,13 @@ function buildSearchableItems(data) {
     }     // ← closes area.subcategories if
   });      // ← closes data.forEach
 
-  console.log(`Built ${searchableItems.length} searchable items.`);
+    console.log(`Built ${searchableItems.length} searchable items.`);
+
+    searchableItems = buildSearchableItems(categoryData); // <--- Make sure you assign the return value!
+    
+    console.log("Global searchableItems after build:", searchableItems);
+    console.log("Global searchableItems length:", searchableItems.length);
+
   return searchableItems;
 }
 
