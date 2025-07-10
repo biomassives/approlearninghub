@@ -970,8 +970,10 @@ function initializeAllModals() {
 
 // --- Video Panel Functions ---
 function flattenVideoData(originalData) {
-    let flatIndex = 0;
-    allVideosFlat = []; // Reset
+   
+    allVideosFlat = []; // Reset the global
+    globalVideoFlatIndex = 0;
+    
     originalData.forEach(area => {
         if (area.subcategories && Array.isArray(area.subcategories)) {
             area.subcategories.forEach((subcat) => {
@@ -989,7 +991,8 @@ function flattenVideoData(originalData) {
                             video.fundraiser = video.fundraiser || "";
                             video.sponsorPages = video.sponsorPages || [];
                             video.localVideoFilename = video.localVideoFilename || "";
-                            video.flat_index = flatIndex++;
+                            video.flat_index = globalVideoFlatIndex++;
+
                             allVideosFlat.push(video);
                         } else { console.warn(`Skipping invalid video entry: ${subcat.title}`, video); }
                     });
@@ -1995,16 +1998,7 @@ function buildSearchableItems(data) {
             return; // Skip bad entries and continue with the next area
         }
 
-        // 1) Add the area itself
-        tempSearchableItems.push({ 
-            id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`,
-            title: area.area,
-            type: 'module',
-            icon: area.icon || 'fa-cubes',
-            areaName: area.area,
-            slug: area.area.toLowerCase().replace(/\s+/g, '-')
-           // flat_index: globalVideoFlatIndex++ // Assign and increment global counter
-        });
+       
 
         // 2) Subcategories
         if (Array.isArray(area.subcategories)) {
@@ -2047,6 +2041,7 @@ function buildSearchableItems(data) {
                             areaName: area.area,
                             areaSlug: areaSlug,
                             subcatUniqueId: uniqueId,
+                            youtubeId: video.youtubeId,
                             flat_index: video.flat_index
                         });
                     });
