@@ -842,7 +842,8 @@ function createAccordionItem(title, contentHtml, parentElement, defaultOpen = fa
 
 
 // --- Global Variables & DOM Elements ---
-        let categoryData = []; // holds the data fetched from the JSON file
+        let globalVideoFlatIndex = 0;
+        let categoryData = [];
         const modulesGridContainer = document.getElementById('modules-grid-container'); // Get homepage grid container
         const modulesGrid = modulesGridContainer.querySelector('.modules-grid'); // Get the grid itself
         const categoryContentContainer = document.getElementById('category-content-container'); // Get the container for detailed view
@@ -1019,12 +1020,9 @@ function populateSubcategoryPills(categories) { // Changed from categoryData to 
                 // Let's assume `subcat.uniqueId` exists or is generated before this point if necessary.
                 // For safety, let's use a similar pattern if needed:
                 const uniqueId = subcat.uniqueId || `${category.area.toLowerCase().replace(/\s+/g, '-')}-${index}`;
-
-
                 const pillButton = document.createElement('button');
                 pillButton.className = 'subcategory-pill';
 
-                
                 let iconElementHtml = '';
                 if (category.svgString && category.svgString.trim().startsWith('<svg')) { // Assuming you might use svgString here too
                     iconElementHtml = category.svgString; // This SVG itself should get class 'pill-icon' or be styled
@@ -1036,9 +1034,6 @@ function populateSubcategoryPills(categories) { // Changed from categoryData to 
                     iconElementHtml = `<i class="fas fa-tag pill-icon mr-0"></i>`;
                 }
                 pillButton.innerHTML = '<span class="math-inline">'+iconElementHtml+'<span class="pill-text"></span>'+subcat.title+'</span>';
-
-
-
                 pillButton.dataset.area = category.area.toLowerCase();
                 pillButton.dataset.uniqueid = uniqueId;
 
@@ -1443,7 +1438,6 @@ function initializeSlideshows() {
 }
 
 // --- Hash Navigation Functions ---
-// IMPORTANT: Define handleHashChange FIRST to avoid reference errors
 function handleHashChange() {
     // Get the hash without the # prefix
     let hash = window.location.hash.substring(1);
@@ -1988,7 +1982,6 @@ function buildSearchableItems(data) {
     // This array will hold the items as they are processed.
     const tempSearchableItems = [];
 
-    let globalVideoFlatIndex = 0; // Initialize a global counter
 
     // 2. Handle invalid data immediately at the beginning.
     // There's no need for two identical checks.
@@ -2011,8 +2004,8 @@ function buildSearchableItems(data) {
             type: 'module',
             icon: area.icon || 'fa-cubes',
             areaName: area.area,
-            slug: area.area.toLowerCase().replace(/\s+/g, '-'),
-            flat_index: globalVideoFlatIndex++ // Assign and increment global counter
+            slug: area.area.toLowerCase().replace(/\s+/g, '-')
+           // flat_index: globalVideoFlatIndex++ // Assign and increment global counter
         });
 
         // 2) Subcategories
@@ -2055,7 +2048,7 @@ function buildSearchableItems(data) {
                             icon: video.icon_tag_fa || '',
                             areaName: area.area,
                             areaSlug: areaSlug,
-                            subcatUniqueId: uniqueId,
+                            subcatUniqueId: uniqueId
                             flat_index: video.flat_index
                         });
                     });
