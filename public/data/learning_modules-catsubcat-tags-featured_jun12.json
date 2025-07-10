@@ -738,344 +738,456 @@
             "socials": {},
             "fundraiser": "",
             "sponsorPages": []
+
           }
         ]
       }
     ]
+  },
+
+   {
+  "area": "Energy",
+  "icon": "fa-bolt",
+  "featherIcon": "zap",
+  "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"#000000\" viewBox=\"0 0 256 256\"><path d=\"M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z\"></path></svg>",
+  "subcategories": [
+    {
+      "uniqueId": "energy-0",
+      "title": "Solar Cookers: Box, Panel, and Parabolic",
+      "description": "Three distinct designs for solar cookers — insulated box, uninsulated panel, and parabolic reflector — using common materials to cook food using the sun's energy.",
+      "tags": [
+        "solar energy",
+        "sustainable cooking",
+        "off-grid",
+        "renewable energy",
+        "DIY",
+        "solar oven",
+        "parabolic cooker"
+      ],
+      "context": "This module outlines three practical approaches to solar cooking. Each design serves a unique context — the box cooker for slow baking and minimal heat loss; the panel cooker for portability and simplicity; and the parabolic cooker for fast, high-heat applications. Best used in sunny, low-wind environments.",
+      "variants": [
+        {
+          "type": "Insulated Box Cooker",
+          "optimalUse": "Slow cooking, baking, grains, stews; suitable for long exposure (1.5–4 hrs) under strong sun; low burn risk.",
+          "materials": [
+            "**1. Cooking Chamber & Insulation:**",
+            "   - Two cardboard boxes (one smaller, one larger)",
+            "   - Insulation (crumpled newspaper, straw, wool, or recycled fabric)",
+            "**2. Reflective & Heat Absorbing Surfaces:**",
+            "   - Aluminum foil or reflective mylar (for inside walls and flaps)",
+            "   - Black, heat-safe paint (non-toxic, for pot exterior)",
+            "**3. Transparent Window:**",
+            "   - Glass pane or clear oven bag (used to trap heat inside)",
+            "**4. Miscellaneous:**",
+            "   - Dark lidded cooking pot (thin black metal works best)",
+            "   - Tape, glue, box cutter, ruler"
+          ],
+          "processSteps": [
+            "1. Nest smaller box inside larger, insulating all gaps between with newspaper or straw.",
+            "2. Line the inside of the inner box with foil (shiny side up), glued flat.",
+            "3. Paint the pot black and allow to dry fully.",
+            "4. Create an angled reflector lid using a flap cut into the outer box top, lined with foil.",
+            "5. Tape or hinge the reflector flap to adjust for best sun angle.",
+            "6. Cover top opening with clear oven bag or glass to retain heat.",
+            "7. Place food in the black pot, seal the cooker, and orient toward the sun.",
+            "8. Cook time varies from 1.5–4 hours depending on sun strength and dish type."
+          ],
+          "videos": [
+            {
+              "title": "Building a DIY Solar Box Cooker",
+              "youtubeId": "example_box_cooker_id",
+              "description": "Step-by-step guide to constructing an insulated solar box cooker.",
+              "icon_tag_fa": "fas fa-box",
+              "color_tag": "#d97706",
+              "localVideoFilename": "",
+              "authors": "",
+              "researchReviewItems": [],
+              "contentCreatorArchive": "",
+              "licence": "Standard YouTube License",
+              "patreon": "",
+              "socials": {},
+              "fundraiser": "",
+              "sponsorPages": []
+            }
+          ]
+        },
+        {
+          "type": "Uninsulated Panel Cooker",
+          "optimalUse": "Portable and lightweight; great for light cooking (e.g., reheating, tea, grains); ideal for community demos, emergency kits.",
+          "materials": [
+            "**1. Structure:**",
+            "   - Cardboard sheets or corrugated plastic",
+            "**2. Reflective Surfaces:**",
+            "   - Aluminum foil or reflective tape",
+            "**3. Heat Retention:**",
+            "   - Clear oven bag or upside-down glass bowl",
+            "**4. Cooking Vessel:**",
+            "   - Thin black pot or jar with tight-fitting lid",
+            "**5. Fasteners:**",
+            "   - Binder clips, tape, string, or glue"
+          ],
+          "processSteps": [
+            "1. Cut reflective panels in 3–5 segments and hinge them at angles to form a reflector cone or C-shape.",
+            "2. Cover each panel with foil or reflective tape.",
+            "3. Place cooking pot inside a clear oven bag or under an inverted glass bowl.",
+            "4. Orient toward the sun, repositioning every 30–45 minutes for best results.",
+            "5. Monitor food through clear cover to prevent overheating or drying out."
+          ],
+          "videos": [
+            {
+              "title": "Making a Simple Solar Panel Cooker",
+              "youtubeId": "example_panel_cooker_id",
+              "description": "Demonstrates the construction of a basic, portable solar panel cooker.",
+              "icon_tag_fa": "fas fa-solar-panel",
+              "color_tag": "#fbbf24",
+              "localVideoFilename": "",
+              "authors": "",
+              "researchReviewItems": [],
+              "contentCreatorArchive": "",
+              "licence": "Standard YouTube License",
+              "patreon": "",
+              "socials": {},
+              "fundraiser": "",
+              "sponsorPages": []
+            }
+          ]
+        },
+        {
+          "type": "Parabolic Concentrating Cooker",
+          "optimalUse": "High heat applications (boiling water, frying, pressure cooking); great for short cook times; requires precise alignment and supervision.",
+          "materials": [
+            "**1. Reflective Dish:**",
+            "   - Old satellite dish lined with mylar, foil tape, or mirror pieces",
+            "   - Optional: large umbrella frame modified with reflective segments",
+            "**2. Support Frame:**",
+            "   - Sturdy stand or tripod to hold dish and align it with the sun",
+            "**3. Cooking Pot Holder:**",
+            "   - Metal frame or cage at focal point to hold pot safely",
+            "**4. Cooking Pot:**",
+            "   - Black pressure cooker or frying pot (must handle high heat)",
+            "**5. Safety Gear:**",
+            "   - Gloves, sunglasses, fire extinguisher (for safety)"
+          ],
+          "processSteps": [
+            "1. Line parabolic dish with reflective material, ensuring a clean, smooth curve.",
+            "2. Mark and test focal point using a piece of black paper (should burn in ~5 seconds under strong sun).",
+            "3. Mount pot holder securely at focal point using metal bars or cage.",
+            "4. Place black cooking pot with food or water inside the holder.",
+            "5. Align the parabola toward the sun and make periodic adjustments.",
+            "6. Supervise at all times — cook times may be as short as 10–30 minutes for boiling water or frying.",
+            "7. Remove food using heat-safe gloves and allow cooker to cool."
+          ],
+          "videos": [
+            {
+              "title": "How these mirror toys can generate cheap solar energy",
+              "youtubeId": "KS4bv_DwxbY",
+              "description": "Explores how inexpensive mirror dishes can concentrate solar energy to generate cheap thermal electricity. The video evaluates four approaches, with a focus on using thermal oil and heat storage for continuous power generation — potentially outperforming conventional power plants and solar panels.",
+              "icon_tag_fa": "fas fa-city",
+              "color_tag": "#6B7280",
+              "localVideoFilename": "",
+              "authors": "Sergiy Yurko",
+              "researchReviewItems": [],
+              "contentCreatorArchive": "",
+              "licence": "Standard YouTube License",
+              "patreon": "",
+              "socials": {},
+              "fundraiser": "",
+              "sponsorPages": []
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Solar cookers require direct, unobstructed sunlight — avoid shaded or cloudy periods for best results.",
+        "Use food-safe, non-toxic black paint for pot coating.",
+        "Never leave a parabolic cooker unattended; risk of ignition or burns is higher due to high temperatures.",
+        "For all types, reflective surfaces should be kept clean for maximum effectiveness."
+      ]
     },
     {
-    "uniqueId": "energy-1",
-    "title": "Solar Cookers: Box, Panel, and Parabolic",
-    "description": "Three distinct designs for solar cookers — insulated box, uninsulated panel, and parabolic reflector — using common materials to cook food using the sun's energy.",
-    "tags": [
-      "solar energy",
-      "sustainable cooking",
-      "off-grid",
-      "renewable energy",
-      "DIY",
-      "solar oven",
-      "parabolic cooker"
-    ],
-    "context": "This module outlines three practical approaches to solar cooking. Each design serves a unique context — the box cooker for slow baking and minimal heat loss; the panel cooker for portability and simplicity; and the parabolic cooker for fast, high-heat applications. Best used in sunny, low-wind environments.",
-    "variants": [
-      {
-        "type": "Insulated Box Cooker",
-        "optimalUse": "Slow cooking, baking, grains, stews; suitable for long exposure (1.5–4 hrs) under strong sun; low burn risk.",
-        "materials": [
-          "**1. Cooking Chamber & Insulation:**",
-          "   - Two cardboard boxes (one smaller, one larger)",
-          "   - Insulation (crumpled newspaper, straw, wool, or recycled fabric)",
-          "**2. Reflective & Heat Absorbing Surfaces:**",
-          "   - Aluminum foil or reflective mylar (for inside walls and flaps)",
-          "   - Black, heat-safe paint (non-toxic, for pot exterior)",
-          "**3. Transparent Window:**",
-          "   - Glass pane or clear oven bag (used to trap heat inside)",
-          "**4. Miscellaneous:**",
-          "   - Dark lidded cooking pot (thin black metal works best)",
-          "   - Tape, glue, box cutter, ruler"
-        ],
-        "processSteps": [
-          "1. Nest smaller box inside larger, insulating all gaps between with newspaper or straw.",
-          "2. Line the inside of the inner box with foil (shiny side up), glued flat.",
-          "3. Paint the pot black and allow to dry fully.",
-          "4. Create an angled reflector lid using a flap cut into the outer box top, lined with foil.",
-          "5. Tape or hinge the reflector flap to adjust for best sun angle.",
-          "6. Cover top opening with clear oven bag or glass to retain heat.",
-          "7. Place food in the black pot, seal the cooker, and orient toward the sun.",
-          "8. Cook time varies from 1.5–4 hours depending on sun strength and dish type."
-        ]
-      },
-      {
-        "type": "Uninsulated Panel Cooker",
-        "optimalUse": "Portable and lightweight; great for light cooking (e.g., reheating, tea, grains); ideal for community demos, emergency kits.",
-        "materials": [
-          "**1. Structure:**",
-          "   - Cardboard sheets or corrugated plastic",
-          "**2. Reflective Surfaces:**",
-          "   - Aluminum foil or reflective tape",
-          "**3. Heat Retention:**",
-          "   - Clear oven bag or upside-down glass bowl",
-          "**4. Cooking Vessel:**",
-          "   - Thin black pot or jar with tight-fitting lid",
-          "**5. Fasteners:**",
-          "   - Binder clips, tape, string, or glue"
-        ],
-        "processSteps": [
-          "1. Cut reflective panels in 3–5 segments and hinge them at angles to form a reflector cone or C-shape.",
-          "2. Cover each panel with foil or reflective tape.",
-          "3. Place cooking pot inside a clear oven bag or under an inverted glass bowl.",
-          "4. Orient toward the sun, repositioning every 30–45 minutes for best results.",
-          "5. Monitor food through clear cover to prevent overheating or drying out."
-        ]
-      },
-      {
-        "type": "Parabolic Concentrating Cooker",
-        "optimalUse": "High heat applications (boiling water, frying, pressure cooking); great for short cook times; requires precise alignment and supervision.",
-        "materials": [
-          "**1. Reflective Dish:**",
-          "   - Old satellite dish lined with mylar, foil tape, or mirror pieces",
-          "   - Optional: large umbrella frame modified with reflective segments",
-          "**2. Support Frame:**",
-          "   - Sturdy stand or tripod to hold dish and align it with the sun",
-          "**3. Cooking Pot Holder:**",
-          "   - Metal frame or cage at focal point to hold pot safely",
-          "**4. Cooking Pot:**",
-          "   - Black pressure cooker or frying pot (must handle high heat)",
-          "**5. Safety Gear:**",
-          "   - Gloves, sunglasses, fire extinguisher (for safety)"
-        ],
-        "processSteps": [
-          "1. Line parabolic dish with reflective material, ensuring a clean, smooth curve.",
-          "2. Mark and test focal point using a piece of black paper (should burn in ~5 seconds under strong sun).",
-          "3. Mount pot holder securely at focal point using metal bars or cage.",
-          "4. Place black cooking pot with food or water inside the holder.",
-          "5. Align the parabola toward the sun and make periodic adjustments.",
-          "6. Supervise at all times — cook times may be as short as 10–30 minutes for boiling water or frying.",
-          "7. Remove food using heat-safe gloves and allow cooker to cool."
-        ]
-      }
-    ],
-    "videos": [],
-    "notes": [
-      "Solar cookers require direct, unobstructed sunlight — avoid shaded or cloudy periods for best results.",
-      "Use food-safe, non-toxic black paint for pot coating.",
-      "Never leave a parabolic cooker unattended; risk of ignition or burns is higher due to high temperatures.",
-      "For all types, reflective surfaces should be kept clean for maximum effectiveness."
-    ]
-  },
-      {
-        "uniqueId": "energy-2",
-        "title": "Biogas",
-        "description": "A comprehensive guide to the materials required and the step-by-step process for planning, building, and operating a biogas digester.",
-        "tags": [
-            "biogas",
-            "anaerobic digestion",
-            "renewable energy",
-            "waste to energy",
-            "methane",
-            "digester construction",
-            "DIY energy"
-        ],
-        "context": "This module provides in-depth information on constructing and managing a biogas system. It covers necessary materials for various common digester types and outlines a multi-phase process from planning to safe operation and maintenance. The advice and cautions section (to be filled with your content) will complement this technical information.",
-        "materials": [
-            "**1. Digester Tank Components:**",
-            "   - Main digester vessel (e.g., 1000L-2000L IBC tote, multiple HDPE plastic drums, pre-fabricated tank, or materials for constructed digesters like bricks, cement, sand, and waterproofing agent for fixed-dome; or geomembrane for Puxin-type)",
-            "   - Insulation materials (e.g., straw, styrofoam, agricultural plastic sheeting - especially for colder climates)",
-            "**2. Inlet & Outlet Systems:**",
-            "   - PVC pipes (various diameters: e.g., 100-150mm for inlet, 50-100mm for outlet, 15-25mm for gas line)",
-            "   - PVC fittings (elbows, T-joints, reducers, end caps, unions, tank connectors/bulkhead fittings)",
-            "   - Ball valves or gate valves (for inlet, outlet, and gas line control)",
-            "   - Sealants (e.g., PVC primer and cement, silicone sealant, rubber gaskets, Teflon tape) for watertight and airtight seals",
-            "**3. Gas Collection, Storage & Purification:**",
-            "   - Gas holder/storage (e.g., inner tube of a truck tire, dedicated biogas storage bag with UV protection, or materials for a floating drum gasholder like a smaller drum and guide frame)",
-            "   - Transparent flexible hose (for visual checks and connections)",
-            "   - Condensate/Water trap (PVC components to build a U-trap or T-junction drain)",
-            "   - H2S Scrubber (optional but recommended: PVC pipe section, end caps with fittings, iron filings/steel wool)",
-            "**4. Pressure Management & Safety Devices:**",
-            "   - Manometer (DIY U-tube with clear plastic tubing and colored water, or a low-pressure gauge)",
-            "   - Pressure relief valve (set to a safe low pressure, e.g., 2-5 kPa)",
-            "   - Flame arrestor (install on the gas line near the point of use)",
-            "**5. Feedstock Preparation & Handling:**",
-            "   - Buckets or containers for collecting and mixing feedstock",
-            "   - Chopper, shredder, or machete (for reducing particle size of fibrous materials - optional)",
-            "   - Water source and watering can/hose",
-            "**6. Tools for Construction & Maintenance:**",
-            "   - Basic hand tools (saw for PVC, drill, screwdrivers, wrenches, spirit level, measuring tape)",
-            "   - Shovels, trowels (for excavation or concrete work if applicable)",
-            "   - Safety gear (gloves, safety glasses, masks)",
-            "**7. Utilization Appliances (examples):**",
-            "   - Biogas stove or burner (specifically designed for biogas or modified)",
-            "   - Biogas lamp",
-            "   - Flexible gas piping for connecting to appliances"
-        ],
-        "processSteps": [
-            "**Phase 1: Planning and Design**",
-            "   - Step 1: Assess Feedstock Availability & Type (quantify daily organic waste like manure, kitchen scraps; analyze C/N ratio if possible)",
-            "   - Step 2: Determine Energy Needs & System Sizing (calculate required gas volume, which dictates digester volume - typical retention times are 20-60 days)",
-            "   - Step 3: Select Digester Design (e.g., floating drum, fixed dome, IBC tote, Puxin; consider climate, cost, available skills, and materials)",
-            "   - Step 4: Detailed Site Selection (ensure level ground, sunlight (for some designs), proximity to feedstock and use-point, away from dwellings, consider effluent drainage)",
-            "   - Step 5: Create a Detailed Construction Plan & Material List (sketch design, list all components, estimate costs)",
-            "   - Step 6: Review Safety Regulations & Obtain Permits (if required locally)",
-            "**Phase 2: Construction and Assembly**",
-            "   - Step 7: Prepare the Site (clear vegetation, level ground, excavate if necessary for underground designs)",
-            "   - Step 8: Construct or Place the Digester Tank (follow design plans meticulously; ensure structural integrity)",
-            "   - Step 9: Install Inlet (for feeding) and Outlet (for digestate removal) Pipes (ensure correct height difference for gravity flow, airtight and watertight seals)",
-            "   - Step 10: Assemble and Install Gas Holder/Dome and Gas Outlet Pipe (ensure gasholder can move freely if floating type, or dome is gas-tight)",
-            "   - Step 11: Connect Gas Line with Valves, Manometer, H2S Scrubber, Water Trap, and Safety Devices (pressure relief valve, flame arrestor)",
-            "   - Step 12: Perform Thorough Leak Testing (use soapy water on all gas joints and seals; for water seals, check levels. Pressurize slightly if possible to check tank integrity before filling with slurry)",
-            "**Phase 3: Commissioning (Startup)**",
-            "   - Step 13: Prepare Inoculum/Starter Culture (use slurry from an active digester, fresh cow dung, or septic tank sludge – about 10-30% of digester volume)",
-            "   - Step 14: Prepare Initial Feedstock Slurry (mix organic waste with water to a suitable consistency, typically 1:1 to 1:4 solids to water ratio by weight, targeting 6-10% total solids)",
-            "   - Step 15: Load the Digester (first add inoculum, then gradually fill with prepared feedstock slurry, leaving recommended headspace)",
-            "   - Step 16: Seal the Digester and Monitor (allow 1-4 weeks for anaerobic conditions to establish and methane production to begin; initial gas will be mainly CO2 and should be vented safely)",
-            "   - Step 17: Test First Biogas for Flammability (collect a sample in a small bag or balloon and test carefully away from the digester; if it burns with a blue flame, it's methane-rich)",
-            "**Phase 4: Regular Operation**",
-            "   - Step 18: Establish a Regular Feeding Schedule (daily or every few days, add a consistent amount of fresh slurry – e.g., 1/20th to 1/60th of the digester volume, matching the hydraulic retention time)",
-            "   - Step 19: Simultaneous Digestate Removal (remove an equivalent volume of digestate as you feed to maintain liquid level)",
-            "   - Step 20: Monitor Gas Production & Quality (check manometer, observe flame color when in use)",
-            "   - Step 21: Utilize Biogas Safely (connect to appliances, ensure good ventilation where gas is used)",
-            "   - Step 22: Process and Utilize Digestate (use as organic fertilizer after composting or dilution; handle with care)",
-            "**Phase 5: Maintenance and Troubleshooting**",
-            "   - Step 23: Regular Checks (inspect for gas leaks, water seal levels, pipe blockages, structural integrity of the digester and gasholder)",
-            "   - Step 24: Scum and Sludge Management (periodically check for and remove excessive scum buildup or sediment if design allows and performance degrades)",
-            "   - Step 25: Maintain H2S Scrubber Material (replace iron filings/steel wool when saturated – color change or H2S smell indicates saturation)",
-            "   - Step 26: Troubleshoot Common Issues (e.g., low/no gas, acidic conditions (low pH), foaming, rotten egg smell, refer to specific troubleshooting guides)",
-            "   - Step 27: Follow Safety Protocols Continuously (no smoking, ensure flame arrestors are functional, handle digestate hygienically)"
-        ],
-        "videos": [
-      
-        ]
-        },
-          {
-            "uniqueId": "energy-2",
-            "title": "Power Microgrids",
-            "description": "Build small, local power systems...",
-            "tags": [
-              "microgrid",
-              "sustainability",
-              "infrastructure",
-              "renewable energy",
-              "off-grid power",
-              "community power",
-              "solar",
-              "wind power",
-              "battery storage",
-              "energy access",
-              "resilience"
-            ],
-            "context": "Creates localized, independent energy networks...",
-            "materials": [
-              "ration Source(s)...",
-              "Charge Controllers...",
-              "Battery Bank...",
-              "Inverter(s)...",
-              "Distribution Wiring...",
-              "Load Management System...",
-              "Monitoring Equipment"
-            ],
-            "processSteps": [
-              "1. Energy Audit...",
-              "2. System Design...",
-              "3. Installation...",
-              "4. Wiring & Safety...",
-              "5. Distribution Network...",
-              "6. Commissioning...",
-              "7. Community Governance..."
-            ],
-            "videos": []
-          },
-          {
-            "uniqueId": "energy-3",
-            "title": "DIY Biochar Retort (Soda Keg + Cast Iron Pan)",
-            "description": "A step-by-step guide for making biochar at home using a repurposed soda keg sealed with a cast iron pan and secured with stainless cable. The vessel is heated inside a wood stove to achieve pyrolysis.",
-            "tags": [
-              "biochar",
-              "pyrolysis",
-              "charcoal production",
-              "carbon sequestration",
-              "DIY energy",
-              "regenerative systems",
-              "wood stove",
-              "sustainable fuel"
-            ],
-            "context": "This module details the design, materials, and step-by-step process for building and operating a home-scale biochar retort using an improvised pressure vessel. It supports experimentation with different biomass types, carbon yields, and environmental impact (e.g., odor, residue, gas output). This system is well-suited for sustainable homesteads and regenerative agriculture enthusiasts.",
-            "materials": [
-              "**1. Retort Body:**",
-              "   - Stainless steel soda keg (top removed to create a chamber)",
-              "   - Cast iron pan (used as heavy lid)",
-              "**2. Retort Sealing System:**",
-              "   - Stainless steel cable (7x woven over-under stitching to hold the lid down under thermal expansion)",
-              "   - Optional: Furnace cement, clay, or fire rope gasket to improve the seal",
-              "**3. Biomass Feedstock:**",
-              "   - Dry wood chunks, nutshells, dried crop waste, or small sticks (low-moisture for optimal char quality)",
-              "**4. Heating Source:**",
-              "   - Wood stove or masonry heater with a well-established coal bed",
-              "**5. Monitoring & Safety:**",
-              "   - IR thermometer or thermocouple for vessel surface temp",
-              "   - Gloves, eye protection, long tongs",
-              "   - Ventilation (if indoors, use stove with chimney draw)"
-            ],
-            "processSteps": [
-              "**Phase 1: Vessel Preparation**",
-              "   - Step 1: Cut the soda keg and deburr edges",
-              "   - Step 2: Select a cast iron pan that tightly fits the keg’s top",
-              "   - Step 3: Prepare the stainless steel cable; test-fit the weave to hold the lid tight",
-              "**Phase 2: Biomass Loading**",
-              "   - Step 4: Fill the keg with dry, uniform biomass (avoid green or wet material)",
-              "   - Step 5: Place the lid and secure with cable (tighten using pliers or turnbuckle)",
-              "   - Step 6: Optionally apply clay or ash at the seam",
-              "**Phase 3: Pyrolysis Cycle**",
-              "   - Step 7: Prepare a bed of red-hot coals in the wood stove",
-              "   - Step 8: Insert the sealed vessel into the coals",
-              "   - Step 9: Let cook for 1.5–3 hours, depending on stove heat and biomass",
-              "   - Step 10: Optionally add coals around the vessel for uniform heat",
-              "**Phase 4: Cooling & Recovery**",
-              "   - Step 11: Allow the retort to cool fully (ideally overnight)",
-              "   - Step 12: Open the vessel only when cold to avoid oxygen flash",
-              "   - Step 13: Remove the biochar and inspect quality (black, glossy or dull, lightweight)",
-              "**Phase 5: Application or Storage**",
-              "   - Step 14: Store in airtight container or soak in compost tea before soil application",
-              "   - Step 15: Optionally log temperature, biomass weight in/out, odor, texture for experiments"
-            ],
-            "videos": [],
-            "notes": [
-              "Do not open the vessel hot—risk of flash combustion!",
-              "This is a low-pressure system; never fully seal without a pressure vent.",
-              "Char yield will vary by biomass type, particle size, and cook time.",
-              "If syngas flames appear, they should be short-lived and low volume in this design."
-            ]
-          },
-          {
-            "uniqueId": "energy-3",
-            "title": "Briquettes",
-            "subtitle": "Hand Pressed Heat & Cooking Fuel Briquettes",
-            "description": "DIY cook stove Fuel produced...",
-            "tags": [
-              "cooking fuel",
-              "upcycling",
-              "home heating",
-              "biomass",
-              "briquettes",
-              "waste to energy",
-              "appropriate technology",
-              "DIY",
-              "fuel efficiency"
-            ],
-            "context": "Compresses loose biomass waste...",
-            "materials": [
-              "Dry Biomass Waste...",
-              "Water...",
-              "Binder...",
-              "Briquette Press...",
-              "Drying Rack/Area"
-            ],
-            "processSteps": [
-              "1. Collect & Shred...",
-              "2. Mix with Water...",
-              "3. Load Slurry...",
-              "4. Compress Firmly...",
-              "5. Eject Wet Briquette...",
-              "6. Dry Thoroughly..."
-            ],
-            "videos": [
-              {
-                "icon_tag_fa": "fas fa-fire-alt",
-                "color_tag": "#d97706",
-                "title": "Simple Biomass Briquette Press Construction",
-                "youtubeId": "1LD7BhR3jTI",
-                "description": "Building a manual press...",
-                "localVideoFilename": "energy_briquette_press.mp4",
-                "authors": "",
-                "researchReviewItems": [],
-                "contentCreatorArchive": "",
-                "licence": "Standard YouTube License",
-                "patreon": "",
-                "socials": {},
-                "fundraiser": "",
-                "sponsorPages": []
-              }
-            ]
-      },
+      "uniqueId": "energy-1",
+      "title": "Biogas",
+      "description": "A comprehensive guide to the materials required and the step-by-step process for planning, building, and operating a biogas digester.",
+      "tags": [
+        "biogas",
+        "anaerobic digestion",
+        "renewable energy",
+        "waste to energy",
+        "methane",
+        "digester construction",
+        "DIY energy"
+      ],
+      "context": "This module provides in-depth information on constructing and managing a biogas system. It covers necessary materials for various common digester types and outlines a multi-phase process from planning to safe operation and maintenance. The advice and cautions section (to be filled with your content) will complement this technical information.",
+      "materials": [
+        "**1. Digester Tank Components:**",
+        "   - Main digester vessel (e.g., 1000L-2000L IBC tote, multiple HDPE plastic drums, pre-fabricated tank, or materials for constructed digesters like bricks, cement, sand, and waterproofing agent for fixed-dome; or geomembrane for Puxin-type)",
+        "   - Insulation materials (e.g., straw, styrofoam, agricultural plastic sheeting - especially for colder climates)",
+        "**2. Inlet & Outlet Systems:**",
+        "   - PVC pipes (various diameters: e.g., 100-150mm for inlet, 50-100mm for outlet, 15-25mm for gas line)",
+        "   - PVC fittings (elbows, T-joints, reducers, end caps, unions, tank connectors/bulkhead fittings)",
+        "   - Ball valves or gate valves (for inlet, outlet, and gas line control)",
+        "   - Sealants (e.g., PVC primer and cement, silicone sealant, rubber gaskets, Teflon tape) for watertight and airtight seals",
+        "**3. Gas Collection, Storage & Purification:**",
+        "   - Gas holder/storage (e.g., inner tube of a truck tire, dedicated biogas storage bag with UV protection, or materials for a floating drum gasholder like a smaller drum and guide frame)",
+        "   - Transparent flexible hose (for visual checks and connections)",
+        "   - Condensate/Water trap (PVC components to build a U-trap or T-junction drain)",
+        "   - H2S Scrubber (optional but recommended: PVC pipe section, end caps with fittings, iron filings/steel wool)",
+        "**4. Pressure Management & Safety Devices:**",
+        "   - Manometer (DIY U-tube with clear plastic tubing and colored water, or a low-pressure gauge)",
+        "   - Pressure relief valve (set to a safe low pressure, e.g., 2-5 kPa)",
+        "   - Flame arrestor (install on the gas line near the point of use)",
+        "**5. Feedstock Preparation & Handling:**",
+        "   - Buckets or containers for collecting and mixing feedstock",
+        "   - Chopper, shredder, or machete (for reducing particle size of fibrous materials - optional)",
+        "   - Water source and watering can/hose",
+        "**6. Tools for Construction & Maintenance:**",
+        "   - Basic hand tools (saw for PVC, drill, screwdrivers, wrenches, spirit level, measuring tape)",
+        "   - Shovels, trowels (for excavation or concrete work if applicable)",
+        "   - Safety gear (gloves, safety glasses, masks)",
+        "**7. Utilization Appliances (examples):**",
+        "   - Biogas stove or burner (specifically designed for biogas or modified)",
+        "   - Biogas lamp",
+        "   - Flexible gas piping for connecting to appliances"
+      ],
+      "processSteps": [
+        "**Phase 1: Planning and Design**",
+        "   - Step 1: Assess Feedstock Availability & Type (quantify daily organic waste like manure, kitchen scraps; analyze C/N ratio if possible)",
+        "   - Step 2: Determine Energy Needs & System Sizing (calculate required gas volume, which dictates digester volume - typical retention times are 20-60 days)",
+        "   - Step 3: Select Digester Design (e.g., floating drum, fixed dome, IBC tote, Puxin; consider climate, cost, available skills, and materials)",
+        "   - Step 4: Detailed Site Selection (ensure level ground, sunlight (for some designs), proximity to feedstock and use-point, away from dwellings, consider effluent drainage)",
+        "   - Step 5: Create a Detailed Construction Plan & Material List (sketch design, list all components, estimate costs)",
+        "   - Step 6: Review Safety Regulations & Obtain Permits (if required locally)",
+        "**Phase 2: Construction and Assembly**",
+        "   - Step 7: Prepare the Site (clear vegetation, level ground, excavate if necessary for underground designs)",
+        "   - Step 8: Construct or Place the Digester Tank (follow design plans meticulously; ensure structural integrity)",
+        "   - Step 9: Install Inlet (for feeding) and Outlet (for digestate removal) Pipes (ensure correct height difference for gravity flow, airtight and watertight seals)",
+        "   - Step 10: Assemble and Install Gas Holder/Dome and Gas Outlet Pipe (ensure gasholder can move freely if floating type, or dome is gas-tight)",
+        "   - Step 11: Connect Gas Line with Valves, Manometer, H2S Scrubber, Water Trap, and Safety Devices (pressure relief valve, flame arrestor)",
+        "   - Step 12: Perform Thorough Leak Testing (use soapy water on all gas joints and seals; for water seals, check levels. Pressurize slightly if possible to check tank integrity before filling with slurry)",
+        "**Phase 3: Commissioning (Startup)**",
+        "   - Step 13: Prepare Inoculum/Starter Culture (use slurry from an active digester, fresh cow dung, or septic tank sludge – about 10-30% of digester volume)",
+        "   - Step 14: Prepare Initial Feedstock Slurry (mix organic waste with water to a suitable consistency, typically 1:1 to 1:4 solids to water ratio by weight, targeting 6-10% total solids)",
+        "   - Step 15: Load the Digester (first add inoculum, then gradually fill with prepared feedstock slurry, leaving recommended headspace)",
+        "   - Step 16: Seal the Digester and Monitor (allow 1-4 weeks for anaerobic conditions to establish and methane production to begin; initial gas will be mainly CO2 and should be vented safely)",
+        "   - Step 17: Test First Biogas for Flammability (collect a sample in a small bag or balloon and test carefully away from the digester; if it burns with a blue flame, it's methane-rich)",
+        "**Phase 4: Regular Operation**",
+        "   - Step 18: Establish a Regular Feeding Schedule (daily or every few days, add a consistent amount of fresh slurry – e.g., 1/20th to 1/60th of the digester volume, matching the hydraulic retention time)",
+        "   - Step 19: Simultaneous Digestate Removal (remove an equivalent volume of digestate as you feed to maintain liquid level)",
+        "   - Step 20: Monitor Gas Production & Quality (check manometer, observe flame color when in use)",
+        "   - Step 21: Utilize Biogas Safely (connect to appliances, ensure good ventilation where gas is used)",
+        "   - Step 22: Process and Utilize Digestate (use as organic fertilizer after composting or dilution; handle with care)",
+        "**Phase 5: Maintenance and Troubleshooting**",
+        "   - Step 23: Regular Checks (inspect for gas leaks, water seal levels, pipe blockages, structural integrity of the digester and gasholder)",
+        "   - Step 24: Scum and Sludge Management (periodically check for and remove excessive scum buildup or sediment if design allows and performance degrades)",
+        "   - Step 25: Maintain H2S Scrubber Material (replace iron filings/steel wool when saturated – color change or H2S smell indicates saturation)",
+        "   - Step 26: Troubleshoot Common Issues (e.g., low/no gas, acidic conditions (low pH), foaming, rotten egg smell, refer to specific troubleshooting guides)",
+        "   - Step 27: Follow Safety Protocols Continuously (no smoking, ensure flame arrestors are functional, handle digestate hygienically)"
+      ],
+      "videos": [
+        {
+          "title": "DIY Biogas Digester from IBC Tote (Practical Guide)",
+          "youtubeId": "example_biogas_ibc_id",
+          "description": "Step-by-step instructions for building a small-scale biogas digester using an IBC tote.",
+          "icon_tag_fa": "fas fa-gas-pump",
+          "color_tag": "#059669",
+          "localVideoFilename": "",
+          "authors": "",
+          "researchReviewItems": [],
+          "contentCreatorArchive": "",
+          "licence": "Standard YouTube License",
+          "patreon": "",
+          "socials": {},
+          "fundraiser": "",
+          "sponsorPages": []
+        }
+      ]
+    },
+    {
+      "uniqueId": "energy-2",
+      "title": "Power Microgrids",
+      "description": "Build small, local power systems...",
+      "tags": [
+        "microgrid",
+        "sustainability",
+        "infrastructure",
+        "renewable energy",
+        "off-grid power",
+        "community power",
+        "solar",
+        "wind power",
+        "battery storage",
+        "energy access",
+        "resilience"
+      ],
+      "context": "Creates localized, independent energy networks...",
+      "materials": [
+        "ration Source(s)...",
+        "Charge Controllers...",
+        "Battery Bank...",
+        "Inverter(s)...",
+        "Distribution Wiring...",
+        "Load Management System...",
+        "Monitoring Equipment"
+      ],
+      "processSteps": [
+        "1. Energy Audit...",
+        "2. System Design...",
+        "3. Installation...",
+        "4. Wiring & Safety...",
+        "5. Distribution Network...",
+        "6. Commissioning...",
+        "7. Community Governance..."
+      ],
+      "videos": [
+        {
+          "title": "Introduction to Community Microgrids",
+          "youtubeId": "example_microgrid_intro_id",
+          "description": "An overview of how microgrids work and their benefits for local power.",
+          "icon_tag_fa": "fas fa-network-wired",
+          "color_tag": "#1d4ed8",
+          "localVideoFilename": "",
+          "authors": "",
+          "researchReviewItems": [],
+          "contentCreatorArchive": "",
+          "licence": "Standard YouTube License",
+          "patreon": "",
+          "socials": {},
+          "fundraiser": "",
+          "sponsorPages": []
+        }
+      ]
+    },
+    {
+      "uniqueId": "energy-3",
+      "title": "DIY Biochar Retort (Soda Keg + Cast Iron Pan)",
+      "description": "A step-by-step guide for making biochar at home using a repurposed soda keg sealed with a cast iron pan and secured with stainless cable. The vessel is heated inside a wood stove to achieve pyrolysis.",
+      "tags": [
+        "biochar",
+        "pyrolysis",
+        "charcoal production",
+        "carbon sequestration",
+        "DIY energy",
+        "regenerative systems",
+        "wood stove",
+        "sustainable fuel"
+      ],
+      "context": "This module details the design, materials, and step-by-step process for building and operating a home-scale biochar retort using an improvised pressure vessel. It supports experimentation with different biomass types, carbon yields, and environmental impact (e.g., odor, residue, gas output). This system is well-suited for sustainable homesteads and regenerative agriculture enthusiasts.",
+      "materials": [
+        "**1. Retort Body:**",
+        "   - Stainless steel soda keg (top removed to create a chamber)",
+        "   - Cast iron pan (used as heavy lid)",
+        "**2. Retort Sealing System:**",
+        "   - Stainless steel cable (7x woven over-under stitching to hold the lid down under thermal expansion)",
+        "   - Optional: Furnace cement, clay, or fire rope gasket to improve the seal",
+        "**3. Biomass Feedstock:**",
+        "   - Dry wood chunks, nutshells, dried crop waste, or small sticks (low-moisture for optimal char quality)",
+        "**4. Heating Source:**",
+        "   - Wood stove or masonry heater with a well-established coal bed",
+        "**5. Monitoring & Safety:**",
+        "   - IR thermometer or thermocouple for vessel surface temp",
+        "   - Gloves, eye protection, long tongs",
+        "   - Ventilation (if indoors, use stove with chimney draw)"
+      ],
+      "processSteps": [
+        "**Phase 1: Vessel Preparation**",
+        "   - Step 1: Cut the soda keg and deburr edges",
+        "   - Step 2: Select a cast iron pan that tightly fits the keg’s top",
+        "   - Step 3: Prepare the stainless steel cable; test-fit the weave to hold the lid tight",
+        "**Phase 2: Biomass Loading**",
+        "   - Step 4: Fill the keg with dry, uniform biomass (avoid green or wet material)",
+        "   - Step 5: Place the lid and secure with cable (tighten using pliers or turnbuckle)",
+        "   - Step 6: Optionally apply clay or ash at the seam",
+        "**Phase 3: Pyrolysis Cycle**",
+        "   - Step 7: Prepare a bed of red-hot coals in the wood stove",
+        "   - Step 8: Insert the sealed vessel into the coals",
+        "   - Step 9: Let cook for 1.5–3 hours, depending on stove heat and biomass",
+        "   - Step 10: Optionally add coals around the vessel for uniform heat",
+        "**Phase 4: Cooling & Recovery**",
+        "   - Step 11: Allow the retort to cool fully (ideally overnight)",
+        "   - Step 12: Open the vessel only when cold to avoid oxygen flash",
+        "   - Step 13: Remove the biochar and inspect quality (black, glossy or dull, lightweight)",
+        "**Phase 5: Application or Storage**",
+        "   - Step 14: Store in airtight container or soak in compost tea before soil application",
+        "   - Step 15: Optionally log temperature, biomass weight in/out, odor, texture for experiments"
+      ],
+      "videos": [
+        {
+          "title": "Making Biochar at Home with a Simple Retort",
+          "youtubeId": "example_biochar_retort_id",
+          "description": "A demonstration of using a soda keg and cast iron pan to produce biochar.",
+          "icon_tag_fa": "fas fa-fire",
+          "color_tag": "#78350f",
+          "localVideoFilename": "",
+          "authors": "",
+          "researchReviewItems": [],
+          "contentCreatorArchive": "",
+          "licence": "Standard YouTube License",
+          "patreon": "",
+          "socials": {},
+          "fundraiser": "",
+          "sponsorPages": []
+        }
+      ],
+      "notes": [
+        "Do not open the vessel hot—risk of flash combustion!",
+        "This is a low-pressure system; never fully seal without a pressure vent.",
+        "Char yield will vary by biomass type, particle size, and cook time.",
+        "If syngas flames appear, they should be short-lived and low volume in this design."
+      ]
+    },
+    {
+      "uniqueId": "energy-4",
+      "title": "Briquettes",
+      "subtitle": "Hand Pressed Heat & Cooking Fuel Briquettes",
+      "description": "DIY cook stove Fuel produced...",
+      "tags": [
+        "cooking fuel",
+        "upcycling",
+        "home heating",
+        "biomass",
+        "briquettes",
+        "waste to energy",
+        "appropriate technology",
+        "DIY",
+        "fuel efficiency"
+      ],
+      "context": "Compresses loose biomass waste...",
+      "materials": [
+        "Dry Biomass Waste...",
+        "Water...",
+        "Binder...",
+        "Briquette Press...",
+        "Drying Rack/Area"
+      ],
+      "processSteps": [
+        "1. Collect & Shred...",
+        "2. Mix with Water...",
+        "3. Load Slurry...",
+        "4. Compress Firmly...",
+        "5. Eject Wet Briquette...",
+        "6. Dry Thoroughly..."
+      ],
+      "videos": [
+        {
+          "icon_tag_fa": "fas fa-fire-alt",
+          "color_tag": "#d97706",
+          "title": "Simple Biomass Briquette Press Construction",
+          "youtubeId": "1LD7BhR3jTI",
+          "description": "Building a manual press...",
+          "localVideoFilename": "energy_briquette_press.mp4",
+          "authors": "",
+          "researchReviewItems": [],
+          "contentCreatorArchive": "",
+          "licence": "Standard YouTube License",
+          "patreon": "",
+          "socials": {},
+          "fundraiser": "",
+          "sponsorPages": []
+        }
+      ]
+    }
+  ]
+},
       {
         "area": "Health",
         "icon": "fa-heartbeat",
