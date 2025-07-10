@@ -771,7 +771,6 @@ Our method is to support critical needs of vulnerable populations ( think water 
 
 
 
-// let searchableItems = []; // For search functionality
 
 // Debounce function
 function debounce(func, delay) {
@@ -1972,9 +1971,8 @@ function populateAreaNavIcons(categoriesInfo) { // Expects array like [{ name: "
     });
     console.log("Area navigation icons populated.");
 }
-// Global declaration (keep this at the top of your script if it's meant to be global)
+// Global declaration  
 let searchableItems = [];
-let allVideosFlat = [];
         
 // --- Function to build the searchableItems array for search autocomplete ---
 function buildSearchableItems(data) {
