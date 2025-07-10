@@ -1978,80 +1978,94 @@ function populateAreaNavIcons(categoriesInfo) { // Expects array like [{ name: "
     });
     console.log("Area navigation icons populated.");
 }
+// Global declaration (keep this at the top of your script if it's meant to be global)
+let searchableItems = [];
 
 // --- Function to build the searchableItems array for search autocomplete ---
 function buildSearchableItems(data) {
-  const searchableItems = []; // Reset before building
+    // 1. Declare the temporary array *inside* the function.
+    // This array will hold the items as they are processed.
+    const tempSearchableItems = [];
 
-  if (!data || !Array.isArray(data)) {
-    console.error("Invalid data provided to buildSearchableItems");
-    return;
-  }
+    // 2. Handle invalid data immediately at the beginning.
+    // There's no need for two identical checks.
+    if (!data || !Array.isArray(data)) {
+        console.error("Invalid data provided to buildSearchableItems. Expected an array.");
+        return tempSearchableItems; // Always return the array, even if empty on error
+    }
 
-  data.forEach(area => {
-    if (!area || !area.area) return; // Skip bad entries
+    // 3. Iterate through the data and populate tempSearchableItems.
+    data.forEach(area => {
+        if (!area || !area.area) {
+            console.warn("Skipping malformed area entry:", area); // Added a warning for debugging
+            return; // Skip bad entries and continue with the next area
+        }
 
-    // 1) Add the area itself
-    searchableItems.push({
-      id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`,
-      title: area.area,
-      type: 'module',
-      icon: area.icon || 'fa-cubes',
-      areaName: area.area,
-      slug: area.area.toLowerCase().replace(/\s+/g, '-')
-    });
-
-    // 2) Subcategories
-    if (Array.isArray(area.subcategories)) {
-      area.subcategories.forEach((subcategory, subcatIndex) => {
-        if (!subcategory || !subcategory.title) return;
-
-        const areaSlug = area.area.toLowerCase().replace(/\s+/g, '-');
-        const uniqueId = subcategory.uniqueId
-          ? subcategory.uniqueId
-          : `${areaSlug}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
-
-        searchableItems.push({
-          id: `subcategory-${uniqueId}`,
-          title: subcategory.title,
-          type: 'module',
-          icon: subcategory.icon || area.icon || 'fa-cube',
-          areaName: area.area,
-          areaSlug: areaSlug,
-          uniqueId: uniqueId
+        // 1) Add the area itself
+        tempSearchableItems.push({ // <--- IMPORTANT: Push to tempSearchableItems
+            id: `area-${area.area.toLowerCase().replace(/\s+/g, '-')}`,
+            title: area.area,
+            type: 'module',
+            icon: area.icon || 'fa-cubes',
+            areaName: area.area,
+            slug: area.area.toLowerCase().replace(/\s+/g, '-')
         });
 
-        // 3) Videos
-        if (Array.isArray(subcategory.videos)) {
-          subcategory.videos.forEach((video, videoIndex) => {
-            if (!video || !video.youtubeId || !video.title) return;
+        // 2) Subcategories
+        if (Array.isArray(area.subcategories)) {
+            area.subcategories.forEach((subcategory, subcatIndex) => {
+                if (!subcategory || !subcategory.title) {
+                    console.warn("Skipping malformed subcategory entry:", subcategory, "in area:", area.area);
+                    return; // Skip bad entries
+                }
 
-            const videoId = `video-search-${uniqueId}-${videoIndex}`;
-            searchableItems.push({
-              id: videoId,
-              title: video.title,
-              description: video.description || '',
-              type: 'video',
-              icon: video.icon_tag_fa || '',
-              areaName: area.area,
-              areaSlug: areaSlug,
-              subcatUniqueId: uniqueId,
-              flat_index: video.flat_index
-            });
-          });
-        } // ← closes subcategory.videos if
-      });  // ← closes area.subcategories.forEach
-    }     // ← closes area.subcategories if
-  });      // ← closes data.forEach
+                const areaSlug = area.area.toLowerCase().replace(/\s+/g, '-');
+                const uniqueId = subcategory.uniqueId
+                    ? subcategory.uniqueId
+                    : `${areaSlug}-${subcategory.title.toLowerCase().replace(/\s+/g, '-')}-${subcatIndex}`;
 
-    console.log(`Built ${searchableItems.length} searchable items.`);
+                tempSearchableItems.push({ // <--- IMPORTANT: Push to tempSearchableItems
+                    id: `subcategory-${uniqueId}`,
+                    title: subcategory.title,
+                    type: 'module',
+                    icon: subcategory.icon || area.icon || 'fa-cube',
+                    areaName: area.area,
+                    areaSlug: areaSlug,
+                    uniqueId: uniqueId
+                });
 
-    searchableItems = buildSearchableItems(categoryData); // <--- Make sure you assign the return value!
-    
-    console.log("Global searchableItems after build:", searchableItems);
-    console.log("Global searchableItems length:", searchableItems.length);
+                // 3) Videos
+                if (Array.isArray(subcategory.videos)) {
+                    subcategory.videos.forEach((video, videoIndex) => {
+                        if (!video || !video.youtubeId || !video.title) {
+                            console.warn("Skipping malformed video entry:", video, "in subcategory:", subcategory.title);
+                            return; // Skip bad entries
+                        }
 
-  return searchableItems;
+                        const videoId = `video-search-${uniqueId}-${videoIndex}`;
+                        tempSearchableItems.push({ // <--- IMPORTANT: Push to tempSearchableItems
+                            id: videoId,
+                            title: video.title,
+                            description: video.description || '',
+                            type: 'video',
+                            icon: video.icon_tag_fa || '',
+                            areaName: area.area,
+                            areaSlug: areaSlug,
+                            subcatUniqueId: uniqueId,
+                            flat_index: video.flat_index
+                        });
+                    });
+                } // ← closes subcategory.videos if
+            }); // ← closes area.subcategories.forEach
+        } // ← closes area.subcategories if
+    }); // ← closes data.forEach
+
+    // 4. Log the count of items built *before* returning.
+    // This confirms the *local* array was populated as expected.
+    console.log(`Built ${tempSearchableItems.length} searchable items.`);
+
+    // 5. Return the fully populated temporary array.
+    return tempSearchableItems;
 }
 
 // --- Function to set up interactions for the floating search menu ---
@@ -2587,6 +2601,13 @@ function handleSearch() {
             document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Essential content could not be loaded. The data file might be empty or corrupted.</p>";
             return;
         }
+        searchableItems = buildSearchableItems(categoryData);    
+    
+        // Now, log the global searchableItems to verify it's populated.
+        console.log("Global searchableItems after build and assignment:", searchableItems);
+        console.log("Global searchableItems length after assignment:", searchableItems.length);
+
+
     } catch (error) {
         console.error("CRITICAL ERROR: Failed to load and parse category data from JSON file:", error);
         document.body.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Error: Could not load essential page content. Please check the console for details and try again later.</p>";
