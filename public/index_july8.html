@@ -1283,6 +1283,14 @@ function toggleSubcategoryPreview(moduleElement, areaName) {
     }
 }
 
+// Grab your slides & dots once
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dots   = Array.from(document.querySelectorAll('.dot'));
+
+// Shared state
+let currentIndex = 0;
+let intervalId   = null;
+
 // instead of nextSlide()
 function showNextSlide() {
   showSlide(currentIndex + 1);
