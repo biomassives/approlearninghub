@@ -379,21 +379,35 @@
             "sponsorPages": []
           },
           {
-            "icon_tag_fa": "fas fa-cogs",
-            "color_tag": "#475569",
-            "title": "Building and Installing a Ram Pump",
-            "youtubeId": "Jl5TodxqQpc",
-            "description": "Construct a pump that works...",
-            "localVideoFilename": "water_ram_pump.mp4",
-            "authors": "",
-            "researchReviewItems": [],
-            "contentCreatorArchive": "",
-            "licence": "Standard YouTube License",
-            "patreon": "",
-            "socials": {},
-            "fundraiser": "",
-            "sponsorPages": []
-          }
+              "icon_tag_fa": "fas fa-water",
+              "color_tag": "#3b82f6",
+              "title": "DIY Hydraulic Ram Pump Installation - Part 1 (Water Power Pumping)",
+              "youtubeId": "",
+              "description": "Demonstrates how to build and install a hydraulic ram pump using only water power to move water from a stream up to garden level. Mike Collinson shows the complete process from surveying requirements (minimum 3-foot drop) through assembly using standard plumbing parts including expansion tanks and brass swing check valves. Initial results show 11 liters per hour output. Covers drive pipe installation and pump positioning in stream.",
+              "localVideoFilename": "hydraulic_ram_pump_part1.mp4",
+              "authors": "Mike Collinson",
+              "researchReviewItems": [
+                "Minimum 3-foot water drop required for operation",
+                "Higher fall allows higher pumping height",
+                "Two brass swing check valves must be oriented correctly",
+                "Uses standard plumbing expansion tank",
+                "Drive pipe approximately 120 feet in this example",
+                "Initial output: 11 liters per hour",
+                "Part 1 of multi-part series"
+              ],
+              "contentCreatorArchive": "",
+              "licence": "Educational/Tutorial Content",
+              "patreon": "",
+              "socials": {},
+              "fundraiser": "",
+              "sponsorPages": [],
+              "tags": ["hydraulic", "water pump", "DIY", "renewable energy", "water power", "garden irrigation", "sustainable technology"],
+              "difficulty": "Intermediate",
+              "duration_minutes": 5,
+              "part_number": 1,
+              "series_name": "DIY Hydraulic Ram Pump"
+            }
+          
         ]
       }
     ]
