@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Module POAP Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2d1810 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 2px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #C0C0C0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #cccccc;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #C0C0C0, #A0A0A0);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .module-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+        }
+
+        .module-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status-pending {
+            background: rgba(249, 115, 22, 0.2);
+            color: #f97316;
+        }
+
+        .poap-preview {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            margin: 20px auto;
+            border: 3px solid #FFD700;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wallet-status {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .wallet-connected {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 2px solid #22c55e;
+        }
+
+        .wallet-disconnected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+
+        .glitter {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: glitter 2s infinite;
+        }
+
+        @keyframes glitter {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background: rgba(34, 197, 94, 0.9);
+            color: white;
+        }
+
+        .toast-error {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="event-pretext" style="color: #FFA500; font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Battle Rappers Call</div>
+            <h1 class="title">Battle of the Raps</h1>
+            <p class="subtitle">Glitters vs Golds • Karen Edition • Jul 15 2025</p>
+            <div style="margin-bottom: 10px;">
+                <small style="color: #C0C0C0;">Organized by Fana Ke • <a href="http://www.artlifegroup.or.ke" style="color: #FFD700; text-decoration: none;">www.artlifegroup.or.ke</a></small>
+            </div>
+            <div class="wallet-status wallet-disconnected" id="walletStatus">
+                Wallet Disconnected
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title">📚 Learning Modules</h2>
+                <div class="module-list" id="moduleList">
+                    <!-- Modules will be populated here -->
+                </div>
+                <button class="btn" onclick="moduleManager.refreshModules()">Refresh Modules</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🎨 POAP Generator</h2>
+                <div class="poap-preview" id="poapPreview">
+                    <!-- SVG art will be generated here -->
+                </div>
+                <div class="input-group">
+                    <label for="artistName">Artist Name</label>
+                    <input type="text" id="artistName" placeholder="Enter artist name">
+                </div>
+                <div class="input-group">
+                    <label for="moduleTitle">Module Completed</label>
+                    <select id="moduleTitle">
+                        <option value="">Select module...</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="poapManager.generateArt()">Generate Art</button>
+                <button class="btn btn-secondary" onclick="poapManager.mintPOAP()">Mint POAP</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">🔐 Wallet Connection</h2>
+            <button class="btn" onclick="walletManager.connectWallet()">Connect Solana Wallet</button>
+            <button class="btn btn-secondary" onclick="walletManager.disconnectWallet()">Disconnect</button>
+        </div>
+    </div>
+
+    <script>
+        // Local JSON seed data with event metadata
+        const seedData = {
+            eventMetadata: {
+                organizer: "Fana Ke",
+                pretextName: "Battle Rappers Call",
+                titleName: "Battle of the Raps",
+                subtitleName: "Glitters vs Golds",
+                urlOrgEvent: "www.artlifegroup.or.ke",
+                edition: "Karen Edition",
+                date: "Jul 15 2025",
+                venue: "Karen, Nairobi",
+                timestamp: "2025-07-15T00:00:00Z"
+            },
+            modules: [
+                {
+                    id: 1,
+                    title: "Battle Rap Fundamentals",
+                    description: "Master the art of lyrical combat and wordplay",
+                    status: "completed",
+                    artist: "Khaligraph Jones",
+                    difficulty: "beginner",
+                    category: "glitters"
+                },
+                {
+                    id: 2,
+                    title: "Freestyle Flow Mastery",
+                    description: "Develop your improvisational rap skills",
+                    status: "completed",
+                    artist: "Octopizzo",
+                    difficulty: "intermediate",
+                    category: "golds"
+                },
+                {
+                    id: 3,
+                    title: "Stage Presence & Performance",
+                    description: "Command the crowd with confidence and charisma",
+                    status: "pending",
+                    artist: "Femi One",
+                    difficulty: "advanced",
+                    category: "glitters"
+                },
+                {
+                    id: 4,
+                    title: "Diss Track Construction",
+                    description: "Learn the anatomy of a perfect battle rap response",
+                    status: "pending",
+                    artist: "Prezzo",
+                    difficulty: "intermediate",
+                    category: "golds"
+                }
+            ],
+            poapTemplates: [
+                {
+                    id: 1,
+                    name: "Glitters Champion",
+                    colors: ["#C0C0C0", "#E6E6FA", "#F0F8FF"],
+                    elements: ["microphone", "crown", "diamond"],
+                    team: "glitters"
+                },
+                {
+                    id: 2,
+                    name: "Golds Warrior",
+                    colors: ["#FFD700", "#FFA500", "#FF8C00"],
+                    elements: ["trophy", "chain", "fire"],
+                    team: "golds"
+                },
+                {
+                    id: 3,
+                    name: "Karen Battle Legend",
+                    colors: ["#8B4513", "#CD853F", "#DAA520"],
+                    elements: ["shield", "sword", "laurel"],
+                    team: "neutral"
+                }
+            ]
+        };
+
+        // Lattice method for data security (simplified)
+        class LatticeSecurityManager {
+            constructor() {
+                this.encryptionKey = 'nairobi_hiphop_2025';
+            }
+
+            encrypt(data) {
+                // Simple XOR encryption for demo
+                const key = this.encryptionKey;
+                let encrypted = '';
+                for (let i = 0; i < data.length; i++) {
+                    encrypted += String.fromCharCode(data.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                }
+                return btoa(encrypted);
+            }
+
+            decrypt(encryptedData) {
+                try {
+                    const decoded = atob(encryptedData);
+                    const key = this.encryptionKey;
+                    let decrypted = '';
+                    for (let i = 0; i < decoded.length; i++) {
+                        decrypted += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                    }
+                    return decrypted;
+                } catch (e) {
+                    return null;
+                }
+            }
+        }
+
+        // Module Manager Class
+        class ModuleManager {
+            constructor() {
+                this.modules = seedData.modules;
+                this.security = new LatticeSecurityManager();
+                this.loadModules();
+            }
+
+            loadModules() {
+                const savedModules = localStorage.getItem('learning_modules');
+                if (savedModules) {
+                    const decrypted = this.security.decrypt(savedModules);
+                    if (decrypted) {
+                        this.modules = JSON.parse(decrypted);
+                    }
+                }
+                this.renderModules();
+                this.updateModuleSelector();
+            }
+
+            saveModules() {
+                const encrypted = this.security.encrypt(JSON.stringify(this.modules));
+                localStorage.setItem('learning_modules', encrypted);
+            }
+
+            renderModules() {
+                const moduleList = document.getElementById('moduleList');
+                moduleList.innerHTML = '';
+
+                this.modules.forEach(module => {
+                    const categoryBadge = module.category === 'glitters' ? 
+                        '<span style="background: linear-gradient(45deg, #C0C0C0, #E6E6FA); color: #000; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-left: 10px;">✨ GLITTERS</span>' :
+                        '<span style="background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-left: 10px;">🏆 GOLDS</span>';
+                    
+                    const moduleItem = document.createElement('div');
+                    moduleItem.className = 'module-item';
+                    moduleItem.innerHTML = `
+                        <div>
+                            <h3>${module.title} ${categoryBadge}</h3>
+                            <p style="color: #ccc; font-size: 0.9rem;">${module.description}</p>
+                            <small style="color: #FFD700;">Mentor: ${module.artist}</small>
+                        </div>
+                        <div class="module-status status-${module.status}">
+                            ${module.status}
+                        </div>
+                    `;
+                    moduleList.appendChild(moduleItem);
+                });
+            }
+
+            updateModuleSelector() {
+                const selector = document.getElementById('moduleTitle');
+                selector.innerHTML = '<option value="">Select module...</option>';
+                
+                this.modules.filter(m => m.status === 'completed').forEach(module => {
+                    const option = document.createElement('option');
+                    option.value = module.id;
+                    option.textContent = module.title;
+                    selector.appendChild(option);
+                });
+            }
+
+            completeModule(moduleId) {
+                const module = this.modules.find(m => m.id === moduleId);
+                if (module) {
+                    module.status = 'completed';
+                    this.saveModules();
+                    this.renderModules();
+                    this.updateModuleSelector();
+                    this.showToast('Module completed successfully!', 'success');
+                }
+            }
+
+            refreshModules() {
+                this.renderModules();
+                this.updateModuleSelector();
+                this.showToast('Modules refreshed!', 'success');
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => document.body.removeChild(toast), 300);
+                }, 3000);
+            }
+        }
+
+        // POAP Manager Class
+        class POAPManager {
+            constructor() {
+                this.currentArt = null;
+                this.templates = seedData.poapTemplates;
+            }
+
+            generateArt() {
+                const artistName = document.getElementById('artistName').value;
+                const moduleId = document.getElementById('moduleTitle').value;
+                
+                if (!artistName || !moduleId) {
+                    moduleManager.showToast('Please fill in all fields', 'error');
+                    return;
+                }
+
+                const module = moduleManager.modules.find(m => m.id == moduleId);
+                const template = this.templates[Math.floor(Math.random() * this.templates.length)];
+                
+                this.currentArt = this.createSVGArt(artistName, module, template);
+                document.getElementById('poapPreview').innerHTML = this.currentArt;
+                
+                this.addGlitterEffect();
+                moduleManager.showToast('POAP art generated!', 'success');
+            }
+
+            createSVGArt(artistName, module, template) {
+                const colors = template.colors;
+                const width = 200;
+                const height = 200;
+                const eventData = seedData.eventMetadata;
+                
+                return `
+                    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="bgGradient">
+                                <stop offset="0%" style="stop-color:${colors[0]};stop-opacity:0.8" />
+                                <stop offset="50%" style="stop-color:${colors[1]};stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:${colors[2]};stop-opacity:0.4" />
+                            </radialGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                            <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:${colors[0]};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${colors[1]};stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Background with event branding -->
+                        <rect width="100%" height="100%" fill="url(#bgGradient)" />
+                        
+                        <!-- Battle-themed geometric patterns -->
+                        <circle cx="50" cy="50" r="20" fill="${colors[0]}" opacity="0.7" />
+                        <circle cx="150" cy="150" r="25" fill="${colors[1]}" opacity="0.6" />
+                        <circle cx="150" cy="50" r="15" fill="${colors[2]}" opacity="0.8" />
+                        <circle cx="50" cy="150" r="18" fill="${colors[0]}" opacity="0.5" />
+                        
+                        <!-- Battle arena -->
+                        <rect x="70" y="70" width="60" height="60" fill="none" stroke="${colors[1]}" stroke-width="3" opacity="0.6" transform="rotate(45 100 100)" />
+                        
+                        <!-- Microphone icon with battle theme -->
+                        <circle cx="100" cy="80" r="12" fill="${colors[0]}" filter="url(#glow)" />
+                        <rect x="94" y="92" width="12" height="25" fill="${colors[0]}" />
+                        <rect x="96" y="117" width="8" height="8" fill="${colors[1]}" />
+                        
+                        <!-- Sound wave battle lines -->
+                        <path d="M 60 80 Q 50 70 40 80 Q 50 90 60 80" fill="none" stroke="${colors[1]}" stroke-width="3" opacity="0.8" />
+                        <path d="M 140 80 Q 150 70 160 80 Q 150 90 140 80" fill="none" stroke="${colors[1]}" stroke-width="3" opacity="0.8" />
+                        
+                        <!-- Crown for winner -->
+                        <polygon points="90,50 95,40 100,45 105,40 110,50 100,55" fill="${colors[0]}" opacity="0.9" />
+                        
+                        <!-- Event title -->
+                        <text x="100" y="140" text-anchor="middle" fill="url(#textGrad)" font-family="Arial, sans-serif" font-size="8" font-weight="bold">
+                            ${eventData.titleName.toUpperCase()}
+                        </text>
+                        
+                        <!-- Artist name -->
+                        <text x="100" y="155" text-anchor="middle" fill="${colors[0]}" font-family="Arial, sans-serif" font-size="10" font-weight="bold">
+                            ${artistName.toUpperCase()}
+                        </text>
+                        
+                        <!-- Event details -->
+                        <text x="100" y="170" text-anchor="middle" fill="${colors[2]}" font-family="Arial, sans-serif" font-size="7">
+                            ${eventData.edition.toUpperCase()}
+                        </text>
+                        <text x="100" y="185" text-anchor="middle" fill="${colors[1]}" font-family="Arial, sans-serif" font-size="6">
+                            ${eventData.date} • FANA KE
+                        </text>
+                        
+                        <!-- Team indicator -->
+                        <text x="100" y="30" text-anchor="middle" fill="${colors[0]}" font-family="Arial, sans-serif" font-size="9" font-weight="bold" opacity="0.8">
+                            ${template.team === 'glitters' ? '✨ GLITTERS' : template.team === 'golds' ? '🏆 GOLDS' : '⚔️ BATTLE'}
+                        </text>
+                        
+                        <!-- Corner battle elements -->
+                        <polygon points="20,20 30,25 25,35" fill="${colors[0]}" opacity="0.6" />
+                        <polygon points="180,20 170,25 175,35" fill="${colors[1]}" opacity="0.6" />
+                        <polygon points="20,180 30,175 25,165" fill="${colors[2]}" opacity="0.6" />
+                        <polygon points="180,180 170,175 175,165" fill="${colors[0]}" opacity="0.6" />
+                        
+                        <!-- Hidden metadata for POAP -->
+                        <metadata>
+                            <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                                <rdf:Description>
+                                    <dc:title>${eventData.titleName}</dc:title>
+                                    <dc:creator>${eventData.organizer}</dc:creator>
+                                    <dc:date>${eventData.timestamp}</dc:date>
+                                    <dc:description>${eventData.subtitleName} - ${eventData.edition}</dc:description>
+                                    <dc:identifier>${eventData.urlOrgEvent}</dc:identifier>
+                                    <dc:contributor>${artistName}</dc:contributor>
+                                    <dc:subject>Battle Rap, POAP, Nairobi Hip Hop</dc:subject>
+                                </rdf:Description>
+                            </rdf:RDF>
+                        </metadata>
+                    </svg>
+                `;
+            }
+
+            addGlitterEffect() {
+                const preview = document.getElementById('poapPreview');
+                
+                // Remove existing glitter
+                const existingGlitter = preview.querySelectorAll('.glitter');
+                existingGlitter.forEach(g => g.remove());
+                
+                // Add new glitter
+                for (let i = 0; i < 8; i++) {
+                    const glitter = document.createElement('div');
+                    glitter.className = 'glitter';
+                    glitter.style.left = Math.random() * 190 + 'px';
+                    glitter.style.top = Math.random() * 190 + 'px';
+                    glitter.style.animationDelay = Math.random() * 2 + 's';
+                    preview.appendChild(glitter);
+                }
+            }
+
+            async mintPOAP() {
+                if (!this.currentArt) {
+                    moduleManager.showToast('Please generate art first', 'error');
+                    return;
+                }
+
+                if (!walletManager.isConnected) {
+                    moduleManager.showToast('Please connect your wallet first', 'error');
+                    return;
+                }
+
+                try {
+                    // Simulate minting process
+                    moduleManager.showToast('Minting POAP...', 'success');
+                    
+                    // In real implementation, this would interact with Solana
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    const mockTxHash = 'mock_tx_' + Math.random().toString(36).substr(2, 9);
+                    moduleManager.showToast(`POAP minted! TX: ${mockTxHash}`, 'success');
+                    
+                    // Save to localStorage with complete event metadata
+                    const mintedPOAPs = JSON.parse(localStorage.getItem('minted_poaps') || '[]');
+                    mintedPOAPs.push({
+                        id: Date.now(),
+                        art: this.currentArt,
+                        timestamp: new Date().toISOString(),
+                        txHash: mockTxHash,
+                        eventMetadata: seedData.eventMetadata,
+                        artist: document.getElementById('artistName').value,
+                        module: moduleManager.modules.find(m => m.id == document.getElementById('moduleTitle').value)
+                    });
+                    localStorage.setItem('minted_poaps', JSON.stringify(mintedPOAPs));
+                    
+                } catch (error) {
+                    moduleManager.showToast('Minting failed: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Wallet Manager Class
+        class WalletManager {
+            constructor() {
+                this.isConnected = false;
+                this.walletAddress = null;
+            }
+
+            async connectWallet() {
+                try {
+                    // Mock wallet connection for demo
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    this.isConnected = true;
+                    this.walletAddress = 'mock_wallet_' + Math.random().toString(36).substr(2, 9);
+                    
+                    this.updateWalletStatus();
+                    moduleManager.showToast('Wallet connected successfully!', 'success');
+                    
+                } catch (error) {
+                    moduleManager.showToast('Failed to connect wallet', 'error');
+                }
+            }
+
+            disconnectWallet() {
+                this.isConnected = false;
+                this.walletAddress = null;
+                this.updateWalletStatus();
+                moduleManager.showToast('Wallet disconnected', 'success');
+            }
+
+            updateWalletStatus() {
+                const status = document.getElementById('walletStatus');
+                if (this.isConnected) {
+                    status.textContent = `Connected: ${this.walletAddress.substr(0, 8)}...`;
+                    status.className = 'wallet-status wallet-connected';
+                } else {
+                    status.textContent = 'Wallet Disconnected';
+                    status.className = 'wallet-status wallet-disconnected';
+                }
+            }
+        }
+
+        // Initialize managers
+        const moduleManager = new ModuleManager();
+        const poapManager = new POAPManager();
+        const walletManager = new WalletManager();
+
+        // Create floating background elements
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            const colors = ['#FFD700', '#FFA500', '#C0C0C0'];
+            
+            for (let i = 0; i < 6; i++) {
+                const blob = document.createElement('div');
+                blob.className = 'floating-blob';
+                blob.style.width = Math.random() * 100 + 50 + 'px';
+                blob.style.height = blob.style.width;
+                blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+                blob.style.left = Math.random() * 100 + '%';
+                blob.style.top = Math.random() * 100 + '%';
+                blob.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                blob.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(blob);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            createFloatingElements();
+            
+            // Auto-generate initial POAP art
+            setTimeout(() => {
+                document.getElementById('artistName').value = 'Sample Artist';
+                document.getElementById('moduleTitle').value = '1';
+                poapManager.generateArt();
+            }, 1000);
+        });
+
+        // Simulate module completion for demo
+        setTimeout(() => {
+            if (Math.random() > 0.7) {
+                moduleManager.completeModule(3);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
