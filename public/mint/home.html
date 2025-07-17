@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle of the Raps POAP Minter</title>
+    <script src="https://unpkg.com/@solana/web3.js@1.92.3/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/@metaplex-foundation/js@1.44.0/dist/browser/index.min.js"></script>
+    <script src="https://unpkg.com/@solflare-wallet/sdk@0.3.2/lib/index.iife.min.js"></script>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: sans-serif;
+            text-align: center;
+            padding: 2rem;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 1rem;
+            cursor: pointer;
+        }
+        .connected {
+            color: #0f0;
+        }
+        .disconnected {
+            color: #f00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Battle of the Raps - POAP Minting</h1>
+    <p id="walletStatus" class="disconnected">Wallet Disconnected</p>
+    <button onclick="walletManager.connectWallet()">Connect Solflare Wallet</button>
+    <button onclick="walletManager.disconnectWallet()">Disconnect Wallet</button>
+    <br>
+    <input type="text" id="artistName" placeholder="Enter Artist Name" />
+    <button onclick="poapManager.mintPOAP()">Mint POAP NFT</button>
+
+    <script>
+        const { Connection, clusterApiUrl, PublicKey } = solanaWeb3;
+        const { Metaplex, walletAdapterIdentity, bundlrStorage } = metaplexFoundation;
+
+        class WalletManager {
+            constructor() {
+                this.connection = new Connection(clusterApiUrl('testnet'), 'confirmed');
+                this.wallet = null;
+                this.walletAddress = null;
+                this.isConnected = false;
+            }
+
+            async connectWallet() {
+                const provider = window.solflare;
+
+                if (!provider || !provider.isSolflare) {
+                    alert("Solflare not found. Install at https://solflare.com");
+                    return;
+                }
+
+                try {
+                    await provider.connect();
+                    this.wallet = provider;
+                    this.walletAddress = provider.publicKey.toString();
+                    this.isConnected = true;
+                    this.updateWalletStatus();
+                    console.log("Connected wallet:", this.walletAddress);
+                } catch (err) {
+                    console.error("Wallet connection failed", err);
+                }
+            }
+
+            disconnectWallet() {
+                if (this.wallet) this.wallet.disconnect();
+                this.wallet = null;
+                this.walletAddress = null;
+                this.isConnected = false;
+                this.updateWalletStatus();
+            }
+
+            updateWalletStatus() {
+                const status = document.getElementById("walletStatus");
+                if (this.isConnected) {
+                    status.textContent = `Connected: ${this.walletAddress.slice(0, 8)}...`;
+                    status.className = 'connected';
+                } else {
+                    status.textContent = "Wallet Disconnected";
+                    status.className = 'disconnected';
+                }
+            }
+        }
+
+        class POAPManager {
+            async mintPOAP() {
+                if (!walletManager.isConnected) {
+                    alert("Connect your Solflare wallet first.");
+                    return;
+                }
+
+                const artistName = document.getElementById('artistName').value;
+                if (!artistName) {
+                    alert("Enter an artist name.");
+                    return;
+                }
+
+                const metaplex = Metaplex.make(walletManager.connection)
+                    .use(walletAdapterIdentity(walletManager.wallet))
+                    .use(bundlrStorage({ address: "https://devnet.bundlr.network" }));
+
+                try {
+                    const metadata = {
+                        name: `BattleRap POAP - ${artistName}`,
+                        symbol: "POAP",
+                        description: `POAP for ${artistName} in Battle of the Raps.`,
+                        image: "https://arweave.net/<your-poap-image.png>", // Upload your image and replace
+                        attributes: [
+                            { trait_type: "Event", value: "Battle of the Raps" },
+                            { trait_type: "Artist", value: artistName },
+                            { trait_type: "Edition", value: "Karen 2025" }
+                        ]
+                    };
+
+                    const { uri } = await metaplex.nfts().uploadMetadata(metadata);
+                    console.log("Metadata URI:", uri);
+
+                    const { nft } = await metaplex.nfts().create({
+                        uri,
+                        name: metadata.name,
+                        symbol: metadata.symbol,
+                        sellerFeeBasisPoints: 0,
+                        maxSupply: 1
+                    });
+
+                    alert("✅ POAP Minted! NFT Address: " + nft.address.toBase58());
+                    console.log("Minted NFT:", nft);
+                } catch (error) {
+                    console.error("Minting failed:", error);
+                    alert("Minting failed: " + error.message);
+                }
+            }
+        }
+
+        const walletManager = new WalletManager();
+        const poapManager = new POAPManager();
+    </script>
+</body>
+</html>
