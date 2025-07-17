@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POAP Explorer - Battle of the Raps</title>
+  <style>
+    body {
+      background: #121212;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      color: #FFD700;
+    }
+    .mint-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .mint-card {
+      background: #1e1e1e;
+      border: 1px solid #FFD70033;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .mint-card h3 {
+      margin: 0.5rem 0;
+      color: #FFA500;
+    }
+    .mint-card small {
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <h1>Battle of the Raps POAP Explorer</h1>
+  <div id="mintContainer" class="mint-list">Loading...</div>
+
+  <script>
+    async function fetchMints() {
+      try {
+        const res = await fetch('/api/mints');
+        const mints = await res.json();
+
+        const container = document.getElementById('mintContainer');
+        container.innerHTML = '';
+
+        if (!mints.length) {
+          container.textContent = 'No POAPs minted yet.';
+          return;
+        }
+
+        for (const mint of mints) {
+          const card = document.createElement('div');
+          card.className = 'mint-card';
+
+          card.innerHTML = `
+            <h3>${mint.artistName}</h3>
+            <p><strong>Wallet:</strong> ${mint.walletAddress.slice(0, 8)}...</p>
+            <p><strong>NFT:</strong> <a href="https://explorer.solana.com/address/${mint.nftAddress}?cluster=testnet" target="_blank">View on Solana</a></p>
+            <small>Minted: ${new Date(mint.timestamp).toLocaleString()}</small>
+          `;
+
+          container.appendChild(card);
+        }
+      } catch (err) {
+        document.getElementById('mintContainer').textContent = 'Error loading mints.';
+        console.error('Failed to fetch mints:', err);
+      }
+    }
+
+    fetchMints();
+  </script>
+</body>
+</html>
