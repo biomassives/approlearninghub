@@ -33,16 +33,41 @@
     .mint-card small {
       color: #bbb;
     }
+    input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      margin-top: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      background-color: #FFD700;
+      color: #121212;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>Battle of the Raps POAP Explorer</h1>
+
+  <div>
+    <input type="text" id="artistFilter" placeholder="Filter by artist name..." />
+    <button onclick="filterMints()">Search</button>
+  </div>
+
   <div id="mintContainer" class="mint-list">Loading...</div>
 
   <script>
-    async function fetchMints() {
+    async function fetchMints(artist = '') {
       try {
-        const res = await fetch('/api/mints');
+        const endpoint = artist
+          ? `/api/mints/${encodeURIComponent(artist)}`
+          : '/api/mints';
+        const res = await fetch(endpoint);
         const mints = await res.json();
 
         const container = document.getElementById('mintContainer');
@@ -70,6 +95,11 @@
         document.getElementById('mintContainer').textContent = 'Error loading mints.';
         console.error('Failed to fetch mints:', err);
       }
+    }
+
+    function filterMints() {
+      const artist = document.getElementById('artistFilter').value.trim();
+      fetchMints(artist);
     }
 
     fetchMints();
